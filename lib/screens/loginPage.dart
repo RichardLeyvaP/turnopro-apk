@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        automaticallyImplyLeading: false,
+        //automaticallyImplyLeading: false,//RLP Oculta la flecha de retroceso
         title: Center(
             child: Text(
           title,
@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   onPressed: () {
                     // Navigator.pushNamed(context, '/servicesProductsPage');
-                    Navigator.pushNamed(context, '/servicesProductsPage');
+                    Navigator.pushNamed(context, '/servicesPage');
                     //print(usuarioController);
                     //print(passController);
                   },

@@ -16,7 +16,8 @@ class _BottomNavigationBarNewState extends State<BottomNavigationBarNew> {
   void _navigateBottomBar(int index) {
     _selecteIndex = index;
     setState(() {});
-    Navigator.pushReplacementNamed(context, '/servicesProductsPage');
+    //Navigator.pushReplacementNamed(context, '/servicesProductsPage');
+    Navigator.pushNamed(context, '/servicesPage');
   }
 
   @override

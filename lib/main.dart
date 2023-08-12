@@ -21,6 +21,7 @@ class Myapp extends StatelessWidget {
   final _routes = {
     '/': (context) => const HomePages(),
     '/profile': (context) => const BarberProfile(),
+    '/servicesPage': (context) => const ServicesProductsPage(),
     '/productsPage': (context) => const ProductsPage(),
     '/servicesProductsPage': (context) => const ServicesProductsPage(),
     '/clients': (context) => const ShowCustomers(
@@ -36,19 +37,13 @@ class Myapp extends StatelessWidget {
   Widget build(Object context) {
     return MaterialApp(
       theme: ThemeData(
+        primaryColor: const Color.fromARGB(255, 241, 130, 84), // Color primario
+        hintColor: const Color.fromARGB(155, 231, 232, 234), // Color secundario
         textTheme: GoogleFonts
             .poppinsTextTheme(), // Aplicar Poppins a todo el proyecto
         // Otras configuraciones de tema
       ),
 
-      /* ThemeData(
-          brightness: Brightness.light,
-          appBarTheme: const AppBarTheme(
-              titleTextStyle: TextStyle(
-                  color: Color.fromARGB(255, 22, 22, 22), fontSize: 25),
-              iconTheme: IconThemeData(color: Color.fromARGB(255, 43, 44, 49)),
-              color: Colors.white, //<-- SEE HERE
-              shadowColor: Color.fromARGB(255, 43, 44, 49))),*/
       debugShowCheckedModeBanner: false,
       //home: const BarberProfile(),
       initialRoute: '/',
