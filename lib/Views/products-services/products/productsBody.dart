@@ -2,35 +2,102 @@
 
 import 'package:flutter/material.dart';
 
-class ProductsBody extends StatelessWidget {
+class ProductsBody extends StatefulWidget {
   const ProductsBody({super.key});
 
   @override
+  State<ProductsBody> createState() => _ProductsBodyState();
+}
+
+class _ProductsBodyState extends State<ProductsBody>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    String productName = 'Coca Cola';
-    String propertiesName = 'Coca Cola Clasica 350ml';
-    double priceProduct = 1.999;
-    String addressProduct = 'assets/images/pngegg.png';
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            newMethod(addressProduct, productName, propertiesName, priceProduct,
-                context),
-            SizedBox(
-              height: (MediaQuery.of(context).size.width * 0.025),
-            ),
-            newMethod('assets/images/sprite.png', 'Sprite', 'Sprite Zero 350ml',
-                2.229, context),
-            SizedBox(
-              height: (MediaQuery.of(context).size.width * 0.025),
-            ),
-            newMethod('assets/images/pngegg.png', 'Coca Cola',
-                'Coca Cola Max 350ml', 2.559, context),
-          ],
+    List<String> tabValues = ["Especializados", "Snacks", "Otros"];
+
+    return Column(
+      children: [
+        SizedBox(
+          width: (MediaQuery.of(context).size.width),
+          height: (MediaQuery.of(context).size.width) * 0.09,
+          child: TabBar(
+              labelColor: Colors.black,
+              indicatorColor: const Color.fromARGB(255, 241, 130, 84),
+              controller: _tabController,
+              tabs: [
+                Text(tabValues[0]),
+                Text(tabValues[1]),
+                Text(tabValues[2]),
+              ]),
         ),
-      ),
+        SizedBox(
+          height: (MediaQuery.of(context).size.width * 0.005),
+        ),
+        Expanded(
+            child: TabBarView(
+          controller: _tabController,
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  newMethod('assets/images/pngegg.png', 'Coca Cola',
+                      'Coca Cola Max 350ml', 2.559, context),
+                  SizedBox(
+                    height: (MediaQuery.of(context).size.width * 0.02),
+                  ),
+                  newMethod('assets/images/pngegg.png', 'Coca Cola',
+                      'Coca Cola Max 350ml', 2.559, context),
+                  SizedBox(
+                    height: (MediaQuery.of(context).size.width * 0.02),
+                  ),
+                  newMethod('assets/images/pngegg.png', 'Coca Cola',
+                      'Coca Cola Max 350ml', 2.559, context),
+                ],
+              ),
+            ),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.add_business_outlined,
+                  size: 80,
+                ),
+                Text(
+                  'Contenido SNACKS',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ],
+            ),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.addchart_outlined,
+                  size: 80,
+                ),
+                Text(
+                  'Contenido de OTROS',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ],
+            ),
+          ],
+        )),
+      ],
     );
   }
 }
