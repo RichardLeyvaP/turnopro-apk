@@ -36,17 +36,17 @@ class servicesBodyController extends GetxController {
         .toDouble();
   }
 
+  /*
   @override
   void onInit() {
-    // print('Estoy iniciando');
     super.onInit();
   }
 
   @override
   void onReady() {
-    // print('Estoy Listo');
     super.onReady();
   }
+  */
 
   @override
   void onClose() {

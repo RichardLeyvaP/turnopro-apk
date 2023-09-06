@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-//import 'package:turnopro_apk/components/BottomNavigationBar.dart';
+import 'package:animate_do/animate_do.dart';
+import 'package:lottie/lottie.dart';
 
 class HomePages extends StatefulWidget {
   const HomePages({super.key});
@@ -140,124 +141,158 @@ class _HomePagesState extends State<HomePages> {
     return Column(
       children: [
         Expanded(
-          flex: 1, // 20% del espacio disponible para esta parte
-          // child: bannerProfile(context),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.all(Radius.circular(borderRadiusValue)),
-                color: const Color.fromARGB(255, 241, 130, 84),
-              ),
-              child: Center(
-                // This Tween Animation Builder is Just For Demonstration, Do not use this AS-IS in Projects
-                // Create and Animation Controller and Control the animation that way.
-                child: TweenAnimationBuilder(
-                  tween: Tween(begin: 0.0, end: 1.0),
-                  duration: Duration(seconds: totalSeconds),
-                  builder: (context, value, _) {
-                    remainingSeconds = (totalSeconds - (totalSeconds * value))
-                        .ceil(); // Calcula los segundos restantes
+            flex: 1, // 20% del espacio disponible para esta parte
+            // child: bannerProfile(context),
 
-                    int minutes =
-                        remainingSeconds ~/ 60; // Calcula los minutos restantes
-                    int seconds =
-                        remainingSeconds % 60; // Calcula los segundos restantes
-                    if (seconds < 10) {
-                      segundos = "0";
-                    } else {
-                      segundos = "";
-                    }
-                    if (minutes == 0 && seconds == 0) {
-                      mensaj = 'FINALIZADO';
-                      colorInicial = Colors.red;
-                      colorInicialCirculo = Colors.white;
-                      fontSizeText = 14;
-                    } else {
-                      mensaj = "Tiempo Restante";
-                    }
+            child: TweenAnimationBuilder<double>(
+              duration: const Duration(seconds: 2),
+              tween: Tween(begin: 1.0, end: 0.0),
+              curve: Curves.bounceOut,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(borderRadiusValue)),
+                    color: const Color.fromARGB(255, 241, 130, 84),
+                  ),
+                  child: TweenAnimationBuilder(
+                    tween: Tween(begin: 0.0, end: 1.0),
+                    duration: const Duration(seconds: 5),
+                    builder: (context, value, child) {
+                      return Opacity(
+                        opacity: 1 * value,
+                        child: child,
+                      );
+                    },
+                    child: Center(
+                      // This Tween Animation Builder is Just For Demonstration, Do not use this AS-IS in Projects
+                      // Create and Animation Controller and Control the animation that way.
+                      child: TweenAnimationBuilder(
+                        tween: Tween(begin: 0.0, end: 1.0),
+                        duration: Duration(seconds: totalSeconds),
+                        builder: (context, value, _) {
+                          remainingSeconds =
+                              (totalSeconds - (totalSeconds * value))
+                                  .ceil(); // Calcula los segundos restantes
 
-                    return SizedBox(
-                      width: size,
-                      height: size,
-                      child: Stack(
-                        children: [
-                          ShaderMask(
-                            shaderCallback: (rect) {
-                              return SweepGradient(
-                                  startAngle: 0.0,
-                                  endAngle: twoPi,
-                                  stops: [value, value],
-                                  // 0.0 , 0.5 , 0.5 , 1.0
-                                  center: Alignment.center,
-                                  colors: [
-                                    Colors.white,
-                                    Colors.grey.withAlpha(55)
-                                  ]).createShader(rect);
-                            },
-                            child: Container(
-                              width: size,
-                              height: size,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: Image.asset(
-                                              "assets/images/radial_scale.png")
-                                          .image)),
-                            ),
-                          ),
-                          Center(
-                            child: Container(
-                              width: size - 40,
-                              height: size - 40,
-                              decoration: BoxDecoration(
-                                  color: colorInicialCirculo,
-                                  shape: BoxShape.circle),
-                              child: Center(
-                                  child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        '$minutes :',
-                                        style: TextStyle(
-                                            fontSize: 45,
-                                            color: colorInicial,
-                                            fontWeight: FontWeight.w900),
-                                      ),
-                                      Text(
-                                        "$segundos$seconds",
-                                        style: TextStyle(
-                                            fontSize: 45,
-                                            color: colorInicial,
-                                            fontWeight: FontWeight.w900),
-                                      ),
-                                    ],
+                          int minutes = remainingSeconds ~/
+                              60; // Calcula los minutos restantes
+                          int seconds = remainingSeconds %
+                              60; // Calcula los segundos restantes
+                          if (seconds < 10) {
+                            segundos = "0";
+                          } else {
+                            segundos = "";
+                          }
+                          if (minutes == 0 && seconds == 0) {
+                            mensaj = 'FINALIZADO';
+                            colorInicial = Colors.red;
+                            colorInicialCirculo = Colors.white;
+                            fontSizeText = 14;
+                          } else {
+                            mensaj = "Tiempo Restante";
+                          }
+
+                          return SizedBox(
+                            width: size,
+                            height: size,
+                            child: Stack(
+                              children: [
+                                ShaderMask(
+                                  shaderCallback: (rect) {
+                                    return SweepGradient(
+                                        startAngle: 0.0,
+                                        endAngle: twoPi,
+                                        stops: [value, value],
+                                        // 0.0 , 0.5 , 0.5 , 1.0
+                                        center: Alignment.center,
+                                        colors: [
+                                          Colors.white,
+                                          Colors.grey.withAlpha(55)
+                                        ]).createShader(rect);
+                                  },
+                                  child: Container(
+                                    width: size,
+                                    height: size,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                            image: Image.asset(
+                                                    "assets/images/radial_scale.png")
+                                                .image)),
                                   ),
-                                  Text(
-                                    mensaj,
-                                    style: TextStyle(
-                                        fontSize: fontSizeText,
-                                        color: colorInicial,
-                                        fontWeight: FontWeight.w900),
+                                ),
+                                Center(
+                                  child: Container(
+                                    width: size - 40,
+                                    height: size - 40,
+                                    decoration: BoxDecoration(
+                                        color: colorInicialCirculo,
+                                        shape: BoxShape.circle),
+                                    child: Center(
+                                        child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              '$minutes :',
+                                              style: TextStyle(
+                                                  fontSize: 45,
+                                                  color: colorInicial,
+                                                  fontWeight: FontWeight.w900),
+                                            ),
+                                            Text(
+                                              "$segundos$seconds",
+                                              style: TextStyle(
+                                                  fontSize: 45,
+                                                  color: colorInicial,
+                                                  fontWeight: FontWeight.w900),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          mensaj,
+                                          style: TextStyle(
+                                              fontSize: fontSizeText,
+                                              color: colorInicial,
+                                              fontWeight: FontWeight.w900),
+                                        ),
+                                      ],
+                                    )),
                                   ),
-                                ],
-                              )),
+                                )
+                              ],
                             ),
-                          )
-                        ],
+                          );
+                        },
                       ),
-                    );
-                  },
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ), //Header
-        ),
+              ), //Header
+              builder: (context, value, child) {
+                double valueDefinido = 0.0;
+                if (value >= 0 && value < 0.5) {
+                  valueDefinido = 1 - 2 * value;
+                } else if (value >= 0.5 && value <= 1) {
+                  valueDefinido = 2 * value - 1;
+                }
+                return Transform.translate(
+                  offset: Offset(0.0, 100 * value),
+                  child: Opacity(
+                    opacity: valueDefinido,
+                    child: child,
+                  ),
+                );
+              },
+            )),
         Expanded(
             flex: 2, // 85% del espacio disponible para esta parte
             child: SingleChildScrollView(
@@ -267,14 +302,28 @@ class _HomePagesState extends State<HomePages> {
                   color: const Color.fromARGB(255, 231, 232, 234),
                   child: Column(
                     children: [
-                      const Row(
+                      Row(
                         children: [
-                          Text(
+                          const Text(
                             'Dashboard',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed(
+                                '/clients',
+                              );
+                            },
+                            child: const Text(
+                              '     MIS CLIENTES',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700),
+                            ),
                           ),
                         ],
                       ),
@@ -289,33 +338,52 @@ class _HomePagesState extends State<HomePages> {
                                     '/servicesProductsPage',
                                   );
                                 },
-                                child: cartsHome(
-                                    context,
-                                    borderRadiusValue,
-                                    colorVariable,
-                                    colorBottom,
-                                    titleCart,
-                                    descriptionTitleCart,
-                                    iconCart),
+                                child: TweenAnimationBuilder<double>(
+                                  duration: const Duration(seconds: 1),
+                                  tween: Tween(begin: 1.0, end: 0.0),
+                                  child: cartsHome(
+                                      context,
+                                      borderRadiusValue,
+                                      colorVariable,
+                                      colorBottom,
+                                      titleCart,
+                                      descriptionTitleCart,
+                                      iconCart),
+                                  builder: (context, value, child) {
+                                    return Transform.translate(
+                                      offset: Offset(-30 * value, 0.0),
+                                      child: child,
+                                    );
+                                  },
+                                ),
                               ),
                               InkWell(
                                 onTap: () {
+                                  // Get.toNamed(
+                                  //   '/apiUsers',
+                                  // );
                                   Get.toNamed(
-                                    '/apiUsers',
+                                    '/NotificationsPageNew',
                                   );
-                                  // Get.snackbar(
-                                  //     'Mensaje', 'Aqui van las Notificaciones',
-                                  //     duration:
-                                  //         const Duration(milliseconds: 2000));
                                 },
-                                child: cartsHome(
-                                    context,
-                                    borderRadiusValue,
-                                    const Color.fromARGB(255, 81, 93, 117),
-                                    colorBottom,
-                                    'Notificaciones',
-                                    'Tus Notificaciones',
-                                    Icons.notifications),
+                                child: TweenAnimationBuilder<double>(
+                                  duration: const Duration(seconds: 1),
+                                  tween: Tween(begin: 1.0, end: 0.0),
+                                  child: cartsHome(
+                                      context,
+                                      borderRadiusValue,
+                                      const Color.fromARGB(255, 81, 93, 117),
+                                      colorBottom,
+                                      'Notificaciones',
+                                      'Tus Notificaciones',
+                                      Icons.notifications),
+                                  builder: (context, value, child) {
+                                    return Transform.translate(
+                                      offset: Offset(30 * value, 0.0),
+                                      child: child,
+                                    );
+                                  },
+                                ),
                               ),
                             ],
                           ),
@@ -341,14 +409,24 @@ class _HomePagesState extends State<HomePages> {
                                     overlayBlur: 3,
                                   );
                                 },
-                                child: cartsHome(
-                                    context,
-                                    borderRadiusValue,
-                                    const Color.fromARGB(255, 177, 174, 174),
-                                    colorBottom,
-                                    'Estadisticas',
-                                    'Revisa Tus Ingresos',
-                                    Icons.bar_chart),
+                                child: TweenAnimationBuilder<double>(
+                                  duration: const Duration(seconds: 1),
+                                  tween: Tween(begin: 1.0, end: 0.0),
+                                  child: cartsHome(
+                                      context,
+                                      borderRadiusValue,
+                                      const Color.fromARGB(255, 177, 174, 174),
+                                      colorBottom,
+                                      'Estadisticas',
+                                      'Revisa Tus Ingresos',
+                                      Icons.bar_chart),
+                                  builder: (context, value, child) {
+                                    return Transform.translate(
+                                      offset: Offset(-30 * value, 0.0),
+                                      child: child,
+                                    );
+                                  },
+                                ),
                               ),
                               InkWell(
                                 onTap: () {
@@ -358,18 +436,25 @@ class _HomePagesState extends State<HomePages> {
                                     duration:
                                         const Duration(milliseconds: 1000),
                                   );
-                                  Get.toNamed(
-                                    '/clients',
-                                  );
                                 },
-                                child: cartsHome(
-                                    context,
-                                    borderRadiusValue,
-                                    const Color.fromARGB(255, 241, 130, 84),
-                                    colorBottom,
-                                    'Convivencia',
-                                    'Cumplimiento de Reglas',
-                                    Icons.star_border),
+                                child: TweenAnimationBuilder<double>(
+                                  duration: const Duration(seconds: 1),
+                                  tween: Tween(begin: 1.0, end: 0.0),
+                                  child: cartsHome(
+                                      context,
+                                      borderRadiusValue,
+                                      const Color.fromARGB(255, 241, 130, 84),
+                                      colorBottom,
+                                      'Convivencia',
+                                      'Cumplimiento de Reglas',
+                                      Icons.star_border),
+                                  builder: (context, value, child) {
+                                    return Transform.translate(
+                                      offset: Offset(30 * value, 0.0),
+                                      child: child,
+                                    );
+                                  },
+                                ),
                               ),
                             ],
                           ),
@@ -477,9 +562,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 width: 2, // Ajusta el ancho del borde según tus preferencias
               ),
             ),
-            child: CircleAvatar(
-              backgroundImage: AssetImage(imageDirection),
-              radius: 25, // Ajusta el tamaño del círculo aquí
+            child: SpinPerfect(
+              duration: const Duration(seconds: 3),
+              child: CircleAvatar(
+                backgroundImage: AssetImage(imageDirection),
+                radius: 25, // Ajusta el tamaño del círculo aquí
+              ),
             ),
           ),
           SizedBox(
@@ -489,19 +577,25 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Hola',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 12,
+              ElasticInRight(
+                duration: const Duration(seconds: 3),
+                child: const Text(
+                  'Hola',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 12,
+                  ),
                 ),
               ),
-              Text(
-                nameUser,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w800,
+              ElasticInRight(
+                duration: const Duration(seconds: 4),
+                child: Text(
+                  nameUser,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ),
             ],
@@ -509,15 +603,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
       actions: [
-        IconButton(
-          icon: const Icon(
-            Icons.settings,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            // Acción al presionar el ícono de ajustes
-          },
-        ),
+        Lottie.network(
+            "https://lottie.host/b39e9bdf-0bd9-47e5-b2e0-5e4f513b6dbe/UCS5u0vKhj.json",
+            height: 150,
+            width: 100),
       ],
     );
   }
@@ -571,5 +660,5 @@ class HomePage extends StatelessWidget {
   }
 }
 
-  //****************************************************************************** */
-  //****************************************************************************** */
+//****************************************************************************** */
+//****************************************************************************** */

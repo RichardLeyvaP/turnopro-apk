@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Views/products-services/products/productsBody.dart';
-import 'package:turnopro_apk/Views/products-services/services/servicesBody.dart';
+import 'package:turnopro_apk/Views/products-services/services/servicesBodyPage.dart';
+//import 'package:turnopro_apk/Views/products-services/services/servicesBody.dart';
 import '../../Components/BottomNavigationBar.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
@@ -111,7 +112,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
             Container(
               color: backgroundColor,
               child:
-                  const ServicesBody(), //RLP AQUI SE CARGA LA PAGINA DE LOS SERVICIOS
+                  const ServicesBodyPage(), //RLP AQUI SE CARGA LA PAGINA DE LOS SERVICIOS
             ),
             Container(
               color: backgroundColor,

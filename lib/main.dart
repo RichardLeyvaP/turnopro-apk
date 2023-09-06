@@ -2,10 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:turnopro_apk/Controllers/customer.controller.dart';
 import 'package:turnopro_apk/Controllers/main.controller.dart';
+import 'package:turnopro_apk/Controllers/notification.controller.dart';
+import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+
+import 'Views/notificationsPage.dart';
 
 void main() {
   // Llamada para inicializar Flutter y su enlace con la plataforma
@@ -47,23 +52,27 @@ class Myapp extends StatelessWidget {
       ),
       getPages: [
         GetPage(name: '/home', page: () => const HomePages()),
-        GetPage(name: '/profile', page: () => const BarberProfile()),
         GetPage(
-          name: '/RRRRRRRapiUsers',
+          name:
+              '/RapiUsers', //*ESTA RUTA ESTA MAL A PROPOSITO LA RUTA REAL ES /apiUsers
           page: () => const UserPage(),
           binding: BindingsBuilder.put(() => MainController()),
         ), //ESTA ESTA CARGANDO UNA API
         GetPage(
-            name: '/servicesProductsPage',
-            page: () => const ServicesProductsPage()),
+          name: '/servicesProductsPage',
+          page: () => const ServicesProductsPage(),
+          binding: BindingsBuilder.put(() => ServiceController()),
+        ), //ESTA ESTA CARGANDO UNA API
+        GetPage(
+          name: '/NotificationsPageNew',
+          page: () => const NotificationsPageNew(),
+          binding: BindingsBuilder.put(() => NotificationController()),
+        ),
         GetPage(name: '/Error', page: () => const Page404()),
         GetPage(
           name: '/clients',
-          page: () => const ShowCustomers(
-              name: 'name',
-              clicK: 1,
-              typeCut: 'Normal',
-              typeWashed: 'Lavado y secado'),
+          page: () => const CustomersPage(),
+          binding: BindingsBuilder.put(() => CustomerController()),
         ),
       ],
     );

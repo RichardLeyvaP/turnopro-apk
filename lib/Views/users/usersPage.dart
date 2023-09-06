@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/main.controller.dart';
-import 'package:turnopro_apk/Models/user_model.dart';
 
 class UserPage extends GetView<MainController> {
   const UserPage({super.key});
@@ -15,32 +14,55 @@ class UserPage extends GetView<MainController> {
         title: const Text('Carga de Api de prueba. '),
       ),
       body: _body(),
+      bottomNavigationBar: GetBuilder<MainController>(
+        builder: (add) => InkWell(
+          child: const Icon(Icons.add),
+          onTap: () {
+            Get.snackbar(
+              'MENSAJE',
+              'AGREGADO CORECTAMENTE',
+              duration: const Duration(milliseconds: 2000),
+            );
+            add.addUser();
+          },
+        ),
+      ),
     );
   }
 
   _body() {
     return Center(
-      child: FutureBuilder(
-          future: controller.userList(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return const Text('ERROR');
-            } else if (snapshot.hasData) {
-              final List<UserModel> user = snapshot.data as List<UserModel>;
-              return ListView.builder(
-                  itemCount: user.length,
-                  itemBuilder: (context, index) => Card(
-                        margin: const EdgeInsets.all(7),
-                        child: ListTile(
-                          title: Text(user[index].name.toString()),
-                          subtitle: Text(user[index].username.toString()),
-                        ),
-                      ));
-            }
-            return const Center();
-          }),
+      child: GetBuilder<MainController>(
+        builder: (_) => ListView.builder(
+            itemCount: _.userListLength,
+            itemBuilder: (context, index) => Card(
+                  margin: const EdgeInsets.all(7),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
+                    child: ListTile(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      onLongPress: () {
+                        Get.snackbar(
+                          'ElIMINANDO CORRECTAMENTE',
+                          _.users[index].name.toString(),
+                          duration: const Duration(milliseconds: 2000),
+                        );
+                        _.deleteUser(index); // Llama a la función para eliminar
+                      },
+                      title: Text(_.users[index].name.toString()),
+                      subtitle: Text(_.users[index].username.toString()),
+                      selected: false,
+                      //selectedColor: Colors.amber,
+                      //selectedTileColor: Colors.blue,
+                    ),
+                  ),
+                )),
+      ),
     );
   }
 }
