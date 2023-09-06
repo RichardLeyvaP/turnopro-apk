@@ -144,154 +144,121 @@ class _HomePagesState extends State<HomePages> {
             flex: 1, // 20% del espacio disponible para esta parte
             // child: bannerProfile(context),
 
-            child: TweenAnimationBuilder<double>(
-              duration: const Duration(seconds: 2),
-              tween: Tween(begin: 1.0, end: 0.0),
-              curve: Curves.bounceOut,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(borderRadiusValue)),
-                    color: const Color.fromARGB(255, 241, 130, 84),
-                  ),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(borderRadiusValue)),
+                  color: const Color.fromARGB(255, 241, 130, 84),
+                ),
+                child: Center(
+                  // This Tween Animation Builder is Just For Demonstration, Do not use this AS-IS in Projects
+                  // Create and Animation Controller and Control the animation that way.
                   child: TweenAnimationBuilder(
                     tween: Tween(begin: 0.0, end: 1.0),
-                    duration: const Duration(seconds: 5),
-                    builder: (context, value, child) {
-                      return Opacity(
-                        opacity: 1 * value,
-                        child: child,
-                      );
-                    },
-                    child: Center(
-                      // This Tween Animation Builder is Just For Demonstration, Do not use this AS-IS in Projects
-                      // Create and Animation Controller and Control the animation that way.
-                      child: TweenAnimationBuilder(
-                        tween: Tween(begin: 0.0, end: 1.0),
-                        duration: Duration(seconds: totalSeconds),
-                        builder: (context, value, _) {
-                          remainingSeconds =
-                              (totalSeconds - (totalSeconds * value))
-                                  .ceil(); // Calcula los segundos restantes
+                    duration: Duration(seconds: totalSeconds),
+                    builder: (context, value, _) {
+                      remainingSeconds = (totalSeconds - (totalSeconds * value))
+                          .ceil(); // Calcula los segundos restantes
 
-                          int minutes = remainingSeconds ~/
-                              60; // Calcula los minutos restantes
-                          int seconds = remainingSeconds %
-                              60; // Calcula los segundos restantes
-                          if (seconds < 10) {
-                            segundos = "0";
-                          } else {
-                            segundos = "";
-                          }
-                          if (minutes == 0 && seconds == 0) {
-                            mensaj = 'FINALIZADO';
-                            colorInicial = Colors.red;
-                            colorInicialCirculo = Colors.white;
-                            fontSizeText = 14;
-                          } else {
-                            mensaj = "Tiempo Restante";
-                          }
+                      int minutes = remainingSeconds ~/
+                          60; // Calcula los minutos restantes
+                      int seconds = remainingSeconds %
+                          60; // Calcula los segundos restantes
+                      if (seconds < 10) {
+                        segundos = "0";
+                      } else {
+                        segundos = "";
+                      }
+                      if (minutes == 0 && seconds == 0) {
+                        mensaj = 'FINALIZADO';
+                        colorInicial = Colors.red;
+                        colorInicialCirculo = Colors.white;
+                        fontSizeText = 14;
+                      } else {
+                        mensaj = "Tiempo Restante";
+                      }
 
-                          return SizedBox(
-                            width: size,
-                            height: size,
-                            child: Stack(
-                              children: [
-                                ShaderMask(
-                                  shaderCallback: (rect) {
-                                    return SweepGradient(
-                                        startAngle: 0.0,
-                                        endAngle: twoPi,
-                                        stops: [value, value],
-                                        // 0.0 , 0.5 , 0.5 , 1.0
-                                        center: Alignment.center,
-                                        colors: [
-                                          Colors.white,
-                                          Colors.grey.withAlpha(55)
-                                        ]).createShader(rect);
-                                  },
-                                  child: Container(
-                                    width: size,
-                                    height: size,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                            image: Image.asset(
-                                                    "assets/images/radial_scale.png")
-                                                .image)),
-                                  ),
-                                ),
-                                Center(
-                                  child: Container(
-                                    width: size - 40,
-                                    height: size - 40,
-                                    decoration: BoxDecoration(
-                                        color: colorInicialCirculo,
-                                        shape: BoxShape.circle),
-                                    child: Center(
-                                        child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                      return SizedBox(
+                        width: size,
+                        height: size,
+                        child: Stack(
+                          children: [
+                            ShaderMask(
+                              shaderCallback: (rect) {
+                                return SweepGradient(
+                                    startAngle: 0.0,
+                                    endAngle: twoPi,
+                                    stops: [value, value],
+                                    // 0.0 , 0.5 , 0.5 , 1.0
+                                    center: Alignment.center,
+                                    colors: [
+                                      Colors.white,
+                                      Colors.grey.withAlpha(55)
+                                    ]).createShader(rect);
+                              },
+                              child: Container(
+                                width: size,
+                                height: size,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                        image: Image.asset(
+                                                "assets/images/radial_scale.png")
+                                            .image)),
+                              ),
+                            ),
+                            Center(
+                              child: Container(
+                                width: size - 40,
+                                height: size - 40,
+                                decoration: BoxDecoration(
+                                    color: colorInicialCirculo,
+                                    shape: BoxShape.circle),
+                                child: Center(
+                                    child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              '$minutes :',
-                                              style: TextStyle(
-                                                  fontSize: 45,
-                                                  color: colorInicial,
-                                                  fontWeight: FontWeight.w900),
-                                            ),
-                                            Text(
-                                              "$segundos$seconds",
-                                              style: TextStyle(
-                                                  fontSize: 45,
-                                                  color: colorInicial,
-                                                  fontWeight: FontWeight.w900),
-                                            ),
-                                          ],
+                                        Text(
+                                          '$minutes :',
+                                          style: TextStyle(
+                                              fontSize: 45,
+                                              color: colorInicial,
+                                              fontWeight: FontWeight.w900),
                                         ),
                                         Text(
-                                          mensaj,
+                                          "$segundos$seconds",
                                           style: TextStyle(
-                                              fontSize: fontSizeText,
+                                              fontSize: 45,
                                               color: colorInicial,
                                               fontWeight: FontWeight.w900),
                                         ),
                                       ],
-                                    )),
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                                    ),
+                                    Text(
+                                      mensaj,
+                                      style: TextStyle(
+                                          fontSize: fontSizeText,
+                                          color: colorInicial,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                  ],
+                                )),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ),
-              ), //Header
-              builder: (context, value, child) {
-                double valueDefinido = 0.0;
-                if (value >= 0 && value < 0.5) {
-                  valueDefinido = 1 - 2 * value;
-                } else if (value >= 0.5 && value <= 1) {
-                  valueDefinido = 2 * value - 1;
-                }
-                return Transform.translate(
-                  offset: Offset(0.0, 100 * value),
-                  child: Opacity(
-                    opacity: valueDefinido,
-                    child: child,
-                  ),
-                );
-              },
+              ),
             )),
         Expanded(
             flex: 2, // 85% del espacio disponible para esta parte
@@ -338,24 +305,14 @@ class _HomePagesState extends State<HomePages> {
                                     '/servicesProductsPage',
                                   );
                                 },
-                                child: TweenAnimationBuilder<double>(
-                                  duration: const Duration(seconds: 1),
-                                  tween: Tween(begin: 1.0, end: 0.0),
-                                  child: cartsHome(
-                                      context,
-                                      borderRadiusValue,
-                                      colorVariable,
-                                      colorBottom,
-                                      titleCart,
-                                      descriptionTitleCart,
-                                      iconCart),
-                                  builder: (context, value, child) {
-                                    return Transform.translate(
-                                      offset: Offset(-30 * value, 0.0),
-                                      child: child,
-                                    );
-                                  },
-                                ),
+                                child: cartsHome(
+                                    context,
+                                    borderRadiusValue,
+                                    colorVariable,
+                                    colorBottom,
+                                    titleCart,
+                                    descriptionTitleCart,
+                                    iconCart),
                               ),
                               InkWell(
                                 onTap: () {
@@ -366,24 +323,14 @@ class _HomePagesState extends State<HomePages> {
                                     '/NotificationsPageNew',
                                   );
                                 },
-                                child: TweenAnimationBuilder<double>(
-                                  duration: const Duration(seconds: 1),
-                                  tween: Tween(begin: 1.0, end: 0.0),
-                                  child: cartsHome(
-                                      context,
-                                      borderRadiusValue,
-                                      const Color.fromARGB(255, 81, 93, 117),
-                                      colorBottom,
-                                      'Notificaciones',
-                                      'Tus Notificaciones',
-                                      Icons.notifications),
-                                  builder: (context, value, child) {
-                                    return Transform.translate(
-                                      offset: Offset(30 * value, 0.0),
-                                      child: child,
-                                    );
-                                  },
-                                ),
+                                child: cartsHome(
+                                    context,
+                                    borderRadiusValue,
+                                    const Color.fromARGB(255, 81, 93, 117),
+                                    colorBottom,
+                                    'Notificaciones',
+                                    'Tus Notificaciones',
+                                    Icons.notifications),
                               ),
                             ],
                           ),
@@ -409,52 +356,29 @@ class _HomePagesState extends State<HomePages> {
                                     overlayBlur: 3,
                                   );
                                 },
-                                child: TweenAnimationBuilder<double>(
-                                  duration: const Duration(seconds: 1),
-                                  tween: Tween(begin: 1.0, end: 0.0),
-                                  child: cartsHome(
-                                      context,
-                                      borderRadiusValue,
-                                      const Color.fromARGB(255, 177, 174, 174),
-                                      colorBottom,
-                                      'Estadisticas',
-                                      'Revisa Tus Ingresos',
-                                      Icons.bar_chart),
-                                  builder: (context, value, child) {
-                                    return Transform.translate(
-                                      offset: Offset(-30 * value, 0.0),
-                                      child: child,
-                                    );
-                                  },
-                                ),
+                                child: cartsHome(
+                                    context,
+                                    borderRadiusValue,
+                                    const Color.fromARGB(255, 177, 174, 174),
+                                    colorBottom,
+                                    'Estadisticas',
+                                    'Revisa Tus Ingresos',
+                                    Icons.bar_chart),
                               ),
                               InkWell(
                                 onTap: () {
-                                  Get.snackbar(
-                                    'Mensaje',
-                                    'Aqui van las Convivencias',
-                                    duration:
-                                        const Duration(milliseconds: 1000),
+                                  Get.toNamed(
+                                    '/CoexistencePage',
                                   );
                                 },
-                                child: TweenAnimationBuilder<double>(
-                                  duration: const Duration(seconds: 1),
-                                  tween: Tween(begin: 1.0, end: 0.0),
-                                  child: cartsHome(
-                                      context,
-                                      borderRadiusValue,
-                                      const Color.fromARGB(255, 241, 130, 84),
-                                      colorBottom,
-                                      'Convivencia',
-                                      'Cumplimiento de Reglas',
-                                      Icons.star_border),
-                                  builder: (context, value, child) {
-                                    return Transform.translate(
-                                      offset: Offset(30 * value, 0.0),
-                                      child: child,
-                                    );
-                                  },
-                                ),
+                                child: cartsHome(
+                                    context,
+                                    borderRadiusValue,
+                                    const Color.fromARGB(255, 241, 130, 84),
+                                    colorBottom,
+                                    'Convivencia',
+                                    'Cumplimiento de Reglas',
+                                    Icons.star_border),
                               ),
                             ],
                           ),
@@ -562,8 +486,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 width: 2, // Ajusta el ancho del borde según tus preferencias
               ),
             ),
-            child: SpinPerfect(
-              duration: const Duration(seconds: 3),
+            child: Swing(
+              duration: const Duration(seconds: 4),
+              delay: const Duration(seconds: 2),
               child: CircleAvatar(
                 backgroundImage: AssetImage(imageDirection),
                 radius: 25, // Ajusta el tamaño del círculo aquí
@@ -577,8 +502,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ElasticInRight(
-                duration: const Duration(seconds: 3),
+              Pulse(
+                duration: const Duration(seconds: 5),
+                delay: const Duration(seconds: 2),
+                infinite: true,
                 child: const Text(
                   'Hola',
                   style: TextStyle(
@@ -587,8 +514,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ),
               ),
-              ElasticInRight(
-                duration: const Duration(seconds: 4),
+              BounceInUp(
+                duration: const Duration(seconds: 2),
+                delay: const Duration(seconds: 1),
                 child: Text(
                   nameUser,
                   style: const TextStyle(

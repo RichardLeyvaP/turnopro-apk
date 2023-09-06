@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/customer.controller.dart';
 import 'package:turnopro_apk/Controllers/main.controller.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
@@ -9,8 +10,6 @@ import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-
-import 'Views/notificationsPage.dart';
 
 void main() {
   // Llamada para inicializar Flutter y su enlace con la plataforma
@@ -68,12 +67,17 @@ class Myapp extends StatelessWidget {
           page: () => const NotificationsPageNew(),
           binding: BindingsBuilder.put(() => NotificationController()),
         ),
-        GetPage(name: '/Error', page: () => const Page404()),
         GetPage(
           name: '/clients',
           page: () => const CustomersPage(),
           binding: BindingsBuilder.put(() => CustomerController()),
+        ), //ESTA ESTA CARGANDO UNA API
+        GetPage(
+          name: '/CoexistencePage',
+          page: () => const CoexistencePage(),
+          binding: BindingsBuilder.put(() => CoexistenceController()),
         ),
+        GetPage(name: '/Error', page: () => const Page404()),
       ],
     );
   }
