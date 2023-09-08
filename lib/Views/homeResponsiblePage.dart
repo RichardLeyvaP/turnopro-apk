@@ -6,14 +6,14 @@ import 'package:animate_do/animate_do.dart';
 import 'package:lottie/lottie.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 
-class HomePages extends StatefulWidget {
-  const HomePages({super.key});
+class HomeResponsiblePages extends StatefulWidget {
+  const HomeResponsiblePages({super.key});
 
   @override
-  State<HomePages> createState() => _HomePagesState();
+  State<HomeResponsiblePages> createState() => _HomeResponsiblePagesState();
 }
 
-class _HomePagesState extends State<HomePages> {
+class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
   final List<Widget> _pages = [
     // homePageBody(borderRadiusValue, context, colorVariable, colorBottom,
     //     titleCart, descriptionTitleCart, iconCart), // Página 0
@@ -131,14 +131,6 @@ class _HomePagesState extends State<HomePages> {
       String titleCart,
       String descriptionTitleCart,
       IconData iconCart) {
-    int totalSeconds = 125; // Tiempo total en segundos
-    int remainingSeconds = totalSeconds; // Inicialmente,
-    String segundos = "";
-    String mensaj = "Tiempo Restante";
-    Color colorInicial = Colors.white;
-    Color colorInicialCirculo = const Color.fromARGB(255, 241, 130, 84);
-    double fontSizeText = 10;
-
     return Column(
       children: [
         Expanded(
@@ -151,114 +143,15 @@ class _HomePagesState extends State<HomePages> {
                 decoration: BoxDecoration(
                   borderRadius:
                       BorderRadius.all(Radius.circular(borderRadiusValue)),
-                  color: const Color.fromARGB(255, 241, 130, 84),
+                  color: const Color.fromARGB(255, 26, 50, 82),
                 ),
                 child: Center(
-                  // This Tween Animation Builder is Just For Demonstration, Do not use this AS-IS in Projects
-                  // Create and Animation Controller and Control the animation that way.
-                  child: TweenAnimationBuilder(
-                    tween: Tween(begin: 0.0, end: 1.0),
-                    duration: Duration(seconds: totalSeconds),
-                    builder: (context, value, _) {
-                      remainingSeconds = (totalSeconds - (totalSeconds * value))
-                          .ceil(); // Calcula los segundos restantes
-
-                      int minutes = remainingSeconds ~/
-                          60; // Calcula los minutos restantes
-                      int seconds = remainingSeconds %
-                          60; // Calcula los segundos restantes
-                      if (seconds < 10) {
-                        segundos = "0";
-                      } else {
-                        segundos = "";
-                      }
-                      if (minutes == 0 && seconds == 0) {
-                        mensaj = 'FINALIZADO';
-                        colorInicial = Colors.red;
-                        colorInicialCirculo = Colors.white;
-                        fontSizeText = 14;
-                      } else {
-                        mensaj = "Tiempo Restante";
-                      }
-
-                      return SizedBox(
-                        width: size,
-                        height: size,
-                        child: Stack(
-                          children: [
-                            ShaderMask(
-                              shaderCallback: (rect) {
-                                return SweepGradient(
-                                    startAngle: 0.0,
-                                    endAngle: twoPi,
-                                    stops: [value, value],
-                                    // 0.0 , 0.5 , 0.5 , 1.0
-                                    center: Alignment.center,
-                                    colors: [
-                                      Colors.white,
-                                      Colors.grey.withAlpha(55)
-                                    ]).createShader(rect);
-                              },
-                              child: Container(
-                                width: size,
-                                height: size,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        image: Image.asset(
-                                                "assets/images/radial_scale.png")
-                                            .image)),
-                              ),
-                            ),
-                            Center(
-                              child: Container(
-                                width: size - 40,
-                                height: size - 40,
-                                decoration: BoxDecoration(
-                                    color: colorInicialCirculo,
-                                    shape: BoxShape.circle),
-                                child: Center(
-                                    child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          '$minutes :',
-                                          style: TextStyle(
-                                              fontSize: 45,
-                                              color: colorInicial,
-                                              fontWeight: FontWeight.w900),
-                                        ),
-                                        Text(
-                                          "$segundos$seconds",
-                                          style: TextStyle(
-                                              fontSize: 45,
-                                              color: colorInicial,
-                                              fontWeight: FontWeight.w900),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      mensaj,
-                                      style: TextStyle(
-                                          fontSize: fontSizeText,
-                                          color: colorInicial,
-                                          fontWeight: FontWeight.w900),
-                                    ),
-                                  ],
-                                )),
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                  child: Lottie.network(
+                      "https://lottie.host/5e657bb8-f8df-44c4-9f43-01638719d288/STiu5BdZGJ.json",
+                      height: (MediaQuery.of(context).size.height * 0.3),
+                      width: (MediaQuery.of(context).size.width * 0.6)),
                 ),
+                //https://lottie.host/5e657bb8-f8df-44c4-9f43-01638719d288/STiu5BdZGJ.json
               ),
             )),
         Expanded(
@@ -465,8 +358,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize =>
       const Size.fromHeight(70); // Ajusta el tamaño del AppBar aquí
 
-  String nameUser = 'Paula Rego';
-  String imageDirection = 'assets/images/image_perfil.jpg';
+  String nameUser = 'Miguel Hojas';
+  String imageDirection = 'assets/images/Responsable.jpg';
 
   @override
   Widget build(BuildContext context) {
@@ -508,7 +401,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 delay: const Duration(seconds: 2),
                 infinite: true,
                 child: const Text(
-                  'Hola',
+                  'Responsable',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 12,
