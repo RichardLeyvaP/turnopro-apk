@@ -20,7 +20,7 @@ dependencies:
   lottie: ^2.6.0
   
 flutter_native_splash:  
-  color: "#3F51B5"
+  color: "#ff9700"
   image: "assets/app/splash.png"
   android: true
   ios: true

@@ -462,7 +462,7 @@ class LoginPage extends StatelessWidget {
                         ElevatedButton(
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
-                                  Color.fromARGB(255, 236, 232, 231)),
+                                  const Color.fromARGB(255, 236, 232, 231)),
                               // Añadir más propiedades de estilo aquí
                             ),
                             onPressed: () {
