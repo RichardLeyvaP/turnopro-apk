@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:turnopro_apk/Components/auth_check.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/customer.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
@@ -12,6 +14,7 @@ import 'package:turnopro_apk/Routes/index.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Views/homeResponsiblePage.dart';
+import 'package:turnopro_apk/providers.dart';
 
 void main() {
   // Llamada para inicializar Flutter y su enlace con la plataforma
@@ -19,7 +22,12 @@ void main() {
   // Bloquear la orientación horizontal
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    runApp(Myapp());
+    runApp(
+      MultiProvider(
+        providers: providers,
+        child: Myapp(),
+      ),
+    );
   });
 }
 
@@ -64,7 +72,9 @@ class Myapp extends StatelessWidget {
                     .poppinsTextTheme(), // Aplicar Poppins a todo el proyecto
                 // Otras configuraciones de tema
               ),
-        initialRoute: '/login',
+        // initialRoute: '/login',
+        // initialRoute: '/AuthCheck',
+        initialRoute: '/home',
         unknownRoute: GetPage(
           name: '/Error', // Nombre de la ruta de error
           page: () => const Page404(), // Página de error
@@ -112,6 +122,7 @@ class Myapp extends StatelessWidget {
             binding: BindingsBuilder.put(() => CoexistenceController()),
           ),
           GetPage(name: '/Error', page: () => const Page404()),
+          GetPage(name: '/AuthCheck', page: () => const AuthCheck()),
         ],
       );
     });
