@@ -1,8 +1,8 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
 import 'package:flutter/material.dart';
-import 'package:turnopro_apk/sidebar/MenuLateral.dart';
-import 'package:turnopro_apk/components/BottomNavigationBar.dart';
+import 'package:turnopro_apk/Sidebar/MenuLateral.dart';
+import 'package:turnopro_apk/Components/BottomNavigationBar.dart';
 //LLamadas de paginas
 //import 'package:barbershop/presentation/screens/page_show_customers.dart';
 
@@ -15,7 +15,7 @@ class BarberProfile extends StatefulWidget {
 
 class _BarberProfileState extends State<BarberProfile> {
   int clicK = 0;
-  final String name = 'WILIAM MILLER';
+  final String name = 'DEILER RIVERA';
   final String typeCut = 'Corte Normal';
   final String typeWashed = 'Lavado y Secado';
   final String title = 'PERFIL';

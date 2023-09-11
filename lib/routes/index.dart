@@ -1,7 +1,8 @@
-export 'package:turnopro_apk/screens/homePage.dart';
-export 'package:turnopro_apk/screens/barber_profile.dart';
-export 'package:turnopro_apk/screens/page_show_customers.dart';
-export 'package:turnopro_apk/screens/page404.dart';
-export 'package:turnopro_apk/screens/loginPage.dart';
-export 'package:turnopro_apk/screens/servicesProductsPage.dart';
-export 'package:turnopro_apk/screens/productsPage.dart';
+export 'package:turnopro_apk/Views/homePage.dart';
+export 'package:turnopro_apk/Views/customerPage.dart';
+export 'package:turnopro_apk/Views/page404.dart';
+export 'package:turnopro_apk/Views/loginPage.dart';
+export 'package:turnopro_apk/Views/products-services/servicesProductsPage.dart';
+export 'package:turnopro_apk/Views/users/usersPage.dart';
+export 'package:turnopro_apk/Views/coexistencePage.dart';
+export 'package:turnopro_apk/Views/notificationsPage.dart';
