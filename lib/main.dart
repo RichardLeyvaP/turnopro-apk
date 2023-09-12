@@ -13,8 +13,8 @@ import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Views/Code-Qr/CodeQrPage.dart';
 import 'package:turnopro_apk/Views/homeResponsiblePage.dart';
-import 'package:turnopro_apk/pages/qrcode_page.dart';
 import 'package:turnopro_apk/providers.dart';
 
 void main() {
@@ -124,7 +124,7 @@ class Myapp extends StatelessWidget {
           ),
           GetPage(name: '/Error', page: () => const Page404()),
           GetPage(name: '/AuthCheck', page: () => const AuthCheck()),
-          GetPage(name: '/QRCodePage', page: () => const QRCodePage()),
+          GetPage(name: '/CodeQrPage', page: () => const CodeQrPage()),
         ],
       );
     });

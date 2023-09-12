@@ -296,7 +296,7 @@ class _HomePagesState extends State<HomePages> {
                           InkWell(
                             onTap: () {
                               Get.toNamed(
-                                '/QRCodePage',
+                                '/CodeQrPage',
                               );
                             },
                             child: const Text(
