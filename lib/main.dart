@@ -13,6 +13,7 @@ import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Views/Code-Qr/CodeQrPage.dart';
 import 'package:turnopro_apk/Views/homeResponsiblePage.dart';
 import 'package:turnopro_apk/providers.dart';
 
@@ -71,10 +72,9 @@ class Myapp extends StatelessWidget {
                 textTheme: GoogleFonts
                     .poppinsTextTheme(), // Aplicar Poppins a todo el proyecto
                 // Otras configuraciones de tema
-              ),
-        // initialRoute: '/login',
-        // initialRoute: '/AuthCheck',
-        initialRoute: '/login',
+              ),       
+        initialRoute: '/AuthCheck',
+
         unknownRoute: GetPage(
           name: '/Error', // Nombre de la ruta de error
           page: () => const Page404(), // Página de error
@@ -123,6 +123,7 @@ class Myapp extends StatelessWidget {
           ),
           GetPage(name: '/Error', page: () => const Page404()),
           GetPage(name: '/AuthCheck', page: () => const AuthCheck()),
+          GetPage(name: '/CodeQrPage', page: () => const CodeQrPage()),
         ],
       );
     });

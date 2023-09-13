@@ -20,6 +20,7 @@ dependencies:
   lottie: ^2.6.0
   local_auth: ^2.1.7
   provider: ^6.0.5
+  qr_code_scanner: ^1.0.1
   
 flutter_native_splash:  
   color: "#ff9700"

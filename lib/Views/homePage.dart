@@ -293,6 +293,20 @@ class _HomePagesState extends State<HomePages> {
                                   fontWeight: FontWeight.w700),
                             ),
                           ),
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed(
+                                '/CodeQrPage',
+                              );
+                            },
+                            child: const Text(
+                              '     Codigo-Qr',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
                         ],
                       ),
                       Column(
