@@ -1,5 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages
-
+//'http://10.0.2.2:8000/api/rule'
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -72,10 +72,9 @@ class Myapp extends StatelessWidget {
                 textTheme: GoogleFonts
                     .poppinsTextTheme(), // Aplicar Poppins a todo el proyecto
                 // Otras configuraciones de tema
-              ),
-        // initialRoute: '/login',
-        // initialRoute: '/AuthCheck',
+              ),       
         initialRoute: '/AuthCheck',
+
         unknownRoute: GetPage(
           name: '/Error', // Nombre de la ruta de error
           page: () => const Page404(), // Página de error

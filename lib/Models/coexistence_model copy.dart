@@ -1,29 +1,23 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: file_names
 
 import 'dart:convert';
 
 class CoexistenceModel {
   int id;
   String name;
-  String description;
-  String created_at;
-  String updated_at;
+  String username;
 
   CoexistenceModel({
     required this.id,
     required this.name,
-    required this.description,
-    required this.created_at,
-    required this.updated_at,
+    required this.username,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,
-      'description': description,
-      'created_at': created_at,
-      'updated_at': updated_at,
+      'username': username,
     };
   }
 
@@ -31,9 +25,7 @@ class CoexistenceModel {
     return CoexistenceModel(
       id: map['id'] ?? '',
       name: map['name'] ?? '',
-      description: map['description'] ?? '',
-      created_at: map['created_at'] ?? '',
-      updated_at: map['updated_at'] ?? '',
+      username: map['username'] ?? '',
     );
   }
 

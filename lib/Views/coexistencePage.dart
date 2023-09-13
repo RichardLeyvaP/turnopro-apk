@@ -1,5 +1,5 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
-import 'package:animate_do/animate_do.dart';
+//import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:get/get.dart';
@@ -89,7 +89,7 @@ class CoexistencePage extends StatelessWidget {
                                           height: (MediaQuery.of(context)
                                                   .size
                                                   .height *
-                                              0.085),
+                                              0.11),
                                           width: (MediaQuery.of(context)
                                                   .size
                                                   .width *
@@ -112,167 +112,86 @@ class CoexistencePage extends StatelessWidget {
                                                         borderRadiusValue)),
                                           ),
                                           child: ListTile(
-                                            shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(12)),
-                                            ),
-                                            onTap: () {
-                                              _.getSelectCoexistence(index);
-                                            },
-                                            title: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        border: Border.all(
-                                                          color: const Color
-                                                                  .fromARGB(
-                                                              255, 32, 32, 32),
-                                                          width:
-                                                              2, // Ajusta el ancho del borde según tus preferencias
-                                                        ),
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(12)),
+                                              ),
+                                              title: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      const SizedBox(
+                                                        width: 5,
                                                       ),
-                                                      child: Swing(
-                                                        duration:
-                                                            const Duration(
-                                                                seconds: 4),
-                                                        delay: const Duration(
-                                                            seconds: 2),
-                                                        child: CircleAvatar(
-                                                          backgroundImage:
-                                                              AssetImage(
-                                                                  imageDirection),
-                                                          radius:
-                                                              25, // Ajusta el tamaño del círculo aquí
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          _.coexistence[index]
-                                                              .name
-                                                              .toString(),
-                                                          style: const TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800),
-                                                        ),
-                                                        Row(
+                                                      SizedBox(
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.77,
+                                                        child: Column(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
                                                           children: [
-                                                            InkWell(
-                                                              onTap: () {
-                                                                _.seleccStars();
-                                                              },
-                                                              child: Icon(
-                                                                  Icons.star,
-                                                                  color: const Color
-                                                                          .fromARGB(
-                                                                      255,
-                                                                      241,
-                                                                      130,
-                                                                      84),
-                                                                  size: (MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.035)),
+                                                            Text(
+                                                              _
+                                                                  .coexistence[
+                                                                      index]
+                                                                  .name
+                                                                  .toString(),
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w800,
+                                                              ),
                                                             ),
-                                                            Icon(Icons.star,
-                                                                color: const Color
-                                                                        .fromARGB(
-                                                                    255,
-                                                                    241,
-                                                                    130,
-                                                                    84),
-                                                                size: (MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height *
-                                                                    0.035)),
-                                                            Icon(Icons.star,
-                                                                color: const Color
-                                                                        .fromARGB(
-                                                                    255,
-                                                                    241,
-                                                                    130,
-                                                                    84),
-                                                                size: (MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height *
-                                                                    0.035)),
-                                                            Icon(
-                                                                Icons
-                                                                    .star_border,
-                                                                color: const Color
-                                                                        .fromARGB(
-                                                                    96,
-                                                                    0,
-                                                                    0,
-                                                                    0),
-                                                                size: (MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height *
-                                                                    0.035)),
-                                                            Icon(
-                                                                Icons
-                                                                    .star_border,
-                                                                color: const Color
-                                                                        .fromARGB(
-                                                                    96,
-                                                                    0,
-                                                                    0,
-                                                                    0),
-                                                                size: (MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height *
-                                                                    0.035)),
+                                                            Text(
+                                                              _
+                                                                  .coexistence[
+                                                                      index]
+                                                                  .description
+                                                                  .toString(),
+                                                              style: const TextStyle(
+                                                                  fontSize: 13,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          148,
+                                                                          0,
+                                                                          0,
+                                                                          0)),
+                                                            ),
                                                           ],
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                                _.selectCoexistence.contains(
-                                                        _.coexistence[index])
-                                                    ? const Icon(
-                                                        Icons.stars_outlined,
-                                                        color: Colors.red,
-                                                        size: 65,
-                                                      )
-                                                    : const Icon(
-                                                        Icons.star_half_sharp,
-                                                        size: 55,
-                                                      )
-                                              ],
-                                            ),
-                                          ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  _.selectCoexistence.contains(
+                                                          _.coexistence[index])
+                                                      ? const Icon(
+                                                          Icons.stars_outlined,
+                                                          color: Colors.red,
+                                                          size: 65,
+                                                        )
+                                                      : const Icon(
+                                                          Icons.star,
+                                                          size: 55,
+                                                          color: Colors.amber,
+                                                        )
+                                                ],
+                                              )),
                                         ),
                                       ],
                                     ),
@@ -281,29 +200,17 @@ class CoexistencePage extends StatelessWidget {
                       ),
                     ],
                   )
-                : Center(
+                : const Center(
                     //*AQUI ESTA EL CODIGO DE CUANDO NO HAY NOTIFICACIONES
                     child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.no_backpack_outlined),
                           Text('No hay Notificaciones'),
                         ],
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Get.snackbar(
-                            'Mensaje',
-                            'INSERTADO CORRECTAMENTE',
-                            backgroundColor:
-                                const Color.fromARGB(92, 11, 226, 22),
-                            duration: const Duration(milliseconds: 2000),
-                          );
-                          _.addCoexistence();
-                        },
                       ),
                     ],
                   ));
