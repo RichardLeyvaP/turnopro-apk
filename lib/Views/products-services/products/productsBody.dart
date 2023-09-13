@@ -1,6 +1,8 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/product.controller.dart';
 
 class ProductsBody extends StatefulWidget {
   const ProductsBody({super.key});
@@ -29,81 +31,81 @@ class _ProductsBodyState extends State<ProductsBody>
   Widget build(BuildContext context) {
     List<String> tabValues = ["Especializados", "Snacks", "Otros"];
 
-    return Column(
-      children: [
-        SizedBox(
-          width: (MediaQuery.of(context).size.width),
-          height: (MediaQuery.of(context).size.width) * 0.09,
-          child: TabBar(
-              labelColor: Colors.black,
-              indicatorColor: const Color.fromARGB(255, 241, 130, 84),
-              controller: _tabController,
-              tabs: [
-                Text(tabValues[0]),
-                Text(tabValues[1]),
-                Text(tabValues[2]),
-              ]),
-        ),
-        SizedBox(
-          height: (MediaQuery.of(context).size.width * 0.005),
-        ),
-        Expanded(
-            child: TabBarView(
-          controller: _tabController,
-          children: [
-            SingleChildScrollView(
-              child: Column(
+    return GetBuilder<ProductController>(builder: (_) {
+      return Column(
+        children: [
+          SizedBox(
+            width: (MediaQuery.of(context).size.width),
+            height: (MediaQuery.of(context).size.width) * 0.09,
+            child: TabBar(
+                labelColor: Colors.black,
+                indicatorColor: const Color.fromARGB(255, 241, 130, 84),
+                controller: _tabController,
+                tabs: [
+                  Text(tabValues[0]),
+                  Text(tabValues[1]),
+                  Text(tabValues[2]),
+                ]),
+          ),
+          SizedBox(
+            height: (MediaQuery.of(context).size.width * 0.005),
+          ),
+          Expanded(
+              child: TabBarView(
+            controller: _tabController,
+            children: [
+              ListView.builder(
+                itemCount: _.productListLength,
+                itemBuilder: (context, index) => Column(
+                  children: [
+                    newMethod(
+                        'assets/images/pngegg.png',
+                        _.product[index].name,
+                        _.product[index].description,
+                        _.product[index].sale_price,
+                        context),
+                    SizedBox(
+                      height: (MediaQuery.of(context).size.width * 0.02),
+                    ),
+                  ],
+                ),
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  newMethod('assets/images/pngegg.png', 'Coca Cola',
-                      'Coca Cola Max 350ml', 2.559, context),
-                  SizedBox(
-                    height: (MediaQuery.of(context).size.width * 0.02),
+                  Icon(
+                    Icons.add_business_outlined,
+                    size: 80,
                   ),
-                  newMethod('assets/images/pngegg.png', 'Coca Cola',
-                      'Coca Cola Max 350ml', 2.559, context),
-                  SizedBox(
-                    height: (MediaQuery.of(context).size.width * 0.02),
+                  Text(
+                    'Contenido SNACKS',
+                    style: TextStyle(fontSize: 20),
                   ),
-                  newMethod('assets/images/pngegg.png', 'Coca Cola',
-                      'Coca Cola Max 350ml', 2.559, context),
                 ],
               ),
-            ),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.add_business_outlined,
-                  size: 80,
-                ),
-                Text(
-                  'Contenido SNACKS',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ],
-            ),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.addchart_outlined,
-                  size: 80,
-                ),
-                Text(
-                  'Contenido de OTROS',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ],
-            ),
-          ],
-        )),
-      ],
-    );
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.addchart_outlined,
+                    size: 80,
+                  ),
+                  Text(
+                    'Contenido de OTROS',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+            ],
+          )),
+        ],
+      );
+    });
   }
 }
 
 Row newMethod(String addressProduct, String productName, String propertiesName,
-    double priceProduct, BuildContext context) {
+    String priceProduct, BuildContext context) {
   //VARIABLES DE PROPIEDADES DEL WIDGET
   const double borderRadiusValue = 12; //container que carga la imagen
   return Row(
@@ -154,7 +156,7 @@ Row newMethod(String addressProduct, String productName, String propertiesName,
               height: (MediaQuery.of(context).size.width * 0.09),
             ),
             Text(
-              '$priceProduct',
+              priceProduct,
               style: TextStyle(
                   fontSize: (MediaQuery.of(context).size.width * 0.08),
                   fontWeight: FontWeight.w900),
