@@ -75,7 +75,7 @@ class Myapp extends StatelessWidget {
               ),
         // initialRoute: '/login',
         // initialRoute: '/AuthCheck',
-        initialRoute: '/home',
+        initialRoute: '/AuthCheck',
         unknownRoute: GetPage(
           name: '/Error', // Nombre de la ruta de error
           page: () => const Page404(), // Página de error
