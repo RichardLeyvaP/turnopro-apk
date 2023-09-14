@@ -6,8 +6,6 @@ import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:get/get.dart';
 
 class ServicesBodyPage extends StatelessWidget {
-  // final ServiceController controller = Get.put(ServiceController());
-
   final double valuePadding = 12;
   const ServicesBodyPage({super.key});
 
