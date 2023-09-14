@@ -68,7 +68,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                     Text(
                         'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
                   else
-                    const Text('Scan a code'),
+                    const Text('Scaneado Código...'),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -83,12 +83,12 @@ class _QRViewExampleState extends State<QRViewExample> {
                             child: FutureBuilder(
                               future: controller?.getFlashStatus(),
                               builder: (context, snapshot) {
-                                return Text('Flash: ${snapshot.data}');
+                                return Text('Flash: ${snapshot.data}?');
                               },
                             )),
                       ),
                       Container(
-                        margin: const EdgeInsets.all(8),
+                        margin: const EdgeInsets.all(3),
                         child: ElevatedButton(
                             onPressed: () async {
                               await controller?.flipCamera();
@@ -99,7 +99,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                               builder: (context, snapshot) {
                                 if (snapshot.data != null) {
                                   return Text(
-                                      'Camera facing ${describeEnum(snapshot.data!)}');
+                                      'Cámara ${describeEnum(snapshot.data!)}');
                                 } else {
                                   return const Text('loading');
                                 }
@@ -113,7 +113,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Container(
-                        margin: const EdgeInsets.all(8),
+                        margin: const EdgeInsets.all(3),
                         child: ElevatedButton(
                           onPressed: () async {
                             await controller?.pauseCamera();
@@ -123,7 +123,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.all(8),
+                        margin: const EdgeInsets.all(3),
                         child: ElevatedButton(
                           onPressed: () async {
                             await controller?.resumeCamera();
@@ -134,6 +134,8 @@ class _QRViewExampleState extends State<QRViewExample> {
                       )
                     ],
                   ),
+                  const Icon(Icons.arrow_back),
+                  const Text('Atrás'),
                 ],
               ),
             ),
