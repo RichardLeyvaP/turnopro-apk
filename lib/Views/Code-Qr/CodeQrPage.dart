@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, depend_on_referenced_packages
 
 import 'dart:developer';
 import 'dart:io';
@@ -6,36 +6,16 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:get/get.dart';
 
-class CodeQrPage extends StatelessWidget {
-  const CodeQrPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Scanear Código')),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const QRViewExample(),
-            ));
-          },
-          child: const Text('Escanear'),
-        ),
-      ),
-    );
-  }
-}
-
-class QRViewExample extends StatefulWidget {
-  const QRViewExample({Key? key}) : super(key: key);
+class QRViewPage extends StatefulWidget {
+  const QRViewPage({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _QRViewExampleState();
+  State<StatefulWidget> createState() => _QRViewPageState();
 }
 
-class _QRViewExampleState extends State<QRViewExample> {
+class _QRViewPageState extends State<QRViewPage> {
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -68,7 +48,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                     Text(
                         'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
                   else
-                    const Text('Scaneado Código...'),
+                    const Text('Escaneado Código...'),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -83,7 +63,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                             child: FutureBuilder(
                               future: controller?.getFlashStatus(),
                               builder: (context, snapshot) {
-                                return Text('Flash: ${snapshot.data}?');
+                                return Text('Flash: ${snapshot.data}');
                               },
                             )),
                       ),
@@ -118,8 +98,8 @@ class _QRViewExampleState extends State<QRViewExample> {
                           onPressed: () async {
                             await controller?.pauseCamera();
                           },
-                          child: const Text('pause',
-                              style: TextStyle(fontSize: 20)),
+                          child: const Text('Pause',
+                              style: TextStyle(fontSize: 15)),
                         ),
                       ),
                       Container(
@@ -128,14 +108,20 @@ class _QRViewExampleState extends State<QRViewExample> {
                           onPressed: () async {
                             await controller?.resumeCamera();
                           },
-                          child: const Text('resume',
-                              style: TextStyle(fontSize: 20)),
+                          child: const Text('Reanudar',
+                              style: TextStyle(fontSize: 15)),
                         ),
                       )
                     ],
                   ),
-                  const Icon(Icons.arrow_back),
-                  const Text('Atrás'),
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.offNamedUntil('/home', (route) => route.isFirst);
+                    },
+                    child: const Text('Atras'),
+                  ),
+                  // const Icon(Icons.arrow_back),
+                  // const Text('Atrás'),
                 ],
               ),
             ),

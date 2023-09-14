@@ -122,7 +122,8 @@ class Myapp extends StatelessWidget {
           ),
           GetPage(name: '/Error', page: () => const Page404()),
           GetPage(name: '/AuthCheck', page: () => const AuthCheck()),
-          GetPage(name: '/CodeQrPage', page: () => const CodeQrPage()),
+          // GetPage(name: '/CodeQrPage', page: () => const CodeQrPage()),
+          GetPage(name: '/QRViewExample', page: () => const QRViewPage()),
           GetPage(
             name: '/ProductPage',
             page: () => const CoexistencePage(),
