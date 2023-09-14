@@ -296,7 +296,7 @@ class _HomePagesState extends State<HomePages> {
                           InkWell(
                             onTap: () {
                               Get.toNamed(
-                                '/CodeQrPage',
+                                '/QRViewExample',
                               );
                             },
                             child: const Text(
@@ -485,7 +485,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      //automaticallyImplyLeading: true, //RLP Oculta la flecha de retroceso
+      automaticallyImplyLeading: false, //RLP Oculta la flecha de retroceso
       elevation: 0,
       backgroundColor: const Color.fromARGB(255, 231, 232, 234),
       title: Row(
