@@ -72,9 +72,8 @@ class Myapp extends StatelessWidget {
                 textTheme: GoogleFonts
                     .poppinsTextTheme(), // Aplicar Poppins a todo el proyecto
                 // Otras configuraciones de tema
-              ),       
-        initialRoute: '/AuthCheck',
-
+              ),
+        initialRoute: '/home',
         unknownRoute: GetPage(
           name: '/Error', // Nombre de la ruta de error
           page: () => const Page404(), // Página de error

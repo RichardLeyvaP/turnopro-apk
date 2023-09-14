@@ -117,7 +117,7 @@ class CoexistencePage extends StatelessWidget {
                                                   Radius.circular(12)),
                                             ),
                                             onTap: () {
-                                              _.getSelectCoexistence(index);
+                                              // _.getSelectCoexistence(index);
                                             },
                                             title: Row(
                                               crossAxisAlignment:
