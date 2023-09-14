@@ -1,6 +1,8 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:turnopro_apk/Controllers/product.controller.dart';
+import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/Views/products-services/products/productsBody.dart';
 import 'package:turnopro_apk/Views/products-services/services/servicesBodyPage.dart';
 //import 'package:turnopro_apk/Views/products-services/services/servicesBody.dart';
@@ -18,6 +20,8 @@ class ServicesProductsPage extends StatefulWidget {
 class _ServicesProductsPageState extends State<ServicesProductsPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  final ServiceController controller = Get.put(ServiceController());
+  final ProductController controller2 = Get.put(ProductController());
 
   @override
   void initState() {

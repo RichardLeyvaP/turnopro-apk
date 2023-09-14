@@ -9,7 +9,8 @@ import 'package:turnopro_apk/Controllers/customer.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/main.controller.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
-import 'package:turnopro_apk/Controllers/service.controller.dart';
+import 'package:turnopro_apk/Controllers/product.controller.dart';
+//import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -103,7 +104,6 @@ class Myapp extends StatelessWidget {
           GetPage(
             name: '/servicesProductsPage',
             page: () => const ServicesProductsPage(),
-            binding: BindingsBuilder.put(() => ServiceController()),
           ), //ESTA ESTA CARGANDO UNA API
           GetPage(
             name: '/NotificationsPageNew',
@@ -123,6 +123,11 @@ class Myapp extends StatelessWidget {
           GetPage(name: '/Error', page: () => const Page404()),
           GetPage(name: '/AuthCheck', page: () => const AuthCheck()),
           GetPage(name: '/CodeQrPage', page: () => const CodeQrPage()),
+          GetPage(
+            name: '/ProductPage',
+            page: () => const CoexistencePage(),
+            binding: BindingsBuilder.put(() => ProductController()),
+          ),
         ],
       );
     });
