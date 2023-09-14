@@ -21,7 +21,7 @@ class CodeQrPage extends StatelessWidget {
               builder: (context) => const QRViewExample(),
             ));
           },
-          child: const Text('qrView'),
+          child: const Text('Escanear'),
         ),
       ),
     );
