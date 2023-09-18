@@ -109,7 +109,7 @@ class ServicesBodyPage extends StatelessWidget {
                                       duration:
                                           const Duration(milliseconds: 2000),
                                     );
-                                    _.addService();
+                                    // _.addService();
                                   },
                                   child: const Column(
                                     children: [
@@ -201,7 +201,8 @@ class ServicesBodyPage extends StatelessWidget {
                                               Text(_.services[index].name
                                                   .toString()),
                                               Text(
-                                                '15.000',
+                                                _.services[index].price_service
+                                                    .toString(),
                                                 style: TextStyle(
                                                     fontSize:
                                                         (MediaQuery.of(context)
@@ -217,7 +218,8 @@ class ServicesBodyPage extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(_.services[index].username
+                                              Text(_
+                                                  .services[index].type_service
                                                   .toString()),
                                               SizedBox(
                                                 height: (MediaQuery.of(context)
@@ -301,7 +303,7 @@ class ServicesBodyPage extends StatelessWidget {
                                                               .height *
                                                           0.016)),
                                                   Text(
-                                                    '15 Minutos',
+                                                    '${_.services[index].duration_service} Minutos',
                                                     style: TextStyle(
                                                         fontSize:
                                                             (MediaQuery.of(
@@ -415,7 +417,7 @@ class ServicesBodyPage extends StatelessWidget {
                                 const Color.fromARGB(92, 11, 226, 22),
                             duration: const Duration(milliseconds: 2000),
                           );
-                          _.addService();
+                          // _.addService();
                         },
                         child: const Column(
                           children: [

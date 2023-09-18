@@ -8,13 +8,13 @@ class ServiceRepository extends GetConnect {
   Future<List<ServiceModel>> getServiceList() async {
     List<ServiceModel> serviceList = [];
     var url =
-        'http://jsonplaceholder.typicode.com/users'; //cambiar aqui por servicios en la api
+        'http://10.0.2.2:8000/api/service'; //cambiar aqui por servicios en la api
 
     final response = await get(url);
     if (response.statusCode == 200) {
-      final services = response.body;
-      for (Map service in services) {
-        ServiceModel u = ServiceModel.fromJson(jsonEncode(service));
+      final products = response.body['services'];
+      for (Map product in products) {
+        ServiceModel u = ServiceModel.fromJson(jsonEncode(product));
         serviceList.add(u);
       }
       return serviceList;
