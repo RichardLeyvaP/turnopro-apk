@@ -9,7 +9,7 @@ import 'package:turnopro_apk/Controllers/customer.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/main.controller.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
-import 'package:turnopro_apk/Controllers/product.controller.dart';
+//import 'package:turnopro_apk/Controllers/product.controller.dart';
 //import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:flutter/services.dart';
@@ -124,11 +124,11 @@ class Myapp extends StatelessWidget {
           GetPage(name: '/AuthCheck', page: () => const AuthCheck()),
           // GetPage(name: '/CodeQrPage', page: () => const CodeQrPage()),
           GetPage(name: '/QRViewExample', page: () => const QRViewPage()),
-          GetPage(
-            name: '/ProductPage',
-            page: () => const CoexistencePage(),
-            binding: BindingsBuilder.put(() => ProductController()),
-          ),
+          // GetPage(
+          //   name: '/ProductPage',
+          //   page: () => const CoexistencePage(),
+          //   binding: BindingsBuilder.put(() => ProductController()),
+          // ),
         ],
       );
     });

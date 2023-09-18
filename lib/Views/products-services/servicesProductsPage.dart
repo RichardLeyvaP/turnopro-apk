@@ -21,7 +21,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final ServiceController controller = Get.put(ServiceController());
-  final ProductController controller2 = Get.put(ProductController());
+  final ProductController controllerProduct = Get.put(ProductController());
 
   @override
   void initState() {
@@ -61,6 +61,9 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
               255, 241, 130, 84), // Color de fondo del AppBar
           elevation: 0, // Sombra del AppBar
           toolbarHeight: 120, // Altura del AppBar
+          // actions: [
+          //   IconButton(onPressed: () {}, icon: const Icon(Icons.shopping_cart))
+          // ],
 
           title: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,7 +86,56 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ],
               ),
-              const Text("          "),
+              StreamBuilder<int>(
+                  stream: controllerProduct.shoppingCart.stream,
+                  builder: (context, snapshot) {
+                    return Badge(
+                        label: Text(snapshot.data?.toString() ?? '0'),
+                        child: snapshot.data != null
+                            ? IconButton(
+                                icon: const Icon(
+                                  Icons.shopping_cart,
+                                  size: 30,
+                                ), // Icono que deseas mostrar
+                                onPressed: () {
+                                  Get.snackbar(
+                                    'Mensaje del Carrito de Compra',
+                                    'LLamar a la pagina correspondiente',
+                                    duration:
+                                        const Duration(milliseconds: 2500),
+                                    showProgressIndicator: true,
+                                    progressIndicatorBackgroundColor:
+                                        const Color.fromARGB(255, 81, 93, 117),
+                                    progressIndicatorValueColor:
+                                        const AlwaysStoppedAnimation(
+                                            Color.fromARGB(255, 241, 130, 84)),
+                                    overlayBlur: 3,
+                                  );
+                                }, // Evento onPress
+                              )
+                            : IconButton(
+                                icon: const Icon(
+                                  Icons.shopping_cart_outlined,
+                                  size: 30,
+                                ), // Icono que deseas mostrar
+                                onPressed: () {
+                                  Get.snackbar(
+                                    'Mensaje',
+                                    snapshot.data.toString(),
+                                    duration:
+                                        const Duration(milliseconds: 2500),
+                                    showProgressIndicator: true,
+                                    progressIndicatorBackgroundColor:
+                                        const Color.fromARGB(255, 81, 93, 117),
+                                    progressIndicatorValueColor:
+                                        const AlwaysStoppedAnimation(
+                                            Color.fromARGB(255, 241, 130, 84)),
+                                    overlayBlur: 3,
+                                  );
+                                }, // Evento onPress
+                              ));
+                  }),
+              // const Text("          "),
             ],
           ),
           bottom: PreferredSize(
@@ -120,7 +172,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
             ),
             Container(
               color: backgroundColor,
-              child: const ProductsBody(),
+              child: ProductsBody(controllerProduct: controllerProduct),
             ),
           ],
         ),

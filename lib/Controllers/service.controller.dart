@@ -79,16 +79,16 @@ class ServiceController extends GetxController {
     update();
   }
 
-  void addService() {
-    ServiceModel newUser = ServiceModel(
-        id: 12,
-        name: "Servicio $serviceListLength",
-        username: "Nuevo servicio");
-    services.add(newUser);
-    serviceListLength = services.length; //actualizo la logitud de la lista
-    getTotalSum();
-    update();
-  }
+  // void addService() {
+  //   ServiceModel newUser = ServiceModel(
+  //       id: 12,
+  //       name: "Servicio $serviceListLength",
+  //       username: "Nuevo servicio");
+  //   services.add(newUser);
+  //   serviceListLength = services.length; //actualizo la logitud de la lista
+  //   getTotalSum();
+  //   update();
+  // }
 
 //***************************************************************
 //*METODOS ELIMINAR
