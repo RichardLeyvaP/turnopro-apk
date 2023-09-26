@@ -6,7 +6,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:get/get.dart';
 
 class QRViewPage extends StatefulWidget {
   const QRViewPage({Key? key}) : super(key: key);
@@ -34,9 +33,129 @@ class _QRViewPageState extends State<QRViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Column(
+              children: [
+                Icon(
+                  Icons.qr_code_scanner_sharp,
+                  size: 50,
+                ),
+                Text(
+                  'turnopro',
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+                ),
+              ],
+            ),
+            SizedBox(
+              width: (MediaQuery.of(context).size.width * 0.14),
+            ),
+          ],
+        ),
+        //actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
+        elevation: 0, // Quits the shadow
+        //shadowColor: Colors.amber, // Removes visual elevation
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.all((MediaQuery.of(context).size.height * 0.012)),
+        child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(10),
+                topLeft: Radius.circular(10),
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10)),
+            child: BottomNavigationBar(
+                showSelectedLabels: false,
+                showUnselectedLabels: false,
+                unselectedItemColor: Colors.white,
+                backgroundColor: const Color.fromARGB(255, 43, 44, 49),
+                fixedColor: const Color.fromARGB(255, 241, 130, 84),
+                type: BottomNavigationBarType.fixed,
+                items: [
+                  BottomNavigationBarItem(
+                      icon: InkWell(
+                        onTap: () async {
+                          await controller?.toggleFlash();
+                          setState(() {});
+                        },
+                        child: FutureBuilder(
+                          future: controller?.getFlashStatus(),
+                          builder: (context, snapshot) {
+                            return snapshot.data == true
+                                ? Icon(
+                                    Icons.flashlight_on,
+                                    color:
+                                        const Color.fromARGB(255, 241, 130, 84),
+                                    size: MediaQuery.of(context).size.width *
+                                        0.07,
+                                  )
+                                : Icon(
+                                    Icons.flashlight_off_sharp,
+                                    color: Colors.white,
+                                    size: MediaQuery.of(context).size.width *
+                                        0.04,
+                                  );
+                          },
+                        ),
+                      ),
+                      label: 'linterna'),
+                  BottomNavigationBarItem(
+                      icon: InkWell(
+                        child: Icon(
+                          Icons.qr_code_scanner_sharp,
+                          size: MediaQuery.of(context).size.width * 0.12,
+                        ),
+                      ),
+                      label: 'Escanear'),
+                  BottomNavigationBarItem(
+                    icon: InkWell(
+                      onTap: () async {
+                        await controller?.flipCamera();
+                        setState(() {});
+                      },
+                      child: FutureBuilder(
+                        future: controller?.getCameraInfo(),
+                        builder: (context, snapshot) {
+                          return snapshot.data != null
+                              ? describeEnum(snapshot.data!) == 'front'
+                                  ? Icon(
+                                      Icons.crop_rotate,
+                                      color: const Color.fromARGB(
+                                          255, 241, 130, 84),
+                                      size: MediaQuery.of(context).size.width *
+                                          0.07,
+                                    )
+                                  : Icon(
+                                      Icons.crop_rotate,
+                                      color: Colors.white,
+                                      size: MediaQuery.of(context).size.width *
+                                          0.04,
+                                    )
+                              : const Text('loading');
+                        },
+                      ),
+                    ),
+                    label: 'Rotar camara',
+                  ),
+                ])),
+      ),
+      backgroundColor: const Color.fromARGB(255, 241, 130, 84),
       body: Column(
         children: <Widget>[
-          Expanded(flex: 4, child: _buildQrView(context)),
+          Expanded(flex: 8, child: _buildQrView(context)),
           Expanded(
             flex: 1,
             child: FittedBox(
@@ -46,80 +165,88 @@ class _QRViewPageState extends State<QRViewPage> {
                 children: <Widget>[
                   if (result != null)
                     Text(
-                        'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
+                        'Resultado : ${describeEnum(result!.format)}   Data: ${result!.code}')
                   else
-                    const Text('Escaneado Código...'),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              await controller?.toggleFlash();
-                              setState(() {});
-                            },
-                            child: FutureBuilder(
-                              future: controller?.getFlashStatus(),
-                              builder: (context, snapshot) {
-                                return Text('Flash: ${snapshot.data}');
-                              },
-                            )),
+                    const Padding(
+                      padding:
+                          EdgeInsets.only(left: 6, right: 6, top: 2, bottom: 3),
+                      child: Text(
+                        'Esperando resultado...',
+                        style:
+                            TextStyle(fontSize: 2, fontWeight: FontWeight.w800),
                       ),
-                      Container(
-                        margin: const EdgeInsets.all(3),
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              await controller?.flipCamera();
-                              setState(() {});
-                            },
-                            child: FutureBuilder(
-                              future: controller?.getCameraInfo(),
-                              builder: (context, snapshot) {
-                                if (snapshot.data != null) {
-                                  return Text(
-                                      'Cámara ${describeEnum(snapshot.data!)}');
-                                } else {
-                                  return const Text('loading');
-                                }
-                              },
-                            )),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.all(3),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller?.pauseCamera();
-                          },
-                          child: const Text('Pause',
-                              style: TextStyle(fontSize: 15)),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(3),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller?.resumeCamera();
-                          },
-                          child: const Text('Reanudar',
-                              style: TextStyle(fontSize: 15)),
-                        ),
-                      )
-                    ],
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Get.offNamedUntil('/home', (route) => route.isFirst);
-                    },
-                    child: const Text('Atras'),
-                  ),
+                    ),
+                  // Row(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  //crossAxisAlignment: CrossAxisAlignment.center,
+                  //children: <Widget>[
+                  // Container(
+                  //   margin: const EdgeInsets.all(8),
+                  //   child: ElevatedButton(
+                  //       onPressed: () async {
+                  //         await controller?.toggleFlash();
+                  //         setState(() {});
+                  //       },
+                  //       child: FutureBuilder(
+                  //         future: controller?.getFlashStatus(),
+                  //         builder: (context, snapshot) {
+                  //           return Text('Flash: ${snapshot.data}');
+                  //         },
+                  //       )),
+                  // ),
+                  // Container(
+                  //   margin: const EdgeInsets.all(3),
+                  //   child: ElevatedButton(
+                  //       onPressed: () async {
+                  //         await controller?.flipCamera();
+                  //         setState(() {});
+                  //       },
+                  //       child: FutureBuilder(
+                  //         future: controller?.getCameraInfo(),
+                  //         builder: (context, snapshot) {
+                  //           if (snapshot.data != null) {
+                  //             return Text(
+                  //                 'Cámara ${describeEnum(snapshot.data!)}');
+                  //           } else {
+                  //             return const Text('loading');
+                  //           }
+                  //         },
+                  //       )),
+                  // )
+                  // ],
+                  //),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   crossAxisAlignment: CrossAxisAlignment.center,
+                  //   children: <Widget>[
+                  //     Container(
+                  //       margin: const EdgeInsets.all(3),
+                  //       child: ElevatedButton(
+                  //         onPressed: () async {
+                  //           await controller?.pauseCamera();
+                  //         },
+                  //         child: const Text('Pause',
+                  //             style: TextStyle(fontSize: 15)),
+                  //       ),
+                  //     ),
+                  //     Container(
+                  //       margin: const EdgeInsets.all(3),
+                  //       child: ElevatedButton(
+                  //         onPressed: () async {
+                  //           await controller?.resumeCamera();
+                  //         },
+                  //         child: const Text('Reanudar',
+                  //             style: TextStyle(fontSize: 15)),
+                  //       ),
+                  //     )
+                  //   ],
+                  // ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     Get.offNamedUntil('/home', (route) => route.isFirst);
+                  //   },
+                  //   child: const Text('Atras'),
+                  // ),
                   // const Icon(Icons.arrow_back),
                   // const Text('Atrás'),
                 ],

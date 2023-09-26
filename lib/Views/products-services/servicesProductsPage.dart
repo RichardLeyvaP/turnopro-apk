@@ -1,13 +1,14 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/product.controller.dart';
 import 'package:turnopro_apk/Controllers/service.controller.dart';
+import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:turnopro_apk/Views/products-services/products/productsBody.dart';
 import 'package:turnopro_apk/Views/products-services/services/servicesBodyPage.dart';
 //import 'package:turnopro_apk/Views/products-services/services/servicesBody.dart';
 import '../../Components/BottomNavigationBar.dart';
-// ignore: depend_on_referenced_packages
+//import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
 
 class ServicesProductsPage extends StatefulWidget {
@@ -20,8 +21,13 @@ class ServicesProductsPage extends StatefulWidget {
 class _ServicesProductsPageState extends State<ServicesProductsPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final ServiceController controller = Get.put(ServiceController());
+  //final ServiceController controller = Get.put(ServiceController());
+
   final ProductController controllerProduct = Get.put(ProductController());
+
+  final ServiceController controllerService = Get.find<ServiceController>();
+  final ShoppingCartController controllerShoppingCart =
+      Get.find<ShoppingCartController>();
 
   @override
   void initState() {
@@ -86,55 +92,43 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ],
               ),
-              StreamBuilder<int>(
-                  stream: controllerProduct.shoppingCart.stream,
-                  builder: (context, snapshot) {
-                    return Badge(
-                        label: Text(snapshot.data?.toString() ?? '0'),
-                        child: snapshot.data != null
-                            ? IconButton(
-                                icon: const Icon(
-                                  Icons.shopping_cart,
-                                  size: 30,
-                                ), // Icono que deseas mostrar
-                                onPressed: () {
-                                  Get.snackbar(
-                                    'Mensaje del Carrito de Compra',
-                                    'LLamar a la pagina correspondiente',
-                                    duration:
-                                        const Duration(milliseconds: 2500),
-                                    showProgressIndicator: true,
-                                    progressIndicatorBackgroundColor:
-                                        const Color.fromARGB(255, 81, 93, 117),
-                                    progressIndicatorValueColor:
-                                        const AlwaysStoppedAnimation(
-                                            Color.fromARGB(255, 241, 130, 84)),
-                                    overlayBlur: 3,
-                                  );
-                                }, // Evento onPress
-                              )
-                            : IconButton(
-                                icon: const Icon(
-                                  Icons.shopping_cart_outlined,
-                                  size: 30,
-                                ), // Icono que deseas mostrar
-                                onPressed: () {
-                                  Get.snackbar(
-                                    'Mensaje',
-                                    snapshot.data.toString(),
-                                    duration:
-                                        const Duration(milliseconds: 2500),
-                                    showProgressIndicator: true,
-                                    progressIndicatorBackgroundColor:
-                                        const Color.fromARGB(255, 81, 93, 117),
-                                    progressIndicatorValueColor:
-                                        const AlwaysStoppedAnimation(
-                                            Color.fromARGB(255, 241, 130, 84)),
-                                    overlayBlur: 3,
-                                  );
-                                }, // Evento onPress
-                              ));
-                  }),
+
+              GetBuilder<ShoppingCartController>(builder: (_) {
+                return Badge(
+                    label: Text(_.shoppingCart.toString()),
+                    child: _.shoppingCart == 0
+                        ? IconButton(
+                            icon: const Icon(
+                              Icons.shopping_cart_outlined,
+                              size: 30,
+                            ), // Icono que deseas mostrar
+                            onPressed: () {
+                              Get.snackbar(
+                                'Mensaje del Carrito de Compra',
+                                'Su carrito esta vacio',
+                                duration: const Duration(milliseconds: 2500),
+                                showProgressIndicator: true,
+                                progressIndicatorBackgroundColor:
+                                    const Color.fromARGB(255, 81, 93, 117),
+                                progressIndicatorValueColor:
+                                    const AlwaysStoppedAnimation(
+                                        Color.fromARGB(255, 241, 130, 84)),
+                                overlayBlur: 3,
+                              );
+                            }, // Evento onPress
+                          )
+                        : IconButton(
+                            icon: const Icon(
+                              Icons.shopping_cart,
+                              size: 30,
+                            ), // Icono que deseas mostrar
+                            onPressed: () {
+                              Get.toNamed(
+                                '/ShoppingCartPage',
+                              );
+                            }, // Evento onPress
+                          ));
+              }),
               // const Text("          "),
             ],
           ),
@@ -162,21 +156,72 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
             ),
           ),
         ),
-        body: TabBarView(
-          controller: _tabController,
+        body: controllerShoppingCart.internetError != -99
+            ? TabBarView(
+                controller: _tabController,
+                children: [
+                  Container(
+                    color: backgroundColor,
+                    child:
+                        ServicesBodyPage(), //RLP AQUI SE CARGA LA PAGINA DE LOS SERVICIOS
+                  ),
+                  Container(
+                    color: backgroundColor,
+                    child: const ProductsBody(),
+                  ),
+                ],
+              )
+            : AlertDialogPago(
+                controllerShoppingCart:
+                    controllerShoppingCart), // Muestra el AlertDialog
+      ),
+    );
+  }
+}
+
+class AlertDialogPago extends StatelessWidget {
+  final ShoppingCartController controllerShoppingCart;
+  const AlertDialogPago({Key? key, required this.controllerShoppingCart})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Error'),
+      content: const SizedBox(
+        height: 30.0, // Ajusta la altura según tu necesidad
+        child: Column(
+          mainAxisSize: MainAxisSize.min, // Establece el tamaño mínimo
           children: [
-            Container(
-              color: backgroundColor,
-              child:
-                  const ServicesBodyPage(), //RLP AQUI SE CARGA LA PAGINA DE LOS SERVICIOS
-            ),
-            Container(
-              color: backgroundColor,
-              child: ProductsBody(controllerProduct: controllerProduct),
-            ),
+            Text('Por favor revise su conexión a Internet'),
           ],
         ),
       ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            // Cerrar el AlertDialog
+            Get.back();
+          },
+          child: const Text('Atras'),
+        ),
+        TextButton(
+          onPressed: () async {
+            // Cerrar el AlertDialog
+            try {
+              await controllerShoppingCart.intentarConexion();
+              Get.toNamed(
+                '/home',
+              );
+            } catch (e) {
+              Get.toNamed(
+                '/home',
+              );
+            }
+          },
+          child: const Text('Volver Intentarlo'),
+        ),
+      ],
     );
   }
 }

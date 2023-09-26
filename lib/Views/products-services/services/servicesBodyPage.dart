@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/service.controller.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 
 class ServicesBodyPage extends StatelessWidget {
   final double valuePadding = 12;
-  const ServicesBodyPage({super.key});
+  ServicesBodyPage({super.key});
+  final ShoppingCartController controllerShoppingCart =
+      Get.find<ShoppingCartController>();
 
   //bool visibleButonEliminar = false;
   @override
@@ -30,104 +33,6 @@ class ServicesBodyPage extends StatelessWidget {
           : _.serviceListLength > 0
               ? Column(
                   children: [
-                    Visibility(
-                        visible: /* _.selectService.length */ 1 == 1,
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              InkWell(
-                                  onTap: () {
-                                    if (_.selectService.isEmpty) {
-                                      Get.snackbar(
-                                        'Alerta!',
-                                        'NO HAY SERVICIOS SELECCIONADOS',
-                                        backgroundColor: const Color.fromARGB(
-                                            61, 255, 238, 0),
-                                        duration:
-                                            const Duration(milliseconds: 2000),
-                                      );
-                                    } else {
-                                      Get.snackbar(
-                                        'Mensaje',
-                                        'ElIMINANDO CORRECTAMENTE',
-                                        backgroundColor: const Color.fromARGB(
-                                            95, 255, 17, 0),
-                                        duration:
-                                            const Duration(milliseconds: 2000),
-                                      );
-                                      _.deleteMultipleService();
-                                    }
-                                  },
-                                  child: const Column(
-                                    children: [
-                                      Icon(
-                                        Icons.delete_outline_outlined,
-                                        color: Colors.red,
-                                      ),
-                                      Text(
-                                        'Eliminar Seleccionados',
-                                        style: TextStyle(
-                                            fontSize: 9,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ],
-                                  )),
-                              InkWell(
-                                  onTap: () {
-                                    Get.snackbar(
-                                      'Mensaje',
-                                      'ELIMINADOS TODOS',
-                                      backgroundColor:
-                                          const Color.fromARGB(95, 255, 17, 0),
-                                      duration:
-                                          const Duration(milliseconds: 2000),
-                                    );
-                                    _.deleteAll();
-                                  },
-                                  child: const Column(
-                                    children: [
-                                      Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
-                                      ),
-                                      Text(
-                                        'Eliminar Todos',
-                                        style: TextStyle(
-                                            fontSize: 9,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ],
-                                  )),
-                              InkWell(
-                                  onTap: () {
-                                    Get.snackbar(
-                                      'Mensaje',
-                                      'INSERTADO CORRECTAMENTE',
-                                      backgroundColor:
-                                          const Color.fromARGB(92, 11, 226, 22),
-                                      duration:
-                                          const Duration(milliseconds: 2000),
-                                    );
-                                    // _.addService();
-                                  },
-                                  child: const Column(
-                                    children: [
-                                      Icon(
-                                        Icons.add_circle_outline,
-                                        color: Colors.green,
-                                      ),
-                                      Text(
-                                        'Adicionar Servicio',
-                                        style: TextStyle(
-                                            fontSize: 9,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ],
-                                  )),
-                            ],
-                          ),
-                        )),
                     Expanded(
                       flex:
                           heightFlexBody, // 85% del espacio disponible para esta parte
@@ -192,7 +97,16 @@ class ServicesBodyPage extends StatelessWidget {
                                                 Radius.circular(12)),
                                           ),
                                           onTap: () {
-                                            _.getSelectService(index);
+                                            if (!_.selectService
+                                                .contains(_.services[index])) {
+                                              _.getSelectService(index);
+                                              controllerShoppingCart
+                                                  .updateShoppingCartValue(
+                                                      index, 'service');
+                                              _.getTotalSum(double.parse(_
+                                                  .services[index]
+                                                  .price_service));
+                                            }
                                           },
                                           title: Row(
                                             mainAxisAlignment:
@@ -341,13 +255,12 @@ class ServicesBodyPage extends StatelessWidget {
                                           child: IconButton(
                                             onPressed: () {
                                               Get.snackbar(
-                                                'ElIMINANDO CORRECTAMENTE',
-                                                _.services[index].name
-                                                    .toString(),
+                                                'Mensaje',
+                                                'Fue notificado al responsable,espere confirmación.',
                                                 duration: const Duration(
-                                                    milliseconds: 2000),
+                                                    milliseconds: 2500),
                                               );
-                                              _.deleteService(index);
+                                              _.sentServiceDelet(index);
                                             },
                                             icon: Icon(
                                               Icons.delete,
@@ -384,7 +297,8 @@ class ServicesBodyPage extends StatelessWidget {
                                   fontWeight: FontWeight.w900),
                             ),
                             Text(
-                              '${_.getTotal}' '00',
+                              _.getTotal.toStringAsFixed(2),
+                              /*esto garantiza 2 lugares despues de la coma */
                               style: TextStyle(
                                   fontSize:
                                       (MediaQuery.of(context).size.height *
@@ -397,41 +311,17 @@ class ServicesBodyPage extends StatelessWidget {
                     ),
                   ],
                 )
-              : Center(
+              : const Center(
                   child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.no_backpack_outlined),
                         Text('No hay servicios'),
                       ],
                     ),
-                    InkWell(
-                        onTap: () {
-                          Get.snackbar(
-                            'Mensaje',
-                            'INSERTADO CORRECTAMENTE',
-                            backgroundColor:
-                                const Color.fromARGB(92, 11, 226, 22),
-                            duration: const Duration(milliseconds: 2000),
-                          );
-                          // _.addService();
-                        },
-                        child: const Column(
-                          children: [
-                            Icon(
-                              Icons.add_circle_outline,
-                              color: Colors.green,
-                            ),
-                            Text(
-                              'Adicionar Servicio',
-                              style: TextStyle(
-                                  fontSize: 9, fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        )),
                   ],
                 ));
     });

@@ -3,26 +3,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/product.controller.dart';
+import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 
 class ProductsBody extends StatefulWidget {
-  final ProductController controllerProduct;
-
   const ProductsBody({
     Key? key,
-    required this.controllerProduct,
   }) : super(key: key);
 
   @override
-  State<ProductsBody> createState() =>
-      _ProductsBodyState(controllerProduct: controllerProduct);
+  State<ProductsBody> createState() => _ProductsBodyState();
 }
 
 class _ProductsBodyState extends State<ProductsBody>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final ProductController controllerProduct;
 
-  _ProductsBodyState({required this.controllerProduct});
+  final ShoppingCartController controllerShoppingCart =
+      Get.put(ShoppingCartController());
+
+  final ProductController controllerProduct = Get.find<ProductController>();
 
   @override
   void initState() {
@@ -53,8 +52,8 @@ class _ProductsBodyState extends State<ProductsBody>
       tabs2.add(Text(tabValues[i]));
     }
 
-    return GetBuilder<ProductController>(builder: (_) {
-      return _.isLoading
+    return GetBuilder<ProductController>(builder: (controllerProduct) {
+      return controllerProduct.isLoading
           ? const Center(
               child: CircularProgressIndicator(
               color: Color.fromARGB(255, 241, 130, 84),
@@ -76,34 +75,50 @@ class _ProductsBodyState extends State<ProductsBody>
                     },
                   ),
                 ),
-                Expanded(
-                    child: TabBarView(
-                  controller: _tabController,
-                  children: List<Widget>.generate(
-                    tabs2.length,
-                    (index) {
-                      return ListView.builder(
-                        itemCount: _.productListLength,
-                        itemBuilder: (context, itemIndex) => Column(
-                          children: [
-                            newMethod(
-                              'assets/images/pngegg.png',
-                              _.product[itemIndex].name,
-                              _.product[itemIndex].description,
-                              _.product[itemIndex].sale_price,
-                              context,
-                              controllerProduct,
-                            ),
-                            SizedBox(
-                              height:
-                                  (MediaQuery.of(context).size.width * 0.02),
-                            ),
-                          ],
+                controllerProduct.productListLength != -99
+                    ? Expanded(
+                        child: TabBarView(
+                        controller: _tabController,
+                        children: List<Widget>.generate(
+                          tabs2.length,
+                          (index) {
+                            return ListView.builder(
+                              itemCount: controllerProduct.productListLength,
+                              itemBuilder: (context, itemIndex) => Column(
+                                children: [
+                                  controllerProduct.productListLength != 0 &&
+                                          controllerProduct.productListLength >
+                                              0
+                                      ? newMethod(
+                                          'assets/images/pngegg.png',
+                                          controllerProduct
+                                              .product[itemIndex].name,
+                                          controllerProduct
+                                              .product[itemIndex].product_exit,
+                                          controllerProduct
+                                              .product[itemIndex].description,
+                                          controllerProduct
+                                              .product[itemIndex].sale_price,
+                                          context,
+                                          controllerShoppingCart,
+                                          itemIndex,
+                                        )
+                                      : controllerProduct.productListLength == 0
+                                          ? const Text('')
+                                          : const Text(
+                                              'Fallo la carga de los datos, revise su coneccion a internet'),
+                                  SizedBox(
+                                    height: (MediaQuery.of(context).size.width *
+                                        0.02),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-                )),
+                      ))
+                    : const Text(
+                        'Falló la conexion,revise su coneccion de Internet.'),
               ],
             );
     });
@@ -113,10 +128,12 @@ class _ProductsBodyState extends State<ProductsBody>
 Padding newMethod(
     String addressProduct,
     String productName,
+    int productExit,
     String propertiesName,
     String priceProduct,
     BuildContext context,
-    ProductController controllerProduct) {
+    ShoppingCartController controllerShoppingCart,
+    itemIndex) {
   //VARIABLES DE PROPIEDADES DEL WIDGET
   const double borderRadiusValue = 12; //container que carga la imagen
   return Padding(
@@ -153,10 +170,21 @@ Padding newMethod(
                       fontSize: (MediaQuery.of(context).size.width * 0.05),
                       fontWeight: FontWeight.w900),
                 ),
-                subtitle: Text(
-                  propertiesName,
-                  style: TextStyle(
-                      fontSize: (MediaQuery.of(context).size.width * 0.03)),
+                subtitle: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      propertiesName,
+                      style: TextStyle(
+                          fontSize: (MediaQuery.of(context).size.width * 0.03)),
+                    ),
+                    Text(
+                      'Cantidad Disponible: $productExit',
+                      style: TextStyle(
+                          fontSize: (MediaQuery.of(context).size.width * 0.03)),
+                    ),
+                  ],
                 ),
               ),
               ListTile(
@@ -175,7 +203,8 @@ Padding newMethod(
                     children: [
                       InkWell(
                         onTap: () {
-                          controllerProduct.updateAppBarValue(1);
+                          controllerShoppingCart.updateShoppingCartValue(
+                              itemIndex, 'product');
                         },
                         child: Container(
                           height: (MediaQuery.of(context).size.height * 0.035),

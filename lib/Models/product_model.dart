@@ -7,6 +7,7 @@ class ProductModel {
   String name;
   String code;
   String description;
+  int product_exit;
   String status_product;
   String purchase_price;
   String sale_price;
@@ -18,6 +19,7 @@ class ProductModel {
     required this.name,
     required this.code,
     required this.description,
+    required this.product_exit,
     required this.status_product,
     required this.purchase_price,
     required this.sale_price,
@@ -31,6 +33,7 @@ class ProductModel {
       'name': name,
       'code': code,
       'description': description,
+      'product_exit': product_exit,
       'status_product': status_product,
       'purchase_price': purchase_price,
       'sale_price': sale_price,
@@ -45,6 +48,7 @@ class ProductModel {
       name: map['name'] ?? '',
       code: map['code'] ?? '',
       description: map['description'] ?? '',
+      product_exit: map['product_exit'] ?? 0,
       status_product: map['status_product'] ?? '',
       purchase_price: map['purchase_price'] ?? '',
       sale_price: map['sale_price'] ?? '',

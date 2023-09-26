@@ -7,14 +7,9 @@ import 'package:turnopro_apk/get_connect/repository/services.repository.dart';
 class ServiceController extends GetxController {
   //LLAMANDO AL CONTROLADOR
   ServiceController() {
-    getTotalSum();
     calculateTime();
-    if (yaEntre == false) {
-      _fetchServiceList(); // Llamar al método asincrónico en el constructor
-      getTotalSum();
-      yaEntre = true;
-      update();
-    }
+    _fetchServiceList(); // Llamar al método asincrónico en el constructor
+    update();
   }
 
   @override
@@ -27,13 +22,16 @@ class ServiceController extends GetxController {
   }
 
   ServiceRepository repository = ServiceRepository();
-  bool yaEntre = false;
-  double getTotal = 20.0;
+  double getTotal = 0;
   int numero = 5;
   int serviceListLength = 0;
   List<ServiceModel> services = []; // Lista de servicios
+
   List<ServiceModel> selectService =
       []; // Lista de servicios seleccionados vacia
+
+  List<ServiceModel> sentServiceDelete = [];
+
   int time = 30;
   bool isLoading = true;
 
@@ -55,23 +53,30 @@ class ServiceController extends GetxController {
 
   getSelectService(index) {
     (selectService.contains(services[index]))
-        ? selectService.remove(services[index])
+        ? null
         : selectService.add(services[index]);
     update();
   }
 
-  getTotalSum() {
-    getTotal = getTotal + 5;
-
-    // getTotal = services
-    //     .map((service) => service.id)
-    //     .fold(0.0, (sum, id) => sum + id)
-    //     .toDouble();
-    // print(getTotal);
+  sentServiceDelet(index) {
+    (sentServiceDelete.contains(services[index]))
+        ? null
+        : sentServiceDelete.add(services[index]);
     update();
   }
 
-  //Future<List<UserModel>> userList() async => await repository.getUserList();
+  //*ESTE ERA EL QUE ESTABA,SELECIONAS Y DESELECCIONAS
+  // getSelectService(index) {
+  //   (selectService.contains(services[index]))
+  //       ? selectService.remove(services[index])
+  //       : selectService.add(services[index]);
+  //   update();
+  // }
+
+  getTotalSum(double x) {
+    getTotal = getTotal + x;
+    update();
+  }
 
   Future<void> _fetchServiceList() async {
     services = await repository.getServiceList();
@@ -79,21 +84,33 @@ class ServiceController extends GetxController {
     update();
   }
 
-  // void addService() {
-  //   ServiceModel newUser = ServiceModel(
-  //       id: 12,
-  //       name: "Servicio $serviceListLength",
-  //       username: "Nuevo servicio");
-  //   services.add(newUser);
-  //   serviceListLength = services.length; //actualizo la logitud de la lista
-  //   getTotalSum();
-  //   update();
-  // }
+//*ESTOS METODOS FUNCIONAN BIEN,ESTA COMENTADO PORQUE AQUI NO C NECESITA */
+//*ADICIONAR
+/* 
+  void addService() {
+    ServiceModel newUser = ServiceModel(
+      id: 12,
+      name: "Servicio $serviceListLength",
+      simultaneou: false,
+      price_service: "20.99",
+      type_service: "Corte normal",
+      profit_percentaje: "10%",
+      duration_service: 55,
+      image_service: "/assest/imag.jpg",
+      service_comment: "comentario",
+    );
+    services.add(newUser);
+    serviceListLength = services.length; //actualizo la logitud de la lista
+    getTotalSum();
+    update();
+  }
+  */
 
 //***************************************************************
 //*METODOS ELIMINAR
 
   //*ELIMINAR 1 ELEMENTO
+  /*
   void deleteService(int index) {
     if (index >= 0 && index < services.length) {
       //HACER LLAMADA A REPOSITORYY MANDAR A ELIMINAR EN LA BD
@@ -110,7 +127,6 @@ class ServiceController extends GetxController {
     update();
   }
 
-  //*ELIMINAR  ELEMENTOS SELECCIONADOS
   void deleteMultipleService() {
     if (selectService.isNotEmpty) {
       //HACER LLAMADA A REPOSITORYY MANDAR A ELIMINAR EN LA BD
@@ -130,4 +146,5 @@ class ServiceController extends GetxController {
     getTotal = 0.0;
     update();
   }
+  */
 }

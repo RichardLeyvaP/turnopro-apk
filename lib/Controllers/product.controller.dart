@@ -9,7 +9,6 @@ class ProductController extends GetxController {
   //LLAMANDO AL CONTROLADOR
   ProductController() {
     _initializeData();
-    //_fetchcategoryList();
     // Llamar al método asincrónico en el constructor
   }
 
@@ -23,11 +22,18 @@ class ProductController extends GetxController {
   }
 
   ProductRepository repository = ProductRepository();
-  RxInt shoppingCart = 0.obs;
+  int shoppingCart = 0;
 
   void updateAppBarValue(int newValue) {
-    shoppingCart.value += newValue;
+    shoppingCart += newValue;
+    update();
   }
+
+  //  RxInt shoppingCart = 0.obs;
+
+  // void updateAppBarValue(int newValue) {
+  //   shoppingCart.value += newValue;
+  // }
 
   bool yaEntre = false;
   double getTotal = 20.0;
@@ -45,16 +51,34 @@ class ProductController extends GetxController {
   bool isLoading = true;
 
   Future<void> fetchproductList(index) async {
-    product = await repository.getProductCategoryList(index);
-    productListLength = product.length;
-    update();
+    try {
+      product = await repository.getProductCategoryList(index);
+      productListLength = product.length;
+      update();
+    } catch (e) {
+      productListLength = -99;
+      update();
+      print('Fallo fetchproductList, con este erroro:$e');
+    }
   }
 
   Future<void> _fetchcategoryList() async {
-    category = await repository.getCategoryList();
-    categoryListLength = category.length;
-    idInicial = category[0].id;
-    update();
+    // Obtén la lista de categorías
+    try {
+      category = await repository.getCategoryList();
+
+      // Verifica que la lista de categorías no esté vacía antes de acceder a sus elementos
+      if (category.isNotEmpty) {
+        categoryListLength = category.length;
+        idInicial = category[0].id;
+        update();
+      } else {
+        // Manejo de caso en el que la lista de categorías está vacía
+        print('La lista de categorías está vacía.');
+      }
+    } catch (e) {
+      print('FALLO LA CONEXION: $e');
+    }
   }
 
   Future<void> _initializeData() async {

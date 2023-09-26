@@ -9,16 +9,30 @@ import 'package:turnopro_apk/Controllers/customer.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/main.controller.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
-//import 'package:turnopro_apk/Controllers/product.controller.dart';
+import 'package:turnopro_apk/Controllers/product.controller.dart';
+import 'package:turnopro_apk/Controllers/service.controller.dart';
+// import 'package:turnopro_apk/Controllers/product.controller.dart';
+import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 //import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Views/Code-Qr/CodeQrPage.dart';
 import 'package:turnopro_apk/Views/homeResponsiblePage.dart';
+import 'package:turnopro_apk/Views/shoppingCartPage.dart';
 import 'package:turnopro_apk/providers.dart';
 
 void main() {
+  // Inicializa y guarda tu controlador en Get
+  ShoppingCartController controllerShoppingCart = ShoppingCartController();
+  Get.put(controllerShoppingCart);
+
+  ServiceController controllerService = ServiceController();
+  Get.put(controllerService);
+
+  ProductController controllerProduct = ProductController();
+  Get.put(controllerProduct);
+
   // Llamada para inicializar Flutter y su enlace con la plataforma
   WidgetsFlutterBinding.ensureInitialized();
   // Bloquear la orientación horizontal
@@ -36,7 +50,7 @@ void main() {
 // ignore: must_be_immutable
 class Myapp extends StatelessWidget {
   Myapp({super.key});
-  final LoginController controller = Get.put(LoginController());
+  final LoginController controllerasas = Get.put(LoginController());
   Color colorPrimario =
       const Color.fromARGB(255, 241, 130, 84); // Color primario appBar
   Color colorSecundario =
@@ -74,7 +88,7 @@ class Myapp extends StatelessWidget {
                     .poppinsTextTheme(), // Aplicar Poppins a todo el proyecto
                 // Otras configuraciones de tema
               ),
-        initialRoute: '/home',
+        initialRoute: '/login',
         unknownRoute: GetPage(
           name: '/Error', // Nombre de la ruta de error
           page: () => const Page404(), // Página de error
@@ -124,6 +138,7 @@ class Myapp extends StatelessWidget {
           GetPage(name: '/AuthCheck', page: () => const AuthCheck()),
           // GetPage(name: '/CodeQrPage', page: () => const CodeQrPage()),
           GetPage(name: '/QRViewExample', page: () => const QRViewPage()),
+          GetPage(name: '/ShoppingCartPage', page: () => ShoppingCartPage()),
           // GetPage(
           //   name: '/ProductPage',
           //   page: () => const CoexistencePage(),

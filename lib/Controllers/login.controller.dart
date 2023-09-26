@@ -30,10 +30,10 @@ class LoginController extends GetxController {
   }
 
   void getData() {
-    if (usuario == 'usuario' && pass == '123') {
+    if (usuario == 'barbero' && pass == '123') {
       pagina = '/home';
       update();
-    } else if (usuario == 'admin' && pass == '123') {
+    } else if (usuario == 'responsable' && pass == '123') {
       pagina = '/HomeResponsible';
       update();
     }

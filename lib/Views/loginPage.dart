@@ -93,7 +93,7 @@ class LoginPage extends StatelessWidget {
                                     ), // Ícono de persona (user)
                                     //labelText: 'Usuario',
                                     hintText:
-                                        'usuario ó admin', // Este es el placeholder
+                                        'barbero ó responsable', // Este es el placeholder
                                     fillColor:
                                         const Color.fromARGB(14, 96, 125, 139),
                                     filled: true,
