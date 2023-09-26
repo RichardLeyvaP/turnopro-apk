@@ -73,8 +73,8 @@ class Myapp extends StatelessWidget {
                 ),
                 primaryColor: colorPrimario, // Color primario
                 hintColor: colorSecundario,
-                textTheme: GoogleFonts
-                    .poppinsTextTheme(), // Aplicar Poppins a todo el proyecto
+                textTheme: GoogleFonts.poppinsTextTheme(),
+                // Aplicar Poppins a todo el proyecto
                 // Otras configuraciones de tema
               )
             : ThemeData(

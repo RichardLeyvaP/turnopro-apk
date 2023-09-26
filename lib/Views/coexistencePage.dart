@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:get/get.dart';
 
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 class CoexistencePage extends StatelessWidget {
   const CoexistencePage({super.key});
   final double valuePadding = 12;
@@ -185,11 +187,7 @@ class CoexistencePage extends StatelessWidget {
                                                           color: Colors.red,
                                                           size: 65,
                                                         )
-                                                      : const Icon(
-                                                          Icons.star,
-                                                          size: 55,
-                                                          color: Colors.amber,
-                                                        )
+                                                      : Icon(MdiIcons.abacus),
                                                 ],
                                               )),
                                         ),

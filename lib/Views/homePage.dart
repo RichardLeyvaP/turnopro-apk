@@ -2,9 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:animate_do/animate_do.dart';
-import 'package:lottie/lottie.dart';
+//import 'package:animate_do/animate_do.dart';
+import 'package:google_fonts/google_fonts.dart';
+//import 'package:lottie/lottie.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
+//import 'package:google_fonts/google_fonts.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class HomePages extends StatefulWidget {
   const HomePages({super.key});
@@ -38,7 +41,7 @@ class _HomePagesState extends State<HomePages> {
   @override
   Widget build(BuildContext context) {
     double borderRadiusValue = 12;
-    const Color colorVariable = Color.fromARGB(255, 26, 50, 82);
+    const Color colorVariable = Color(0xFF2B3141); //CARAGANDO COLOR HEXADECIMAL
     const Color colorBottom =
         Color.fromARGB(255, 231, 233, 233); // Define el color a través de una
     const iconCart = (Icons.perm_contact_calendar);
@@ -147,181 +150,168 @@ class _HomePagesState extends State<HomePages> {
 
             child: Padding(
               padding: const EdgeInsets.all(12.0),
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(borderRadiusValue)),
-                    color: const Color.fromARGB(255, 241, 130, 84),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Center(
-                        // This Tween Animation Builder is Just For Demonstration, Do not use this AS-IS in Projects
-                        // Create and Animation Controller and Control the animation that way.
-                        child: TweenAnimationBuilder(
-                          tween: Tween(begin: 0.0, end: 1.0),
-                          duration: Duration(seconds: totalSeconds),
-                          builder: (context, value, _) {
-                            remainingSeconds =
-                                (totalSeconds - (totalSeconds * value))
-                                    .ceil(); // Calcula los segundos restantes
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(borderRadiusValue)),
+                  color: const Color.fromARGB(255, 241, 130, 84),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Center(
+                      // This Tween Animation Builder is Just For Demonstration, Do not use this AS-IS in Projects
+                      // Create and Animation Controller and Control the animation that way.
+                      child: TweenAnimationBuilder(
+                        tween: Tween(begin: 0.0, end: 1.0),
+                        duration: Duration(seconds: totalSeconds),
+                        builder: (context, value, _) {
+                          remainingSeconds =
+                              (totalSeconds - (totalSeconds * value))
+                                  .ceil(); // Calcula los segundos restantes
 
-                            int minutes = remainingSeconds ~/
-                                60; // Calcula los minutos restantes
-                            int seconds = remainingSeconds %
-                                60; // Calcula los segundos restantes
-                            if (seconds < 10) {
-                              segundos = "0";
-                            } else {
-                              segundos = "";
-                            }
-                            if (minutes == 0 && seconds == 0) {
-                              mensaj = 'FINALIZADO';
-                              colorInicial = Colors.red;
-                              colorInicialCirculo = Colors.white;
-                              fontSizeText = 14;
-                            } else {
-                              mensaj = "Tiempo Restante";
-                            }
+                          int minutes = remainingSeconds ~/
+                              60; // Calcula los minutos restantes
+                          int seconds = remainingSeconds %
+                              60; // Calcula los segundos restantes
+                          if (seconds < 10) {
+                            segundos = "0";
+                          } else {
+                            segundos = "";
+                          }
+                          if (minutes == 0 && seconds == 0) {
+                            mensaj = 'FINALIZADO';
+                            colorInicial = Colors.red;
+                            colorInicialCirculo = Colors.white;
+                            fontSizeText = 14;
+                          } else {
+                            mensaj = "Tiempo Restante";
+                          }
 
-                            return SizedBox(
-                              width: size,
-                              height: size,
-                              child: Stack(
-                                children: [
-                                  ShaderMask(
-                                    shaderCallback: (rect) {
-                                      return SweepGradient(
-                                          startAngle: 0.0,
-                                          endAngle: twoPi,
-                                          stops: [value, value],
-                                          // 0.0 , 0.5 , 0.5 , 1.0
-                                          center: Alignment.center,
-                                          colors: [
-                                            Colors.white,
-                                            Colors.grey.withAlpha(55)
-                                          ]).createShader(rect);
-                                    },
-                                    child: Container(
-                                      width: size,
-                                      height: size,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                              image: Image.asset(
-                                                      "assets/images/radial_scale.png")
-                                                  .image)),
-                                    ),
+                          return SizedBox(
+                            width: size,
+                            height: size,
+                            child: Stack(
+                              children: [
+                                ShaderMask(
+                                  shaderCallback: (rect) {
+                                    return SweepGradient(
+                                        startAngle: 0.0,
+                                        endAngle: twoPi,
+                                        stops: [value, value],
+                                        // 0.0 , 0.5 , 0.5 , 1.0
+                                        center: Alignment.center,
+                                        colors: [
+                                          Colors.white,
+                                          Colors.grey.withAlpha(55)
+                                        ]).createShader(rect);
+                                  },
+                                  child: Container(
+                                    width: size,
+                                    height: size,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                            image: Image.asset(
+                                                    "assets/images/radial_scale.png")
+                                                .image)),
                                   ),
-                                  Center(
-                                    child: Container(
-                                      width: size - 40,
-                                      height: size - 40,
-                                      decoration: BoxDecoration(
-                                          color: colorInicialCirculo,
-                                          shape: BoxShape.circle),
-                                      child: Center(
-                                          child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                '$minutes :',
-                                                style: TextStyle(
-                                                    fontSize: 45,
-                                                    color: colorInicial,
-                                                    fontWeight:
-                                                        FontWeight.w900),
-                                              ),
-                                              Text(
-                                                "$segundos$seconds",
-                                                style: TextStyle(
-                                                    fontSize: 45,
-                                                    color: colorInicial,
-                                                    fontWeight:
-                                                        FontWeight.w900),
-                                              ),
-                                            ],
-                                          ),
-                                          Text(
-                                            mensaj,
-                                            style: TextStyle(
-                                                fontSize: fontSizeText,
-                                                color: colorInicial,
-                                                fontWeight: FontWeight.w900),
-                                          ),
-                                        ],
-                                      )),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            );
-                          },
-                        ),
+                                ),
+                                Center(
+                                  child: Container(
+                                    width: size - 40,
+                                    height: size - 40,
+                                    decoration: BoxDecoration(
+                                        color: colorInicialCirculo,
+                                        shape: BoxShape.circle),
+                                    child: Center(
+                                        child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              '$minutes :',
+                                              style: TextStyle(
+                                                  fontSize: 33,
+                                                  fontFamily:
+                                                      GoogleFonts.orbitron()
+                                                          .fontFamily,
+                                                  color: colorInicial,
+                                                  fontWeight: FontWeight.w900),
+                                            ),
+                                            Text(
+                                              "$segundos$seconds",
+                                              style: TextStyle(
+                                                  fontSize: 33,
+                                                  color: colorInicial,
+                                                  fontFamily:
+                                                      GoogleFonts.orbitron()
+                                                          .fontFamily,
+                                                  fontWeight: FontWeight.w900),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          mensaj,
+                                          style: TextStyle(
+                                              fontSize: fontSizeText,
+                                              color: colorInicial,
+                                              fontWeight: FontWeight.w900),
+                                        ),
+                                      ],
+                                    )),
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Get.toNamed(
-                                  '/servicesProductsPage',
-                                );
-                              },
-                              child: const Text(
-                                'Servicio y productos',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w700),
-                              ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed(
+                                '/servicesProductsPage',
+                              );
+                            },
+                            child: const Text(
+                              'Servicio y productos',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700),
                             ),
-                            InkWell(
-                              onTap: () {
-                                Get.toNamed(
-                                  '/QRViewExample',
-                                );
-                              },
-                              child: const Text(
-                                'Escanear Qr',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w700),
-                              ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed(
+                                '/clients',
+                              );
+                            },
+                            child: const Text(
+                              'Mis clientes',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700),
                             ),
-                            InkWell(
-                              onTap: () {
-                                Get.toNamed(
-                                  '/clients',
-                                );
-                              },
-                              child: const Text(
-                                'Mis clientes',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
               ),
             )),
@@ -425,7 +415,7 @@ class _HomePagesState extends State<HomePages> {
                                     colorBottom,
                                     'Convivencia',
                                     'Cumplimiento de Reglas',
-                                    Icons.star_border),
+                                    Icons.star),
                               ),
                             ],
                           ),
@@ -457,7 +447,7 @@ class _HomePagesState extends State<HomePages> {
         color: colorVariable,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -482,7 +472,7 @@ class _HomePagesState extends State<HomePages> {
                   titleCart,
                   style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 17,
+                      fontSize: 18,
                       fontWeight: FontWeight.w600),
                 ),
                 Text(
@@ -533,13 +523,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 width: 2, // Ajusta el ancho del borde según tus preferencias
               ),
             ),
-            child: Swing(
-              duration: const Duration(seconds: 4),
-              delay: const Duration(seconds: 2),
-              child: CircleAvatar(
-                backgroundImage: AssetImage(imageDirection),
-                radius: 25, // Ajusta el tamaño del círculo aquí
-              ),
+            child: CircleAvatar(
+              backgroundImage: AssetImage(imageDirection),
+              radius: 25, // Ajusta el tamaño del círculo aquí
             ),
           ),
           SizedBox(
@@ -549,28 +535,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Pulse(
-                duration: const Duration(seconds: 5),
-                delay: const Duration(seconds: 2),
-                infinite: true,
-                child: const Text(
-                  'Hola',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                  ),
+              const Text(
+                'Hola',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
                 ),
               ),
-              BounceInUp(
-                duration: const Duration(seconds: 2),
-                delay: const Duration(seconds: 1),
-                child: Text(
-                  nameUser,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w800,
-                  ),
+              Text(
+                nameUser,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
                 ),
               ),
             ],
@@ -584,10 +561,49 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               _.exit();
               Get.offAllNamed('/login');
             },
-            child: Lottie.network(
-              "https://lottie.host/f12c9938-f79a-493a-9170-89962542aeca/SQhtYt7Ml2.json",
-              height: 40,
-              width: 40,
+            child: Row(
+              children: [
+                InkWell(
+                  onTap: () {
+                    Get.toNamed(
+                      '/QRViewExample',
+                    );
+                  },
+                  child: CircleAvatar(
+                    radius: 22, // Tamaño del CircleAvatar
+                    backgroundColor: const Color(
+                        0xFF2B3141), // Color de fondo del CircleAvatar
+                    child: Icon(
+                      MdiIcons.qrcodeScan,
+                      size: MediaQuery.of(context).size.width * 0.06,
+                      color: const Color.fromARGB(255, 231, 233, 233),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                InkWell(
+                  onTap: () {
+                    Get.toNamed(
+                      '/login',
+                    );
+                  },
+                  child: CircleAvatar(
+                    radius: 22, // Tamaño del CircleAvatar
+                    backgroundColor: const Color(
+                        0xFF2B3141), // Color de fondo del CircleAvatar
+                    child: Icon(
+                      MdiIcons.exitToApp,
+                      size: MediaQuery.of(context).size.width * 0.06,
+                      color: const Color.fromARGB(255, 231, 233, 233),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 18,
+                )
+              ],
             ),
           );
         }),

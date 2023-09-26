@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class NotificationsPageNew extends StatelessWidget {
   const NotificationsPageNew({super.key});
@@ -124,7 +125,7 @@ class NotificationsPageNew extends StatelessWidget {
                                                 //_.deletenotification(index);
                                               },
                                               icon: Icon(
-                                                Icons.phonelink_erase,
+                                                MdiIcons.thumbDown,
                                                 color: Colors.white,
                                                 size: (MediaQuery.of(context)
                                                         .size
@@ -370,7 +371,7 @@ class NotificationsPageNew extends StatelessWidget {
                                                 // _.deletenotification(index);
                                               },
                                               icon: Icon(
-                                                Icons.done_all,
+                                                MdiIcons.thumbUp,
                                                 color: Colors.white,
                                                 size: (MediaQuery.of(context)
                                                         .size
