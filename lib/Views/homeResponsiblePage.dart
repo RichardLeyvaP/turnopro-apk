@@ -2,9 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:animate_do/animate_do.dart';
-import 'package:lottie/lottie.dart';
+//import 'package:animate_do/animate_do.dart';
+//import 'package:lottie/lottie.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class HomeResponsiblePages extends StatefulWidget {
   const HomeResponsiblePages({super.key});
@@ -38,7 +39,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
   @override
   Widget build(BuildContext context) {
     double borderRadiusValue = 12;
-    const Color colorVariable = Color.fromARGB(255, 26, 50, 82);
+    const Color colorVariable = Color(0xFF2B3141); //CARAGANDO COLOR HEXADECIMAL
     const Color colorBottom =
         Color.fromARGB(255, 231, 233, 233); // Define el color a través de una
     const iconCart = (Icons.perm_contact_calendar);
@@ -121,7 +122,6 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
 
 //ESTA ES LA PAGINA PRINCIPAL CON LOS CARDS
 //VARIABLES A UTILIZAR
-  final size = 160.0;
   final twoPi = 3.14 * 2;
   Column homePageBody(
       double borderRadiusValue,
@@ -134,28 +134,397 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
     return Column(
       children: [
         Expanded(
-            flex: 1, // 20% del espacio disponible para esta parte
-            // child: bannerProfile(context),
-
+            flex: 10,
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius:
                       BorderRadius.all(Radius.circular(borderRadiusValue)),
-                  color: const Color.fromARGB(255, 26, 50, 82),
+                  color: const Color(0xFF2B3141), //CARAGANDO COLOR HEXADECIMAL,
                 ),
-                child: Center(
-                  child: Lottie.network(
-                      "https://lottie.host/5e657bb8-f8df-44c4-9f43-01638719d288/STiu5BdZGJ.json",
-                      height: (MediaQuery.of(context).size.height * 0.3),
-                      width: (MediaQuery.of(context).size.width * 0.6)),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      /*todo texto arriba */ const Padding(
+                        padding: EdgeInsets.only(left: 8),
+                        child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'Últimas Notificaciones',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white),
+                            )),
+                      ),
+                      const SizedBox(
+                        height: 22,
+                      ),
+                      /*todo cart1 servicios*/ Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8, top: 4, right: 8, bottom: 6),
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Row(
+                            children: [
+                              Container(
+                                height: (MediaQuery.of(context).size.height *
+                                    0.120),
+                                width:
+                                    (MediaQuery.of(context).size.width * 0.20),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors
+                                        .white, // Color blanco para el borde
+                                    width:
+                                        1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                                  ),
+                                  color:
+                                      const Color.fromARGB(255, 241, 130, 84),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(12)),
+                                ),
+                                child: IconButton(
+                                  onPressed: () {
+                                    Get.snackbar(
+                                      'Mensaje',
+                                      '! No me Gustó...',
+                                      duration:
+                                          const Duration(milliseconds: 2000),
+                                    );
+                                    //_.deletenotification(index);
+                                  },
+                                  icon: Icon(
+                                    MdiIcons.thumbDown,
+                                    color: Colors.white,
+                                    size: (MediaQuery.of(context).size.height *
+                                        0.04),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: (MediaQuery.of(context).size.height *
+                                    0.120),
+                                width:
+                                    (MediaQuery.of(context).size.width * 0.8),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 12),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        const Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              Icons.delete,
+                                              color: Colors.black,
+                                            ),
+                                            Text(
+                                              'Eliminación de servicio',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontFamily:
+                                                      AutofillHints.familyName,
+                                                  fontSize: 22),
+                                            ),
+                                          ],
+                                        ),
+                                        Text('Masaje capilar',
+                                            style: TextStyle(
+                                                fontSize:
+                                                    (MediaQuery.of(context)
+                                                            .size
+                                                            .height *
+                                                        0.018),
+                                                fontWeight: FontWeight.w500)),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Icon(
+                                              Icons.person,
+                                              color: Colors.black,
+                                            ),
+                                            Text(
+                                              'William Miller',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      (MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.018),
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Icon(
+                                              Icons.person,
+                                              color: Colors.black,
+                                            ),
+                                            Text(
+                                              'Paula Rego',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      (MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.018),
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: (MediaQuery.of(context).size.height *
+                                    0.120),
+                                width:
+                                    (MediaQuery.of(context).size.width * 0.20),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors
+                                          .white, // Color blanco para el borde
+                                      width:
+                                          1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                                    ),
+                                    color:
+                                        const Color.fromARGB(255, 32, 32, 32),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(12))),
+                                child: IconButton(
+                                  onPressed: () {
+                                    Get.snackbar(
+                                      'Mensaje',
+                                      'Like!',
+                                      duration:
+                                          const Duration(milliseconds: 2000),
+                                    );
+                                    // _.deletenotification(index);
+                                  },
+                                  icon: Icon(
+                                    MdiIcons.thumbUp,
+                                    color: Colors.white,
+                                    size: (MediaQuery.of(context).size.height *
+                                        0.04),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      /*todo cart2 productos*/ Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8, top: 4, right: 8, bottom: 6),
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Row(
+                            children: [
+                              Container(
+                                height: (MediaQuery.of(context).size.height *
+                                    0.120),
+                                width:
+                                    (MediaQuery.of(context).size.width * 0.20),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors
+                                        .white, // Color blanco para el borde
+                                    width:
+                                        1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                                  ),
+                                  color:
+                                      const Color.fromARGB(255, 241, 130, 84),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(12)),
+                                ),
+                                child: IconButton(
+                                  onPressed: () {
+                                    Get.snackbar(
+                                      'Mensaje',
+                                      '! No me Gustó...',
+                                      duration:
+                                          const Duration(milliseconds: 2000),
+                                    );
+                                    //_.deletenotification(index);
+                                  },
+                                  icon: Icon(
+                                    MdiIcons.thumbDown,
+                                    color: Colors.white,
+                                    size: (MediaQuery.of(context).size.height *
+                                        0.04),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: (MediaQuery.of(context).size.height *
+                                    0.120),
+                                width:
+                                    (MediaQuery.of(context).size.width * 0.8),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 12),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        const Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              Icons.delete,
+                                              color: Colors.black,
+                                            ),
+                                            Text(
+                                              'Eliminación de producto',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontFamily:
+                                                      AutofillHints.familyName,
+                                                  fontSize: 22),
+                                            ),
+                                          ],
+                                        ),
+                                        Text('Coca Cola 350ml',
+                                            style: TextStyle(
+                                                fontSize:
+                                                    (MediaQuery.of(context)
+                                                            .size
+                                                            .height *
+                                                        0.018),
+                                                fontWeight: FontWeight.w500)),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Icon(
+                                              Icons.person,
+                                              color: Colors.black,
+                                            ),
+                                            Text(
+                                              'Evelyn Castillo',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      (MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.018),
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Icon(
+                                              Icons.person,
+                                              color: Colors.black,
+                                            ),
+                                            Text(
+                                              'Eusebio Pérez',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      (MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.018),
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: (MediaQuery.of(context).size.height *
+                                    0.120),
+                                width:
+                                    (MediaQuery.of(context).size.width * 0.20),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors
+                                          .white, // Color blanco para el borde
+                                      width:
+                                          1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                                    ),
+                                    color:
+                                        const Color.fromARGB(255, 32, 32, 32),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(12))),
+                                child: IconButton(
+                                  onPressed: () {
+                                    Get.snackbar(
+                                      'Mensaje',
+                                      'Like!',
+                                      duration:
+                                          const Duration(milliseconds: 2000),
+                                    );
+                                    // _.deletenotification(index);
+                                  },
+                                  icon: Icon(
+                                    MdiIcons.thumbUp,
+                                    color: Colors.white,
+                                    size: (MediaQuery.of(context).size.height *
+                                        0.04),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                //https://lottie.host/5e657bb8-f8df-44c4-9f43-01638719d288/STiu5BdZGJ.json
               ),
             )),
         Expanded(
-            flex: 2, // 85% del espacio disponible para esta parte
+            flex: 14, // 85% del espacio disponible para esta parte
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(12, 0, 12, 1),
@@ -172,19 +541,39 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700),
                           ),
-                          InkWell(
-                            onTap: () {
-                              Get.toNamed(
-                                '/clients',
-                              );
-                            },
-                            child: const Text(
-                              '     MIS CLIENTES',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700),
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Get.toNamed(
+                                    '/servicesProductsPage',
+                                  );
+                                },
+                                child: const Text(
+                                  '  Servicio y productos  ',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Get.toNamed(
+                                    '/clients',
+                                  );
+                                },
+                                child: const Text(
+                                  '  Mis clientes  ',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -194,11 +583,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               GestureDetector(
-                                onTap: () {
-                                  Get.toNamed(
-                                    '/servicesProductsPage',
-                                  );
-                                },
+                                onTap: () {},
                                 child: cartsHome(
                                     context,
                                     borderRadiusValue,
@@ -272,7 +657,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                                     colorBottom,
                                     'Convivencia',
                                     'Cumplimiento de Reglas',
-                                    Icons.star_border),
+                                    Icons.star),
                               ),
                             ],
                           ),
@@ -298,13 +683,13 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
       iconCart) {
     return Container(
       width: (MediaQuery.of(context).size.width * 0.46), //Tamaño de los Cards
-      height: (MediaQuery.of(context).size.height * 0.24),
+      height: (MediaQuery.of(context).size.height * 0.20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
         color: colorVariable,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -329,7 +714,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                   titleCart,
                   style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 17,
+                      fontSize: 18,
                       fontWeight: FontWeight.w600),
                 ),
                 Text(
@@ -364,7 +749,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      //automaticallyImplyLeading: true, //RLP Oculta la flecha de retroceso
+      automaticallyImplyLeading: false, //RLP Oculta la flecha de retroceso
       elevation: 0,
       backgroundColor: const Color.fromARGB(255, 231, 232, 234),
       title: Row(
@@ -380,13 +765,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 width: 2, // Ajusta el ancho del borde según tus preferencias
               ),
             ),
-            child: Swing(
-              duration: const Duration(seconds: 4),
-              delay: const Duration(seconds: 2),
-              child: CircleAvatar(
-                backgroundImage: AssetImage(imageDirection),
-                radius: 25, // Ajusta el tamaño del círculo aquí
-              ),
+            child: CircleAvatar(
+              backgroundImage: AssetImage(imageDirection),
+              radius: 25, // Ajusta el tamaño del círculo aquí
             ),
           ),
           SizedBox(
@@ -396,28 +777,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Pulse(
-                duration: const Duration(seconds: 5),
-                delay: const Duration(seconds: 2),
-                infinite: true,
-                child: const Text(
-                  'Responsable',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                  ),
+              const Text(
+                'Responsable',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
                 ),
               ),
-              BounceInUp(
-                duration: const Duration(seconds: 2),
-                delay: const Duration(seconds: 1),
-                child: Text(
-                  nameUser,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w800,
-                  ),
+              Text(
+                nameUser,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
                 ),
               ),
             ],
@@ -431,10 +803,49 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               _.exit();
               Get.offAllNamed('/login');
             },
-            child: Lottie.network(
-              "https://lottie.host/f12c9938-f79a-493a-9170-89962542aeca/SQhtYt7Ml2.json",
-              height: 40,
-              width: 40,
+            child: Row(
+              children: [
+                InkWell(
+                  onTap: () {
+                    Get.toNamed(
+                      '/QRViewExample',
+                    );
+                  },
+                  child: CircleAvatar(
+                    radius: 22, // Tamaño del CircleAvatar
+                    backgroundColor: const Color(
+                        0xFF2B3141), // Color de fondo del CircleAvatar
+                    child: Icon(
+                      MdiIcons.qrcodeScan,
+                      size: MediaQuery.of(context).size.width * 0.06,
+                      color: const Color.fromARGB(255, 231, 233, 233),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                InkWell(
+                  onTap: () {
+                    Get.toNamed(
+                      '/login',
+                    );
+                  },
+                  child: CircleAvatar(
+                    radius: 22, // Tamaño del CircleAvatar
+                    backgroundColor: const Color(
+                        0xFF2B3141), // Color de fondo del CircleAvatar
+                    child: Icon(
+                      MdiIcons.exitToApp,
+                      size: MediaQuery.of(context).size.width * 0.06,
+                      color: const Color.fromARGB(255, 231, 233, 233),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 18,
+                )
+              ],
             ),
           );
         }),
