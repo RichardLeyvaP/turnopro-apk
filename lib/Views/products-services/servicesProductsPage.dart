@@ -193,7 +193,9 @@ class AlertDialogPago extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min, // Establece el tamaño mínimo
           children: [
-            Text('Por favor revise su conexión a Internet'),
+            FittedBox(
+                fit: BoxFit.contain,
+                child: Text('Por favor revise su conexión a Internet')),
           ],
         ),
       ),
