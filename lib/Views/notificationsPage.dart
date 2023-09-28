@@ -342,7 +342,7 @@ class NotificationsPageNew extends StatelessWidget {
                                             ),
                                           ),
                                         ),
-                                        Visibility(
+                                        /*todo*/ Visibility(
                                           visible: _.selectNotification
                                               .contains(_.notification[index]),
                                           child: Container(

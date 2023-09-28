@@ -1,5 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/get_connect/repository/services.repository.dart';
@@ -82,6 +84,19 @@ class ServiceController extends GetxController {
     services = await repository.getServiceList();
     serviceListLength = services.length;
     update();
+  }
+
+  Future<bool> internetConnectivity() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('soy true');
+        return true;
+      }
+    } on SocketException catch (_) {
+      return false;
+    }
+    return false;
   }
 
 //*ESTOS METODOS FUNCIONAN BIEN,ESTA COMENTADO PORQUE AQUI NO C NECESITA */
