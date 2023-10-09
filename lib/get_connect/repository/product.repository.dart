@@ -35,7 +35,7 @@ class ProductRepository extends GetConnect {
     try {
       List<ProductModel> productList = [];
       var url =
-          'http://10.0.2.2:8000/api/product_branch?branch_id=10'; //cambiar aqui por servicios en la api
+          'http://10.0.2.2:8000/api/product_branch?branch_id=1'; //cambiar aqui por servicios en la api
 
       final response = await get(url);
       if (response.statusCode == 200) {
@@ -56,7 +56,7 @@ class ProductRepository extends GetConnect {
   Future<List<CategoryModel>> getCategoryList() async {
     List<CategoryModel> categoryList = [];
     var url =
-        'http://10.0.2.2:8000/api/category_branch?branch_id=10'; //cambiar aqui por servicios en la api
+        'http://10.0.2.2:8000/api/category_branch?branch_id=1'; //cambiar aqui por servicios en la api
 
     final response = await get(url);
     if (response.statusCode == 200) {

@@ -86,18 +86,18 @@ class ServiceController extends GetxController {
     update();
   }
 
-  Future<bool> internetConnectivity() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        print('soy true');
-        return true;
-      }
-    } on SocketException catch (_) {
-      return false;
-    }
-    return false;
-  }
+  // Future<bool> internetConnectivity() async {
+  //   try {
+  //     final result = await InternetAddress.lookup('google.com');
+  //     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+  //       print('soy true');
+  //       return true;
+  //     }
+  //   } on SocketException catch (_) {
+  //     return false;
+  //   }
+  //   return false;
+  // }
 
 //*ESTOS METODOS FUNCIONAN BIEN,ESTA COMENTADO PORQUE AQUI NO C NECESITA */
 //*ADICIONAR

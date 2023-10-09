@@ -731,12 +731,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ), // Espacio entre la imagen y el texto
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               const Text(
                 'Hola',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 16,
+                  height: 1.0,
                 ),
               ),
               Text(
@@ -745,6 +747,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   color: Colors.black,
                   fontSize: 18,
                   fontWeight: FontWeight.w900,
+                  height: 1.0,
                 ),
               ),
             ],

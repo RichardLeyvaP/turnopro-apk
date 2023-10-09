@@ -778,10 +778,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Responsable',
+                'Encargado del Local',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 16,
+                  height: 1.0,
                 ),
               ),
               Text(
@@ -790,6 +791,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   color: Colors.black,
                   fontSize: 18,
                   fontWeight: FontWeight.w900,
+                  height: 1.0,
                 ),
               ),
             ],
