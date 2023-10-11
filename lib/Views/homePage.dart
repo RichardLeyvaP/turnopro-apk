@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 //import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 
 class HomePages extends StatefulWidget {
   const HomePages({super.key});
@@ -26,6 +27,9 @@ class _HomePagesState extends State<HomePages> {
     const StatisticsPage(), // Página 3
     const HomePage(), // Página 4
   ];
+
+  final ShoppingCartController controllerShoppingCart =
+      Get.find<ShoppingCartController>();
 //inicializando en 0 para que cargue de inicio la primera pagina
   int _selectedIndex = 0;
   void _navigateBottomBar(int index) {
@@ -501,7 +505,19 @@ class _HomePagesState extends State<HomePages> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               InkWell(
-                                onTap: () {
+                                onTap: () async {
+                                  Get.dialog(
+                                    const Center(
+                                      child: CircularProgressIndicator(
+                                        color:
+                                            Color.fromARGB(255, 241, 130, 84),
+                                      ),
+                                    ),
+                                    barrierDismissible: true,
+                                  );
+                                  await controllerShoppingCart.loadCart();
+                                  // Oculta el indicador de carga y navega a la página del carrito
+                                  Get.back(); // Cierra el diálogo
                                   Get.toNamed(
                                     '/servicesProductsPage',
                                   );
