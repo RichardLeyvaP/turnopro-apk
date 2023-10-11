@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages, unused_element
+// ignore_for_file: depend_on_referenced_packages, unused_element, non_constant_identifier_names
 
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Models/product_model.dart';
@@ -13,11 +13,14 @@ class ShoppingCartController extends GetxController {
   List<ProductModel> productCart = [], selectproduct = []; // Lista de product
   List<ServiceModel> serviceCart = [], selectservice = []; // Lista de service
 
+  List<int> productCarr = [];
+
   int internetError = 0;
   int productListLength = 0;
   int serviceListLength = 0;
   int shoppingCart = 0;
   double totalPrice = 0.0;
+  int responseId = 0;
 
   @override
   void onReady() {
@@ -26,10 +29,44 @@ class ShoppingCartController extends GetxController {
     intentarConexion();
   }
 
+  Future<void> loadCart() async {
+    try {
+      Map<String, List<dynamic>> resultList =
+          await productRepository.getCartProductService();
+
+      List<ProductModel> productListCar =
+          (resultList['products'] ?? []).cast<ProductModel>();
+      List<ServiceModel> serviceListCar =
+          (resultList['services'] ?? []).cast<ServiceModel>();
+
+      selectproduct = productListCar;
+      selectservice = serviceListCar;
+      productListLength = selectproduct.length;
+      serviceListLength = selectservice.length;
+      shoppingCart = productListLength + serviceListLength;
+
+      update();
+    } catch (e) {
+      //print('DIO ERROR:$e');
+    }
+  }
+
+  Future<void> requestDelete(int id) async {
+    try {
+      await productRepository.awaitRequestDelete(id);
+      internetError = 0;
+      update();
+    } catch (e) {
+      internetError = -99;
+      update();
+    }
+  }
+
   intentarConexion() {
     try {
       _fetchServiceList();
       _fetchProductList();
+      loadCart();
       //******************************************************************************** */
       internetError = 0;
       Future.delayed(const Duration(seconds: 2), () {
@@ -63,11 +100,29 @@ class ShoppingCartController extends GetxController {
     }
   }
 
+  Future<void> _addOrderCartList(
+      client_id, person_id, product_id, service_id) async {
+    try {
+      responseId = await productRepository.addOrderCartList(
+          client_id, person_id, product_id, service_id);
+      if (responseId != -990099) {
+        productCarr.add(responseId);
+        internetError = 0;
+      } else {
+        internetError = -99;
+      }
+      update();
+    } catch (e) {
+      internetError = -99;
+      update();
+    }
+  }
+
   void updateShoppingCartValue(index, String type) {
     if (type == 'service') {
       if (internetError != -99) {
         if (!selectservice.contains(serviceCart[index])) {
-          selectservice.add(serviceCart[index]);
+          _addOrderCartList(5, 3, 0, 1);
           totalPrice += double.parse(serviceCart[index]
               .price_service); //convierte un estring en un double
           shoppingCart += 1;
@@ -77,8 +132,8 @@ class ShoppingCartController extends GetxController {
       }
     } else if (type == 'product') {
       if (internetError != -99) {
-        selectproduct.add(productCart[index]);
-        productListLength = selectproduct.length;
+        _addOrderCartList(5, 3, 3, 0); //todo
+        //todo revisar el totalPrice, que venga de la db
         totalPrice += double.parse(productCart[index].sale_price);
         shoppingCart += 1;
         update();

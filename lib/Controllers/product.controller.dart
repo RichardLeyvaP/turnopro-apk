@@ -110,11 +110,6 @@ class ProductController extends GetxController {
   getTotalSum() {
     getTotal = getTotal + 5;
 
-    // getTotal = product
-    //     .map((product) => product.id)
-    //     .fold(0.0, (sum, id) => sum + id)
-    //     .toDouble();
-    // print(getTotal);
     update();
   }
 

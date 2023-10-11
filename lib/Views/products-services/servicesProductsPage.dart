@@ -122,10 +122,31 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                               Icons.shopping_cart,
                               size: 30,
                             ), // Icono que deseas mostrar
-                            onPressed: () {
-                              Get.toNamed(
-                                '/ShoppingCartPage',
+                            onPressed: () async {
+                              // Muestra el indicador de carga
+                              Get.dialog(
+                                const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Color.fromARGB(255, 241, 130, 84),
+                                  ),
+                                ),
+                                barrierDismissible: false,
                               );
+
+                              try {
+                                await _.loadCart();
+                                // await Future.delayed(
+                                //     Duration(seconds: 3)); //todo esperar 3 se
+                                // Oculta el indicador de carga y navega a la página del carrito
+                                Get.back(); // Cierra el diálogo
+
+                                Get.toNamed('/ShoppingCartPage');
+                              } catch (e) {
+                                // En caso de error, oculta el indicador de carga y muestra un mensaje de error
+                                Get.back();
+                                Get.snackbar('Error',
+                                    'Hubo un error al cargar el carrito: $e');
+                              }
                             }, // Evento onPress
                           ));
               }),
