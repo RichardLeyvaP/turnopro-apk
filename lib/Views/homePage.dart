@@ -79,7 +79,7 @@ class _HomePagesState extends State<HomePages> {
                 showUnselectedLabels: false,
                 unselectedItemColor: Colors.white,
                 backgroundColor: const Color.fromARGB(255, 43, 44, 49),
-                fixedColor: const Color.fromARGB(255, 241, 130, 84),
+                fixedColor: const Color(0xFFFFB05F),
                 currentIndex: _selectedIndex,
                 type: BottomNavigationBarType.fixed,
                 onTap: _navigateBottomBar,
@@ -142,7 +142,7 @@ class _HomePagesState extends State<HomePages> {
     String segundos = "";
     String mensaj = "";
     Color colorInicial = Colors.white;
-    Color colorInicialCirculo = const Color.fromARGB(255, 241, 130, 84);
+    Color colorInicialCirculo = const Color(0xFFFFB05F);
     double fontSizeText = (MediaQuery.of(context).size.width * 0.02); //todo3
     final size = (MediaQuery.of(context).size.width * 0.34);
 
@@ -156,7 +156,7 @@ class _HomePagesState extends State<HomePages> {
                 decoration: BoxDecoration(
                   borderRadius:
                       BorderRadius.all(Radius.circular(borderRadiusValue)),
-                  color: const Color.fromARGB(255, 241, 130, 84),
+                  color: const Color(0xFFFFB05F),
                 ),
                 child: SingleChildScrollView(
                   child: Column(
@@ -318,8 +318,7 @@ class _HomePagesState extends State<HomePages> {
                                     width:
                                         1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                                   ),
-                                  color:
-                                      const Color.fromARGB(255, 241, 130, 84),
+                                  color: const Color(0xFFFFB05F),
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(12)),
                                   boxShadow: [
@@ -370,7 +369,8 @@ class _HomePagesState extends State<HomePages> {
                                       Radius.circular(12)),
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left: 12),
+                                  padding:
+                                      const EdgeInsets.only(left: 28, top: 8),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -379,12 +379,11 @@ class _HomePagesState extends State<HomePages> {
                                       const Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
                                         children: [
                                           Icon(
                                             Icons.person,
                                             color: Colors.black,
+                                            size: 22,
                                           ),
                                           Text(
                                             'William Miller',
@@ -396,25 +395,30 @@ class _HomePagesState extends State<HomePages> {
                                           ),
                                         ],
                                       ),
-                                      Text('Masaje capilar',
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 2),
+                                        child: Text('Masaje capilar',
+                                            style: TextStyle(
+                                                fontSize:
+                                                    (MediaQuery.of(context)
+                                                            .size
+                                                            .height *
+                                                        0.018),
+                                                fontWeight: FontWeight.w500)),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 2),
+                                        child: Text(
+                                          'Corte de Cabello',
                                           style: TextStyle(
                                               fontSize: (MediaQuery.of(context)
                                                       .size
                                                       .height *
                                                   0.018),
-                                              fontWeight: FontWeight.w500)),
-                                      Text(
-                                        'Corte de Cabello',
-                                        style: TextStyle(
-                                            fontSize: (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.018),
-                                            fontWeight: FontWeight.w500),
+                                              fontWeight: FontWeight.w500),
+                                        ),
                                       ),
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
                                         children: [
                                           Icon(Icons.timer,
                                               color: Colors.black,
@@ -624,7 +628,7 @@ class _HomePagesState extends State<HomePages> {
                                 child: cartsHome(
                                     context,
                                     borderRadiusValue,
-                                    const Color.fromARGB(255, 241, 130, 84),
+                                    const Color(0xFFFFB05F),
                                     colorBottom,
                                     'Convivencia',
                                     'Cumplimiento de Reglas',
@@ -775,7 +779,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           return InkWell(
             onTap: () {
               _.exit();
-              Get.offAllNamed('/login');
+              Get.offAllNamed('/loginNewPage');
             },
             child: Row(
               children: [
@@ -802,7 +806,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 InkWell(
                   onTap: () {
                     Get.toNamed(
-                      '/login',
+                      '/loginNewPage',
                     );
                   },
                   child: CircleAvatar(

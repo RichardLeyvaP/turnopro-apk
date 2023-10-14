@@ -6,6 +6,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:get/get.dart';
 
 class QRViewPage extends StatefulWidget {
   const QRViewPage({Key? key}) : super(key: key);
@@ -18,6 +20,8 @@ class _QRViewPageState extends State<QRViewPage> {
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+  final LoginController loginController = Get.find<LoginController>();
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
@@ -34,6 +38,11 @@ class _QRViewPageState extends State<QRViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: loginController.pagina == 'nothing' ||
+                loginController.pagina == '/home'
+            ? const Color.fromARGB(255, 241, 130, 84)
+            : const Color.fromARGB(255, 26, 50, 82),
+
         leading: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -55,7 +64,7 @@ class _QRViewPageState extends State<QRViewPage> {
                   size: 50,
                 ),
                 Text(
-                  'turnopro',
+                  'Simplifies',
                   style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
                 ),
               ],
@@ -152,7 +161,10 @@ class _QRViewPageState extends State<QRViewPage> {
                   ),
                 ])),
       ),
-      backgroundColor: const Color.fromARGB(255, 241, 130, 84),
+      backgroundColor: loginController.pagina == 'nothing' ||
+              loginController.pagina == '/home'
+          ? const Color.fromARGB(255, 241, 130, 84)
+          : const Color.fromARGB(255, 26, 50, 82),
       body: Column(
         children: <Widget>[
           Expanded(flex: 8, child: _buildQrView(context)),
@@ -167,14 +179,18 @@ class _QRViewPageState extends State<QRViewPage> {
                     Text(
                         'Resultado : ${describeEnum(result!.format)}   Data: ${result!.code}')
                   else
-                    const Padding(
-                      padding:
-                          EdgeInsets.only(left: 6, right: 6, top: 2, bottom: 3),
-                      child: Text(
-                        'Esperando resultado...',
-                        style:
-                            TextStyle(fontSize: 2, fontWeight: FontWeight.w800),
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 6, right: 6, top: 2, bottom: 3),
+                      child: Text('Esperando resultado...',
+                          style: TextStyle(
+                            fontSize: 2,
+                            fontWeight: FontWeight.w800,
+                            color: loginController.pagina == 'nothing' ||
+                                    loginController.pagina == '/home'
+                                ? Colors.black
+                                : Colors.white,
+                          )),
                     ),
                   // Row(
                   // mainAxisAlignment: MainAxisAlignment.center,

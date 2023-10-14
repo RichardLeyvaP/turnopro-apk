@@ -58,7 +58,6 @@ class ProductController extends GetxController {
     } catch (e) {
       productListLength = -99;
       update();
-      print('Fallo fetchproductList, con este erroro:$e');
     }
   }
 
@@ -74,10 +73,10 @@ class ProductController extends GetxController {
         update();
       } else {
         // Manejo de caso en el que la lista de categorías está vacía
-        print('La lista de categorías está vacía.');
+        //print('La lista de categorías está vacía.');
       }
     } catch (e) {
-      print('FALLO LA CONEXION: $e');
+      // print('FALLO LA CONEXION: $e');
     }
   }
 

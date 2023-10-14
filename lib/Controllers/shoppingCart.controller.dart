@@ -13,6 +13,8 @@ class ShoppingCartController extends GetxController {
   List<ProductModel> productCart = [], selectproduct = []; // Lista de product
   List<ServiceModel> serviceCart = [], selectservice = []; // Lista de service
 
+  List<int> requestDeleteOrder = []; // id de las ordenes solicitadas a eliminar
+
   List<int> productCarr = [];
 
   int internetError = 0;
@@ -44,7 +46,6 @@ class ShoppingCartController extends GetxController {
       productListLength = selectproduct.length;
       serviceListLength = selectservice.length;
       shoppingCart = productListLength + serviceListLength;
-
       update();
     } catch (e) {
       //print('DIO ERROR:$e');
@@ -54,6 +55,7 @@ class ShoppingCartController extends GetxController {
   Future<void> requestDelete(int id) async {
     try {
       await productRepository.awaitRequestDelete(id);
+      requestDeleteOrder.add(id);
       internetError = 0;
       update();
     } catch (e) {
@@ -118,11 +120,11 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  void updateShoppingCartValue(index, String type) {
+  void updateShoppingCartValue(index, String type, id) {
     if (type == 'service') {
       if (internetError != -99) {
         if (!selectservice.contains(serviceCart[index])) {
-          _addOrderCartList(5, 3, 0, 1);
+          _addOrderCartList(5, 3, 0, (serviceCart[index].id - 1));
           totalPrice += double.parse(serviceCart[index]
               .price_service); //convierte un estring en un double
           shoppingCart += 1;
@@ -132,7 +134,9 @@ class ShoppingCartController extends GetxController {
       }
     } else if (type == 'product') {
       if (internetError != -99) {
-        _addOrderCartList(5, 3, 3, 0); //todo
+        print('indice:$index');
+        print(id);
+        _addOrderCartList(5, 3, id, 0); //todo
         //todo revisar el totalPrice, que venga de la db
         totalPrice += double.parse(productCart[index].sale_price);
         shoppingCart += 1;

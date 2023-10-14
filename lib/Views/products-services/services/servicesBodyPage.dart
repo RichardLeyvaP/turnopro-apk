@@ -102,7 +102,9 @@ class ServicesBodyPage extends StatelessWidget {
                                               _.getSelectService(index);
                                               controllerShoppingCart
                                                   .updateShoppingCartValue(
-                                                      index, 'service');
+                                                      index,
+                                                      'service',
+                                                      _.services[index].id);
                                               _.getTotalSum(double.parse(_
                                                   .services[index]
                                                   .price_service));

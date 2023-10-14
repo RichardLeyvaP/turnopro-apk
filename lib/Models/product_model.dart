@@ -13,6 +13,7 @@ class ProductModel {
   String sale_price;
   String created_at;
   String updated_at;
+  int? request_delete;
 
   ProductModel({
     required this.id,
@@ -25,6 +26,7 @@ class ProductModel {
     required this.sale_price,
     required this.created_at,
     required this.updated_at,
+    this.request_delete,
   });
 
   Map<String, dynamic> toMap() {
@@ -39,6 +41,7 @@ class ProductModel {
       'sale_price': sale_price,
       'created_at': created_at,
       'updated_at': updated_at,
+      'request_delete': request_delete,
     };
   }
 
@@ -54,6 +57,7 @@ class ProductModel {
       sale_price: map['sale_price'] ?? '',
       created_at: map['created_at'] ?? '',
       updated_at: map['updated_at'] ?? '',
+      request_delete: map['request_delete'] ?? 0,
     );
   }
 
