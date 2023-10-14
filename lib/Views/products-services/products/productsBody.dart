@@ -56,7 +56,7 @@ class _ProductsBodyState extends State<ProductsBody>
       return controllerProduct.isLoading
           ? const Center(
               child: CircularProgressIndicator(
-              color: Color.fromARGB(255, 241, 130, 84),
+              color: Color(0xFFFFB05F),
             ))
           : Column(
               children: [
@@ -66,7 +66,7 @@ class _ProductsBodyState extends State<ProductsBody>
                   child: TabBar(
                     isScrollable: true,
                     labelColor: Colors.black,
-                    indicatorColor: const Color.fromARGB(255, 241, 130, 84),
+                    indicatorColor: const Color(0xFFFFB05F),
                     controller: _tabController,
                     tabs: tabs2,
                     onTap: (int tabIndex) {
@@ -91,6 +91,8 @@ class _ProductsBodyState extends State<ProductsBody>
                                               0
                                       ? newMethod(
                                           'assets/images/pngegg.png',
+                                          controllerProduct
+                                              .product[itemIndex].id,
                                           controllerProduct
                                               .product[itemIndex].name,
                                           controllerProduct
@@ -127,6 +129,7 @@ class _ProductsBodyState extends State<ProductsBody>
 
 Padding newMethod(
     String addressProduct,
+    int id,
     String productName,
     int productExit,
     String propertiesName,
@@ -147,7 +150,7 @@ Padding newMethod(
           decoration: const BoxDecoration(
               borderRadius:
                   BorderRadius.all(Radius.circular(borderRadiusValue)),
-              color: Color.fromARGB(255, 241, 130, 84)),
+              color: Color(0xFFFFB05F)),
           child: FractionallySizedBox(
             widthFactor: 0.6, // 50% del ancho del contenedor padre
             heightFactor: 0.65, // 50% del alto del contenedor padre
@@ -204,7 +207,7 @@ Padding newMethod(
                       InkWell(
                         onTap: () {
                           controllerShoppingCart.updateShoppingCartValue(
-                              itemIndex, 'product');
+                              itemIndex, 'product', id);
                         },
                         child: Container(
                           height: (MediaQuery.of(context).size.height * 0.035),
@@ -236,8 +239,7 @@ Padding newMethod(
                       CircleAvatar(
                         radius: (MediaQuery.of(context).size.width *
                             0.04), // Ajusta este valor según tu preferencia
-                        backgroundColor:
-                            const Color.fromARGB(255, 241, 130, 84),
+                        backgroundColor: const Color(0xFFFFB05F),
                         child: Icon(
                           Icons.check,
                           color: Colors.white,

@@ -12,7 +12,7 @@ class ProductRepository extends GetConnect {
       List<ProductModel> productListCar = [];
       List<ServiceModel> serviceListCar = [];
       var url =
-          'http://10.0.2.2:8000/api/car_oders?id=7'; //cambiar aqui por servicios en la api
+          'http://10.0.2.2:8000/api/car_oders?id=8'; //cambiar aqui por servicios en la api
       // category_branch?branch_id=10
 
       final response = await get(url);

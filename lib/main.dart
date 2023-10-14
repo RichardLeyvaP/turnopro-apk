@@ -19,6 +19,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Views/Code-Qr/CodeQrPage.dart';
 import 'package:turnopro_apk/Views/homeResponsiblePage.dart';
+import 'package:turnopro_apk/Views/loginFormPage.dart';
+import 'package:turnopro_apk/Views/loginNewPage.dart';
 import 'package:turnopro_apk/Views/shoppingCartPage.dart';
 import 'package:turnopro_apk/providers.dart';
 
@@ -51,8 +53,7 @@ void main() {
 class Myapp extends StatelessWidget {
   Myapp({super.key});
   final LoginController controllerasas = Get.put(LoginController());
-  Color colorPrimario =
-      const Color.fromARGB(255, 241, 130, 84); // Color primario appBar
+  Color colorPrimario = const Color(0xFFFFB05F); // Color primario appBar
   Color colorSecundario =
       const Color.fromARGB(155, 231, 232, 234); // Color secundario
   Color colorPrimario2 =
@@ -88,7 +89,7 @@ class Myapp extends StatelessWidget {
                     .poppinsTextTheme(), // Aplicar Poppins a todo el proyecto
                 // Otras configuraciones de tema
               ),
-        initialRoute: '/login',
+        initialRoute: '/loginNewPage',
         unknownRoute: GetPage(
           name: '/Error', // Nombre de la ruta de error
           page: () => const Page404(), // Página de error
@@ -102,6 +103,16 @@ class Myapp extends StatelessWidget {
           GetPage(
             name: '/HomeResponsible',
             page: () => const HomeResponsiblePages(),
+            binding: BindingsBuilder.put(() => LoginController()),
+          ),
+          GetPage(
+            name: '/loginNewPage',
+            page: () => const LoginNewPage(),
+            binding: BindingsBuilder.put(() => LoginController()),
+          ),
+          GetPage(
+            name: '/LoginFormPage',
+            page: () => LoginFormPage(),
             binding: BindingsBuilder.put(() => LoginController()),
           ),
           GetPage(

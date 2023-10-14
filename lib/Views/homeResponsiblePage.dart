@@ -803,7 +803,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           return InkWell(
             onTap: () {
               _.exit();
-              Get.offAllNamed('/login');
+              Get.offAllNamed('/loginNewPage');
             },
             child: Row(
               children: [
@@ -830,7 +830,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 InkWell(
                   onTap: () {
                     Get.toNamed(
-                      '/login',
+                      '/loginNewPage',
                     );
                   },
                   child: CircleAvatar(

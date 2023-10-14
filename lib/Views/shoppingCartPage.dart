@@ -171,29 +171,51 @@ class ShoppingCartPage extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                              InkWell(
-                                                onTap: () {
-                                                  //todooo
-                                                  Get.snackbar(
-                                                    'Mensaje',
-                                                    'Enviada solicitud de eliminación.',
-                                                    duration: const Duration(
-                                                        milliseconds: 2000),
-                                                  );
-                                                  controllerShoppingCart
-                                                      .requestDelete(
-                                                          controllerShoppingCart
-                                                              .selectservice[
-                                                                  index]
-                                                              .id);
-                                                },
-                                                child: const Icon(
-                                                  Icons.delete,
-                                                  size: 35,
-                                                  color: Color.fromARGB(
-                                                      255, 241, 130, 84),
-                                                ),
-                                              )
+                                              GetBuilder<
+                                                      ShoppingCartController>(
+                                                  builder: (_) {
+                                                return InkWell(
+                                                  onTap: () {
+                                                    //todooo
+                                                    Get.snackbar(
+                                                      'Mensaje',
+                                                      'Enviada solicitud de eliminación.',
+                                                      duration: const Duration(
+                                                          milliseconds: 2000),
+                                                    );
+                                                    controllerShoppingCart
+                                                        .requestDelete(
+                                                            controllerShoppingCart
+                                                                .selectservice[
+                                                                    index]
+                                                                .id);
+                                                  },
+                                                  child: _.requestDeleteOrder
+                                                          .contains(
+                                                              controllerShoppingCart
+                                                                  .selectservice[
+                                                                      index]
+                                                                  .id)
+                                                      ? const Icon(
+                                                          Icons.delete,
+                                                          size: 35,
+                                                          color: Color.fromARGB(
+                                                              105,
+                                                              241,
+                                                              130,
+                                                              84),
+                                                        )
+                                                      : const Icon(
+                                                          Icons.delete,
+                                                          size: 35,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              241,
+                                                              130,
+                                                              84),
+                                                        ),
+                                                );
+                                              })
                                             ],
                                           )),
                                     ),
@@ -216,7 +238,9 @@ class ShoppingCartPage extends StatelessWidget {
                     ? Expanded(
                         flex:
                             heightFlexBody, // 85% del espacio disponible para esta parte
+
                         child: ListView.builder(
+                            //todo builder
                             itemCount: controllerShoppingCart.productListLength,
                             itemBuilder: (context, index) => Padding(
                                   padding: EdgeInsets.fromLTRB(
@@ -325,31 +349,55 @@ class ShoppingCartPage extends StatelessWidget {
                                                       ),
                                                     ],
                                                   ),
-                                                  InkWell(
-                                                    onTap: () {
-                                                      Get.snackbar(
-                                                        'Mensaje',
-                                                        'Enviada solicitud de eliminación.',
-                                                        duration:
-                                                            const Duration(
-                                                                milliseconds:
-                                                                    2000),
-                                                      );
-                                                      //todooo
-                                                      controllerShoppingCart
-                                                          .requestDelete(
-                                                              controllerShoppingCart
-                                                                  .selectproduct[
-                                                                      index]
-                                                                  .id);
-                                                    },
-                                                    child: const Icon(
-                                                      Icons.delete,
-                                                      size: 35,
-                                                      color: Color.fromARGB(
-                                                          255, 241, 130, 84),
-                                                    ),
-                                                  )
+                                                  GetBuilder<
+                                                          ShoppingCartController>(
+                                                      builder: (_) {
+                                                    return InkWell(
+                                                      onTap: () {
+                                                        Get.snackbar(
+                                                          'Mensaje',
+                                                          'Enviada solicitud de eliminación.',
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      2000),
+                                                        );
+                                                        //todooo
+                                                        controllerShoppingCart
+                                                            .requestDelete(
+                                                                controllerShoppingCart
+                                                                    .selectproduct[
+                                                                        index]
+                                                                    .id);
+                                                      },
+                                                      child: _.requestDeleteOrder
+                                                              .contains(
+                                                                  controllerShoppingCart
+                                                                      .selectproduct[
+                                                                          index]
+                                                                      .id)
+                                                          ? const Icon(
+                                                              Icons.delete,
+                                                              size: 35,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      105,
+                                                                      241,
+                                                                      130,
+                                                                      84),
+                                                            )
+                                                          : const Icon(
+                                                              Icons.delete,
+                                                              size: 35,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      241,
+                                                                      130,
+                                                                      84),
+                                                            ),
+                                                    );
+                                                  })
                                                 ],
                                               )),
                                         ),

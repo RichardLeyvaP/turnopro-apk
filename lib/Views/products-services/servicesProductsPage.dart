@@ -63,8 +63,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
           child: BottomNavigationBarNew(),
         ),
         appBar: AppBar(
-          backgroundColor: const Color.fromARGB(
-              255, 241, 130, 84), // Color de fondo del AppBar
+          backgroundColor: const Color(0xFFFFB05F), // Color de fondo del AppBar
           elevation: 0, // Sombra del AppBar
           toolbarHeight: 120, // Altura del AppBar
           // actions: [
@@ -112,7 +111,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                     const Color.fromARGB(255, 81, 93, 117),
                                 progressIndicatorValueColor:
                                     const AlwaysStoppedAnimation(
-                                        Color.fromARGB(255, 241, 130, 84)),
+                                        Color(0xFFFFB05F)),
                                 overlayBlur: 3,
                               );
                             }, // Evento onPress
@@ -127,7 +126,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                               Get.dialog(
                                 const Center(
                                   child: CircularProgressIndicator(
-                                    color: Color.fromARGB(255, 241, 130, 84),
+                                    color: Color(0xFFFFB05F),
                                   ),
                                 ),
                                 barrierDismissible: false,
@@ -164,7 +163,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                 child: TabBar(
                   // isScrollable: true,//rlp si son muchos tab para que tenga scroll entre los tab
                   indicator: clickServicesDecoration,
-                  labelColor: const Color.fromARGB(255, 241, 130, 84),
+                  labelColor: const Color(0xFFFFB05F),
                   unselectedLabelColor: Colors.white,
                   automaticIndicatorColorAdjustment: false,
                   controller: _tabController,
