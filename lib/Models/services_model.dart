@@ -12,6 +12,8 @@ class ServiceModel {
   int duration_service;
   String image_service;
   String service_comment;
+  int? request_delete;
+  int? is_product;
 
   ServiceModel({
     required this.id,
@@ -23,6 +25,8 @@ class ServiceModel {
     required this.duration_service,
     required this.image_service,
     required this.service_comment,
+    this.request_delete,
+    this.is_product,
   });
 
   Map<String, dynamic> toMap() {
@@ -36,6 +40,8 @@ class ServiceModel {
       'duration_service': duration_service,
       'image_service': image_service,
       'service_comment': service_comment,
+      'request_delete': request_delete,
+      'is_product': is_product,
     };
   }
 
@@ -50,6 +56,8 @@ class ServiceModel {
       duration_service: map['duration_service'] ?? '',
       image_service: map['image_service'] ?? '',
       service_comment: map['service_comment'] ?? '',
+      request_delete: map['request_delete'] ?? 0,
+      is_product: map['is_product'] ?? 0,
     );
   }
 

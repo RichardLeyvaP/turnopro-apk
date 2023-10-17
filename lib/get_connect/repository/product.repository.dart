@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Models/category_model.dart';
+import 'package:turnopro_apk/Models/orderDelete_model.dart';
 import 'package:turnopro_apk/Models/product_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 
@@ -37,6 +38,31 @@ class ProductRepository extends GetConnect {
           'products': productListCar,
           'services': serviceListCar,
         };
+      }
+    } catch (e) {
+      // print('eroor:$e,NO RETORNO LAS DOS LISTAS ');
+    }
+  }
+
+  Future serviceRequestProductDelete(int id_car) async {
+    //todo
+    try {
+      List<OrderDeleteModel> orderDEL = [];
+      var url =
+          'http://10.0.2.2:8000/api/car_order_delete?id=$id_car'; //cambiar aqui por servicios en la api
+      // category_branch?branch_id=10
+
+      final response = await get(url);
+      if (response.statusCode == 200) {
+        final products = response.body['carOrderDelete'];
+        if (products != null) {
+          for (Map product in products) {
+            OrderDeleteModel u = OrderDeleteModel.fromJson(jsonEncode(product));
+            orderDEL.add(u);
+          }
+        }
+        //retornando dos listas
+        return orderDEL;
       }
     } catch (e) {
       // print('eroor:$e,NO RETORNO LAS DOS LISTAS ');
@@ -119,9 +145,32 @@ class ProductRepository extends GetConnect {
     }
   }
 
-  Future<int> awaitRequestDelete(id) async {
+  Future<int> awaitRequestDelete(int id, int request) async {
     try {
       const url = 'http://10.0.2.2:8000/api/order';
+
+      // Parámetros que deseas enviar en la solicitud POST
+      final Map<String, dynamic> body = {
+        'id': id,
+        'request_delete': request,
+      };
+
+      // Realizar la solicitud POST
+      final response = await put(url, body);
+      if (response.statusCode == 200) {
+        //final id_order = response.body['order_id'];
+        return 1;
+      } else {
+        return -990099;
+      }
+    } catch (e) {
+      return -990099;
+    }
+  }
+
+  Future<int> orderDeleteCar(id) async {
+    try {
+      const url = 'http://10.0.2.2:8000/api/order-destroy';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
@@ -129,9 +178,8 @@ class ProductRepository extends GetConnect {
       };
 
       // Realizar la solicitud POST
-      final response = await put(url, body);
+      final response = await post(url, body);
       if (response.statusCode == 200) {
-        //final id_order = response.body['order_id'];
         return 1;
       } else {
         return -990099;

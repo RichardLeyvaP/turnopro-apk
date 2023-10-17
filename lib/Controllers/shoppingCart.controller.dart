@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, unused_element, non_constant_identifier_names
 
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Models/orderDelete_model.dart';
 import 'package:turnopro_apk/Models/product_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/get_connect/repository/product.repository.dart';
@@ -12,6 +13,7 @@ class ShoppingCartController extends GetxController {
 
   List<ProductModel> productCart = [], selectproduct = []; // Lista de product
   List<ServiceModel> serviceCart = [], selectservice = []; // Lista de service
+  List<OrderDeleteModel> orderDeleteCar = [];
 
   List<int> requestDeleteOrder = []; // id de las ordenes solicitadas a eliminar
 
@@ -23,6 +25,7 @@ class ShoppingCartController extends GetxController {
   int shoppingCart = 0;
   double totalPrice = 0.0;
   int responseId = 0;
+  bool load_request = false;
 
   @override
   void onReady() {
@@ -34,17 +37,14 @@ class ShoppingCartController extends GetxController {
   Future<void> loadCart() async {
     try {
       Map<String, List<dynamic>> resultList =
-          await productRepository.getCartProductService();
+          await productRepository.getCartProductService(); //todo
 
-      List<ProductModel> productListCar =
-          (resultList['products'] ?? []).cast<ProductModel>();
-      List<ServiceModel> serviceListCar =
-          (resultList['services'] ?? []).cast<ServiceModel>();
+      selectproduct = (resultList['products'] ?? []).cast<ProductModel>();
+      selectservice = (resultList['services'] ?? []).cast<ServiceModel>();
 
-      selectproduct = productListCar;
-      selectservice = serviceListCar;
       productListLength = selectproduct.length;
       serviceListLength = selectservice.length;
+
       shoppingCart = productListLength + serviceListLength;
       update();
     } catch (e) {
@@ -52,10 +52,37 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  Future<void> requestDelete(int id) async {
+  Future<void> loadOrderDeleteCar(int id_car) async {
     try {
-      await productRepository.awaitRequestDelete(id);
+      orderDeleteCar =
+          await productRepository.serviceRequestProductDelete(id_car); //todo
+      load_delete();
+      update();
+    } catch (e) {
+      //print('DIO ERROR:$e');
+    }
+  }
+
+  Future<void> requestDelete(int id, int request) async {
+    try {
+      await productRepository.awaitRequestDelete(id, request);
       requestDeleteOrder.add(id);
+      internetError = 0;
+      update();
+    } catch (e) {
+      internetError = -99;
+      update();
+    }
+  }
+
+  load_delete() {
+    load_request == false;
+    update();
+  }
+
+  Future<void> orderDelete(int id) async {
+    try {
+      await productRepository.orderDeleteCar(id); //todo
       internetError = 0;
       update();
     } catch (e) {
@@ -134,8 +161,6 @@ class ShoppingCartController extends GetxController {
       }
     } else if (type == 'product') {
       if (internetError != -99) {
-        print('indice:$index');
-        print(id);
         _addOrderCartList(5, 3, id, 0); //todo
         //todo revisar el totalPrice, que venga de la db
         totalPrice += double.parse(productCart[index].sale_price);

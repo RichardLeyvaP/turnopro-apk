@@ -304,180 +304,180 @@ class _HomePagesState extends State<HomePages> {
                             left: 8, top: 4, right: 8, bottom: 6),
                         child: FittedBox(
                           fit: BoxFit.contain,
-                          child: Row(
-                            children: [
-                              Container(
-                                height: (MediaQuery.of(context).size.height *
-                                    0.120),
-                                width:
-                                    (MediaQuery.of(context).size.width * 0.20),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors
-                                        .white, // Color blanco para el borde
-                                    width:
-                                        1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                                  ),
-                                  color: const Color(0xFFFFB05F),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(12)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.7),
-                                      spreadRadius: 1,
-                                      blurRadius: 5,
-                                      offset: const Offset(-5,
-                                          5), // Ajusta los valores para personalizar la sombra
-                                    ),
-                                  ],
-                                ),
-                                child: IconButton(
-                                  onPressed: () {
-                                    Get.snackbar(
-                                      'Mensaje',
-                                      '! No me Gustó...',
-                                      duration:
-                                          const Duration(milliseconds: 2000),
-                                    );
-                                    //_.deletenotification(index);
-                                  },
-                                  icon: Icon(
-                                    MdiIcons.thumbDown,
-                                    color: Colors.white,
-                                    size: (MediaQuery.of(context).size.height *
-                                        0.04),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                height: (MediaQuery.of(context).size.height *
-                                    0.120),
-                                width:
-                                    (MediaQuery.of(context).size.width * 0.8),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.7),
-                                      spreadRadius: 1,
-                                      blurRadius: 5,
-                                      offset: const Offset(-5,
-                                          5), // Ajusta los valores para personalizar la sombra
-                                    ),
-                                  ],
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(12)),
-                                ),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 28, top: 8),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      const Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            Icons.person,
-                                            color: Colors.black,
-                                            size: 22,
-                                          ),
-                                          Text(
-                                            'William Miller',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontFamily:
-                                                    AutofillHints.familyName,
-                                                fontSize: 22),
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 2),
-                                        child: Text('Masaje capilar',
-                                            style: TextStyle(
-                                                fontSize:
-                                                    (MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        0.018),
-                                                fontWeight: FontWeight.w500)),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 2),
-                                        child: Text(
-                                          'Corte de Cabello',
-                                          style: TextStyle(
-                                              fontSize: (MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.018),
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Icon(Icons.timer,
-                                              color: Colors.black,
-                                              size: (MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.016)),
-                                          Text(
-                                            '15 Minutos',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize:
-                                                    (MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        0.016),
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                height: (MediaQuery.of(context).size.height *
-                                    0.120),
-                                width:
-                                    (MediaQuery.of(context).size.width * 0.20),
-                                decoration: BoxDecoration(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
+                            ),
+                            child: Row(
+                              //todo
+                              children: [
+                                Container(
+                                  height: (MediaQuery.of(context).size.height *
+                                      0.120),
+                                  width: (MediaQuery.of(context).size.width *
+                                      0.20),
+                                  decoration: BoxDecoration(
                                     border: Border.all(
                                       color: Colors
                                           .white, // Color blanco para el borde
                                       width:
                                           1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                                     ),
-                                    color:
-                                        const Color.fromARGB(255, 32, 32, 32),
+                                    color: const Color(0xFFFFB05F),
                                     borderRadius: const BorderRadius.all(
-                                        Radius.circular(12))),
-                                child: IconButton(
-                                  onPressed: () {
-                                    Get.snackbar(
-                                      'Mensaje',
-                                      'Like!',
-                                      duration:
-                                          const Duration(milliseconds: 2000),
-                                    );
-                                    // _.deletenotification(index);
-                                  },
-                                  icon: Icon(
-                                    MdiIcons.thumbUp,
-                                    color: Colors.white,
-                                    size: (MediaQuery.of(context).size.height *
-                                        0.04),
+                                        Radius.circular(12)),
+                                  ),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      Get.snackbar(
+                                        'Mensaje',
+                                        'Cancelar',
+                                        duration:
+                                            const Duration(milliseconds: 2000),
+                                      );
+                                      //_.deletenotification(index);
+                                    },
+                                    icon: Icon(
+                                      MdiIcons.thumbDown,
+                                      color: Colors.white,
+                                      size:
+                                          (MediaQuery.of(context).size.height *
+                                              0.04),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Container(
+                                  height: (MediaQuery.of(context).size.height *
+                                      0.120),
+                                  width:
+                                      (MediaQuery.of(context).size.width * 0.8),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(12)),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 30, top: 14),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        const Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              Icons.person,
+                                              color: Colors.black,
+                                              size: 22,
+                                            ),
+                                            Text(
+                                              'William Miller',
+                                              style: TextStyle(
+                                                  height: 1.0,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontFamily:
+                                                      AutofillHints.familyName,
+                                                  fontSize: 22),
+                                            ),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 2),
+                                          child: Text('Masaje capilar',
+                                              style: TextStyle(
+                                                  height: 1.0,
+                                                  fontSize:
+                                                      (MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.018),
+                                                  fontWeight: FontWeight.w500)),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 2),
+                                          child: Text(
+                                            'Corte de Cabello',
+                                            style: TextStyle(
+                                                height: 1.0,
+                                                fontSize:
+                                                    (MediaQuery.of(context)
+                                                            .size
+                                                            .height *
+                                                        0.018),
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Icon(Icons.timer,
+                                                color: Colors.black,
+                                                size: (MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.016)),
+                                            Text(
+                                              '15 Minutos',
+                                              style: TextStyle(
+                                                  height: 1.0,
+                                                  color: Colors.black,
+                                                  fontSize:
+                                                      (MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.016),
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  height: (MediaQuery.of(context).size.height *
+                                      0.120),
+                                  width: (MediaQuery.of(context).size.width *
+                                      0.20),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors
+                                            .white, // Color blanco para el borde
+                                        width:
+                                            1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                                      ),
+                                      color:
+                                          const Color.fromARGB(255, 32, 32, 32),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(12))),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      Get.snackbar(
+                                        'Mensaje',
+                                        'Aceptar',
+                                        duration:
+                                            const Duration(milliseconds: 2000),
+                                      );
+                                      // _.deletenotification(index);
+                                    },
+                                    icon: Icon(
+                                      MdiIcons.thumbUp,
+                                      color: Colors.white,
+                                      size:
+                                          (MediaQuery.of(context).size.height *
+                                              0.04),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -805,9 +805,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.toNamed(
-                      '/loginNewPage',
-                    );
+                    Get.offAllNamed('/loginNewPage');
                   },
                   child: CircleAvatar(
                     radius: 22, // Tamaño del CircleAvatar
