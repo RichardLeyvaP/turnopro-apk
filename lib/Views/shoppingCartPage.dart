@@ -188,7 +188,8 @@ class ShoppingCartPage extends StatelessWidget {
                                                             controllerShoppingCart
                                                                 .selectservice[
                                                                     index]
-                                                                .id);
+                                                                .id,
+                                                            1);
                                                   },
                                                   child: _.requestDeleteOrder
                                                           .contains(
@@ -368,7 +369,8 @@ class ShoppingCartPage extends StatelessWidget {
                                                                 controllerShoppingCart
                                                                     .selectproduct[
                                                                         index]
-                                                                    .id);
+                                                                    .id,
+                                                                1);
                                                       },
                                                       child: _.requestDeleteOrder
                                                               .contains(
