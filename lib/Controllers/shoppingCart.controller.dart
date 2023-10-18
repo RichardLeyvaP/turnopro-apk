@@ -84,6 +84,7 @@ class ShoppingCartController extends GetxController {
     try {
       await productRepository.orderDeleteCar(id); //todo
       internetError = 0;
+      loadOrderDeleteCar(8);
       update();
     } catch (e) {
       internetError = -99;
