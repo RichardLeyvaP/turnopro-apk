@@ -53,6 +53,7 @@ class ProductController extends GetxController {
   Future<void> fetchproductList(index) async {
     try {
       product = await repository.getProductCategoryList(index);
+      // print(product);
       productListLength = product.length;
       update();
     } catch (e) {

@@ -34,7 +34,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
   @override
   void initState() {
     super.initState();
-    controllerShoppingCart.loadOrderDeleteCar(8);
+    controllerShoppingCart.loadOrderDeleteCar(10);
     iniciarLlamadaCada10Segundos();
   }
 
@@ -53,7 +53,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
 
     // Establece un temporizador que llama a la función cada 20 segundos
     _timer = Timer.periodic(const Duration(seconds: 20), (Timer timer) {
-      controllerShoppingCart.loadOrderDeleteCar(8);
+      controllerShoppingCart.loadOrderDeleteCar(10);
     });
   }
 
@@ -232,49 +232,49 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                   color: const Color.fromARGB(255, 231, 232, 234),
                   child: Column(
                     children: [
-                      Row(
+                      const Row(
                         children: [
-                          const Text(
+                          Text(
                             'Dashboard',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Get.toNamed(
-                                    '/servicesProductsPage',
-                                  );
-                                },
-                                child: const Text(
-                                  '  Servicio y productos  ',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Get.toNamed(
-                                    '/clients',
-                                  );
-                                },
-                                child: const Text(
-                                  '  Mis clientes  ',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.end,
+                          //   crossAxisAlignment: CrossAxisAlignment.end,
+                          //   children: [
+                          //     InkWell(
+                          //       onTap: () {
+                          //         Get.toNamed(
+                          //           '/servicesProductsPage',
+                          //         );
+                          //       },
+                          //       child: const Text(
+                          //         '  Servicio y productos  ',
+                          //         style: TextStyle(
+                          //             color: Colors.black,
+                          //             fontSize: 13,
+                          //             fontWeight: FontWeight.w700),
+                          //       ),
+                          //     ),
+                          //     InkWell(
+                          //       onTap: () {
+                          //         Get.toNamed(
+                          //           '/clients',
+                          //         );
+                          //       },
+                          //       child: const Text(
+                          //         '  Mis clientes  ',
+                          //         style: TextStyle(
+                          //             color: Colors.black,
+                          //             fontSize: 13,
+                          //             fontWeight: FontWeight.w700),
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                         ],
                       ),
                       Column(

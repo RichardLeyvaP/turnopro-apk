@@ -534,20 +534,6 @@ class _HomePagesState extends State<HomePages> {
                                       fontWeight: FontWeight.w700),
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  Get.toNamed(
-                                    '/clients',
-                                  );
-                                },
-                                child: const Text(
-                                  '  Mis clientes  ',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ),
                             ],
                           ),
                         ],
@@ -558,7 +544,11 @@ class _HomePagesState extends State<HomePages> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  Get.toNamed(
+                                    '/clients',
+                                  );
+                                },
                                 child: cartsHome(
                                     context,
                                     borderRadiusValue,

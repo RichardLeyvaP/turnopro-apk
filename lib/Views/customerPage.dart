@@ -4,9 +4,42 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Components/BottomNavigationBar.dart';
 import 'package:turnopro_apk/Controllers/customer.controller.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class CustomersPage extends GetView<CustomerController> {
-  const CustomersPage({super.key});
+  CustomersPage({super.key});
+  final List<String> nameClient = [
+    'Alexis Campos',
+    'Alejandro Hernandez',
+    'Daniel Farias',
+    'Gerardo Saucedo',
+    'Miguel Romero',
+    'Victor Días'
+  ];
+  final List<String> typeCurtClient = [
+    'Pelado Normal',
+    'Pintado de Cabello',
+    'Corte de Barba',
+    'Pelado de Corte bajo',
+    'Pelado Normal',
+    'Pelado y Corte de Barba'
+  ];
+  final List<String> typeCurt2Client = [
+    'Afeitado de barba',
+    'Corte de barba',
+    'Corte de Barba',
+    'Corte con diseño',
+    'Afeitado clasico de barba',
+    'Bigote,NariZ y Orejas'
+  ];
+  final List<String> hrClient = [
+    '  08:10 - 09:15',
+    '  09:17 - 10:10',
+    '  10:12 - 10:55',
+    '  10:58 - 11:45',
+    '  11:50 - 12:30',
+    '  02:00 - 03:15',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +88,7 @@ class CustomersPage extends GetView<CustomerController> {
                   color: Color.fromARGB(255, 241, 130, 84),
                 ))
               : ListView.builder(
-                  itemCount: _.customerListLength,
+                  itemCount: 6, //_.customerListLength,
                   itemBuilder: (context, index) => Padding(
                     padding: const EdgeInsets.only(left: 10, top: 6, right: 10),
                     child: Container(
@@ -85,7 +118,7 @@ class CustomersPage extends GetView<CustomerController> {
                         onTap: () {
                           _.getselectCustomer(index);
                         },
-                        onLongPress: () {
+                        /*onLongPress: () {
                           Get.snackbar(
                             'ElIMINANDO CORRECTAMENTE',
                             _.customers[index].name.toString(),
@@ -93,7 +126,7 @@ class CustomersPage extends GetView<CustomerController> {
                           );
                           _.deleteCustomer(
                               index); // Llama a la función para eliminar
-                        },
+                        },*/
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -103,50 +136,44 @@ class CustomersPage extends GetView<CustomerController> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 _.selectCustomer.contains(_.customers[index])
-                                    ? const Row(
+                                    ? Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Badge(
-                                              label: Text('a'),
-                                              child: Icon(
-                                                Icons.access_time,
-                                                color: Color.fromARGB(
-                                                    255, 150, 37, 19),
-                                              )),
+                                          Icon(
+                                            MdiIcons.formatListNumbered, //todo
+                                            color: const Color.fromARGB(
+                                                255, 150, 37, 19),
+                                          ),
                                           Text(
-                                            '   01:53',
-                                            style: TextStyle(
-                                                fontSize: 15,
+                                            hrClient[index],
+                                            //  '   01:53',
+                                            style: const TextStyle(
+                                                fontSize: 12,
                                                 color: Color.fromARGB(
                                                     255, 150, 37, 19),
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ],
                                       )
-                                    : const Row(
+                                    : Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Badge(
-                                              backgroundColor: Color.fromARGB(
-                                                  255, 71, 143, 43),
-                                              label: Text('+'),
-                                              isLabelVisible: true,
-                                              alignment: Alignment.bottomRight,
-                                              child: Icon(
-                                                Icons.access_time,
-                                                color: Color.fromARGB(
-                                                    255, 71, 143, 43),
-                                              )),
+                                          Icon(
+                                            MdiIcons.clockPlus,
+                                            color: const Color.fromARGB(
+                                                255, 71, 143, 43),
+                                          ),
                                           Text(
-                                            '   08:10 - 09:10',
-                                            style: TextStyle(
-                                                fontSize: 15,
+                                            hrClient[index],
+                                            // '   08:10 - 09:10',
+                                            style: const TextStyle(
+                                                fontSize: 12,
                                                 color: Color.fromARGB(
                                                     255, 0, 0, 0),
                                                 fontWeight: FontWeight.bold),
@@ -154,29 +181,29 @@ class CustomersPage extends GetView<CustomerController> {
                                         ],
                                       ),
                                 Text(
-                                  _.customers[index].name,
+                                  nameClient[index],
+                                  // _.customers[index].name,
                                   style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w900),
                                 ),
                                 Text(
-                                  'typeCut-${_.customers[index].username}',
+                                  typeCurtClient[index],
+                                  //'typeCut-${_.customers[index].username}',
                                   style: const TextStyle(
                                       fontSize: 12,
                                       color: Color.fromARGB(129, 0, 0, 0)),
                                 ),
                                 Text(
-                                  'typeWashed-${_.customers[index].username}',
+                                  typeCurt2Client[index],
+                                  // 'typeWashed-${_.customers[index].username}',
                                   style: const TextStyle(
                                       fontSize: 12,
                                       color: Color.fromARGB(129, 0, 0, 0)),
                                 ),
-                                Text(
-                                  'typeWashed-${_.customers[index].id}',
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Color.fromARGB(129, 0, 0, 0)),
-                                ),
+                                const SizedBox(
+                                  height: 12,
+                                )
                               ],
                             ),
                             _.selectCustomer.contains(_.customers[index])

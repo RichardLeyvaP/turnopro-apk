@@ -1,5 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages
-//'http://10.0.2.2:8000/api/rule'
+//'http://api.simplifies.cl/api/rule'
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -137,7 +137,7 @@ class Myapp extends StatelessWidget {
           ),
           GetPage(
             name: '/clients',
-            page: () => const CustomersPage(),
+            page: () => CustomersPage(),
             binding: BindingsBuilder.put(() => CustomerController()),
           ), //ESTA ESTA CARGANDO UNA API
           GetPage(

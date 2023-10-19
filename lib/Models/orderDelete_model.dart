@@ -45,7 +45,8 @@ class OrderDeleteModel {
       nameProduct: map['nameProduct'] ?? '',
       nameService: map['nameService'] ?? '',
       updated_at: map['updated_at'] ?? '',
-      is_product: map['is_product'] ?? 0,
+      //is_product: map['is_product'] ?? 0,
+      is_product: 0,
     );
   }
 
