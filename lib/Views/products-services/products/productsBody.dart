@@ -56,7 +56,7 @@ class _ProductsBodyState extends State<ProductsBody>
       return controllerProduct.isLoading
           ? const Center(
               child: CircularProgressIndicator(
-              color: Color(0xFFFFB05F),
+              color: Color(0xFFF18254),
             ))
           : Column(
               children: [
@@ -66,7 +66,7 @@ class _ProductsBodyState extends State<ProductsBody>
                   child: TabBar(
                     isScrollable: true,
                     labelColor: Colors.black,
-                    indicatorColor: const Color(0xFFFFB05F),
+                    indicatorColor: const Color(0xFFF18254),
                     controller: _tabController,
                     tabs: tabs2,
                     onTap: (int tabIndex) {
@@ -150,7 +150,7 @@ Padding newMethod(
           decoration: const BoxDecoration(
               borderRadius:
                   BorderRadius.all(Radius.circular(borderRadiusValue)),
-              color: Color(0xFFFFB05F)),
+              color: Color(0xFFF18254)),
           child: FractionallySizedBox(
             widthFactor: 0.6, // 50% del ancho del contenedor padre
             heightFactor: 0.65, // 50% del alto del contenedor padre
@@ -239,7 +239,7 @@ Padding newMethod(
                       CircleAvatar(
                         radius: (MediaQuery.of(context).size.width *
                             0.04), // Ajusta este valor según tu preferencia
-                        backgroundColor: const Color(0xFFFFB05F),
+                        backgroundColor: const Color(0xFFF18254),
                         child: Icon(
                           Icons.check,
                           color: Colors.white,

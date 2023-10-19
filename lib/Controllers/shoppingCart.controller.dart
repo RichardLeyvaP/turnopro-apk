@@ -35,15 +35,20 @@ class ShoppingCartController extends GetxController {
   }
 
   Future<void> loadCart() async {
+    //print('estoy cargando el carro');
     try {
+      //  print('00000');
       Map<String, List<dynamic>> resultList =
           await productRepository.getCartProductService(); //todo
-
+      //print('1111111');
       selectproduct = (resultList['products'] ?? []).cast<ProductModel>();
       selectservice = (resultList['services'] ?? []).cast<ServiceModel>();
 
       productListLength = selectproduct.length;
       serviceListLength = selectservice.length;
+      //print('------------------------');
+      //  print(productListLength);
+      //  print(serviceListLength);
 
       shoppingCart = productListLength + serviceListLength;
       update();
@@ -53,10 +58,13 @@ class ShoppingCartController extends GetxController {
   }
 
   Future<void> loadOrderDeleteCar(int id_car) async {
+    //print('estoy aqui en load');
     try {
+      //print('1111111');
       orderDeleteCar =
           await productRepository.serviceRequestProductDelete(id_car); //todo
-      load_delete();
+      // print(orderDeleteCar);
+
       update();
     } catch (e) {
       //print('DIO ERROR:$e');
@@ -75,15 +83,11 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  load_delete() {
-    load_request == false;
-    update();
-  }
-
   Future<void> orderDelete(int id) async {
     try {
       await productRepository.orderDeleteCar(id); //todo
       internetError = 0;
+      loadOrderDeleteCar(10);
       update();
     } catch (e) {
       internetError = -99;
@@ -136,6 +140,8 @@ class ShoppingCartController extends GetxController {
           client_id, person_id, product_id, service_id);
       if (responseId != -990099) {
         productCarr.add(responseId);
+        // print('longitud.....');
+        // print(productCarr.length);
         internetError = 0;
       } else {
         internetError = -99;
@@ -148,14 +154,19 @@ class ShoppingCartController extends GetxController {
   }
 
   void updateShoppingCartValue(index, String type, id) {
+    //print('11111');
     if (type == 'service') {
+      // print('22');
       if (internetError != -99) {
+        //  print('3333');
         if (!selectservice.contains(serviceCart[index])) {
+          //   print(serviceCart[index].id);
           _addOrderCartList(5, 3, 0, (serviceCart[index].id - 1));
           totalPrice += double.parse(serviceCart[index]
               .price_service); //convierte un estring en un double
           shoppingCart += 1;
           serviceListLength = selectservice.length;
+          //print('long de serviceListLength:$serviceListLength');
         }
         update();
       }

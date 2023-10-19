@@ -12,7 +12,7 @@ class LoginFormPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFB05F),
+      backgroundColor: const Color(0xFFF18254),
       appBar: AppBar(
         toolbarHeight: 30.0,
         backgroundColor: Colors.transparent,

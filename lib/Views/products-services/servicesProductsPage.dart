@@ -63,7 +63,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
           child: BottomNavigationBarNew(),
         ),
         appBar: AppBar(
-          backgroundColor: const Color(0xFFFFB05F), // Color de fondo del AppBar
+          backgroundColor: const Color(0xFFF18254), // Color de fondo del AppBar
           elevation: 0, // Sombra del AppBar
           toolbarHeight: 120, // Altura del AppBar
           // actions: [
@@ -111,7 +111,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                     const Color.fromARGB(255, 81, 93, 117),
                                 progressIndicatorValueColor:
                                     const AlwaysStoppedAnimation(
-                                        Color(0xFFFFB05F)),
+                                        Color(0xFFF18254)),
                                 overlayBlur: 3,
                               );
                             }, // Evento onPress
@@ -126,7 +126,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                               Get.dialog(
                                 const Center(
                                   child: CircularProgressIndicator(
-                                    color: Color(0xFFFFB05F),
+                                    color: Color(0xFFF18254),
                                   ),
                                 ),
                                 barrierDismissible: false,
@@ -163,7 +163,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                 child: TabBar(
                   // isScrollable: true,//rlp si son muchos tab para que tenga scroll entre los tab
                   indicator: clickServicesDecoration,
-                  labelColor: const Color(0xFFFFB05F),
+                  labelColor: const Color(0xFFF18254),
                   unselectedLabelColor: Colors.white,
                   automaticIndicatorColorAdjustment: false,
                   controller: _tabController,

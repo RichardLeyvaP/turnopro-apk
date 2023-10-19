@@ -34,6 +34,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
   @override
   void initState() {
     super.initState();
+    controllerShoppingCart.loadOrderDeleteCar(10);
     iniciarLlamadaCada10Segundos();
   }
 
@@ -50,9 +51,9 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
     // Cancela cualquier temporizador existente para evitar duplicaciones
     _timer?.cancel();
 
-    // Establece un temporizador que llama a la función cada 10 segundos
-    _timer = Timer.periodic(const Duration(seconds: 10), (Timer timer) {
-      controllerShoppingCart.loadOrderDeleteCar(8);
+    // Establece un temporizador que llama a la función cada 20 segundos
+    _timer = Timer.periodic(const Duration(seconds: 20), (Timer timer) {
+      controllerShoppingCart.loadOrderDeleteCar(10);
     });
   }
 
@@ -217,183 +218,6 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                           ),
                         ),
                       ),
-                      // const SizedBox(height: 6),
-                      //   /*todo cart2 productos*/ Padding(
-                      //     padding: const EdgeInsets.only(
-                      //         left: 8, top: 4, right: 8, bottom: 6),
-                      //     child: FittedBox(
-                      //       fit: BoxFit.contain,
-                      //       child: Row(
-                      //         children: [
-                      //           Container(
-                      //             height: (MediaQuery.of(context).size.height *
-                      //                 0.120),
-                      //             width:
-                      //                 (MediaQuery.of(context).size.width * 0.20),
-                      //             decoration: BoxDecoration(
-                      //               border: Border.all(
-                      //                 color: Colors
-                      //                     .white, // Color blanco para el borde
-                      //                 width:
-                      //                     1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                      //               ),
-                      //               color:
-                      //                   const Color.fromARGB(255, 241, 130, 84),
-                      //               borderRadius: const BorderRadius.all(
-                      //                   Radius.circular(12)),
-                      //             ),
-                      //             child: IconButton(
-                      //               onPressed: () {
-                      //                 Get.snackbar(
-                      //                   'Mensaje',
-                      //                   '! No me Gustó...',
-                      //                   duration:
-                      //                       const Duration(milliseconds: 2000),
-                      //                 );
-                      //                 //_.deletenotification(index);
-                      //               },
-                      //               icon: Icon(
-                      //                 MdiIcons.thumbDown,
-                      //                 color: Colors.white,
-                      //                 size: (MediaQuery.of(context).size.height *
-                      //                     0.04),
-                      //               ),
-                      //             ),
-                      //           ),
-                      //           Container(
-                      //             height: (MediaQuery.of(context).size.height *
-                      //                 0.120),
-                      //             width:
-                      //                 (MediaQuery.of(context).size.width * 0.8),
-                      //             decoration: const BoxDecoration(
-                      //               color: Colors.white,
-                      //               borderRadius:
-                      //                   BorderRadius.all(Radius.circular(12)),
-                      //             ),
-                      //             child: Padding(
-                      //               padding: const EdgeInsets.only(left: 12),
-                      //               child: SingleChildScrollView(
-                      //                 child: Column(
-                      //                   crossAxisAlignment:
-                      //                       CrossAxisAlignment.start,
-                      //                   mainAxisAlignment:
-                      //                       MainAxisAlignment.start,
-                      //                   children: [
-                      //                     const Row(
-                      //                       mainAxisAlignment:
-                      //                           MainAxisAlignment.start,
-                      //                       crossAxisAlignment:
-                      //                           CrossAxisAlignment.start,
-                      //                       children: [
-                      //                         Icon(
-                      //                           Icons.delete,
-                      //                           color: Colors.black,
-                      //                         ),
-                      //                         Text(
-                      //                           'Eliminación de producto',
-                      //                           style: TextStyle(
-                      //                               fontWeight: FontWeight.w600,
-                      //                               fontFamily:
-                      //                                   AutofillHints.familyName,
-                      //                               fontSize: 22),
-                      //                         ),
-                      //                       ],
-                      //                     ),
-                      //                     Text('Coca Cola 350ml',
-                      //                         style: TextStyle(
-                      //                             fontSize:
-                      //                                 (MediaQuery.of(context)
-                      //                                         .size
-                      //                                         .height *
-                      //                                     0.018),
-                      //                             fontWeight: FontWeight.w500)),
-                      //                     Row(
-                      //                       mainAxisAlignment:
-                      //                           MainAxisAlignment.start,
-                      //                       crossAxisAlignment:
-                      //                           CrossAxisAlignment.start,
-                      //                       children: [
-                      //                         const Icon(
-                      //                           Icons.person,
-                      //                           color: Colors.black,
-                      //                         ),
-                      //                         Text(
-                      //                           'Evelyn Castillo',
-                      //                           style: TextStyle(
-                      //                               fontSize:
-                      //                                   (MediaQuery.of(context)
-                      //                                           .size
-                      //                                           .height *
-                      //                                       0.018),
-                      //                               fontWeight: FontWeight.w500),
-                      //                         ),
-                      //                       ],
-                      //                     ),
-                      //                     Row(
-                      //                       mainAxisAlignment:
-                      //                           MainAxisAlignment.start,
-                      //                       crossAxisAlignment:
-                      //                           CrossAxisAlignment.start,
-                      //                       children: [
-                      //                         const Icon(
-                      //                           Icons.person,
-                      //                           color: Colors.black,
-                      //                         ),
-                      //                         Text(
-                      //                           'Eusebio Pérez',
-                      //                           style: TextStyle(
-                      //                               fontSize:
-                      //                                   (MediaQuery.of(context)
-                      //                                           .size
-                      //                                           .height *
-                      //                                       0.018),
-                      //                               fontWeight: FontWeight.w500),
-                      //                         ),
-                      //                       ],
-                      //                     ),
-                      //                   ],
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //           ),
-                      //           Container(
-                      //             height: (MediaQuery.of(context).size.height *
-                      //                 0.120),
-                      //             width:
-                      //                 (MediaQuery.of(context).size.width * 0.20),
-                      //             decoration: BoxDecoration(
-                      //                 border: Border.all(
-                      //                   color: Colors
-                      //                       .white, // Color blanco para el borde
-                      //                   width:
-                      //                       1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                      //                 ),
-                      //                 color:
-                      //                     const Color.fromARGB(255, 32, 32, 32),
-                      //                 borderRadius: const BorderRadius.all(
-                      //                     Radius.circular(12))),
-                      //             child: IconButton(
-                      //               onPressed: () {
-                      //                 Get.snackbar(
-                      //                   'Mensaje',
-                      //                   'Like!',
-                      //                   duration:
-                      //                       const Duration(milliseconds: 2000),
-                      //                 );
-                      //                 // _.deletenotification(index);
-                      //               },
-                      //               icon: Icon(
-                      //                 MdiIcons.thumbUp,
-                      //                 color: Colors.white,
-                      //                 size: (MediaQuery.of(context).size.height *
-                      //                     0.04),
-                      //               ),
-                      //             ),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
                     ],
                   ),
                 ),
@@ -408,49 +232,49 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                   color: const Color.fromARGB(255, 231, 232, 234),
                   child: Column(
                     children: [
-                      Row(
+                      const Row(
                         children: [
-                          const Text(
+                          Text(
                             'Dashboard',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Get.toNamed(
-                                    '/servicesProductsPage',
-                                  );
-                                },
-                                child: const Text(
-                                  '  Servicio y productos  ',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Get.toNamed(
-                                    '/clients',
-                                  );
-                                },
-                                child: const Text(
-                                  '  Mis clientes  ',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.end,
+                          //   crossAxisAlignment: CrossAxisAlignment.end,
+                          //   children: [
+                          //     InkWell(
+                          //       onTap: () {
+                          //         Get.toNamed(
+                          //           '/servicesProductsPage',
+                          //         );
+                          //       },
+                          //       child: const Text(
+                          //         '  Servicio y productos  ',
+                          //         style: TextStyle(
+                          //             color: Colors.black,
+                          //             fontSize: 13,
+                          //             fontWeight: FontWeight.w700),
+                          //       ),
+                          //     ),
+                          //     InkWell(
+                          //       onTap: () {
+                          //         Get.toNamed(
+                          //           '/clients',
+                          //         );
+                          //       },
+                          //       child: const Text(
+                          //         '  Mis clientes  ',
+                          //         style: TextStyle(
+                          //             color: Colors.black,
+                          //             fontSize: 13,
+                          //             fontWeight: FontWeight.w700),
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                         ],
                       ),
                       Column(
@@ -784,222 +608,215 @@ class HomePage extends StatelessWidget {
 //****************************************************************************** */
 Column mostrarNombres(context, ShoppingCartController contShopp) {
   List<Widget> widgets = [];
-  int fin = 0;
   String titulo = "";
   bool service = false;
-
-  fin = contShopp.orderDeleteCar.length;
   /* if (fin > 2) {
     fin = 2;
   }*/
 
-  if (fin == 0) {
+  for (int i = 0; i < contShopp.orderDeleteCar.length; i++) {
+    if (contShopp.orderDeleteCar[i].is_product == 1) {
+      titulo = 'Eliminación de Producto';
+      service = false;
+    } else {
+      titulo = 'Eliminación de Servicio';
+      service = true;
+    }
+    widgets.add(
+      FittedBox(
+        fit: BoxFit.contain,
+        child: Column(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    height: (MediaQuery.of(context).size.height * 0.120),
+                    width: (MediaQuery.of(context).size.width * 0.20),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.white, // Color blanco para el borde
+                        width:
+                            1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                      ),
+                      color: const Color.fromARGB(255, 241, 130, 84),
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        contShopp.requestDelete(
+                            contShopp.orderDeleteCar[i].id, 0);
+                        Get.snackbar(
+                          'Mensaje',
+                          '! No me Gustó...',
+                          duration: const Duration(milliseconds: 2000),
+                        );
+                        //_.deletenotification(index);
+                      },
+                      icon: Icon(
+                        MdiIcons.thumbDown,
+                        color: Colors.white,
+                        size: (MediaQuery.of(context).size.height * 0.04),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: (MediaQuery.of(context).size.height * 0.120),
+                    width: (MediaQuery.of(context).size.width * 0.8),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 30),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.delete,
+                                  color: Colors.black,
+                                ),
+                                Text(
+                                  titulo,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: AutofillHints.familyName,
+                                      fontSize: 22),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 5, right: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                      service
+                                          ? contShopp
+                                              .orderDeleteCar[i].nameService
+                                              .toString()
+                                          : contShopp
+                                              .orderDeleteCar[i].nameProduct
+                                              .toString(),
+                                      style: TextStyle(
+                                          fontSize: (MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.018),
+                                          fontWeight: FontWeight.w500)),
+                                  Text(
+                                      contShopp.orderDeleteCar[i].hora
+                                          .toString(),
+                                      style: TextStyle(
+                                          fontSize: (MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.018),
+                                          fontWeight: FontWeight.w800)),
+                                ],
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.person,
+                                  color: Color.fromARGB(180, 0, 0, 0),
+                                ),
+                                Text(
+                                  contShopp.orderDeleteCar[i].nameProfessional
+                                      .toString(),
+                                  style: TextStyle(
+                                      fontSize:
+                                          (MediaQuery.of(context).size.height *
+                                              0.018),
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.person,
+                                  color: Color.fromARGB(180, 0, 0, 0),
+                                ),
+                                Text(
+                                  contShopp.orderDeleteCar[i].nameClient,
+                                  style: TextStyle(
+                                      fontSize:
+                                          (MediaQuery.of(context).size.height *
+                                              0.018),
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: (MediaQuery.of(context).size.height * 0.120),
+                    width: (MediaQuery.of(context).size.width * 0.20),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white, // Color blanco para el borde
+                          width:
+                              1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                        ),
+                        color: const Color.fromARGB(255, 32, 32, 32),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(12))),
+                    child: IconButton(
+                      onPressed: () {
+                        contShopp.orderDelete(contShopp.orderDeleteCar[i].id);
+                        Get.snackbar(
+                          'Mensaje',
+                          'Eliminando solicitud',
+                          duration: const Duration(milliseconds: 2000),
+                        );
+                        // _.deletenotification(index);
+                      },
+                      icon: Icon(
+                        MdiIcons.thumbUp,
+                        color: Colors.white,
+                        size: (MediaQuery.of(context).size.height * 0.04),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 12,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+  if (contShopp.orderDeleteCar.isEmpty) {
     widgets.add(const Center(
       child: Text(
         'No hay solicitudes a eliminar.',
         style: TextStyle(color: Colors.white, fontSize: 20),
       ),
     ));
-  } else {
-    for (int i = 0; i < fin; i++) {
-      if (contShopp.orderDeleteCar[i].is_product == 1) {
-        titulo = 'Eliminación de Producto';
-        service = false;
-      } else {
-        titulo = 'Eliminación de Servicio';
-        service = true;
-      }
-      widgets.add(
-        FittedBox(
-          fit: BoxFit.contain,
-          child: Column(
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      height: (MediaQuery.of(context).size.height * 0.120),
-                      width: (MediaQuery.of(context).size.width * 0.20),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white, // Color blanco para el borde
-                          width:
-                              1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                        ),
-                        color: const Color.fromARGB(255, 241, 130, 84),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(12)),
-                      ),
-                      child: IconButton(
-                        onPressed: () {
-                          contShopp.requestDelete(
-                              contShopp.orderDeleteCar[i].id, 0);
-                          Get.snackbar(
-                            'Mensaje',
-                            '! No me Gustó...',
-                            duration: const Duration(milliseconds: 2000),
-                          );
-                          //_.deletenotification(index);
-                        },
-                        icon: Icon(
-                          MdiIcons.thumbDown,
-                          color: Colors.white,
-                          size: (MediaQuery.of(context).size.height * 0.04),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: (MediaQuery.of(context).size.height * 0.120),
-                      width: (MediaQuery.of(context).size.width * 0.8),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Icon(
-                                    Icons.delete,
-                                    color: Colors.black,
-                                  ),
-                                  Text(
-                                    titulo,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily: AutofillHints.familyName,
-                                        fontSize: 22),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 5, right: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                        service
-                                            ? contShopp
-                                                .orderDeleteCar[i].nameService
-                                                .toString()
-                                            : contShopp
-                                                .orderDeleteCar[i].nameProduct
-                                                .toString(),
-                                        style: TextStyle(
-                                            fontSize: (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.018),
-                                            fontWeight: FontWeight.w500)),
-                                    Text(
-                                        contShopp.orderDeleteCar[i].hora
-                                            .toString(),
-                                        style: TextStyle(
-                                            fontSize: (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.018),
-                                            fontWeight: FontWeight.w800)),
-                                  ],
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Icon(
-                                    Icons.person,
-                                    color: Color.fromARGB(180, 0, 0, 0),
-                                  ),
-                                  Text(
-                                    contShopp.orderDeleteCar[i].nameProfessional
-                                        .toString(),
-                                    style: TextStyle(
-                                        fontSize: (MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.018),
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Icon(
-                                    Icons.person,
-                                    color: Color.fromARGB(180, 0, 0, 0),
-                                  ),
-                                  Text(
-                                    contShopp.orderDeleteCar[i].nameClient,
-                                    style: TextStyle(
-                                        fontSize: (MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.018),
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: (MediaQuery.of(context).size.height * 0.120),
-                      width: (MediaQuery.of(context).size.width * 0.20),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.white, // Color blanco para el borde
-                            width:
-                                1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                          ),
-                          color: const Color.fromARGB(255, 32, 32, 32),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12))),
-                      child: IconButton(
-                        onPressed: () {
-                          contShopp.orderDelete(contShopp.orderDeleteCar[i].id);
-                          Get.snackbar(
-                            'Mensaje',
-                            'Eliminando solicitud',
-                            duration: const Duration(milliseconds: 2000),
-                          );
-                          // _.deletenotification(index);
-                        },
-                        icon: Icon(
-                          MdiIcons.thumbUp,
-                          color: Colors.white,
-                          size: (MediaQuery.of(context).size.height * 0.04),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 12,
-              )
-            ],
-          ),
-        ),
-      );
-    }
   }
 
   return Column(

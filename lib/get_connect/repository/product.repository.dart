@@ -12,24 +12,30 @@ class ProductRepository extends GetConnect {
     try {
       List<ProductModel> productListCar = [];
       List<ServiceModel> serviceListCar = [];
-      var url =
-          'http://10.0.2.2:8000/api/car_oders?id=8'; //cambiar aqui por servicios en la api
-      // category_branch?branch_id=10
 
+      var url =
+          'http://api.simplifies.cl/api/car_oders?id=10'; //cambiar aqui por servicios en la api
+      // category_branch?branch_id=10
+      //print(url);
       final response = await get(url);
       if (response.statusCode == 200) {
+        // print('codigo 200000000000000000');
         final products = response.body['productscar'];
         if (products != null) {
           for (Map product in products) {
+            //   print('estoy aqui para mapear');
+            // print(jsonEncode(product));
             ProductModel u = ProductModel.fromJson(jsonEncode(product));
             productListCar.add(u);
+            //print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
+            //print(productListCar.length);
           }
         }
 
         final services = response.body['servicescar'];
         if (services != null) {
           for (Map service in services) {
-            ServiceModel u = ServiceModel.fromJson(jsonEncode(service));
+            ServiceModel u = ServiceModel.fromJson(jsonEncode(service)); //todo
             serviceListCar.add(u);
           }
         }
@@ -49,14 +55,16 @@ class ProductRepository extends GetConnect {
     try {
       List<OrderDeleteModel> orderDEL = [];
       var url =
-          'http://10.0.2.2:8000/api/car_order_delete?id=$id_car'; //cambiar aqui por servicios en la api
+          'http://api.simplifies.cl/api/car_order_delete?id=$id_car'; //cambiar aqui por servicios en la api
       // category_branch?branch_id=10
-
+      //print(url);
       final response = await get(url);
       if (response.statusCode == 200) {
+        // print('tambien llegue aqui');
         final products = response.body['carOrderDelete'];
         if (products != null) {
           for (Map product in products) {
+            //  print('aqui mapeandooooo');
             OrderDeleteModel u = OrderDeleteModel.fromJson(jsonEncode(product));
             orderDEL.add(u);
           }
@@ -71,25 +79,34 @@ class ProductRepository extends GetConnect {
 
 //*ESTE METODO ME DEVUELVE LOS PRODUCTOS ASOCIADO A UNA CATEGORIA LA CUAL LA SABEMOS PORQUE MANDAMOS EL ID
   Future getProductCategoryList(int id) async {
+    //print('este es el id: $id');
     try {
       List<ProductModel> productList = [];
       var url =
-          'http://10.0.2.2:8000/api/category_products?id=$id&branch_id=10'; //cambiar aqui por servicios en la api
+          'http://api.simplifies.cl/api/category_products?id=$id&branch_id=10'; //cambiar aqui por servicios en la api
       // category_branch?branch_id=10
+      //print('$url');
 
       final response = await get(url);
+      // print(response.statusCode);
       if (response.statusCode == 200) {
         final products = response.body['category_products'];
         if (products != null) {
+          // print('ok1');
           for (Map product in products) {
+            //  print('ok2');
+            // print(jsonEncode(product));
+
             ProductModel u = ProductModel.fromJson(jsonEncode(product));
             productList.add(u);
+            //print('ok3');
           }
         }
+        // print(productList.length);
         return productList;
       }
     } catch (e) {
-      // print('eroor:$e');
+      //print('eroor:$e');
     }
   }
 
@@ -98,7 +115,7 @@ class ProductRepository extends GetConnect {
     try {
       List<ProductModel> productList = [];
       var url =
-          'http://10.0.2.2:8000/api/product_branch?branch_id=1'; //cambiar aqui por servicios en la api
+          'http://api.simplifies.cl/api/product_branch?branch_id=1'; //cambiar aqui por servicios en la api
 
       final response = await get(url);
       if (response.statusCode == 200) {
@@ -120,13 +137,13 @@ class ProductRepository extends GetConnect {
   Future<int> addOrderCartList(
       client_id, person_id, product_id, service_id) async {
     try {
-      const url = 'http://10.0.2.2:8000/api/order';
+      const url = 'http://api.simplifies.cl/api/order';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
-        'client_id': client_id,
-        'person_id': person_id,
-        'product_id': product_id,
+        'client_id': client_id, //5
+        'person_id': person_id, //3
+        'product_id': product_id, //0
         'service_id': service_id
       };
 
@@ -135,19 +152,20 @@ class ProductRepository extends GetConnect {
       if (response.statusCode == 200) {
         final id_order = response.body['order_id'];
         //print('soy codigo 200 y hice la llamada a la api bien');
+        // print(id_order);
         return id_order;
       } else {
         return -990099;
       }
     } catch (e) {
-      // print('Error');
+      //print('Errorrrrr:$e');
       return -990099;
     }
   }
 
   Future<int> awaitRequestDelete(int id, int request) async {
     try {
-      const url = 'http://10.0.2.2:8000/api/order';
+      const url = 'http://api.simplifies.cl/api/order';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
@@ -157,6 +175,7 @@ class ProductRepository extends GetConnect {
 
       // Realizar la solicitud POST
       final response = await put(url, body);
+      //print('MANDE A ELIMINAR:$body');
       if (response.statusCode == 200) {
         //final id_order = response.body['order_id'];
         return 1;
@@ -170,7 +189,7 @@ class ProductRepository extends GetConnect {
 
   Future<int> orderDeleteCar(id) async {
     try {
-      const url = 'http://10.0.2.2:8000/api/order-destroy';
+      const url = 'http://api.simplifies.cl/api/order-destroy';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
@@ -192,7 +211,7 @@ class ProductRepository extends GetConnect {
   Future<List<CategoryModel>> getCategoryList() async {
     List<CategoryModel> categoryList = [];
     var url =
-        'http://10.0.2.2:8000/api/category_branch?branch_id=1'; //cambiar aqui por servicios en la api
+        'http://api.simplifies.cl/api/category_branch?branch_id=1'; //cambiar aqui por servicios en la api
 
     final response = await get(url);
     if (response.statusCode == 200) {
