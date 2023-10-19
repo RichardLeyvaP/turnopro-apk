@@ -33,7 +33,7 @@ class LoginNewPage extends StatelessWidget {
               flex: 4,
               child: Container(
                 decoration: const BoxDecoration(
-                    color: Color(0xFFFFB05F), //todo
+                    color: Color(0xFFF18254), //todo
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(35),
                       topRight: Radius.circular(35),

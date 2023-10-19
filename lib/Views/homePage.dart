@@ -79,7 +79,7 @@ class _HomePagesState extends State<HomePages> {
                 showUnselectedLabels: false,
                 unselectedItemColor: Colors.white,
                 backgroundColor: const Color.fromARGB(255, 43, 44, 49),
-                fixedColor: const Color(0xFFFFB05F),
+                fixedColor: const Color(0xFFF18254),
                 currentIndex: _selectedIndex,
                 type: BottomNavigationBarType.fixed,
                 onTap: _navigateBottomBar,
@@ -142,7 +142,7 @@ class _HomePagesState extends State<HomePages> {
     String segundos = "";
     String mensaj = "";
     Color colorInicial = Colors.white;
-    Color colorInicialCirculo = const Color(0xFFFFB05F);
+    Color colorInicialCirculo = const Color(0xFFF18254);
     double fontSizeText = (MediaQuery.of(context).size.width * 0.02); //todo3
     final size = (MediaQuery.of(context).size.width * 0.34);
 
@@ -156,7 +156,7 @@ class _HomePagesState extends State<HomePages> {
                 decoration: BoxDecoration(
                   borderRadius:
                       BorderRadius.all(Radius.circular(borderRadiusValue)),
-                  color: const Color(0xFFFFB05F),
+                  color: const Color(0xFFF18254),
                 ),
                 child: SingleChildScrollView(
                   child: Column(
@@ -325,7 +325,7 @@ class _HomePagesState extends State<HomePages> {
                                       width:
                                           1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                                     ),
-                                    color: const Color(0xFFFFB05F),
+                                    color: const Color(0xFFF18254),
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(12)),
                                   ),
@@ -618,7 +618,7 @@ class _HomePagesState extends State<HomePages> {
                                 child: cartsHome(
                                     context,
                                     borderRadiusValue,
-                                    const Color(0xFFFFB05F),
+                                    const Color(0xFFF18254),
                                     colorBottom,
                                     'Convivencia',
                                     'Cumplimiento de Reglas',

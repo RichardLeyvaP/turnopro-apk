@@ -53,7 +53,7 @@ void main() {
 class Myapp extends StatelessWidget {
   Myapp({super.key});
   final LoginController controllerasas = Get.put(LoginController());
-  Color colorPrimario = const Color(0xFFFFB05F); // Color primario appBar
+  Color colorPrimario = const Color(0xFFF18254); // Color primario appBar
   Color colorSecundario =
       const Color.fromARGB(155, 231, 232, 234); // Color secundario
   Color colorPrimario2 =
