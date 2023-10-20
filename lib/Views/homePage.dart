@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-//import 'package:animate_do/animate_do.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:google_fonts/google_fonts.dart';
 //import 'package:lottie/lottie.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
@@ -61,67 +61,70 @@ class _HomePagesState extends State<HomePages> {
       const HomePage(), // Página 4
     ];
 
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 231, 232, 234),
-      appBar: CustomAppBar(),
-      body: _pages[_selectedIndex], // Muestra la página actual
-      //body: homePageBody(borderRadiusValue, context, colorVariable, colorBottom, titleCart, descriptionTitleCart, iconCart),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.all((MediaQuery.of(context).size.height * 0.012)),
-        child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(10),
-                topLeft: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10)),
-            child: BottomNavigationBar(
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
-                unselectedItemColor: Colors.white,
-                backgroundColor: const Color.fromARGB(255, 43, 44, 49),
-                fixedColor: const Color(0xFFF18254),
-                currentIndex: _selectedIndex,
-                type: BottomNavigationBarType.fixed,
-                onTap: _navigateBottomBar,
-                items: [
-                  BottomNavigationBarItem(
-                      icon: Badge(
-                        label: Text('$_selectedIndex'),
-                        child: Icon(
-                          Icons.person,
+    return FadeIn(
+      duration: const Duration(seconds: 2),
+      child: Scaffold(
+        backgroundColor: const Color.fromARGB(255, 231, 232, 234),
+        appBar: CustomAppBar(),
+        body: _pages[_selectedIndex], // Muestra la página actual
+        //body: homePageBody(borderRadiusValue, context, colorVariable, colorBottom, titleCart, descriptionTitleCart, iconCart),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.all((MediaQuery.of(context).size.height * 0.012)),
+          child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(10),
+                  topLeft: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10)),
+              child: BottomNavigationBar(
+                  showSelectedLabels: false,
+                  showUnselectedLabels: false,
+                  unselectedItemColor: Colors.white,
+                  backgroundColor: const Color.fromARGB(255, 43, 44, 49),
+                  fixedColor: const Color(0xFFF18254),
+                  currentIndex: _selectedIndex,
+                  type: BottomNavigationBarType.fixed,
+                  onTap: _navigateBottomBar,
+                  items: [
+                    BottomNavigationBarItem(
+                        icon: Badge(
+                          label: Text('$_selectedIndex'),
+                          child: Icon(
+                            Icons.person,
+                            size: MediaQuery.of(context).size.width * 0.08,
+                          ),
+                        ),
+                        label: 'Perfil'),
+                    BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.storage,
                           size: MediaQuery.of(context).size.width * 0.08,
                         ),
-                      ),
-                      label: 'Perfil'),
-                  BottomNavigationBarItem(
-                      icon: Icon(
-                        Icons.storage,
-                        size: MediaQuery.of(context).size.width * 0.08,
-                      ),
-                      label: 'Agenda'),
-                  BottomNavigationBarItem(
-                      icon: Badge(
-                        label: Text('$_selectedIndex'),
-                        child: Icon(
-                          Icons.notifications,
+                        label: 'Agenda'),
+                    BottomNavigationBarItem(
+                        icon: Badge(
+                          label: Text('$_selectedIndex'),
+                          child: Icon(
+                            Icons.notifications,
+                            size: MediaQuery.of(context).size.width * 0.08,
+                          ),
+                        ),
+                        label: 'Notificaciones'),
+                    BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.bar_chart,
                           size: MediaQuery.of(context).size.width * 0.08,
                         ),
-                      ),
-                      label: 'Notificaciones'),
-                  BottomNavigationBarItem(
+                        label: 'Estadistica'),
+                    BottomNavigationBarItem(
                       icon: Icon(
-                        Icons.bar_chart,
+                        Icons.insert_emoticon,
                         size: MediaQuery.of(context).size.width * 0.08,
                       ),
-                      label: 'Estadistica'),
-                  BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.insert_emoticon,
-                      size: MediaQuery.of(context).size.width * 0.08,
+                      label: 'Home',
                     ),
-                    label: 'Home',
-                  ),
-                ])),
+                  ])),
+        ),
       ),
     );
   }
