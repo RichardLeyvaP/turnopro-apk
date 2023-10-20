@@ -59,13 +59,6 @@ class CoexistenceController extends GetxController {
     return coexistence;
   }
 
-  getSelectCoexistence(index) {
-    (selectCoexistence.contains(coexistence[index]))
-        ? selectCoexistence.remove(coexistence[index])
-        : selectCoexistence.add(coexistence[index]);
-    update();
-  }
-
   getTotalSum() {
     getTotal = getTotal + 5;
 
@@ -82,18 +75,6 @@ class CoexistenceController extends GetxController {
   Future<void> _fetchCoexistenceList() async {
     coexistence = await repository.getCoexistenceList();
     coexistenceListLength = coexistence.length;
-    update();
-  }
-
-  void addCoexistence() {
-    CoexistenceModel newCoexistence = CoexistenceModel(
-        id: 12,
-        name: "Convivencia $coexistenceListLength",
-        username: "Nueva Convivencia");
-    coexistence.add(newCoexistence);
-    coexistenceListLength =
-        coexistence.length; //actualizo la logitud de la lista
-    getTotalSum();
     update();
   }
 

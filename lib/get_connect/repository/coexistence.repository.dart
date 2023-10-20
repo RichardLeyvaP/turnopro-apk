@@ -8,11 +8,11 @@ class CoexistenceRepository extends GetConnect {
   Future<List<CoexistenceModel>> getCoexistenceList() async {
     List<CoexistenceModel> coexistenceList = [];
     var url =
-        'http://jsonplaceholder.typicode.com/users'; //cambiar aqui por servicios en la api
+        'http://api.simplifies.cl/api/rule'; //cambiar aqui por servicios en la api
 
     final response = await get(url);
     if (response.statusCode == 200) {
-      final coexistences = response.body;
+      final coexistences = response.body['rules'];
       for (Map coexistence in coexistences) {
         CoexistenceModel u = CoexistenceModel.fromJson(jsonEncode(coexistence));
         coexistenceList.add(u);

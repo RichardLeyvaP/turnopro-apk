@@ -7,14 +7,15 @@ import 'package:turnopro_apk/Models/services_model.dart';
 class ServiceRepository extends GetConnect {
   Future<List<ServiceModel>> getServiceList() async {
     List<ServiceModel> serviceList = [];
-    var url =
-        'http://jsonplaceholder.typicode.com/users'; //cambiar aqui por servicios en la api
+    // var url =
+    //     'http://api.simplifies.cl/api/person_services?person_id=3'; //cambiar aqui por servicios en la api
+    var url = 'http://api.simplifies.cl/api/person_services?person_id=3';
 
     final response = await get(url);
     if (response.statusCode == 200) {
-      final services = response.body;
-      for (Map service in services) {
-        ServiceModel u = ServiceModel.fromJson(jsonEncode(service));
+      final products = response.body['person_services'];
+      for (Map product in products) {
+        ServiceModel u = ServiceModel.fromJson(jsonEncode(product));
         serviceList.add(u);
       }
       return serviceList;

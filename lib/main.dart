@@ -1,5 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages
-
+//'http://api.simplifies.cl/api/rule'
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -9,14 +9,32 @@ import 'package:turnopro_apk/Controllers/customer.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/main.controller.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
+import 'package:turnopro_apk/Controllers/product.controller.dart';
 import 'package:turnopro_apk/Controllers/service.controller.dart';
+// import 'package:turnopro_apk/Controllers/product.controller.dart';
+import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
+//import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Views/Code-Qr/CodeQrPage.dart';
 import 'package:turnopro_apk/Views/homeResponsiblePage.dart';
+import 'package:turnopro_apk/Views/loginFormPage.dart';
+import 'package:turnopro_apk/Views/loginNewPage.dart';
+import 'package:turnopro_apk/Views/shoppingCartPage.dart';
 import 'package:turnopro_apk/providers.dart';
 
 void main() {
+  // Inicializa y guarda tu controlador en Get
+  ShoppingCartController controllerShoppingCart = ShoppingCartController();
+  Get.put(controllerShoppingCart);
+
+  ServiceController controllerService = ServiceController();
+  Get.put(controllerService);
+
+  ProductController controllerProduct = ProductController();
+  Get.put(controllerProduct);
+
   // Llamada para inicializar Flutter y su enlace con la plataforma
   WidgetsFlutterBinding.ensureInitialized();
   // Bloquear la orientación horizontal
@@ -34,9 +52,8 @@ void main() {
 // ignore: must_be_immutable
 class Myapp extends StatelessWidget {
   Myapp({super.key});
-  final LoginController controller = Get.put(LoginController());
-  Color colorPrimario =
-      const Color.fromARGB(255, 241, 130, 84); // Color primario appBar
+  final LoginController controllerasas = Get.put(LoginController());
+  Color colorPrimario = const Color(0xFFF18254); // Color primario appBar
   Color colorSecundario =
       const Color.fromARGB(155, 231, 232, 234); // Color secundario
   Color colorPrimario2 =
@@ -57,8 +74,8 @@ class Myapp extends StatelessWidget {
                 ),
                 primaryColor: colorPrimario, // Color primario
                 hintColor: colorSecundario,
-                textTheme: GoogleFonts
-                    .poppinsTextTheme(), // Aplicar Poppins a todo el proyecto
+                textTheme: GoogleFonts.poppinsTextTheme(),
+                // Aplicar Poppins a todo el proyecto
                 // Otras configuraciones de tema
               )
             : ThemeData(
@@ -72,9 +89,7 @@ class Myapp extends StatelessWidget {
                     .poppinsTextTheme(), // Aplicar Poppins a todo el proyecto
                 // Otras configuraciones de tema
               ),
-        // initialRoute: '/login',
-        // initialRoute: '/AuthCheck',
-        initialRoute: '/home',
+        initialRoute: '/loginNewPage',
         unknownRoute: GetPage(
           name: '/Error', // Nombre de la ruta de error
           page: () => const Page404(), // Página de error
@@ -91,6 +106,16 @@ class Myapp extends StatelessWidget {
             binding: BindingsBuilder.put(() => LoginController()),
           ),
           GetPage(
+            name: '/loginNewPage',
+            page: () => const LoginNewPage(),
+            binding: BindingsBuilder.put(() => LoginController()),
+          ),
+          GetPage(
+            name: '/LoginFormPage',
+            page: () => LoginFormPage(),
+            binding: BindingsBuilder.put(() => LoginController()),
+          ),
+          GetPage(
             name: '/login',
             page: () => LoginPage(),
             binding: BindingsBuilder.put(() => LoginController()),
@@ -104,7 +129,6 @@ class Myapp extends StatelessWidget {
           GetPage(
             name: '/servicesProductsPage',
             page: () => const ServicesProductsPage(),
-            binding: BindingsBuilder.put(() => ServiceController()),
           ), //ESTA ESTA CARGANDO UNA API
           GetPage(
             name: '/NotificationsPageNew',
@@ -113,7 +137,7 @@ class Myapp extends StatelessWidget {
           ),
           GetPage(
             name: '/clients',
-            page: () => const CustomersPage(),
+            page: () => CustomersPage(),
             binding: BindingsBuilder.put(() => CustomerController()),
           ), //ESTA ESTA CARGANDO UNA API
           GetPage(
@@ -123,6 +147,14 @@ class Myapp extends StatelessWidget {
           ),
           GetPage(name: '/Error', page: () => const Page404()),
           GetPage(name: '/AuthCheck', page: () => const AuthCheck()),
+          // GetPage(name: '/CodeQrPage', page: () => const CodeQrPage()),
+          GetPage(name: '/QRViewExample', page: () => const QRViewPage()),
+          GetPage(name: '/ShoppingCartPage', page: () => ShoppingCartPage()),
+          // GetPage(
+          //   name: '/ProductPage',
+          //   page: () => const CoexistencePage(),
+          //   binding: BindingsBuilder.put(() => ProductController()),
+          // ),
         ],
       );
     });

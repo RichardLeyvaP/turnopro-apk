@@ -1,9 +1,14 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, depend_on_referenced_packages, prefer_typing_uninitialized_variables, no_logic_in_create_state
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/product.controller.dart';
+import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 
 class ProductsBody extends StatefulWidget {
-  const ProductsBody({super.key});
+  const ProductsBody({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ProductsBody> createState() => _ProductsBodyState();
@@ -13,10 +18,16 @@ class _ProductsBodyState extends State<ProductsBody>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  final ShoppingCartController controllerShoppingCart =
+      Get.put(ShoppingCartController());
+
+  final ProductController controllerProduct = Get.find<ProductController>();
+
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(
+        length: controllerProduct.categoryListLength, vsync: this);
   }
 
   @override
@@ -27,181 +38,222 @@ class _ProductsBodyState extends State<ProductsBody>
 
   @override
   Widget build(BuildContext context) {
-    List<String> tabValues = ["Especializados", "Snacks", "Otros"];
+    //*AQUI CREO LA LISTA con los nombres que tiene categorias de productos que vienen de la api
+    List<String> tabValues = [];
 
-    return Column(
-      children: [
-        SizedBox(
-          width: (MediaQuery.of(context).size.width),
-          height: (MediaQuery.of(context).size.width) * 0.09,
-          child: TabBar(
-              labelColor: Colors.black,
-              indicatorColor: const Color.fromARGB(255, 241, 130, 84),
-              controller: _tabController,
-              tabs: [
-                Text(tabValues[0]),
-                Text(tabValues[1]),
-                Text(tabValues[2]),
-              ]),
-        ),
-        SizedBox(
-          height: (MediaQuery.of(context).size.width * 0.005),
-        ),
-        Expanded(
-            child: TabBarView(
-          controller: _tabController,
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  newMethod('assets/images/pngegg.png', 'Coca Cola',
-                      'Coca Cola Max 350ml', 2.559, context),
-                  SizedBox(
-                    height: (MediaQuery.of(context).size.width * 0.02),
-                  ),
-                  newMethod('assets/images/pngegg.png', 'Coca Cola',
-                      'Coca Cola Max 350ml', 2.559, context),
-                  SizedBox(
-                    height: (MediaQuery.of(context).size.width * 0.02),
-                  ),
-                  newMethod('assets/images/pngegg.png', 'Coca Cola',
-                      'Coca Cola Max 350ml', 2.559, context),
-                ],
-              ),
-            ),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+    var tabsID = [];
+    for (int i = 0; i < controllerProduct.categoryListLength; i++) {
+      tabValues.add(controllerProduct.category[i].name);
+      tabsID.add(controllerProduct.category[i].id);
+    }
+    //*AQUI ASIGNO A tabs los nombres que tiene la lista de categorias de productos
+    var tabs2 = <Widget>[];
+    for (int i = 0; i < controllerProduct.categoryListLength; i++) {
+      tabs2.add(Text(tabValues[i]));
+    }
+
+    return GetBuilder<ProductController>(builder: (controllerProduct) {
+      return controllerProduct.isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+              color: Color(0xFFF18254),
+            ))
+          : Column(
               children: [
-                Icon(
-                  Icons.add_business_outlined,
-                  size: 80,
+                SizedBox(
+                  width: (MediaQuery.of(context).size.width),
+                  height: (MediaQuery.of(context).size.width) * 0.09,
+                  child: TabBar(
+                    isScrollable: true,
+                    labelColor: Colors.black,
+                    indicatorColor: const Color(0xFFF18254),
+                    controller: _tabController,
+                    tabs: tabs2,
+                    onTap: (int tabIndex) {
+                      // Llama al método del controlador y pasa el valor deseado
+                      controllerProduct.fetchproductList(tabsID[tabIndex]);
+                    },
+                  ),
                 ),
-                Text(
-                  'Contenido SNACKS',
-                  style: TextStyle(fontSize: 20),
-                ),
+                controllerProduct.productListLength != -99
+                    ? Expanded(
+                        child: TabBarView(
+                        controller: _tabController,
+                        children: List<Widget>.generate(
+                          tabs2.length,
+                          (index) {
+                            return ListView.builder(
+                              itemCount: controllerProduct.productListLength,
+                              itemBuilder: (context, itemIndex) => Column(
+                                children: [
+                                  controllerProduct.productListLength != 0 &&
+                                          controllerProduct.productListLength >
+                                              0
+                                      ? newMethod(
+                                          'assets/images/pngegg.png',
+                                          controllerProduct
+                                              .product[itemIndex].id,
+                                          controllerProduct
+                                              .product[itemIndex].name,
+                                          controllerProduct
+                                              .product[itemIndex].product_exit,
+                                          controllerProduct
+                                              .product[itemIndex].description,
+                                          controllerProduct
+                                              .product[itemIndex].sale_price,
+                                          context,
+                                          controllerShoppingCart,
+                                          itemIndex,
+                                        )
+                                      : controllerProduct.productListLength == 0
+                                          ? const Text('')
+                                          : const Text(
+                                              'Fallo la carga de los datos, revise su coneccion a internet'),
+                                  SizedBox(
+                                    height: (MediaQuery.of(context).size.width *
+                                        0.02),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ))
+                    : const Text(
+                        'Falló la conexion,revise su coneccion de Internet.'),
               ],
-            ),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.addchart_outlined,
-                  size: 80,
-                ),
-                Text(
-                  'Contenido de OTROS',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ],
-            ),
-          ],
-        )),
-      ],
-    );
+            );
+    });
   }
 }
 
-Row newMethod(String addressProduct, String productName, String propertiesName,
-    double priceProduct, BuildContext context) {
+Padding newMethod(
+    String addressProduct,
+    int id,
+    String productName,
+    int productExit,
+    String propertiesName,
+    String priceProduct,
+    BuildContext context,
+    ShoppingCartController controllerShoppingCart,
+    itemIndex) {
   //VARIABLES DE PROPIEDADES DEL WIDGET
   const double borderRadiusValue = 12; //container que carga la imagen
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
-    children: [
-      Container(
-        height: (MediaQuery.of(context).size.height * 0.26),
-        width: (MediaQuery.of(context).size.width * 0.4),
-        decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
-            color: Color.fromARGB(255, 241, 130, 84)),
-        child: FractionallySizedBox(
-          widthFactor: 0.6, // 50% del ancho del contenedor padre
-          heightFactor: 0.65, // 50% del alto del contenedor padre
-          child: Center(
-            child: Image.asset(addressProduct),
+  return Padding(
+    padding: const EdgeInsets.only(left: 10, top: 5, right: 10),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          height: (MediaQuery.of(context).size.height * 0.26),
+          width: (MediaQuery.of(context).size.width * 0.4),
+          decoration: const BoxDecoration(
+              borderRadius:
+                  BorderRadius.all(Radius.circular(borderRadiusValue)),
+              color: Color(0xFFF18254)),
+          child: FractionallySizedBox(
+            widthFactor: 0.6, // 50% del ancho del contenedor padre
+            heightFactor: 0.65, // 50% del alto del contenedor padre
+            child: Center(
+              child: Image.asset(addressProduct),
+            ),
           ),
         ),
-      ),
-      const SizedBox(
-        width: 10,
-      ),
-      SizedBox(
-        height: (MediaQuery.of(context).size.height * 0.26),
-        width: (MediaQuery.of(context).size.width * 0.4),
-        child: Column(
-          //AQUI ES LA PARTE DERECHA DE LOS DATOS DEL PRODUCTO
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                productName,
-                style: TextStyle(
-                    fontSize: (MediaQuery.of(context).size.width * 0.06),
-                    fontWeight: FontWeight.w900),
-              ),
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                propertiesName,
-                style: TextStyle(
-                    fontSize: (MediaQuery.of(context).size.width * 0.03)),
-              ),
-            ),
-            SizedBox(
-              height: (MediaQuery.of(context).size.width * 0.09),
-            ),
-            Text(
-              '$priceProduct',
-              style: TextStyle(
-                  fontSize: (MediaQuery.of(context).size.width * 0.08),
-                  fontWeight: FontWeight.w900),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: (MediaQuery.of(context).size.height * 0.035),
-                  width: (MediaQuery.of(context).size.width * 0.2),
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(95, 46, 20, 20),
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(borderRadiusValue)),
-                    gradient: LinearGradient(
-                      colors: [
-                        Color.fromARGB(255, 238, 234, 234),
-                        Color.fromARGB(255, 134, 134, 136),
-                      ],
-                      stops: [0.0, 0.8],
-                      begin: FractionalOffset.centerRight,
-                      end: FractionalOffset.centerLeft,
+        SizedBox(
+          height: (MediaQuery.of(context).size.height * 0.26),
+          width: (MediaQuery.of(context).size.width * 0.52),
+          child: Column(
+            //AQUI ES LA PARTE DERECHA DE LOS DATOS DEL PRODUCTO
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ListTile(
+                title: Text(
+                  productName,
+                  style: TextStyle(
+                      fontSize: (MediaQuery.of(context).size.width * 0.05),
+                      fontWeight: FontWeight.w900),
+                ),
+                subtitle: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      propertiesName,
+                      style: TextStyle(
+                          fontSize: (MediaQuery.of(context).size.width * 0.03)),
                     ),
-                  ),
-                  child: Center(
-                      child: Text(
-                    'Agregar',
+                    Text(
+                      'Cantidad Disponible: $productExit',
+                      style: TextStyle(
+                          fontSize: (MediaQuery.of(context).size.width * 0.03)),
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                title: Center(
+                  child: Text(
+                    priceProduct,
                     style: TextStyle(
-                        fontSize: (MediaQuery.of(context).size.width * 0.03),
-                        fontWeight: FontWeight.w600),
-                  )),
-                ),
-                CircleAvatar(
-                  radius: (MediaQuery.of(context).size.width *
-                      0.04), // Ajusta este valor según tu preferencia
-                  backgroundColor: const Color.fromARGB(255, 241, 130, 84),
-                  child: Icon(
-                    Icons.check,
-                    color: Colors.white,
-                    size: (MediaQuery.of(context).size.height * 0.03),
+                        fontSize: (MediaQuery.of(context).size.width * 0.06),
+                        fontWeight: FontWeight.w900),
                   ),
                 ),
-              ],
-            ),
-          ],
-        ),
-      )
-    ],
+                subtitle: Padding(
+                  padding: const EdgeInsets.only(top: 10, left: 25),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          controllerShoppingCart.updateShoppingCartValue(
+                              itemIndex, 'product', id);
+                        },
+                        child: Container(
+                          height: (MediaQuery.of(context).size.height * 0.035),
+                          width: (MediaQuery.of(context).size.width * 0.2),
+                          decoration: const BoxDecoration(
+                            color: Color.fromARGB(95, 46, 20, 20),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(borderRadiusValue)),
+                            gradient: LinearGradient(
+                              colors: [
+                                Color.fromARGB(255, 238, 234, 234),
+                                Color.fromARGB(255, 134, 134, 136),
+                              ],
+                              stops: [0.0, 0.8],
+                              begin: FractionalOffset.centerRight,
+                              end: FractionalOffset.centerLeft,
+                            ),
+                          ),
+                          child: Center(
+                              child: Text(
+                            'Agregar',
+                            style: TextStyle(
+                                fontSize:
+                                    (MediaQuery.of(context).size.width * 0.03),
+                                fontWeight: FontWeight.w600),
+                          )),
+                        ),
+                      ),
+                      CircleAvatar(
+                        radius: (MediaQuery.of(context).size.width *
+                            0.04), // Ajusta este valor según tu preferencia
+                        backgroundColor: const Color(0xFFF18254),
+                        child: Icon(
+                          Icons.check,
+                          color: Colors.white,
+                          size: (MediaQuery.of(context).size.height * 0.03),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    ),
   );
 }

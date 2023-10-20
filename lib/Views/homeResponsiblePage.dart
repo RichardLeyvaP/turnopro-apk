@@ -1,10 +1,14 @@
 // ignore_for_file: file_names, no_leading_underscores_for_local_identifiers, depend_on_referenced_packages
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:animate_do/animate_do.dart';
-import 'package:lottie/lottie.dart';
+//import 'package:animate_do/animate_do.dart';
+//import 'package:lottie/lottie.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 
 class HomeResponsiblePages extends StatefulWidget {
   const HomeResponsiblePages({super.key});
@@ -14,6 +18,9 @@ class HomeResponsiblePages extends StatefulWidget {
 }
 
 class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
+  final ShoppingCartController controllerShoppingCart =
+      Get.find<ShoppingCartController>();
+
   final List<Widget> _pages = [
     // homePageBody(borderRadiusValue, context, colorVariable, colorBottom,
     //     titleCart, descriptionTitleCart, iconCart), // Página 0
@@ -23,6 +30,33 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
     const StatisticsPage(), // Página 3
     const HomePage(), // Página 4
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    controllerShoppingCart.loadOrderDeleteCar(10);
+    iniciarLlamadaCada10Segundos();
+  }
+
+  @override
+  void dispose() {
+    // Asegúrate de cancelar el temporizador al eliminar el widget
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  Timer? _timer;
+
+  void iniciarLlamadaCada10Segundos() {
+    // Cancela cualquier temporizador existente para evitar duplicaciones
+    _timer?.cancel();
+
+    // Establece un temporizador que llama a la función cada 20 segundos
+    _timer = Timer.periodic(const Duration(seconds: 20), (Timer timer) {
+      controllerShoppingCart.loadOrderDeleteCar(10);
+    });
+  }
+
 //inicializando en 0 para que cargue de inicio la primera pagina
   int _selectedIndex = 0;
   void _navigateBottomBar(int index) {
@@ -38,7 +72,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
   @override
   Widget build(BuildContext context) {
     double borderRadiusValue = 12;
-    const Color colorVariable = Color.fromARGB(255, 26, 50, 82);
+    const Color colorVariable = Color(0xFF2B3141); //CARAGANDO COLOR HEXADECIMAL
     const Color colorBottom =
         Color.fromARGB(255, 231, 233, 233); // Define el color a través de una
     const iconCart = (Icons.perm_contact_calendar);
@@ -121,7 +155,6 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
 
 //ESTA ES LA PAGINA PRINCIPAL CON LOS CARDS
 //VARIABLES A UTILIZAR
-  final size = 160.0;
   final twoPi = 3.14 * 2;
   Column homePageBody(
       double borderRadiusValue,
@@ -134,28 +167,64 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
     return Column(
       children: [
         Expanded(
-            flex: 1, // 20% del espacio disponible para esta parte
-            // child: bannerProfile(context),
-
+            flex: 10,
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius:
                       BorderRadius.all(Radius.circular(borderRadiusValue)),
-                  color: const Color.fromARGB(255, 26, 50, 82),
+                  color: const Color(0xFF2B3141), //CARAGANDO COLOR HEXADECIMAL,
                 ),
-                child: Center(
-                  child: Lottie.network(
-                      "https://lottie.host/5e657bb8-f8df-44c4-9f43-01638719d288/STiu5BdZGJ.json",
-                      height: (MediaQuery.of(context).size.height * 0.3),
-                      width: (MediaQuery.of(context).size.width * 0.6)),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      /*todo texto arriba */ const Padding(
+                        padding: EdgeInsets.only(left: 8),
+                        child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'Últimas Notificaciones',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white),
+                            )),
+                      ),
+                      const SizedBox(
+                        height: 22,
+                      ),
+                      /*todo cart1 servicios*/ Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8, top: 4, right: 8, bottom: 6),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              GetBuilder<ShoppingCartController>(
+                                  builder: (contShopp) {
+                                if (contShopp.load_request == true) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else {
+                                  return mostrarNombres(context, contShopp);
+                                }
+                              }),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                //https://lottie.host/5e657bb8-f8df-44c4-9f43-01638719d288/STiu5BdZGJ.json
               ),
             )),
         Expanded(
-            flex: 2, // 85% del espacio disponible para esta parte
+            flex: 14, // 85% del espacio disponible para esta parte
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(12, 0, 12, 1),
@@ -163,29 +232,49 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                   color: const Color.fromARGB(255, 231, 232, 234),
                   child: Column(
                     children: [
-                      Row(
+                      const Row(
                         children: [
-                          const Text(
+                          Text(
                             'Dashboard',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700),
                           ),
-                          InkWell(
-                            onTap: () {
-                              Get.toNamed(
-                                '/clients',
-                              );
-                            },
-                            child: const Text(
-                              '     MIS CLIENTES',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.end,
+                          //   crossAxisAlignment: CrossAxisAlignment.end,
+                          //   children: [
+                          //     InkWell(
+                          //       onTap: () {
+                          //         Get.toNamed(
+                          //           '/servicesProductsPage',
+                          //         );
+                          //       },
+                          //       child: const Text(
+                          //         '  Servicio y productos  ',
+                          //         style: TextStyle(
+                          //             color: Colors.black,
+                          //             fontSize: 13,
+                          //             fontWeight: FontWeight.w700),
+                          //       ),
+                          //     ),
+                          //     InkWell(
+                          //       onTap: () {
+                          //         Get.toNamed(
+                          //           '/clients',
+                          //         );
+                          //       },
+                          //       child: const Text(
+                          //         '  Mis clientes  ',
+                          //         style: TextStyle(
+                          //             color: Colors.black,
+                          //             fontSize: 13,
+                          //             fontWeight: FontWeight.w700),
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                         ],
                       ),
                       Column(
@@ -194,11 +283,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               GestureDetector(
-                                onTap: () {
-                                  Get.toNamed(
-                                    '/servicesProductsPage',
-                                  );
-                                },
+                                onTap: () {},
                                 child: cartsHome(
                                     context,
                                     borderRadiusValue,
@@ -272,7 +357,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                                     colorBottom,
                                     'Convivencia',
                                     'Cumplimiento de Reglas',
-                                    Icons.star_border),
+                                    Icons.star),
                               ),
                             ],
                           ),
@@ -298,13 +383,13 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
       iconCart) {
     return Container(
       width: (MediaQuery.of(context).size.width * 0.46), //Tamaño de los Cards
-      height: (MediaQuery.of(context).size.height * 0.24),
+      height: (MediaQuery.of(context).size.height * 0.20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
         color: colorVariable,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -329,7 +414,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                   titleCart,
                   style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 17,
+                      fontSize: 18,
                       fontWeight: FontWeight.w600),
                 ),
                 Text(
@@ -364,7 +449,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      //automaticallyImplyLeading: true, //RLP Oculta la flecha de retroceso
+      automaticallyImplyLeading: false, //RLP Oculta la flecha de retroceso
       elevation: 0,
       backgroundColor: const Color.fromARGB(255, 231, 232, 234),
       title: Row(
@@ -380,13 +465,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 width: 2, // Ajusta el ancho del borde según tus preferencias
               ),
             ),
-            child: Swing(
-              duration: const Duration(seconds: 4),
-              delay: const Duration(seconds: 2),
-              child: CircleAvatar(
-                backgroundImage: AssetImage(imageDirection),
-                radius: 25, // Ajusta el tamaño del círculo aquí
-              ),
+            child: CircleAvatar(
+              backgroundImage: AssetImage(imageDirection),
+              radius: 25, // Ajusta el tamaño del círculo aquí
             ),
           ),
           SizedBox(
@@ -396,28 +477,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Pulse(
-                duration: const Duration(seconds: 5),
-                delay: const Duration(seconds: 2),
-                infinite: true,
-                child: const Text(
-                  'Responsable',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                  ),
+              const Text(
+                'Encargado del Local',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  height: 1.0,
                 ),
               ),
-              BounceInUp(
-                duration: const Duration(seconds: 2),
-                delay: const Duration(seconds: 1),
-                child: Text(
-                  nameUser,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w800,
-                  ),
+              Text(
+                nameUser,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
+                  height: 1.0,
                 ),
               ),
             ],
@@ -429,12 +503,51 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           return InkWell(
             onTap: () {
               _.exit();
-              Get.offAllNamed('/login');
+              Get.offAllNamed('/loginNewPage');
             },
-            child: Lottie.network(
-              "https://lottie.host/f12c9938-f79a-493a-9170-89962542aeca/SQhtYt7Ml2.json",
-              height: 40,
-              width: 40,
+            child: Row(
+              children: [
+                InkWell(
+                  onTap: () {
+                    Get.toNamed(
+                      '/QRViewExample',
+                    );
+                  },
+                  child: CircleAvatar(
+                    radius: 22, // Tamaño del CircleAvatar
+                    backgroundColor: const Color(
+                        0xFF2B3141), // Color de fondo del CircleAvatar
+                    child: Icon(
+                      MdiIcons.qrcodeScan,
+                      size: MediaQuery.of(context).size.width * 0.06,
+                      color: const Color.fromARGB(255, 231, 233, 233),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                InkWell(
+                  onTap: () {
+                    Get.toNamed(
+                      '/loginNewPage',
+                    );
+                  },
+                  child: CircleAvatar(
+                    radius: 22, // Tamaño del CircleAvatar
+                    backgroundColor: const Color(
+                        0xFF2B3141), // Color de fondo del CircleAvatar
+                    child: Icon(
+                      MdiIcons.exitToApp,
+                      size: MediaQuery.of(context).size.width * 0.06,
+                      color: const Color.fromARGB(255, 231, 233, 233),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 18,
+                )
+              ],
             ),
           );
         }),
@@ -493,3 +606,220 @@ class HomePage extends StatelessWidget {
 
 //****************************************************************************** */
 //****************************************************************************** */
+Column mostrarNombres(context, ShoppingCartController contShopp) {
+  List<Widget> widgets = [];
+  String titulo = "";
+  bool service = false;
+  /* if (fin > 2) {
+    fin = 2;
+  }*/
+
+  for (int i = 0; i < contShopp.orderDeleteCar.length; i++) {
+    if (contShopp.orderDeleteCar[i].is_product == 1) {
+      titulo = 'Eliminación de Producto';
+      service = false;
+    } else {
+      titulo = 'Eliminación de Servicio';
+      service = true;
+    }
+    widgets.add(
+      FittedBox(
+        fit: BoxFit.contain,
+        child: Column(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    height: (MediaQuery.of(context).size.height * 0.120),
+                    width: (MediaQuery.of(context).size.width * 0.20),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.white, // Color blanco para el borde
+                        width:
+                            1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                      ),
+                      color: const Color.fromARGB(255, 241, 130, 84),
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        contShopp.requestDelete(
+                            contShopp.orderDeleteCar[i].id, 0);
+                        Get.snackbar(
+                          'Mensaje',
+                          '! No me Gustó...',
+                          duration: const Duration(milliseconds: 2000),
+                        );
+                        //_.deletenotification(index);
+                      },
+                      icon: Icon(
+                        MdiIcons.thumbDown,
+                        color: Colors.white,
+                        size: (MediaQuery.of(context).size.height * 0.04),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: (MediaQuery.of(context).size.height * 0.120),
+                    width: (MediaQuery.of(context).size.width * 0.8),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 30),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.delete,
+                                  color: Colors.black,
+                                ),
+                                Text(
+                                  titulo,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: AutofillHints.familyName,
+                                      fontSize: 22),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 5, right: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                      service
+                                          ? contShopp
+                                              .orderDeleteCar[i].nameService
+                                              .toString()
+                                          : contShopp
+                                              .orderDeleteCar[i].nameProduct
+                                              .toString(),
+                                      style: TextStyle(
+                                          fontSize: (MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.018),
+                                          fontWeight: FontWeight.w500)),
+                                  Text(
+                                      contShopp.orderDeleteCar[i].hora
+                                          .toString(),
+                                      style: TextStyle(
+                                          fontSize: (MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.018),
+                                          fontWeight: FontWeight.w800)),
+                                ],
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.person,
+                                  color: Color.fromARGB(180, 0, 0, 0),
+                                ),
+                                Text(
+                                  contShopp.orderDeleteCar[i].nameProfessional
+                                      .toString(),
+                                  style: TextStyle(
+                                      fontSize:
+                                          (MediaQuery.of(context).size.height *
+                                              0.018),
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.person,
+                                  color: Color.fromARGB(180, 0, 0, 0),
+                                ),
+                                Text(
+                                  contShopp.orderDeleteCar[i].nameClient,
+                                  style: TextStyle(
+                                      fontSize:
+                                          (MediaQuery.of(context).size.height *
+                                              0.018),
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: (MediaQuery.of(context).size.height * 0.120),
+                    width: (MediaQuery.of(context).size.width * 0.20),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white, // Color blanco para el borde
+                          width:
+                              1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                        ),
+                        color: const Color.fromARGB(255, 32, 32, 32),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(12))),
+                    child: IconButton(
+                      onPressed: () {
+                        contShopp.orderDelete(contShopp.orderDeleteCar[i].id);
+                        Get.snackbar(
+                          'Mensaje',
+                          'Eliminando solicitud',
+                          duration: const Duration(milliseconds: 2000),
+                        );
+                        // _.deletenotification(index);
+                      },
+                      icon: Icon(
+                        MdiIcons.thumbUp,
+                        color: Colors.white,
+                        size: (MediaQuery.of(context).size.height * 0.04),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 12,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+  if (contShopp.orderDeleteCar.isEmpty) {
+    widgets.add(const Center(
+      child: Text(
+        'No hay solicitudes a eliminar.',
+        style: TextStyle(color: Colors.white, fontSize: 20),
+      ),
+    ));
+  }
+
+  return Column(
+    children: widgets,
+  );
+}

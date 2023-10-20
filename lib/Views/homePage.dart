@@ -2,9 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:animate_do/animate_do.dart';
-import 'package:lottie/lottie.dart';
+//import 'package:animate_do/animate_do.dart';
+import 'package:google_fonts/google_fonts.dart';
+//import 'package:lottie/lottie.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
+//import 'package:google_fonts/google_fonts.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 
 class HomePages extends StatefulWidget {
   const HomePages({super.key});
@@ -23,6 +27,9 @@ class _HomePagesState extends State<HomePages> {
     const StatisticsPage(), // Página 3
     const HomePage(), // Página 4
   ];
+
+  final ShoppingCartController controllerShoppingCart =
+      Get.find<ShoppingCartController>();
 //inicializando en 0 para que cargue de inicio la primera pagina
   int _selectedIndex = 0;
   void _navigateBottomBar(int index) {
@@ -38,7 +45,7 @@ class _HomePagesState extends State<HomePages> {
   @override
   Widget build(BuildContext context) {
     double borderRadiusValue = 12;
-    const Color colorVariable = Color.fromARGB(255, 26, 50, 82);
+    const Color colorVariable = Color(0xFF2B3141); //CARAGANDO COLOR HEXADECIMAL
     const Color colorBottom =
         Color.fromARGB(255, 231, 233, 233); // Define el color a través de una
     const iconCart = (Icons.perm_contact_calendar);
@@ -72,7 +79,7 @@ class _HomePagesState extends State<HomePages> {
                 showUnselectedLabels: false,
                 unselectedItemColor: Colors.white,
                 backgroundColor: const Color.fromARGB(255, 43, 44, 49),
-                fixedColor: const Color.fromARGB(255, 241, 130, 84),
+                fixedColor: const Color(0xFFF18254),
                 currentIndex: _selectedIndex,
                 type: BottomNavigationBarType.fixed,
                 onTap: _navigateBottomBar,
@@ -121,7 +128,6 @@ class _HomePagesState extends State<HomePages> {
 
 //ESTA ES LA PAGINA PRINCIPAL CON LOS CARDS
 //VARIABLES A UTILIZAR
-  final size = 160.0;
   final twoPi = 3.14 * 2;
   Column homePageBody(
       double borderRadiusValue,
@@ -131,138 +137,357 @@ class _HomePagesState extends State<HomePages> {
       String titleCart,
       String descriptionTitleCart,
       IconData iconCart) {
-    int totalSeconds = 125; // Tiempo total en segundos
+    int totalSeconds = 150; // Tiempo total en segundos
     int remainingSeconds = totalSeconds; // Inicialmente,
     String segundos = "";
-    String mensaj = "Tiempo Restante";
+    String mensaj = "";
     Color colorInicial = Colors.white;
-    Color colorInicialCirculo = const Color.fromARGB(255, 241, 130, 84);
-    double fontSizeText = 10;
+    Color colorInicialCirculo = const Color(0xFFF18254);
+    double fontSizeText = (MediaQuery.of(context).size.width * 0.02); //todo3
+    final size = (MediaQuery.of(context).size.width * 0.34);
 
     return Column(
       children: [
         Expanded(
-            flex: 1, // 20% del espacio disponible para esta parte
-            // child: bannerProfile(context),
-
+            flex: 10,
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius:
                       BorderRadius.all(Radius.circular(borderRadiusValue)),
-                  color: const Color.fromARGB(255, 241, 130, 84),
+                  color: const Color(0xFFF18254),
                 ),
-                child: Center(
-                  // This Tween Animation Builder is Just For Demonstration, Do not use this AS-IS in Projects
-                  // Create and Animation Controller and Control the animation that way.
-                  child: TweenAnimationBuilder(
-                    tween: Tween(begin: 0.0, end: 1.0),
-                    duration: Duration(seconds: totalSeconds),
-                    builder: (context, value, _) {
-                      remainingSeconds = (totalSeconds - (totalSeconds * value))
-                          .ceil(); // Calcula los segundos restantes
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      /*todo texto arriba */ const Padding(
+                        padding: EdgeInsets.only(left: 8),
+                        child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'Cliente en espera',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white),
+                            )),
+                      ),
+                      /*todo cronometro*/ Center(
+                        // This Tween Animation Builder is Just For Demonstration, Do not use this AS-IS in Projects
+                        // Create and Animation Controller and Control the animation that way.
+                        child: TweenAnimationBuilder(
+                          tween: Tween(begin: 0.0, end: 1.0),
+                          duration: Duration(seconds: totalSeconds),
+                          builder: (context, value, _) {
+                            remainingSeconds =
+                                (totalSeconds - (totalSeconds * value))
+                                    .ceil(); // Calcula los segundos restantes
 
-                      int minutes = remainingSeconds ~/
-                          60; // Calcula los minutos restantes
-                      int seconds = remainingSeconds %
-                          60; // Calcula los segundos restantes
-                      if (seconds < 10) {
-                        segundos = "0";
-                      } else {
-                        segundos = "";
-                      }
-                      if (minutes == 0 && seconds == 0) {
-                        mensaj = 'FINALIZADO';
-                        colorInicial = Colors.red;
-                        colorInicialCirculo = Colors.white;
-                        fontSizeText = 14;
-                      } else {
-                        mensaj = "Tiempo Restante";
-                      }
+                            int minutes = remainingSeconds ~/
+                                60; // Calcula los minutos restantes
+                            int seconds = remainingSeconds %
+                                60; // Calcula los segundos restantes
+                            if (seconds < 10) {
+                              segundos = "0";
+                            } else {
+                              segundos = "";
+                            }
+                            if (minutes == 0 && seconds == 0) {
+                              mensaj = 'FINALIZADO';
+                              colorInicial = Colors.red;
+                              colorInicialCirculo = Colors.white;
+                              fontSizeText = 10;
+                            } else {
+                              mensaj = "";
+                            }
 
-                      return SizedBox(
-                        width: size,
-                        height: size,
-                        child: Stack(
-                          children: [
-                            ShaderMask(
-                              shaderCallback: (rect) {
-                                return SweepGradient(
-                                    startAngle: 0.0,
-                                    endAngle: twoPi,
-                                    stops: [value, value],
-                                    // 0.0 , 0.5 , 0.5 , 1.0
-                                    center: Alignment.center,
-                                    colors: [
-                                      Colors.white,
-                                      Colors.grey.withAlpha(55)
-                                    ]).createShader(rect);
-                              },
-                              child: Container(
-                                width: size,
-                                height: size,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        image: Image.asset(
-                                                "assets/images/radial_scale.png")
-                                            .image)),
+                            return SizedBox(
+                              width: size,
+                              height: size,
+                              child: Stack(
+                                children: [
+                                  ShaderMask(
+                                    shaderCallback: (rect) {
+                                      return SweepGradient(
+                                          startAngle: 0.0,
+                                          endAngle: twoPi,
+                                          stops: [value, value],
+                                          // 0.0 , 0.5 , 0.5 , 1.0
+                                          center: Alignment.center,
+                                          colors: [
+                                            Colors.white,
+                                            Colors.grey.withAlpha(55)
+                                          ]).createShader(rect);
+                                    },
+                                    child: Container(
+                                      width: size,
+                                      height: size,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                              image: Image.asset(
+                                                      "assets/images/radial_scale.png")
+                                                  .image)),
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Container(
+                                      width: size - 40,
+                                      height: size - 40,
+                                      decoration: BoxDecoration(
+                                          color: colorInicialCirculo,
+                                          shape: BoxShape.circle),
+                                      child: Center(
+                                          child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                '$minutes :',
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        (MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.05), //todo2
+                                                    fontFamily:
+                                                        GoogleFonts.orbitron()
+                                                            .fontFamily,
+                                                    color: colorInicial,
+                                                    fontWeight:
+                                                        FontWeight.w900),
+                                              ),
+                                              Text(
+                                                "$segundos$seconds",
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        (MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.05),
+                                                    color: colorInicial,
+                                                    fontFamily:
+                                                        GoogleFonts.orbitron()
+                                                            .fontFamily,
+                                                    fontWeight:
+                                                        FontWeight.w900),
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            mensaj,
+                                            style: TextStyle(
+                                                fontSize: fontSizeText,
+                                                color: colorInicial,
+                                                fontWeight: FontWeight.w900),
+                                          ),
+                                        ],
+                                      )),
+                                    ),
+                                  )
+                                ],
                               ),
+                            );
+                          },
+                        ),
+                      ),
+                      /*todo cart*/ Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8, top: 4, right: 8, bottom: 6),
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
                             ),
-                            Center(
-                              child: Container(
-                                width: size - 40,
-                                height: size - 40,
-                                decoration: BoxDecoration(
-                                    color: colorInicialCirculo,
-                                    shape: BoxShape.circle),
-                                child: Center(
+                            child: Row(
+                              //todo
+                              children: [
+                                Container(
+                                  height: (MediaQuery.of(context).size.height *
+                                      0.120),
+                                  width: (MediaQuery.of(context).size.width *
+                                      0.20),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors
+                                          .white, // Color blanco para el borde
+                                      width:
+                                          1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                                    ),
+                                    color: const Color(0xFFF18254),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(12)),
+                                  ),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      Get.snackbar(
+                                        'Mensaje',
+                                        'Cancelar',
+                                        duration:
+                                            const Duration(milliseconds: 2000),
+                                      );
+                                      //_.deletenotification(index);
+                                    },
+                                    icon: Icon(
+                                      MdiIcons.thumbDown,
+                                      color: Colors.white,
+                                      size:
+                                          (MediaQuery.of(context).size.height *
+                                              0.04),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  height: (MediaQuery.of(context).size.height *
+                                      0.120),
+                                  width:
+                                      (MediaQuery.of(context).size.width * 0.8),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(12)),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 30, top: 14),
                                     child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                          MainAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          '$minutes :',
-                                          style: TextStyle(
-                                              fontSize: 45,
-                                              color: colorInicial,
-                                              fontWeight: FontWeight.w900),
+                                        const Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              Icons.person,
+                                              color: Colors.black,
+                                              size: 22,
+                                            ),
+                                            Text(
+                                              'William Miller',
+                                              style: TextStyle(
+                                                  height: 1.0,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontFamily:
+                                                      AutofillHints.familyName,
+                                                  fontSize: 22),
+                                            ),
+                                          ],
                                         ),
-                                        Text(
-                                          "$segundos$seconds",
-                                          style: TextStyle(
-                                              fontSize: 45,
-                                              color: colorInicial,
-                                              fontWeight: FontWeight.w900),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 2),
+                                          child: Text('Masaje capilar',
+                                              style: TextStyle(
+                                                  height: 1.0,
+                                                  fontSize:
+                                                      (MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.018),
+                                                  fontWeight: FontWeight.w500)),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 2),
+                                          child: Text(
+                                            'Corte de Cabello',
+                                            style: TextStyle(
+                                                height: 1.0,
+                                                fontSize:
+                                                    (MediaQuery.of(context)
+                                                            .size
+                                                            .height *
+                                                        0.018),
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Icon(Icons.timer,
+                                                color: Colors.black,
+                                                size: (MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.016)),
+                                            Text(
+                                              '15 Minutos',
+                                              style: TextStyle(
+                                                  height: 1.0,
+                                                  color: Colors.black,
+                                                  fontSize:
+                                                      (MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.016),
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                    Text(
-                                      mensaj,
-                                      style: TextStyle(
-                                          fontSize: fontSizeText,
-                                          color: colorInicial,
-                                          fontWeight: FontWeight.w900),
+                                  ),
+                                ),
+                                Container(
+                                  height: (MediaQuery.of(context).size.height *
+                                      0.120),
+                                  width: (MediaQuery.of(context).size.width *
+                                      0.20),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors
+                                            .white, // Color blanco para el borde
+                                        width:
+                                            1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                                      ),
+                                      color:
+                                          const Color.fromARGB(255, 32, 32, 32),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(12))),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      Get.snackbar(
+                                        'Mensaje',
+                                        'Aceptar',
+                                        duration:
+                                            const Duration(milliseconds: 2000),
+                                      );
+                                      // _.deletenotification(index);
+                                    },
+                                    icon: Icon(
+                                      MdiIcons.thumbUp,
+                                      color: Colors.white,
+                                      size:
+                                          (MediaQuery.of(context).size.height *
+                                              0.04),
                                     ),
-                                  ],
-                                )),
-                              ),
-                            )
-                          ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
                 ),
               ),
             )),
         Expanded(
-            flex: 2, // 85% del espacio disponible para esta parte
+            flex: 14, // 85% del espacio disponible para esta parte
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(12, 0, 12, 1),
@@ -279,19 +504,37 @@ class _HomePagesState extends State<HomePages> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700),
                           ),
-                          InkWell(
-                            onTap: () {
-                              Get.toNamed(
-                                '/clients',
-                              );
-                            },
-                            child: const Text(
-                              '     MIS CLIENTES',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700),
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                onTap: () async {
+                                  Get.dialog(
+                                    const Center(
+                                      child: CircularProgressIndicator(
+                                        color:
+                                            Color.fromARGB(255, 241, 130, 84),
+                                      ),
+                                    ),
+                                    barrierDismissible: true,
+                                  );
+                                  await controllerShoppingCart.loadCart();
+                                  // Oculta el indicador de carga y navega a la página del carrito
+                                  Get.back(); // Cierra el diálogo
+                                  Get.toNamed(
+                                    '/servicesProductsPage',
+                                  );
+                                },
+                                child: const Text(
+                                  '  Servicio y productos  ',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -303,7 +546,7 @@ class _HomePagesState extends State<HomePages> {
                               GestureDetector(
                                 onTap: () {
                                   Get.toNamed(
-                                    '/servicesProductsPage',
+                                    '/clients',
                                   );
                                 },
                                 child: cartsHome(
@@ -375,11 +618,11 @@ class _HomePagesState extends State<HomePages> {
                                 child: cartsHome(
                                     context,
                                     borderRadiusValue,
-                                    const Color.fromARGB(255, 241, 130, 84),
+                                    const Color(0xFFF18254),
                                     colorBottom,
                                     'Convivencia',
                                     'Cumplimiento de Reglas',
-                                    Icons.star_border),
+                                    Icons.star),
                               ),
                             ],
                           ),
@@ -405,13 +648,13 @@ class _HomePagesState extends State<HomePages> {
       iconCart) {
     return Container(
       width: (MediaQuery.of(context).size.width * 0.46), //Tamaño de los Cards
-      height: (MediaQuery.of(context).size.height * 0.24),
+      height: (MediaQuery.of(context).size.height * 0.20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
         color: colorVariable,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -436,7 +679,7 @@ class _HomePagesState extends State<HomePages> {
                   titleCart,
                   style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 17,
+                      fontSize: 18,
                       fontWeight: FontWeight.w600),
                 ),
                 Text(
@@ -471,7 +714,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      //automaticallyImplyLeading: true, //RLP Oculta la flecha de retroceso
+      automaticallyImplyLeading: false, //RLP Oculta la flecha de retroceso
       elevation: 0,
       backgroundColor: const Color.fromARGB(255, 231, 232, 234),
       title: Row(
@@ -487,13 +730,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 width: 2, // Ajusta el ancho del borde según tus preferencias
               ),
             ),
-            child: Swing(
-              duration: const Duration(seconds: 4),
-              delay: const Duration(seconds: 2),
-              child: CircleAvatar(
-                backgroundImage: AssetImage(imageDirection),
-                radius: 25, // Ajusta el tamaño del círculo aquí
-              ),
+            child: CircleAvatar(
+              backgroundImage: AssetImage(imageDirection),
+              radius: 25, // Ajusta el tamaño del círculo aquí
             ),
           ),
           SizedBox(
@@ -502,29 +741,23 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ), // Espacio entre la imagen y el texto
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Pulse(
-                duration: const Duration(seconds: 5),
-                delay: const Duration(seconds: 2),
-                infinite: true,
-                child: const Text(
-                  'Hola',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                  ),
+              const Text(
+                'Hola',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  height: 1.0,
                 ),
               ),
-              BounceInUp(
-                duration: const Duration(seconds: 2),
-                delay: const Duration(seconds: 1),
-                child: Text(
-                  nameUser,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w800,
-                  ),
+              Text(
+                nameUser,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
+                  height: 1.0,
                 ),
               ),
             ],
@@ -536,12 +769,49 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           return InkWell(
             onTap: () {
               _.exit();
-              Get.offAllNamed('/login');
+              Get.offAllNamed('/loginNewPage');
             },
-            child: Lottie.network(
-              "https://lottie.host/f12c9938-f79a-493a-9170-89962542aeca/SQhtYt7Ml2.json",
-              height: 40,
-              width: 40,
+            child: Row(
+              children: [
+                InkWell(
+                  onTap: () {
+                    Get.toNamed(
+                      '/QRViewExample',
+                    );
+                  },
+                  child: CircleAvatar(
+                    radius: 22, // Tamaño del CircleAvatar
+                    backgroundColor: const Color(
+                        0xFF2B3141), // Color de fondo del CircleAvatar
+                    child: Icon(
+                      MdiIcons.qrcodeScan,
+                      size: MediaQuery.of(context).size.width * 0.06,
+                      color: const Color.fromARGB(255, 231, 233, 233),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                InkWell(
+                  onTap: () {
+                    Get.offAllNamed('/loginNewPage');
+                  },
+                  child: CircleAvatar(
+                    radius: 22, // Tamaño del CircleAvatar
+                    backgroundColor: const Color(
+                        0xFF2B3141), // Color de fondo del CircleAvatar
+                    child: Icon(
+                      MdiIcons.exitToApp,
+                      size: MediaQuery.of(context).size.width * 0.06,
+                      color: const Color.fromARGB(255, 231, 233, 233),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 18,
+                )
+              ],
             ),
           );
         }),
