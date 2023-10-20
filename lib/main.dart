@@ -22,6 +22,7 @@ import 'package:turnopro_apk/Views/homeResponsiblePage.dart';
 import 'package:turnopro_apk/Views/loginFormPage.dart';
 import 'package:turnopro_apk/Views/loginNewPage.dart';
 import 'package:turnopro_apk/Views/shoppingCartPage.dart';
+import 'package:turnopro_apk/Views/splash/splash.dart';
 import 'package:turnopro_apk/providers.dart';
 
 void main() {
@@ -89,12 +90,16 @@ class Myapp extends StatelessWidget {
                     .poppinsTextTheme(), // Aplicar Poppins a todo el proyecto
                 // Otras configuraciones de tema
               ),
-        initialRoute: '/loginNewPage',
+        initialRoute: '/SplashPage',
         unknownRoute: GetPage(
           name: '/Error', // Nombre de la ruta de error
           page: () => const Page404(), // Página de error
         ),
         getPages: [
+          GetPage(
+            name: '/SplashPage',
+            page: () => const SplashPage(),
+          ),
           GetPage(
             name: '/home',
             page: () => const HomePages(),
