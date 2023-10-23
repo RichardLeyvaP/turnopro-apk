@@ -216,7 +216,8 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                                       child: CircularProgressIndicator(),
                                     );
                                   } else {
-                                    return mostrarNombres(context, contShopp);
+                                    return showRequestsDelete(
+                                        context, contShopp);
                                   }
                                 }),
                               ],
@@ -612,7 +613,7 @@ class HomePage extends StatelessWidget {
 
 //****************************************************************************** */
 //****************************************************************************** */
-Column mostrarNombres(context, ShoppingCartController contShopp) {
+Column showRequestsDelete(context, ShoppingCartController contShopp) {
   List<Widget> widgets = [];
   String titulo = "";
   bool service = false;

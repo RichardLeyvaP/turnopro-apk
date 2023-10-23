@@ -90,13 +90,27 @@ class CustomersPage extends GetView<CustomerController> {
               : ListView.builder(
                   itemCount: 6, //_.customerListLength,
                   itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.only(left: 10, top: 6, right: 10),
+                    padding: EdgeInsets.fromLTRB(
+                        (MediaQuery.of(context).size.height * 0.013),
+                        (MediaQuery.of(context).size.height * 0.006),
+                        (MediaQuery.of(context).size.height * 0.013),
+                        (MediaQuery.of(context).size.height * 0.006)),
                     child: Container(
                       decoration: _.selectCustomer.contains(_.customers[index])
-                          ? const BoxDecoration(
+                          ? BoxDecoration(
+                              border: Border.all(width: 0.1),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                              gradient: LinearGradient(
+                                  const BorderRadius.all(Radius.circular(8)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.7),
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                  offset: const Offset(-5,
+                                      5), // Ajusta los valores para personalizar la sombra
+                                ),
+                              ],
+                              gradient: const LinearGradient(
                                 colors: [
                                   Color.fromARGB(255, 231, 232, 234),
                                   Color.fromARGB(255, 243, 182, 138),
@@ -105,10 +119,21 @@ class CustomersPage extends GetView<CustomerController> {
                                 begin: FractionalOffset.centerRight,
                                 end: FractionalOffset.centerLeft,
                               ))
-                          : const BoxDecoration(
-                              color: Color.fromARGB(255, 240, 240, 238),
+                          : BoxDecoration(
+                              border: Border.all(width: 0.1),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.7),
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                  offset: const Offset(-5,
+                                      5), // Ajusta los valores para personalizar la sombra
+                                ),
+                              ],
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(8))),
+                                  const BorderRadius.all(Radius.circular(10)),
+                            ),
                       child: ListTile(
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
