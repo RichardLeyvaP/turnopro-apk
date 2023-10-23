@@ -114,8 +114,13 @@ class ServicesBodyPage extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(_.services[index].name
-                                                  .toString()),
+                                              Text(
+                                                _.services[index].name
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w800),
+                                              ),
                                               Text(
                                                 _.services[index].price_service
                                                     .toString(),
@@ -126,7 +131,7 @@ class ServicesBodyPage extends StatelessWidget {
                                                                 .height *
                                                             0.03),
                                                     fontWeight:
-                                                        FontWeight.w700),
+                                                        FontWeight.w800),
                                               ),
                                             ],
                                           ),

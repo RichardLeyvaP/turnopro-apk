@@ -21,6 +21,7 @@ import 'package:turnopro_apk/Views/Code-Qr/CodeQrPage.dart';
 import 'package:turnopro_apk/Views/homeResponsiblePage.dart';
 import 'package:turnopro_apk/Views/loginFormPage.dart';
 import 'package:turnopro_apk/Views/loginNewPage.dart';
+import 'package:turnopro_apk/Views/professional/notificationsPage.dart';
 import 'package:turnopro_apk/Views/shoppingCartPage.dart';
 import 'package:turnopro_apk/Views/splash/splash.dart';
 import 'package:turnopro_apk/providers.dart';
@@ -137,7 +138,12 @@ class Myapp extends StatelessWidget {
           ), //ESTA ESTA CARGANDO UNA API
           GetPage(
             name: '/NotificationsPageNew',
-            page: () => const NotificationsPageNew(),
+            page: () => NotificationsPageNew(),
+            binding: BindingsBuilder.put(() => NotificationController()),
+          ),
+          GetPage(
+            name: '/NotificationsPageProf',
+            page: () => NotificationsPageProf(),
             binding: BindingsBuilder.put(() => NotificationController()),
           ),
           GetPage(
