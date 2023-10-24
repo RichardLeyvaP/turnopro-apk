@@ -23,7 +23,6 @@ import 'package:turnopro_apk/Views/loginFormPage.dart';
 import 'package:turnopro_apk/Views/loginNewPage.dart';
 import 'package:turnopro_apk/Views/professional/notificationsPage.dart';
 import 'package:turnopro_apk/Views/shoppingCartPage.dart';
-import 'package:turnopro_apk/Views/splash/splash.dart';
 import 'package:turnopro_apk/providers.dart';
 
 void main() {
@@ -76,7 +75,20 @@ class Myapp extends StatelessWidget {
                 ),
                 primaryColor: colorPrimario, // Color primario
                 hintColor: colorSecundario,
-                textTheme: GoogleFonts.poppinsTextTheme(),
+                textTheme: GoogleFonts.poppinsTextTheme(
+                    /* const TextTheme(
+                    displayLarge:
+                        TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+                    titleMedium: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                    ),
+                    titleSmall: TextStyle(
+                        fontSize: 12, color: Color.fromARGB(148, 0, 0, 0)),
+                    bodyLarge: TextStyle(fontSize: 17.0, fontFamily: 'Hind'),
+                  ),*/
+                    ),
+
                 // Aplicar Poppins a todo el proyecto
                 // Otras configuraciones de tema
               )
@@ -89,6 +101,7 @@ class Myapp extends StatelessWidget {
                 hintColor: colorSecundario2,
                 textTheme: GoogleFonts
                     .poppinsTextTheme(), // Aplicar Poppins a todo el proyecto
+
                 // Otras configuraciones de tema
               ),
         initialRoute: '/SplashPage',

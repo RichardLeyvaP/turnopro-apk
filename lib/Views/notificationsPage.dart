@@ -401,29 +401,17 @@ class NotificationsPageNew extends StatelessWidget {
                       ),
                     ],
                   )
-                : Center(
+                : const Center(
                     //*AQUI ESTA EL CODIGO DE CUANDO NO HAY NOTIFICACIONES
                     child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.no_backpack_outlined),
                           Text('No hay Notificaciones'),
                         ],
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Get.snackbar(
-                            'Mensaje',
-                            'INSERTADO CORRECTAMENTE',
-                            backgroundColor:
-                                const Color.fromARGB(92, 11, 226, 22),
-                            duration: const Duration(milliseconds: 2000),
-                          );
-                          _.addNotification();
-                        },
                       ),
                     ],
                   ));

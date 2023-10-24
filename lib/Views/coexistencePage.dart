@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:get/get.dart';
 
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+//import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class CoexistencePage extends StatelessWidget {
   const CoexistencePage({super.key});
@@ -20,7 +20,15 @@ class CoexistencePage extends StatelessWidget {
     }
     //DECLARACION DE VARIABLES
     const double borderRadiusValue = 12;
-
+    List<int> typeCoexistence = [
+      0,
+      1,
+      2,
+      1,
+      0,
+      2,
+      0,
+    ]; //todo esto es cargado de la db, esto solo para modelar ca carga de los ico
     return Scaffold(
       appBar: AppBar(
         leading: Row(
@@ -68,6 +76,9 @@ class CoexistencePage extends StatelessWidget {
             : _.coexistenceListLength > 0
                 ? Column(
                     children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
                       Expanded(
                         flex:
                             heightFlexBody, // 85% del espacio disponible para esta parte
@@ -155,6 +166,7 @@ class CoexistencePage extends StatelessWidget {
                                                                   .toString(),
                                                               style:
                                                                   const TextStyle(
+                                                                fontSize: 16,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w800,
@@ -166,8 +178,12 @@ class CoexistencePage extends StatelessWidget {
                                                                       index]
                                                                   .description
                                                                   .toString(),
+                                                              maxLines:
+                                                                  2, // Limita el texto a 2 líneas
+                                                              overflow: TextOverflow
+                                                                  .ellipsis, // Agrega los tres puntos suspensivos
                                                               style: const TextStyle(
-                                                                  fontSize: 13,
+                                                                  fontSize: 14,
                                                                   color: Color
                                                                       .fromARGB(
                                                                           148,
@@ -180,14 +196,34 @@ class CoexistencePage extends StatelessWidget {
                                                       ),
                                                     ],
                                                   ),
-                                                  _.selectCoexistence.contains(
-                                                          _.coexistence[index])
+                                                  typeCoexistence[index] == 0
                                                       ? const Icon(
-                                                          Icons.stars_outlined,
-                                                          color: Colors.red,
-                                                          size: 65,
+                                                          Icons.star,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              170,
+                                                              169,
+                                                              169),
+                                                          size: 50,
                                                         )
-                                                      : Icon(MdiIcons.abacus),
+                                                      : typeCoexistence[
+                                                                  index] ==
+                                                              1
+                                                          ? const Icon(
+                                                              Icons.star,
+                                                              color: Colors.red,
+                                                              size: 50,
+                                                            )
+                                                          : const Icon(
+                                                              Icons.star,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      241,
+                                                                      130,
+                                                                      84),
+                                                              size: 50,
+                                                            )
                                                 ],
                                               )),
                                         ),
@@ -199,7 +235,7 @@ class CoexistencePage extends StatelessWidget {
                     ],
                   )
                 : const Center(
-                    //*AQUI ESTA EL CODIGO DE CUANDO NO HAY NOTIFICACIONES
+                    //*AQUI ESTA EL CODIGO DE CUANDO NO HAY Convivencias
                     child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -207,7 +243,7 @@ class CoexistencePage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.no_backpack_outlined),
-                          Text('No hay Notificaciones'),
+                          Text('No hay Convivencias'),
                         ],
                       ),
                     ],

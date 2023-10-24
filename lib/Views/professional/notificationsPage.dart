@@ -67,6 +67,9 @@ class NotificationsPageProf extends StatelessWidget {
             : _.notificationListLength > 0
                 ? Column(
                     children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
                       Expanded(
                         flex:
                             heightFlexBody, // 85% del espacio disponible para esta parte
@@ -147,7 +150,7 @@ class NotificationsPageProf extends StatelessWidget {
                                               : (MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  0.115),
+                                                  0.12),
                                           width: (MediaQuery.of(context)
                                                   .size
                                                   .width *
@@ -217,30 +220,27 @@ class NotificationsPageProf extends StatelessWidget {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               children: [
-                                                const Text(
-                                                  'Eliminación de Servicio',
-                                                  style: TextStyle(
+                                                const Padding(
+                                                  padding:
+                                                      EdgeInsets.only(left: 2),
+                                                  child: Text(
+                                                    'Eliminación de Servicio',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
                                                       fontWeight:
-                                                          FontWeight.w800),
+                                                          FontWeight.w800,
+                                                      height: 1.0,
+                                                    ),
+                                                  ),
                                                 ),
                                                 Text(
                                                   '8.000',
                                                   style: TextStyle(
-                                                      fontSize: _
-                                                              .selectNotification
-                                                              .contains(
-                                                                  _.notification[
-                                                                      index])
-                                                          ? (MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .height *
-                                                              0.03)
-                                                          : (MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .height *
-                                                              0.022),
+                                                      fontSize: (MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .height *
+                                                          0.022),
                                                       fontWeight:
                                                           FontWeight.w700),
                                                 ),
@@ -250,7 +250,19 @@ class NotificationsPageProf extends StatelessWidget {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                const Text('Masaje capilar'),
+                                                const Padding(
+                                                  padding:
+                                                      EdgeInsets.only(left: 2),
+                                                  child: Text(
+                                                    'Masaje capilar',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Color.fromARGB(
+                                                          148, 0, 0, 0),
+                                                      height: 1.0,
+                                                    ),
+                                                  ),
+                                                ),
                                                 Column(
                                                   children: [
                                                     Row(
@@ -266,18 +278,19 @@ class NotificationsPageProf extends StatelessWidget {
                                                                         context)
                                                                     .size
                                                                     .height *
-                                                                0.016)),
-                                                        Text(
+                                                                0.02)),
+                                                        const Text(
                                                           'Paula Rego',
                                                           style: TextStyle(
-                                                              fontSize: (MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .height *
-                                                                  0.014),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
+                                                            fontSize: 14,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    148,
+                                                                    0,
+                                                                    0,
+                                                                    0),
+                                                            height: 1.0,
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
@@ -291,25 +304,28 @@ class NotificationsPageProf extends StatelessWidget {
                                                               MainAxisAlignment
                                                                   .end,
                                                           children: [
-                                                            Icon(Icons.person,
+                                                            Icon(
+                                                                Icons
+                                                                    .person_2_outlined,
                                                                 color: Colors
                                                                     .black,
                                                                 size: (MediaQuery.of(
                                                                             context)
                                                                         .size
                                                                         .height *
-                                                                    0.016)),
-                                                            Text(
+                                                                    0.02)),
+                                                            const Text(
                                                               'Wiliam Miller',
                                                               style: TextStyle(
-                                                                  fontSize: (MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.014),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
+                                                                fontSize: 14,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        148,
+                                                                        0,
+                                                                        0,
+                                                                        0),
+                                                                height: 1.0,
+                                                              ),
                                                             ),
                                                           ],
                                                         ),
@@ -394,29 +410,17 @@ class NotificationsPageProf extends StatelessWidget {
                       ),
                     ],
                   )
-                : Center(
+                : const Center(
                     //*AQUI ESTA EL CODIGO DE CUANDO NO HAY NOTIFICACIONES
                     child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.no_backpack_outlined),
                           Text('No hay Notificaciones'),
                         ],
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Get.snackbar(
-                            'Mensaje',
-                            'INSERTADO CORRECTAMENTE',
-                            backgroundColor:
-                                const Color.fromARGB(92, 11, 226, 22),
-                            duration: const Duration(milliseconds: 2000),
-                          );
-                          _.addNotification();
-                        },
                       ),
                     ],
                   ));
