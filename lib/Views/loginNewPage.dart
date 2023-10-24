@@ -34,7 +34,7 @@ class LoginNewPage extends StatelessWidget {
                 ),
               )),
           Expanded(
-              flex: 4,
+              flex: 5,
               child: FadeIn(
                 duration: const Duration(seconds: 1),
                 delay: const Duration(milliseconds: 600),
@@ -47,89 +47,84 @@ class LoginNewPage extends StatelessWidget {
                       )),
                   child: Padding(
                     padding:
-                        const EdgeInsets.only(top: 60, left: 16, right: 16),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Bienvenido',
-                            style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.w900,
-                                fontFamily: String.fromEnvironment(
-                                    AutofillHints.addressCity)),
-                          ),
-                          const SizedBox(
-                            height: 12,
-                          ),
-                          const Text(
-                            'Estamos emocionados de tenerte como parte de nuestro equipo,para comenzar a trabajar presione QR SCANNER,si no estás trabajando y necesitas revisar tus estadisticas,agendas,etc. presione LOGIN',
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ElevatedButton(
-                                  style: ButtonStyle(
-                                    padding: MaterialStateProperty.all<
-                                        EdgeInsetsGeometry>(
-                                      const EdgeInsets.symmetric(
-                                          //vertical: 16.0,
-                                          horizontal:
-                                              60.0), // Ajusta el padding
-                                    ),
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            Colors.black),
-                                    // Añadir más propiedades de estilo aquí
+                        const EdgeInsets.only(top: 50, left: 16, right: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Bienvenido',
+                          style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.w900,
+                              fontFamily: String.fromEnvironment(
+                                  AutofillHints.addressCity)),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        const Text(
+                          'Estamos emocionados de tenerte como parte de nuestro equipo,para comenzar a trabajar presione QR SCANNER,si no estás trabajando y necesitas revisar tus estadisticas,agendas,etc. presione LOGIN',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ElevatedButton(
+                                style: ButtonStyle(
+                                  padding: MaterialStateProperty.all<
+                                      EdgeInsetsGeometry>(
+                                    const EdgeInsets.symmetric(
+                                        //vertical: 16.0,
+                                        horizontal: 60.0), // Ajusta el padding
                                   ),
-                                  onPressed: () {
-                                    Get.toNamed(
-                                      '/LoginFormPage',
-                                    );
-                                  },
-                                  child: const Text(
-                                    'LOGIN',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w800),
-                                  )),
-                              ElevatedButton(
-                                  style: ButtonStyle(
-                                    padding: MaterialStateProperty.all<
-                                        EdgeInsetsGeometry>(
-                                      const EdgeInsets.symmetric(
-                                          //vertical: 16.0,
-                                          horizontal:
-                                              50.0), // Ajusta el padding
-                                    ),
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            const Color.fromARGB(
-                                                255, 248, 246, 246)),
-                                    // Añadir más propiedades de estilo aquí
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.black),
+                                  // Añadir más propiedades de estilo aquí
+                                ),
+                                onPressed: () {
+                                  Get.toNamed(
+                                    '/LoginFormPage',
+                                  );
+                                },
+                                child: const Text(
+                                  'LOGIN',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800),
+                                )),
+                            ElevatedButton(
+                                style: ButtonStyle(
+                                  padding: MaterialStateProperty.all<
+                                      EdgeInsetsGeometry>(
+                                    const EdgeInsets.symmetric(
+                                        //vertical: 16.0,
+                                        horizontal: 50.0), // Ajusta el padding
                                   ),
-                                  onPressed: () {
-                                    Get.toNamed(
-                                      '/QRViewExample',
-                                    );
-                                  },
-                                  child: const Text(
-                                    'QR SCANNER',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w800),
-                                  )),
-                            ],
-                          ),
-                        ],
-                      ),
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      const Color.fromARGB(255, 248, 246, 246)),
+                                  // Añadir más propiedades de estilo aquí
+                                ),
+                                onPressed: () {
+                                  Get.toNamed(
+                                    '/QRViewExample',
+                                  );
+                                },
+                                child: const Text(
+                                  'QR SCANNER',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w800),
+                                )),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),

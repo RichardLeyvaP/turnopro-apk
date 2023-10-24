@@ -147,9 +147,10 @@ class _HomePagesState extends State<HomePages> {
     Color colorInicial = Colors.white;
     Color colorInicialCirculo = const Color(0xFFF18254);
     double fontSizeText = (MediaQuery.of(context).size.width * 0.02); //todo3
-    final size = (MediaQuery.of(context).size.width * 0.34);
+    final sizeClock = (MediaQuery.of(context).size.width * 0.3);
 
     return Column(
+      //Cart anaranjado grande inicial que tiene el cronometro
       children: [
         Expanded(
             flex: 10,
@@ -161,475 +162,452 @@ class _HomePagesState extends State<HomePages> {
                       BorderRadius.all(Radius.circular(borderRadiusValue)),
                   color: const Color(0xFFF18254),
                 ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      /*todo texto arriba */ const Padding(
-                        padding: EdgeInsets.only(left: 8),
-                        child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'Cliente en espera',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white),
-                            )),
-                      ),
-                      /*todo cronometro*/ Center(
-                        // This Tween Animation Builder is Just For Demonstration, Do not use this AS-IS in Projects
-                        // Create and Animation Controller and Control the animation that way.
-                        child: TweenAnimationBuilder(
-                          tween: Tween(begin: 0.0, end: 1.0),
-                          duration: Duration(seconds: totalSeconds),
-                          builder: (context, value, _) {
-                            remainingSeconds =
-                                (totalSeconds - (totalSeconds * value))
-                                    .ceil(); // Calcula los segundos restantes
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    /*todo texto arriba */ const Padding(
+                      padding: EdgeInsets.only(left: 8),
+                      child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Cliente en espera',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white),
+                          )),
+                    ),
+                    /*todo cronometro*/ Center(
+                      child: TweenAnimationBuilder(
+                        tween: Tween(begin: 0.0, end: 1.0),
+                        duration: Duration(seconds: totalSeconds),
+                        builder: (context, value, _) {
+                          remainingSeconds =
+                              (totalSeconds - (totalSeconds * value))
+                                  .ceil(); // Calcula los segundos restantes
 
-                            int minutes = remainingSeconds ~/
-                                60; // Calcula los minutos restantes
-                            int seconds = remainingSeconds %
-                                60; // Calcula los segundos restantes
-                            if (seconds < 10) {
-                              segundos = "0";
-                            } else {
-                              segundos = "";
-                            }
-                            if (minutes == 0 && seconds == 0) {
-                              mensaj = 'FINALIZADO';
-                              colorInicial = Colors.red;
-                              colorInicialCirculo = Colors.white;
-                              fontSizeText = 10;
-                            } else {
-                              mensaj = "";
-                            }
+                          int minutes = remainingSeconds ~/
+                              60; // Calcula los minutos restantes
+                          int seconds = remainingSeconds %
+                              60; // Calcula los segundos restantes
+                          if (seconds < 10) {
+                            segundos = "0";
+                          } else {
+                            segundos = "";
+                          }
+                          if (minutes == 0 && seconds == 0) {
+                            mensaj = 'FINALIZADO';
+                            colorInicial = Colors.red;
+                            colorInicialCirculo = Colors.white;
+                            fontSizeText = 10;
+                          } else {
+                            mensaj = "";
+                          }
 
-                            return SizedBox(
-                              width: size,
-                              height: size,
-                              child: Stack(
-                                children: [
-                                  ShaderMask(
-                                    shaderCallback: (rect) {
-                                      return SweepGradient(
-                                          startAngle: 0.0,
-                                          endAngle: twoPi,
-                                          stops: [value, value],
-                                          // 0.0 , 0.5 , 0.5 , 1.0
-                                          center: Alignment.center,
-                                          colors: [
-                                            Colors.white,
-                                            Colors.grey.withAlpha(55)
-                                          ]).createShader(rect);
-                                    },
-                                    child: Container(
-                                      width: size,
-                                      height: size,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                              image: Image.asset(
-                                                      "assets/images/radial_scale.png")
-                                                  .image)),
-                                    ),
+                          return SizedBox(
+                            width: sizeClock,
+                            height: sizeClock,
+                            child: Stack(
+                              children: [
+                                ShaderMask(
+                                  shaderCallback: (rect) {
+                                    return SweepGradient(
+                                        startAngle: 0.0,
+                                        endAngle: twoPi,
+                                        stops: [value, value],
+                                        // 0.0 , 0.5 , 0.5 , 1.0
+                                        center: Alignment.center,
+                                        colors: [
+                                          Colors.white,
+                                          Colors.grey.withAlpha(55)
+                                        ]).createShader(rect);
+                                  },
+                                  child: Container(
+                                    width: sizeClock,
+                                    height: sizeClock,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                            image: Image.asset(
+                                                    "assets/images/radial_scale.png")
+                                                .image)),
                                   ),
-                                  Center(
-                                    child: Container(
-                                      width: size - 40,
-                                      height: size - 40,
-                                      decoration: BoxDecoration(
-                                          color: colorInicialCirculo,
-                                          shape: BoxShape.circle),
-                                      child: Center(
-                                          child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                ),
+                                Center(
+                                  child: Container(
+                                    width: sizeClock - 40,
+                                    height: sizeClock - 40,
+                                    decoration: BoxDecoration(
+                                        color: colorInicialCirculo,
+                                        shape: BoxShape.circle),
+                                    child: Center(
+                                        child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              '$minutes :',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      (MediaQuery.of(context)
+                                                              .size
+                                                              .width *
+                                                          0.05), //todo2
+                                                  fontFamily:
+                                                      GoogleFonts.orbitron()
+                                                          .fontFamily,
+                                                  color: colorInicial,
+                                                  fontWeight: FontWeight.w900),
+                                            ),
+                                            Text(
+                                              "$segundos$seconds",
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      (MediaQuery.of(context)
+                                                              .size
+                                                              .width *
+                                                          0.05),
+                                                  color: colorInicial,
+                                                  fontFamily:
+                                                      GoogleFonts.orbitron()
+                                                          .fontFamily,
+                                                  fontWeight: FontWeight.w900),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          mensaj,
+                                          style: TextStyle(
+                                              fontSize: fontSizeText,
+                                              color: colorInicial,
+                                              fontWeight: FontWeight.w900),
+                                        ),
+                                      ],
+                                    )),
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    /*todo cart*/ Padding(
+                      padding: const EdgeInsets.only(
+                          left: 8, top: 8, right: 8, bottom: 6),
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                          ),
+                          child: Row(
+                            //todo
+                            children: [
+                              Container(
+                                height: (MediaQuery.of(context).size.height *
+                                    0.115),
+                                width:
+                                    (MediaQuery.of(context).size.width * 0.20),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors
+                                        .white, // Color blanco para el borde
+                                    width:
+                                        1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                                  ),
+                                  color: const Color(0xFFF18254),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(12)),
+                                ),
+                                child: IconButton(
+                                  onPressed: () {
+                                    Get.snackbar(
+                                      'Mensaje',
+                                      'Cancelar',
+                                      duration:
+                                          const Duration(milliseconds: 2000),
+                                    );
+                                    //_.deletenotification(index);
+                                  },
+                                  icon: Icon(
+                                    MdiIcons.thumbDown,
+                                    color: Colors.white,
+                                    size: (MediaQuery.of(context).size.height *
+                                        0.04),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: (MediaQuery.of(context).size.height *
+                                    0.115),
+                                width:
+                                    (MediaQuery.of(context).size.width * 0.8),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)),
+                                ),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 30, top: 8),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
                                         children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                '$minutes :',
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        (MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.05), //todo2
-                                                    fontFamily:
-                                                        GoogleFonts.orbitron()
-                                                            .fontFamily,
-                                                    color: colorInicial,
-                                                    fontWeight:
-                                                        FontWeight.w900),
-                                              ),
-                                              Text(
-                                                "$segundos$seconds",
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        (MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.05),
-                                                    color: colorInicial,
-                                                    fontFamily:
-                                                        GoogleFonts.orbitron()
-                                                            .fontFamily,
-                                                    fontWeight:
-                                                        FontWeight.w900),
-                                              ),
-                                            ],
+                                          Icon(
+                                            Icons.person,
+                                            color: Colors.black,
+                                            size: 22,
                                           ),
                                           Text(
-                                            mensaj,
+                                            'William Miller',
                                             style: TextStyle(
-                                                fontSize: fontSizeText,
-                                                color: colorInicial,
-                                                fontWeight: FontWeight.w900),
+                                                height: 1.0,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 20),
                                           ),
                                         ],
-                                      )),
-                                    ),
-                                  )
-                                ],
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.only(left: 2),
+                                        child: Text('Masaje capilar',
+                                            style: TextStyle(
+                                              height: 1.0,
+                                              fontSize: 17,
+                                              color:
+                                                  Color.fromARGB(180, 0, 0, 0),
+                                            )),
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.only(left: 2),
+                                        child: Text(
+                                          'Corte de Cabello',
+                                          style: TextStyle(
+                                            height: 1.0,
+                                            fontSize: 17,
+                                            color: Color.fromARGB(180, 0, 0, 0),
+                                          ),
+                                        ),
+                                      ),
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Icon(Icons.timer,
+                                              color: const Color.fromARGB(
+                                                  180, 0, 0, 0),
+                                              size: (MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.016)),
+                                          const Text('15 Minutos',
+                                              style: TextStyle(
+                                                height: 1.2,
+                                                fontSize: 14,
+                                                color: Color.fromARGB(
+                                                    180, 0, 0, 0),
+                                              )),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            );
-                          },
-                        ),
-                      ),
-                      /*todo cart*/ Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8, top: 4, right: 8, bottom: 6),
-                        child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
-                            ),
-                            child: Row(
-                              //todo
-                              children: [
-                                Container(
-                                  height: (MediaQuery.of(context).size.height *
-                                      0.120),
-                                  width: (MediaQuery.of(context).size.width *
-                                      0.20),
-                                  decoration: BoxDecoration(
+                              Container(
+                                height: (MediaQuery.of(context).size.height *
+                                    0.115),
+                                width:
+                                    (MediaQuery.of(context).size.width * 0.20),
+                                decoration: BoxDecoration(
                                     border: Border.all(
                                       color: Colors
                                           .white, // Color blanco para el borde
                                       width:
                                           1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                                     ),
-                                    color: const Color(0xFFF18254),
+                                    color:
+                                        const Color.fromARGB(255, 32, 32, 32),
                                     borderRadius: const BorderRadius.all(
-                                        Radius.circular(12)),
-                                  ),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      Get.snackbar(
-                                        'Mensaje',
-                                        'Cancelar',
-                                        duration:
-                                            const Duration(milliseconds: 2000),
-                                      );
-                                      //_.deletenotification(index);
-                                    },
-                                    icon: Icon(
-                                      MdiIcons.thumbDown,
-                                      color: Colors.white,
-                                      size:
-                                          (MediaQuery.of(context).size.height *
-                                              0.04),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  height: (MediaQuery.of(context).size.height *
-                                      0.120),
-                                  width:
-                                      (MediaQuery.of(context).size.width * 0.8),
-                                  decoration: const BoxDecoration(
+                                        Radius.circular(12))),
+                                child: IconButton(
+                                  onPressed: () {
+                                    Get.snackbar(
+                                      'Mensaje',
+                                      'Aceptar',
+                                      duration:
+                                          const Duration(milliseconds: 2000),
+                                    );
+                                    // _.deletenotification(index);
+                                  },
+                                  icon: Icon(
+                                    MdiIcons.thumbUp,
                                     color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(12)),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 30, top: 14),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        const Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Icon(
-                                              Icons.person,
-                                              color: Colors.black,
-                                              size: 22,
-                                            ),
-                                            Text(
-                                              'William Miller',
-                                              style: TextStyle(
-                                                  height: 1.0,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontFamily:
-                                                      AutofillHints.familyName,
-                                                  fontSize: 22),
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 2),
-                                          child: Text('Masaje capilar',
-                                              style: TextStyle(
-                                                  height: 1.0,
-                                                  fontSize:
-                                                      (MediaQuery.of(context)
-                                                              .size
-                                                              .height *
-                                                          0.018),
-                                                  fontWeight: FontWeight.w500)),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 2),
-                                          child: Text(
-                                            'Corte de Cabello',
-                                            style: TextStyle(
-                                                height: 1.0,
-                                                fontSize:
-                                                    (MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        0.018),
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Icon(Icons.timer,
-                                                color: Colors.black,
-                                                size: (MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.016)),
-                                            Text(
-                                              '15 Minutos',
-                                              style: TextStyle(
-                                                  height: 1.0,
-                                                  color: Colors.black,
-                                                  fontSize:
-                                                      (MediaQuery.of(context)
-                                                              .size
-                                                              .height *
-                                                          0.016),
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                    size: (MediaQuery.of(context).size.height *
+                                        0.04),
                                   ),
                                 ),
-                                Container(
-                                  height: (MediaQuery.of(context).size.height *
-                                      0.120),
-                                  width: (MediaQuery.of(context).size.width *
-                                      0.20),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors
-                                            .white, // Color blanco para el borde
-                                        width:
-                                            1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                                      ),
-                                      color:
-                                          const Color.fromARGB(255, 32, 32, 32),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(12))),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      Get.snackbar(
-                                        'Mensaje',
-                                        'Aceptar',
-                                        duration:
-                                            const Duration(milliseconds: 2000),
-                                      );
-                                      // _.deletenotification(index);
-                                    },
-                                    icon: Icon(
-                                      MdiIcons.thumbUp,
-                                      color: Colors.white,
-                                      size:
-                                          (MediaQuery.of(context).size.height *
-                                              0.04),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             )),
         Expanded(
             flex: 14, // 85% del espacio disponible para esta parte
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(12, 0, 12, 1),
-                child: Container(
-                  color: const Color.fromARGB(255, 231, 232, 234),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          const Text(
-                            'Dashboard',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              InkWell(
-                                onTap: () async {
-                                  Get.dialog(
-                                    const Center(
-                                      child: CircularProgressIndicator(
-                                        color:
-                                            Color.fromARGB(255, 241, 130, 84),
-                                      ),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 0, 12, 1),
+              child: Container(
+                color: const Color.fromARGB(255, 231, 232, 234),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        const Text(
+                          'Dashboard',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                Get.dialog(
+                                  const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Color.fromARGB(255, 241, 130, 84),
                                     ),
-                                    barrierDismissible: true,
-                                  );
-                                  await controllerShoppingCart.loadCart();
-                                  // Oculta el indicador de carga y navega a la página del carrito
-                                  Get.back(); // Cierra el diálogo
-                                  Get.toNamed(
-                                    '/servicesProductsPage',
-                                  );
-                                },
-                                child: const Text(
-                                  '  Servicio y productos  ',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700),
-                                ),
+                                  ),
+                                  barrierDismissible: true,
+                                );
+                                await controllerShoppingCart.loadCart();
+                                // Oculta el indicador de carga y navega a la página del carrito
+                                Get.back(); // Cierra el diálogo
+                                Get.toNamed(
+                                  '/servicesProductsPage',
+                                );
+                              },
+                              child: const Text(
+                                '  Servicio y productos  ',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w700),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Get.toNamed(
-                                    '/clients',
-                                  );
-                                },
-                                child: cartsHome(
-                                    context,
-                                    borderRadiusValue,
-                                    colorVariable,
-                                    colorBottom,
-                                    titleCart,
-                                    descriptionTitleCart,
-                                    iconCart),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Get.toNamed(
-                                    '/NotificationsPageProf',
-                                  );
-                                },
-                                child: cartsHome(
-                                    context,
-                                    borderRadiusValue,
-                                    const Color.fromARGB(255, 81, 93, 117),
-                                    colorBottom,
-                                    'Notificaciones',
-                                    'Tus Notificaciones',
-                                    Icons.notifications),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: (MediaQuery.of(context).size.height * 0.01),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Get.snackbar(
-                                    'Mensaje',
-                                    'Aqui van las Estadisticas',
-                                    duration:
-                                        const Duration(milliseconds: 2500),
-                                    showProgressIndicator: true,
-                                    progressIndicatorBackgroundColor:
-                                        const Color.fromARGB(255, 81, 93, 117),
-                                    progressIndicatorValueColor:
-                                        const AlwaysStoppedAnimation(
-                                            Color.fromARGB(255, 241, 130, 84)),
-                                    overlayBlur: 3,
-                                  );
-                                },
-                                child: cartsHome(
-                                    context,
-                                    borderRadiusValue,
-                                    const Color.fromARGB(255, 177, 174, 174),
-                                    colorBottom,
-                                    'Estadisticas',
-                                    'Revisa Tus Ingresos',
-                                    Icons.bar_chart),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Get.toNamed(
-                                    '/CoexistencePage',
-                                  );
-                                },
-                                child: cartsHome(
-                                    context,
-                                    borderRadiusValue,
-                                    const Color(0xFFF18254),
-                                    colorBottom,
-                                    'Convivencia',
-                                    'Cumplimiento de Reglas',
-                                    Icons.star),
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Get.toNamed(
+                                  '/clients',
+                                );
+                              },
+                              child: cartsHome(
+                                  context,
+                                  borderRadiusValue,
+                                  colorVariable,
+                                  colorBottom,
+                                  titleCart,
+                                  descriptionTitleCart,
+                                  iconCart),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Get.toNamed(
+                                  '/NotificationsPageProf',
+                                );
+                              },
+                              child: cartsHome(
+                                  context,
+                                  borderRadiusValue,
+                                  const Color.fromARGB(255, 81, 93, 117),
+                                  colorBottom,
+                                  'Notificaciones',
+                                  'Tus Notificaciones',
+                                  Icons.notifications),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: (MediaQuery.of(context).size.height * 0.01),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Get.snackbar(
+                                  'Mensaje',
+                                  'Aqui van las Estadisticas',
+                                  duration: const Duration(milliseconds: 2500),
+                                  showProgressIndicator: true,
+                                  progressIndicatorBackgroundColor:
+                                      const Color.fromARGB(255, 81, 93, 117),
+                                  progressIndicatorValueColor:
+                                      const AlwaysStoppedAnimation(
+                                          Color.fromARGB(255, 241, 130, 84)),
+                                  overlayBlur: 3,
+                                );
+                              },
+                              child: cartsHome(
+                                  context,
+                                  borderRadiusValue,
+                                  const Color.fromARGB(255, 177, 174, 174),
+                                  colorBottom,
+                                  'Estadisticas',
+                                  'Revisa Tus Ingresos',
+                                  Icons.bar_chart),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Get.toNamed(
+                                  '/CoexistencePage',
+                                );
+                              },
+                              child: cartsHome(
+                                  context,
+                                  borderRadiusValue,
+                                  const Color(0xFFF18254),
+                                  colorBottom,
+                                  'Convivencia',
+                                  'Cumplimiento de Reglas',
+                                  Icons.star),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               ),
             )),

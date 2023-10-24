@@ -9,8 +9,17 @@ class ProductController extends GetxController {
   //LLAMANDO AL CONTROLADOR
   ProductController() {
     _initializeData();
-    // Llamar al método asincrónico en el constructor
   }
+//DECLARACION DE VARIABLES
+  ProductRepository repository = ProductRepository();
+  int shoppingCart = 0;
+  int idInicial = 0;
+  int productListLength = 0;
+  int categoryListLength = 0;
+  List<ProductModel> product = []; // Lista de Notificaciones
+  List<CategoryModel> category = []; // Lista de Notificaciones
+  List<ProductModel> selectproduct = []; //Notificaciones seleccionados vacia
+  bool isLoading = true;
 
   @override
   void onReady() {
@@ -21,34 +30,10 @@ class ProductController extends GetxController {
     });
   }
 
-  ProductRepository repository = ProductRepository();
-  int shoppingCart = 0;
-
   void updateAppBarValue(int newValue) {
     shoppingCart += newValue;
     update();
   }
-
-  //  RxInt shoppingCart = 0.obs;
-
-  // void updateAppBarValue(int newValue) {
-  //   shoppingCart.value += newValue;
-  // }
-
-  bool yaEntre = false;
-  double getTotal = 20.0;
-  int numero = 5;
-  int idInicial = 0;
-  int productListLength = 0;
-  int categoryListLength = 0;
-
-  List<ProductModel> product = []; // Lista de Notificaciones
-  List<CategoryModel> category = []; // Lista de Notificaciones
-
-  List<ProductModel> selectproduct =
-      []; // Lista de Notificaciones seleccionados vacia
-  int time = 30;
-  bool isLoading = true;
 
   Future<void> fetchproductList(index) async {
     try {
@@ -87,30 +72,12 @@ class ProductController extends GetxController {
         idInicial); // Llama a fetchproductList después de obtener idInicial
   }
 
-  void calculateTime() {
-    if (time > 60) {
-      //controlando que el tiempo no sea mayor que 60 min
-      time = 60;
-    }
-    if (time < 0) {
-      //controlando que el tiempo no sea negativo
-      time = 0;
-    }
-    update();
-  }
-
   getList() {
     return product;
   }
 
   getCategoryList() {
     return category;
-  }
-
-  getTotalSum() {
-    getTotal = getTotal + 5;
-
-    update();
   }
 
   //Future<List<UserModel>> userList() async => await repository.getUserList();
@@ -126,7 +93,6 @@ class ProductController extends GetxController {
 
       if (selectproduct.contains(product[index])) {
         selectproduct.removeWhere((products) => products == product[index]);
-        getTotal = getTotal - 5;
       }
     }
     product.removeAt(index);
@@ -143,7 +109,6 @@ class ProductController extends GetxController {
       product.removeWhere((element) => selectproduct.contains(element));
       productListLength = product.length;
       selectproduct = [];
-      getTotal = getTotal - 5;
       update();
     }
   }
@@ -152,7 +117,6 @@ class ProductController extends GetxController {
     product = [];
     selectproduct = [];
     productListLength = product.length;
-    getTotal = 0.0;
     update();
   }
 }

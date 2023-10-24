@@ -11,21 +11,22 @@ class ShoppingCartController extends GetxController {
   ProductRepository productRepository = ProductRepository();
   ServiceRepository serviceRepository = ServiceRepository();
 
+//DECLARACION DE VARIABLES
   List<ProductModel> productCart = [], selectproduct = []; // Lista de product
   List<ServiceModel> serviceCart = [], selectservice = []; // Lista de service
   List<OrderDeleteModel> orderDeleteCar = [];
-
   List<int> requestDeleteOrder = []; // id de las ordenes solicitadas a eliminar
-
   List<int> productCarr = [];
-
   int internetError = 0;
+  double getTotalServices = 0;
+  double getTotalProduct = 0;
+  double totalPrice = 0.0;
   int productListLength = 0;
   int serviceListLength = 0;
   int shoppingCart = 0;
-  double totalPrice = 0.0;
   int responseId = 0;
   bool load_request = false;
+  bool isLoading = true;
 
   @override
   void onReady() {
@@ -95,7 +96,19 @@ class ShoppingCartController extends GetxController {
     }
   }
 
+  getTotalServicesProduct_Sum(String type, double x) {
+    if (type == 'service') {
+      getTotalServices = getTotalServices + x;
+    } else if (type == 'product') {
+      //todo revisar la suma de los precios del producto
+      getTotalProduct = getTotalProduct + x;
+    }
+    totalPrice = getTotalServices + getTotalProduct;
+    update();
+  }
+
   intentarConexion() {
+    //TODO REVISAR ESTA FUNCION BIEN CONEXION INTERNET
     try {
       _fetchServiceList();
       _fetchProductList();
@@ -140,8 +153,6 @@ class ShoppingCartController extends GetxController {
           client_id, person_id, product_id, service_id);
       if (responseId != -990099) {
         productCarr.add(responseId);
-        // print('longitud.....');
-        // print(productCarr.length);
         internetError = 0;
       } else {
         internetError = -99;
@@ -162,8 +173,9 @@ class ShoppingCartController extends GetxController {
         if (!selectservice.contains(serviceCart[index])) {
           //   print(serviceCart[index].id);
           _addOrderCartList(5, 3, 0, (serviceCart[index].id - 1));
-          totalPrice += double.parse(serviceCart[index]
-              .price_service); //convierte un estring en un double
+          //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
+          getTotalServicesProduct_Sum(
+              type, double.parse(serviceCart[index].price_service));
           shoppingCart += 1;
           serviceListLength = selectservice.length;
           //print('long de serviceListLength:$serviceListLength');
@@ -173,8 +185,9 @@ class ShoppingCartController extends GetxController {
     } else if (type == 'product') {
       if (internetError != -99) {
         _addOrderCartList(5, 3, id, 0); //todo
-        //todo revisar el totalPrice, que venga de la db
-        totalPrice += double.parse(productCart[index].sale_price);
+        //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
+        getTotalServicesProduct_Sum(
+            type, double.parse(productCart[index].sale_price));
         shoppingCart += 1;
         update();
       }
@@ -186,60 +199,11 @@ class ShoppingCartController extends GetxController {
     update();
   }
 
-  //  RxInt shoppingCart = 0.obs;
-
-  // void updateAppBarValue(int newValue) {
-  //   shoppingCart.value += newValue;
-  // }
-
-  int time = 30;
-  bool isLoading = true;
-
   getList() {
     return productCart;
   }
 
   getCategoryList() {
     return serviceCart;
-  }
-
-  //Future<List<UserModel>> userList() async => await repository.getUserList();
-
-//***************************************************************
-//*METODOS ELIMINAR
-
-  //*ELIMINAR 1 ELEMENTO
-  void deleteproduct(int index) {
-    if (index >= 0 && index < productCart.length) {
-      //HACER LLAMADA A REPOSITORYY MANDAR A ELIMINAR EN LA BD
-      //SI SE ELIMINA CORRECTAMENTE MADO HACER LO DE ABAJO,Q ES ELIMINAR EN LA PARTE VISUAL
-
-      if (selectproduct.contains(productCart[index])) {
-        selectproduct.removeWhere((products) => products == productCart[index]);
-      }
-    }
-    productCart.removeAt(index);
-    productListLength = productCart.length;
-
-    update();
-  }
-
-  //*ELIMINAR  ELEMENTOS SELECCIONADOS
-  void deleteMultipleproduct() {
-    if (selectproduct.isNotEmpty) {
-      //HACER LLAMADA A REPOSITORYY MANDAR A ELIMINAR EN LA BD
-      //SI SE ELIMINA CORRECTAMENTE MADO HACER LO DE ABAJO,Q ES ELIMINAR EN LA PARTE VISUAL
-      productCart.removeWhere((element) => selectproduct.contains(element));
-      productListLength = productCart.length;
-      selectproduct = [];
-      update();
-    }
-  }
-
-  void deleteAll() {
-    productCart = [];
-    selectproduct = [];
-    productListLength = productCart.length;
-    update();
   }
 }

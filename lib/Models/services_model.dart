@@ -54,7 +54,7 @@ class ServiceModel {
       type_service: map['type_service'] ?? '',
       profit_percentaje: map['profit_percentaje'] ?? '',
       // duration_service: map['duration_service'] ?? '',
-      duration_service: 10,
+      duration_service: 35,
       image_service: map['image_service'] ?? '',
       service_comment: map['service_comment'] ?? '',
       request_delete: 0,

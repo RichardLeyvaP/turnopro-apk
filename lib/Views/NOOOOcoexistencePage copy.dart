@@ -117,9 +117,7 @@ class CoexistencePage extends StatelessWidget {
                                                   Radius.circular(12)),
                                             ),
                                             onTap: () {
-                                         
                                               //_.getSelectCoexistence(index);
-
                                             },
                                             title: Row(
                                               crossAxisAlignment:
@@ -186,9 +184,7 @@ class CoexistencePage extends StatelessWidget {
                                                                   .start,
                                                           children: [
                                                             InkWell(
-                                                              onTap: () {
-                                                                _.seleccStars();
-                                                              },
+                                                              onTap: () {},
                                                               child: Icon(
                                                                   Icons.star,
                                                                   color: const Color
