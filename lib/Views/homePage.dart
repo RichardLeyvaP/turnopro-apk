@@ -357,7 +357,7 @@ class _HomePagesState extends State<HomePages> {
                                 ),
                                 child: Padding(
                                   padding:
-                                      const EdgeInsets.only(left: 30, top: 14),
+                                      const EdgeInsets.only(left: 30, top: 8),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -366,6 +366,8 @@ class _HomePagesState extends State<HomePages> {
                                       const Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
                                         children: [
                                           Icon(
                                             Icons.person,
@@ -403,6 +405,8 @@ class _HomePagesState extends State<HomePages> {
                                         ),
                                       ),
                                       Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Icon(Icons.timer,
                                               color: const Color.fromARGB(
@@ -413,7 +417,7 @@ class _HomePagesState extends State<HomePages> {
                                                   0.016)),
                                           const Text('15 Minutos',
                                               style: TextStyle(
-                                                height: 1.0,
+                                                height: 1.2,
                                                 fontSize: 14,
                                                 color: Color.fromARGB(
                                                     180, 0, 0, 0),

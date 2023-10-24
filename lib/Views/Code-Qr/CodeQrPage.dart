@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:get/get.dart';
@@ -65,7 +66,7 @@ class _QRViewPageState extends State<QRViewPage> {
                 ),
                 Text(
                   'Simplifies',
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 26),
                 ),
               ],
             ),
@@ -108,14 +109,14 @@ class _QRViewPageState extends State<QRViewPage> {
                                     Icons.flashlight_on,
                                     color:
                                         const Color.fromARGB(255, 241, 130, 84),
-                                    size: MediaQuery.of(context).size.width *
-                                        0.07,
+                                    size:
+                                        MediaQuery.of(context).size.width * 0.1,
                                   )
                                 : Icon(
                                     Icons.flashlight_off_sharp,
                                     color: Colors.white,
                                     size: MediaQuery.of(context).size.width *
-                                        0.04,
+                                        0.07,
                                   );
                           },
                         ),
@@ -124,8 +125,8 @@ class _QRViewPageState extends State<QRViewPage> {
                   BottomNavigationBarItem(
                       icon: InkWell(
                         child: Icon(
-                          Icons.qr_code_scanner_sharp,
-                          size: MediaQuery.of(context).size.width * 0.12,
+                          MdiIcons.cameraIris,
+                          size: MediaQuery.of(context).size.width * 0.14,
                         ),
                       ),
                       label: 'Escanear'),
@@ -141,17 +142,17 @@ class _QRViewPageState extends State<QRViewPage> {
                           return snapshot.data != null
                               ? describeEnum(snapshot.data!) == 'front'
                                   ? Icon(
-                                      Icons.crop_rotate,
+                                      MdiIcons.orbitVariant,
+                                      color: Colors.white,
+                                      size: MediaQuery.of(context).size.width *
+                                          0.08,
+                                    )
+                                  : Icon(
+                                      MdiIcons.orbitVariant,
                                       color: const Color.fromARGB(
                                           255, 241, 130, 84),
                                       size: MediaQuery.of(context).size.width *
-                                          0.07,
-                                    )
-                                  : Icon(
-                                      Icons.crop_rotate,
-                                      color: Colors.white,
-                                      size: MediaQuery.of(context).size.width *
-                                          0.04,
+                                          0.1,
                                     )
                               : const Text('loading');
                         },

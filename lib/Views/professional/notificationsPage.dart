@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:get/get.dart';
@@ -87,323 +88,359 @@ class NotificationsPageProf extends StatelessWidget {
                                           0.006)),
                                   child: FittedBox(
                                     fit: BoxFit.contain,
-                                    child: Row(
-                                      children: [
-                                        // Visibility(
-                                        //   visible: false,
-                                        // _.selectNotification.contains(_.notification[index]),
-                                        //   child: Container(
-                                        //     height: (MediaQuery.of(context)
-                                        //             .size
-                                        //             .height *
-                                        //         0.130),
-                                        //     width: (MediaQuery.of(context)
-                                        //             .size
-                                        //             .width *
-                                        //         0.16),
-                                        //     decoration: BoxDecoration(
-                                        //       color: const Color.fromARGB(
-                                        //           255, 241, 130, 84),
-                                        //       borderRadius:
-                                        //           const BorderRadius.horizontal(
-                                        //               left: Radius.circular(
-                                        //                   borderRadiusValue)),
-                                        //       boxShadow: [
-                                        //         BoxShadow(
-                                        //           color: Colors.grey
-                                        //               .withOpacity(0.7),
-                                        //           spreadRadius: 1,
-                                        //           blurRadius: 5,
-                                        //           offset: const Offset(-5,
-                                        //               5), // Ajusta los valores para personalizar la sombra
-                                        //         ),
-                                        //       ],
-                                        //     ),
-                                        //     child: IconButton(
-                                        //       onPressed: () {
-                                        //         Get.snackbar(
-                                        //           'Mensaje',
-                                        //           '! No me Gustó...',
-                                        //           duration: const Duration(
-                                        //               milliseconds: 2000),
-                                        //         );
-                                        //         //_.deletenotification(index);
-                                        //       },
-                                        //       icon: Icon(
-                                        //         MdiIcons.thumbDown,
-                                        //         color: Colors.white,
-                                        //         size: (MediaQuery.of(context)
-                                        //                 .size
-                                        //                 .height *
-                                        //             0.04),
-                                        //       ),
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                        Container(
-                                          height: _.selectNotification.contains(
-                                                  _.notification[index])
-                                              ? (MediaQuery.of(context)
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          border: Border.all(width: 0.01),
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(
+                                                  borderRadiusValue)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.6),
+                                              spreadRadius: 1,
+                                              blurRadius: 3,
+                                              offset: const Offset(0,
+                                                  5), // Ajusta los valores para personalizar la sombra
+                                            ),
+                                          ],
+                                          gradient: const LinearGradient(
+                                            colors: [
+                                              Color.fromARGB(
+                                                  255, 231, 232, 234),
+                                              Color.fromARGB(
+                                                  255, 243, 182, 138),
+                                            ],
+                                            stops: [0.0, 0.8],
+                                            begin: FractionalOffset.centerRight,
+                                            end: FractionalOffset.centerLeft,
+                                          )),
+                                      child: Row(
+                                        children: [
+                                          Visibility(
+                                            visible: _.selectNotification
+                                                .contains(
+                                                    _.notification[index]),
+                                            child: Container(
+                                              height: (MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  0.130)
-                                              : (MediaQuery.of(context)
+                                                  0.168),
+                                              width: (MediaQuery.of(context)
                                                       .size
-                                                      .height *
-                                                  0.12),
-                                          width: (MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              1),
-                                          decoration: _.selectNotification
-                                                  .contains(_.notification[
-                                                      index]) /*_.selectnotification
-                                                  .contains(_.notifications[index])*/
-                                              ? BoxDecoration(
-                                                  border:
-                                                      Border.all(width: 0.1),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.6),
-                                                      spreadRadius: 1,
-                                                      blurRadius: 3,
-                                                      offset: const Offset(0,
-                                                          5), // Ajusta los valores para personalizar la sombra
-                                                    ),
-                                                  ],
-                                                  gradient:
-                                                      const LinearGradient(
-                                                    colors: [
-                                                      Color.fromARGB(
-                                                          255, 231, 232, 234),
-                                                      Color.fromARGB(
-                                                          255, 243, 182, 138),
-                                                    ],
-                                                    stops: [0.0, 0.8],
-                                                    begin: FractionalOffset
-                                                        .centerRight,
-                                                    end: FractionalOffset
-                                                        .centerLeft,
-                                                  ))
-                                              : BoxDecoration(
-                                                  border:
-                                                      Border.all(width: 0.1),
+                                                      .width *
+                                                  0.20),
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(
+                                                    255, 241, 130, 84),
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(
+                                                            borderRadiusValue)),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.7),
+                                                    spreadRadius: 1,
+                                                    blurRadius: 5,
+                                                    offset: const Offset(-5,
+                                                        5), // Ajusta los valores para personalizar la sombra
+                                                  ),
+                                                ],
+                                              ),
+                                              child: IconButton(
+                                                onPressed: () {
+                                                  Get.snackbar(
+                                                    'Mensaje',
+                                                    '! No me Gustó...',
+                                                    duration: const Duration(
+                                                        milliseconds: 2000),
+                                                  );
+                                                  //_.deletenotification(index);
+                                                },
+                                                icon: Icon(
+                                                  MdiIcons.thumbDown,
                                                   color: Colors.white,
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.7),
-                                                      spreadRadius: 1,
-                                                      blurRadius: 5,
-                                                      offset: const Offset(-5,
-                                                          5), // Ajusta los valores para personalizar la sombra
-                                                    ),
-                                                  ],
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(
-                                                              borderRadiusValue)),
+                                                  size: (MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.04),
                                                 ),
-                                          child: ListTile(
-                                            shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(12)),
+                                              ),
                                             ),
-                                            // onTap: () {
-                                            //   _.getSelectNotification(index);
-                                            // },
-                                            title: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                const Padding(
-                                                  padding:
-                                                      EdgeInsets.only(left: 2),
-                                                  child: Text(
-                                                    'Eliminación de Servicio',
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      height: 1.0,
+                                          ),
+                                          Container(
+                                            height: _.selectNotification
+                                                    .contains(
+                                                        _.notification[index])
+                                                ? (MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.168)
+                                                : (MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.12),
+                                            width: (MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                1),
+                                            decoration: _.selectNotification
+                                                    .contains(_.notification[
+                                                        index]) /*_.selectnotification
+                                                    .contains(_.notifications[index])*/
+                                                ? null
+                                                : BoxDecoration(
+                                                    border:
+                                                        Border.all(width: 0.01),
+                                                    color: Colors.white,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: Colors.grey
+                                                            .withOpacity(0.7),
+                                                        spreadRadius: 1,
+                                                        blurRadius: 5,
+                                                        offset: const Offset(-5,
+                                                            5), // Ajusta los valores para personalizar la sombra
+                                                      ),
+                                                    ],
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                            Radius.circular(
+                                                                borderRadiusValue)),
+                                                  ),
+                                            child: ListTile(
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(
+                                                        borderRadiusValue)),
+                                              ),
+                                              onTap: () {
+                                                _.getSelectNotification(index);
+                                              },
+                                              title: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 2),
+                                                    child: Text(
+                                                      'Eliminación de Servicio',
+                                                      style: TextStyle(
+                                                        fontSize: _
+                                                                .selectNotification
+                                                                .contains(
+                                                                    _.notification[
+                                                                        index])
+                                                            ? 23
+                                                            : 16,
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        height: 1.0,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                                Text(
-                                                  '8.000',
-                                                  style: TextStyle(
-                                                      fontSize: (MediaQuery.of(
-                                                                  context)
-                                                              .size
-                                                              .height *
-                                                          0.022),
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                ),
-                                              ],
-                                            ),
-                                            subtitle: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Padding(
-                                                  padding:
-                                                      EdgeInsets.only(left: 2),
-                                                  child: Text(
-                                                    'Masaje capilar',
+                                                  Text(
+                                                    '8.000',
                                                     style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Color.fromARGB(
-                                                          148, 0, 0, 0),
-                                                      height: 1.0,
+                                                        fontSize: _
+                                                                .selectNotification
+                                                                .contains(
+                                                                    _.notification[
+                                                                        index])
+                                                            ? 28
+                                                            : 25,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                ],
+                                              ),
+                                              subtitle: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 2),
+                                                    child: Text(
+                                                      'Masaje capilar',
+                                                      style: TextStyle(
+                                                        fontSize: _
+                                                                .selectNotification
+                                                                .contains(
+                                                                    _.notification[
+                                                                        index])
+                                                            ? 20
+                                                            : 14,
+                                                        color: const Color
+                                                                .fromARGB(
+                                                            148, 0, 0, 0),
+                                                        height: 1.0,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Icon(
-                                                            Icons
-                                                                .person_2_outlined,
+                                                  Column(
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Icon(
+                                                            MdiIcons.accountTie,
                                                             color: Colors.black,
-                                                            size: (MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                0.02)),
-                                                        const Text(
-                                                          'Paula Rego',
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    148,
-                                                                    0,
-                                                                    0,
-                                                                    0),
-                                                            height: 1.0,
+                                                            size: _.selectNotification
+                                                                    .contains(
+                                                                        _.notification[
+                                                                            index])
+                                                                ? 20
+                                                                : 16,
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Icon(
-                                                                Icons
-                                                                    .person_2_outlined,
-                                                                color: Colors
-                                                                    .black,
-                                                                size: (MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height *
-                                                                    0.02)),
-                                                            const Text(
-                                                              'Wiliam Miller',
-                                                              style: TextStyle(
-                                                                fontSize: 14,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        148,
-                                                                        0,
-                                                                        0,
-                                                                        0),
-                                                                height: 1.0,
-                                                              ),
+                                                          Text(
+                                                            'Paula Rego',
+                                                            style: TextStyle(
+                                                              fontSize: _
+                                                                      .selectNotification
+                                                                      .contains(
+                                                                          _.notification[
+                                                                              index])
+                                                                  ? 20
+                                                                  : 14,
+                                                              color: const Color
+                                                                      .fromARGB(
+                                                                  148, 0, 0, 0),
+                                                              height: 1.0,
                                                             ),
-                                                          ],
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Icon(Icons.timer,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Icon(
+                                                                MdiIcons
+                                                                    .account,
                                                                 color: Colors
                                                                     .black,
-                                                                size: (MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height *
-                                                                    0.016)),
-                                                            Text(
-                                                              '15 Minutos',
-                                                              style: TextStyle(
-                                                                  fontSize: (MediaQuery.of(
+                                                                size: _.selectNotification
+                                                                        .contains(
+                                                                            _.notification[index])
+                                                                    ? 20
+                                                                    : 16,
+                                                              ),
+                                                              Text(
+                                                                'Wiliam Miller',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: _
+                                                                          .selectNotification
+                                                                          .contains(
+                                                                              _.notification[index])
+                                                                      ? 20
+                                                                      : 14,
+                                                                  color: const Color
+                                                                          .fromARGB(
+                                                                      148,
+                                                                      0,
+                                                                      0,
+                                                                      0),
+                                                                  height: 1.0,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Icon(Icons.timer,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  size: (MediaQuery.of(
                                                                               context)
                                                                           .size
                                                                           .height *
-                                                                      0.014),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
+                                                                      0.016)),
+                                                              Text(
+                                                                '15 Minutos',
+                                                                style: TextStyle(
+                                                                    fontSize: _
+                                                                            .selectNotification
+                                                                            .contains(_.notification[
+                                                                                index])
+                                                                        ? 16
+                                                                        : 12,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        // /*todo*/ Visibility(
-                                        //   visible: _.selectNotification
-                                        //       .contains(_.notification[index]),
-                                        //   child: Container(
-                                        //     height: (MediaQuery.of(context)
-                                        //             .size
-                                        //             .height *
-                                        //         0.130),
-                                        //     width: (MediaQuery.of(context)
-                                        //             .size
-                                        //             .width *
-                                        //         0.16),
-                                        //     decoration: const BoxDecoration(
-                                        //         color: Color.fromARGB(
-                                        //             255, 32, 32, 32),
-                                        //         borderRadius: BorderRadius.all(
-                                        //             Radius.circular(
-                                        //                 borderRadiusValue))),
-                                        //     child: IconButton(
-                                        //       onPressed: () {
-                                        //         Get.snackbar(
-                                        //           'Mensaje',
-                                        //           'Like!',
-                                        //           duration: const Duration(
-                                        //               milliseconds: 2000),
-                                        //         );
-                                        //         // _.deletenotification(index);
-                                        //       },
-                                        //       icon: Icon(
-                                        //         MdiIcons.thumbUp,
-                                        //         color: Colors.white,
-                                        //         size: (MediaQuery.of(context)
-                                        //                 .size
-                                        //                 .height *
-                                        //             0.04),
-                                        //       ),
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                      ],
+                                          /*todo*/ Visibility(
+                                            visible: _.selectNotification
+                                                .contains(
+                                                    _.notification[index]),
+                                            child: Container(
+                                              height: (MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.168),
+                                              width: (MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.20),
+                                              decoration: const BoxDecoration(
+                                                  color: Color.fromARGB(
+                                                      255, 32, 32, 32),
+                                                  borderRadius: BorderRadius
+                                                      .all(Radius.circular(
+                                                          borderRadiusValue))),
+                                              child: IconButton(
+                                                onPressed: () {
+                                                  Get.snackbar(
+                                                    'Mensaje',
+                                                    'Like!',
+                                                    duration: const Duration(
+                                                        milliseconds: 2000),
+                                                  );
+                                                  // _.deletenotification(index);
+                                                },
+                                                icon: Icon(
+                                                  MdiIcons.thumbUp,
+                                                  color: Colors.white,
+                                                  size: (MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.04),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 )),

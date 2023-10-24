@@ -106,9 +106,9 @@ class CustomersPage extends GetView<CustomerController> {
                             decoration:
                                 _.selectCustomer.contains(_.customers[index])
                                     ? BoxDecoration(
-                                        border: Border.all(width: 0.1),
+                                        border: Border.all(width: 0.01),
                                         borderRadius: const BorderRadius.all(
-                                            Radius.circular(8)),
+                                            Radius.circular(12)),
                                         boxShadow: [
                                           BoxShadow(
                                             color: Colors.grey.withOpacity(0.7),
@@ -128,7 +128,7 @@ class CustomersPage extends GetView<CustomerController> {
                                           end: FractionalOffset.centerLeft,
                                         ))
                                     : BoxDecoration(
-                                        border: Border.all(width: 0.1),
+                                        border: Border.all(width: 0.01),
                                         color: Colors.white,
                                         boxShadow: [
                                           BoxShadow(
@@ -140,7 +140,7 @@ class CustomersPage extends GetView<CustomerController> {
                                           ),
                                         ],
                                         borderRadius: const BorderRadius.all(
-                                            Radius.circular(10)),
+                                            Radius.circular(12)),
                                       ),
                             child: ListTile(
                               shape: const RoundedRectangleBorder(
@@ -148,9 +148,9 @@ class CustomersPage extends GetView<CustomerController> {
                                   Radius.circular(12),
                                 ),
                               ),
-                              onTap: () {
-                                _.getselectCustomer(index);
-                              },
+                              // onTap: () {
+                              //   _.getselectCustomer(index);
+                              // },
                               title: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -213,10 +213,9 @@ class CustomersPage extends GetView<CustomerController> {
                                             ),
                                       Text(
                                         nameClient[index],
-                                        // _.customers[index].name,
                                         style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w800),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600),
                                       ),
                                       Text(
                                         typeCurtClient[index],
