@@ -1,11 +1,12 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:get/get.dart';
+import 'package:turnopro_apk/env.dart';
 
 class UserRepository extends GetConnect {
   Future getUserLoggedIn(String email, String password) async {
     try {
-      const url = 'http://10.0.2.2:8000/api/login';
+      var url = '${Env.apiEndpoint}/login';
 
       final Map<String, dynamic> body = {
         'email': email,
@@ -29,7 +30,7 @@ class UserRepository extends GetConnect {
 
   Future userLogout(String token) async {
     try {
-      const url = 'http://10.0.2.2:8000/api/logout';
+      var url = '${Env.apiEndpoint}/logout';
 
       // Parámetros que deseas enviar en la solicitud POST
       /*   final Map<String, dynamic> body = {

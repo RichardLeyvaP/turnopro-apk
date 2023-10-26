@@ -1,5 +1,4 @@
 // ignore_for_file: depend_on_referenced_packages
-//'http://10.0.2.2:8000/api/rule'
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:turnopro_apk/Routes/index.dart';
