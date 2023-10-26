@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:turnopro_apk/env.dart';
 
 class LoginNewPage extends StatelessWidget {
   const LoginNewPage({super.key});
@@ -34,7 +35,7 @@ class LoginNewPage extends StatelessWidget {
                 ),
               )),
           Expanded(
-              flex: 5,
+              flex: 4,
               child: FadeIn(
                 duration: const Duration(seconds: 1),
                 delay: const Duration(milliseconds: 600),
@@ -47,18 +48,31 @@ class LoginNewPage extends StatelessWidget {
                       )),
                   child: Padding(
                     padding:
-                        const EdgeInsets.only(top: 50, left: 16, right: 16),
+                        const EdgeInsets.only(top: 60, left: 16, right: 16),
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Bienvenido',
-                            style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.w900,
-                                fontFamily: String.fromEnvironment(
-                                    AutofillHints.addressCity)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Bienvenido',
+                                style: TextStyle(
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.w900,
+                                    fontFamily: String.fromEnvironment(
+                                        AutofillHints.addressCity)),
+                              ),
+                              Text(
+                                'Ambiente: (${Env.apiToken})',
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: String.fromEnvironment(
+                                        AutofillHints.addressCity)),
+                              ),
+                            ],
                           ),
                           const SizedBox(
                             height: 12,

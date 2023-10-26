@@ -7,7 +7,11 @@
         {
             "name": "turnopro-apk",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--dart-define-from-file",
+                "env.local.json"
+            ]
         },
         {
             "name": "turnopro-apk (profile mode)",
