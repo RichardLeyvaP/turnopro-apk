@@ -509,8 +509,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         GetBuilder<LoginController>(builder: (_) {
           return InkWell(
             onTap: () {
-              _.exit();
-              Get.offAllNamed('/loginNewPage');
+              //_.exit();
+              _.exit(_.tokenUserLoggedIn);
             },
             child: Row(
               children: [
@@ -536,9 +536,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.toNamed(
-                      '/loginNewPage',
-                    );
+                    _.exit(_.tokenUserLoggedIn);
+                    // Get.toNamed(
+                    //   '/loginNewPage',
+                    // );
                   },
                   child: CircleAvatar(
                     radius: 22, // Tamaño del CircleAvatar

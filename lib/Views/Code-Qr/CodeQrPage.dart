@@ -40,7 +40,7 @@ class _QRViewPageState extends State<QRViewPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: loginController.pagina == 'nothing' ||
-                loginController.pagina == '/home'
+                loginController.pagina == '/Professional'
             ? const Color.fromARGB(255, 241, 130, 84)
             : const Color.fromARGB(255, 26, 50, 82),
 
@@ -163,7 +163,7 @@ class _QRViewPageState extends State<QRViewPage> {
                 ])),
       ),
       backgroundColor: loginController.pagina == 'nothing' ||
-              loginController.pagina == '/home'
+              loginController.pagina == '/Professional'
           ? const Color.fromARGB(255, 241, 130, 84)
           : const Color.fromARGB(255, 26, 50, 82),
       body: Column(
@@ -188,7 +188,7 @@ class _QRViewPageState extends State<QRViewPage> {
                             fontSize: 2,
                             fontWeight: FontWeight.w800,
                             color: loginController.pagina == 'nothing' ||
-                                    loginController.pagina == '/home'
+                                    loginController.pagina == '/Professional'
                                 ? Colors.black
                                 : Colors.white,
                           )),
@@ -260,7 +260,7 @@ class _QRViewPageState extends State<QRViewPage> {
                   // ),
                   // ElevatedButton(
                   //   onPressed: () {
-                  //     Get.offNamedUntil('/home', (route) => route.isFirst);
+                  //     Get.offNamedUntil('/Professional', (route) => route.isFirst);
                   //   },
                   //   child: const Text('Atras'),
                   // ),
