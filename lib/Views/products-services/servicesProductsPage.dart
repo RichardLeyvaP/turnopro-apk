@@ -233,11 +233,11 @@ class AlertDialogPago extends StatelessWidget {
             try {
               await controllerShoppingCart.intentarConexion();
               Get.toNamed(
-                '/home',
+                '/Professional',
               );
             } catch (e) {
               Get.toNamed(
-                '/home',
+                '/Professional',
               );
             }
           },

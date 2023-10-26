@@ -168,24 +168,17 @@ class LoginFormPage extends StatelessWidget {
                                               Colors.black),
                                       // Añadir más propiedades de estilo aquí
                                     ),
-                                    onPressed: () {
-                                      _.updateData(_usserController.text,
-                                          _passController.text);
-                                      _.getData();
-
-                                      if (_.pagina != 'nothing') {
-                                        Navigator.pushReplacementNamed(
-                                            context, _.pagina);
-                                      } else if (_.usuario.isNotEmpty ||
-                                          _.pass.isNotEmpty) {
+                                    onPressed: () async {
+                                      if (_usserController.text.isEmpty ||
+                                          _passController.text.isEmpty) {
                                         _passController.text = '';
                                         _usserController.text = '';
                                         Get.snackbar(
                                           '',
-                                          'Usuario o Contraseña incorecto,INTENTELO NUEVAMENTE.',
+                                          'Campos Vacio.',
                                           colorText: Colors.black,
                                           titleText: const Text('Error'),
-                                          duration: const Duration(seconds: 4),
+                                          duration: const Duration(seconds: 1),
                                           showProgressIndicator: true,
                                           progressIndicatorBackgroundColor:
                                               const Color.fromARGB(
@@ -196,6 +189,9 @@ class LoginFormPage extends StatelessWidget {
                                                       255, 241, 130, 84)),
                                           overlayBlur: 3,
                                         );
+                                      } else {
+                                        _.loginGetIn(_usserController.text,
+                                            _passController.text);
                                       }
                                     },
                                     child: const Text(

@@ -428,7 +428,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         GetBuilder<LoginController>(builder: (_) {
           return InkWell(
             onTap: () {
-              _.exit();
+//_.exit();
               Get.offAllNamed('/login');
             },
             child: Lottie.network(

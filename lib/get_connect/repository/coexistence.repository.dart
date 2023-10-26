@@ -8,7 +8,7 @@ class CoexistenceRepository extends GetConnect {
   Future<List<CoexistenceModel>> getCoexistenceList() async {
     List<CoexistenceModel> coexistenceList = [];
     var url =
-        'http://api.simplifies.cl/api/rule'; //cambiar aqui por servicios en la api
+        'http://10.0.2.2:8000/api/rule'; //cambiar aqui por servicios en la api   http://10.0.2.2:8000
 
     final response = await get(url);
     if (response.statusCode == 200) {
