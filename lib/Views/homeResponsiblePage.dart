@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-//import 'package:animate_do/animate_do.dart';
+import 'package:animate_do/animate_do.dart';
 //import 'package:lottie/lottie.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -88,67 +88,70 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
       const HomePage(), // Página 4
     ];
 
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 231, 232, 234),
-      appBar: CustomAppBar(),
-      body: _pages[_selectedIndex], // Muestra la página actual
-      //body: homePageBody(borderRadiusValue, context, colorVariable, colorBottom, titleCart, descriptionTitleCart, iconCart),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.all((MediaQuery.of(context).size.height * 0.012)),
-        child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(10),
-                topLeft: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10)),
-            child: BottomNavigationBar(
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
-                unselectedItemColor: Colors.white,
-                backgroundColor: const Color.fromARGB(255, 43, 44, 49),
-                fixedColor: const Color.fromARGB(255, 241, 130, 84),
-                currentIndex: _selectedIndex,
-                type: BottomNavigationBarType.fixed,
-                onTap: _navigateBottomBar,
-                items: [
-                  BottomNavigationBarItem(
-                      icon: Badge(
-                        label: Text('$_selectedIndex'),
-                        child: Icon(
-                          Icons.person,
+    return FadeIn(
+      duration: const Duration(seconds: 2),
+      child: Scaffold(
+        backgroundColor: const Color.fromARGB(255, 231, 232, 234),
+        appBar: CustomAppBar(),
+        body: _pages[_selectedIndex], // Muestra la página actual
+        //body: homePageBody(borderRadiusValue, context, colorVariable, colorBottom, titleCart, descriptionTitleCart, iconCart),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.all((MediaQuery.of(context).size.height * 0.012)),
+          child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(10),
+                  topLeft: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10)),
+              child: BottomNavigationBar(
+                  showSelectedLabels: false,
+                  showUnselectedLabels: false,
+                  unselectedItemColor: Colors.white,
+                  backgroundColor: const Color.fromARGB(255, 43, 44, 49),
+                  fixedColor: const Color.fromARGB(255, 241, 130, 84),
+                  currentIndex: _selectedIndex,
+                  type: BottomNavigationBarType.fixed,
+                  onTap: _navigateBottomBar,
+                  items: [
+                    BottomNavigationBarItem(
+                        icon: Badge(
+                          label: Text('$_selectedIndex'),
+                          child: Icon(
+                            Icons.person,
+                            size: MediaQuery.of(context).size.width * 0.08,
+                          ),
+                        ),
+                        label: 'Perfil'),
+                    BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.storage,
                           size: MediaQuery.of(context).size.width * 0.08,
                         ),
-                      ),
-                      label: 'Perfil'),
-                  BottomNavigationBarItem(
-                      icon: Icon(
-                        Icons.storage,
-                        size: MediaQuery.of(context).size.width * 0.08,
-                      ),
-                      label: 'Agenda'),
-                  BottomNavigationBarItem(
-                      icon: Badge(
-                        label: Text('$_selectedIndex'),
-                        child: Icon(
-                          Icons.notifications,
+                        label: 'Agenda'),
+                    BottomNavigationBarItem(
+                        icon: Badge(
+                          label: Text('$_selectedIndex'),
+                          child: Icon(
+                            Icons.notifications,
+                            size: MediaQuery.of(context).size.width * 0.08,
+                          ),
+                        ),
+                        label: 'Notificaciones'),
+                    BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.bar_chart,
                           size: MediaQuery.of(context).size.width * 0.08,
                         ),
-                      ),
-                      label: 'Notificaciones'),
-                  BottomNavigationBarItem(
+                        label: 'Estadistica'),
+                    BottomNavigationBarItem(
                       icon: Icon(
-                        Icons.bar_chart,
+                        Icons.insert_emoticon,
                         size: MediaQuery.of(context).size.width * 0.08,
                       ),
-                      label: 'Estadistica'),
-                  BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.insert_emoticon,
-                      size: MediaQuery.of(context).size.width * 0.08,
+                      label: 'Home',
                     ),
-                    label: 'Home',
-                  ),
-                ])),
+                  ])),
+        ),
       ),
     );
   }
@@ -201,20 +204,24 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                       /*todo cart1 servicios*/ Padding(
                         padding: const EdgeInsets.only(
                             left: 8, top: 4, right: 8, bottom: 6),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              GetBuilder<ShoppingCartController>(
-                                  builder: (contShopp) {
-                                if (contShopp.load_request == true) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                } else {
-                                  return mostrarNombres(context, contShopp);
-                                }
-                              }),
-                            ],
+                        child: FadeIn(
+                          duration: const Duration(seconds: 2),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                GetBuilder<ShoppingCartController>(
+                                    builder: (contShopp) {
+                                  if (contShopp.load_request == true) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  } else {
+                                    return showRequestsDelete(
+                                        context, contShopp);
+                                  }
+                                }),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -502,8 +509,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         GetBuilder<LoginController>(builder: (_) {
           return InkWell(
             onTap: () {
-              _.exit();
-              Get.offAllNamed('/loginNewPage');
+              //_.exit();
+              _.exit(_.tokenUserLoggedIn);
             },
             child: Row(
               children: [
@@ -529,9 +536,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.toNamed(
-                      '/loginNewPage',
-                    );
+                    _.exit(_.tokenUserLoggedIn);
+                    // Get.toNamed(
+                    //   '/loginNewPage',
+                    // );
                   },
                   child: CircleAvatar(
                     radius: 22, // Tamaño del CircleAvatar
@@ -606,7 +614,7 @@ class HomePage extends StatelessWidget {
 
 //****************************************************************************** */
 //****************************************************************************** */
-Column mostrarNombres(context, ShoppingCartController contShopp) {
+Column showRequestsDelete(context, ShoppingCartController contShopp) {
   List<Widget> widgets = [];
   String titulo = "";
   bool service = false;

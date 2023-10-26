@@ -141,118 +141,131 @@ Padding newMethod(
   const double borderRadiusValue = 12; //container que carga la imagen
   return Padding(
     padding: const EdgeInsets.only(left: 10, top: 5, right: 10),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+    child: Column(
       children: [
-        Container(
-          height: (MediaQuery.of(context).size.height * 0.26),
-          width: (MediaQuery.of(context).size.width * 0.4),
-          decoration: const BoxDecoration(
-              borderRadius:
-                  BorderRadius.all(Radius.circular(borderRadiusValue)),
-              color: Color(0xFFF18254)),
-          child: FractionallySizedBox(
-            widthFactor: 0.6, // 50% del ancho del contenedor padre
-            heightFactor: 0.65, // 50% del alto del contenedor padre
-            child: Center(
-              child: Image.asset(addressProduct),
-            ),
-          ),
+        const SizedBox(
+          height: 10,
         ),
-        SizedBox(
-          height: (MediaQuery.of(context).size.height * 0.26),
-          width: (MediaQuery.of(context).size.width * 0.52),
-          child: Column(
-            //AQUI ES LA PARTE DERECHA DE LOS DATOS DEL PRODUCTO
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ListTile(
-                title: Text(
-                  productName,
-                  style: TextStyle(
-                      fontSize: (MediaQuery.of(context).size.width * 0.05),
-                      fontWeight: FontWeight.w900),
-                ),
-                subtitle: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      propertiesName,
-                      style: TextStyle(
-                          fontSize: (MediaQuery.of(context).size.width * 0.03)),
-                    ),
-                    Text(
-                      'Cantidad Disponible: $productExit',
-                      style: TextStyle(
-                          fontSize: (MediaQuery.of(context).size.width * 0.03)),
-                    ),
-                  ],
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              height: (MediaQuery.of(context).size.height * 0.26),
+              width: (MediaQuery.of(context).size.width * 0.4),
+              decoration: const BoxDecoration(
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(borderRadiusValue)),
+                  color: Color(0xFFF18254)),
+              child: FractionallySizedBox(
+                widthFactor: 0.6, // 50% del ancho del contenedor padre
+                heightFactor: 0.65, // 50% del alto del contenedor padre
+                child: Center(
+                  child: Image.asset(addressProduct),
                 ),
               ),
-              ListTile(
-                title: Center(
-                  child: Text(
-                    priceProduct,
-                    style: TextStyle(
-                        fontSize: (MediaQuery.of(context).size.width * 0.06),
-                        fontWeight: FontWeight.w900),
+            ),
+            SizedBox(
+              height: (MediaQuery.of(context).size.height * 0.26),
+              width: (MediaQuery.of(context).size.width * 0.52),
+              child: Column(
+                //AQUI ES LA PARTE DERECHA DE LOS DATOS DEL PRODUCTO
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ListTile(
+                    title: Text(
+                      productName,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    subtitle: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          propertiesName,
+                          style: const TextStyle(
+                              fontSize: 15,
+                              color: Color.fromARGB(148, 0, 0, 0)),
+                        ),
+                        Text(
+                          'Cantidad Disponible: $productExit',
+                          style: const TextStyle(
+                              fontSize: 15,
+                              color: Color.fromARGB(148, 0, 0, 0)),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                subtitle: Padding(
-                  padding: const EdgeInsets.only(top: 10, left: 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          controllerShoppingCart.updateShoppingCartValue(
-                              itemIndex, 'product', id);
-                        },
-                        child: Container(
-                          height: (MediaQuery.of(context).size.height * 0.035),
-                          width: (MediaQuery.of(context).size.width * 0.2),
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(95, 46, 20, 20),
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(borderRadiusValue)),
-                            gradient: LinearGradient(
-                              colors: [
-                                Color.fromARGB(255, 238, 234, 234),
-                                Color.fromARGB(255, 134, 134, 136),
-                              ],
-                              stops: [0.0, 0.8],
-                              begin: FractionalOffset.centerRight,
-                              end: FractionalOffset.centerLeft,
+                  ListTile(
+                    title: Center(
+                      child: Text(
+                        priceProduct,
+                        style: TextStyle(
+                            fontSize:
+                                (MediaQuery.of(context).size.height * 0.03),
+                            fontWeight: FontWeight.w800),
+                      ),
+                    ),
+                    subtitle: Padding(
+                      padding: const EdgeInsets.only(top: 10, left: 25),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              controllerShoppingCart.updateShoppingCartValue(
+                                  itemIndex, 'product', id);
+                            },
+                            child: Container(
+                              height:
+                                  (MediaQuery.of(context).size.height * 0.035),
+                              width: (MediaQuery.of(context).size.width * 0.2),
+                              decoration: const BoxDecoration(
+                                color: Color.fromARGB(95, 46, 20, 20),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(borderRadiusValue)),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromARGB(255, 238, 234, 234),
+                                    Color.fromARGB(255, 134, 134, 136),
+                                  ],
+                                  stops: [0.0, 0.8],
+                                  begin: FractionalOffset.centerRight,
+                                  end: FractionalOffset.centerLeft,
+                                ),
+                              ),
+                              child: Center(
+                                  child: Text(
+                                'Agregar',
+                                style: TextStyle(
+                                    fontSize:
+                                        (MediaQuery.of(context).size.width *
+                                            0.03),
+                                    fontWeight: FontWeight.w600),
+                              )),
                             ),
                           ),
-                          child: Center(
-                              child: Text(
-                            'Agregar',
-                            style: TextStyle(
-                                fontSize:
-                                    (MediaQuery.of(context).size.width * 0.03),
-                                fontWeight: FontWeight.w600),
-                          )),
-                        ),
+                          CircleAvatar(
+                            radius: (MediaQuery.of(context).size.width *
+                                0.04), // Ajusta este valor según tu preferencia
+                            backgroundColor: const Color(0xFFF18254),
+                            child: Icon(
+                              Icons.check,
+                              color: Colors.white,
+                              size: (MediaQuery.of(context).size.height * 0.03),
+                            ),
+                          ),
+                        ],
                       ),
-                      CircleAvatar(
-                        radius: (MediaQuery.of(context).size.width *
-                            0.04), // Ajusta este valor según tu preferencia
-                        backgroundColor: const Color(0xFFF18254),
-                        child: Icon(
-                          Icons.check,
-                          color: Colors.white,
-                          size: (MediaQuery.of(context).size.height * 0.03),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        )
+            )
+          ],
+        ),
       ],
     ),
   );

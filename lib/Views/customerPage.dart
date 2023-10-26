@@ -87,160 +87,198 @@ class CustomersPage extends GetView<CustomerController> {
                   child: CircularProgressIndicator(
                   color: Color.fromARGB(255, 241, 130, 84),
                 ))
-              : ListView.builder(
-                  itemCount: 6, //_.customerListLength,
-                  itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.only(left: 10, top: 6, right: 10),
-                    child: Container(
-                      decoration: _.selectCustomer.contains(_.customers[index])
-                          ? const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color.fromARGB(255, 231, 232, 234),
-                                  Color.fromARGB(255, 243, 182, 138),
-                                ],
-                                stops: [0.0, 0.8],
-                                begin: FractionalOffset.centerRight,
-                                end: FractionalOffset.centerLeft,
-                              ))
-                          : const BoxDecoration(
-                              color: Color.fromARGB(255, 240, 240, 238),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8))),
-                      child: ListTile(
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(12),
-                          ),
-                        ),
-                        onTap: () {
-                          _.getselectCustomer(index);
-                        },
-                        /*onLongPress: () {
-                          Get.snackbar(
-                            'ElIMINANDO CORRECTAMENTE',
-                            _.customers[index].name.toString(),
-                            duration: const Duration(milliseconds: 2000),
-                          );
-                          _.deleteCustomer(
-                              index); // Llama a la función para eliminar
-                        },*/
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
+              : Column(
+                  children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Expanded(
+                      flex: 18,
+                      child: ListView.builder(
+                        itemCount: 6, //_.customerListLength,
+                        itemBuilder: (context, index) => Padding(
+                          padding: EdgeInsets.fromLTRB(
+                              (MediaQuery.of(context).size.height * 0.013),
+                              (MediaQuery.of(context).size.height * 0.006),
+                              (MediaQuery.of(context).size.height * 0.013),
+                              (MediaQuery.of(context).size.height * 0.006)),
+                          child: Container(
+                            decoration:
                                 _.selectCustomer.contains(_.customers[index])
-                                    ? Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            MdiIcons.formatListNumbered, //todo
-                                            color: const Color.fromARGB(
-                                                255, 150, 37, 19),
+                                    ? BoxDecoration(
+                                        border: Border.all(width: 0.01),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(12)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.7),
+                                            spreadRadius: 1,
+                                            blurRadius: 5,
+                                            offset: const Offset(-5,
+                                                5), // Ajusta los valores para personalizar la sombra
                                           ),
-                                          Text(
-                                            hrClient[index],
-                                            //  '   01:53',
-                                            style: const TextStyle(
-                                                fontSize: 12,
+                                        ],
+                                        gradient: const LinearGradient(
+                                          colors: [
+                                            Color.fromARGB(255, 231, 232, 234),
+                                            Color.fromARGB(255, 243, 182, 138),
+                                          ],
+                                          stops: [0.0, 0.8],
+                                          begin: FractionalOffset.centerRight,
+                                          end: FractionalOffset.centerLeft,
+                                        ))
+                                    : BoxDecoration(
+                                        border: Border.all(width: 0.01),
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.7),
+                                            spreadRadius: 1,
+                                            blurRadius: 5,
+                                            offset: const Offset(-5,
+                                                5), // Ajusta los valores para personalizar la sombra
+                                          ),
+                                        ],
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(12)),
+                                      ),
+                            child: ListTile(
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12),
+                                ),
+                              ),
+                              // onTap: () {
+                              //   _.getselectCustomer(index);
+                              // },
+                              title: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      _.selectCustomer
+                                              .contains(_.customers[index])
+                                          ? Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  MdiIcons
+                                                      .formatListNumbered, //todo
+                                                  color: const Color.fromARGB(
+                                                      255, 150, 37, 19),
+                                                ),
+                                                Text(
+                                                  hrClient[index],
+                                                  //  '   01:53',
+                                                  style: const TextStyle(
+                                                      height: 1.0,
+                                                      fontSize: 12,
+                                                      color: Color.fromARGB(
+                                                          255, 150, 37, 19),
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
+                                            )
+                                          : Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  MdiIcons.clockPlus,
+                                                  color: const Color.fromARGB(
+                                                      255, 71, 143, 43),
+                                                ),
+                                                Text(
+                                                  hrClient[index],
+                                                  // '   08:10 - 09:10',
+                                                  style: const TextStyle(
+                                                    height: 1.0,
+                                                    fontSize: 12,
+                                                    color: Color.fromARGB(
+                                                        180, 0, 0, 0),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                      Text(
+                                        nameClient[index],
+                                        style: const TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Text(
+                                        typeCurtClient[index],
+                                        //'typeCut-${_.customers[index].username}',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Color.fromARGB(148, 0, 0, 0),
+                                          height: 1.0,
+                                        ),
+                                      ),
+                                      Text(
+                                        typeCurt2Client[index],
+                                        // 'typeWashed-${_.customers[index].username}',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Color.fromARGB(148, 0, 0, 0),
+                                          height: 1.0,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 12,
+                                      )
+                                    ],
+                                  ),
+                                  _.selectCustomer.contains(_.customers[index])
+                                      ? const Row(
+                                          children: [
+                                            Opacity(
+                                              opacity: 1,
+                                              child: Icon(
+                                                Icons.play_circle,
+                                                size: 60,
                                                 color: Color.fromARGB(
                                                     255, 150, 37, 19),
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      )
-                                    : Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            MdiIcons.clockPlus,
-                                            color: const Color.fromARGB(
-                                                255, 71, 143, 43),
-                                          ),
-                                          Text(
-                                            hrClient[index],
-                                            // '   08:10 - 09:10',
-                                            style: const TextStyle(
-                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      : const Row(
+                                          children: [
+                                            Opacity(
+                                              opacity: 1,
+                                              child: Icon(
+                                                Icons.play_circle,
+                                                size: 60,
                                                 color: Color.fromARGB(
-                                                    255, 0, 0, 0),
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                Text(
-                                  nameClient[index],
-                                  // _.customers[index].name,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w900),
-                                ),
-                                Text(
-                                  typeCurtClient[index],
-                                  //'typeCut-${_.customers[index].username}',
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Color.fromARGB(129, 0, 0, 0)),
-                                ),
-                                Text(
-                                  typeCurt2Client[index],
-                                  // 'typeWashed-${_.customers[index].username}',
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Color.fromARGB(129, 0, 0, 0)),
-                                ),
-                                const SizedBox(
-                                  height: 12,
-                                )
-                              ],
+                                                    85, 83, 82, 82),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                ],
+                              ),
+                              //subtitle: Text(_.users[index].username.toString()),
+                              selected: false,
+                              //selectedColor: Colors.amber,
+                              //selectedTileColor: Colors.blue,
                             ),
-                            _.selectCustomer.contains(_.customers[index])
-                                ? const Row(
-                                    children: [
-                                      Opacity(
-                                        opacity: 1,
-                                        child: Icon(
-                                          Icons.play_circle,
-                                          size: 60,
-                                          color:
-                                              Color.fromARGB(255, 150, 37, 19),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : const Row(
-                                    children: [
-                                      Opacity(
-                                        opacity: 1,
-                                        child: Icon(
-                                          Icons.play_circle,
-                                          size: 60,
-                                          color: Color.fromARGB(85, 83, 82, 82),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                          ],
+                          ),
                         ),
-                        //subtitle: Text(_.users[index].username.toString()),
-                        selected: false,
-                        //selectedColor: Colors.amber,
-                        //selectedTileColor: Colors.blue,
                       ),
                     ),
-                  ),
+                  ],
                 ),
         ),
       ),

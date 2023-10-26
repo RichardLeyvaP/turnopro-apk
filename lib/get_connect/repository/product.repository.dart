@@ -14,7 +14,7 @@ class ProductRepository extends GetConnect {
       List<ServiceModel> serviceListCar = [];
 
       var url =
-          'http://api.simplifies.cl/api/car_oders?id=10'; //cambiar aqui por servicios en la api
+          'http://10.0.2.2:8000/api/car_oders?id=10'; //cambiar aqui por servicios en la api
       // category_branch?branch_id=10
       //print(url);
       final response = await get(url);
@@ -55,7 +55,7 @@ class ProductRepository extends GetConnect {
     try {
       List<OrderDeleteModel> orderDEL = [];
       var url =
-          'http://api.simplifies.cl/api/car_order_delete?id=$id_car'; //cambiar aqui por servicios en la api
+          'http://10.0.2.2:8000/api/car_order_delete?id=$id_car'; //cambiar aqui por servicios en la api
       // category_branch?branch_id=10
       //print(url);
       final response = await get(url);
@@ -83,7 +83,7 @@ class ProductRepository extends GetConnect {
     try {
       List<ProductModel> productList = [];
       var url =
-          'http://api.simplifies.cl/api/category_products?id=$id&branch_id=10'; //cambiar aqui por servicios en la api
+          'http://10.0.2.2:8000/api/category_products?id=$id&branch_id=10'; //cambiar aqui por servicios en la api
       // category_branch?branch_id=10
       //print('$url');
 
@@ -115,7 +115,7 @@ class ProductRepository extends GetConnect {
     try {
       List<ProductModel> productList = [];
       var url =
-          'http://api.simplifies.cl/api/product_branch?branch_id=1'; //cambiar aqui por servicios en la api
+          'http://10.0.2.2:8000/api/product_branch?branch_id=1'; //cambiar aqui por servicios en la api
 
       final response = await get(url);
       if (response.statusCode == 200) {
@@ -137,7 +137,7 @@ class ProductRepository extends GetConnect {
   Future<int> addOrderCartList(
       client_id, person_id, product_id, service_id) async {
     try {
-      const url = 'http://api.simplifies.cl/api/order';
+      const url = 'http://10.0.2.2:8000/api/order';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
@@ -165,7 +165,7 @@ class ProductRepository extends GetConnect {
 
   Future<int> awaitRequestDelete(int id, int request) async {
     try {
-      const url = 'http://api.simplifies.cl/api/order';
+      const url = 'http://10.0.2.2:8000/api/order';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
@@ -189,7 +189,7 @@ class ProductRepository extends GetConnect {
 
   Future<int> orderDeleteCar(id) async {
     try {
-      const url = 'http://api.simplifies.cl/api/order-destroy';
+      const url = 'http://10.0.2.2:8000/api/order-destroy';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
@@ -211,7 +211,7 @@ class ProductRepository extends GetConnect {
   Future<List<CategoryModel>> getCategoryList() async {
     List<CategoryModel> categoryList = [];
     var url =
-        'http://api.simplifies.cl/api/category_branch?branch_id=1'; //cambiar aqui por servicios en la api
+        'http://10.0.2.2:8000/api/category_branch?branch_id=1'; //cambiar aqui por servicios en la api
 
     final response = await get(url);
     if (response.statusCode == 200) {

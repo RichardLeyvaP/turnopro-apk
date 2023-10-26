@@ -33,6 +33,9 @@ class ServicesBodyPage extends StatelessWidget {
           : _.serviceListLength > 0
               ? Column(
                   children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Expanded(
                       flex:
                           heightFlexBody, // 85% del espacio disponible para esta parte
@@ -105,17 +108,20 @@ class ServicesBodyPage extends StatelessWidget {
                                                       index,
                                                       'service',
                                                       _.services[index].id);
-                                              _.getTotalSum(double.parse(_
-                                                  .services[index]
-                                                  .price_service));
                                             }
                                           },
                                           title: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(_.services[index].name
-                                                  .toString()),
+                                              Text(
+                                                _.services[index].name
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
                                               Text(
                                                 _.services[index].price_service
                                                     .toString(),
@@ -126,7 +132,7 @@ class ServicesBodyPage extends StatelessWidget {
                                                                 .height *
                                                             0.03),
                                                     fontWeight:
-                                                        FontWeight.w700),
+                                                        FontWeight.w800),
                                               ),
                                             ],
                                           ),
@@ -134,9 +140,14 @@ class ServicesBodyPage extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(_
-                                                  .services[index].type_service
-                                                  .toString()),
+                                              Text(
+                                                _.services[index].type_service
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 15,
+                                                    color: Color.fromARGB(
+                                                        148, 0, 0, 0)),
+                                              ),
                                               SizedBox(
                                                 height: (MediaQuery.of(context)
                                                         .size
@@ -166,8 +177,12 @@ class ServicesBodyPage extends StatelessWidget {
                                                         Container(
                                                             width: constraints
                                                                     .maxWidth *
-                                                                (_.time / 6) /
-                                                                10, // Ocupa el 50% del ancho del contenedor padre
+                                                                (_
+                                                                        .services[
+                                                                            index]
+                                                                        .duration_service /
+                                                                    6) /
+                                                                10, //TODO AQUI CALCULA PARA QUE PINTE EL CONTAINER-RESPECTO-TIEMPO
                                                             decoration:
                                                                 const BoxDecoration(
                                                                     borderRadius:
@@ -220,15 +235,12 @@ class ServicesBodyPage extends StatelessWidget {
                                                           0.016)),
                                                   Text(
                                                     '${_.services[index].duration_service} Minutos',
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            (MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                0.014),
-                                                        fontWeight:
-                                                            FontWeight.w500),
+                                                    style: const TextStyle(
+                                                      height: 1.0,
+                                                      fontSize: 12,
+                                                      color: Color.fromARGB(
+                                                          180, 0, 0, 0),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -299,7 +311,8 @@ class ServicesBodyPage extends StatelessWidget {
                                   fontWeight: FontWeight.w900),
                             ),
                             Text(
-                              _.getTotal.toStringAsFixed(2),
+                              controllerShoppingCart.getTotalServices
+                                  .toStringAsFixed(2),
                               /*esto garantiza 2 lugares despues de la coma */
                               style: TextStyle(
                                   fontSize:
