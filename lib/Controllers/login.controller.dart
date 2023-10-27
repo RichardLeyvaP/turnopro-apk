@@ -39,14 +39,14 @@ class LoginController extends GetxController {
         idUserLoggedIn = result['id'];
         emailUserLoggedIn = result['email'];
         //*******Asignando Valores*****/
-        print('TOKEN***************************: $tokenUserLoggedIn');
+        // print('TOKEN***************************: $tokenUserLoggedIn');
       }
 
       if (tokenUserLoggedIn != '' &&
           nameUserLoggedIn != '' &&
           emailUserLoggedIn != '') {
         pagina = '/Professional';
-        print('PAGINA:$pagina');
+        //print('PAGINA:$pagina');
         Get.offAllNamed('/Professional');
       } else if (email == 'responsable' && pass == '123') {
         pagina = '/HomeResponsible';
@@ -68,12 +68,13 @@ class LoginController extends GetxController {
           await clearSessionData();
           Get.offAllNamed('/loginNewPage');
         } else {
-          print('NO CERRO SECION');
+          // print('NO CERRO SECION');
         }
-      } else
-        print('ERROR: -----> Revisar que el token esta llegando aqui vacio');
+      }
+      // else
+      //   print('ERROR: -----> Revisar que el token esta llegando aqui vacio');
     } catch (e) {
-      print('Erroor:$e');
+      // print('Erroor:$e');
     }
   }
 

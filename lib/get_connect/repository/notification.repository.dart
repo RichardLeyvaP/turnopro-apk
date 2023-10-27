@@ -6,7 +6,8 @@ import 'package:turnopro_apk/Models/notification_model.dart';
 
 class NotificationRepository extends GetConnect {
   Future<List<NotificationModel>> getNotificationList() async {
-    List<NotificationModel> notificationList = [];
+    List<NotificationModel> notificationList =
+        []; //todo REVISAR esta esta llamando a otra api de ejemplo
     var url =
         'http://jsonplaceholder.typicode.com/users'; //cambiar aqui por servicios en la api
 

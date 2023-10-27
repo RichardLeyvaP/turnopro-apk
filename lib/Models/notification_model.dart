@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 class NotificationModel {
+  //todo REVISAR si utilizo este o no
   int id;
   String name;
   String username;

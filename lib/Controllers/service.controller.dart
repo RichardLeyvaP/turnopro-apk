@@ -13,10 +13,10 @@ class ServiceController extends GetxController {
   ServiceRepository repository = ServiceRepository();
   double getTotal = 0;
   int serviceListLength = 0;
+  bool isLoading = true;
   List<ServiceModel> services = []; // Lista de servicios
   List<ServiceModel> selectService = []; //ervicios seleccionados vacia
   List<ServiceModel> sentServiceDelete = [];
-  bool isLoading = true;
 
   @override
   void onReady() {

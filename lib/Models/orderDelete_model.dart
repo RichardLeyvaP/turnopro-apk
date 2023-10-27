@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 class OrderDeleteModel {
+  //todo REVISAR aqui los datos enteros estan estaticos
   int id;
   String nameClient;
   String nameProfessional;

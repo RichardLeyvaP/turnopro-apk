@@ -9,6 +9,7 @@ import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/env.dart';
 
 class ProductRepository extends GetConnect {
+  //todo REVISAR este repositoro que no lo he revisado ni optimizado
   Future getCartProductService() async {
     try {
       List<ProductModel> productListCar = [];
@@ -84,7 +85,7 @@ class ProductRepository extends GetConnect {
     try {
       List<ProductModel> productList = [];
       var url =
-          '${Env.apiEndpoint}/category_products?id=$id&branch_id=10'; //cambiar aqui por servicios en la api
+          '${Env.apiEndpoint}/category_products?id=$id&branch_id=10'; //todo REVISAR aaqui id estaticos
       // category_branch?branch_id=10
       //print('$url');
 
@@ -116,7 +117,7 @@ class ProductRepository extends GetConnect {
     try {
       List<ProductModel> productList = [];
       var url =
-          '${Env.apiEndpoint}/product_branch?branch_id=1'; //cambiar aqui por servicios en la api
+          '${Env.apiEndpoint}/product_branch?branch_id=1'; //todo REVISAR aqui id estaticos
 
       final response = await get(url);
       if (response.statusCode == 200) {
@@ -142,6 +143,7 @@ class ProductRepository extends GetConnect {
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
+        //todo REVISAR aaqui id estaticos que vienen desde la vista
         'client_id': client_id, //5
         'person_id': person_id, //3
         'product_id': product_id, //0
@@ -212,7 +214,7 @@ class ProductRepository extends GetConnect {
   Future<List<CategoryModel>> getCategoryList() async {
     List<CategoryModel> categoryList = [];
     var url =
-        '${Env.apiEndpoint}/category_branch?branch_id=1'; //cambiar aqui por servicios en la api
+        '${Env.apiEndpoint}/category_branch?branch_id=1'; //todo REVISAR aaqui id estaticos
 
     final response = await get(url);
     if (response.statusCode == 200) {

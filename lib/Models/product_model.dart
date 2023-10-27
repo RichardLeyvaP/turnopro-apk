@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 class ProductModel {
+  //todo REVISAR aqui los datos enteros estan estaticos
   int id;
   String name;
   String code;

@@ -12,9 +12,9 @@ class CustomerController extends GetxController {
   //DECLARACION DE VARIABLES
   CustomerRepository repository = CustomerRepository();
   int customerListLength = 0;
+  bool isLoading = true;
   List<CustomerModel> customers = []; // Lista de servicios
   List<CustomerModel> selectCustomer = [];
-  bool isLoading = true;
 
   @override
   void onReady() {

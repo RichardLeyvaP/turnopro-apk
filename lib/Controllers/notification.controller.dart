@@ -12,9 +12,9 @@ class NotificationController extends GetxController {
 //DECLARACION DE VARIABLES
   NotificationRepository repository = NotificationRepository();
   int notificationListLength = 0;
+  bool isLoading = true;
   List<NotificationModel> notification = []; // Lista de Notificaciones
   List<NotificationModel> selectNotification = [];
-  bool isLoading = true;
 
   @override
   void onReady() {

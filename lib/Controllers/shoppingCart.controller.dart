@@ -108,7 +108,7 @@ class ShoppingCartController extends GetxController {
   }
 
   intentarConexion() {
-    //TODO REVISAR ESTA FUNCION BIEN CONEXION INTERNET
+    //todo REVISAR ESTA FUNCION BIEN CONEXION INTERNET
     try {
       _fetchServiceList();
       _fetchProductList();

@@ -6,7 +6,8 @@ import 'package:turnopro_apk/Models/customer_model.dart';
 
 class CustomerRepository extends GetConnect {
   Future<List<CustomerModel>> getcustomersList() async {
-    List<CustomerModel> customersList = [];
+    List<CustomerModel> customersList =
+        []; //todo REVISAR esta esta llamando a otra api de ejemplo
     var url =
         'http://jsonplaceholder.typicode.com/users'; //cambiar aqui por servicios en la api
 

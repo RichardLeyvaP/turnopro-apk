@@ -3,14 +3,12 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Models/coexistence_model.dart';
-
-import '../../env.dart';
+import 'package:turnopro_apk/env.dart';
 
 class CoexistenceRepository extends GetConnect {
   Future<List<CoexistenceModel>> getCoexistenceList() async {
     List<CoexistenceModel> coexistenceList = [];
-    var url =
-        '${Env.apiEndpoint}/rule'; //cambiar aqui por servicios en la api   http://10.0.2.2:8000
+    var url = '${Env.apiEndpoint}/rule';
 
     final response = await get(url);
     if (response.statusCode == 200) {
