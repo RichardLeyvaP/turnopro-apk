@@ -1,13 +1,5 @@
 // ignore_for_file: file_names
-
-import 'package:flutter/material.dart';
-import 'package:turnopro_apk/Components/auth_check.dart';
 import 'package:turnopro_apk/Routes/index.dart';
-// ignore: depend_on_referenced_packages
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:turnopro_apk/Views/homeResponsiblePage.dart';
-import 'package:turnopro_apk/Views/shoppingCartPage.dart';
 
 class Myapp extends StatelessWidget {
   Myapp({super.key});
@@ -36,6 +28,33 @@ class Myapp extends StatelessWidget {
         getPages: routes,
       );
     });
+  }
+
+  ThemeData themeDataProfessional() {
+    return ThemeData(
+      appBarTheme: AppBarTheme(
+        toolbarHeight: 120, // Cambia este valor según tus necesidades
+        backgroundColor: colorPrimario,
+      ),
+      primaryColor: colorPrimario, // Color primario
+      hintColor: colorSecundario,
+      textTheme: GoogleFonts.poppinsTextTheme(),
+    );
+  }
+
+  ThemeData themeDataResponsible() {
+    return ThemeData(
+      appBarTheme: AppBarTheme(
+        toolbarHeight: 120, // Cambia este valor según tus necesidades
+        backgroundColor: colorPrimario2,
+      ),
+      primaryColor: colorPrimario2, // Color primario
+      hintColor: colorSecundario2,
+      textTheme:
+          GoogleFonts.poppinsTextTheme(), // Aplicar Poppins a todo el proyecto
+
+      // Otras configuraciones de tema
+    );
   }
 
   List<GetPage<dynamic>> get routes {
@@ -95,32 +114,5 @@ class Myapp extends StatelessWidget {
       GetPage(name: '/QRViewExample', page: () => const QRViewPage()),
       GetPage(name: '/ShoppingCartPage', page: () => ShoppingCartPage()),
     ];
-  }
-
-  ThemeData themeDataProfessional() {
-    return ThemeData(
-      appBarTheme: AppBarTheme(
-        toolbarHeight: 120, // Cambia este valor según tus necesidades
-        backgroundColor: colorPrimario,
-      ),
-      primaryColor: colorPrimario, // Color primario
-      hintColor: colorSecundario,
-      textTheme: GoogleFonts.poppinsTextTheme(),
-    );
-  }
-
-  ThemeData themeDataResponsible() {
-    return ThemeData(
-      appBarTheme: AppBarTheme(
-        toolbarHeight: 120, // Cambia este valor según tus necesidades
-        backgroundColor: colorPrimario2,
-      ),
-      primaryColor: colorPrimario2, // Color primario
-      hintColor: colorSecundario2,
-      textTheme:
-          GoogleFonts.poppinsTextTheme(), // Aplicar Poppins a todo el proyecto
-
-      // Otras configuraciones de tema
-    );
   }
 }

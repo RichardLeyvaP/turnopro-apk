@@ -425,7 +425,7 @@ class ShoppingCartPage extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return AlertDialogPago(
+                        return AlertDialogPay(
                           totalPrice: controllerShoppingCart.totalPrice,
                         ); // Muestra el AlertDialog
                       },
@@ -466,10 +466,10 @@ class ShoppingCartPage extends StatelessWidget {
   }
 }
 
-class AlertDialogPago extends StatelessWidget {
+class AlertDialogPay extends StatelessWidget {
   final double totalPrice;
 
-  const AlertDialogPago({Key? key, required this.totalPrice}) : super(key: key);
+  const AlertDialogPay({Key? key, required this.totalPrice}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

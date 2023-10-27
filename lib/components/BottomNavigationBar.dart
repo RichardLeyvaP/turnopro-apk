@@ -14,11 +14,11 @@ class _BottomNavigationBarNewState extends State<BottomNavigationBarNew> {
   int _selectedIndex = 0;
 
   List<Widget> _pages = [
-    const ProfilePage(), // Página 0
-    const AgendaPage(), // Página 1
-    const NotificationsPage(), // Página 2
-    const StatisticsPage(), // Página 3
-    const HomePage(), // Página 4
+    const ProfilePagees(), // Página 0
+    const AgendaPagees(), // Página 1
+    const NotificationsPagees(), // Página 2
+    const StatisticsPagees(), // Página 3
+    const HomePagees(), // Página 4
   ];
 
   void _navigateBottomBar(int index) {
@@ -120,8 +120,8 @@ class _BottomNavigationBarNewState extends State<BottomNavigationBarNew> {
 }
 
 // Define tus páginas correspondientes aquí
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class ProfilePagees extends StatelessWidget {
+  const ProfilePagees({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -129,8 +129,8 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-class AgendaPage extends StatelessWidget {
-  const AgendaPage({super.key});
+class AgendaPagees extends StatelessWidget {
+  const AgendaPagees({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -138,8 +138,8 @@ class AgendaPage extends StatelessWidget {
   }
 }
 
-class NotificationsPage extends StatelessWidget {
-  const NotificationsPage({super.key});
+class NotificationsPagees extends StatelessWidget {
+  const NotificationsPagees({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -147,8 +147,8 @@ class NotificationsPage extends StatelessWidget {
   }
 }
 
-class StatisticsPage extends StatelessWidget {
-  const StatisticsPage({super.key});
+class StatisticsPagees extends StatelessWidget {
+  const StatisticsPagees({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -156,8 +156,8 @@ class StatisticsPage extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePagees extends StatelessWidget {
+  const HomePagees({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,11 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:turnopro_apk/Routes/index.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:turnopro_apk/myApp.dart';
-import 'package:turnopro_apk/providers.dart';
 
 void main() {
   // Inicializa y guarda tu controlador en Get

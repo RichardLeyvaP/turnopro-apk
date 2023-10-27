@@ -22,13 +22,13 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
       Get.find<ShoppingCartController>();
 
   final List<Widget> _pages = [
-    // homePageBody(borderRadiusValue, context, colorVariable, colorBottom,
+    // homePageRespBody(borderRadiusValue, context, colorVariable, colorBottom,
     //     titleCart, descriptionTitleCart, iconCart), // Página 0
-    const AgendaPage(), // Página 1
-    const AgendaPage(), // Página 1
-    const NotificationsPage(), // Página 2
-    const StatisticsPage(), // Página 3
-    const HomePage(), // Página 4
+    const AgendaPageResp(), // Página 1
+    const AgendaPageResp(), // Página 1
+    const NotificationsPageResp(), // Página 2
+    const StatisticsPageResp(), // Página 3
+    const HomePageResp(), // Página 4
   ];
 
   @override
@@ -80,21 +80,21 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
     String descriptionTitleCart = 'Clientes Agendados';
 
     List<Widget> _pages = [
-      homePageBody(borderRadiusValue, context, colorVariable, colorBottom,
+      homePageRespBody(borderRadiusValue, context, colorVariable, colorBottom,
           titleCart, descriptionTitleCart, iconCart), // Página 0
-      const AgendaPage(), // Página 1
-      const NotificationsPage(), // Página 2
-      const StatisticsPage(), // Página 3
-      const HomePage(), // Página 4
+      const AgendaPageResp(), // Página 1
+      const NotificationsPageResp(), // Página 2
+      const StatisticsPageResp(), // Página 3
+      const HomePageResp(), // Página 4
     ];
 
     return FadeIn(
       duration: const Duration(seconds: 2),
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 231, 232, 234),
-        appBar: CustomAppBar(),
+        appBar: CustomAppBaar(),
         body: _pages[_selectedIndex], // Muestra la página actual
-        //body: homePageBody(borderRadiusValue, context, colorVariable, colorBottom, titleCart, descriptionTitleCart, iconCart),
+        //body: homePageRespBody(borderRadiusValue, context, colorVariable, colorBottom, titleCart, descriptionTitleCart, iconCart),
         bottomNavigationBar: Padding(
           padding: EdgeInsets.all((MediaQuery.of(context).size.height * 0.012)),
           child: ClipRRect(
@@ -159,7 +159,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
 //ESTA ES LA PAGINA PRINCIPAL CON LOS CARDS
 //VARIABLES A UTILIZAR
   final twoPi = 3.14 * 2;
-  Column homePageBody(
+  Column homePageRespBody(
       double borderRadiusValue,
       BuildContext context,
       Color colorVariable,
@@ -306,7 +306,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                                   //   '/apiUsers',
                                   // );
                                   Get.toNamed(
-                                    '/NotificationsPageNew',
+                                    '/NotificationsPageRespNew',
                                   );
                                 },
                                 child: cartsHome(
@@ -442,8 +442,8 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
 
 //DEFINIENDO EL AppBar
 // ignore: must_be_immutable
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  CustomAppBar({super.key});
+class CustomAppBaar extends StatelessWidget implements PreferredSizeWidget {
+  CustomAppBaar({super.key});
 
   @override
   //Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -567,8 +567,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 //****************************************************************************** */
 //****************************************************************************** */
 // Define tus páginas correspondientes aquí
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class ProfilePageResp extends StatelessWidget {
+  const ProfilePageResp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -576,8 +576,8 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-class AgendaPage extends StatelessWidget {
-  const AgendaPage({super.key});
+class AgendaPageResp extends StatelessWidget {
+  const AgendaPageResp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -585,8 +585,8 @@ class AgendaPage extends StatelessWidget {
   }
 }
 
-class NotificationsPage extends StatelessWidget {
-  const NotificationsPage({super.key});
+class NotificationsPageResp extends StatelessWidget {
+  const NotificationsPageResp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -594,8 +594,8 @@ class NotificationsPage extends StatelessWidget {
   }
 }
 
-class StatisticsPage extends StatelessWidget {
-  const StatisticsPage({super.key});
+class StatisticsPageResp extends StatelessWidget {
+  const StatisticsPageResp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -603,8 +603,8 @@ class StatisticsPage extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePageResp extends StatelessWidget {
+  const HomePageResp({super.key});
 
   @override
   Widget build(BuildContext context) {

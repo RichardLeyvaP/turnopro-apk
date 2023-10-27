@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/product.controller.dart';
 import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
-import 'package:turnopro_apk/Views/products-services/products/productsBody.dart';
-import 'package:turnopro_apk/Views/products-services/services/servicesBodyPage.dart';
+import 'package:turnopro_apk/Views/professional/products-services/products/productsBody.dart';
+import 'package:turnopro_apk/Views/professional/products-services/services/servicesBodyPage.dart';
 //import 'package:turnopro_apk/Views/products-services/services/servicesBody.dart';
-import '../../Components/BottomNavigationBar.dart';
+import '../../../Components/BottomNavigationBar.dart';
 //import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
 
@@ -236,9 +236,9 @@ class AlertDialogPago extends StatelessWidget {
                 '/Professional',
               );
             } catch (e) {
-              Get.toNamed(
+              /* Get.toNamed(
                 '/Professional',
-              );
+              );*/
             }
           },
           child: const Text('Volver Intentarlo'),
