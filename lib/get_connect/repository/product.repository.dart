@@ -15,7 +15,7 @@ class ProductRepository extends GetConnect {
       List<ServiceModel> serviceListCar = [];
 
       var url =
-          '${Env.apiEndpoint}/car_oders?id=10'; //cambiar aqui por servicios en la api
+          '${Env.apiEndpoint}/car_oders?id=9'; //todo REVISAR aqui enviar el id del carro correspondiente al cliente-profesional
       // category_branch?branch_id=10
       //print(url);
       final response = await get(url);
@@ -79,14 +79,12 @@ class ProductRepository extends GetConnect {
   }
 
 //*ESTE METODO ME DEVUELVE LOS PRODUCTOS ASOCIADO A UNA CATEGORIA LA CUAL LA SABEMOS PORQUE MANDAMOS EL ID
-  Future getProductCategoryList(int id) async {
+  Future getProductCategoryList(id) async {
     //print('este es el id: $id');
     try {
       List<ProductModel> productList = [];
       var url =
-          '${Env.apiEndpoint}/category_products?id=$id&branch_id=10'; //cambiar aqui por servicios en la api
-      // category_branch?branch_id=10
-      //print('$url');
+          '${Env.apiEndpoint}/category_products?id=$id'; //cambiar aqui por servicios en la api
 
       final response = await get(url);
       // print(response.statusCode);
@@ -95,15 +93,11 @@ class ProductRepository extends GetConnect {
         if (products != null) {
           // print('ok1');
           for (Map product in products) {
-            //  print('ok2');
-            // print(jsonEncode(product));
-
             ProductModel u = ProductModel.fromJson(jsonEncode(product));
             productList.add(u);
-            //print('ok3');
           }
         }
-        // print(productList.length);
+        print('cantidad de Productos:${productList.length}');
         return productList;
       }
     } catch (e) {
@@ -113,6 +107,7 @@ class ProductRepository extends GetConnect {
 
   //*ESTE METODO ME DEVUELVE TODOS LOS PRODUCTOS
   Future getProductList() async {
+    //todo 1 REVISAR aqui devuelve los productos
     try {
       List<ProductModel> productList = [];
       var url =
@@ -209,11 +204,12 @@ class ProductRepository extends GetConnect {
     }
   }
 
-  Future<List<CategoryModel>> getCategoryList() async {
+//todo BIEN getCategoryList(branchIdLoggedIn)
+  Future<List<CategoryModel>> getCategoryList(branchIdLoggedIn) async {
     List<CategoryModel> categoryList = [];
     var url =
-        '${Env.apiEndpoint}/category_branch?branch_id=1'; //cambiar aqui por servicios en la api
-
+        '${Env.apiEndpoint}/category_branch?branch_id=$branchIdLoggedIn'; //cambiar aqui por servicios en la api
+//todo aqui van las categorias de los productos para el tab
     final response = await get(url);
     if (response.statusCode == 200) {
       final categorys = response.body['category_products'];
@@ -223,6 +219,8 @@ class ProductRepository extends GetConnect {
           categoryList.add(u);
         }
       }
+      // print(
+      //     'Aqui retorno los category_products por almacen-branch ${categoryList.length}');
       return categoryList;
     } else {
       return categoryList;

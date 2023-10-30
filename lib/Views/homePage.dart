@@ -8,6 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 //import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Controllers/product.controller.dart';
+import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 
 class HomePages extends StatefulWidget {
@@ -28,8 +30,6 @@ class _HomePagesState extends State<HomePages> {
     HomePage(), // Página 4
   ];
 
-  final ShoppingCartController controllerShoppingCart =
-      Get.find<ShoppingCartController>();
 //inicializando en 0 para que cargue de inicio la primera pagina
   int _selectedIndex = 0;
   void _navigateBottomBar(int index) {
@@ -44,6 +44,13 @@ class _HomePagesState extends State<HomePages> {
 
   @override
   Widget build(BuildContext context) {
+    ServiceController controllerService = ServiceController();
+    Get.put(controllerService);
+    ProductController controllerProduct = ProductController();
+    Get.put(controllerProduct);
+    ShoppingCartController controllerShoppingCart = ShoppingCartController();
+    Get.put(controllerShoppingCart);
+
     double borderRadiusValue = 12;
     const Color colorVariable = Color(0xFF2B3141); //CARAGANDO COLOR HEXADECIMAL
     const Color colorBottom =
@@ -53,8 +60,15 @@ class _HomePagesState extends State<HomePages> {
     String descriptionTitleCart = 'Clientes Agendados';
 
     List<Widget> _pages = [
-      homePageBody(borderRadiusValue, context, colorVariable, colorBottom,
-          titleCart, descriptionTitleCart, iconCart), // Página 0
+      homePageBody(
+          borderRadiusValue,
+          context,
+          colorVariable,
+          colorBottom,
+          titleCart,
+          descriptionTitleCart,
+          iconCart,
+          controllerShoppingCart), // Página 0
       const AgendaPage(), // Página 1
       const NotificationsPage(), // Página 2
       const StatisticsPage(), // Página 3
@@ -139,7 +153,9 @@ class _HomePagesState extends State<HomePages> {
       Color colorBottom,
       String titleCart,
       String descriptionTitleCart,
-      IconData iconCart) {
+      IconData iconCart,
+      ShoppingCartController controllerShoppingCart) {
+    //todo1
     int totalSeconds = 150; // Tiempo total en segundos
     int remainingSeconds = totalSeconds; // Inicialmente,
     String segundos = "";
@@ -488,37 +504,42 @@ class _HomePagesState extends State<HomePages> {
                               fontSize: 16,
                               fontWeight: FontWeight.w700),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            InkWell(
-                              onTap: () async {
-                                Get.dialog(
-                                  const Center(
-                                    child: CircularProgressIndicator(
-                                      color: Color.fromARGB(255, 241, 130, 84),
+                        GetBuilder<ServiceController>(builder: (_serv) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                onTap: () async {
+                                  Get.dialog(
+                                    const Center(
+                                      child: CircularProgressIndicator(
+                                        color:
+                                            Color.fromARGB(255, 241, 130, 84),
+                                      ),
                                     ),
-                                  ),
-                                  barrierDismissible: true,
-                                );
-                                await controllerShoppingCart.loadCart();
-                                // Oculta el indicador de carga y navega a la página del carrito
-                                Get.back(); // Cierra el diálogo
-                                Get.toNamed(
-                                  '/servicesProductsPage',
-                                );
-                              },
-                              child: const Text(
-                                '  Servicio y productos  ',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w700),
+                                    barrierDismissible: true,
+                                  );
+                                  await controllerShoppingCart.loadCart();
+                                  await _serv.loadListService();
+                                  // Oculta el indicador de carga y navega a la página del carrito
+                                  Get.back(); // Cierra el diálogo
+
+                                  Get.toNamed(
+                                    '/servicesProductsPage',
+                                  );
+                                },
+                                child: const Text(
+                                  '  Servicio y productos  ',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          );
+                        }),
                       ],
                     ),
                     Column(
@@ -689,59 +710,62 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   String nameUser = 'Paula Rego';
   String imageDirection = 'assets/images/image_perfil.jpg';
 
-  @override
+  @override //todo AppBar
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false, //RLP Oculta la flecha de retroceso
       elevation: 0,
       backgroundColor: const Color.fromARGB(255, 231, 232, 234),
-      title: Row(
-        children: [
-          Container(
-            margin: const EdgeInsets.only(
-                top: 8), // Agrega un margen en la parte superior
+      title: GetBuilder<LoginController>(//todo
+          builder: (logUser) {
+        return Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(
+                  top: 8), // Agrega un margen en la parte superior
 
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: const Color.fromARGB(255, 32, 32, 32),
-                width: 2, // Ajusta el ancho del borde según tus preferencias
-              ),
-            ),
-            child: CircleAvatar(
-              backgroundImage: AssetImage(imageDirection),
-              radius: 25, // Ajusta el tamaño del círculo aquí
-            ),
-          ),
-          SizedBox(
-            width: (MediaQuery.of(context).size.width *
-                0.02), //Espacio entre foto perfil y el saludo y el nombre
-          ), // Espacio entre la imagen y el texto
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Text(
-                'Hola',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  height: 1.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: const Color.fromARGB(255, 32, 32, 32),
+                  width: 2, // Ajusta el ancho del borde según tus preferencias
                 ),
               ),
-              Text(
-                nameUser,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w900,
-                  height: 1.0,
-                ),
+              child: CircleAvatar(
+                backgroundImage: AssetImage(imageDirection),
+                radius: 25, // Ajusta el tamaño del círculo aquí
               ),
-            ],
-          ),
-        ],
-      ),
+            ),
+            SizedBox(
+              width: (MediaQuery.of(context).size.width *
+                  0.02), //Espacio entre foto perfil y el saludo y el nombre
+            ), // Espacio entre la imagen y el texto
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                const Text(
+                  'Hola',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                    height: 1.0,
+                  ),
+                ),
+                Text(
+                  logUser.nameUserLoggedIn,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w900,
+                    height: 1.0,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      }),
       actions: [
         GetBuilder<LoginController>(builder: (_) {
           return InkWell(

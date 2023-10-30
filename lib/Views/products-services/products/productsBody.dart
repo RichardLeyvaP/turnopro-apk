@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/product.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 
@@ -17,17 +18,40 @@ class ProductsBody extends StatefulWidget {
 class _ProductsBodyState extends State<ProductsBody>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-
-  final ShoppingCartController controllerShoppingCart =
-      Get.put(ShoppingCartController());
+  // Agregar la declaración de tabsID como variable de instancia
+  var tabsID = [];
+  List<String> tabValues = [];
+  //*AQUI ASIGNO A tabs los nombres que tiene la lista de categorias de productos
+  var tabs2 = <Widget>[];
 
   final ProductController controllerProduct = Get.find<ProductController>();
+  final ShoppingCartController controllerShoppingCart =
+      Get.find<ShoppingCartController>();
+  final LoginController controllerLogin = Get.find<LoginController>();
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(
         length: controllerProduct.categoryListLength, vsync: this);
+
+    // Asegúrate de llenar tabsID después de obtener sus valores en el método build
+    for (int i = 0; i < controllerProduct.categoryListLength; i++) {
+      tabValues.add(controllerProduct.category[i].name);
+      tabsID.add(controllerProduct.category[i].id);
+      print('tabsID : ${controllerProduct.category[i].id}');
+    }
+
+    for (int i = 0; i < controllerProduct.categoryListLength; i++) {
+      tabs2.add(Text(tabValues[i]));
+    }
+
+    // Agrega un listener al controlador de pestañas
+    _tabController.addListener(() {
+      //todo Llama a la función cuando la pestaña cambia
+      controllerProduct.fetchproductList(tabsID[_tabController.index]);
+      //}
+    });
   }
 
   @override
@@ -38,20 +62,6 @@ class _ProductsBodyState extends State<ProductsBody>
 
   @override
   Widget build(BuildContext context) {
-    //*AQUI CREO LA LISTA con los nombres que tiene categorias de productos que vienen de la api
-    List<String> tabValues = [];
-
-    var tabsID = [];
-    for (int i = 0; i < controllerProduct.categoryListLength; i++) {
-      tabValues.add(controllerProduct.category[i].name);
-      tabsID.add(controllerProduct.category[i].id);
-    }
-    //*AQUI ASIGNO A tabs los nombres que tiene la lista de categorias de productos
-    var tabs2 = <Widget>[];
-    for (int i = 0; i < controllerProduct.categoryListLength; i++) {
-      tabs2.add(Text(tabValues[i]));
-    }
-
     return GetBuilder<ProductController>(builder: (controllerProduct) {
       return controllerProduct.isLoading
           ? const Center(
@@ -69,56 +79,67 @@ class _ProductsBodyState extends State<ProductsBody>
                     indicatorColor: const Color(0xFFF18254),
                     controller: _tabController,
                     tabs: tabs2,
-                    onTap: (int tabIndex) {
-                      // Llama al método del controlador y pasa el valor deseado
-                      controllerProduct.fetchproductList(tabsID[tabIndex]);
-                    },
                   ),
                 ),
                 controllerProduct.productListLength != -99
-                    ? Expanded(
-                        child: TabBarView(
-                        controller: _tabController,
-                        children: List<Widget>.generate(
-                          tabs2.length,
-                          (index) {
-                            return ListView.builder(
-                              itemCount: controllerProduct.productListLength,
-                              itemBuilder: (context, itemIndex) => Column(
-                                children: [
-                                  controllerProduct.productListLength != 0 &&
-                                          controllerProduct.productListLength >
-                                              0
-                                      ? newMethod(
-                                          'assets/images/pngegg.png',
-                                          controllerProduct
-                                              .product[itemIndex].id,
-                                          controllerProduct
-                                              .product[itemIndex].name,
-                                          controllerProduct
-                                              .product[itemIndex].product_exit,
-                                          controllerProduct
-                                              .product[itemIndex].description,
-                                          controllerProduct
-                                              .product[itemIndex].sale_price,
-                                          context,
-                                          controllerShoppingCart,
-                                          itemIndex,
-                                        )
-                                      : controllerProduct.productListLength == 0
-                                          ? const Text('')
-                                          : const Text(
-                                              'Fallo la carga de los datos, revise su coneccion a internet'),
-                                  SizedBox(
-                                    height: (MediaQuery.of(context).size.width *
-                                        0.02),
+                    ? controllerProduct.isLoadingCategory == true
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                            color: Color(0xFFF18254),
+                          ))
+                        : Expanded(
+                            child: TabBarView(
+                            controller: _tabController,
+                            children: List<Widget>.generate(
+                              tabs2.length,
+                              (index) {
+                                return ListView.builder(
+                                  itemCount:
+                                      controllerProduct.productListLength,
+                                  itemBuilder: (context, itemIndex) => Column(
+                                    children: [
+                                      controllerProduct.productListLength !=
+                                                  0 &&
+                                              controllerProduct
+                                                      .productListLength >
+                                                  0
+                                          ? cartProduct(
+                                              'assets/images/pngegg.png',
+                                              controllerProduct
+                                                  .product[itemIndex].id,
+                                              controllerProduct
+                                                  .product[itemIndex].name,
+                                              controllerProduct
+                                                  .product[itemIndex]
+                                                  .product_exit,
+                                              controllerProduct
+                                                  .product[itemIndex]
+                                                  .description,
+                                              controllerProduct
+                                                  .product[itemIndex]
+                                                  .sale_price,
+                                              context,
+                                              controllerShoppingCart,
+                                              controllerLogin,
+                                              itemIndex,
+                                            )
+                                          : controllerProduct
+                                                      .productListLength ==
+                                                  0
+                                              ? const Text('')
+                                              : const Text(
+                                                  'Fallo la carga de los datos, revise su coneccion a internet'),
+                                      SizedBox(
+                                        height:
+                                            (MediaQuery.of(context).size.width *
+                                                0.02),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ))
+                                );
+                              },
+                            ),
+                          ))
                     : const Text(
                         'Falló la conexion,revise su coneccion de Internet.'),
               ],
@@ -127,7 +148,7 @@ class _ProductsBodyState extends State<ProductsBody>
   }
 }
 
-Padding newMethod(
+Padding cartProduct(
     String addressProduct,
     int id,
     String productName,
@@ -136,6 +157,7 @@ Padding newMethod(
     String priceProduct,
     BuildContext context,
     ShoppingCartController controllerShoppingCart,
+    LoginController controllerLogin,
     itemIndex) {
   //VARIABLES DE PROPIEDADES DEL WIDGET
   const double borderRadiusValue = 12; //container que carga la imagen
@@ -216,7 +238,10 @@ Padding newMethod(
                           InkWell(
                             onTap: () {
                               controllerShoppingCart.updateShoppingCartValue(
-                                  itemIndex, 'product', id);
+                                  itemIndex,
+                                  controllerLogin.idProfessionalLoggedIn,
+                                  'product',
+                                  id); //todo
                             },
                             child: Container(
                               height:

@@ -8,18 +8,9 @@ import 'package:turnopro_apk/myApp.dart';
 import 'package:turnopro_apk/providers.dart';
 
 void main() {
-  // Inicializa y guarda tu controlador en Get
-  ShoppingCartController controllerShoppingCart = ShoppingCartController();
-  Get.put(controllerShoppingCart);
-
-  ServiceController controllerService = ServiceController();
-  Get.put(controllerService);
-
-  ProductController controllerProduct = ProductController();
-  Get.put(controllerProduct);
-
   LoginController controllerLogin = LoginController();
   Get.put(controllerLogin);
+  // Inicializa y guarda tu controlador en Get
 
   // Llamada para inicializar Flutter y su enlace con la plataforma
   WidgetsFlutterBinding.ensureInitialized();
