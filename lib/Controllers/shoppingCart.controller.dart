@@ -1,7 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages, unused_element, non_constant_identifier_names
 
 import 'package:get/get.dart';
-import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/orderDelete_model.dart';
 import 'package:turnopro_apk/Models/product_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';

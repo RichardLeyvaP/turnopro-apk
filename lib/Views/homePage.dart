@@ -587,18 +587,22 @@ class _HomePagesState extends State<HomePages> {
                           children: [
                             InkWell(
                               onTap: () {
-                                Get.snackbar(
-                                  'Mensaje',
-                                  'Aqui van las Estadisticas',
-                                  duration: const Duration(milliseconds: 2500),
-                                  showProgressIndicator: true,
-                                  progressIndicatorBackgroundColor:
-                                      const Color.fromARGB(255, 81, 93, 117),
-                                  progressIndicatorValueColor:
-                                      const AlwaysStoppedAnimation(
-                                          Color.fromARGB(255, 241, 130, 84)),
-                                  overlayBlur: 3,
+                                Get.toNamed(
+                                  '/StatisticPage',
                                 );
+
+                                // Get.snackbar(
+                                //   'Mensaje',
+                                //   'Aqui van las Estadisticas',
+                                //   duration: const Duration(milliseconds: 2500),
+                                //   showProgressIndicator: true,
+                                //   progressIndicatorBackgroundColor:
+                                //       const Color.fromARGB(255, 81, 93, 117),
+                                //   progressIndicatorValueColor:
+                                //       const AlwaysStoppedAnimation(
+                                //           Color.fromARGB(255, 241, 130, 84)),
+                                //   overlayBlur: 3,
+                                // );
                               },
                               child: cartsHome(
                                   context,
