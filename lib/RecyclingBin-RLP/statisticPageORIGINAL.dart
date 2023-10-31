@@ -46,11 +46,9 @@ class _StatisticPageState extends State<StatisticPage>
       borderRadius: BorderRadius.all(Radius.circular(20)),
     );
     const backgroundColor = Color.fromARGB(255, 231, 232, 234);
-    const pilateColor = Colors.white;
-    List<String> description = ['Ganancia Total', 'Promedio Diario'];
-    List<int> cant$ = [255000, 41000];
-    // const cyclingColor = Color.fromARGB(255, 68, 135, 211);
-    // const quickWorkoutColor = Color(0xFFF18254);
+    const pilateColor = Color.fromARGB(180, 76, 75, 75);
+    const cyclingColor = Color.fromARGB(255, 68, 135, 211);
+    const quickWorkoutColor = Color(0xFFF18254);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -83,7 +81,7 @@ class _StatisticPageState extends State<StatisticPage>
                     MdiIcons.chartBarStacked,
                     size: (MediaQuery.of(context).size.width * 0.22),
                   ),
-                  const Text('ESTADÍSTICAS',
+                  const Text('ESTADSTICAS',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ],
@@ -115,9 +113,9 @@ class _StatisticPageState extends State<StatisticPage>
                   automaticIndicatorColorAdjustment: false,
                   controller: _tabController,
                   tabs: const [
-                    Tab(text: 'Diario'),
-                    Tab(text: 'Semananal'),
-                    Tab(text: 'Mensual'),
+                    Tab(text: 'Dia'),
+                    Tab(text: 'Semana'),
+                    Tab(text: 'Mes'),
                   ],
                 ),
               ),
@@ -131,54 +129,45 @@ class _StatisticPageState extends State<StatisticPage>
             Column(
               children: [
                 const BarChartSample6(),
-                Container(
-                  width: (MediaQuery.of(context).size.width * 0.8),
-                  height: 40,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                    color: Colors.white,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              MdiIcons.calendarBlank,
-                              color: const Color.fromARGB(130, 0, 0, 0),
-                            ),
-                            const Text(
-                              '16 oct - 22 oct',
-                              style: TextStyle(
-                                  color: Color.fromARGB(130, 0, 0, 0)),
-                            ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 150,
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color.fromARGB(255, 231, 232, 234),
+                            Color.fromARGB(255, 243, 182, 138),
                           ],
-                        ),
-                        Icon(
-                          MdiIcons.arrowDownThin,
-                          color: const Color.fromARGB(130, 0, 0, 0),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 135,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CartOption(
-                            color: pilateColor,
-                            icon: Icon(
-                              MdiIcons.cash,
-                            ),
-                            number: cant$,
-                            description: description),
-                      ],
+                          stops: [0.0, 0.8],
+                          begin: FractionalOffset.topCenter,
+                          end: FractionalOffset.bottomCenter,
+                        )),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          CartOption(
+                              color: pilateColor,
+                              icon: Icon(
+                                MdiIcons.cash,
+                              ),
+                              number: 12500,
+                              description: '8:00am - 10am'),
+                          CartOption(
+                              color: quickWorkoutColor,
+                              icon: Icon(MdiIcons.cashMultiple),
+                              number: 25000,
+                              description: '10:15am - 1:00pm'),
+                          CartOption(
+                              color: cyclingColor,
+                              icon: Icon(MdiIcons.currencyUsd),
+                              number: 45000,
+                              description: '2:00pm - 5:00pm'),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -203,68 +192,30 @@ class CartOption extends StatelessWidget {
 
   final Color color;
   final Icon icon;
-  final List<int> number;
-  final List<String> description;
+  final int number;
+  final String description;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: (MediaQuery.of(context).size.width * 0.8),
-      height: 120, //(MediaQuery.of(context).size.height * 0.4),
+      width: 120,
+      height: 100,
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
         color: color,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
-            width: (MediaQuery.of(context).size.width * 0.35),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  description[0],
-                  style: const TextStyle(
-                      fontSize: 14, color: Color.fromARGB(162, 0, 0, 0)),
-                ),
-                Text(
-                  '${number[0]}',
-                  style: const TextStyle(
-                      color: Color.fromARGB(245, 39, 141, 61),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w900),
-                ),
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              icon,
+              Text('$number'),
+            ],
           ),
-          Container(
-            color: const Color.fromARGB(30, 0, 0, 0),
-            width: 0.6,
-            height: (MediaQuery.of(context).size.height * 0.128),
-          ),
-          SizedBox(
-            width: (MediaQuery.of(context).size.width * 0.35),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  description[1],
-                  style: const TextStyle(
-                      fontSize: 14, color: Color.fromARGB(162, 0, 0, 0)),
-                ),
-                Text(
-                  '${number[1]}',
-                  style: const TextStyle(
-                      color: Color(0xFFF18254),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w900),
-                ),
-              ],
-            ),
-          ),
+          Text(description),
         ],
       ),
     );
