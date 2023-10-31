@@ -1,16 +1,19 @@
 // ignore_for_file: file_names, unused_local_variable, dead_code
 
 import 'package:flutter/material.dart';
+import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/service.controller.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
+//import 'package:turnopro_apk/Routes/index.dart';
 
 class ServicesBodyPage extends StatelessWidget {
   final double valuePadding = 12;
   ServicesBodyPage({super.key});
   final ShoppingCartController controllerShoppingCart =
       Get.find<ShoppingCartController>();
+  final LoginController controllerLogin = Get.find<LoginController>();
 
   //bool visibleButonEliminar = false;
   @override
@@ -103,11 +106,12 @@ class ServicesBodyPage extends StatelessWidget {
                                             if (!_.selectService
                                                 .contains(_.services[index])) {
                                               _.getSelectService(index);
-                                              controllerShoppingCart
-                                                  .updateShoppingCartValue(
-                                                      index,
-                                                      'service',
-                                                      _.services[index].id);
+                                              controllerShoppingCart.updateShoppingCartValue(
+                                                  index,
+                                                  controllerLogin
+                                                      .idProfessionalLoggedIn,
+                                                  'service',
+                                                  _.services[index].id);
                                             }
                                           },
                                           title: Row(

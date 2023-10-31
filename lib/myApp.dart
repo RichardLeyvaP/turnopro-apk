@@ -9,6 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:turnopro_apk/Views/homeResponsiblePage.dart';
 import 'package:turnopro_apk/Views/shoppingCartPage.dart';
 
+import 'Views/statisticPage.dart';
+
 class Myapp extends StatelessWidget {
   Myapp({super.key});
   final LoginController controllerasas = Get.put(LoginController());
@@ -29,6 +31,7 @@ class Myapp extends StatelessWidget {
             ? themeDataProfessional()
             : themeDataResponsible(),
         initialRoute: '/SplashPage',
+        //initialRoute: '/SplashPage',
         unknownRoute: GetPage(
           name: '/Error', // Nombre de la ruta de error
           page: () => const Page404(), // Página de error
@@ -43,6 +46,10 @@ class Myapp extends StatelessWidget {
       GetPage(
         name: '/SplashPage',
         page: () => const SplashPage(),
+      ),
+      GetPage(
+        name: '/StatisticPage',
+        page: () => const StatisticPage(),
       ),
       GetPage(
         name: '/Professional',

@@ -110,8 +110,8 @@ class ShoppingCartController extends GetxController {
   intentarConexion() {
     //TODO REVISAR ESTA FUNCION BIEN CONEXION INTERNET
     try {
-      _fetchServiceList();
-      _fetchProductList();
+      //_fetchServiceList();//todo revisar para que yo queria saber si tenia servicio y productos el profesional
+      // _fetchProductList();
       loadCart();
       //******************************************************************************** */
       internetError = 0;
@@ -125,19 +125,22 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  Future<void> _fetchServiceList() async {
+  /*Future<void> _fetchServiceList() async {
     try {
-      serviceCart = await serviceRepository.getServiceList();
+      final LoginController controllerLogin = Get.find<LoginController>();
+      serviceCart = await serviceRepository
+          .getServiceList(controllerLogin.idProfessionalLoggedIn);
       internetError = 0;
     } catch (e) {
       internetError = -99;
       update();
     }
-  }
+  }*/
 
   Future<void> _fetchProductList() async {
     try {
-      productCart = await productRepository.getProductList();
+      productCart = await productRepository
+          .getProductList(); //todo mando a pedir los productos que hay en la sucursal
       internetError = 0;
       update();
     } catch (e) {
@@ -164,7 +167,7 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  void updateShoppingCartValue(index, String type, id) {
+  void updateShoppingCartValue(index, idProfessional, type, id) {
     //print('11111');
     if (type == 'service') {
       // print('22');
@@ -172,7 +175,8 @@ class ShoppingCartController extends GetxController {
         //  print('3333');
         if (!selectservice.contains(serviceCart[index])) {
           //   print(serviceCart[index].id);
-          _addOrderCartList(5, 3, 0, (serviceCart[index].id - 1));
+          _addOrderCartList(5, idProfessional, 0, (serviceCart[index].id - 1));
+          //todo REVISAR estoy modificando aqui(Falta el id del cliente dinamicamente)
           //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
           getTotalServicesProduct_Sum(
               type, double.parse(serviceCart[index].price_service));

@@ -18,9 +18,13 @@ class LoginController extends GetxController {
   UserRepository usuarioLg = UserRepository();
   //*************************/
   String nameUserLoggedIn = '';
+  String userLoggedIn = '';
   String tokenUserLoggedIn = '';
   int idUserLoggedIn = -2023991991;
   String emailUserLoggedIn = '';
+  String chargeUserLoggedIn = '';
+  int? idProfessionalLoggedIn;
+  int? branchIdLoggedIn;
   //*************************/
   bool isLoading = true;
   String pagina = 'nothing';
@@ -34,28 +38,37 @@ class LoginController extends GetxController {
 
       if (result != null) {
         //*******Asignando Valores*****/
-        nameUserLoggedIn = result['name'];
+        nameUserLoggedIn = result['nameProfessional'];
+        userLoggedIn = result['userName'];
         tokenUserLoggedIn = result['token'];
         idUserLoggedIn = result['id'];
         emailUserLoggedIn = result['email'];
+        chargeUserLoggedIn = result['charge'];
+        idProfessionalLoggedIn = result['professional_id'];
+        branchIdLoggedIn = result['branch_id'];
+
         //*******Asignando Valores*****/
         print('TOKEN***************************: $tokenUserLoggedIn');
-      }
 
-      if (tokenUserLoggedIn != '' &&
-          nameUserLoggedIn != '' &&
-          emailUserLoggedIn != '') {
-        pagina = '/Professional';
-        print('PAGINA:$pagina');
-        Get.offAllNamed('/Professional');
-      } else if (email == 'responsable' && pass == '123') {
-        pagina = '/HomeResponsible';
-        // Get.offAllNamed(pagina);
+        if (tokenUserLoggedIn != '' &&
+            nameUserLoggedIn != '' &&
+            emailUserLoggedIn != '') {
+          pagina = '/Professional';
+          if (chargeUserLoggedIn == "Barbero") {
+            pagina = '/Professional';
+            Get.offAllNamed('/Professional');
+          } else if (chargeUserLoggedIn == "Encargado") {
+            pagina = '/HomeResponsible';
+            Get.offAllNamed('/HomeResponsible');
+          }
+        }
+        update();
+      } //cierre if (result != null) {
+      else {
+        print(' result == null por eso no entro');
       }
-      update();
-      // Get.offAllNamed(pagina);
     } catch (e) {
-      // print('errorrrrrr:$e');
+      print('errorrrrrr:$e');
     }
   }
 

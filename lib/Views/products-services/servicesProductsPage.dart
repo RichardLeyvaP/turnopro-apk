@@ -33,6 +33,8 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    controllerProduct.initializeData();
+    print('ESTOY AQUI controllerProduct.initializeData()');
   }
 
   @override
@@ -135,7 +137,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                               try {
                                 await _.loadCart();
                                 // await Future.delayed(
-                                //     Duration(seconds: 3)); //todo esperar 3 se
+                                //     Duration(seconds: 3)); //todo esperar 3 segundos
                                 // Oculta el indicador de carga y navega a la página del carrito
                                 Get.back(); // Cierra el diálogo
 
