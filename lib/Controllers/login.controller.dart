@@ -1,5 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:turnopro_apk/get_connect/repository/user.repository.dart';
 
@@ -29,6 +31,18 @@ class LoginController extends GetxController {
   bool isLoading = true;
   String pagina = 'nothing';
   bool obscureText = true;
+  String qrRead = '';
+
+  void qrReading(String? qr) {
+    print('entre aqui a el controlador de lectura del QR${qr.toString()}');
+    // Map<String, dynamic> jsonMap = json.decode(qr.toString());
+
+    // print('......................Objeto JSON: $jsonMap');
+    // String nombre = jsonMap['nombre']; // Accede al valor del campo "nombre"
+    // int edad = jsonMap['edad']; // Accede al valor del campo "edad"
+    // print(nombre);
+    // print(edad);
+  }
 
   Future<void> loginGetIn(String u, String p) async {
     String email = u.toString(), pass = p.toString();
@@ -92,9 +106,13 @@ class LoginController extends GetxController {
 
   Future<void> clearSessionData() async {
     nameUserLoggedIn = '';
+    userLoggedIn = '';
     tokenUserLoggedIn = '';
-    idUserLoggedIn = -2023023;
+    idUserLoggedIn = -2023991991;
+    chargeUserLoggedIn = '';
     emailUserLoggedIn = '';
+    idProfessionalLoggedIn = null;
+    branchIdLoggedIn = null;
     pagina = 'nothing';
     update();
   }

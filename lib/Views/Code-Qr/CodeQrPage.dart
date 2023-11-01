@@ -143,16 +143,16 @@ class _QRViewPageState extends State<QRViewPage> {
                               ? describeEnum(snapshot.data!) == 'front'
                                   ? Icon(
                                       MdiIcons.orbitVariant,
-                                      color: Colors.white,
-                                      size: MediaQuery.of(context).size.width *
-                                          0.08,
-                                    )
-                                  : Icon(
-                                      MdiIcons.orbitVariant,
                                       color: const Color.fromARGB(
                                           255, 241, 130, 84),
                                       size: MediaQuery.of(context).size.width *
                                           0.1,
+                                    )
+                                  : Icon(
+                                      MdiIcons.orbitVariant,
+                                      color: Colors.white,
+                                      size: MediaQuery.of(context).size.width *
+                                          0.08,
                                     )
                               : const Text('loading');
                         },
@@ -176,10 +176,16 @@ class _QRViewPageState extends State<QRViewPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  if (result != null)
-                    Text(
-                        'Resultado : ${describeEnum(result!.format)}   Data: ${result!.code}')
-                  else
+                  if (result != null) ...[
+                    Column(
+                      children: [
+                        Icon(MdiIcons.qrcode),
+                        const Text('Datos cargados correctamente'),
+                        /* Text('Resultado : ${describeEnum(result!.format)} '),
+                        Text('Data: ${result!.code}'),*/
+                      ],
+                    ),
+                  ] else
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 6, right: 6, top: 2, bottom: 3),
@@ -303,6 +309,9 @@ class _QRViewPageState extends State<QRViewPage> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
+        loginController.qrReading(result!
+            .code); //todo aqui mando al controlador la lectura del codigo
+        // print('************ RESULTADO  ********** CodeQr qr:${result!.code}');
       });
     });
   }
@@ -311,7 +320,7 @@ class _QRViewPageState extends State<QRViewPage> {
     log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
     if (!p) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('no Permission')),
+        const SnackBar(content: Text('No tienen Permiso.')),
       );
     }
   }
