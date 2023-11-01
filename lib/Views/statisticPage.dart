@@ -5,10 +5,12 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Views/stadisticaDiaPageNueva.dart';
 import 'package:turnopro_apk/Views/stadisticaMesPageNueva.dart';
 import 'package:turnopro_apk/Views/stadisticaPageNueva.dart';
+import 'package:turnopro_apk/Views/utilCalendar.dart';
 //import 'package:turnopro_apk/Views/products-services/services/servicesBody.dart';
 import '../../Components/BottomNavigationBar.dart';
 //import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class StatisticPage extends StatefulWidget {
   const StatisticPage({super.key});
@@ -128,61 +130,78 @@ class _StatisticPageState extends State<StatisticPage>
           controller: _tabController,
           children: [
             const LineChartSample2(),
-            Column(
-              children: [
-                const BarChartSample6(),
-                Container(
-                  width: (MediaQuery.of(context).size.width * 0.8),
-                  height: 40,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                    color: Colors.white,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  const BarChartSample6(),
+                  Container(
+                    width: (MediaQuery.of(context).size.width * 0.8),
+                    height: 40,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                      color: Colors.white,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return BuildCalendar(
+                                d: DateTime.now(),
+                                m: DateTime.now(),
+                                a: DateTime.now(),
+                                // totalPrice: controllerShoppingCart.totalPrice,
+                              ); // Muestra el AlertDialog
+                            },
+                          );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(
-                              MdiIcons.calendarBlank,
-                              color: const Color.fromARGB(130, 0, 0, 0),
+                            Row(
+                              children: [
+                                Icon(
+                                  MdiIcons.calendarBlank,
+                                  color: const Color.fromARGB(130, 0, 0, 0),
+                                ),
+                                const Text(
+                                  '16 oct - 22 oct',
+                                  style: TextStyle(
+                                      color: Color.fromARGB(130, 0, 0, 0)),
+                                ),
+                              ],
                             ),
-                            const Text(
-                              '16 oct - 22 oct',
-                              style: TextStyle(
-                                  color: Color.fromARGB(130, 0, 0, 0)),
+                            Icon(
+                              MdiIcons.arrowDownThin,
+                              color: const Color.fromARGB(130, 0, 0, 0),
                             ),
                           ],
                         ),
-                        Icon(
-                          MdiIcons.arrowDownThin,
-                          color: const Color.fromARGB(130, 0, 0, 0),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 135,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CartOption(
-                            color: pilateColor,
-                            icon: Icon(
-                              MdiIcons.cash,
-                            ),
-                            number: cant$,
-                            description: description),
-                      ],
+                  SizedBox(
+                    height: 135,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          CartOption(
+                              color: pilateColor,
+                              icon: Icon(
+                                MdiIcons.cash,
+                              ),
+                              number: cant$,
+                              description: description),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             const LineChartSample5(),
           ],
@@ -267,6 +286,128 @@ class CartOption extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class BuildCalendar extends StatefulWidget {
+  final DateTime d;
+  final DateTime m;
+  final DateTime a;
+
+  const BuildCalendar(
+      {Key? key, required this.d, required this.m, required this.a})
+      : super(key: key);
+
+  @override
+  State<BuildCalendar> createState() => _BuildCalendarState();
+}
+
+class _BuildCalendarState extends State<BuildCalendar> {
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      //title: const Text('Confirmación'),
+      content: SizedBox(
+        height: 150, // Ajusta la altura según tu necesidad
+        width: 400,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // Establece el tamaño mínimo
+            children: [
+              TableCalendar(
+                rangeStartDay: DateTime(
+                    2022), //todo aqui la fecha que el profesional empezo a trabajar
+
+                /*  calendarFormat: CalendarFormat.week,
+                selectedDayPredicate: (DateTime date) {
+                  // Deshabilita la selección de días individuales
+                  return false;
+                },*/
+                // Asigna el controlador
+                daysOfWeekStyle: const DaysOfWeekStyle(
+                    weekendStyle:
+                        TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                    weekdayStyle:
+                        TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+                headerStyle: const HeaderStyle(
+                  formatButtonVisible: false,
+                  titleTextStyle: TextStyle(fontWeight: FontWeight.w700),
+                ),
+                locale: 'es',
+                calendarStyle: const CalendarStyle(
+                    // Ajusta el tamaño de fuente de los días de la semana
+                    weekendTextStyle: TextStyle(
+                        fontSize:
+                            14), // Ajusta el tamaño de fuente de los fines de semana
+
+                    todayTextStyle: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight
+                            .w700) // Ajusta el tamaño de fuente de días fuera del mes
+                    ),
+                firstDay: kFirstDay,
+                lastDay: kLastDay,
+                focusedDay: _focusedDay,
+                //todo con esto selecciona un dia esn es pecifico
+                calendarFormat: _calendarFormat,
+                selectedDayPredicate: (day) {
+                  // Use `selectedDayPredicate` to determine which day is currently selected.
+                  // If this returns true, then `day` will be marked as selected.
+
+                  // Using `isSameDay` is recommended to disregard
+                  // the time-part of compared DateTime objects.
+                  return isSameDay(_selectedDay, day);
+                },
+
+                onDaySelected: (selectedDay, focusedDay) {
+                  if (!isSameDay(_selectedDay, selectedDay)) {
+                    // Call `setState()` when updating the selected day
+                    setState(() {
+                      _selectedDay = selectedDay;
+                      _focusedDay = focusedDay;
+                      print('eeeeeeeeeeeeeeeeeeeeeee');
+                      print(_focusedDay);
+                      print(_selectedDay);
+                    });
+                  }
+                },
+                onFormatChanged: (format) {
+                  if (_calendarFormat != format) {
+                    // Call `setState()` when updating calendar format
+                    setState(() {
+                      _calendarFormat = format;
+                    });
+                  }
+                },
+                onPageChanged: (focusedDay) {
+                  // No need to call `setState()` here
+                  _focusedDay = focusedDay;
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            // Cerrar el AlertDialog
+            Navigator.of(context).pop();
+          },
+          child: const Text('Aceptar'),
+        ),
+        TextButton(
+          onPressed: () {
+            // Cerrar el AlertDialog
+            Navigator.of(context).pop();
+          },
+          child: const Text('Cerrar'),
+        ),
+      ],
     );
   }
 }
