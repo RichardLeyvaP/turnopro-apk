@@ -1,9 +1,17 @@
+// ignore_for_file: file_names
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Components/legend_widget.dart';
+// ignore: depend_on_referenced_packages
+import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/statistic.controller.dart';
 
 class BarChartSample6 extends StatelessWidget {
-  const BarChartSample6({super.key});
+  BarChartSample6({super.key});
+
+  final StatisticController controllerStatistic =
+      Get.find<StatisticController>();
 
   final pilateColor = const Color.fromARGB(180, 76, 75, 75);
   final cyclingColor = const Color.fromARGB(255, 68, 135, 211);
@@ -51,9 +59,6 @@ class BarChartSample6 extends StatelessWidget {
     const style = TextStyle(fontSize: 12, fontWeight: FontWeight.w700);
     String text;
     switch (value.toInt()) {
-      case 0:
-        text = 'DOM';
-        break;
       case 1:
         text = 'LUN';
         break;
@@ -76,16 +81,22 @@ class BarChartSample6 extends StatelessWidget {
         text = 'DOM';
         break;
       case 8:
-        text = 'SEP';
+        text = 'LUN';
         break;
       case 9:
-        text = 'OCT';
+        text = 'MAR';
         break;
       case 10:
-        text = 'NOV';
+        text = 'MIE';
         break;
       case 11:
-        text = 'DEC';
+        text = 'JUE';
+        break;
+      case 12:
+        text = 'VIE';
+        break;
+      case 13:
+        text = 'SAB';
         break;
       default:
         text = '';
@@ -109,96 +120,100 @@ class BarChartSample6 extends StatelessWidget {
   Widget build(BuildContext context) {
     double maxGanancia = 40000;
 
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Ganancias',
-            style: TextStyle(
-              color: sexWorkoutColor,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+    return GetBuilder<StatisticController>(builder: (contStat) {
+      return Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Ganancias',
+              style: TextStyle(
+                color: sexWorkoutColor,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          LegendsListWidget(
-            legends: [
-              Legend('Bajo', pilateColor),
-              Legend('Medio', quickWorkoutColor),
-              Legend('Alto', cyclingColor),
-            ],
-          ),
-          const SizedBox(height: 24),
-          AspectRatio(
-            aspectRatio: 1.3,
-            child: BarChart(
-              swapAnimationDuration: const Duration(seconds: 3),
-              BarChartData(
-                alignment: BarChartAlignment.spaceAround,
-                titlesData: FlTitlesData(
-                  // leftTitles: const AxisTitles(),
-                  rightTitles: const AxisTitles(),
-                  topTitles: const AxisTitles(),
-                  bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      getTitlesWidget: bottomTitles,
-                      //reservedSize: 5,
+            const SizedBox(height: 8),
+            LegendsListWidget(
+              legends: [
+                Legend('Bajo', pilateColor),
+                Legend('Medio', quickWorkoutColor),
+                Legend('Alto', cyclingColor),
+              ],
+            ),
+            const SizedBox(height: 24),
+            AspectRatio(
+              aspectRatio: 1.3,
+              child: BarChart(
+                swapAnimationDuration: const Duration(seconds: 3),
+                BarChartData(
+                  alignment: BarChartAlignment.spaceAround,
+                  titlesData: FlTitlesData(
+                    // leftTitles: const AxisTitles(),
+                    rightTitles: const AxisTitles(),
+                    topTitles: const AxisTitles(),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: bottomTitles,
+                        //reservedSize: 5,
+                      ),
                     ),
                   ),
-                ),
-                barTouchData: BarTouchData(enabled: false),
-                borderData: FlBorderData(show: false),
-                gridData: const FlGridData(show: false),
-                barGroups: [
-                  generateGroupData(0, 20000, 10000, 5000),
-                  generateGroupData(1, 9200, 10000, 6000),
-                  generateGroupData(2, 15000, 10000, 12000),
-                  generateGroupData(3, 10000, 11000, 14000),
-                  generateGroupData(4, 13000, 8000, 9000),
-                  generateGroupData(5, 11500, 2200, 9800),
-                  generateGroupData(6, 4350, 9200, 18450),
-                  generateGroupData(7, 4350, 9200, 18450),
-                  // generateGroupData(8, 4350, 9200, 18450),
-                  // generateGroupData(9, 4350, 9200, 18450),
-                  // generateGroupData(10, 4350, 9200, 18450),
-                  // generateGroupData(7, 2.3, 3.2, 3),
-                  // generateGroupData(8, 2, 4.8, 2.5),
-                  // generateGroupData(9, 1.2, 3.2, 2.5),
-                  // generateGroupData(10, 1, 4.8, 3),
-                  // generateGroupData(11, 2, 4.4, 2.8),
-                ],
-                maxY: maxGanancia,
-                extraLinesData: ExtraLinesData(
-                  horizontalLines: [
-                    HorizontalLine(
-                      y: 12500,
-                      color: pilateColor,
-                      strokeWidth: 1,
-                      dashArray: [20, 4],
-                    ),
-                    HorizontalLine(
-                      y: 25000,
-                      color: quickWorkoutColor,
-                      strokeWidth: 2,
-                      dashArray: [20, 4],
-                    ),
-                    HorizontalLine(
-                      y: maxGanancia,
-                      color: cyclingColor,
-                      strokeWidth: 3,
-                      dashArray: [20, 4],
-                    ),
+                  barTouchData: BarTouchData(enabled: false),
+                  borderData: FlBorderData(show: false),
+                  gridData: const FlGridData(show: false),
+                  barGroups: [
+                    if (contStat.numberdayWeek != -99099) ...[
+                      for (int i = contStat.numberdayWeek;
+                          i < (contStat.quantityDates + contStat.numberdayWeek);
+                          i++) ...[generateGroupData(i, 4350, 9200, 18450)]
+                    ] else ...[
+                      generateGroupData(1, 9200, 10000, 6000),
+                      generateGroupData(2, 15000, 10000, 12000),
+                      generateGroupData(3, 10000, 11000, 14000),
+                      generateGroupData(4, 13000, 8000, 9000),
+                      generateGroupData(5, 11500, 2200, 9800),
+                      generateGroupData(6, 4350, 9200, 18450),
+                      generateGroupData(7, 20000, 10000, 5000),
+                    ]
+
+                    // generateGroupData(7, 4350, 9200, 18450),
+                    // generateGroupData(8, 4350, 9200, 18450),
+                    // generateGroupData(9, 4350, 9200, 18450),
+                    // generateGroupData(10, 4350, 9200, 18450),
                   ],
+                  maxY: maxGanancia,
+                  extraLinesData: ExtraLinesData(
+                    horizontalLines: [
+                      HorizontalLine(
+                        y: 12500,
+                        color: pilateColor,
+                        strokeWidth: 1,
+                        dashArray: [20, 4],
+                      ),
+                      HorizontalLine(
+                        y: 25000,
+                        color: quickWorkoutColor,
+                        strokeWidth: 2,
+                        dashArray: [20, 4],
+                      ),
+                      HorizontalLine(
+                        y: maxGanancia,
+                        color: cyclingColor,
+                        strokeWidth: 3,
+                        dashArray: [20, 4],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 }

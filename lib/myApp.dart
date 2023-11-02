@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Components/auth_check.dart';
+import 'package:turnopro_apk/Controllers/statistic.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
@@ -50,6 +51,7 @@ class Myapp extends StatelessWidget {
       GetPage(
         name: '/StatisticPage',
         page: () => const StatisticPage(),
+        binding: BindingsBuilder.put(() => StatisticController()),
       ),
       GetPage(
         name: '/Professional',
