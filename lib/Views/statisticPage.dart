@@ -5,12 +5,11 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Views/stadisticaDiaPageNueva.dart';
 import 'package:turnopro_apk/Views/stadisticaMesPageNueva.dart';
 import 'package:turnopro_apk/Views/stadisticaPageNueva.dart';
-import 'package:turnopro_apk/Views/utilCalendar.dart';
-//import 'package:turnopro_apk/Views/products-services/services/servicesBody.dart';
 import '../../Components/BottomNavigationBar.dart';
 //import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:intl/intl.dart';
 
 class StatisticPage extends StatefulWidget {
   const StatisticPage({super.key});
@@ -304,110 +303,127 @@ class BuildCalendar extends StatefulWidget {
 }
 
 class _BuildCalendarState extends State<BuildCalendar> {
-  CalendarFormat _calendarFormat = CalendarFormat.month;
-  DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
+  final DateRangePickerController _controller = DateRangePickerController();
+
+  late DateTime? _startDate;
+  late DateTime? _endDate;
+  int selectDate = 0;
+  DateTime? _minDate;
+  DateTime? _maxDate;
+  final formatterDate = DateFormat('yyyy-MM-dd');
+
+  void getFormatterDate() async {
+    final getInitialDate = formatterDate.format(_startDate!);
+    final getFinalDate = formatterDate.format(_endDate!);
+    //todo... llamada al controlador sperar por la respuesta y luego cerrar el calendario
+    //todo... y cargar nuevamente la vista de estadistica con los nuevos valores
+    print('DESDE LA FUNCION:$getInitialDate');
+    print('DESDE LA FUNCION:$getFinalDate');
+
+    int numeroDiaSemana = _startDate!.weekday;
+
+    String diaSemana = '';
+    switch (numeroDiaSemana) {
+      case 1:
+        diaSemana = 'Lunes';
+        break;
+      case 2:
+        diaSemana = 'Martes';
+        break;
+      case 3:
+        diaSemana = 'Miércoles';
+        break;
+      case 4:
+        diaSemana = 'Jueves';
+        break;
+      case 5:
+        diaSemana = 'Viernes';
+        break;
+      case 6:
+        diaSemana = 'Sábado';
+        break;
+      case 7:
+        diaSemana = 'Domingo';
+        break;
+    }
+
+    print('La fecha $getInitialDate corresponde a un $diaSemana');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startDate = DateTime.now();
+    _endDate = null;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final DateTime initialDate = DateTime(2023, 1, 1);
     return AlertDialog(
       //title: const Text('Confirmación'),
+      actionsPadding: const EdgeInsets.only(right: 20),
+      actions: [
+        TextButton(
+          style: const ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll(
+            Color.fromARGB(20, 0, 0, 0),
+          )),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Cancelar'),
+        ),
+        TextButton(
+          style: const ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll(
+            Color.fromARGB(20, 0, 0, 0),
+          )),
+          onPressed: () {
+            setState(() {
+              selectDate = 0;
+            });
+          },
+          child: const Text('Seleccionar nuevamente'),
+        ),
+      ],
       content: SizedBox(
-        height: 150, // Ajusta la altura según tu necesidad
-        width: 400,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min, // Establece el tamaño mínimo
-            children: [
-              TableCalendar(
-                rangeStartDay: DateTime(
-                    2022), //todo aqui la fecha que el profesional empezo a trabajar
-
-                /*  calendarFormat: CalendarFormat.week,
-                selectedDayPredicate: (DateTime date) {
-                  // Deshabilita la selección de días individuales
-                  return false;
-                },*/
-                // Asigna el controlador
-                daysOfWeekStyle: const DaysOfWeekStyle(
-                    weekendStyle:
-                        TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
-                    weekdayStyle:
-                        TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
-                headerStyle: const HeaderStyle(
-                  formatButtonVisible: false,
-                  titleTextStyle: TextStyle(fontWeight: FontWeight.w700),
-                ),
-                locale: 'es',
-                calendarStyle: const CalendarStyle(
-                    // Ajusta el tamaño de fuente de los días de la semana
-                    weekendTextStyle: TextStyle(
-                        fontSize:
-                            14), // Ajusta el tamaño de fuente de los fines de semana
-
-                    todayTextStyle: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight
-                            .w700) // Ajusta el tamaño de fuente de días fuera del mes
-                    ),
-                firstDay: kFirstDay,
-                lastDay: kLastDay,
-                focusedDay: _focusedDay,
-                //todo con esto selecciona un dia esn es pecifico
-                calendarFormat: _calendarFormat,
-                selectedDayPredicate: (day) {
-                  // Use `selectedDayPredicate` to determine which day is currently selected.
-                  // If this returns true, then `day` will be marked as selected.
-
-                  // Using `isSameDay` is recommended to disregard
-                  // the time-part of compared DateTime objects.
-                  return isSameDay(_selectedDay, day);
-                },
-
-                onDaySelected: (selectedDay, focusedDay) {
-                  if (!isSameDay(_selectedDay, selectedDay)) {
-                    // Call `setState()` when updating the selected day
-                    setState(() {
-                      _selectedDay = selectedDay;
-                      _focusedDay = focusedDay;
-                      print('eeeeeeeeeeeeeeeeeeeeeee');
-                      print(_focusedDay);
-                      print(_selectedDay);
-                    });
+        height: 255, // Ajusta la altura según tu necesidad
+        width: 300,
+        child: AspectRatio(
+          aspectRatio: 1.0,
+          child: SfDateRangePicker(
+            controller: _controller,
+            view: DateRangePickerView.month,
+            initialDisplayDate: initialDate,
+            minDate: selectDate == 0 ? null : _minDate,
+            maxDate: selectDate == 0 ? null : _maxDate,
+            selectionColor: const Color(0xFFF18254),
+            startRangeSelectionColor: const Color(0xFFF18254),
+            endRangeSelectionColor: const Color(0xFFF18254),
+            selectionMode: DateRangePickerSelectionMode.range,
+            showActionButtons: _endDate != null ? true : false,
+            onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+              if (args.value != null && args.value.startDate != null) {
+                setState(() {
+                  selectDate = 1;
+                  if (_startDate != null) {
+                    _minDate = _startDate = args.value.startDate;
+                    _endDate = args.value.endDate;
+                    _maxDate = _startDate!.add(const Duration(days: 6));
+                    selectDate = 1;
                   }
-                },
-                onFormatChanged: (format) {
-                  if (_calendarFormat != format) {
-                    // Call `setState()` when updating calendar format
-                    setState(() {
-                      _calendarFormat = format;
-                    });
-                  }
-                },
-                onPageChanged: (focusedDay) {
-                  // No need to call `setState()` here
-                  _focusedDay = focusedDay;
-                },
-              ),
-            ],
+                });
+              }
+            },
+            confirmText: 'Aceptar',
+            cancelText: '',
+            onSubmit: (dateRange) {
+              getFormatterDate();
+            },
           ),
         ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            // Cerrar el AlertDialog
-            Navigator.of(context).pop();
-          },
-          child: const Text('Aceptar'),
-        ),
-        TextButton(
-          onPressed: () {
-            // Cerrar el AlertDialog
-            Navigator.of(context).pop();
-          },
-          child: const Text('Cerrar'),
-        ),
-      ],
     );
   }
 }

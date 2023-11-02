@@ -12,7 +12,8 @@ Future<void> main() async {
   LoginController controllerLogin = LoginController();
   Get.put(controllerLogin);
   // Inicializa y guarda tu controlador en Get
-  await initializeDateFormatting('es', null);
+  await initializeDateFormatting('es',
+      null); //esto es para el paquete de el calendario que cargue el idioma español
 
   // Llamada para inicializar Flutter y su enlace con la plataforma
   WidgetsFlutterBinding.ensureInitialized();

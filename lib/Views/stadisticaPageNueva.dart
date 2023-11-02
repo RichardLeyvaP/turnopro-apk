@@ -48,7 +48,7 @@ class BarChartSample6 extends StatelessWidget {
   }
 
   Widget bottomTitles(double value, TitleMeta meta) {
-    const style = TextStyle(fontSize: 10, fontWeight: FontWeight.w700);
+    const style = TextStyle(fontSize: 12, fontWeight: FontWeight.w700);
     String text;
     switch (value.toInt()) {
       case 0:
@@ -75,24 +75,33 @@ class BarChartSample6 extends StatelessWidget {
       case 7:
         text = 'DOM';
         break;
-      // case 8:
-      //   text = 'SEP';
-      //   break;
-      // case 9:
-      //   text = 'OCT';
-      //   break;
-      // case 10:
-      //   text = 'NOV';
-      //   break;
-      // case 11:
-      //   text = 'DEC';
-      //   break;
+      case 8:
+        text = 'SEP';
+        break;
+      case 9:
+        text = 'OCT';
+        break;
+      case 10:
+        text = 'NOV';
+        break;
+      case 11:
+        text = 'DEC';
+        break;
       default:
         text = '';
     }
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      child: Text(text, style: style),
+      child: InkWell(
+          onTap: () {
+            print(text); //todo aqui puedo mostrar la cantidad por dia
+          },
+          child: Container(
+              width: 35,
+              height: 40,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
+              child: Center(child: Text(text, style: style)))),
     );
   }
 
@@ -126,6 +135,7 @@ class BarChartSample6 extends StatelessWidget {
           AspectRatio(
             aspectRatio: 1.3,
             child: BarChart(
+              swapAnimationDuration: const Duration(seconds: 3),
               BarChartData(
                 alignment: BarChartAlignment.spaceAround,
                 titlesData: FlTitlesData(
@@ -145,12 +155,16 @@ class BarChartSample6 extends StatelessWidget {
                 gridData: const FlGridData(show: false),
                 barGroups: [
                   generateGroupData(0, 20000, 10000, 5000),
-                  generateGroupData(1, 8200, 12000, 5000),
+                  generateGroupData(1, 9200, 10000, 6000),
                   generateGroupData(2, 15000, 10000, 12000),
-                  generateGroupData(3, 12000, 10000, 16000),
-                  generateGroupData(4, 13000, 5000, 11000),
+                  generateGroupData(3, 10000, 11000, 14000),
+                  generateGroupData(4, 13000, 8000, 9000),
                   generateGroupData(5, 11500, 2200, 9800),
                   generateGroupData(6, 4350, 9200, 18450),
+                  generateGroupData(7, 4350, 9200, 18450),
+                  // generateGroupData(8, 4350, 9200, 18450),
+                  // generateGroupData(9, 4350, 9200, 18450),
+                  // generateGroupData(10, 4350, 9200, 18450),
                   // generateGroupData(7, 2.3, 3.2, 3),
                   // generateGroupData(8, 2, 4.8, 2.5),
                   // generateGroupData(9, 1.2, 3.2, 2.5),
