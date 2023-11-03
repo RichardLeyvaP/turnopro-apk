@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Models/customer_model.dart';
+//todo REVISAR aqui se esta cargando una API de ejemplo no la de SIMPLIFI
 
 class CustomerRepository extends GetConnect {
   Future<List<CustomerModel>> getcustomersList() async {

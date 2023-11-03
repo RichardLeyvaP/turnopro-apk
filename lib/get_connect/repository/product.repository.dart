@@ -16,8 +16,6 @@ class ProductRepository extends GetConnect {
 
       var url =
           '${Env.apiEndpoint}/car_oders?id=9'; //todo REVISAR aqui enviar el id del carro correspondiente al cliente-profesional
-      // category_branch?branch_id=10
-      //print(url);
       final response = await get(url);
       if (response.statusCode == 200) {
         // print('codigo 200000000000000000');
@@ -52,13 +50,11 @@ class ProductRepository extends GetConnect {
   }
 
   Future serviceRequestProductDelete(int id_car) async {
-    //todo
     try {
       List<OrderDeleteModel> orderDEL = [];
       var url =
-          '${Env.apiEndpoint}/car_order_delete?id=$id_car'; //cambiar aqui por servicios en la api
+          '${Env.apiEndpoint}/car_order_delete?id=$id_car'; //AHORA MISMO EL QUE TIENE ES EL ID=6
       // category_branch?branch_id=10
-      //print(url);
       final response = await get(url);
       if (response.statusCode == 200) {
         // print('tambien llegue aqui');
@@ -78,27 +74,24 @@ class ProductRepository extends GetConnect {
     }
   }
 
-//*ESTE METODO ME DEVUELVE LOS PRODUCTOS ASOCIADO A UNA CATEGORIA LA CUAL LA SABEMOS PORQUE MANDAMOS EL ID
+//*ESTE METODO ME DEVUELVE LOS PRODUCTOS ASOCIADO A UNA CATEGORIA LA CUAL LA SABEMOS PORQUE MANDAMOS EL ID Y ID_BRANCH
   Future getProductCategoryList(id, branchId) async {
-    print('este es el id: $id');
-    print('este es el branchId: $branchId');
+    // print('este es el id: $id');
+    // print('este es el branchId: $branchId');
     try {
       List<ProductModel> productList = [];
       var url =
-          '${Env.apiEndpoint}/category_products?id=$id&branch_id=$branchId'; //cambiar aqui por servicios en la api
-
+          '${Env.apiEndpoint}/category_products?id=$id&branch_id=$branchId';
       final response = await get(url);
-      // print(response.statusCode);
       if (response.statusCode == 200) {
         final products = response.body['category_products'];
         if (products != null) {
-          // print('ok1');
           for (Map product in products) {
             ProductModel u = ProductModel.fromJson(jsonEncode(product));
             productList.add(u);
           }
         }
-        print('cantidad de Productos:${productList.length}');
+        //print('cantidad de Productos:${productList.length}');
         return productList;
       }
     } catch (e) {
@@ -107,12 +100,11 @@ class ProductRepository extends GetConnect {
   }
 
   //*ESTE METODO ME DEVUELVE TODOS LOS PRODUCTOS
-  Future getProductList() async {
+  Future getProductList(branchId) async {
     //todo 1 REVISAR aqui devuelve los productos
     try {
       List<ProductModel> productList = [];
-      var url =
-          '${Env.apiEndpoint}/product_branch?branch_id=1'; //cambiar aqui por servicios en la api
+      var url = '${Env.apiEndpoint}/product_branch?branch_id=$branchId';
 
       final response = await get(url);
       if (response.statusCode == 200) {
@@ -132,7 +124,11 @@ class ProductRepository extends GetConnect {
 
   //*ESTE METODO ME DEVUELVE TODOS LOS PRODUCTOS
   Future<int> addOrderCartList(
-      client_id, person_id, product_id, service_id) async {
+      //todo REVISAR REVISAR este metodo
+      client_id,
+      person_id,
+      product_id,
+      service_id) async {
     try {
       var url = '${Env.apiEndpoint}/order';
 
@@ -160,21 +156,19 @@ class ProductRepository extends GetConnect {
     }
   }
 
-  Future<int> awaitRequestDelete(int id, int request) async {
+  Future<int> awaitRequestDelete(id, request_delete) async {
     try {
       var url = '${Env.apiEndpoint}/order';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
         'id': id,
-        'request_delete': request,
+        'request_delete': request_delete,
       };
 
-      // Realizar la solicitud POST
       final response = await put(url, body);
       //print('MANDE A ELIMINAR:$body');
       if (response.statusCode == 200) {
-        //final id_order = response.body['order_id'];
         return 1;
       } else {
         return -990099;
@@ -208,22 +202,28 @@ class ProductRepository extends GetConnect {
 //todo BIEN getCategoryList(branchIdLoggedIn)
   Future<List<CategoryModel>> getCategoryList(branchIdLoggedIn) async {
     List<CategoryModel> categoryList = [];
-    var url =
-        '${Env.apiEndpoint}/category_branch?branch_id=$branchIdLoggedIn'; //cambiar aqui por servicios en la api
+
+    try {
+      var url =
+          '${Env.apiEndpoint}/category_branch?branch_id=$branchIdLoggedIn'; //cambiar aqui por servicios en la api
 //todo aqui van las categorias de los productos para el tab
-    final response = await get(url);
-    if (response.statusCode == 200) {
-      final categorys = response.body['category_products'];
-      if (categorys != null) {
-        for (Map category in categorys) {
-          CategoryModel u = CategoryModel.fromJson(jsonEncode(category));
-          categoryList.add(u);
+      final response = await get(url);
+      if (response.statusCode == 200) {
+        final categorys = response.body['category_products'];
+        if (categorys != null) {
+          for (Map category in categorys) {
+            CategoryModel u = CategoryModel.fromJson(jsonEncode(category));
+            categoryList.add(u);
+          }
         }
+        // print(
+        //     'Aqui retorno los category_products por almacen-branch ${categoryList.length}');
+        return categoryList;
+      } else {
+        return categoryList;
       }
-      // print(
-      //     'Aqui retorno los category_products por almacen-branch ${categoryList.length}');
-      return categoryList;
-    } else {
+    } catch (e) {
+      print('ERROR:$e');
       return categoryList;
     }
   }

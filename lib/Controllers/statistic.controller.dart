@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 
 class StatisticController extends GetxController {
+  //DECLARACION DE VARIABLES
   //*********************** */
   int quantityDates = 0;
   int numberdayWeek = -99099;

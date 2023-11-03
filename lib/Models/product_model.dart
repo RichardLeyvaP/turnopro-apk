@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
+//todo REVISAR aqui datos estaticos en el modelo, los valores enteros
 
 class ProductModel {
   int id;

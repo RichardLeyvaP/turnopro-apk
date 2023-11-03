@@ -5,11 +5,6 @@ import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/get_connect/repository/services.repository.dart';
 
 class ServiceController extends GetxController {
-  //LLAMANDO AL CONTROLADOR
-  /*ServiceController() {
-    _fetchServiceList();
-  }*/
-
 //DECLARACION DE VARIABLES
   ServiceRepository repository = ServiceRepository();
   double getTotal = 0;

@@ -1,11 +1,13 @@
 // ignore_for_file: depend_on_referenced_packages, unused_element, non_constant_identifier_names
 
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/orderDelete_model.dart';
 import 'package:turnopro_apk/Models/product_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/get_connect/repository/product.repository.dart';
 import 'package:turnopro_apk/get_connect/repository/services.repository.dart';
+//todo REVISAR REVISAR este controlador y que  funcione correctamente,no lo he revisado me refiero funcionalmente
 
 class ShoppingCartController extends GetxController {
   ProductRepository productRepository = ProductRepository();
@@ -72,9 +74,9 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  Future<void> requestDelete(int id, int request) async {
+  Future<void> requestDelete(int id, int request_delete) async {
     try {
-      await productRepository.awaitRequestDelete(id, request);
+      await productRepository.awaitRequestDelete(id, request_delete);
       requestDeleteOrder.add(id);
       internetError = 0;
       update();
@@ -84,11 +86,12 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  Future<void> orderDelete(int id) async {
+  Future<void> orderDelete(id) async {
     try {
       await productRepository.orderDeleteCar(id); //todo
       internetError = 0;
-      loadOrderDeleteCar(10);
+      loadOrderDeleteCar(
+          10); //todo REVISAR aqui mandando el id del carro estatico
       update();
     } catch (e) {
       internetError = -99;
@@ -139,8 +142,9 @@ class ShoppingCartController extends GetxController {
 
   Future<void> _fetchProductList() async {
     try {
-      productCart = await productRepository
-          .getProductList(); //todo mando a pedir los productos que hay en la sucursal
+      final LoginController controllerLogin = Get.find<LoginController>();
+      productCart = await productRepository.getProductList(controllerLogin
+          .branchIdLoggedIn); //todo1 mando a pedir los productos que hay en la sucursal
       internetError = 0;
       update();
     } catch (e) {

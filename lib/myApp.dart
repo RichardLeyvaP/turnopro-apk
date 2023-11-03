@@ -1,14 +1,14 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:turnopro_apk/Components/auth_check.dart';
+import 'package:turnopro_apk/Views/common/auth_check.dart';
 import 'package:turnopro_apk/Controllers/statistic.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:turnopro_apk/Views/homeResponsiblePage.dart';
-import 'package:turnopro_apk/Views/shoppingCartPage.dart';
+import 'package:turnopro_apk/Views/responsible/homeResponsiblePage.dart';
+import 'package:turnopro_apk/Views/professional/shoppingCartPage.dart';
 
 import 'Views/statisticPage.dart';
 

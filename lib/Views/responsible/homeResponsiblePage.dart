@@ -34,7 +34,8 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
   @override
   void initState() {
     super.initState();
-    controllerShoppingCart.loadOrderDeleteCar(10);
+    controllerShoppingCart
+        .loadOrderDeleteCar(10); //todo REVISAR  aqui llamada estatica
     iniciarLlamadaCada10Segundos();
   }
 
@@ -53,7 +54,8 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
 
     // Establece un temporizador que llama a la función cada 20 segundos
     _timer = Timer.periodic(const Duration(seconds: 20), (Timer timer) {
-      controllerShoppingCart.loadOrderDeleteCar(10);
+      controllerShoppingCart
+          .loadOrderDeleteCar(10); //todo REVISAR  aqui llamada estatica
     });
   }
 

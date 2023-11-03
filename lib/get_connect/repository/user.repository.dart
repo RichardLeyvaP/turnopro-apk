@@ -53,8 +53,7 @@ class UserRepository extends GetConnect {
         return null;
       }
     } catch (e) {
-      // Maneja cualquier excepción que pueda ocurrir durante la solicitud.
-      // print('nooo ultimo en el error:$e');
+      print('Error:$e');
       return e;
     }
   }

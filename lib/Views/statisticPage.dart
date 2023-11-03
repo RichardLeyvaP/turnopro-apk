@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/statistic.controller.dart';
 import 'package:turnopro_apk/Views/stadisticaDiaPageNueva.dart';
 import 'package:turnopro_apk/Views/stadisticaMesPageNueva.dart';

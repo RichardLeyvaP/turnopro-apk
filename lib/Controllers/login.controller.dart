@@ -1,13 +1,9 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:turnopro_apk/get_connect/repository/user.repository.dart';
 
 class LoginController extends GetxController {
-  //LLAMANDO AL CONTROLADOR
-
   @override
   void onReady() {
     super.onReady();
@@ -36,7 +32,6 @@ class LoginController extends GetxController {
   void qrReading(String? qr) {
     print('entre aqui a el controlador de lectura del QR${qr.toString()}');
     // Map<String, dynamic> jsonMap = json.decode(qr.toString());
-
     // print('......................Objeto JSON: $jsonMap');
     // String nombre = jsonMap['nombre']; // Accede al valor del campo "nombre"
     // int edad = jsonMap['edad']; // Accede al valor del campo "edad"
