@@ -450,7 +450,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize =>
       const Size.fromHeight(70); // Ajusta el tamaño del AppBar aquí
 
-  String nameUser = 'Miguel Hojas';
+  String nameUser = 'Miguel Hojas'; //todo estoy aqui
   String imageDirection = 'assets/images/Responsable.jpg';
 
   @override
@@ -459,52 +459,55 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false, //RLP Oculta la flecha de retroceso
       elevation: 0,
       backgroundColor: const Color.fromARGB(255, 231, 232, 234),
-      title: Row(
-        children: [
-          Container(
-            margin: const EdgeInsets.only(
-                top: 8), // Agrega un margen en la parte superior
+      title: GetBuilder<LoginController>(//todo
+          builder: (logUser) {
+        return Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(
+                  top: 8), // Agrega un margen en la parte superior
 
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: const Color.fromARGB(255, 32, 32, 32),
-                width: 2, // Ajusta el ancho del borde según tus preferencias
-              ),
-            ),
-            child: CircleAvatar(
-              backgroundImage: AssetImage(imageDirection),
-              radius: 25, // Ajusta el tamaño del círculo aquí
-            ),
-          ),
-          SizedBox(
-            width: (MediaQuery.of(context).size.width *
-                0.02), //Espacio entre foto perfil y el saludo y el nombre
-          ), // Espacio entre la imagen y el texto
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Encargado del Local',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  height: 1.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: const Color.fromARGB(255, 32, 32, 32),
+                  width: 2, // Ajusta el ancho del borde según tus preferencias
                 ),
               ),
-              Text(
-                nameUser,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w900,
-                  height: 1.0,
-                ),
+              child: CircleAvatar(
+                backgroundImage: AssetImage(imageDirection),
+                radius: 25, // Ajusta el tamaño del círculo aquí
               ),
-            ],
-          ),
-        ],
-      ),
+            ),
+            SizedBox(
+              width: (MediaQuery.of(context).size.width *
+                  0.02), //Espacio entre foto perfil y el saludo y el nombre
+            ), // Espacio entre la imagen y el texto
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Encargado del Local',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    height: 1.0,
+                  ),
+                ),
+                Text(
+                  logUser.nameUserLoggedIn,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w900,
+                    height: 1.0,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      }),
       actions: [
         GetBuilder<LoginController>(builder: (_) {
           return InkWell(

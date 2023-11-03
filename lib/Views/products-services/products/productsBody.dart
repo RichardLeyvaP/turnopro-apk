@@ -87,59 +87,68 @@ class _ProductsBodyState extends State<ProductsBody>
                             child: CircularProgressIndicator(
                             color: Color(0xFFF18254),
                           ))
-                        : Expanded(
-                            child: TabBarView(
-                            controller: _tabController,
-                            children: List<Widget>.generate(
-                              tabs2.length,
-                              (index) {
-                                return ListView.builder(
-                                  itemCount:
-                                      controllerProduct.productListLength,
-                                  itemBuilder: (context, itemIndex) => Column(
-                                    children: [
-                                      controllerProduct.productListLength !=
-                                                  0 &&
-                                              controllerProduct
-                                                      .productListLength >
-                                                  0
-                                          ? cartProduct(
-                                              'assets/images/pngegg.png',
-                                              controllerProduct
-                                                  .product[itemIndex].id,
-                                              controllerProduct
-                                                  .product[itemIndex].name,
-                                              controllerProduct
-                                                  .product[itemIndex]
-                                                  .product_exit,
-                                              controllerProduct
-                                                  .product[itemIndex]
-                                                  .description,
-                                              controllerProduct
-                                                  .product[itemIndex]
-                                                  .sale_price,
-                                              context,
-                                              controllerShoppingCart,
-                                              controllerLogin,
-                                              itemIndex,
-                                            )
-                                          : controllerProduct
-                                                      .productListLength ==
-                                                  0
-                                              ? const Text('')
-                                              : const Text(
-                                                  'Fallo la carga de los datos, revise su coneccion a internet'),
-                                      SizedBox(
-                                        height:
-                                            (MediaQuery.of(context).size.width *
+                        : controllerProduct.productListLength == 0
+                            ? const Center(
+                                child: Text(
+                                'No hay Productos',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w700),
+                              ))
+                            : Expanded(
+                                child: TabBarView(
+                                controller: _tabController,
+                                children: List<Widget>.generate(
+                                  tabs2.length,
+                                  (index) {
+                                    return ListView.builder(
+                                      itemCount:
+                                          controllerProduct.productListLength,
+                                      itemBuilder: (context, itemIndex) =>
+                                          Column(
+                                        children: [
+                                          controllerProduct.productListLength !=
+                                                      0 &&
+                                                  controllerProduct
+                                                          .productListLength >
+                                                      0
+                                              ? cartProduct(
+                                                  'assets/images/pngegg.png',
+                                                  controllerProduct
+                                                      .product[itemIndex].id,
+                                                  controllerProduct
+                                                      .product[itemIndex].name,
+                                                  controllerProduct
+                                                      .product[itemIndex]
+                                                      .product_exit,
+                                                  controllerProduct
+                                                      .product[itemIndex]
+                                                      .description,
+                                                  controllerProduct
+                                                      .product[itemIndex]
+                                                      .sale_price,
+                                                  context,
+                                                  controllerShoppingCart,
+                                                  controllerLogin,
+                                                  itemIndex,
+                                                )
+                                              : controllerProduct
+                                                          .productListLength ==
+                                                      0
+                                                  ? const Text('')
+                                                  : const Text(
+                                                      'Fallo la carga de los datos, revise su coneccion a internet'),
+                                          SizedBox(
+                                            height: (MediaQuery.of(context)
+                                                    .size
+                                                    .width *
                                                 0.02),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ))
+                                    );
+                                  },
+                                ),
+                              ))
                     : const Text(
                         'Falló la conexion,revise su coneccion de Internet.'),
               ],
