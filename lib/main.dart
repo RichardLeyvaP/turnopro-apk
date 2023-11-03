@@ -6,11 +6,16 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/myApp.dart';
 import 'package:turnopro_apk/providers.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-void main() {
+Future<void> main() async {
   LoginController controllerLogin = LoginController();
   Get.put(controllerLogin);
+  ShoppingCartController controllerShoppingCart = ShoppingCartController();
+  Get.put(controllerShoppingCart);
   // Inicializa y guarda tu controlador en Get
+  await initializeDateFormatting('es',
+      null); //esto es para el paquete de el calendario que cargue el idioma español
 
   // Llamada para inicializar Flutter y su enlace con la plataforma
   WidgetsFlutterBinding.ensureInitialized();

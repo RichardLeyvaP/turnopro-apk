@@ -128,7 +128,7 @@ class _StatisticPageState extends State<StatisticPage>
             const LineChartSample2(),
             Column(
               children: [
-                const BarChartSample6(),
+                BarChartSample6(),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(

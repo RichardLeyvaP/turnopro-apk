@@ -48,8 +48,8 @@ class _HomePagesState extends State<HomePages> {
     Get.put(controllerService);
     ProductController controllerProduct = ProductController();
     Get.put(controllerProduct);
-    ShoppingCartController controllerShoppingCart = ShoppingCartController();
-    Get.put(controllerShoppingCart);
+    final ShoppingCartController controllerShoppingCart =
+        Get.find<ShoppingCartController>();
 
     double borderRadiusValue = 12;
     const Color colorVariable = Color(0xFF2B3141); //CARAGANDO COLOR HEXADECIMAL

@@ -69,9 +69,11 @@ class LoginController extends GetxController {
             emailUserLoggedIn != '') {
           pagina = '/Professional';
           if (chargeUserLoggedIn == "Barbero") {
+            print('***************SOY BARBERO*************');
             pagina = '/Professional';
             Get.offAllNamed('/Professional');
           } else if (chargeUserLoggedIn == "Encargado") {
+            print('***************SOY ENCARGADO*************');
             pagina = '/HomeResponsible';
             Get.offAllNamed('/HomeResponsible');
           }

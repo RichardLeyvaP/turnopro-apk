@@ -79,12 +79,13 @@ class ProductRepository extends GetConnect {
   }
 
 //*ESTE METODO ME DEVUELVE LOS PRODUCTOS ASOCIADO A UNA CATEGORIA LA CUAL LA SABEMOS PORQUE MANDAMOS EL ID
-  Future getProductCategoryList(id) async {
-    //print('este es el id: $id');
+  Future getProductCategoryList(id, branchId) async {
+    print('este es el id: $id');
+    print('este es el branchId: $branchId');
     try {
       List<ProductModel> productList = [];
       var url =
-          '${Env.apiEndpoint}/category_products?id=$id'; //cambiar aqui por servicios en la api
+          '${Env.apiEndpoint}/category_products?id=$id&branch_id=$branchId'; //cambiar aqui por servicios en la api
 
       final response = await get(url);
       // print(response.statusCode);

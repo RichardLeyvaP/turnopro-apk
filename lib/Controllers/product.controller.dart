@@ -37,12 +37,15 @@ class ProductController extends GetxController {
   }
 
   Future<void> fetchproductList(index) async {
+    final LoginController controllerLogin = Get.find<LoginController>();
     try {
       isLoadingCategory = true;
       update();
       Future.delayed(const Duration(milliseconds: 1000), () async {
-        product = await repository.getProductCategoryList(index);
+        product = await repository.getProductCategoryList(
+            index, controllerLogin.branchIdLoggedIn);
         productListLength = product.length;
+        print('Cantidad de productos $productListLength');
         isLoadingCategory = false;
         update();
       });

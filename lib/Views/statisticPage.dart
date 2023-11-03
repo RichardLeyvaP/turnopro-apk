@@ -2,13 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:turnopro_apk/Controllers/statistic.controller.dart';
 import 'package:turnopro_apk/Views/stadisticaDiaPageNueva.dart';
 import 'package:turnopro_apk/Views/stadisticaMesPageNueva.dart';
 import 'package:turnopro_apk/Views/stadisticaPageNueva.dart';
-//import 'package:turnopro_apk/Views/products-services/services/servicesBody.dart';
 import '../../Components/BottomNavigationBar.dart';
 //import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:intl/intl.dart';
 
 class StatisticPage extends StatefulWidget {
   const StatisticPage({super.key});
@@ -20,7 +23,6 @@ class StatisticPage extends StatefulWidget {
 class _StatisticPageState extends State<StatisticPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  //final ServiceController controller = Get.put(ServiceController());
 
   @override
   void initState() {
@@ -124,69 +126,90 @@ class _StatisticPageState extends State<StatisticPage>
             ),
           ),
         ),
-        body: TabBarView(
-          controller: _tabController,
-          children: [
-            const LineChartSample2(),
-            Column(
-              children: [
-                const BarChartSample6(),
-                Container(
-                  width: (MediaQuery.of(context).size.width * 0.8),
-                  height: 40,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                    color: Colors.white,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
+        body: GetBuilder<StatisticController>(builder: (contStat) {
+          return TabBarView(
+            controller: _tabController,
+            children: [
+              const LineChartSample2(),
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    BarChartSample6(),
+                    Container(
+                      width: (MediaQuery.of(context).size.width * 0.8),
+                      height: 40,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                        color: Colors.white,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return BuildCalendar(
+                                  d: DateTime.now(),
+                                  m: DateTime.now(),
+                                  a: DateTime.now(),
+                                  // totalPrice: controllerShoppingCart.totalPrice,
+                                ); // Muestra el AlertDialog
+                              },
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    MdiIcons.calendarBlank,
+                                    color: const Color.fromARGB(130, 0, 0, 0),
+                                  ),
+                                  Text(
+                                    contStat.dateRange == ''
+                                        ? '  seleccione una fecha'
+                                        : contStat.dateRange,
+                                    style: const TextStyle(
+                                        color: Color.fromARGB(130, 0, 0, 0)),
+                                  ),
+                                ],
+                              ),
+                              Icon(
+                                MdiIcons.arrowDownThin,
+                                color: const Color.fromARGB(130, 0, 0, 0),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 135,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Icon(
-                              MdiIcons.calendarBlank,
-                              color: const Color.fromARGB(130, 0, 0, 0),
-                            ),
-                            const Text(
-                              '16 oct - 22 oct',
-                              style: TextStyle(
-                                  color: Color.fromARGB(130, 0, 0, 0)),
-                            ),
+                            CartOption(
+                                color: pilateColor,
+                                icon: Icon(
+                                  MdiIcons.cash,
+                                ),
+                                number: cant$,
+                                description: description),
                           ],
                         ),
-                        Icon(
-                          MdiIcons.arrowDownThin,
-                          color: const Color.fromARGB(130, 0, 0, 0),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-                SizedBox(
-                  height: 135,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CartOption(
-                            color: pilateColor,
-                            icon: Icon(
-                              MdiIcons.cash,
-                            ),
-                            number: cant$,
-                            description: description),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const LineChartSample5(),
-          ],
-        ), // Muestra el AlertDialog
+              ),
+              const LineChartSample5(),
+            ],
+          );
+        }), // Muestra el AlertDialog
       ),
     );
   }
@@ -266,6 +289,148 @@ class CartOption extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class BuildCalendar extends StatefulWidget {
+  final DateTime d;
+  final DateTime m;
+  final DateTime a;
+
+  const BuildCalendar(
+      {Key? key, required this.d, required this.m, required this.a})
+      : super(key: key);
+
+  @override
+  State<BuildCalendar> createState() => _BuildCalendarState();
+}
+
+class _BuildCalendarState extends State<BuildCalendar> {
+  final DateRangePickerController _controller = DateRangePickerController();
+  final StatisticController controllerStatistic =
+      Get.find<StatisticController>();
+
+  late DateTime? _startDate;
+  late DateTime? _endDate;
+  int selectDate = 0;
+  DateTime? _minDate;
+  DateTime? _maxDate;
+  final formatterDate = DateFormat('yyyy-MM-dd');
+
+  void getFormatterDate() async {
+    final startDate = formatterDate.format(_startDate!);
+    final endDate = formatterDate.format(_endDate!);
+
+    int numberdayWeek = _startDate!.weekday;
+    // String dayWeek = '';
+    // switch (numerodayWeek) {
+    //   case 1:
+    //     dayWeek = 'Lunes';
+    //     break;
+    //   case 2:
+    //     dayWeek = 'Martes';
+    //     break;
+    //   case 3:
+    //     dayWeek = 'Miércoles';
+    //     break;
+    //   case 4:
+    //     dayWeek = 'Jueves';
+    //     break;
+    //   case 5:
+    //     dayWeek = 'Viernes';
+    //     break;
+    //   case 6:
+    //     dayWeek = 'Sábado';
+    //     break;
+    //   case 7:
+    //     dayWeek = 'Domingo';
+    //     break;
+    // }
+
+    Duration diferencia = _endDate!.difference(_startDate!);
+    int quantityDates = diferencia.inDays + 1;
+
+    //EN ESTA DEVUELVE LAS GANANCIAS EN ESE INTERVALO DE FECHAS
+    await controllerStatistic.getDataStatistic(startDate, endDate,
+        numberdayWeek, quantityDates); //TODO LLAMANDO AL CONTROLADOR
+    Navigator.of(context).pop();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startDate = DateTime.now();
+    _endDate = null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final DateTime initialDate = DateTime(2023, 1, 1);
+    return AlertDialog(
+      //title: const Text('Confirmación'),
+      actionsPadding: const EdgeInsets.only(right: 20),
+      actions: [
+        TextButton(
+          style: const ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll(
+            Color.fromARGB(20, 0, 0, 0),
+          )),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Cancelar'),
+        ),
+        TextButton(
+          style: const ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll(
+            Color.fromARGB(20, 0, 0, 0),
+          )),
+          onPressed: () {
+            setState(() {
+              selectDate = 0;
+            });
+          },
+          child: const Text('Seleccionar nuevamente'),
+        ),
+      ],
+      content: SizedBox(
+        height: 255, // Ajusta la altura según tu necesidad
+        width: 300,
+        child: AspectRatio(
+          aspectRatio: 1.0,
+          child: SfDateRangePicker(
+            controller: _controller,
+            view: DateRangePickerView.month,
+            initialDisplayDate: initialDate,
+            minDate: selectDate == 0 ? null : _minDate,
+            maxDate: selectDate == 0 ? null : _maxDate,
+            selectionColor: const Color(0xFFF18254),
+            startRangeSelectionColor: const Color(0xFFF18254),
+            endRangeSelectionColor: const Color(0xFFF18254),
+            selectionMode: DateRangePickerSelectionMode.range,
+            showActionButtons: _endDate != null ? true : false,
+            onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+              if (args.value != null && args.value.startDate != null) {
+                setState(() {
+                  selectDate = 1;
+                  if (_startDate != null) {
+                    _minDate = _startDate = args.value.startDate;
+                    _endDate = args.value.endDate;
+                    _maxDate = _startDate!.add(const Duration(days: 6));
+                    selectDate = 1;
+                  }
+                });
+              }
+            },
+            confirmText: 'Aceptar',
+            cancelText: '',
+            onSubmit: (dateRange) {
+              getFormatterDate();
+            },
+          ),
+        ),
       ),
     );
   }
