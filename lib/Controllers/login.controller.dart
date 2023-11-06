@@ -28,6 +28,7 @@ class LoginController extends GetxController {
   String pagina = 'nothing';
   bool obscureText = true;
   String qrRead = '';
+  bool incorrectFields = false;
 
   void qrReading(String? qr) {
     print('entre aqui a el controlador de lectura del QR${qr.toString()}');
@@ -41,6 +42,7 @@ class LoginController extends GetxController {
 
   Future<void> loginGetIn(String u, String p) async {
     String email = u.toString(), pass = p.toString();
+    incorrectFields = false;
     try {
       Map<String, dynamic>? result; //INICIALIZANDO A NULL
       result = await usuarioLg.getUserLoggedIn(email, pass);
@@ -57,7 +59,9 @@ class LoginController extends GetxController {
         branchIdLoggedIn = result['branch_id'];
 
         //*******Asignando Valores*****/
+        print('branchIdLoggedIn***************************: $branchIdLoggedIn');
         print('TOKEN***************************: $tokenUserLoggedIn');
+        print('ID-Profess***************************: $idProfessionalLoggedIn');
 
         if (tokenUserLoggedIn != '' &&
             nameUserLoggedIn != '' &&
@@ -73,9 +77,12 @@ class LoginController extends GetxController {
             Get.offAllNamed('/HomeResponsible');
           }
         }
+
         update();
       } //cierre if (result != null) {
       else {
+        incorrectFields = true;
+        update();
         print(' result == null por eso no entro');
       }
     } catch (e) {
@@ -111,6 +118,7 @@ class LoginController extends GetxController {
     idProfessionalLoggedIn = null;
     branchIdLoggedIn = null;
     pagina = 'nothing';
+    incorrectFields = false;
     update();
   }
 

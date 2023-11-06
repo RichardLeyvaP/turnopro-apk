@@ -15,7 +15,7 @@ class ProductRepository extends GetConnect {
       List<ServiceModel> serviceListCar = [];
 
       var url =
-          '${Env.apiEndpoint}/car_oders?id=9'; //todo REVISAR aqui enviar el id del carro correspondiente al cliente-profesional
+          '${Env.apiEndpoint}/car_oders?id=13'; //todo REVISAR aqui enviar el id del carro correspondiente al cliente-profesional
       final response = await get(url);
       if (response.statusCode == 200) {
         // print('codigo 200000000000000000');
@@ -126,32 +126,37 @@ class ProductRepository extends GetConnect {
   Future<int> addOrderCartList(
       //todo REVISAR REVISAR este metodo
       client_id,
-      person_id,
+      professional_id,
       product_id,
-      service_id) async {
+      service_id,
+      type) async {
     try {
       var url = '${Env.apiEndpoint}/order';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
         'client_id': client_id, //5
-        'person_id': person_id, //3
+        'professional_id': professional_id, //3
         'product_id': product_id, //0
-        'service_id': service_id
+        'service_id': service_id,
+        'type': type
       };
 
       // Realizar la solicitud POST
       final response = await post(url, body);
       if (response.statusCode == 200) {
+        //print('addOrderCartList response:$response');
         final id_order = response.body['order_id'];
-        //print('soy codigo 200 y hice la llamada a la api bien');
+        // print(
+        // 'addOrderCartList soy codigo 200 y hice la llamada a la api bien');
         // print(id_order);
         return id_order;
       } else {
+        // print('addOrderCartList return -990099;');
         return -990099;
       }
     } catch (e) {
-      //print('Errorrrrr:$e');
+      // print('addOrderCartList Errorrrrr:$e');
       return -990099;
     }
   }

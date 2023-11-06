@@ -7,10 +7,9 @@ import 'package:turnopro_apk/Routes/index.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:turnopro_apk/Views/professional/statistic/statisticPage.dart';
 import 'package:turnopro_apk/Views/responsible/homeResponsiblePage.dart';
 import 'package:turnopro_apk/Views/professional/shoppingCartPage.dart';
-
-import 'Views/statisticPage.dart';
 
 class Myapp extends StatelessWidget {
   Myapp({super.key});
@@ -65,7 +64,7 @@ class Myapp extends StatelessWidget {
       ),
       GetPage(
         name: '/loginNewPage',
-        page: () => const LoginNewPage(),
+        page: () => LoginNewPage(),
         binding: BindingsBuilder.put(() => LoginController()),
       ),
       GetPage(

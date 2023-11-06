@@ -140,9 +140,9 @@ class ShoppingCartPage extends StatelessWidget {
                                                       children: [
                                                         Text(
                                                           controllerShoppingCart
-                                                              .selectservice[
+                                                              .selectserviceCart[
                                                                   index]
-                                                              .name
+                                                              .nameService
                                                               .toString(),
                                                           style:
                                                               const TextStyle(
@@ -152,7 +152,7 @@ class ShoppingCartPage extends StatelessWidget {
                                                         ),
                                                         Text(
                                                           controllerShoppingCart
-                                                              .selectservice[
+                                                              .selectserviceCart[
                                                                   index]
                                                               .price_service
                                                               .toString(),
@@ -186,17 +186,16 @@ class ShoppingCartPage extends StatelessWidget {
                                                     controllerShoppingCart
                                                         .requestDelete(
                                                             controllerShoppingCart
-                                                                .selectservice[
+                                                                .selectserviceCart[
                                                                     index]
                                                                 .id,
                                                             1);
                                                   },
-                                                  child: _.requestDeleteOrder
-                                                          .contains(
-                                                              controllerShoppingCart
-                                                                  .selectservice[
-                                                                      index]
-                                                                  .id)
+                                                  child: _.requestDeleteOrder.contains(
+                                                          controllerShoppingCart
+                                                              .selectserviceCart[
+                                                                  index]
+                                                              .id)
                                                       ? const Icon(
                                                           Icons.delete,
                                                           size: 35,

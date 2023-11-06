@@ -13,6 +13,7 @@ class ServiceModel {
   int duration_service;
   String image_service;
   String service_comment;
+  String? nameService;
   int? request_delete;
   int? is_product;
 
@@ -26,6 +27,7 @@ class ServiceModel {
     required this.duration_service,
     required this.image_service,
     required this.service_comment,
+    this.nameService,
     this.request_delete,
     this.is_product,
   });
@@ -41,6 +43,7 @@ class ServiceModel {
       'duration_service': duration_service,
       'image_service': image_service,
       'service_comment': service_comment,
+      'nameService': nameService,
       'request_delete': request_delete,
       'is_product': is_product,
     };
@@ -58,6 +61,7 @@ class ServiceModel {
       duration_service: 35,
       image_service: map['image_service'] ?? '',
       service_comment: map['service_comment'] ?? '',
+      nameService: map['nameService'] ?? '',
       request_delete: 0,
       is_product: 0,
       // request_delete: map['request_delete'] ?? 0,

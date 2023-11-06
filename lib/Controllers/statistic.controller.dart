@@ -32,6 +32,7 @@ class StatisticController extends GetxController {
       quantityDates = quantityDatesIn;
     }
     numberdayWeek = numberdayWeekIn;
+    print(numberdayWeek);
     dateRange = '  ' + startDateIn + '  -  ' + endDateIn;
     update();
 

@@ -3,12 +3,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:turnopro_apk/Controllers/product.controller.dart';
+import 'package:turnopro_apk/Controllers/service.controller.dart';
+import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:turnopro_apk/env.dart';
 
 class LoginNewPage extends StatelessWidget {
-  const LoginNewPage({super.key});
-  //final TextEditingController _passController = TextEditingController();
-  //final TextEditingController _usserController = TextEditingController();
+  final ShoppingCartController controllerShoppingCart =
+      ShoppingCartController();
+  final ServiceController controllerService = ServiceController();
+  final ProductController controllerProduct = ProductController();
+
+  LoginNewPage({Key? key}) : super(key: key) {
+    Get.put<ServiceController>(ServiceController(), permanent: true);
+    Get.put<ProductController>(ProductController(), permanent: true);
+  }
 
   @override
   Widget build(BuildContext context) {

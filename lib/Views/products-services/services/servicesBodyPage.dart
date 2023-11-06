@@ -8,12 +8,26 @@ import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 //import 'package:turnopro_apk/Routes/index.dart';
 
-class ServicesBodyPage extends StatelessWidget {
+class ServicesBodyPage extends StatefulWidget {
+  const ServicesBodyPage({super.key});
+
+  @override
+  State<ServicesBodyPage> createState() => _ServicesBodyPageState();
+}
+
+class _ServicesBodyPageState extends State<ServicesBodyPage> {
   final double valuePadding = 12;
-  ServicesBodyPage({super.key});
+
   final ShoppingCartController controllerShoppingCart =
       Get.find<ShoppingCartController>();
+
   final LoginController controllerLogin = Get.find<LoginController>();
+
+  @override
+  void initState() {
+    super.initState();
+    controllerShoppingCart.loadDataInitiallyNecessary();
+  }
 
   //bool visibleButonEliminar = false;
   @override
@@ -105,7 +119,11 @@ class ServicesBodyPage extends StatelessWidget {
                                           onTap: () {
                                             if (!_.selectService
                                                 .contains(_.services[index])) {
-                                              _.getSelectService(index);
+                                              _.getSelectService(
+                                                  index); //guarda en la lista de los seleccionados
+                                              print(_.services[index].name);
+                                              print(_.services[index].id);
+                                              //todo REVISAR AQUI ESTA EL PROBLEMA
                                               controllerShoppingCart.updateShoppingCartValue(
                                                   index,
                                                   controllerLogin
@@ -276,7 +294,7 @@ class ServicesBodyPage extends StatelessWidget {
                                                 'Mensaje',
                                                 'Fue notificado al responsable,espere confirmación.',
                                                 duration: const Duration(
-                                                    milliseconds: 2500),
+                                                    milliseconds: 1500),
                                               );
                                               _.sentServiceDelet(index);
                                             },

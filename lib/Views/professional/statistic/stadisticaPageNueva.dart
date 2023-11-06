@@ -173,9 +173,9 @@ class BarChartSample6 extends StatelessWidget {
                         i++) ...[
                       generateGroupData(
                           i,
-                          350 + controllerStatistic.numberdayWeek * 1000,
-                          controllerStatistic.numberdayWeek * 100 + 1250,
-                          18450)
+                          350 + controllerStatistic.numberdayWeek * 1200,
+                          controllerStatistic.numberdayWeek * 3500 + 1250,
+                          9450)
                     ]
                   ] else ...[
                     //AQUI CARGAR LA SEMANA ACTUAL EN LA QUE ESTA

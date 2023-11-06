@@ -35,7 +35,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
   void initState() {
     super.initState();
     controllerShoppingCart
-        .loadOrderDeleteCar(10); //todo REVISAR  aqui llamada estatica
+        .loadOrderDeleteCar(13); //todo REVISAR  aqui llamada estatica
     iniciarLlamadaCada10Segundos();
   }
 
@@ -55,7 +55,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
     // Establece un temporizador que llama a la función cada 20 segundos
     _timer = Timer.periodic(const Duration(seconds: 20), (Timer timer) {
       controllerShoppingCart
-          .loadOrderDeleteCar(10); //todo REVISAR  aqui llamada estatica
+          .loadOrderDeleteCar(13); //todo REVISAR  aqui llamada estatica
     });
   }
 
@@ -181,34 +181,31 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                       BorderRadius.all(Radius.circular(borderRadiusValue)),
                   color: const Color(0xFF2B3141), //CARAGANDO COLOR HEXADECIMAL,
                 ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      /*todo texto arriba */ const Padding(
-                        padding: EdgeInsets.only(left: 8),
-                        child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'Últimas Notificaciones',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white),
-                            )),
-                      ),
-                      const SizedBox(
-                        height: 22,
-                      ),
-                      /*todo cart1 servicios*/ Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8, top: 4, right: 8, bottom: 6),
-                        child: FadeIn(
-                          duration: const Duration(seconds: 2),
-                          child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    /*todo texto arriba */ const Padding(
+                      padding: EdgeInsets.only(left: 8, top: 8),
+                      child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Últimas Notificaciones',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white),
+                          )),
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    /*todo cart1 servicios*/ Expanded(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8, top: 4, right: 8, bottom: 6),
+                          child: FadeIn(
+                            duration: const Duration(seconds: 2),
                             child: Column(
                               children: [
                                 GetBuilder<ShoppingCartController>(
@@ -227,8 +224,8 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             )),
@@ -250,40 +247,6 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700),
                           ),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.end,
-                          //   crossAxisAlignment: CrossAxisAlignment.end,
-                          //   children: [
-                          //     InkWell(
-                          //       onTap: () {
-                          //         Get.toNamed(
-                          //           '/servicesProductsPage',
-                          //         );
-                          //       },
-                          //       child: const Text(
-                          //         '  Servicio y productos  ',
-                          //         style: TextStyle(
-                          //             color: Colors.black,
-                          //             fontSize: 13,
-                          //             fontWeight: FontWeight.w700),
-                          //       ),
-                          //     ),
-                          //     InkWell(
-                          //       onTap: () {
-                          //         Get.toNamed(
-                          //           '/clients',
-                          //         );
-                          //       },
-                          //       child: const Text(
-                          //         '  Mis clientes  ',
-                          //         style: TextStyle(
-                          //             color: Colors.black,
-                          //             fontSize: 13,
-                          //             fontWeight: FontWeight.w700),
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
                         ],
                       ),
                       Column(
@@ -304,9 +267,6 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  // Get.toNamed(
-                                  //   '/apiUsers',
-                                  // );
                                   Get.toNamed(
                                     '/NotificationsPageNew',
                                   );
@@ -452,7 +412,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize =>
       const Size.fromHeight(70); // Ajusta el tamaño del AppBar aquí
 
-  String nameUser = 'Miguel Hojas'; //todo estoy aqui
   String imageDirection = 'assets/images/Responsable.jpg';
 
   @override
@@ -542,9 +501,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 InkWell(
                   onTap: () {
                     _.exit(_.tokenUserLoggedIn);
-                    // Get.toNamed(
-                    //   '/loginNewPage',
-                    // );
                   },
                   child: CircleAvatar(
                     radius: 22, // Tamaño del CircleAvatar
@@ -665,7 +621,7 @@ Column showRequestsDelete(context, ShoppingCartController contShopp) {
                             contShopp.orderDeleteCar[i].id, 0);
                         Get.snackbar(
                           'Mensaje',
-                          '! No me Gustó...',
+                          'Rechazada la solicitud',
                           duration: const Duration(milliseconds: 2000),
                         );
                         //_.deletenotification(index);

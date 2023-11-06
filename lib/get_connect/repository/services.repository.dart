@@ -16,9 +16,9 @@ class ServiceRepository extends GetConnect {
 
         final response = await get(url);
         if (response.statusCode == 200) {
-          final products = response.body['professional_services'];
-          for (Map product in products) {
-            ServiceModel u = ServiceModel.fromJson(jsonEncode(product));
+          final services = response.body['professional_services'];
+          for (Map service in services) {
+            ServiceModel u = ServiceModel.fromJson(jsonEncode(service));
             serviceList.add(u);
           }
           print(

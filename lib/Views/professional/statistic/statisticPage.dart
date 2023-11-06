@@ -2,15 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Components/BottomNavigationBar.dart';
 import 'package:turnopro_apk/Controllers/statistic.controller.dart';
-import 'package:turnopro_apk/Views/stadisticaDiaPageNueva.dart';
-import 'package:turnopro_apk/Views/stadisticaMesPageNueva.dart';
-import 'package:turnopro_apk/Views/stadisticaPageNueva.dart';
-import '../../Components/BottomNavigationBar.dart';
+import 'package:turnopro_apk/Views/professional/statistic/stadisticaDiaPageNueva.dart';
+import 'package:turnopro_apk/Views/professional/statistic/stadisticaMesPageNueva.dart';
 //import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
+import 'package:turnopro_apk/Views/professional/statistic/stadisticaPageNueva.dart';
 
 class StatisticPage extends StatefulWidget {
   const StatisticPage({super.key});

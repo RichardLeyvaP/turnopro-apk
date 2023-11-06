@@ -190,8 +190,28 @@ class LoginFormPage extends StatelessWidget {
                                           overlayBlur: 3,
                                         );
                                       } else {
-                                        _.loginGetIn(_usserController.text,
+                                        await _.loginGetIn(
+                                            _usserController.text,
                                             _passController.text);
+                                        if (_.incorrectFields == true) {
+                                          Get.snackbar(
+                                            '',
+                                            'Usuario o Contraseña Incorrectos.',
+                                            colorText: Colors.black,
+                                            titleText: const Text('Error'),
+                                            duration:
+                                                const Duration(seconds: 2),
+                                            showProgressIndicator: true,
+                                            progressIndicatorBackgroundColor:
+                                                const Color.fromARGB(
+                                                    255, 81, 93, 117),
+                                            progressIndicatorValueColor:
+                                                const AlwaysStoppedAnimation(
+                                                    Color.fromARGB(
+                                                        255, 241, 130, 84)),
+                                            overlayBlur: 3,
+                                          );
+                                        }
                                       }
                                     },
                                     child: const Text(

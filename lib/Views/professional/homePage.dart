@@ -44,12 +44,14 @@ class _HomePagesState extends State<HomePages> {
 
   @override
   Widget build(BuildContext context) {
-    ServiceController controllerService = ServiceController();
-    Get.put(controllerService);
-    ProductController controllerProduct = ProductController();
-    Get.put(controllerProduct);
     final ShoppingCartController controllerShoppingCart =
         Get.find<ShoppingCartController>();
+    // if (controllerShoppingCart.fieldsLoadedFirstTime == false) {
+    //   ServiceController controllerService = ServiceController();
+    //   Get.put(controllerService);
+    //   ProductController controllerProduct = ProductController();
+    //   Get.put(controllerProduct);
+    // }
 
     double borderRadiusValue = 12;
     const Color colorVariable = Color(0xFF2B3141); //CARAGANDO COLOR HEXADECIMAL
@@ -510,7 +512,8 @@ class _HomePagesState extends State<HomePages> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               InkWell(
-                                onTap: () async {
+                                onTap: () {
+                                  /*
                                   Get.dialog(
                                     const Center(
                                       child: CircularProgressIndicator(
@@ -524,6 +527,7 @@ class _HomePagesState extends State<HomePages> {
                                   await _serv.loadListService();
                                   // Oculta el indicador de carga y navega a la página del carrito
                                   Get.back(); // Cierra el diálogo
+                                  */
 
                                   Get.toNamed(
                                     '/servicesProductsPage',

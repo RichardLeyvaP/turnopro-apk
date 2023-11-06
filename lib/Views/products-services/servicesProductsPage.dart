@@ -233,7 +233,7 @@ class AlertDialogPago extends StatelessWidget {
           onPressed: () async {
             // Cerrar el AlertDialog
             try {
-              await controllerShoppingCart.intentarConexion();
+              await controllerShoppingCart.loadDataInitiallyNecessary();
               Get.toNamed(
                 '/Professional',
               );

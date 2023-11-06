@@ -13,6 +13,7 @@ class ServiceController extends GetxController {
   List<ServiceModel> selectService = []; //ervicios seleccionados vacia
   List<ServiceModel> sentServiceDelete = [];
   bool isLoading = true;
+  bool loadedFirstTime = false;
 
   @override
   void onReady() {
@@ -53,6 +54,7 @@ class ServiceController extends GetxController {
     services =
         await repository.getServiceList(controllerLogin.idProfessionalLoggedIn);
     serviceListLength = services.length;
+    loadedFirstTime = true;
     update();
     print('LISTA2 _fetchServiceList:$serviceListLength');
   }
