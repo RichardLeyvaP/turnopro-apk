@@ -15,7 +15,7 @@ class ProductRepository extends GetConnect {
       List<ServiceModel> serviceListCar = [];
 
       var url =
-          '${Env.apiEndpoint}/car_oders?id=13'; //todo REVISAR aqui enviar el id del carro correspondiente al cliente-profesional
+          '${Env.apiEndpoint}/car_orders?id=13'; //todo REVISAR aqui enviar el id del carro correspondiente al cliente-profesional
       final response = await get(url);
       if (response.statusCode == 200) {
         // print('codigo 200000000000000000');
@@ -58,15 +58,17 @@ class ProductRepository extends GetConnect {
       final response = await get(url);
       if (response.statusCode == 200) {
         // print('tambien llegue aqui');
-        final products = response.body['carOrderDelete'];
-        if (products != null) {
-          for (Map product in products) {
+        final orders = response.body['carOrderDelete'];
+        print(orders);
+        if (orders != null) {
+          for (Map order in orders) {
             //  print('aqui mapeandooooo');
-            OrderDeleteModel u = OrderDeleteModel.fromJson(jsonEncode(product));
+            OrderDeleteModel u = OrderDeleteModel.fromJson(jsonEncode(order));
             orderDEL.add(u);
           }
         }
         //retornando dos listas
+
         return orderDEL;
       }
     } catch (e) {

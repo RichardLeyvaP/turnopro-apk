@@ -61,7 +61,7 @@ class ShoppingCartController extends GetxController {
       //print('1111111');
       orderDeleteCar =
           await productRepository.serviceRequestProductDelete(id_car); //todo
-      // print(orderDeleteCar);
+      print(orderDeleteCar);
 
       update();
     } catch (e) {
@@ -70,6 +70,7 @@ class ShoppingCartController extends GetxController {
   }
 
   Future<void> requestDelete(int id, int request_delete) async {
+    //todooooooooo
     try {
       await productRepository.awaitRequestDelete(id, request_delete);
       requestDeleteOrder.add(id);

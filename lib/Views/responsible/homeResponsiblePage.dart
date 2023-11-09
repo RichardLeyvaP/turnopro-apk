@@ -34,8 +34,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
   @override
   void initState() {
     super.initState();
-    controllerShoppingCart
-        .loadOrderDeleteCar(13); //todo REVISAR  aqui llamada estatica
+    controllerShoppingCart.loadOrderDeleteCar(13); //todo REVISAR valor fijo
     iniciarLlamadaCada10Segundos();
   }
 
@@ -54,8 +53,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
 
     // Establece un temporizador que llama a la función cada 20 segundos
     _timer = Timer.periodic(const Duration(seconds: 20), (Timer timer) {
-      controllerShoppingCart
-          .loadOrderDeleteCar(13); //todo REVISAR  aqui llamada estatica
+      controllerShoppingCart.loadOrderDeleteCar(13); //todo REVISAR valor fijo
     });
   }
 
@@ -294,7 +292,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                                     'Mensaje',
                                     'Aqui van las Estadisticas',
                                     duration:
-                                        const Duration(milliseconds: 2500),
+                                        const Duration(milliseconds: 1500),
                                     showProgressIndicator: true,
                                     progressIndicatorBackgroundColor:
                                         const Color.fromARGB(255, 81, 93, 117),
@@ -584,13 +582,18 @@ Column showRequestsDelete(context, ShoppingCartController contShopp) {
   }*/
 
   for (int i = 0; i < contShopp.orderDeleteCar.length; i++) {
-    if (contShopp.orderDeleteCar[i].is_product == 1) {
+    if (contShopp.orderDeleteCar[i].nameService == '') {
       titulo = 'Eliminación de Producto';
       service = false;
     } else {
       titulo = 'Eliminación de Servicio';
       service = true;
     }
+    print(
+        '---------------------------------------------************---------------------------------------');
+    print(contShopp.orderDeleteCar[i].hora);
+    print(contShopp.orderDeleteCar[i].id);
+    print(contShopp.orderDeleteCar[i].is_product);
     widgets.add(
       FittedBox(
         fit: BoxFit.contain,
@@ -616,13 +619,15 @@ Column showRequestsDelete(context, ShoppingCartController contShopp) {
                       borderRadius: const BorderRadius.all(Radius.circular(12)),
                     ),
                     child: IconButton(
-                      onPressed: () {
-                        contShopp.requestDelete(
+                      onPressed: () async {
+                        await contShopp.requestDelete(
                             contShopp.orderDeleteCar[i].id, 0);
+                        await contShopp
+                            .loadOrderDeleteCar(13); //todo REVISAR valor fijo
                         Get.snackbar(
                           'Mensaje',
                           'Rechazada la solicitud',
-                          duration: const Duration(milliseconds: 2000),
+                          duration: const Duration(milliseconds: 1000),
                         );
                         //_.deletenotification(index);
                       },
@@ -706,7 +711,7 @@ Column showRequestsDelete(context, ShoppingCartController contShopp) {
                                   color: Color.fromARGB(180, 0, 0, 0),
                                 ),
                                 Text(
-                                  contShopp.orderDeleteCar[i].nameProfessional
+                                  contShopp.orderDeleteCar[i].nameProfesional
                                       .toString(),
                                   style: TextStyle(
                                       fontSize:
@@ -752,12 +757,15 @@ Column showRequestsDelete(context, ShoppingCartController contShopp) {
                         borderRadius:
                             const BorderRadius.all(Radius.circular(12))),
                     child: IconButton(
-                      onPressed: () {
-                        contShopp.orderDelete(contShopp.orderDeleteCar[i].id);
+                      onPressed: () async {
+                        await contShopp
+                            .orderDelete(contShopp.orderDeleteCar[i].id);
+                        await contShopp
+                            .loadOrderDeleteCar(13); //todo REVISAR valor fijo
                         Get.snackbar(
                           'Mensaje',
                           'Eliminando solicitud',
-                          duration: const Duration(milliseconds: 2000),
+                          duration: const Duration(milliseconds: 1000),
                         );
                         // _.deletenotification(index);
                       },

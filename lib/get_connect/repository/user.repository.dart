@@ -15,16 +15,20 @@ class UserRepository extends GetConnect {
       final response = await post(url, body);
       if (response.statusCode == 200) {
         final users = response.body;
+        print('dentro del code:200');
         if (users != null) {
+          print('dentro del code:200 y tiene usuarios');
           return users;
         } else {
+          print('dentro del code:200 pero retorno null');
           return null;
         }
       } else {
+        print('No entro al code:200 este es el codigo:${response.statusCode}');
         return null;
       }
     } catch (e) {
-      // print('Error:$e');
+      print('Error estoy en el catch (e) y este es el error:$e');
     }
   }
 
