@@ -10,8 +10,8 @@ class ProductModel {
   String description;
   int product_exit;
   String status_product;
-  String purchase_price;
-  String sale_price;
+  double purchase_price;
+  double sale_price;
   String created_at;
   String updated_at;
   int? request_delete;
@@ -55,11 +55,10 @@ class ProductModel {
       name: map['name'] ?? '',
       code: map['code'] ?? '',
       description: map['description'] ?? '',
-      product_exit: 5,
-      // product_exit: map['product_exit'] ?? 0,
+      product_exit: map['product_exit'] ?? 0,
       status_product: map['status_product'] ?? '',
-      purchase_price: map['purchase_price'] ?? '',
-      sale_price: map['sale_price'] ?? '',
+      purchase_price: map['purchase_price'] ?? 0.0,
+      sale_price: map['sale_price'] ?? 0.0,
       created_at: map['created_at'] ?? '',
       updated_at: map['updated_at'] ?? '',
       request_delete: 0,

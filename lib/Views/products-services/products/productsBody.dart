@@ -163,7 +163,7 @@ Padding cartProduct(
     String productName,
     int productExit,
     String propertiesName,
-    String priceProduct,
+    double priceProduct,
     BuildContext context,
     ShoppingCartController controllerShoppingCart,
     LoginController controllerLogin,
@@ -232,7 +232,7 @@ Padding cartProduct(
                   ListTile(
                     title: Center(
                       child: Text(
-                        priceProduct,
+                        priceProduct.toString(),
                         style: TextStyle(
                             fontSize:
                                 (MediaQuery.of(context).size.height * 0.03),

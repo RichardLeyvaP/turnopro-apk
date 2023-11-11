@@ -78,26 +78,28 @@ class ProductRepository extends GetConnect {
 
 //*ESTE METODO ME DEVUELVE LOS PRODUCTOS ASOCIADO A UNA CATEGORIA LA CUAL LA SABEMOS PORQUE MANDAMOS EL ID Y ID_BRANCH
   Future getProductCategoryList(id, branchId) async {
-    // print('este es el id: $id');
-    // print('este es el branchId: $branchId');
+    print('este es el id: $id');
+    print('este es el branchId: $branchId');
     try {
       List<ProductModel> productList = [];
       var url =
           '${Env.apiEndpoint}/category_products?id=$id&branch_id=$branchId';
       final response = await get(url);
       if (response.statusCode == 200) {
+        print('response.statusCode == 200');
         final products = response.body['category_products'];
         if (products != null) {
+          print('products != null');
           for (Map product in products) {
             ProductModel u = ProductModel.fromJson(jsonEncode(product));
             productList.add(u);
           }
         }
-        //print('cantidad de Productos:${productList.length}');
+        print('cantidad de Productos:${productList.length}');
         return productList;
       }
     } catch (e) {
-      //print('eroor:$e');
+      print('eroor:$e');
     }
   }
 
@@ -111,6 +113,8 @@ class ProductRepository extends GetConnect {
       final response = await get(url);
       if (response.statusCode == 200) {
         final products = response.body['branch_products'];
+        print(
+            '*******************************************************************: ${products}');
         if (products != null) {
           for (Map product in products) {
             ProductModel u = ProductModel.fromJson(jsonEncode(product));
@@ -120,6 +124,7 @@ class ProductRepository extends GetConnect {
         return productList;
       }
     } catch (e) {
+      print('Error:$e');
       return null;
     }
   }

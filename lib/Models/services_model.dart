@@ -2,14 +2,22 @@
 
 import 'dart:convert';
 //todo REVISAR aqui datos estaticos en el modelo, los valores enteros
+/**
+ *  protected $casts = [
+        'simultaneou' => 'integer',
+        'price_service' => 'double',
+        'profit_percentaje' => 'double',
+        'duration_service' => 'integer'
+    ];
+ */
 
 class ServiceModel {
   int id;
   String name;
-  bool simultaneou;
-  String price_service;
+  int simultaneou;
+  double price_service;
   String type_service;
-  String profit_percentaje;
+  double profit_percentaje;
   int duration_service;
   String image_service;
   String service_comment;
@@ -53,12 +61,11 @@ class ServiceModel {
     return ServiceModel(
       id: map['id'] ?? '',
       name: map['name'] ?? '',
-      simultaneou: map['simultaneou'] == 1,
-      price_service: map['price_service'] ?? '',
+      simultaneou: map['simultaneou'] ?? 0,
+      price_service: map['price_service'] ?? 0.0,
       type_service: map['type_service'] ?? '',
-      profit_percentaje: map['profit_percentaje'] ?? '',
-      // duration_service: map['duration_service'] ?? '',
-      duration_service: 35,
+      profit_percentaje: map['profit_percentaje'] ?? 0.0,
+      duration_service: map['duration_service'] ?? 0,
       image_service: map['image_service'] ?? '',
       service_comment: map['service_comment'] ?? '',
       nameService: map['nameService'] ?? '',

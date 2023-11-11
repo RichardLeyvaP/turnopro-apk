@@ -187,8 +187,7 @@ class ShoppingCartController extends GetxController {
           _addOrderCartList(5, idProfessional, 0, serviceCart[index].id,
               type); //todo REVISAR TIENE PROBLEMA
           //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
-          getTotalServicesProduct_Sum(
-              type, double.parse(serviceCart[index].price_service));
+          getTotalServicesProduct_Sum(type, serviceCart[index].price_service);
           shoppingCart += 1;
           serviceListLength = selectserviceCart.length;
           print('long de serviceListLength:$serviceListLength');
@@ -199,8 +198,7 @@ class ShoppingCartController extends GetxController {
       if (internetError != -99) {
         _addOrderCartList(5, idProfessional, id, 0, type); //todo
         //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
-        getTotalServicesProduct_Sum(
-            type, double.parse(productCart[index].sale_price));
+        getTotalServicesProduct_Sum(type, productCart[index].sale_price);
         shoppingCart += 1;
         update();
       }
