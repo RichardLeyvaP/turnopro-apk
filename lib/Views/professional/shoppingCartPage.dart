@@ -354,14 +354,14 @@ class ShoppingCartPage extends StatelessWidget {
                                                       builder: (_) {
                                                     return InkWell(
                                                       onTap: () {
-                                                        Get.snackbar(
-                                                          'Mensaje',
-                                                          'Enviada solicitud de eliminación.',
-                                                          duration:
-                                                              const Duration(
-                                                                  milliseconds:
-                                                                      2000),
-                                                        );
+                                                        // Get.snackbar(
+                                                        //   'Mensaje',
+                                                        //   'Enviada solicitud de eliminación.',
+                                                        //   duration:
+                                                        //       const Duration(
+                                                        //           milliseconds:
+                                                        //               2000),
+                                                        // );
                                                         //todooo
                                                         controllerShoppingCart
                                                             .requestDelete(

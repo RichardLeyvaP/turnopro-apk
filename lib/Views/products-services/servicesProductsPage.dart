@@ -34,7 +34,6 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     controllerProduct.initializeData();
-    print('ESTOY AQUI controllerProduct.initializeData()');
   }
 
   @override

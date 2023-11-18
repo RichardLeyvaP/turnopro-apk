@@ -9,6 +9,10 @@ import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/env.dart';
 
 class ProductRepository extends GetConnect {
+  double PriceT = 0.0;
+  double PriceProduct = 0.0;
+  double PriceService = 0.0;
+
   Future getCartProductService() async {
     try {
       List<ProductModel> productListCar = [];
@@ -22,12 +26,10 @@ class ProductRepository extends GetConnect {
         final products = response.body['productscar'];
         if (products != null) {
           for (Map product in products) {
-            //   print('estoy aqui para mapear');
-            // print(jsonEncode(product));
             ProductModel u = ProductModel.fromJson(jsonEncode(product));
             productListCar.add(u);
-            //print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
-            //print(productListCar.length);
+            PriceT += u.sale_price;
+            PriceProduct += u.sale_price;
           }
         }
 
@@ -36,12 +38,17 @@ class ProductRepository extends GetConnect {
           for (Map service in services) {
             ServiceModel u = ServiceModel.fromJson(jsonEncode(service)); //todo
             serviceListCar.add(u);
+            PriceT += u.price_service;
+            PriceService += u.price_service;
           }
         }
         //retornando dos listas
         return {
           'products': productListCar,
           'services': serviceListCar,
+          'PriceTotal': PriceT,
+          'PriceService': PriceService,
+          'PriceProduct': PriceProduct,
         };
       }
     } catch (e) {
@@ -113,18 +120,17 @@ class ProductRepository extends GetConnect {
       final response = await get(url);
       if (response.statusCode == 200) {
         final products = response.body['branch_products'];
-        print(
-            '*******************************************************************: ${products}');
         if (products != null) {
           for (Map product in products) {
             ProductModel u = ProductModel.fromJson(jsonEncode(product));
             productList.add(u);
           }
         }
+        print('Lista aqui:${productList.length}');
         return productList;
       }
     } catch (e) {
-      print('Error:$e');
+      print('**-*Error**-*:$e');
       return null;
     }
   }
@@ -148,7 +154,6 @@ class ProductRepository extends GetConnect {
         'service_id': service_id,
         'type': type
       };
-
       // Realizar la solicitud POST
       final response = await post(url, body);
       if (response.statusCode == 200) {
@@ -217,7 +222,7 @@ class ProductRepository extends GetConnect {
 
     try {
       var url =
-          '${Env.apiEndpoint}/category_branch?branch_id=$branchIdLoggedIn'; //cambiar aqui por servicios en la api
+          '${Env.apiEndpoint}/category_branch?branch_id=$branchIdLoggedIn';
 //todo aqui van las categorias de los productos para el tab
       final response = await get(url);
       if (response.statusCode == 200) {
@@ -235,7 +240,7 @@ class ProductRepository extends GetConnect {
         return categoryList;
       }
     } catch (e) {
-      print('ERROR:$e');
+      print('ERROR getCategoryList:$e');
       return categoryList;
     }
   }

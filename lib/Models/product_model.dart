@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
-//todo REVISAR aqui datos estaticos en el modelo, los valores enteros
+//todo REVISAR -Revisado y arreglado
 
 class ProductModel {
   int id;
@@ -57,12 +57,12 @@ class ProductModel {
       description: map['description'] ?? '',
       product_exit: map['product_exit'] ?? 0,
       status_product: map['status_product'] ?? '',
-      purchase_price: map['purchase_price'] ?? 0.0,
-      sale_price: map['sale_price'] ?? 0.0,
+      purchase_price: (map['purchase_price'] ?? 0.0).toDouble(),
+      sale_price: (map['sale_price'] ?? 0.0).toDouble(),
       created_at: map['created_at'] ?? '',
       updated_at: map['updated_at'] ?? '',
-      request_delete: 0,
-      is_product: 0,
+      request_delete: map['request_delete'] ?? 0,
+      is_product: map['is_product'] ?? 0,
     );
   }
 

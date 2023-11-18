@@ -63,8 +63,6 @@ class ProductController extends GetxController {
         if (category.isNotEmpty) {
           categoryListLength = category.length;
           idInicial = category[0].id;
-          print('categoryListLength es:$categoryListLength');
-          print('idInicial es:$idInicial');
           update();
         } else {
           // Manejo de caso en el que la lista de categorías está vacía

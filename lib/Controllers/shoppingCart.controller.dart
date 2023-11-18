@@ -34,21 +34,30 @@ class ShoppingCartController extends GetxController {
 
   Future<void> loadCart() async {
     //print('estoy cargando el carro');
+
+    update();
     try {
+      print(
+          '**** 11111111 **** *** ESTE ES EL getTotalServices ACTUALMENTE:$getTotalServices');
       //  print('00000');
-      Map<String, List<dynamic>> resultList =
+      Map<String, dynamic> resultList =
           await productRepository.getCartProductService(); //todo aqui revisando
       //print('1111111');
       selectproduct = (resultList['products'] ?? []).cast<ProductModel>();
       selectserviceCart = (resultList['services'] ?? []).cast<ServiceModel>();
-
+      if (totalPrice == 0.0) {
+        //Este condicional controlando que solo entrela primera vez
+        totalPrice = resultList['PriceTotal'];
+        getTotalServices = resultList['PriceService'];
+        getTotalProduct = resultList['PriceProduct'];
+      }
+      print(
+          '**** 11111111 **** *** ESTE ES EL getTotalServices ACTUALMENTE:$getTotalServices');
       productListLength = selectproduct.length;
       serviceListLength = selectserviceCart.length;
-      print('------------------------');
-      print('POR PRIMERA VEZ productListLength:$productListLength');
-      print('POR PRIMERA VEZ serviceListLength:$serviceListLength');
 
       shoppingCart = productListLength + serviceListLength;
+
       update();
     } catch (e) {
       //print('DIO ERROR:$e');
@@ -196,6 +205,7 @@ class ShoppingCartController extends GetxController {
       }
     } else if (type == 'product') {
       if (internetError != -99) {
+        print('todavia qui llego bien');
         _addOrderCartList(5, idProfessional, id, 0, type); //todo
         //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
         getTotalServicesProduct_Sum(type, productCart[index].sale_price);

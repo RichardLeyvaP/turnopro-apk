@@ -589,11 +589,6 @@ Column showRequestsDelete(context, ShoppingCartController contShopp) {
       titulo = 'Eliminación de Servicio';
       service = true;
     }
-    print(
-        '---------------------------------------------************---------------------------------------');
-    print(contShopp.orderDeleteCar[i].hora);
-    print(contShopp.orderDeleteCar[i].id);
-    print(contShopp.orderDeleteCar[i].is_product);
     widgets.add(
       FittedBox(
         fit: BoxFit.contain,
@@ -624,11 +619,11 @@ Column showRequestsDelete(context, ShoppingCartController contShopp) {
                             contShopp.orderDeleteCar[i].id, 0);
                         await contShopp
                             .loadOrderDeleteCar(13); //todo REVISAR valor fijo
-                        Get.snackbar(
-                          'Mensaje',
-                          'Rechazada la solicitud',
-                          duration: const Duration(milliseconds: 1000),
-                        );
+                        // Get.snackbar(
+                        //   'Mensaje',
+                        //   'Rechazada la solicitud',
+                        //   duration: const Duration(milliseconds: 500),
+                        // );
                         //_.deletenotification(index);
                       },
                       icon: Icon(
@@ -762,11 +757,11 @@ Column showRequestsDelete(context, ShoppingCartController contShopp) {
                             .orderDelete(contShopp.orderDeleteCar[i].id);
                         await contShopp
                             .loadOrderDeleteCar(13); //todo REVISAR valor fijo
-                        Get.snackbar(
-                          'Mensaje',
-                          'Eliminando solicitud',
-                          duration: const Duration(milliseconds: 1000),
-                        );
+                        // Get.snackbar(
+                        //   'Mensaje',
+                        //   'Solicitud Eliminada',
+                        //   duration: const Duration(milliseconds: 500),
+                        // );
                         // _.deletenotification(index);
                       },
                       icon: Icon(

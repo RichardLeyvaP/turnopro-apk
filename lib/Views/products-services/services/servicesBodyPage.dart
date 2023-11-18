@@ -121,9 +121,6 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                 .contains(_.services[index])) {
                                               _.getSelectService(
                                                   index); //guarda en la lista de los seleccionados
-                                              print(_.services[index].name);
-                                              print(_.services[index].id);
-                                              //todo REVISAR AQUI ESTA EL PROBLEMA
                                               controllerShoppingCart.updateShoppingCartValue(
                                                   index,
                                                   controllerLogin

@@ -1,15 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
-//todo REVISAR aqui datos estaticos en el modelo, los valores enteros
-/**
- *  protected $casts = [
-        'simultaneou' => 'integer',
-        'price_service' => 'double',
-        'profit_percentaje' => 'double',
-        'duration_service' => 'integer'
-    ];
- */
+//todo REVISAR -Revisado y arreglado
 
 class ServiceModel {
   int id;
@@ -62,17 +54,15 @@ class ServiceModel {
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       simultaneou: map['simultaneou'] ?? 0,
-      price_service: map['price_service'] ?? 0.0,
+      price_service: (map['price_service'] ?? 0.0).toDouble(),
       type_service: map['type_service'] ?? '',
-      profit_percentaje: map['profit_percentaje'] ?? 0.0,
+      profit_percentaje: (map['profit_percentaje'] ?? 0.0).toDouble(),
       duration_service: map['duration_service'] ?? 0,
       image_service: map['image_service'] ?? '',
       service_comment: map['service_comment'] ?? '',
       nameService: map['nameService'] ?? '',
-      request_delete: 0,
-      is_product: 0,
-      // request_delete: map['request_delete'] ?? 0,
-      // is_product: map['is_product'] ?? 0,
+      request_delete: map['request_delete'] ?? 0,
+      is_product: map['is_product'] ?? 0,
     );
   }
 
