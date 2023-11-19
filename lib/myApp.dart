@@ -1,8 +1,8 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:turnopro_apk/Views/common/auth_check.dart';
-import 'package:turnopro_apk/Controllers/statistic.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Components/BottomNavigationBar.dart';
-import 'package:turnopro_apk/Controllers/statistic.controller.dart';
+import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaDiaPageNueva.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaMesPageNueva.dart';
 //import 'package:animate_do/animate_do.dart';
@@ -21,6 +21,8 @@ class StatisticPage extends StatefulWidget {
 
 class _StatisticPageState extends State<StatisticPage>
     with SingleTickerProviderStateMixin {
+  final StatisticController controllerStatistic =
+      Get.find<StatisticController>();
   late TabController _tabController;
 
   @override
@@ -196,7 +198,10 @@ class _StatisticPageState extends State<StatisticPage>
                                 icon: Icon(
                                   MdiIcons.cash,
                                 ),
-                                number: cant$,
+                                totalEarnings:
+                                    controllerStatistic.totalEarnings,
+                                averageEarnings:
+                                    controllerStatistic.averageEarnings,
                                 description: description),
                           ],
                         ),
@@ -219,13 +224,15 @@ class CartOption extends StatelessWidget {
     super.key,
     required this.color,
     required this.icon,
-    required this.number,
+    required this.totalEarnings,
+    required this.averageEarnings,
     required this.description,
   });
 
   final Color color;
   final Icon icon;
-  final List<int> number;
+  final double totalEarnings;
+  final double? averageEarnings;
   final List<String> description;
 
   @override
@@ -252,7 +259,7 @@ class CartOption extends StatelessWidget {
                       fontSize: 14, color: Color.fromARGB(162, 0, 0, 0)),
                 ),
                 Text(
-                  '${number[0]}',
+                  totalEarnings.toStringAsFixed(2),
                   style: const TextStyle(
                       color: Color.fromARGB(245, 39, 141, 61),
                       fontSize: 24,
@@ -278,7 +285,7 @@ class CartOption extends StatelessWidget {
                       fontSize: 14, color: Color.fromARGB(162, 0, 0, 0)),
                 ),
                 Text(
-                  '${number[1]}',
+                  averageEarnings!.toStringAsFixed(2),
                   style: const TextStyle(
                       color: Color(0xFFF18254),
                       fontSize: 24,
@@ -323,37 +330,14 @@ class _BuildCalendarState extends State<BuildCalendar> {
     final endDate = formatterDate.format(_endDate!);
 
     int numberdayWeek = _startDate!.weekday;
-    // String dayWeek = '';
-    // switch (numerodayWeek) {
-    //   case 1:
-    //     dayWeek = 'Lunes';
-    //     break;
-    //   case 2:
-    //     dayWeek = 'Martes';
-    //     break;
-    //   case 3:
-    //     dayWeek = 'Miércoles';
-    //     break;
-    //   case 4:
-    //     dayWeek = 'Jueves';
-    //     break;
-    //   case 5:
-    //     dayWeek = 'Viernes';
-    //     break;
-    //   case 6:
-    //     dayWeek = 'Sábado';
-    //     break;
-    //   case 7:
-    //     dayWeek = 'Domingo';
-    //     break;
-    // }
 
     Duration diferencia = _endDate!.difference(_startDate!);
     int quantityDates = diferencia.inDays + 1;
 
     //EN ESTA DEVUELVE LAS GANANCIAS EN ESE INTERVALO DE FECHAS
     await controllerStatistic.getDataStatistic(startDate, endDate,
-        numberdayWeek, quantityDates); //TODO LLAMANDO AL CONTROLADOR
+        numberdayWeek, quantityDates); //todo LLAMANDO AL CONTROLADOR
+    // ignore: use_build_context_synchronously
     Navigator.of(context).pop();
   }
 

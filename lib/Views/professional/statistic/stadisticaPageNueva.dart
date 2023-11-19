@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Components/legend_widget.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
-import 'package:turnopro_apk/Controllers/statistic.controller.dart';
+import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 
 class BarChartSample6 extends StatelessWidget {
   BarChartSample6({super.key});
@@ -33,26 +33,51 @@ class BarChartSample6 extends StatelessWidget {
       x: x,
       groupVertically: true,
       barRods: [
+        // BarChartRodData(
+        //   fromY: 0,
+        //   toY: pilates,
+        //   color: pilateColor,
+        //   width: 15,
+        // ),
+        // BarChartRodData(
+        //   fromY: 0,
+        //   toY: betweenSpace,
+        //   color: quickWorkoutColor,
+        //   width: 15,
+        // ),
         BarChartRodData(
           fromY: 0,
-          toY: pilates,
-          color: pilateColor,
-          width: 15,
-        ),
-        BarChartRodData(
-          fromY: pilates + betweenSpace,
-          toY: pilates + betweenSpace + quickWorkout,
-          color: quickWorkoutColor,
-          width: 15,
-        ),
-        BarChartRodData(
-          fromY: pilates + betweenSpace + quickWorkout + betweenSpace,
-          toY: pilates + betweenSpace + quickWorkout + betweenSpace + cycling,
+          toY: quickWorkout,
           color: cyclingColor,
           width: 15,
         ),
       ],
     );
+
+    // BarChartGroupData(
+    //   x: x,
+    //   groupVertically: true,
+    //   barRods: [
+    //     BarChartRodData(
+    //       fromY: 0,
+    //       toY: pilates,
+    //       color: pilateColor,
+    //       width: 15,
+    //     ),
+    //     BarChartRodData(
+    //       fromY: pilates + betweenSpace,
+    //       toY: pilates + betweenSpace + quickWorkout,
+    //       color: quickWorkoutColor,
+    //       width: 15,
+    //     ),
+    //     BarChartRodData(
+    //       fromY: pilates + betweenSpace + quickWorkout + betweenSpace,
+    //       toY: pilates + betweenSpace + quickWorkout + betweenSpace + cycling,
+    //       color: cyclingColor,
+    //       width: 15,
+    //     ),
+    //   ],
+    // );
   }
 
   Widget bottomTitles(double value, TitleMeta meta) {
@@ -166,16 +191,16 @@ class BarChartSample6 extends StatelessWidget {
                 gridData: const FlGridData(show: false),
                 barGroups: [
                   if (controllerStatistic.numberdayWeek != -99099) ...[
-                    for (int i = controllerStatistic.numberdayWeek;
+                    for (int j = 0, i = controllerStatistic.numberdayWeek;
                         i <
                             (controllerStatistic.quantityDates +
                                 controllerStatistic.numberdayWeek);
-                        i++) ...[
+                        i++, j++) ...[
                       generateGroupData(
                           i,
-                          350 + controllerStatistic.numberdayWeek * 1200,
-                          controllerStatistic.numberdayWeek * 3500 + 1250,
-                          9450)
+                          controllerStatistic.earningByDays[j].toDouble(),
+                          controllerStatistic.earningByDays[j].toDouble(),
+                          controllerStatistic.earningByDays[j].toDouble())
                     ]
                   ] else ...[
                     //AQUI CARGAR LA SEMANA ACTUAL EN LA QUE ESTA
@@ -197,7 +222,7 @@ class BarChartSample6 extends StatelessWidget {
                 extraLinesData: ExtraLinesData(
                   horizontalLines: [
                     HorizontalLine(
-                      y: 12500,
+                      y: 10000,
                       color: pilateColor,
                       strokeWidth: 1,
                       dashArray: [20, 4],
