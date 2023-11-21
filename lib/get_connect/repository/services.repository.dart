@@ -12,7 +12,7 @@ class ServiceRepository extends GetConnect {
     try {
       if (idProfessional != null) {
         var url =
-            '${Env.apiEndpoint}/person_services?professional_id=$idProfessional';
+            '${Env.apiEndpoint}/professional_services?professional_id=$idProfessional';
 
         final response = await get(url);
         if (response.statusCode == 200) {
