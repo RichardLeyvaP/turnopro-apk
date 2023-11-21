@@ -8,7 +8,7 @@ class Env {
   static String _getKey(String key) {
     final value = _keys[key] ?? '';
     if (value.isEmpty) {
-      throw Exception('$key no está configurado en Env');
+      throw Exception('$key no está configurado en Env RLP');
     }
     return value;
   }

@@ -13,6 +13,7 @@ class UserRepository extends GetConnect {
         'password': password,
       };
       final response = await post(url, body);
+      print(url);
       if (response.statusCode == 200) {
         final users = response.body;
         print('dentro del code:200');
