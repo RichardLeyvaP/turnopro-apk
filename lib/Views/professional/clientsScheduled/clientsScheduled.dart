@@ -61,200 +61,240 @@ class ClientsScheduled extends GetView<ClientsScheduledController> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Expanded(
-                      flex: 18,
-                      child: ListView.builder(
-                        itemCount: controllerClient.clientsScheduledListLength,
-                        itemBuilder: (context, index) => Padding(
-                          padding: EdgeInsets.fromLTRB(
-                              (MediaQuery.of(context).size.height * 0.013),
-                              (MediaQuery.of(context).size.height * 0.006),
-                              (MediaQuery.of(context).size.height * 0.013),
-                              (MediaQuery.of(context).size.height * 0.006)),
-                          child: Container(
-                            decoration: controllerClient
-                                    .selectClientsScheduledList
-                                    .contains(controllerClient
-                                        .clientsScheduledList[index])
-                                ? BoxDecoration(
-                                    border: Border.all(width: 0.01),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(12)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.7),
-                                        spreadRadius: 1,
-                                        blurRadius: 5,
-                                        offset: const Offset(-5,
-                                            5), // Ajusta los valores para personalizar la sombra
-                                      ),
-                                    ],
-                                    gradient: const LinearGradient(
-                                      colors: [
-                                        Color.fromARGB(255, 231, 232, 234),
-                                        Color.fromARGB(255, 243, 182, 138),
-                                      ],
-                                      stops: [0.0, 0.8],
-                                      begin: FractionalOffset.centerRight,
-                                      end: FractionalOffset.centerLeft,
-                                    ))
-                                : BoxDecoration(
-                                    border: Border.all(width: 0.01),
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.7),
-                                        spreadRadius: 1,
-                                        blurRadius: 5,
-                                        offset: const Offset(-5,
-                                            5), // Ajusta los valores para personalizar la sombra
-                                      ),
-                                    ],
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(12)),
-                                  ),
-                            child: ListTile(
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(12),
-                                ),
-                              ),
-                              onTap: () {
-                                controllerClient.getselectCustomer(
-                                    index,
-                                    controllerClient
-                                        .clientsScheduledList[index].car_id);
-                                ModalHelper.showModal(
-                                    context,
-                                    controllerClient.clientsScheduledList[index]
-                                        .client_name);
-                              },
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      controllerClient
-                                              .selectClientsScheduledList
-                                              .contains(controllerClient
-                                                  .clientsScheduledList[index])
-                                          ? Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  MdiIcons
-                                                      .formatListNumbered, //todo
-                                                  color: const Color.fromARGB(
-                                                      255, 150, 37, 19),
-                                                ),
-                                                Text(
-                                                  'Tiempo Total: ${controllerClient.clientsScheduledList[index].total_time}',
-                                                  // AQUI CARHA LA HORA INICIAL,
-                                                  style: const TextStyle(
-                                                      height: 1.0,
-                                                      fontSize: 12,
-                                                      color: Color.fromARGB(
-                                                          255, 150, 37, 19),
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ],
-                                            )
-                                          : Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  MdiIcons.clockPlus,
-                                                  color: const Color.fromARGB(
-                                                      255, 71, 143, 43),
-                                                ),
-                                                Text(
-                                                  '  ${controllerClient.clientsScheduledList[index].start_time}'
-                                                  ' - '
-                                                  ' ${controllerClient.clientsScheduledList[index].final_hour}',
-                                                  // '   08:10 - 09:10',
-                                                  style: const TextStyle(
-                                                    height: 1.0,
-                                                    fontSize: 12,
-                                                    color: Color.fromARGB(
-                                                        180, 0, 0, 0),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                      Text(
-                                        controllerClient
-                                            .clientsScheduledList[index]
-                                            .client_name,
-                                        //AQUI EL NOMBRE DEL CLIENTE
-                                        style: const TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      Text(
-                                        'Total de servicios: ${(controllerClient.clientsScheduledList[index].total_services).toString()}',
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: Color.fromARGB(148, 0, 0, 0),
-                                          height: 1.0,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 12,
-                                      )
-                                    ],
-                                  ),
-                                  controllerClient.selectClientsScheduledList
+                    //AQUI CONTROLO SI HAY CLIENTES EN COLA LOS MUESTRO , SINO MUESTRO UN MENSAJE
+                    controllerClient.clientsScheduledListLength > 0
+                        ? Expanded(
+                            flex: 18,
+                            child: ListView.builder(
+                              itemCount:
+                                  controllerClient.clientsScheduledListLength,
+                              itemBuilder: (context, index) => Padding(
+                                padding: EdgeInsets.fromLTRB(
+                                    (MediaQuery.of(context).size.height *
+                                        0.013),
+                                    (MediaQuery.of(context).size.height *
+                                        0.006),
+                                    (MediaQuery.of(context).size.height *
+                                        0.013),
+                                    (MediaQuery.of(context).size.height *
+                                        0.006)),
+                                child: Container(
+                                  decoration: controllerClient
+                                          .selectClientsScheduledList
                                           .contains(controllerClient
                                               .clientsScheduledList[index])
-                                      ? const Row(
-                                          children: [
-                                            Opacity(
-                                              opacity: 1,
-                                              child: Icon(
-                                                Icons.play_circle,
-                                                size: 60,
-                                                color: Color.fromARGB(
-                                                    255, 150, 37, 19),
-                                              ),
+                                      ? BoxDecoration(
+                                          border: Border.all(width: 0.01),
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(12)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.7),
+                                              spreadRadius: 1,
+                                              blurRadius: 5,
+                                              offset: const Offset(-5,
+                                                  5), // Ajusta los valores para personalizar la sombra
                                             ),
                                           ],
-                                        )
-                                      : const Row(
-                                          children: [
-                                            Opacity(
-                                              opacity: 1,
-                                              child: Icon(
-                                                Icons.play_circle,
-                                                size: 60,
-                                                color: Color.fromARGB(
-                                                    85, 83, 82, 82),
-                                              ),
+                                          gradient: const LinearGradient(
+                                            colors: [
+                                              Color.fromARGB(
+                                                  255, 231, 232, 234),
+                                              Color.fromARGB(
+                                                  255, 243, 182, 138),
+                                            ],
+                                            stops: [0.0, 0.8],
+                                            begin: FractionalOffset.centerRight,
+                                            end: FractionalOffset.centerLeft,
+                                          ))
+                                      : BoxDecoration(
+                                          border: Border.all(width: 0.01),
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.7),
+                                              spreadRadius: 1,
+                                              blurRadius: 5,
+                                              offset: const Offset(-5,
+                                                  5), // Ajusta los valores para personalizar la sombra
                                             ),
                                           ],
-                                        )
-                                ],
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(12)),
+                                        ),
+                                  child: ListTile(
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(12),
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      controllerClient.getselectCustomer(
+                                          index,
+                                          controllerClient
+                                              .clientsScheduledList[index]
+                                              .car_id);
+                                      ModalHelper.showModal(
+                                          context,
+                                          controllerClient
+                                              .clientsScheduledList[index]
+                                              .client_name);
+                                    },
+                                    title: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            controllerClient
+                                                    .selectClientsScheduledList
+                                                    .contains(controllerClient
+                                                            .clientsScheduledList[
+                                                        index])
+                                                ? Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        MdiIcons
+                                                            .formatListNumbered, //todo
+                                                        color: const Color
+                                                                .fromARGB(
+                                                            255, 150, 37, 19),
+                                                      ),
+                                                      Text(
+                                                        'Tiempo Total: ${controllerClient.clientsScheduledList[index].total_time}',
+                                                        // AQUI CARHA LA HORA INICIAL,
+                                                        style: const TextStyle(
+                                                            height: 1.0,
+                                                            fontSize: 12,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    150,
+                                                                    37,
+                                                                    19),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ],
+                                                  )
+                                                : Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        MdiIcons.clockPlus,
+                                                        color: const Color
+                                                                .fromARGB(
+                                                            255, 71, 143, 43),
+                                                      ),
+                                                      Text(
+                                                        '  ${controllerClient.clientsScheduledList[index].start_time}'
+                                                        ' - '
+                                                        ' ${controllerClient.clientsScheduledList[index].final_hour}',
+                                                        // '   08:10 - 09:10',
+                                                        style: const TextStyle(
+                                                          height: 1.0,
+                                                          fontSize: 12,
+                                                          color: Color.fromARGB(
+                                                              180, 0, 0, 0),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                            Text(
+                                              controllerClient
+                                                  .clientsScheduledList[index]
+                                                  .client_name,
+                                              //AQUI EL NOMBRE DEL CLIENTE
+                                              style: const TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            Text(
+                                              'Total de servicios: ${(controllerClient.clientsScheduledList[index].total_services).toString()}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Color.fromARGB(
+                                                    148, 0, 0, 0),
+                                                height: 1.0,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 12,
+                                            )
+                                          ],
+                                        ),
+                                        controllerClient
+                                                .selectClientsScheduledList
+                                                .contains(controllerClient
+                                                        .clientsScheduledList[
+                                                    index])
+                                            ? const Row(
+                                                children: [
+                                                  Opacity(
+                                                    opacity: 1,
+                                                    child: Icon(
+                                                      Icons.play_circle,
+                                                      size: 60,
+                                                      color: Color.fromARGB(
+                                                          255, 150, 37, 19),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : const Row(
+                                                children: [
+                                                  Opacity(
+                                                    opacity: 1,
+                                                    child: Icon(
+                                                      Icons.play_circle,
+                                                      size: 60,
+                                                      color: Color.fromARGB(
+                                                          85, 83, 82, 82),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                      ],
+                                    ),
+                                    //subtitle: Text(controllerClient.users[index].username.toString()),
+                                    selected: false,
+                                    //selectedColor: Colors.amber,
+                                    //selectedTileColor: Colors.blue,
+                                  ),
+                                ),
                               ),
-                              //subtitle: Text(controllerClient.users[index].username.toString()),
-                              selected: false,
-                              //selectedColor: Colors.amber,
-                              //selectedTileColor: Colors.blue,
+                            ),
+                          )
+                        : const Padding(
+                            padding: EdgeInsets.all(12.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.assignment_ind_sharp),
+                                Text(
+                                  'No hay ningún cliente para hoy',
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
         ),

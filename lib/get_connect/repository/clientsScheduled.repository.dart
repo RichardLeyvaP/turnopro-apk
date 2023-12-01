@@ -61,4 +61,21 @@ class ClientsScheduledRepository extends GetConnect {
       return serviceCustomer;
     }
   }
+
+  Future<bool> acceptOrRejectClient(reservationId, attended) async {
+    bool value = false;
+    var url =
+        '${Env.apiEndpoint}/tail_attended?reservation_id=$reservationId&attended=$attended';
+
+    final response = await get(url);
+    if (response.statusCode == 200) {
+      print('acceptOrRejectClient1 value = true');
+      value = true;
+      return value;
+    } else {
+      print('ERROR:acceptOrRejectClient1 value = false');
+
+      return false;
+    }
+  }
 }

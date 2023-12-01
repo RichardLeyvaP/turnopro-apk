@@ -17,11 +17,16 @@ class ClientsScheduledController extends GetxController {
   int? carIdClientsScheduled;
   List<ServiceModel> serviceCustomerSelected = [];
 
+  //Variables del reloj
+  double sizeClock = 135;
+  //Fin Variables del reloj
+
   @override
   void onReady() {
     super.onReady();
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 2), () {
       isLoading = false;
+
       update();
     });
   }
@@ -54,15 +59,43 @@ class ClientsScheduledController extends GetxController {
     clientsScheduledListLength = clientsScheduledList.length;
     //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
     clientsScheduledNext = resultList['nextClient'];
-    int idCar = clientsScheduledNext!.car_id;
-    await _searchForCustomerServices(idCar);
-    print('llegue aqui si:');
-    print(serviceCustomerSelected.length);
+
+    if (clientsScheduledNext != null) {
+      int idCar = clientsScheduledNext!.car_id;
+      await _searchForCustomerServices(idCar);
+      setValueClock(true);
+    } else {
+      setValueClock(false);
+    }
+
     update();
+  }
+
+  setValueClock(bool value) {
+    if (value == true) {
+      sizeClock = 135;
+    } else {
+      sizeClock = 175;
+    }
   }
 
   Future<void> _searchForCustomerServices(idCar) async {
     serviceCustomerSelected = await repository.getCustomerServicesList(idCar);
     update();
+  }
+
+  Future<void> acceptOrRejectClient(reservationId, attended) async {
+    final LoginController controllerLogin = Get.find<LoginController>();
+    bool value = await repository.acceptOrRejectClient(reservationId, attended);
+    //si lo que devuelve es true actualizo la cola
+    if (value == true) {
+      int? idBranch = controllerLogin.branchIdLoggedIn;
+      int? idProfessional = controllerLogin.idProfessionalLoggedIn;
+      //aqui actualizo la cola
+      await fetchClientsScheduled(idProfessional, idBranch);
+      print('Todo perfectamente se actualizo el valor');
+    } else {
+      print('Dio error al mandar a aceptar o rechazar al cliente');
+    }
   }
 }
