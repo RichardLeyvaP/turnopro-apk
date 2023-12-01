@@ -145,8 +145,9 @@ class ShoppingCartController extends GetxController {
     //todo esta esta revisada ok
     try {
       final LoginController controllerLogin = Get.find<LoginController>();
-      serviceCart = await serviceRepository
-          .getServiceList(controllerLogin.idProfessionalLoggedIn);
+      serviceCart = await serviceRepository.getServiceList(
+          controllerLogin.idProfessionalLoggedIn,
+          controllerLogin.branchIdLoggedIn);
       internetError = 0;
       update();
     } catch (e) {

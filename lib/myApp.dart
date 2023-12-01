@@ -7,6 +7,7 @@ import 'package:turnopro_apk/Routes/index.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/clientsScheduled.dart';
 import 'package:turnopro_apk/Views/professional/statistic/statisticPage.dart';
 import 'package:turnopro_apk/Views/responsible/homeResponsiblePage.dart';
 import 'package:turnopro_apk/Views/professional/shoppingCartPage.dart';
@@ -89,8 +90,8 @@ class Myapp extends StatelessWidget {
       ),
       GetPage(
         name: '/clients',
-        page: () => CustomersPage(),
-        binding: BindingsBuilder.put(() => CustomerController()),
+        page: () => const ClientsScheduled(),
+        binding: BindingsBuilder.put(() => ClientsScheduledController()),
       ), //ESTA ESTA CARGANDO UNA API
       GetPage(
         name: '/CoexistencePage',

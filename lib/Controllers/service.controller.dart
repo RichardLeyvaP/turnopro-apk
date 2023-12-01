@@ -51,8 +51,9 @@ class ServiceController extends GetxController {
     final LoginController controllerLogin = Get.find<LoginController>();
     print(
         'Id Profesional _fetchServiceList:${controllerLogin.idProfessionalLoggedIn}');
-    services =
-        await repository.getServiceList(controllerLogin.idProfessionalLoggedIn);
+    services = await repository.getServiceList(
+        controllerLogin.idProfessionalLoggedIn,
+        controllerLogin.branchIdLoggedIn);
     serviceListLength = services.length;
     loadedFirstTime = true;
     update();

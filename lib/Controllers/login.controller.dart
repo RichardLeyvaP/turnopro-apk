@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/get_connect/repository/user.repository.dart';
 
 class LoginController extends GetxController {
@@ -41,6 +42,8 @@ class LoginController extends GetxController {
   }
 
   Future<void> loginGetIn(String u, String p) async {
+    final ClientsScheduledController clientsScheduledController =
+        Get.find<ClientsScheduledController>();
     String email = u.toString(), pass = p.toString();
     incorrectFields = false;
     try {
@@ -49,7 +52,7 @@ class LoginController extends GetxController {
 
       if (result != null) {
         //*******Asignando Valores*****/
-        nameUserLoggedIn = result['nameProfessional'];
+        nameUserLoggedIn = result['name'];
         userLoggedIn = result['userName'];
         tokenUserLoggedIn = result['token'];
         idUserLoggedIn = result['id'];
@@ -68,6 +71,10 @@ class LoginController extends GetxController {
             emailUserLoggedIn != '') {
           pagina = '/Professional';
           if (chargeUserLoggedIn == "Barbero") {
+            //aqui cargo la cola del barbero para poder tener en el home al siguiente de la cola inicialmente
+            await clientsScheduledController.fetchClientsScheduled(
+                idProfessionalLoggedIn, branchIdLoggedIn);
+
             print('***************SOY BARBERO*************');
             pagina = '/Professional';
             Get.offAllNamed('/Professional');

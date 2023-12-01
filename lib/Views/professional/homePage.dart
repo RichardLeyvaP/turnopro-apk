@@ -8,9 +8,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 //import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:turnopro_apk/Controllers/product.controller.dart';
 import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
+import 'package:turnopro_apk/Routes/index.dart';
 
 class HomePages extends StatefulWidget {
   const HomePages({super.key});
@@ -46,12 +46,6 @@ class _HomePagesState extends State<HomePages> {
   Widget build(BuildContext context) {
     final ShoppingCartController controllerShoppingCart =
         Get.find<ShoppingCartController>();
-    // if (controllerShoppingCart.fieldsLoadedFirstTime == false) {
-    //   ServiceController controllerService = ServiceController();
-    //   Get.put(controllerService);
-    //   ProductController controllerProduct = ProductController();
-    //   Get.put(controllerProduct);
-    // }
 
     double borderRadiusValue = 12;
     const Color colorVariable = Color(0xFF2B3141); //CARAGANDO COLOR HEXADECIMAL
@@ -316,7 +310,8 @@ class _HomePagesState extends State<HomePages> {
                         },
                       ),
                     ),
-                    /*todo cart*/ Padding(
+                    //todo cart
+                    Padding(
                       padding: const EdgeInsets.only(
                           left: 8, top: 8, right: 8, bottom: 6),
                       child: FittedBox(
@@ -326,162 +321,211 @@ class _HomePagesState extends State<HomePages> {
                             color: Colors.white,
                             borderRadius: BorderRadius.all(Radius.circular(12)),
                           ),
-                          child: Row(
-                            //todo
-                            children: [
-                              Container(
-                                height: (MediaQuery.of(context).size.height *
-                                    0.115),
-                                width:
-                                    (MediaQuery.of(context).size.width * 0.20),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors
-                                        .white, // Color blanco para el borde
-                                    width:
-                                        1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                                  ),
-                                  color: const Color(0xFFF18254),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(12)),
-                                ),
-                                child: IconButton(
-                                  onPressed: () {
-                                    Get.snackbar(
-                                      'Mensaje',
-                                      'Cancelar',
-                                      duration:
-                                          const Duration(milliseconds: 2000),
-                                    );
-                                    //_.deletenotification(index);
-                                  },
-                                  icon: Icon(
-                                    MdiIcons.thumbDown,
-                                    color: Colors.white,
-                                    size: (MediaQuery.of(context).size.height *
-                                        0.04),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                height: (MediaQuery.of(context).size.height *
-                                    0.115),
-                                width:
-                                    (MediaQuery.of(context).size.width * 0.8),
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12)),
-                                ),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 30, top: 8),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      const Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Icon(
-                                            Icons.person,
-                                            color: Colors.black,
-                                            size: 22,
-                                          ),
-                                          Text(
-                                            'William Miller',
-                                            style: TextStyle(
-                                                height: 1.0,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 20),
-                                          ),
-                                        ],
-                                      ),
-                                      const Padding(
-                                        padding: EdgeInsets.only(left: 2),
-                                        child: Text('Masaje capilar',
-                                            style: TextStyle(
-                                              height: 1.0,
-                                              fontSize: 17,
-                                              color:
-                                                  Color.fromARGB(180, 0, 0, 0),
-                                            )),
-                                      ),
-                                      const Padding(
-                                        padding: EdgeInsets.only(left: 2),
-                                        child: Text(
-                                          'Corte de Cabello',
-                                          style: TextStyle(
-                                            height: 1.0,
-                                            fontSize: 17,
-                                            color: Color.fromARGB(180, 0, 0, 0),
-                                          ),
-                                        ),
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Icon(Icons.timer,
-                                              color: const Color.fromARGB(
-                                                  180, 0, 0, 0),
-                                              size: (MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.016)),
-                                          const Text('15 Minutos',
-                                              style: TextStyle(
-                                                height: 1.2,
-                                                fontSize: 14,
-                                                color: Color.fromARGB(
-                                                    180, 0, 0, 0),
-                                              )),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                height: (MediaQuery.of(context).size.height *
-                                    0.115),
-                                width:
-                                    (MediaQuery.of(context).size.width * 0.20),
-                                decoration: BoxDecoration(
+                          child: GetBuilder<ClientsScheduledController>(
+                              builder: (controllerclient) {
+                            String fullName = controllerclient
+                                .clientsScheduledNext!.client_name;
+
+                            // Dividir el nombre completo por espacios
+                            List<String> partsName = fullName.split(" ");
+                            // Tomar los primeros dos nombres (si existen)
+                            String firstName =
+                                partsName.isNotEmpty ? partsName[0] : "";
+                            String secondName =
+                                partsName.length > 1 ? partsName[1] : "";
+
+                            // Unir los dos nombres
+                            String nameFinal = "$firstName $secondName";
+
+                            return Row(
+                              children: [
+                                Container(
+                                  height: (MediaQuery.of(context).size.height *
+                                      0.115),
+                                  width: (MediaQuery.of(context).size.width *
+                                      0.20),
+                                  decoration: BoxDecoration(
                                     border: Border.all(
                                       color: Colors
                                           .white, // Color blanco para el borde
                                       width:
                                           1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                                     ),
-                                    color:
-                                        const Color.fromARGB(255, 32, 32, 32),
+                                    color: const Color(0xFFF18254),
                                     borderRadius: const BorderRadius.all(
-                                        Radius.circular(12))),
-                                child: IconButton(
-                                  onPressed: () {
-                                    Get.snackbar(
-                                      'Mensaje',
-                                      'Aceptar',
-                                      duration:
-                                          const Duration(milliseconds: 2000),
-                                    );
-                                    // _.deletenotification(index);
-                                  },
-                                  icon: Icon(
-                                    MdiIcons.thumbUp,
-                                    color: Colors.white,
-                                    size: (MediaQuery.of(context).size.height *
-                                        0.04),
+                                        Radius.circular(12)),
+                                  ),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      Get.snackbar(
+                                        'Mensaje',
+                                        'Cancelar',
+                                        duration:
+                                            const Duration(milliseconds: 2000),
+                                      );
+                                      //_.deletenotification(index);
+                                    },
+                                    icon: Icon(
+                                      MdiIcons.thumbDown,
+                                      color: Colors.white,
+                                      size:
+                                          (MediaQuery.of(context).size.height *
+                                              0.04),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
+                                Container(
+                                  height: (MediaQuery.of(context).size.height *
+                                      0.115),
+                                  width:
+                                      (MediaQuery.of(context).size.width * 0.8),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(12)),
+                                  ),
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.only(left: 30, top: 8),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            const Icon(
+                                              Icons.person,
+                                              color: Colors.black,
+                                              size: 22,
+                                            ),
+                                            Text(
+                                              nameFinal,
+                                              softWrap: true,
+                                              style: const TextStyle(
+                                                  height: 1.0,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 20),
+                                            ),
+                                          ],
+                                        ),
+                                        Expanded(
+                                          child: ListView.builder(
+                                            itemCount: controllerclient
+                                                        .serviceCustomerSelected
+                                                        .length >
+                                                    2
+                                                ? 2
+                                                : controllerclient
+                                                    .serviceCustomerSelected
+                                                    .length,
+                                            itemBuilder: (context, index) =>
+                                                Row(
+                                              children: [
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        const Icon(
+                                                          Icons.api_sharp,
+                                                          size: 12,
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          controllerclient
+                                                              .serviceCustomerSelected[
+                                                                  index]
+                                                              .name,
+                                                          style: const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Icon(Icons.timer,
+                                                color: const Color.fromARGB(
+                                                    180, 0, 0, 0),
+                                                size: (MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.018)),
+                                            Text(
+                                                //AQUI ETSA EL TIEMPO TOTAL DEL SERVICIO
+                                                (controllerclient
+                                                    .clientsScheduledNext!
+                                                    .total_time),
+                                                style: const TextStyle(
+                                                  height: 1.2,
+                                                  fontSize: 16,
+                                                  color: Color.fromARGB(
+                                                      180, 0, 0, 0),
+                                                )),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  height: (MediaQuery.of(context).size.height *
+                                      0.115),
+                                  width: (MediaQuery.of(context).size.width *
+                                      0.20),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors
+                                            .white, // Color blanco para el borde
+                                        width:
+                                            1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                                      ),
+                                      color:
+                                          const Color.fromARGB(255, 32, 32, 32),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(12))),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      Get.snackbar(
+                                        'Mensaje',
+                                        'Aceptar',
+                                        duration:
+                                            const Duration(milliseconds: 2000),
+                                      );
+                                      // _.deletenotification(index);
+                                    },
+                                    icon: Icon(
+                                      MdiIcons.thumbUp,
+                                      color: Colors.white,
+                                      size:
+                                          (MediaQuery.of(context).size.height *
+                                              0.04),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
                         ),
                       ),
                     ),

@@ -51,7 +51,7 @@ class ServiceModel {
 
   factory ServiceModel.fromMap(Map<dynamic, dynamic> map) {
     return ServiceModel(
-      id: map['id'] ?? '',
+      id: map['id'] ?? 0,
       name: map['name'] ?? '',
       simultaneou: map['simultaneou'] ?? 0,
       price_service: (map['price_service'] ?? 0.0).toDouble(),

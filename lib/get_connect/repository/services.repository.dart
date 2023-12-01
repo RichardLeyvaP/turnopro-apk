@@ -6,13 +6,13 @@ import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/env.dart';
 
 class ServiceRepository extends GetConnect {
-  Future<List<ServiceModel>> getServiceList(idProfessional) async {
+  Future<List<ServiceModel>> getServiceList(idProfessional, idBranch) async {
     List<ServiceModel> serviceList = [];
 
     try {
       if (idProfessional != null) {
         var url =
-            '${Env.apiEndpoint}/professional_services?professional_id=$idProfessional';
+            '${Env.apiEndpoint}/professional_services?professional_id=$idProfessional&branch_id=$idBranch';
 
         final response = await get(url);
         if (response.statusCode == 200) {

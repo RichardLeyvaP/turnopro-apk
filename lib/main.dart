@@ -13,6 +13,8 @@ Future<void> main() async {
   Get.put(controllerLogin);
   ShoppingCartController controllerShoppingCart = ShoppingCartController();
   Get.put(controllerShoppingCart);
+  ClientsScheduledController controllerClient = ClientsScheduledController();
+  Get.put(controllerClient);
   // Inicializa y guarda tu controlador en Get
   await initializeDateFormatting('es',
       null); //esto es para el paquete de el calendario que cargue el idioma español
