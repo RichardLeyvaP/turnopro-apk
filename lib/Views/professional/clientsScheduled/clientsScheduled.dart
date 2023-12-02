@@ -1,14 +1,54 @@
-// ignore_for_file: file_names, depend_on_referenced_packages
+// ignore_for_file: library_private_types_in_public_api
 
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Components/BottomNavigationBar.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 
-class ClientsScheduled extends GetView<ClientsScheduledController> {
-  const ClientsScheduled({super.key});
+class ClientsScheduled extends StatefulWidget {
+  const ClientsScheduled({Key? key}) : super(key: key);
+
+  @override
+  _ClientsScheduledState createState() => _ClientsScheduledState();
+}
+
+class _ClientsScheduledState extends State<ClientsScheduled> {
+  final ClientsScheduledController controllerclient =
+      Get.find<ClientsScheduledController>();
+  final LoginController controllerLogin = Get.find<LoginController>();
+
+  @override
+  void initState() {
+    super.initState(); //todo REVISAR valor fijo
+    iniciarLlamadaCada10Segundos();
+  }
+
+  @override
+  void dispose() {
+    // Asegúrate de cancelar el temporizador al eliminar el widget
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  Timer? _timer;
+
+  void iniciarLlamadaCada10Segundos() {
+    // Cancela cualquier temporizador existente para evitar duplicaciones
+    _timer?.cancel();
+
+    // Establece un temporizador que llama a la función cada 20 segundos
+    _timer = Timer.periodic(const Duration(seconds: 20), (Timer timer) {
+      // actualizo la cola
+      print('ESTOY ACTUALIZANDO LA COLA CADA 10 SEGUNDOS');
+      controllerclient.fetchClientsScheduled(
+          controllerLogin.idProfessionalLoggedIn,
+          controllerLogin.branchIdLoggedIn); //todo REVISAR valor fijo
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +108,10 @@ class ClientsScheduled extends GetView<ClientsScheduledController> {
                             child: ListView.builder(
                               itemCount:
                                   controllerClient.clientsScheduledListLength,
-                              itemBuilder: (context, index) => Padding(
+                              itemBuilder: (context, index) =>
+                                  //AQUI CONTROLO DESDE LA **(API)** SI ATTEENDED=3 ES QUE FUE RECHAZADO Y NO LO MUESTRO
+                                  //IGUAL SI ES ATTEENDED=2 ES QUE YA FUE ATENDIDO Y TAMPOCO LO MUESTRO
+                                  Padding(
                                 padding: EdgeInsets.fromLTRB(
                                     (MediaQuery.of(context).size.height *
                                         0.013),
@@ -109,7 +152,16 @@ class ClientsScheduled extends GetView<ClientsScheduledController> {
                                             end: FractionalOffset.centerLeft,
                                           ))
                                       : BoxDecoration(
-                                          border: Border.all(width: 0.01),
+                                          border: controllerClient
+                                                      .clientsScheduledList[
+                                                          index]
+                                                      .attended ==
+                                                  1
+                                              ? Border.all(
+                                                  width: 2,
+                                                  color:
+                                                      const Color(0xFFF18254))
+                                              : Border.all(width: 0.01),
                                           color: Colors.white,
                                           boxShadow: [
                                             BoxShadow(
@@ -122,7 +174,8 @@ class ClientsScheduled extends GetView<ClientsScheduledController> {
                                             ),
                                           ],
                                           borderRadius: const BorderRadius.all(
-                                              Radius.circular(12)),
+                                            Radius.circular(12),
+                                          ),
                                         ),
                                   child: ListTile(
                                     shape: const RoundedRectangleBorder(
@@ -140,7 +193,10 @@ class ClientsScheduled extends GetView<ClientsScheduledController> {
                                           context,
                                           controllerClient
                                               .clientsScheduledList[index]
-                                              .client_name);
+                                              .client_name,
+                                          controllerClient
+                                              .clientsScheduledList[index]
+                                              .reservation_id);
                                     },
                                     title: Row(
                                       mainAxisAlignment:
@@ -258,19 +314,44 @@ class ClientsScheduled extends GetView<ClientsScheduledController> {
                                                   ),
                                                 ],
                                               )
-                                            : const Row(
-                                                children: [
-                                                  Opacity(
-                                                    opacity: 1,
-                                                    child: Icon(
-                                                      Icons.play_circle,
-                                                      size: 60,
-                                                      color: Color.fromARGB(
-                                                          85, 83, 82, 82),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
+                                            : //SI ESTA VARIABLE ES IGUAL A 1 ES QUE SE ESTA ATENDIENDO
+                                            controllerClient
+                                                        .clientsScheduledList[
+                                                            index]
+                                                        .attended ==
+                                                    1
+                                                ? const Column(
+                                                    children: [
+                                                      Image(
+                                                        image: AssetImage(
+                                                          'assets/images/client-attended.png',
+                                                        ),
+                                                        width: 50,
+                                                        height: 50,
+                                                      ),
+                                                      Text(
+                                                        'Atendiendose',
+                                                        style: TextStyle(
+                                                          color:
+                                                              Color(0xFFF18254),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
+                                                : const Row(
+                                                    //todo 99
+                                                    children: [
+                                                      Opacity(
+                                                        opacity: 1,
+                                                        child: Icon(
+                                                          Icons.play_circle,
+                                                          size: 60,
+                                                          color: Color.fromARGB(
+                                                              85, 83, 82, 82),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
                                       ],
                                     ),
                                     //subtitle: Text(controllerClient.users[index].username.toString()),
@@ -306,7 +387,6 @@ class ClientsScheduled extends GetView<ClientsScheduledController> {
     );
   }
 }
-
 
 //esto es por si necesito cargar la imagen del servicio
 // Widget _buildImage(String label, String image) {

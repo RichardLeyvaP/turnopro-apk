@@ -824,7 +824,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize =>
       const Size.fromHeight(70); // Ajusta el tamaño del AppBar aquí
 
-  String nameUser = 'Paula Rego';
   String imageDirection = 'assets/images/image_perfil.jpg';
 
   @override //todo AppBar
