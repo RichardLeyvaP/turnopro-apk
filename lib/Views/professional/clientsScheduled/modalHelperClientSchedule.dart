@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -5,7 +7,8 @@ import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 
 class ModalHelper {
-  static showModal(BuildContext context, String cliente) async {
+  static showModal(
+      BuildContext context, String cliente, int reservationId) async {
     Completer<void> closedCompleter = Completer<void>();
 
     showModalBottomSheet(
@@ -22,13 +25,23 @@ class ModalHelper {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Descripción de reserva',
                         style: TextStyle(fontWeight: FontWeight.w800),
                       ),
+                      InkWell(
+                          onTap: () {
+                            Navigator.pop(context); // Cierra el modal
+                          },
+                          child: const CircleAvatar(
+                              backgroundColor: Colors.black,
+                              child: Icon(
+                                Icons.close,
+                                color: Colors.white,
+                              ))),
                     ],
                   ),
                   Row(
@@ -88,13 +101,20 @@ class ModalHelper {
                         const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 30.0),
                       ),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color(0xFFF18254)),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
+                      //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
+                      await controllClient.acceptOrRejectClient(
+                          reservationId, 2);
                       Navigator.pop(context); // Cierra el modal
                     },
-                    child: const Text('Aceptar'),
+                    child: const Text(
+                      'Cliente Atendido',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w700),
+                    ),
                   ),
                 ],
               );
