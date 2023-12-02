@@ -1,16 +1,33 @@
 // ignore_for_file: file_names, unused_local_variable, dead_code
 
 import 'package:flutter/material.dart';
+import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/service.controller.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
+//import 'package:turnopro_apk/Routes/index.dart';
 
-class ServicesBodyPage extends StatelessWidget {
+class ServicesBodyPage extends StatefulWidget {
+  const ServicesBodyPage({super.key});
+
+  @override
+  State<ServicesBodyPage> createState() => _ServicesBodyPageState();
+}
+
+class _ServicesBodyPageState extends State<ServicesBodyPage> {
   final double valuePadding = 12;
-  ServicesBodyPage({super.key});
+
   final ShoppingCartController controllerShoppingCart =
       Get.find<ShoppingCartController>();
+
+  final LoginController controllerLogin = Get.find<LoginController>();
+
+  @override
+  void initState() {
+    super.initState();
+    controllerShoppingCart.loadDataInitiallyNecessary();
+  }
 
   //bool visibleButonEliminar = false;
   @override
@@ -102,12 +119,14 @@ class ServicesBodyPage extends StatelessWidget {
                                           onTap: () {
                                             if (!_.selectService
                                                 .contains(_.services[index])) {
-                                              _.getSelectService(index);
-                                              controllerShoppingCart
-                                                  .updateShoppingCartValue(
-                                                      index,
-                                                      'service',
-                                                      _.services[index].id);
+                                              _.getSelectService(
+                                                  index); //guarda en la lista de los seleccionados
+                                              controllerShoppingCart.updateShoppingCartValue(
+                                                  index,
+                                                  controllerLogin
+                                                      .idProfessionalLoggedIn,
+                                                  'service',
+                                                  _.services[index].id);
                                             }
                                           },
                                           title: Row(
@@ -272,7 +291,7 @@ class ServicesBodyPage extends StatelessWidget {
                                                 'Mensaje',
                                                 'Fue notificado al responsable,espere confirmación.',
                                                 duration: const Duration(
-                                                    milliseconds: 2500),
+                                                    milliseconds: 1500),
                                               );
                                               _.sentServiceDelet(index);
                                             },

@@ -1,35 +1,42 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:get/get.dart';
+import 'package:turnopro_apk/env.dart';
 
 class UserRepository extends GetConnect {
   Future getUserLoggedIn(String email, String password) async {
     try {
-      const url = 'http://10.0.2.2:8000/api/login';
+      var url = '${Env.apiEndpoint}/login';
 
       final Map<String, dynamic> body = {
         'email': email,
         'password': password,
       };
       final response = await post(url, body);
+      print(url);
       if (response.statusCode == 200) {
         final users = response.body;
+        print('1dentro del code:200');
         if (users != null) {
+          print('2dentro del code:200 y tiene usuarios');
+          print(users);
           return users;
         } else {
+          print('3dentro del code:200 pero retorno null');
           return null;
         }
       } else {
+        print('4No entro al code:200 este es el codigo:${response.statusCode}');
         return null;
       }
     } catch (e) {
-      // print('Error:$e');
+      print('5Error estoy en el catch (e) y este es el error:$e');
     }
   }
 
   Future userLogout(String token) async {
     try {
-      const url = 'http://10.0.2.2:8000/api/logout';
+      var url = '${Env.apiEndpoint}/logout';
 
       // Parámetros que deseas enviar en la solicitud POST
       /*   final Map<String, dynamic> body = {
@@ -52,8 +59,7 @@ class UserRepository extends GetConnect {
         return null;
       }
     } catch (e) {
-      // Maneja cualquier excepción que pueda ocurrir durante la solicitud.
-      // print('nooo ultimo en el error:$e');
+      print('Error:$e');
       return e;
     }
   }

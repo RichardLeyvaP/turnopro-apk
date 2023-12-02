@@ -1,11 +1,14 @@
 // ignore_for_file: depend_on_referenced_packages, unused_element, non_constant_identifier_names
 
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/Models/orderDelete_model.dart';
 import 'package:turnopro_apk/Models/product_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/get_connect/repository/product.repository.dart';
 import 'package:turnopro_apk/get_connect/repository/services.repository.dart';
+//todo REVISAR REVISAR este controlador y que  funcione correctamente,no lo he revisado me refiero funcionalmente
 
 class ShoppingCartController extends GetxController {
   ProductRepository productRepository = ProductRepository();
@@ -13,7 +16,8 @@ class ShoppingCartController extends GetxController {
 
 //DECLARACION DE VARIABLES
   List<ProductModel> productCart = [], selectproduct = []; // Lista de product
-  List<ServiceModel> serviceCart = [], selectservice = []; // Lista de service
+  List<ServiceModel> serviceCart = [],
+      selectserviceCart = []; // Lista de service
   List<OrderDeleteModel> orderDeleteCar = [];
   List<int> requestDeleteOrder = []; // id de las ordenes solicitadas a eliminar
   List<int> productCarr = [];
@@ -28,30 +32,32 @@ class ShoppingCartController extends GetxController {
   bool load_request = false;
   bool isLoading = true;
 
-  @override
-  void onReady() {
-    super.onReady();
-    //*AQUI CARGANDO LOS SEVICIO Y PRODUCTOS Y PONIENDOLOS EN LAS LISTAS CORRESPONDIENTES
-    intentarConexion();
-  }
-
   Future<void> loadCart() async {
     //print('estoy cargando el carro');
+
+    update();
     try {
+      print(
+          '**** 11111111 **** *** ESTE ES EL getTotalServices ACTUALMENTE:$getTotalServices');
       //  print('00000');
-      Map<String, List<dynamic>> resultList =
-          await productRepository.getCartProductService(); //todo
+      Map<String, dynamic> resultList =
+          await productRepository.getCartProductService(); //todo aqui revisando
       //print('1111111');
       selectproduct = (resultList['products'] ?? []).cast<ProductModel>();
-      selectservice = (resultList['services'] ?? []).cast<ServiceModel>();
-
+      selectserviceCart = (resultList['services'] ?? []).cast<ServiceModel>();
+      if (totalPrice == 0.0) {
+        //Este condicional controlando que solo entrela primera vez
+        totalPrice = resultList['PriceTotal'];
+        getTotalServices = resultList['PriceService'];
+        getTotalProduct = resultList['PriceProduct'];
+      }
+      print(
+          '**** 11111111 **** *** ESTE ES EL getTotalServices ACTUALMENTE:$getTotalServices');
       productListLength = selectproduct.length;
-      serviceListLength = selectservice.length;
-      //print('------------------------');
-      //  print(productListLength);
-      //  print(serviceListLength);
+      serviceListLength = selectserviceCart.length;
 
       shoppingCart = productListLength + serviceListLength;
+
       update();
     } catch (e) {
       //print('DIO ERROR:$e');
@@ -64,7 +70,7 @@ class ShoppingCartController extends GetxController {
       //print('1111111');
       orderDeleteCar =
           await productRepository.serviceRequestProductDelete(id_car); //todo
-      // print(orderDeleteCar);
+      print(orderDeleteCar);
 
       update();
     } catch (e) {
@@ -72,9 +78,10 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  Future<void> requestDelete(int id, int request) async {
+  Future<void> requestDelete(int id, int request_delete) async {
+    //todooooooooo
     try {
-      await productRepository.awaitRequestDelete(id, request);
+      await productRepository.awaitRequestDelete(id, request_delete);
       requestDeleteOrder.add(id);
       internetError = 0;
       update();
@@ -84,11 +91,12 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  Future<void> orderDelete(int id) async {
+  Future<void> orderDelete(id) async {
     try {
       await productRepository.orderDeleteCar(id); //todo
       internetError = 0;
-      loadOrderDeleteCar(10);
+      loadOrderDeleteCar(
+          13); //todo REVISAR aqui mandando el id del carro estatico
       update();
     } catch (e) {
       internetError = -99;
@@ -107,11 +115,19 @@ class ShoppingCartController extends GetxController {
     update();
   }
 
-  intentarConexion() {
+  loadDataInitiallyNecessary() async {
+    //*AQUI CARGANDO LOS SEVICIO Y PRODUCTOS Y PONIENDOLOS EN LAS LISTAS CORRESPONDIENTES
+
     //TODO REVISAR ESTA FUNCION BIEN CONEXION INTERNET
     try {
-      _fetchServiceList();
-      _fetchProductList();
+      final ServiceController controllerService = Get.find<ServiceController>();
+      if (controllerService.loadedFirstTime == false) {
+        await controllerService.loadListService();
+      }
+      await _fetchServiceList(); //todo revisar para que yo queria saber si tenia servicio y productos el profesional
+      await _fetchProductList();
+      print('************* onReady:****serviceCart:${serviceCart.length}');
+      // _fetchProductList();
       loadCart();
       //******************************************************************************** */
       internetError = 0;
@@ -126,9 +142,14 @@ class ShoppingCartController extends GetxController {
   }
 
   Future<void> _fetchServiceList() async {
+    //todo esta esta revisada ok
     try {
-      serviceCart = await serviceRepository.getServiceList();
+      final LoginController controllerLogin = Get.find<LoginController>();
+      serviceCart = await serviceRepository.getServiceList(
+          controllerLogin.idProfessionalLoggedIn,
+          controllerLogin.branchIdLoggedIn);
       internetError = 0;
+      update();
     } catch (e) {
       internetError = -99;
       update();
@@ -137,7 +158,9 @@ class ShoppingCartController extends GetxController {
 
   Future<void> _fetchProductList() async {
     try {
-      productCart = await productRepository.getProductList();
+      final LoginController controllerLogin = Get.find<LoginController>();
+      productCart = await productRepository.getProductList(controllerLogin
+          .branchIdLoggedIn); //todo1 mando a pedir los productos que hay en la sucursal
       internetError = 0;
       update();
     } catch (e) {
@@ -147,10 +170,10 @@ class ShoppingCartController extends GetxController {
   }
 
   Future<void> _addOrderCartList(
-      client_id, person_id, product_id, service_id) async {
+      client_id, person_id, product_id, service_id, type) async {
     try {
       responseId = await productRepository.addOrderCartList(
-          client_id, person_id, product_id, service_id);
+          client_id, person_id, product_id, service_id, type);
       if (responseId != -990099) {
         productCarr.add(responseId);
         internetError = 0;
@@ -164,30 +187,29 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  void updateShoppingCartValue(index, String type, id) {
-    //print('11111');
+  void updateShoppingCartValue(index, idProfessional, type, id) {
     if (type == 'service') {
       // print('22');
       if (internetError != -99) {
-        //  print('3333');
-        if (!selectservice.contains(serviceCart[index])) {
-          //   print(serviceCart[index].id);
-          _addOrderCartList(5, 3, 0, (serviceCart[index].id - 1));
+        // print('*************serviceCart:${serviceCart.length}');
+        if (!selectserviceCart.contains(serviceCart[index])) {
+          selectserviceCart.add(serviceCart[index]);
+          _addOrderCartList(5, idProfessional, 0, serviceCart[index].id,
+              type); //todo REVISAR TIENE PROBLEMA
           //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
-          getTotalServicesProduct_Sum(
-              type, double.parse(serviceCart[index].price_service));
+          getTotalServicesProduct_Sum(type, serviceCart[index].price_service);
           shoppingCart += 1;
-          serviceListLength = selectservice.length;
-          //print('long de serviceListLength:$serviceListLength');
+          serviceListLength = selectserviceCart.length;
+          print('long de serviceListLength:$serviceListLength');
         }
         update();
       }
     } else if (type == 'product') {
       if (internetError != -99) {
-        _addOrderCartList(5, 3, id, 0); //todo
+        print('todavia qui llego bien');
+        _addOrderCartList(5, idProfessional, id, 0, type); //todo
         //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
-        getTotalServicesProduct_Sum(
-            type, double.parse(productCart[index].sale_price));
+        getTotalServicesProduct_Sum(type, productCart[index].sale_price);
         shoppingCart += 1;
         update();
       }

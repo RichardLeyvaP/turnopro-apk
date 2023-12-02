@@ -1,14 +1,10 @@
 // ignore_for_file: depend_on_referenced_packages
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/get_connect/repository/services.repository.dart';
 
 class ServiceController extends GetxController {
-  //LLAMANDO AL CONTROLADOR
-  ServiceController() {
-    _fetchServiceList();
-  }
-
 //DECLARACION DE VARIABLES
   ServiceRepository repository = ServiceRepository();
   double getTotal = 0;
@@ -17,6 +13,7 @@ class ServiceController extends GetxController {
   List<ServiceModel> selectService = []; //ervicios seleccionados vacia
   List<ServiceModel> sentServiceDelete = [];
   bool isLoading = true;
+  bool loadedFirstTime = false;
 
   @override
   void onReady() {
@@ -29,6 +26,10 @@ class ServiceController extends GetxController {
 
   getList() {
     return services;
+  }
+
+  loadListService() {
+    _fetchServiceList();
   }
 
   getSelectService(index) {
@@ -46,8 +47,16 @@ class ServiceController extends GetxController {
   }
 
   Future<void> _fetchServiceList() async {
-    services = await repository.getServiceList();
+    print('LISTA1 _fetchServiceList:$serviceListLength');
+    final LoginController controllerLogin = Get.find<LoginController>();
+    print(
+        'Id Profesional _fetchServiceList:${controllerLogin.idProfessionalLoggedIn}');
+    services = await repository.getServiceList(
+        controllerLogin.idProfessionalLoggedIn,
+        controllerLogin.branchIdLoggedIn);
     serviceListLength = services.length;
+    loadedFirstTime = true;
     update();
+    print('LISTA2 _fetchServiceList:$serviceListLength');
   }
 }

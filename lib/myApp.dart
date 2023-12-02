@@ -1,13 +1,16 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:turnopro_apk/Components/auth_check.dart';
+import 'package:turnopro_apk/Controllers/statistics.controller.dart';
+import 'package:turnopro_apk/Views/common/auth_check.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:turnopro_apk/Views/homeResponsiblePage.dart';
-import 'package:turnopro_apk/Views/shoppingCartPage.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/clientsScheduled.dart';
+import 'package:turnopro_apk/Views/professional/statistic/statisticPage.dart';
+import 'package:turnopro_apk/Views/responsible/homeResponsiblePage.dart';
+import 'package:turnopro_apk/Views/professional/shoppingCartPage.dart';
 
 class Myapp extends StatelessWidget {
   Myapp({super.key});
@@ -29,6 +32,7 @@ class Myapp extends StatelessWidget {
             ? themeDataProfessional()
             : themeDataResponsible(),
         initialRoute: '/SplashPage',
+        //initialRoute: '/SplashPage',
         unknownRoute: GetPage(
           name: '/Error', // Nombre de la ruta de error
           page: () => const Page404(), // Página de error
@@ -45,6 +49,11 @@ class Myapp extends StatelessWidget {
         page: () => const SplashPage(),
       ),
       GetPage(
+        name: '/StatisticPage',
+        page: () => const StatisticPage(),
+        binding: BindingsBuilder.put(() => StatisticController()),
+      ),
+      GetPage(
         name: '/Professional',
         page: () => const HomePages(),
         binding: BindingsBuilder.put(() => LoginController()),
@@ -56,7 +65,7 @@ class Myapp extends StatelessWidget {
       ),
       GetPage(
         name: '/loginNewPage',
-        page: () => const LoginNewPage(),
+        page: () => LoginNewPage(),
         binding: BindingsBuilder.put(() => LoginController()),
       ),
       GetPage(
@@ -81,8 +90,8 @@ class Myapp extends StatelessWidget {
       ),
       GetPage(
         name: '/clients',
-        page: () => CustomersPage(),
-        binding: BindingsBuilder.put(() => CustomerController()),
+        page: () => const ClientsScheduled(),
+        binding: BindingsBuilder.put(() => ClientsScheduledController()),
       ), //ESTA ESTA CARGANDO UNA API
       GetPage(
         name: '/CoexistencePage',

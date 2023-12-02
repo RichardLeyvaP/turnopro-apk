@@ -2,10 +2,11 @@
 
 import 'dart:convert';
 
+//todo REVISAR aqui datos estaticos en el modelo, los valores enteros
 class OrderDeleteModel {
   int id;
   String nameClient;
-  String nameProfessional;
+  String nameProfesional;
   String hora;
   String? nameProduct;
   String? nameService;
@@ -15,7 +16,7 @@ class OrderDeleteModel {
   OrderDeleteModel({
     required this.id,
     required this.nameClient,
-    required this.nameProfessional,
+    required this.nameProfesional,
     required this.hora,
     this.nameProduct,
     this.nameService,
@@ -27,7 +28,7 @@ class OrderDeleteModel {
     return {
       'id': id,
       'nombreClients': nameClient,
-      'surname': nameProfessional,
+      'surname': nameProfesional,
       'hora': hora,
       'nameProduct': nameProduct,
       'nameService': nameService,
@@ -40,13 +41,13 @@ class OrderDeleteModel {
     return OrderDeleteModel(
       id: map['id'] ?? 0,
       nameClient: map['nameClient'] ?? '',
-      nameProfessional: map['nameProfessional'] ?? '',
+      nameProfesional: map['nameProfesional'] ?? '',
       hora: map['hora'] ?? '',
       nameProduct: map['nameProduct'] ?? '',
       nameService: map['nameService'] ?? '',
       updated_at: map['updated_at'] ?? '',
       //is_product: map['is_product'] ?? 0,
-      is_product: 0,
+      is_product: 0, //todo REVISAR aqui mandando valor entero estatico
     );
   }
 
