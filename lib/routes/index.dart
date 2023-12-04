@@ -1,4 +1,4 @@
-export 'package:turnopro_apk/Views/professional/homePage.dart';
+export 'package:turnopro_apk/Views/professional/home/homePage.dart';
 export 'package:turnopro_apk/Views/common/page404.dart';
 export 'package:turnopro_apk/Views/products-services/servicesProductsPage.dart';
 export 'package:turnopro_apk/Views/professional/coexistencePage.dart';

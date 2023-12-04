@@ -12,6 +12,8 @@ class ClientsScheduledRepository extends GetConnect {
     List<ClientsScheduledModel> clientList = [];
     ClientsScheduledModel? nextClient;
     bool hasNextClient = false;
+    int quantityClientAttended = 0;
+
     var url =
         '${Env.apiEndpoint}/cola_branch_professional?professional_id=$idProfessional&branch_id=$idBranch';
 
@@ -23,18 +25,22 @@ class ClientsScheduledRepository extends GetConnect {
         ClientsScheduledModel client =
             ClientsScheduledModel.fromJson(jsonEncode(service));
         clientList.add(client);
+        //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE
         if (hasNextClient == false) {
           if (client.attended == 0) {
             nextClient = client;
             hasNextClient = true;
           }
         }
-
-        //AQUI LA LOGICA DE SABER CUAL ES EL QUE LE SIGUE
+        //AQUI PARA SABER CUANTOS ESTA ATENDIENDO
+        if (client.attended == 1) {
+          quantityClientAttended++;
+        }
       }
       return {
         "clientList": clientList,
         "nextClient": nextClient,
+        "quantityClientAttended": quantityClientAttended,
       };
     } else {
       return clientList;
@@ -59,6 +65,41 @@ class ClientsScheduledRepository extends GetConnect {
       return serviceCustomer;
     } else {
       return serviceCustomer;
+    }
+  }
+
+  Future<bool> getServicesSimultaneou(idCar) async {
+    var url =
+        '${Env.apiEndpoint}/car_services?car_id=$idCar'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
+
+    final response = await get(url);
+    if (response.statusCode == 200) {
+      final customers = response.body['services'];
+      for (Map service in customers) {
+        ServiceModel serv = ServiceModel.fromJson(jsonEncode(service));
+        if (serv.simultaneou == 1) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+      return false;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> typeOfService(idProfessional, idBranch) async {
+    var url =
+        '${Env.apiEndpoint}/type_of_service?professional_id=$idProfessional&branch_id=$idBranch'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
+
+    final response = await get(url);
+    if (response.statusCode == 200) {
+      final typeService = response.body;
+      print('typeOfService(idProfessional, idBranch) async:$typeService');
+      return typeService;
+    } else {
+      return false;
     }
   }
 
