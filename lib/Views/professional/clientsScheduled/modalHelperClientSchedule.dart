@@ -18,7 +18,7 @@ class ModalHelper {
           decoration: const BoxDecoration(
             color: Colors.white,
           ),
-          height: 300,
+          height: 400,
           padding: const EdgeInsets.all(12.0),
           child: GetBuilder<ClientsScheduledController>(
             builder: (controllClient) {
@@ -28,10 +28,32 @@ class ModalHelper {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Descripción de reserva',
-                        style: TextStyle(fontWeight: FontWeight.w800),
-                      ),
+                      controllClient.statusClientTemporary == 1
+                          ? ElevatedButton(
+                              style: ButtonStyle(
+                                padding: MaterialStateProperty.all<
+                                    EdgeInsetsGeometry>(
+                                  const EdgeInsets.symmetric(
+                                      vertical: 4.0, horizontal: 10.0),
+                                ),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.black),
+                              ),
+                              onPressed: () async {
+                                //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
+                                await controllClient.acceptOrRejectClient(
+                                    reservationId, 2);
+                                Navigator.pop(context); // Cierra el modal
+                              },
+                              child: const Text(
+                                'Cliente Atendido',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800),
+                              ),
+                            )
+                          : Text(''),
                       InkWell(
                           onTap: () {
                             Navigator.pop(context); // Cierra el modal
@@ -95,27 +117,31 @@ class ModalHelper {
                       ),
                     ),
                   ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 30.0),
-                      ),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color(0xFFF18254)),
-                    ),
-                    onPressed: () async {
-                      //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
-                      await controllClient.acceptOrRejectClient(
-                          reservationId, 2);
-                      Navigator.pop(context); // Cierra el modal
-                    },
-                    child: const Text(
-                      'Cliente Atendido',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.w700),
-                    ),
-                  ),
+                  controllClient.statusClientTemporary == 1
+                      ? ElevatedButton(
+                          style: ButtonStyle(
+                            padding:
+                                MaterialStateProperty.all<EdgeInsetsGeometry>(
+                              const EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 30.0),
+                            ),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                const Color(0xFFF18254)),
+                          ),
+                          onPressed: () async {
+                            //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
+                            await controllClient.acceptOrRejectClient(
+                                reservationId, 2);
+                            Navigator.pop(context); // Cierra el modal
+                          },
+                          child: const Text(
+                            'Añadir servicios y productos',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        )
+                      : Text(''),
                 ],
               );
             },

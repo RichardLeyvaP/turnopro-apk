@@ -183,12 +183,20 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                                         Radius.circular(12),
                                       ),
                                     ),
-                                    onTap: () {
+                                    onTap: () async {
                                       controllerClient.getselectCustomer(
                                           index,
                                           controllerClient
                                               .clientsScheduledList[index]
                                               .car_id);
+                                      //AQUI MANDO EL ID DE RESERVACION Y ME DEVUELVE EL ESTADO DEL CLIENTE,
+                                      //SI SE ESTA ATENDINEDO O NO , PARA ASI SABER CUANDO MOSTRAR LOS BOTONES DE ATENDIDO Y
+                                      //SELECCIONAR SERVICIO Y PRODUCTOS
+                                      controllerClient.returnClientStatus(
+                                          controllerClient
+                                              .clientsScheduledList[index]
+                                              .reservation_id);
+
                                       ModalHelper.showModal(
                                           context,
                                           controllerClient

@@ -25,7 +25,7 @@ class ClientsScheduledRepository extends GetConnect {
         ClientsScheduledModel client =
             ClientsScheduledModel.fromJson(jsonEncode(service));
         clientList.add(client);
-        //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE
+        //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
         if (hasNextClient == false) {
           if (client.attended == 0) {
             nextClient = client;
@@ -100,6 +100,21 @@ class ClientsScheduledRepository extends GetConnect {
       return typeService;
     } else {
       return false;
+    }
+  }
+
+  Future<int> returnClientStatus(reservationId) async {
+    var url =
+        '${Env.apiEndpoint}/return_client_status?reservation_id=$reservationId'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
+
+    final response = await get(url);
+    if (response.statusCode == 200) {
+      final statusClient = response.body;
+      print(
+          'Future<int> returnClientStatus(reservationId) async {:$statusClient');
+      return statusClient;
+    } else {
+      return -99;
     }
   }
 

@@ -13,6 +13,9 @@ class ClientsScheduledController extends GetxController {
   List<ClientsScheduledModel> clientsScheduledList = []; // Lista de clientes
   List<ClientsScheduledModel> selectClientsScheduledList = [];
   ClientsScheduledModel? clientsScheduledNext; // Cliente en espera
+  ClientsScheduledModel? clientsAttended1; // Cliente en espera
+  ClientsScheduledModel? clientsAttended2; // Cliente en espera
+  String clientsAttended = 'nobody';
   List<ServiceModel> serviceCustomerSelected = [];
 
   int clientsScheduledListLength = 0;
@@ -24,6 +27,8 @@ class ClientsScheduledController extends GetxController {
   int totalTimeInitial = 10; //Iniciando en 3 minutos el reloj
   bool callCliente = false; //si esta en false es que es la primera vez
   bool boolFilterShowNext = false; //si esta en false es que es la primera vez
+  int filterShowTimer = 0; //si esta en false es que es la primera vez
+  int statusClientTemporary = -99;
 
   //Fin Variables del reloj
 
@@ -35,6 +40,42 @@ class ClientsScheduledController extends GetxController {
     'punctuality': false, //Puntualidad
     /******************AGREGAR AQUI TODS LOS QUE DESEN*********************/
   };
+
+  Future<void> newClientAttended(ClientsScheduledModel client, int cant) async {
+    //este nuevo cliente se le va a signar un reloj
+    if (cant == 1) {
+      clientsAttended1 = client;
+    }
+    if (cant == 2) {
+      clientsAttended2 = client;
+    }
+    await filterShowCardTimer();
+    update();
+  }
+
+  Future<void> filterShowCardTimer() async {
+    if (clientsAttended1 != null && clientsAttended2 == null) {
+      //solo client1
+      print('filterShowCardTimer client1');
+      clientsAttended = 'client1';
+    }
+    if (clientsAttended2 != null && clientsAttended1 == null) {
+      //solo client2
+      print('filterShowCardTimer client2');
+      clientsAttended = 'client2';
+    }
+    if (clientsAttended1 != null && clientsAttended2 != null) {
+      //los 2 (client1 y client2)
+      print('filterShowCardTimer allClient');
+      clientsAttended = 'allClient';
+    }
+    if (clientsAttended1 == null && clientsAttended2 == null) {
+      //ningun cliente client1
+      print('filterShowCardTimer nobody');
+      clientsAttended = 'nobody';
+    }
+    update();
+  }
 
   Future<void> filterShowNext() async {
     try {
@@ -51,6 +92,16 @@ class ClientsScheduledController extends GetxController {
         print('************** false');
         boolFilterShowNext = false;
       }
+      update();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> returnClientStatus(int reservationId) async {
+    try {
+      int result = await repository.returnClientStatus(reservationId);
+      statusClientTemporary = result;
       update();
     } catch (e) {
       print(e);
@@ -112,6 +163,7 @@ class ClientsScheduledController extends GetxController {
     if (clientsScheduledNext != null) {
       int idCar = clientsScheduledNext!.car_id;
       await _searchForCustomerServices(idCar);
+      await filterShowNext();
       setValueClock(true);
     } else {
       setValueClock(false);
@@ -135,6 +187,7 @@ class ClientsScheduledController extends GetxController {
 
   Future<void> acceptOrRejectClient(reservationId, attended) async {
     final LoginController controllerLogin = Get.find<LoginController>();
+
     bool value = await repository.acceptOrRejectClient(reservationId, attended);
     //si lo que devuelve es true actualizo la cola
     if (value == true) {
@@ -142,7 +195,28 @@ class ClientsScheduledController extends GetxController {
       int? idProfessional = controllerLogin.idProfessionalLoggedIn;
       //aqui actualizo la cola
       await fetchClientsScheduled(idProfessional, idBranch);
+      //verificar que reloj es el que hay que detener
+      if (attended == 2) {
+        //si es 2 es que ya termino de atender al cliente1
+        if (clientsAttended1 != null) {
+          if (reservationId == clientsAttended1!.reservation_id) {
+            print('if (reservationId == clientsAttended1!.reservation_id) {');
+            clientsAttended1 = null;
+          }
+        }
+        if (clientsAttended2 != null) {
+          //si es 2 es que ya termino de atender al cliente2
+          if (reservationId == clientsAttended2!.reservation_id) {
+            print('if (reservationId == clientsAttended2!.reservation_id) {');
+            clientsAttended2 = null;
+          }
+        }
+      }
+      update();
+
+      filterShowCardTimer();
       filterShowNext();
+
       //AQUI ACTUALIZO LA VARIABLE QUE ME DICE QUE YA LLAMO A UN CLIENTE
       if (attended == 1) {
         callCliente = true;
