@@ -41,12 +41,17 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
     _timer?.cancel();
 
     // Establece un temporizador que llama a la función cada 20 segundos
-    _timer = Timer.periodic(const Duration(seconds: 20), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 10), (Timer timer) {
       // actualizo la cola
-      print('ESTOY ACTUALIZANDO LA COLA CADA 10 SEGUNDOS');
-      controllerclient.fetchClientsScheduled(
-          controllerLogin.idProfessionalLoggedIn,
-          controllerLogin.branchIdLoggedIn); //todo REVISAR valor fijo
+      if (controllerclient.showingServiceClients == false) {
+        //solo
+        print(
+            'ESTOY ACTUALIZANDO LA COLA CADA 10 SEGUNDOS solo si showingServiceClients = false');
+        controllerclient.fetchClientsScheduled(
+            controllerLogin.idProfessionalLoggedIn,
+            controllerLogin.branchIdLoggedIn);
+      }
+      //todo REVISAR valor fijo
     });
   }
 
@@ -184,8 +189,18 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                                       ),
                                     ),
                                     onTap: () async {
+                                      // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
+                                      controllerClient
+                                          .showingServiceClient(true);
+                                      // aqui selecciono el cliente
                                       controllerClient.getselectCustomer(
                                           index,
+                                          controllerClient
+                                              .clientsScheduledList[index]
+                                              .car_id);
+                                      //AQUI MANDO ID DE CARRO PAR ACARGAR EL CARRITO PARA LOS SERVICIO Y PRODUCTOS
+                                      //Y SE ACTUALIZA LA VARIABLE GLOBAL carIdClienteSelect
+                                      controllerClient.selectCarClient(
                                           controllerClient
                                               .clientsScheduledList[index]
                                               .car_id);
@@ -196,6 +211,12 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                                           controllerClient
                                               .clientsScheduledList[index]
                                               .reservation_id);
+                                      //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
+                                      controllerClient.returnClientName(
+                                          (controllerClient
+                                                  .clientsScheduledList[index]
+                                                  .client_name)
+                                              .toString());
 
                                       ModalHelper.showModal(
                                           context,
@@ -204,7 +225,10 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                                               .client_name,
                                           controllerClient
                                               .clientsScheduledList[index]
-                                              .reservation_id);
+                                              .reservation_id,
+                                          controllerClient
+                                              .clientsScheduledList[index]
+                                              .car_id);
                                     },
                                     title: Row(
                                       mainAxisAlignment:

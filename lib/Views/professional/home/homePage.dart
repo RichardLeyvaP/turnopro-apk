@@ -706,53 +706,15 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
                   color: const Color.fromARGB(255, 231, 232, 234),
                   child: Column(
                     children: [
-                      Row(
+                      const Row(
                         children: [
-                          const Text(
+                          Text(
                             'Dashboard',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700),
                           ),
-                          GetBuilder<ServiceController>(builder: (_serv) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    /*
-                                      Get.dialog(
-                                        const Center(
-                                          child: CircularProgressIndicator(
-                                            color:
-                                                Color.fromARGB(255, 241, 130, 84),
-                                          ),
-                                        ),
-                                        barrierDismissible: true,
-                                      );
-                                      await controllerShoppingCart.loadCart();
-                                      await _serv.loadListService();
-                                      // Oculta el indicador de carga y navega a la página del carrito
-                                      Get.back(); // Cierra el diálogo
-                                      */
-
-                                    Get.toNamed(
-                                      '/servicesProductsPage',
-                                    );
-                                  },
-                                  child: const Text(
-                                    '  Servicio y productos  ',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                ),
-                              ],
-                            );
-                          }),
                         ],
                       ),
                       Column(

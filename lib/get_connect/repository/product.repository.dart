@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:turnopro_apk/Models/category_model.dart';
 import 'package:turnopro_apk/Models/orderDelete_model.dart';
 import 'package:turnopro_apk/Models/product_model.dart';
@@ -17,9 +18,11 @@ class ProductRepository extends GetConnect {
     try {
       List<ProductModel> productListCar = [];
       List<ServiceModel> serviceListCar = [];
-
+      final ShoppingCartController shoppingCartController =
+          Get.find<ShoppingCartController>();
+      int carId = shoppingCartController.carIdClienteSelect!;
       var url =
-          '${Env.apiEndpoint}/car_orders?id=13'; //todo REVISAR aqui enviar el id del carro correspondiente al cliente-profesional
+          '${Env.apiEndpoint}/car_orders?id=$carId'; //todo REVISAR aqui enviar el id del carro correspondiente al cliente-profesional
       final response = await get(url);
       if (response.statusCode == 200) {
         // print('codigo 200000000000000000');
@@ -64,12 +67,12 @@ class ProductRepository extends GetConnect {
       // category_branch?branch_id=10
       final response = await get(url);
       if (response.statusCode == 200) {
-        // print('tambien llegue aqui');
+        print('tambien llegue aqui response.statusCode == 200');
         final orders = response.body['carOrderDelete'];
         print(orders);
         if (orders != null) {
           for (Map order in orders) {
-            //  print('aqui mapeandooooo');
+            print('aqui mapeandooooo');
             OrderDeleteModel u = OrderDeleteModel.fromJson(jsonEncode(order));
             orderDEL.add(u);
           }
@@ -138,8 +141,7 @@ class ProductRepository extends GetConnect {
   //*ESTE METODO ME DEVUELVE TODOS LOS PRODUCTOS
   Future<int> addOrderCartList(
       //todo REVISAR REVISAR este metodo
-      client_id,
-      professional_id,
+      car_id,
       product_id,
       service_id,
       type) async {
@@ -148,9 +150,8 @@ class ProductRepository extends GetConnect {
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
-        'client_id': client_id, //5
-        'professional_id': professional_id, //3
-        'product_id': product_id, //0
+        'car_id': car_id,
+        'product_id': product_id,
         'service_id': service_id,
         'type': type
       };
@@ -159,16 +160,16 @@ class ProductRepository extends GetConnect {
       if (response.statusCode == 200) {
         //print('addOrderCartList response:$response');
         final id_order = response.body['order_id'];
-        // print(
-        // 'addOrderCartList soy codigo 200 y hice la llamada a la api bien');
-        // print(id_order);
+        print(
+            'addOrderCartList soy codigo 200 y hice la llamada a la api bien');
+        print(id_order);
         return id_order;
       } else {
-        // print('addOrderCartList return -990099;');
+        print('addOrderCartList return -990099;');
         return -990099;
       }
     } catch (e) {
-      // print('addOrderCartList Errorrrrr:$e');
+      print('addOrderCartList Errorrrrr:$e');
       return -990099;
     }
   }

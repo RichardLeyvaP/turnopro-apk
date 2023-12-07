@@ -121,12 +121,14 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                 .contains(_.services[index])) {
                                               _.getSelectService(
                                                   index); //guarda en la lista de los seleccionados
-                                              controllerShoppingCart.updateShoppingCartValue(
-                                                  index,
-                                                  controllerLogin
-                                                      .idProfessionalLoggedIn,
-                                                  'service',
-                                                  _.services[index].id);
+                                              controllerShoppingCart
+                                                  .updateShoppingCartValue(
+                                                      0, //aqui 0 porque este campo solo lo utilizo si fuera un producto
+                                                      index,
+                                                      controllerShoppingCart
+                                                          .carIdClienteSelect,
+                                                      'service',
+                                                      _.services[index].id);
                                             }
                                           },
                                           title: Row(

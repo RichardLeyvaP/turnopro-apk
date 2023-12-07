@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/product.controller.dart';
 import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
@@ -26,6 +27,8 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
   final ProductController controllerProduct = Get.put(ProductController());
 
   final ServiceController controllerService = Get.find<ServiceController>();
+  final ClientsScheduledController clientsController =
+      Get.find<ClientsScheduledController>();
   final ShoppingCartController controllerShoppingCart =
       Get.find<ShoppingCartController>();
 
@@ -87,9 +90,9 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                     Icons.person,
                     size: (MediaQuery.of(context).size.width * 0.22),
                   ),
-                  const Text('RICHARD LEYVA',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text(clientsController.nameClientTemporary,
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold)),
                 ],
               ),
 

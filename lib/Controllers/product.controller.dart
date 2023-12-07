@@ -41,7 +41,7 @@ class ProductController extends GetxController {
         product = await repository.getProductCategoryList(
             index, controllerLogin.branchIdLoggedIn);
         productListLength = product.length;
-        print('Cantidad de productos $productListLength');
+        print('Cantidad de productos -- -- -- $productListLength');
         isLoadingCategory = false;
         update();
       });

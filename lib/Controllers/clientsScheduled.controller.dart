@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
+import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/get_connect/repository/clientsScheduled.repository.dart';
 
 class ClientsScheduledController extends GetxController {
@@ -27,8 +28,11 @@ class ClientsScheduledController extends GetxController {
   int totalTimeInitial = 10; //Iniciando en 3 minutos el reloj
   bool callCliente = false; //si esta en false es que es la primera vez
   bool boolFilterShowNext = false; //si esta en false es que es la primera vez
+  bool showingServiceClients =
+      false; //saber si estoy mostrando los servicios de algun cliente ne el desplegable
   int filterShowTimer = 0; //si esta en false es que es la primera vez
   int statusClientTemporary = -99;
+  String nameClientTemporary = 'Cliente';
 
   //Fin Variables del reloj
 
@@ -108,6 +112,15 @@ class ClientsScheduledController extends GetxController {
     }
   }
 
+  void returnClientName(String name) async {
+    try {
+      nameClientTemporary = name;
+      update();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   void changeNoncomplianceP(String value) {
     //INCUMPLIMIENTO
     if (noncomplianceProfessional.containsKey(value)) {
@@ -143,6 +156,13 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
+  showingServiceClient(bool value) {
+    print(
+        'No actualizar la cola, tengo desplegado los servicios ahora mandando:$value');
+    showingServiceClients = value;
+    update();
+  }
+
   cleanselectCustomer() {
     selectClientsScheduledList.clear();
     update();
@@ -159,6 +179,9 @@ class ClientsScheduledController extends GetxController {
     //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
     clientsScheduledNext = resultList['nextClient'];
     quantityClientAttended = resultList['quantityClientAttended'];
+    if (quantityClientAttended == 0) {
+      clientsAttended = 'nobody';
+    }
 
     if (clientsScheduledNext != null) {
       int idCar = clientsScheduledNext!.car_id;
@@ -169,6 +192,13 @@ class ClientsScheduledController extends GetxController {
       setValueClock(false);
     }
 
+    update();
+  }
+
+  Future<void> selectCarClient(carId) async {
+    final ShoppingCartController shoppingCartController =
+        Get.find<ShoppingCartController>();
+    shoppingCartController.carIdClienteSelect = carId;
     update();
   }
 

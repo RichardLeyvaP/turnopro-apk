@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/env.dart';
-//todo REVISAR aqui se esta cargando una API de ejemplo no la de SIMPLIFI
 
 class ClientsScheduledRepository extends GetConnect {
   Future getClientsScheduledList(idProfessional, idBranch) async {
@@ -68,7 +67,7 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
-  Future<bool> getServicesSimultaneou(idCar) async {
+  /* Future<bool> getServicesSimultaneou(idCar) async {
     var url =
         '${Env.apiEndpoint}/car_services?car_id=$idCar'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
 
@@ -87,7 +86,7 @@ class ClientsScheduledRepository extends GetConnect {
     } else {
       return false;
     }
-  }
+  }*/
 
   Future<bool> typeOfService(idProfessional, idBranch) async {
     var url =
