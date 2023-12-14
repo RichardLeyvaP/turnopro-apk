@@ -1,5 +1,9 @@
-import 'package:fl_chart/fl_chart.dart';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:turnopro_apk/Controllers/statistics.controller.dart';
+import 'package:intl/intl.dart';
 
 class LineChartSample2 extends StatefulWidget {
   const LineChartSample2({super.key});
@@ -9,262 +13,319 @@ class LineChartSample2 extends StatefulWidget {
 }
 
 class _LineChartSample2State extends State<LineChartSample2> {
-  List<Color> gradientColors = [
-    Colors.cyan,
-    Colors.lightBlueAccent,
+  List<String> direcc = [
+    'assets/images/icons/montoGen.png',
+    'assets/images/icons/propina.png',
+    'assets/images/icons/80.png',
+    'assets/images/icons/porcentageGan.png',
+    'assets/images/icons/serviceRea.png',
+    'assets/images/icons/serviceRegul.png',
+    'assets/images/icons/serviceEsp.png',
+    'assets/images/icons/montoEsp.png',
+    'assets/images/icons/gananciaBar.png',
+    'assets/images/icons/gananciaTot.png',
+    'assets/images/icons/clientesAten.png',
+    'assets/images/icons/seleccionado.png',
+    'assets/images/icons/aleatorio.png',
   ];
-
-  bool showAvg = false;
-
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Stack(
-        children: <Widget>[
-          AspectRatio(
-            aspectRatio: 1.3,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                right: 18,
-                left: 12,
-                top: 34,
-                bottom: 12,
-              ),
-              child: LineChart(
-                showAvg ? avgData() : mainData(),
-              ),
+    //ASIGNANDO LA FECHA ACTUAL
+    final now = DateTime.now();
+    final formatter = DateFormat('yyyy-MM-dd');
+    final dateAct = formatter.format(now);
+    String dateActual = '   $dateAct  -  $dateAct';
+    print(dateActual);
+
+    int i = 0;
+    return GetBuilder<StatisticController>(builder: (controllerStat) {
+      return SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 8,
             ),
-          ),
-          SizedBox(
-            width: 80,
-            height: 32,
-            child: TextButton(
-              onPressed: () {
-                setState(() {
-                  showAvg = !showAvg;
-                });
-              },
-              child: Text(
-                'Promedio',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: showAvg
-                      ? const Color(0xFFF18254).withOpacity(1)
-                      : Colors.black,
+            Container(
+              width: (MediaQuery.of(context).size.width * 0.95),
+              height: 40,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+                color: Colors.white,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return BuildCalendar(
+                          d: DateTime.now(),
+                          m: DateTime.now(),
+                          a: DateTime.now(),
+                          // totalPrice: controllerShoppingCart.totalPrice,
+                        ); // Muestra el AlertDialog
+                      },
+                    );
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            MdiIcons.calendarBlank,
+                            color: const Color.fromARGB(130, 0, 0, 0),
+                          ),
+                          Text(
+                            controllerStat.dateRange == ''
+                                ? '  seleccione una fecha'
+                                : dateActual == controllerStat.dateRange
+                                    ? '   Fecha de Hoy- $dateAct'
+                                    : controllerStat.dateRange,
+                            style: const TextStyle(
+                                color: Color.fromARGB(130, 0, 0, 0)),
+                          ),
+                        ],
+                      ),
+                      Icon(
+                        MdiIcons.arrowDownThin,
+                        color: const Color.fromARGB(130, 0, 0, 0),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget leftTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 15,
-    );
-    String text;
-    switch (value.toInt()) {
-      case 1:
-        text = '10K';
-        break;
-      case 3:
-        text = '30k';
-        break;
-      case 5:
-        text = '50k';
-        break;
-      default:
-        return Container();
-    }
-
-    return Text(text, style: style, textAlign: TextAlign.left);
-  }
-
-  LineChartData mainData() {
-    return LineChartData(
-      gridData: FlGridData(
-        show: true,
-        drawVerticalLine: true,
-        horizontalInterval: 1,
-        verticalInterval: 1,
-        getDrawingHorizontalLine: (value) {
-          return const FlLine(
-            color: Color.fromARGB(105, 127, 129, 127),
-            strokeWidth: 1,
-          );
-        },
-        getDrawingVerticalLine: (value) {
-          return const FlLine(
-            color: Color.fromARGB(105, 127, 129, 127),
-            strokeWidth: 1,
-          );
-        },
-      ),
-      titlesData: FlTitlesData(
-        show: true,
-        rightTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        topTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            // reservedSize: 20,
-            interval: 1,
-            // getTitlesWidget: bottomTitleWidgets,
-          ),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            interval: 1,
-            getTitlesWidget: leftTitleWidgets,
-            reservedSize: 30,
-          ),
-        ),
-      ),
-      borderData: FlBorderData(
-        show: true,
-        border: Border.all(color: const Color(0xff37434d)),
-      ),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
-      lineBarsData: [
-        LineChartBarData(
-          spots: const [
-            FlSpot(0, 0),
-            FlSpot(2.6, 4),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
-          ],
-          isCurved: true,
-          gradient: LinearGradient(
-            colors: gradientColors,
-          ),
-          barWidth: 5,
-          isStrokeCapRound: true,
-          dotData: const FlDotData(
-            show: true,
-          ),
-          belowBarData: BarAreaData(
-            show: true,
-            gradient: LinearGradient(
-              colors: gradientColors
-                  .map((color) => color.withOpacity(0.3))
-                  .toList(),
+            const SizedBox(
+              height: 10,
             ),
-          ),
+            controllerStat.statisticsGeneral.isEmpty
+                ? const Center(
+                    child: Column(
+                      children: [
+                        Image(
+                          image: AssetImage('assets/images/imageGrafic.png'),
+                        ),
+                        Text(
+                          'No tiene estadisticas en esta fecha',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: controllerStat.statisticsGeneral.entries
+                              .map((entry) {
+                            i++;
+
+                            print(i);
+
+                            return Column(
+                              children: [
+                                Container(
+                                  height: (MediaQuery.of(context).size.height *
+                                      0.09),
+                                  width: (MediaQuery.of(context).size.width *
+                                      0.95),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(12)),
+                                  ),
+                                  child: ListTile(
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(12)),
+                                    ),
+                                    title: Padding(
+                                      padding: const EdgeInsets.only(top: 15),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          // Agrega un contenedor para alinear el icono al centro verticalmente
+                                          Container(
+                                            margin: const EdgeInsets.only(
+                                                right: 10),
+                                            child: Image(
+                                              image: AssetImage(
+                                                direcc[
+                                                    i < 13 ? i : (i = 1) - 1],
+                                              ),
+                                              color: const Color.fromARGB(
+                                                  255, 228, 86, 26),
+                                              width: 35,
+                                              height: 35,
+                                            ),
+                                          ),
+                                          Text(
+                                            entry.key,
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    subtitle: null,
+                                    trailing: Padding(
+                                      padding: const EdgeInsets.only(top: 15),
+                                      child: Text(
+                                        '${entry.value}',
+                                        style: TextStyle(
+                                          fontSize: (MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.0279),
+                                          fontWeight: FontWeight.w800,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+          ],
+        ),
+      );
+    });
+  }
+}
+
+class BuildCalendar extends StatefulWidget {
+  final DateTime d;
+  final DateTime m;
+  final DateTime a;
+
+  const BuildCalendar(
+      {Key? key, required this.d, required this.m, required this.a})
+      : super(key: key);
+
+  @override
+  State<BuildCalendar> createState() => _BuildCalendarState();
+}
+
+class _BuildCalendarState extends State<BuildCalendar> {
+  final DateRangePickerController _controller = DateRangePickerController();
+  final StatisticController controllerStatistic =
+      Get.find<StatisticController>();
+
+  late DateTime? _startDate;
+  late DateTime? _endDate;
+  int selectDate = 0;
+  DateTime? _minDate;
+  DateTime? _maxDate;
+  final formatterDate = DateFormat('yyyy-MM-dd');
+
+  void getFormatterDate() async {
+    final startDate = formatterDate.format(_startDate!);
+    final endDate = formatterDate.format(_endDate!);
+
+    int numberdayWeek = _startDate!.weekday;
+
+    Duration diferencia = _endDate!.difference(_startDate!);
+    int quantityDates = diferencia.inDays + 1;
+
+    //EN ESTA DEVUELVE LAS GANANCIAS EN ESE INTERVALO DE FECHAS
+    print('intervalo-1 ----:$startDate');
+    print('intervalo-2 ----:$endDate');
+    await controllerStatistic.getDataStatisticDay(startDate, endDate,
+        numberdayWeek, quantityDates); //todo LLAMANDO AL CONTROLADOR DEL DIA
+    // ignore: use_build_context_synchronously
+    Navigator.of(context).pop();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startDate = DateTime.now();
+    _endDate = null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final DateTime initialDate = DateTime(2023, 1, 1);
+    return AlertDialog(
+      //title: const Text('Confirmación'),
+      actionsPadding: const EdgeInsets.only(right: 20),
+      actions: [
+        TextButton(
+          style: const ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll(
+            Color.fromARGB(20, 0, 0, 0),
+          )),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Cancelar'),
+        ),
+        TextButton(
+          style: const ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll(
+            Color.fromARGB(20, 0, 0, 0),
+          )),
+          onPressed: () {
+            setState(() {
+              selectDate = 0;
+            });
+          },
+          child: const Text('Seleccionar nuevamente'),
         ),
       ],
-    );
-  }
-
-  LineChartData avgData() {
-    return LineChartData(
-      lineTouchData: const LineTouchData(enabled: false),
-      gridData: FlGridData(
-        show: true,
-        drawHorizontalLine: true,
-        verticalInterval: 1,
-        horizontalInterval: 1,
-        getDrawingVerticalLine: (value) {
-          return const FlLine(
-            color: Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
-        getDrawingHorizontalLine: (value) {
-          return const FlLine(
-            color: Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
-      ),
-      titlesData: FlTitlesData(
-        show: true,
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 30,
-            //getTitlesWidget: bottomTitleWidgets,
-            interval: 0.5,
+      content: SizedBox(
+        height: 255, // Ajusta la altura según tu necesidad
+        width: 300,
+        child: AspectRatio(
+          aspectRatio: 1.0,
+          child: SfDateRangePicker(
+            controller: _controller,
+            view: DateRangePickerView.month,
+            initialDisplayDate: initialDate,
+            minDate: selectDate == 0 ? null : _minDate,
+            maxDate: selectDate == 0 ? null : _maxDate,
+            selectionColor: const Color(0xFFF18254),
+            startRangeSelectionColor: const Color(0xFFF18254),
+            endRangeSelectionColor: const Color(0xFFF18254),
+            selectionMode: DateRangePickerSelectionMode.range,
+            showActionButtons: _endDate != null ? true : false,
+            onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+              if (args.value != null && args.value.startDate != null) {
+                setState(() {
+                  selectDate = 1;
+                  if (_startDate != null) {
+                    _minDate = _startDate = args.value.startDate;
+                    _endDate = args.value.endDate;
+                    _maxDate = _startDate!.add(const Duration(days: 6));
+                    selectDate = 1;
+                  }
+                });
+              }
+            },
+            confirmText: 'Aceptar',
+            cancelText: '',
+            onSubmit: (dateRange) {
+              getFormatterDate();
+            },
           ),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
-            interval: 1,
-          ),
-        ),
-        topTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        rightTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
         ),
       ),
-      borderData: FlBorderData(
-        show: true,
-        border: Border.all(color: const Color(0xff37434d)),
-      ),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
-      lineBarsData: [
-        LineChartBarData(
-          spots: const [
-            FlSpot(0, 3.44),
-            FlSpot(2.6, 3.44),
-            FlSpot(4.9, 3.44),
-            FlSpot(6.8, 3.44),
-            FlSpot(8, 3.44),
-            FlSpot(9.5, 3.44),
-            FlSpot(11, 3.44),
-          ],
-          isCurved: true,
-          gradient: LinearGradient(
-            colors: [
-              ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                  .lerp(0.2)!,
-              ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                  .lerp(0.2)!,
-            ],
-          ),
-          barWidth: 5,
-          isStrokeCapRound: true,
-          dotData: const FlDotData(
-            show: false,
-          ),
-          belowBarData: BarAreaData(
-            show: true,
-            gradient: LinearGradient(
-              colors: [
-                ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                    .lerp(0.2)!
-                    .withOpacity(0.1),
-                ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                    .lerp(0.2)!
-                    .withOpacity(0.1),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

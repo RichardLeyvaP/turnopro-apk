@@ -34,9 +34,12 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
   @override
   void initState() {
     super.initState();
-    controllerShoppingCart.loadOrderDeleteCar(controllerShoppingCart
-        .carIdClienteSelect!); //todo REVISAR valor fijo YAYAYAYAAAA
-    iniciarLlamadaCada10Segundos();
+    if (controllerShoppingCart.carIdClienteSelect != null) {
+      controllerShoppingCart
+          .loadOrderDeleteCar(controllerShoppingCart.carIdClienteSelect!);
+      //todo REVISAR valor fijo YAYAYAYAAAA
+      iniciarLlamadaCada10Segundos();
+    }
   }
 
   @override

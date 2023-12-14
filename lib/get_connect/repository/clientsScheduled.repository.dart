@@ -90,7 +90,7 @@ class ClientsScheduledRepository extends GetConnect {
 
   Future<bool> typeOfService(idProfessional, idBranch) async {
     var url =
-        '${Env.apiEndpoint}/type_of_service?professional_id=$idProfessional&branch_id=$idBranch'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
+        '${Env.apiEndpoint}/type_of_service?professional_id=$idProfessional&branch_id=$idBranch';
 
     final response = await get(url);
     if (response.statusCode == 200) {
@@ -98,6 +98,28 @@ class ClientsScheduledRepository extends GetConnect {
       print('typeOfService(idProfessional, idBranch) async:$typeService');
       return typeService;
     } else {
+      return false;
+    }
+  }
+
+  //AQUI HACE LA LLAMADA PARA LOS INCUMPLIMIENTOS, 0 ES QUE INCUMPLIO Y 1 QUE CUMPLIO
+  Future<bool> storeByType(type, branchId, professionalId, estado) async {
+    var url = '${Env.apiEndpoint}/storeByType';
+
+    final Map<String, dynamic> body = {
+      'type': type,
+      'branch_id': branchId,
+      'professional_id': professionalId,
+      'estado': estado,
+    };
+
+    final response = await post(url, body);
+    if (response.statusCode == 200) {
+      print('Acacba de incumplir en este type de convivencia:$type');
+      return true;
+    } else {
+      print(
+          'Intento de darle incumplimiento, pero algo salió mal y no fue posible');
       return false;
     }
   }

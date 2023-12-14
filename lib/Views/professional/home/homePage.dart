@@ -23,10 +23,14 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
 
   final ClientsScheduledController clientsScheduledController =
       Get.find<ClientsScheduledController>();
+  final LoginController loginController = Get.find<LoginController>();
+  final CoexistenceController coexistenceController =
+      Get.put(CoexistenceController());
 
   @override
   void initState() {
     super.initState();
+    //AQUI ME DEVUELVE A Q CLIENTE LE SIGUE Y ACUAL MOSTRAR EN LA COLA
     clientsScheduledController.filterShowNext();
     clientsScheduledController.filterShowCardTimer();
 
@@ -40,9 +44,18 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
 // Inicia la animación
     _animationControllerInitial!.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
-        clientsScheduledController
-            .changeNoncomplianceP('lateCustomerTimeInitial');
+        if (clientsScheduledController
+                .noncomplianceProfessional['initialTime'] ==
+            false) {
+          //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
+          String type = 'initialTime';
+          int branchId = loginController.branchIdLoggedIn!;
+          int professionalId = loginController.idProfessionalLoggedIn!;
+          int estado = 0; //es que incumplió
+          clientsScheduledController.changeNoncomplianceP(
+              type, branchId, professionalId, estado);
+        }
+
         // La animación ha llegado al final, reiniciar
         _animationControllerInitial!.reset();
         _animationControllerInitial!.forward();
@@ -51,11 +64,11 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
 
     _animationController1 = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 10),
+      duration: const Duration(seconds: 10),
     );
     _animationController2 = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 10),
+      duration: const Duration(seconds: 10),
     );
   }
 

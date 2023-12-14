@@ -25,7 +25,7 @@ class ClientsScheduledController extends GetxController {
   bool isLoading = true;
   //Variables del reloj
   double sizeClock = 135;
-  int totalTimeInitial = 10; //Iniciando en 3 minutos el reloj
+  int totalTimeInitial = 20; //Iniciando en 3 minutos el reloj
   bool callCliente = false; //si esta en false es que es la primera vez
   bool boolFilterShowNext = false; //si esta en false es que es la primera vez
   bool showingServiceClients =
@@ -39,7 +39,7 @@ class ClientsScheduledController extends GetxController {
   //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
   Map<String, bool> noncomplianceProfessional = {
     //el tiempo para escoger los clientes inicial (3min)
-    'lateCustomerTimeInitial': false,
+    'initialTime': false,
     'teamQuota': false, //Cuidado de equipo
     'punctuality': false, //Puntualidad
     /******************AGREGAR AQUI TODS LOS QUE DESEN*********************/
@@ -121,16 +121,28 @@ class ClientsScheduledController extends GetxController {
     }
   }
 
-  void changeNoncomplianceP(String value) {
-    //INCUMPLIMIENTO
-    if (noncomplianceProfessional.containsKey(value)) {
-      //AQUI ES PÓRQUE INCUMPLIO CON ALGO
-      noncomplianceProfessional[value] = true;
-      print(noncomplianceProfessional[value]);
-      update();
-    } else {
-      print('La clave $value no existe en el mapa.');
+  Future<void> searchForCustomerServices(idCar) async {
+    serviceCustomerSelected = await repository.getCustomerServicesList(idCar);
+    update();
+  }
+
+  Future<bool> changeNoncomplianceP(
+      //todo1
+      type,
+      branchId,
+      professionalId,
+      estado) async {
+    //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
+    bool result =
+        await repository.storeByType(type, branchId, professionalId, estado);
+    if (result) {
+      if (noncomplianceProfessional.containsKey(type)) {
+        //AQUI ES PÓRQUE INCUMPLIO CON ALGO
+        noncomplianceProfessional[type] = false;
+        update();
+      }
     }
+    return result;
   }
 
   @override
@@ -147,12 +159,13 @@ class ClientsScheduledController extends GetxController {
     return clientsScheduledList;
   }
 
-  getselectCustomer(index, idCar) {
+  getselectCustomer(index, idCar) async {
     print('IdCar:$idCar');
+    // await searchForCustomerServices(idCar);
     (selectClientsScheduledList.contains(clientsScheduledList[index]))
         ? selectClientsScheduledList.remove(clientsScheduledList[index])
         : selectClientsScheduledList.add(clientsScheduledList[index]);
-    _searchForCustomerServices(idCar);
+
     update();
   }
 
@@ -185,7 +198,7 @@ class ClientsScheduledController extends GetxController {
 
     if (clientsScheduledNext != null) {
       int idCar = clientsScheduledNext!.car_id;
-      await _searchForCustomerServices(idCar);
+      await searchForCustomerServices(idCar);
       await filterShowNext();
       setValueClock(true);
     } else {
@@ -208,11 +221,6 @@ class ClientsScheduledController extends GetxController {
     } else {
       sizeClock = 160;
     }
-  }
-
-  Future<void> _searchForCustomerServices(idCar) async {
-    serviceCustomerSelected = await repository.getCustomerServicesList(idCar);
-    update();
   }
 
   Future<void> acceptOrRejectClient(reservationId, attended) async {

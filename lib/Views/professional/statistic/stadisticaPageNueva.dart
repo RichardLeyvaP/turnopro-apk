@@ -190,7 +190,8 @@ class BarChartSample6 extends StatelessWidget {
                 borderData: FlBorderData(show: false),
                 gridData: const FlGridData(show: false),
                 barGroups: [
-                  if (controllerStatistic.numberdayWeek != -99099) ...[
+                  if (controllerStatistic.numberdayWeek != -99099 &&
+                      controllerStatistic.earningByDays.isNotEmpty) ...[
                     for (int j = 0, i = controllerStatistic.numberdayWeek;
                         i <
                             (controllerStatistic.quantityDates +

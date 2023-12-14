@@ -218,17 +218,24 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                                                   .client_name)
                                               .toString());
 
-                                      ModalHelper.showModal(
-                                          context,
-                                          controllerClient
-                                              .clientsScheduledList[index]
-                                              .client_name,
-                                          controllerClient
-                                              .clientsScheduledList[index]
-                                              .reservation_id,
-                                          controllerClient
-                                              .clientsScheduledList[index]
-                                              .car_id);
+                                      controllerClient
+                                          .searchForCustomerServices(
+                                              controllerClient
+                                                  .clientsScheduledList[index]
+                                                  .car_id)
+                                          .then((_) {
+                                        ModalHelper.showModal(
+                                            context,
+                                            controllerClient
+                                                .clientsScheduledList[index]
+                                                .client_name,
+                                            controllerClient
+                                                .clientsScheduledList[index]
+                                                .reservation_id,
+                                            controllerClient
+                                                .clientsScheduledList[index]
+                                                .car_id);
+                                      });
                                     },
                                     title: Row(
                                       mainAxisAlignment:

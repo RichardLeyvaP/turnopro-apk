@@ -6,19 +6,24 @@ import 'package:turnopro_apk/Models/coexistence_model.dart';
 import 'package:turnopro_apk/env.dart';
 
 class CoexistenceRepository extends GetConnect {
-  Future<List<CoexistenceModel>> getCoexistenceList() async {
+  Future<List<CoexistenceModel>> getCoexistenceList(
+      idProfessional, idBranch) async {
     List<CoexistenceModel> coexistenceList = [];
     try {
-      var url = '${Env.apiEndpoint}/rule';
+      var url =
+          '${Env.apiEndpoint}/rules_professional?professional_id=$idProfessional&branch_id=$idBranch';
 
       final response = await get(url);
       if (response.statusCode == 200) {
         final coexistences = response.body['rules'];
+        print(coexistences);
         for (Map coexistence in coexistences) {
           CoexistenceModel u =
               CoexistenceModel.fromJson(jsonEncode(coexistence));
           coexistenceList.add(u);
         }
+        print('*************coexistenceList.length*************');
+        print(coexistenceList.length);
         return coexistenceList;
       } else {
         return coexistenceList;

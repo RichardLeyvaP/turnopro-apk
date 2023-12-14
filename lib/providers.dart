@@ -10,7 +10,4 @@ final providers = <SingleChildWidget>[
       auth: LocalAuthentication(),
     ),
   ),
-  // ChangeNotifierProvider<PhotosRepository>(
-  //   create: (context) => PhotosRepository(),
-  // ),
 ];

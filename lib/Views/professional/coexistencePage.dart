@@ -28,6 +28,7 @@ class CoexistencePage extends StatelessWidget {
       0,
       2,
       0,
+      1,
     ]; //todo esto es cargado de la db, esto solo para modelar ca carga de los ico
     return Scaffold(
       appBar: AppBar(
@@ -196,7 +197,8 @@ class CoexistencePage extends StatelessWidget {
                                                       ),
                                                     ],
                                                   ),
-                                                  typeCoexistence[index] == 0
+                                                  _.coexistence[index].state ==
+                                                          3
                                                       ? const Icon(
                                                           Icons.star,
                                                           color: Color.fromARGB(
@@ -206,9 +208,9 @@ class CoexistencePage extends StatelessWidget {
                                                               169),
                                                           size: 50,
                                                         )
-                                                      : typeCoexistence[
-                                                                  index] ==
-                                                              1
+                                                      : _.coexistence[index]
+                                                                  .state ==
+                                                              0
                                                           ? const Icon(
                                                               Icons.star,
                                                               color: Colors.red,

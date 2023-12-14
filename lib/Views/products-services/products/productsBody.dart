@@ -249,8 +249,7 @@ Padding cartProduct(
                               controllerShoppingCart.updateShoppingCartValue(
                                   priceProduct,
                                   itemIndex,
-                                  controllerShoppingCart
-                                      .carIdClienteSelect, //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+                                  controllerShoppingCart.carIdClienteSelect,
                                   'product',
                                   id); //todo
                             },

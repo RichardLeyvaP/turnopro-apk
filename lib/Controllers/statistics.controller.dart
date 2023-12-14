@@ -19,6 +19,7 @@ class StatisticController extends GetxController {
   double totalEarnings = 0.0;
   double? averageEarnings = 0.0;
   //*********************** */
+  Map<String, dynamic> statisticsGeneral = {};
 
   @override
   void onReady() {
@@ -31,10 +32,44 @@ class StatisticController extends GetxController {
 
   bool isLoading = true;
 
-  Future<void> getDataStatistic(
+  Future<void> getDataStatisticDay(
       startDateIn, endDateIn, numberdayWeekIn, quantityDatesIn) async {
     //todo asi mapea bien
+    print('111111 getDataStatisticDay');
+    final LoginController controllerLogin = Get.find<LoginController>();
+    earningByDays.clear();
+    averageEarnings = 0.0;
+    totalEarnings = 0.0;
+    dateRange = '';
+    if (quantityDatesIn > 7) {
+      quantityDates = 7;
+    } else {
+      quantityDates = quantityDatesIn;
+    }
+    dateRange = '   $startDateIn  -  $endDateIn';
+    try {
+      var responseId = await weeklyStatisticsRepository.getDayStatisticsList(
+          controllerLogin.idProfessionalLoggedIn,
+          controllerLogin.branchIdLoggedIn,
+          startDateIn,
+          endDateIn);
+      print('respuest getDayStatisticsList----$responseId');
 
+      if (responseId['Monto Generado'] != 0) {
+        statisticsGeneral = responseId;
+        update();
+      } else {
+        statisticsGeneral = {};
+        print('Resultados correctos pero vacio');
+      }
+      update();
+    } catch (e) {
+      // print('Error StatisticController en getDataStatistic :$e');
+    }
+  }
+
+  Future<void> getDataStatistic(
+      startDateIn, endDateIn, numberdayWeekIn, quantityDatesIn) async {
     final LoginController controllerLogin = Get.find<LoginController>();
     earningByDays.clear();
     averageEarnings = 0.0;
@@ -53,6 +88,7 @@ class StatisticController extends GetxController {
       WeeklyStatisticsModel responseId =
           await weeklyStatisticsRepository.getWeeklyStatisticsList(
               controllerLogin.idProfessionalLoggedIn,
+              controllerLogin.branchIdLoggedIn,
               startDateIn,
               endDateIn,
               numberdayWeekIn);
