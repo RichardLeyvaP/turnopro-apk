@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 //import 'package:lottie/lottie.dart';
 //import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 
 class HomePages extends StatefulWidget {
@@ -20,6 +21,8 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
   AnimationController? _animationControllerInitial;
   AnimationController? _animationController1;
   AnimationController? _animationController2;
+  AnimationController? _animationController3;
+  AnimationController? _animationController4;
 
   final ClientsScheduledController clientsScheduledController =
       Get.find<ClientsScheduledController>();
@@ -32,7 +35,7 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
     super.initState();
     //AQUI ME DEVUELVE A Q CLIENTE LE SIGUE Y ACUAL MOSTRAR EN LA COLA
     clientsScheduledController.filterShowNext();
-    clientsScheduledController.filterShowCardTimer();
+    //clientsScheduledController.filterShowCardTimer();//todo ahora comente a ver que pasa
 
     //INICIALIZANDO CONTROLES DE LOS RELOJES
     _animationControllerInitial = AnimationController(
@@ -70,6 +73,14 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
       vsync: this,
       duration: const Duration(seconds: 10),
     );
+    _animationController3 = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 10),
+    );
+    _animationController4 = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 10),
+    );
   }
 
   @override
@@ -77,6 +88,8 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
     _animationControllerInitial!.dispose();
     _animationController1!.dispose();
     _animationController2!.dispose();
+    _animationController3!.dispose();
+    _animationController4!.dispose();
     super.dispose();
   }
 
@@ -212,23 +225,7 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
       ShoppingCartController controllerShoppingCart) {
     return GetBuilder<ClientsScheduledController>(builder: (controllerclient) {
       String firstName = '';
-      //todo AQUI DETENGO LOS TIMER QUE NO ESTAN VISIBLES
-      if (clientsScheduledController.clientsAttended == 'nobody') {
-        //DETENGO _animationController1 Y _animationController2
-        _animationControllerInitial!.reset();
-        _animationControllerInitial!.forward();
-        //aqui paro al timer 1 y al 2
-        _animationController1!.stop();
-        _animationController2!.stop();
-      } else if (clientsScheduledController.clientsAttended == 'client1') {
-        //DETENGO _animationControllerInitial Y _animationController2
-        _animationControllerInitial!.stop();
-        _animationController2!.stop();
-      } else if (clientsScheduledController.clientsAttended == 'client2') {
-        //DETENGO _animationControllerInitial Y _animationController1
-        _animationControllerInitial!.stop();
-        _animationController1!.stop();
-      }
+      // //todo AQUI DETENGO LOS TIMER QUE NO ESTAN VISIBLES
 
       if (controllerclient.clientsScheduledNext != null) {
         String fullName = controllerclient.clientsScheduledNext!.client_name;
@@ -237,6 +234,28 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
             fullName.split(" "); // Tomar los primeros dos nombres (si existen)
         firstName = partsName.isNotEmpty ? partsName[0] : "";
         // String secondName = partsName.length > 1 ? partsName[1] : "";
+      }
+
+//CREANDO LISTAS PARA UTILIZARLO EN EL FOR
+      List<ClientsScheduledModel?> clientsList = [
+        controllerclient.clientsAttended1,
+        controllerclient.clientsAttended2,
+        controllerclient.clientsAttended3,
+        controllerclient.clientsAttended4,
+        // Agrega más listas según sea necesario
+      ]; //CREANDO LISTAS PARA UTILIZARLO EN EL FOR
+      List<AnimationController?> animationCont = [
+        _animationController1,
+        _animationController2,
+        _animationController3,
+        _animationController4,
+        // Agrega más listas según sea necesario
+      ];
+
+      _animationControllerInitial!.forward();
+      if (controllerclient.activeModifyTime == true) {
+        print(
+            'activeModifyTime SOY = TRUE Y MANDE ESTE TIEMPO ${controllerclient.modifyTime[controllerclient.modifyTimeSpecific]}');
       }
 
       return Column(
@@ -255,80 +274,71 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      /*todo texto arriba */ const Padding(
-                        padding: EdgeInsets.only(left: 8),
+                      /*todo texto arriba */ Padding(
+                        padding: const EdgeInsets.only(left: 8),
                         child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'Cliente en espera',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white),
-                            )),
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            controllerclient.item.isEmpty
+                                ? 'Cliente en espera'
+                                : 'Atendiendo ${controllerclient.item.length} clientes',
+                            style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white),
+                          ),
+                        ),
                       ),
 
                       /*CRONOMETRO*/ Padding(
                         padding: const EdgeInsets.all(8.0),
                         //todo AQUI LA LOGICA AL MOSTRAR LOS TIMER
-                        child: Row(
-                            mainAxisAlignment: //ESTO ES PARA SABER CUANTOS ESTA ATENDIENDO
-                                clientsScheduledController.clientsAttended ==
-                                        'allClient'
-                                    ? MainAxisAlignment.spaceBetween
-                                    : MainAxisAlignment.center,
-                            children: [
-                              //LLAMANDO AL TIMER DE ESPERA QUE SON 3 MINUTOS
-                              if (clientsScheduledController.clientsAttended ==
-                                  'nobody') ...[
-                                cardTimer(
-                                  UniqueKey(),
-                                  'Esperando...',
-                                  controllerclient,
-                                  _animationControllerInitial!,
-                                ),
-                              ] else ...[
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                //AQUI MUESTRA LOS TIMER DE LOS CLIENTES QUE ESTE ATENDIENDO
                                 if (clientsScheduledController
-                                        .clientsAttended ==
-                                    'client1')
+                                    .item.isNotEmpty) ...[
+                                  for (int i = 0;
+                                      i <
+                                          clientsScheduledController
+                                              .item.length;
+                                      i++) ...[
+                                    cardTimer(
+                                      UniqueKey(),
+                                      clientsList[clientsScheduledController
+                                              .item[i]]!
+                                          .client_name,
+                                      controllerclient,
+                                      animationCont[
+                                          clientsScheduledController.item[i]]!,
+                                    ),
+                                  ],
+                                ]
+                                //SI NO ESTA ATENDIENDOA NADIE Y HAY GENTE EN LA COLA ESPERANDO CARGA EL TIMER INICIAL
+                                else if (controllerclient
+                                        .clientsScheduledNext !=
+                                    null) ...[
                                   cardTimer(
                                     UniqueKey(),
-                                    controllerclient
-                                        .clientsAttended1!.client_name,
+                                    'Esperando...',
                                     controllerclient,
-                                    _animationController1!,
+                                    _animationControllerInitial!,
                                   ),
-                                if (clientsScheduledController
-                                        .clientsAttended ==
-                                    'client2') ...[
-                                  cardTimer2(
-                                    UniqueKey(),
-                                    controllerclient
-                                        .clientsAttended2!.client_name,
-                                    controllerclient,
-                                    _animationController2!,
+                                ] else ...[
+                                  SizedBox(
+                                    height: 50,
                                   ),
-                                ],
-                                if (clientsScheduledController
-                                        .clientsAttended ==
-                                    'allClient') ...[
-                                  cardTimer(
-                                    UniqueKey(),
-                                    controllerclient
-                                        .clientsAttended1!.client_name,
-                                    controllerclient,
-                                    _animationController1!,
-                                  ),
-                                  cardTimer2(
-                                    UniqueKey(),
-                                    controllerclient
-                                        .clientsAttended2!.client_name,
-                                    controllerclient,
-                                    _animationController2!,
+                                  Text(
+                                      'aqui decidir que mostrar, ya que no hay nadie en cola.'),
+                                  SizedBox(
+                                    height: 50,
                                   ),
                                 ]
-                              ]
-                            ]),
+                              ]),
+                        ),
                         //FIN CLIENTES QUE ESTAN EN COLA
                       ),
                       //todo CLIENTES QUE ESTAN EN COLA
@@ -569,71 +579,81 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
                                                           milliseconds: 2000),
                                                     );
                                                     //aqui manda aceptar, es decir atender este cliente
+
+                                                    // detengo el timer de 2 minutos
                                                     _animationControllerInitial!
                                                         .stop();
-                                                    //LOGICA PARA SABER A QUE VARIABLE ASIGNARLE EL RELOJ SI AL CLIENT1 O AL 2
-
-                                                    if (controllerclient
-                                                            .clientsAttended ==
-                                                        'nobody') {
-                                                      //todo vacio,inserto en clientsAttended1
-                                                      await controllerclient
-                                                          .newClientAttended(
+                                                    _animationControllerInitial!
+                                                        .reset();
+                                                    // detengo todos los timers que deben detenerse
+                                                    for (int j = 0;
+                                                        j <
+                                                            controllerclient
+                                                                .itemDel.length;
+                                                        j++) {
+                                                      animationCont[
                                                               controllerclient
-                                                                  .clientsScheduledNext!,
-                                                              1);
-                                                    } else if (controllerclient
-                                                            .clientsAttended ==
-                                                        'client2') {
-                                                      //aqui paro al timer 1
-                                                      _animationController1!
+                                                                  .itemDel[j]]!
                                                           .stop();
-                                                      //todo hay 1 cliente en 2 ,inserto en clientsAttended1
-                                                      await controllerclient
-                                                          .newClientAttended(
+                                                      animationCont[
                                                               controllerclient
-                                                                  .clientsScheduledNext!,
-                                                              1);
-                                                    } else if (controllerclient
-                                                            .clientsAttended ==
-                                                        'client1') {
-                                                      //aqui paro al timer 2
-                                                      _animationController2!
-                                                          .stop();
-                                                      //todo hay 1 cliente en 1 ,inserto en clientsAttended2
-                                                      await controllerclient
-                                                          .newClientAttended(
-                                                              controllerclient
-                                                                  .clientsScheduledNext!,
-                                                              2);
+                                                                  .itemDel[j]]!
+                                                          .reset();
                                                     }
+                                                    await controllerclient
+                                                        .newClientAttended(
+                                                            controllerclient
+                                                                .clientsScheduledNext!,
+                                                            controllerclient
+                                                                .availability);
 
-                                                    if (controllerclient
-                                                            .clientsAttended1 !=
-                                                        null) {
-                                                      _animationController1!.duration = Duration(
-                                                          seconds: controllerclient
-                                                              .convertDateSecons(
+                                                    //
+                                                    //
+                                                    //
+                                                    //
+                                                    for (int i = 0;
+                                                        i <
+                                                            controllerclient
+                                                                .item.length;
+                                                        i++) {
+                                                      animationCont[i]!.duration =
+                                                          Duration(
+                                                              seconds:
                                                                   controllerclient
-                                                                      .clientsAttended1!
-                                                                      .total_time));
+                                                                      .convertDateSecons(
+                                                        controllerclient
+                                                                    .item[i] ==
+                                                                0
+                                                            ? controllerclient
+                                                                .clientsAttended1!
+                                                                .total_time
+                                                            : controllerclient
+                                                                            .item[
+                                                                        i] ==
+                                                                    1
+                                                                ? controllerclient
+                                                                    .clientsAttended2!
+                                                                    .total_time
+                                                                : controllerclient.item[
+                                                                            i] ==
+                                                                        2
+                                                                    ? controllerclient
+                                                                        .clientsAttended3!
+                                                                        .total_time
+                                                                    : controllerclient.item[i] ==
+                                                                            3
+                                                                        ? controllerclient
+                                                                            .clientsAttended4!
+                                                                            .total_time
+                                                                        : '',
+                                                      ));
 
-                                                      _animationController1!
+                                                      animationCont[i]!
                                                           .forward();
                                                     }
-                                                    if (controllerclient
-                                                            .clientsAttended2 !=
-                                                        null) {
-                                                      _animationController2!.duration = Duration(
-                                                          seconds: controllerclient
-                                                              .convertDateSecons(
-                                                                  controllerclient
-                                                                      .clientsAttended2!
-                                                                      .total_time));
+                                                    //
+                                                    //
 
-                                                      _animationController2!
-                                                          .forward();
-                                                    }
                                                     //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
                                                     controllerclient
                                                         .acceptOrRejectClient(
@@ -826,7 +846,7 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
     String segundos = "";
     Color colorInicial = Colors.white;
     Color colorInicialCirculo = const Color(0xFFF18254);
-    double fontSizeText = (MediaQuery.of(context).size.width * 0.025);
+    double fontSizeText = (MediaQuery.of(context).size.width * 0.035);
     // Dividir el nombre completo por espacios
 
     List<String> partsName =
@@ -853,134 +873,7 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
           }
 
           if (minutes == 0 && seconds == 0) {
-            firstName = 'FINAL';
-            colorInicial = Colors.red;
-            colorInicialCirculo = Colors.white;
-            fontSizeText = 10;
-          }
-
-          return SizedBox(
-            width: controllerclient.sizeClock,
-            height: controllerclient.sizeClock,
-            child: Stack(
-              children: [
-                ShaderMask(
-                  shaderCallback: (rect) {
-                    return SweepGradient(
-                            startAngle: 0.0,
-                            endAngle: twoPi,
-                            stops: [value, value],
-                            // 0.0 , 0.5 , 0.5 , 1.0
-                            center: Alignment.center,
-                            colors: [Colors.white, Colors.grey.withAlpha(55)])
-                        .createShader(rect);
-                  },
-                  child: Container(
-                    width: controllerclient.sizeClock,
-                    height: controllerclient.sizeClock,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: Image.asset("assets/images/radial_scale.png")
-                                .image)),
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    width: (controllerclient.sizeClock) - 40,
-                    height: (controllerclient.sizeClock) - 40,
-                    decoration: BoxDecoration(
-                        color: colorInicialCirculo, shape: BoxShape.circle),
-                    child: Center(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '$minutes :',
-                              style: TextStyle(
-                                  fontSize: (MediaQuery.of(context).size.width *
-                                      0.05), //todo2
-                                  fontFamily: GoogleFonts.orbitron().fontFamily,
-                                  color: colorInicial,
-                                  fontWeight: FontWeight.w900),
-                            ),
-                            Text(
-                              "$segundos$seconds",
-                              style: TextStyle(
-                                  fontSize: (MediaQuery.of(context).size.width *
-                                      0.05),
-                                  color: colorInicial,
-                                  fontFamily: GoogleFonts.orbitron().fontFamily,
-                                  fontWeight: FontWeight.w900),
-                            ),
-                          ],
-                        ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            firstName,
-                            style: TextStyle(
-                                fontSize: fontSizeText,
-                                color: colorInicial,
-                                fontWeight: FontWeight.w900),
-                          ),
-                        ),
-                      ],
-                    )),
-                  ),
-                )
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-//todo10
-  Center cardTimer2(
-    Key uniqueKey,
-    String name,
-    ClientsScheduledController controllerclient,
-    AnimationController _animationController,
-  ) {
-    String segundos = "";
-    Color colorInicial = Colors.white;
-    Color colorInicialCirculo = const Color(0xFFF18254);
-    double fontSizeText = (MediaQuery.of(context).size.width * 0.025);
-    // Dividir el nombre completo por espacios
-
-    List<String> partsName =
-        name.split(" "); // Tomar los primeros dos nombres (si existen)
-    String firstName = partsName.isNotEmpty ? partsName[0] : "";
-    // String secondName = partsName.length > 1 ? partsName[1] : "";
-
-    _animationController.forward();
-
-    return Center(
-      child: AnimatedBuilder(
-        key: uniqueKey,
-        animation: _animationController,
-        builder: (context, child) {
-          final value = _animationController.value;
-          final remainingSeconds = (_animationController.duration!.inSeconds -
-                  (_animationController.duration!.inSeconds * value))
-              .ceil();
-          int minutes = remainingSeconds ~/ 60; // Calcula los minutos restantes
-          int seconds = remainingSeconds % 60; // Calcula los segundos restantes
-
-          if (seconds < 10) {
-            segundos = "0";
-          } else {
-            segundos = "";
-          }
-
-          if (minutes == 0 && seconds == 0) {
-            firstName = 'FINAL';
+            firstName = 'Terminó';
             colorInicial = Colors.red;
             colorInicialCirculo = Colors.white;
             fontSizeText = 10;

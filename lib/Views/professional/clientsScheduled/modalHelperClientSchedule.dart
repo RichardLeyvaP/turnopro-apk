@@ -140,7 +140,8 @@ class ModalHelper {
                           backgroundColor: MaterialStateProperty.all<Color>(
                               const Color(0xFFF18254)),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
+                          await controllClient.watchModifyTime(reservationId);
                           // Cierra el modal primero
                           Navigator.pop(context);
                           //luego llamo a la pagina de servicios y productos
