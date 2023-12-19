@@ -247,8 +247,9 @@ Padding cartProduct(
                           InkWell(
                             onTap: () {
                               controllerShoppingCart.updateShoppingCartValue(
+                                  priceProduct,
                                   itemIndex,
-                                  controllerLogin.idProfessionalLoggedIn,
+                                  controllerShoppingCart.carIdClienteSelect,
                                   'product',
                                   id); //todo
                             },

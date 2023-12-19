@@ -30,6 +30,26 @@ class LoginController extends GetxController {
   bool obscureText = true;
   String qrRead = '';
   bool incorrectFields = false;
+  String greeting = 'Buenos días ';
+
+  void getGreeting() {
+    // Obtener la hora actual
+    DateTime now = DateTime.now();
+
+    // Obtener la hora del día
+    int hour = now.hour;
+
+    // Determinar el saludo según la hora
+
+    if (hour < 12) {
+      greeting = 'Buenos días ';
+    } else if (hour < 18) {
+      greeting = 'Buenas tardes ';
+    } else {
+      greeting = 'Buenas noches ';
+    }
+    update();
+  }
 
   void qrReading(String? qr) {
     print('entre aqui a el controlador de lectura del QR${qr.toString()}');
@@ -70,10 +90,15 @@ class LoginController extends GetxController {
             nameUserLoggedIn != '' &&
             emailUserLoggedIn != '') {
           pagina = '/Professional';
+          //Define el tipo de saludo
+          getGreeting();
+
           if (chargeUserLoggedIn == "Barbero") {
             //aqui cargo la cola del barbero para poder tener en el home al siguiente de la cola inicialmente
+            print('estoy aqui al cargar datos del controlador de client');
             await clientsScheduledController.fetchClientsScheduled(
                 idProfessionalLoggedIn, branchIdLoggedIn);
+            print(' ya no llegue aqui voy a cargar la pagina del profesional');
 
             print('***************SOY BARBERO*************');
             pagina = '/Professional';

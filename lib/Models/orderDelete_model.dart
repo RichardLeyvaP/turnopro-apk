@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-//todo REVISAR aqui datos estaticos en el modelo, los valores enteros
+//todo REVISAR aqui datos estaticos en el modelo, los valores enteros YAYAAAAA
 class OrderDeleteModel {
   int id;
   String nameClient;
@@ -46,8 +46,7 @@ class OrderDeleteModel {
       nameProduct: map['nameProduct'] ?? '',
       nameService: map['nameService'] ?? '',
       updated_at: map['updated_at'] ?? '',
-      //is_product: map['is_product'] ?? 0,
-      is_product: 0, //todo REVISAR aqui mandando valor entero estatico
+      is_product: map['is_product'] ?? 0,
     );
   }
 

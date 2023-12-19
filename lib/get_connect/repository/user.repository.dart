@@ -14,6 +14,7 @@ class UserRepository extends GetConnect {
       };
       final response = await post(url, body);
       print(url);
+      print(response.statusCode);
       if (response.statusCode == 200) {
         final users = response.body;
         print('1dentro del code:200');

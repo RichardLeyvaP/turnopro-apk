@@ -9,9 +9,11 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/clientsScheduled.dart';
 import 'package:turnopro_apk/Views/professional/statistic/statisticPage.dart';
+import 'package:turnopro_apk/Views/responsible/coexistencePageResponsible.dart';
 import 'package:turnopro_apk/Views/responsible/homeResponsiblePage.dart';
 import 'package:turnopro_apk/Views/professional/shoppingCartPage.dart';
 
+//todo este es el que me falta optimizar
 class Myapp extends StatelessWidget {
   Myapp({super.key});
   final LoginController controllerasas = Get.put(LoginController());
@@ -62,6 +64,11 @@ class Myapp extends StatelessWidget {
         name: '/HomeResponsible',
         page: () => const HomeResponsiblePages(),
         binding: BindingsBuilder.put(() => LoginController()),
+      ),
+      GetPage(
+        name: '/coexistencePageResponsible',
+        page: () => CoexistencePageResponsible(),
+        binding: BindingsBuilder.put(() => CoexistenceController()),
       ),
       GetPage(
         name: '/loginNewPage',

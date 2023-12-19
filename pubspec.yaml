@@ -68,3 +68,18 @@ flutter:
      - assets/images/logo_negro_simplifies_trans.png
      - assets/images/responsableImage.jpg
      - assets/images/client-attended.png
+     - assets/images/image_welcome.jpg
+     - assets/images/imageGrafic.png
+     - assets/images/icons/80.png
+     - assets/images/icons/aleatorio.png
+     - assets/images/icons/clientesAten.png
+     - assets/images/icons/gananciaTot.png
+     - assets/images/icons/montoEsp.png
+     - assets/images/icons/montoGen.png
+     - assets/images/icons/porcentageGan.png
+     - assets/images/icons/propina.png
+     - assets/images/icons/seleccionado.png
+     - assets/images/icons/serviceEsp.png
+     - assets/images/icons/serviceRegul.png
+     - assets/images/icons/gananciaBar.png
+     - assets/images/icons/serviceRea.png

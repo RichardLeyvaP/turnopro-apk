@@ -31,11 +31,11 @@ class ShoppingCartController extends GetxController {
   int responseId = 0;
   bool load_request = false;
   bool isLoading = true;
+  int? carIdClienteSelect;
 
   Future<void> loadCart() async {
-    //print('estoy cargando el carro');
+    print('estoy cargando el carro de id car :$carIdClienteSelect');
 
-    update();
     try {
       print(
           '**** 11111111 **** *** ESTE ES EL getTotalServices ACTUALMENTE:$getTotalServices');
@@ -65,16 +65,16 @@ class ShoppingCartController extends GetxController {
   }
 
   Future<void> loadOrderDeleteCar(int id_car) async {
-    //print('estoy aqui en load');
+    print('estoy aqui en load');
     try {
-      //print('1111111');
+      print('1111111');
       orderDeleteCar =
           await productRepository.serviceRequestProductDelete(id_car); //todo
       print(orderDeleteCar);
 
       update();
     } catch (e) {
-      //print('DIO ERROR:$e');
+      print('DIO ERROR:$e');
     }
   }
 
@@ -95,8 +95,8 @@ class ShoppingCartController extends GetxController {
     try {
       await productRepository.orderDeleteCar(id); //todo
       internetError = 0;
-      loadOrderDeleteCar(
-          13); //todo REVISAR aqui mandando el id del carro estatico
+      loadOrderDeleteCar(carIdClienteSelect!);
+      //todo REVISAR aqui mandando el id del carro estatico YAAAA
       update();
     } catch (e) {
       internetError = -99;
@@ -125,7 +125,7 @@ class ShoppingCartController extends GetxController {
         await controllerService.loadListService();
       }
       await _fetchServiceList(); //todo revisar para que yo queria saber si tenia servicio y productos el profesional
-      await _fetchProductList();
+      // await _fetchProductList();
       print('************* onReady:****serviceCart:${serviceCart.length}');
       // _fetchProductList();
       loadCart();
@@ -156,7 +156,7 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  Future<void> _fetchProductList() async {
+  /* Future<void> _fetchProductList() async {
     try {
       final LoginController controllerLogin = Get.find<LoginController>();
       productCart = await productRepository.getProductList(controllerLogin
@@ -167,34 +167,36 @@ class ShoppingCartController extends GetxController {
       internetError = -99;
       update();
     }
-  }
+  }*/
 
-  Future<void> _addOrderCartList(
-      client_id, person_id, product_id, service_id, type) async {
+  Future<void> _addOrderCartList(car_id, product_id, service_id, type) async {
     try {
       responseId = await productRepository.addOrderCartList(
-          client_id, person_id, product_id, service_id, type);
+          car_id, product_id, service_id, type);
       if (responseId != -990099) {
+        print('agregar responseId');
         productCarr.add(responseId);
         internetError = 0;
       } else {
+        print('internetError ');
         internetError = -99;
       }
       update();
     } catch (e) {
       internetError = -99;
+      print('error:$e');
       update();
     }
   }
 
-  void updateShoppingCartValue(index, idProfessional, type, id) {
+  void updateShoppingCartValue(priceProduct, index, car_id, type, id) async {
     if (type == 'service') {
       // print('22');
       if (internetError != -99) {
         // print('*************serviceCart:${serviceCart.length}');
         if (!selectserviceCart.contains(serviceCart[index])) {
           selectserviceCart.add(serviceCart[index]);
-          _addOrderCartList(5, idProfessional, 0, serviceCart[index].id,
+          _addOrderCartList(car_id, 0, serviceCart[index].id,
               type); //todo REVISAR TIENE PROBLEMA
           //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
           getTotalServicesProduct_Sum(type, serviceCart[index].price_service);
@@ -207,9 +209,11 @@ class ShoppingCartController extends GetxController {
     } else if (type == 'product') {
       if (internetError != -99) {
         print('todavia qui llego bien');
-        _addOrderCartList(5, idProfessional, id, 0, type); //todo
+        await _addOrderCartList(car_id, id, 0, type); //todo
+        print('else if (type == product):$index');
         //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
-        getTotalServicesProduct_Sum(type, productCart[index].sale_price);
+        getTotalServicesProduct_Sum(type, priceProduct);
+
         shoppingCart += 1;
         update();
       }

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Routes/index.dart';
 
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -20,15 +21,6 @@ class CoexistencePage extends StatelessWidget {
     }
     //DECLARACION DE VARIABLES
     const double borderRadiusValue = 12;
-    List<int> typeCoexistence = [
-      0,
-      1,
-      2,
-      1,
-      0,
-      2,
-      0,
-    ]; //todo esto es cargado de la db, esto solo para modelar ca carga de los ico
     return Scaffold(
       appBar: AppBar(
         leading: Row(
@@ -124,108 +116,124 @@ class CoexistencePage extends StatelessWidget {
                                                     Radius.circular(
                                                         borderRadiusValue)),
                                           ),
-                                          child: ListTile(
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(12)),
-                                              ),
-                                              title: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      const SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      SizedBox(
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.77,
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              _
-                                                                  .coexistence[
-                                                                      index]
-                                                                  .name
-                                                                  .toString(),
-                                                              style:
-                                                                  const TextStyle(
-                                                                fontSize: 16,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w800,
-                                                              ),
-                                                            ),
-                                                            Text(
-                                                              _
-                                                                  .coexistence[
-                                                                      index]
-                                                                  .description
-                                                                  .toString(),
-                                                              maxLines:
-                                                                  2, // Limita el texto a 2 líneas
-                                                              overflow: TextOverflow
-                                                                  .ellipsis, // Agrega los tres puntos suspensivos
-                                                              style: const TextStyle(
-                                                                  fontSize: 14,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          148,
-                                                                          0,
-                                                                          0,
-                                                                          0)),
-                                                            ),
-                                                          ],
+                                          child: GetBuilder<
+                                                  ClientsScheduledController>(
+                                              builder: (controllerClient) {
+                                            return ListTile(
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(12)),
+                                                ),
+                                                title: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const SizedBox(
+                                                          width: 5,
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  typeCoexistence[index] == 0
-                                                      ? const Icon(
-                                                          Icons.star,
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              170,
-                                                              169,
-                                                              169),
-                                                          size: 50,
-                                                        )
-                                                      : typeCoexistence[
-                                                                  index] ==
-                                                              1
-                                                          ? const Icon(
-                                                              Icons.star,
-                                                              color: Colors.red,
-                                                              size: 50,
-                                                            )
-                                                          : const Icon(
-                                                              Icons.star,
-                                                              color: Color
-                                                                  .fromRGBO(
-                                                                      26,
-                                                                      177,
-                                                                      71,
-                                                                      1),
-                                                              size: 50,
-                                                            )
-                                                ],
-                                              )),
+                                                        SizedBox(
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              0.77,
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                _
+                                                                    .coexistence[
+                                                                        index]
+                                                                    .name
+                                                                    .toString(),
+                                                                style:
+                                                                    const TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                _
+                                                                    .coexistence[
+                                                                        index]
+                                                                    .description
+                                                                    .toString(),
+                                                                maxLines:
+                                                                    2, // Limita el texto a 2 líneas
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis, // Agrega los tres puntos suspensivos
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        14,
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            148,
+                                                                            0,
+                                                                            0,
+                                                                            0)),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    controllerClient.noncomplianceProfessional[_
+                                                                .coexistence[
+                                                                    index]
+                                                                .type] ==
+                                                            3
+                                                        ? const Icon(
+                                                            Icons.star,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    170,
+                                                                    169,
+                                                                    169),
+                                                            size: 50,
+                                                          )
+                                                        : controllerClient.noncomplianceProfessional[_
+                                                                    .coexistence[
+                                                                        index]
+                                                                    .type] ==
+                                                                0
+                                                            ? const Icon(
+                                                                Icons.star,
+                                                                color:
+                                                                    Colors.red,
+                                                                size: 50,
+                                                              )
+                                                            : const Icon(
+                                                                Icons.star,
+                                                                color: Color
+                                                                    .fromRGBO(
+                                                                        26,
+                                                                        177,
+                                                                        71,
+                                                                        1),
+                                                                size: 50,
+                                                              )
+                                                  ],
+                                                ));
+                                          }),
                                         ),
                                       ],
                                     ),

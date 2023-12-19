@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, unused_local_variable, dead_code
 
 import 'package:flutter/material.dart';
+import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/service.controller.dart';
 // ignore: depend_on_referenced_packages
@@ -22,6 +23,8 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
       Get.find<ShoppingCartController>();
 
   final LoginController controllerLogin = Get.find<LoginController>();
+  final ClientsScheduledController clientsController =
+      Get.find<ClientsScheduledController>();
 
   @override
   void initState() {
@@ -121,12 +124,18 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                 .contains(_.services[index])) {
                                               _.getSelectService(
                                                   index); //guarda en la lista de los seleccionados
-                                              controllerShoppingCart.updateShoppingCartValue(
-                                                  index,
-                                                  controllerLogin
-                                                      .idProfessionalLoggedIn,
-                                                  'service',
-                                                  _.services[index].id);
+                                              controllerShoppingCart
+                                                  .updateShoppingCartValue(
+                                                      0, //aqui 0 porque este campo solo lo utilizo si fuera un producto
+                                                      index,
+                                                      controllerShoppingCart
+                                                          .carIdClienteSelect,
+                                                      'service',
+                                                      _.services[index].id);
+                                              //AQUI ESTOY MANDANDO EN SEGUNDO EL TIEMPO QUE HAY QUE AGREGARLE AL TIMER
+                                              clientsController.modifingTime((_
+                                                  .services[index]
+                                                  .duration_service));
                                             }
                                           },
                                           title: Row(

@@ -34,8 +34,12 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
   @override
   void initState() {
     super.initState();
-    controllerShoppingCart.loadOrderDeleteCar(13); //todo REVISAR valor fijo
-    iniciarLlamadaCada10Segundos();
+    if (controllerShoppingCart.carIdClienteSelect != null) {
+      controllerShoppingCart
+          .loadOrderDeleteCar(controllerShoppingCart.carIdClienteSelect!);
+      //todo REVISAR valor fijo YAYAYAYAAAA
+      iniciarLlamadaCada10Segundos();
+    }
   }
 
   @override
@@ -53,7 +57,8 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
 
     // Establece un temporizador que llama a la función cada 20 segundos
     _timer = Timer.periodic(const Duration(seconds: 20), (Timer timer) {
-      controllerShoppingCart.loadOrderDeleteCar(13); //todo REVISAR valor fijo
+      controllerShoppingCart.loadOrderDeleteCar(controllerShoppingCart
+          .carIdClienteSelect!); //todo REVISAR valor fijo YAYAAAAAAAA
     });
   }
 
@@ -314,7 +319,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                               InkWell(
                                 onTap: () {
                                   Get.toNamed(
-                                    '/CoexistencePage',
+                                    '/coexistencePageResponsible',
                                   );
                                 },
                                 child: cartsHome(
@@ -457,7 +462,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   logUser.nameUserLoggedIn,
                   style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 18,
+                    fontSize: 14,
                     fontWeight: FontWeight.w900,
                     height: 1.0,
                   ),
@@ -617,8 +622,8 @@ Column showRequestsDelete(context, ShoppingCartController contShopp) {
                       onPressed: () async {
                         await contShopp.requestDelete(
                             contShopp.orderDeleteCar[i].id, 0);
-                        await contShopp
-                            .loadOrderDeleteCar(13); //todo REVISAR valor fijo
+                        await contShopp.loadOrderDeleteCar(contShopp
+                            .carIdClienteSelect!); //todo REVISAR valor fijo
                         // Get.snackbar(
                         //   'Mensaje',
                         //   'Rechazada la solicitud',
@@ -755,8 +760,8 @@ Column showRequestsDelete(context, ShoppingCartController contShopp) {
                       onPressed: () async {
                         await contShopp
                             .orderDelete(contShopp.orderDeleteCar[i].id);
-                        await contShopp
-                            .loadOrderDeleteCar(13); //todo REVISAR valor fijo
+                        await contShopp.loadOrderDeleteCar(contShopp
+                            .carIdClienteSelect!); //todo REVISAR valor fijo YAAAAYAAAAAA
                         // Get.snackbar(
                         //   'Mensaje',
                         //   'Solicitud Eliminada',

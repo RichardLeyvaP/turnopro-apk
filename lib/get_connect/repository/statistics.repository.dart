@@ -8,8 +8,35 @@ import 'package:turnopro_apk/env.dart';
 import 'package:http/http.dart' as http; // Asegúrate de importar http
 
 class WeeklyStatisticsRepository extends GetConnect {
+  Future getDayStatisticsList(
+      idProfessional, idBranch, startDate, endDate) async {
+    try {
+      if (idProfessional != null) {
+        var url =
+            '${Env.apiEndpoint}/professionals_ganancias_branch?professional_id=$idProfessional&branch_id=$idBranch&startDate=$startDate&endDate=$endDate';
+        print(idProfessional);
+        print(idBranch);
+        print(startDate);
+        print(endDate);
+        final response = await http.get(Uri.parse(url));
+        print(response.statusCode);
+        if (response.statusCode == 200) {
+          print('response.statusCode == 200');
+          final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+          print(
+              '***************************....********:${jsonResponse['earningPeriodo']}');
+          return jsonResponse['earningPeriodo'];
+        }
+
+        return null; // Retornando lista vacía
+      }
+    } catch (e) {
+      print('ERROR WeeklyStatisticsRepository: $e');
+    }
+  }
+
   Future getWeeklyStatisticsList(
-      idProfessional, startDate, endDate, day) async {
+      idProfessional, idBranch, startDate, endDate, day) async {
     List<EarningByDay> weeklyStatisticsList = [];
     double totalEarnings = 0.0;
     double? averageEarnings = 0.0;
@@ -17,19 +44,26 @@ class WeeklyStatisticsRepository extends GetConnect {
     try {
       if (idProfessional != null) {
         var url =
-            '${Env.apiEndpoint}/professionals_ganancias?professional_id=$idProfessional&startDate=$startDate&endDate=$endDate&day=$day';
+            '${Env.apiEndpoint}/professionals_ganancias?professional_id=$idProfessional&branch_id=$idBranch&startDate=$startDate&endDate=$endDate&day=$day';
 
         final response = await http.get(Uri.parse(url));
         if (response.statusCode == 200) {
           final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-
+          print(jsonResponse);
           if (jsonResponse.containsKey('earningByDay')) {
             // Acceder a la lista de earningByDay
-            List<dynamic> earningByDay = jsonResponse['earningByDay'];
+            List<dynamic> earningByDay = jsonResponse['earningByDay']['dates'];
 
             //todo aqui tengo el total y la media
-            totalEarnings = (jsonResponse['totalEarnings'] ?? 0).toDouble();
-            averageEarnings = (jsonResponse['averageEarnings'] ?? 0).toDouble();
+            totalEarnings =
+                (jsonResponse['earningByDay']['totalEarnings'] ?? 0).toDouble();
+            averageEarnings =
+                (jsonResponse['earningByDay']['averageEarnings'] ?? 0)
+                    .toDouble();
+            print(
+                '*****************************************************************************************');
+            print(totalEarnings);
+            print(averageEarnings);
 
             // Iterar sobre la lista y acceder a los valores dentro de cada mapa
             for (var entry in earningByDay) {
