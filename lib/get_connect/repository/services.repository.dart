@@ -19,8 +19,8 @@ class ServiceRepository extends GetConnect {
           final services = response.body['professional_services'];
           for (Map service in services) {
             print(
-                '**************************************estoy aqui - (Map service in services)');
-            print(jsonEncode(service));
+                '**************************************estoy aqui devolviendo los services - (Map service in services)');
+            //print(jsonEncode(service));
             ServiceModel u = ServiceModel.fromJson(jsonEncode(service));
             serviceList.add(u);
           }

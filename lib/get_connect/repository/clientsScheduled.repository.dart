@@ -114,6 +114,11 @@ class ClientsScheduledRepository extends GetConnect {
     };
 
     final response = await post(url, body);
+    print(type);
+    print(branchId);
+    print(professionalId);
+    print(estado);
+    print(response.statusCode);
     if (response.statusCode == 200) {
       print('Acacba de incumplir en este type de convivencia:$type');
       return true;

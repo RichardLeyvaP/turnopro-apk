@@ -29,6 +29,7 @@ class ClientsScheduledController extends GetxController {
     -1 //este es de _animationController4
   ]; //cuando alguno sea -1 modificar ese tiempo
   int availability = 1;
+  int busyClock = -99;
   String clientsAttended = 'nobody';
   List<ServiceModel> serviceCustomerSelected = [];
 
@@ -50,27 +51,38 @@ class ClientsScheduledController extends GetxController {
   //Fin Variables del reloj
 
   //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
-  Map<String, bool> noncomplianceProfessional = {
-    //el tiempo para escoger los clientes inicial (3min)
-    'initialTime': false,
-    'teamQuota': false, //Cuidado de equipo
-    'punctuality': false, //Puntualidad
-    /******************AGREGAR AQUI TODS LOS QUE DESEN*********************/
+  //ESTA VARIABLE HAY QUE LLENARLA DIRECTAMENTE DE LA DB
+  Map<String, int> noncomplianceProfessional = {
+    /* //el tiempo para escoger los clientes inicial (3min)
+    'initialTime': 3,
+    'teamQuota': 3, //Cuidado de equipo
+    'punctuality': 3, //Puntualidad
+    'clearCommunication': 3, //Comunicacion clara
+    'confidentiality': 3, //Confidencialidad
+    'cleanlinessOrder': 3, //Limpieza y Orden
+    'drugProhibition': 3, //Prohibición de Drogas y Alcohol
+    'respectTreatment': 3, //Respeto y Trato Cordial
+    /******************AGREGAR AQUI TODS LOS QUE DESEN*********************/*/
   };
 
-  Future<void> newClientAttended(ClientsScheduledModel client, int cant) async {
+  Future<void> newClientAttended(
+      ClientsScheduledModel client, int avail) async {
     //este nuevo cliente se le va a signar un reloj
-    if (cant == 1) {
+    if (avail == 1) {
       clientsAttended1 = client;
+      busyClock = 0;
     }
-    if (cant == 2) {
+    if (avail == 2) {
       clientsAttended2 = client;
+      busyClock = 1;
     }
-    if (cant == 3) {
+    if (avail == 3) {
       clientsAttended3 = client;
+      busyClock = 2;
     }
-    if (cant == 4) {
+    if (avail == 4) {
       clientsAttended4 = client;
+      busyClock = 3;
     }
     filterShowCardTimer();
     update();
@@ -260,6 +272,12 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
+  void modifingTimeClose() {
+    modifyTime.addAll([-1]);
+    activeModifyTime = false;
+    update();
+  }
+
   Future<void> acceptOrRejectClient(reservationId, attended) async {
     final LoginController controllerLogin = Get.find<LoginController>();
 
@@ -386,9 +404,13 @@ class ClientsScheduledController extends GetxController {
     bool result =
         await repository.storeByType(type, branchId, professionalId, estado);
     if (result) {
-      if (noncomplianceProfessional.containsKey(type)) {
-        //AQUI ES PÓRQUE INCUMPLIO CON ALGO
-        noncomplianceProfessional[type] = false;
+      print('CORRECTO actualizo el estado correctamente');
+      //AQUI ES PÓRQUE INCUMPLIO CON ALGO
+      if (estado == 1) {
+        noncomplianceProfessional[type] = 1;
+        update();
+      } else {
+        noncomplianceProfessional[type] = 0;
         update();
       }
     }

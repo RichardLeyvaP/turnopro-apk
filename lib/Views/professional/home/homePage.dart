@@ -48,8 +48,8 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
     _animationControllerInitial!.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         if (clientsScheduledController
-                .noncomplianceProfessional['initialTime'] ==
-            false) {
+                .noncomplianceProfessional['initialTime'] !=
+            0) {
           //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
           String type = 'initialTime';
           int branchId = loginController.branchIdLoggedIn!;
@@ -253,9 +253,49 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
       ];
 
       _animationControllerInitial!.forward();
+
       if (controllerclient.activeModifyTime == true) {
         print(
-            'activeModifyTime SOY = TRUE Y MANDE ESTE TIEMPO ${controllerclient.modifyTime[controllerclient.modifyTimeSpecific]}');
+            'activeModifyTime SOY = ${controllerclient.activeModifyTime} Y MANDE ESTE TIEMPO ${controllerclient.modifyTime[controllerclient.modifyTimeSpecific]}');
+        int i = controllerclient.modifyTimeSpecific;
+        int value =
+            controllerclient.modifyTime[controllerclient.modifyTimeSpecific];
+        // Obtén la duración total del AnimationController
+        Duration? duracionTotal = animationCont[i]!.duration;
+
+// Obtén el tiempo transcurrido hasta ahora en minutos
+        double tiempoTranscurrido =
+            animationCont[i]!.value * duracionTotal!.inMinutes;
+
+// Calcula el tiempo restante en minutos
+        double tiempoRestante = duracionTotal.inMinutes - tiempoTranscurrido;
+
+        print('Tiempo duracionTotal: $duracionTotal');
+        print('Tiempo tiempoTranscurrido: ${tiempoTranscurrido.truncate()}');
+        print('Tiempo restante: $tiempoRestante');
+
+        Duration duracionSendAct = Duration(
+          minutes: tiempoRestante.truncate() + value,
+        );
+
+// Aumenta la duración actual en 30 segundos
+        Duration nuevaDuracion = duracionSendAct;
+
+        animationCont[i]!.duration = nuevaDuracion;
+        print('duracionSend YA:$duracionSendAct');
+
+        animationCont[i]!.reset();
+        animationCont[i]!.forward();
+        print('RESETEADO YA');
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          // Se ejecutará después de que se haya construido el widget
+          //define que tipo de saludo dar dependiendo de la hora
+          loginController.getGreeting();
+          controllerclient.modifingTimeClose();
+          print(
+              'ENTRE A DESTRUIR LAS VARIABLES DEL TIEMPO ASIGNADO activeModifyTime SOY = ${controllerclient.activeModifyTime}');
+        });
       }
 
       return Column(
@@ -611,48 +651,51 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
                                                     //
                                                     //
                                                     //
-                                                    for (int i = 0;
-                                                        i <
-                                                            controllerclient
-                                                                .item.length;
-                                                        i++) {
-                                                      animationCont[i]!.duration =
-                                                          Duration(
-                                                              seconds:
+                                                    if (controllerclient
+                                                            .busyClock ==
+                                                        0) {
+                                                      animationCont[0]!.duration = Duration(
+                                                          seconds: controllerclient
+                                                              .convertDateSecons(
                                                                   controllerclient
-                                                                      .convertDateSecons(
-                                                        controllerclient
-                                                                    .item[i] ==
-                                                                0
-                                                            ? controllerclient
-                                                                .clientsAttended1!
-                                                                .total_time
-                                                            : controllerclient
-                                                                            .item[
-                                                                        i] ==
-                                                                    1
-                                                                ? controllerclient
-                                                                    .clientsAttended2!
-                                                                    .total_time
-                                                                : controllerclient.item[
-                                                                            i] ==
-                                                                        2
-                                                                    ? controllerclient
-                                                                        .clientsAttended3!
-                                                                        .total_time
-                                                                    : controllerclient.item[i] ==
-                                                                            3
-                                                                        ? controllerclient
-                                                                            .clientsAttended4!
-                                                                            .total_time
-                                                                        : '',
-                                                      ));
-
-                                                      animationCont[i]!
+                                                                      .clientsAttended1!
+                                                                      .total_time));
+                                                      animationCont[0]!
+                                                          .forward();
+                                                    } else if (controllerclient
+                                                            .busyClock ==
+                                                        1) {
+                                                      animationCont[1]!.duration = Duration(
+                                                          seconds: controllerclient
+                                                              .convertDateSecons(
+                                                                  controllerclient
+                                                                      .clientsAttended2!
+                                                                      .total_time));
+                                                      animationCont[1]!
+                                                          .forward();
+                                                    } else if (controllerclient
+                                                            .busyClock ==
+                                                        2) {
+                                                      animationCont[2]!.duration = Duration(
+                                                          seconds: controllerclient
+                                                              .convertDateSecons(
+                                                                  controllerclient
+                                                                      .clientsAttended3!
+                                                                      .total_time));
+                                                      animationCont[2]!
+                                                          .forward();
+                                                    } else if (controllerclient
+                                                            .busyClock ==
+                                                        3) {
+                                                      animationCont[3]!.duration = Duration(
+                                                          seconds: controllerclient
+                                                              .convertDateSecons(
+                                                                  controllerclient
+                                                                      .clientsAttended4!
+                                                                      .total_time));
+                                                      animationCont[3]!
                                                           .forward();
                                                     }
-                                                    //
-                                                    //
 
                                                     //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
                                                     controllerclient
@@ -837,7 +880,7 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
   }
 
 //todo9
-  Center cardTimer(
+  Padding cardTimer(
     Key uniqueKey,
     String name,
     ClientsScheduledController controllerclient,
@@ -854,109 +897,119 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
     String firstName = partsName.isNotEmpty ? partsName[0] : "";
     // String secondName = partsName.length > 1 ? partsName[1] : "";
 
-    return Center(
-      child: AnimatedBuilder(
-        key: uniqueKey,
-        animation: _animationController,
-        builder: (context, child) {
-          final value = _animationController.value;
-          final remainingSeconds = (_animationController.duration!.inSeconds -
-                  (_animationController.duration!.inSeconds * value))
-              .ceil();
-          int minutes = remainingSeconds ~/ 60; // Calcula los minutos restantes
-          int seconds = remainingSeconds % 60; // Calcula los segundos restantes
+    return Padding(
+      padding: const EdgeInsets.only(left: 8, right: 8),
+      child: Center(
+        child: AnimatedBuilder(
+          key: uniqueKey,
+          animation: _animationController,
+          builder: (context, child) {
+            final value = _animationController.value;
+            final remainingSeconds = (_animationController.duration!.inSeconds -
+                    (_animationController.duration!.inSeconds * value))
+                .ceil();
+            int minutes =
+                remainingSeconds ~/ 60; // Calcula los minutos restantes
+            int seconds =
+                remainingSeconds % 60; // Calcula los segundos restantes
 
-          if (seconds < 10) {
-            segundos = "0";
-          } else {
-            segundos = "";
-          }
+            if (seconds < 10) {
+              segundos = "0";
+            } else {
+              segundos = "";
+            }
 
-          if (minutes == 0 && seconds == 0) {
-            firstName = 'Terminó';
-            colorInicial = Colors.red;
-            colorInicialCirculo = Colors.white;
-            fontSizeText = 10;
-          }
+            if (minutes == 0 && seconds == 0) {
+              firstName = 'Terminó';
+              colorInicial = Colors.red;
+              colorInicialCirculo = Colors.white;
+              fontSizeText = 10;
+            }
 
-          return SizedBox(
-            width: controllerclient.sizeClock,
-            height: controllerclient.sizeClock,
-            child: Stack(
-              children: [
-                ShaderMask(
-                  shaderCallback: (rect) {
-                    return SweepGradient(
-                            startAngle: 0.0,
-                            endAngle: twoPi,
-                            stops: [value, value],
-                            // 0.0 , 0.5 , 0.5 , 1.0
-                            center: Alignment.center,
-                            colors: [Colors.white, Colors.grey.withAlpha(55)])
-                        .createShader(rect);
-                  },
-                  child: Container(
-                    width: controllerclient.sizeClock,
-                    height: controllerclient.sizeClock,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: Image.asset("assets/images/radial_scale.png")
-                                .image)),
+            return SizedBox(
+              width: controllerclient.sizeClock,
+              height: controllerclient.sizeClock,
+              child: Stack(
+                children: [
+                  ShaderMask(
+                    shaderCallback: (rect) {
+                      return SweepGradient(
+                              startAngle: 0.0,
+                              endAngle: twoPi,
+                              stops: [value, value],
+                              // 0.0 , 0.5 , 0.5 , 1.0
+                              center: Alignment.center,
+                              colors: [Colors.white, Colors.grey.withAlpha(55)])
+                          .createShader(rect);
+                    },
+                    child: Container(
+                      width: controllerclient.sizeClock,
+                      height: controllerclient.sizeClock,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                              image:
+                                  Image.asset("assets/images/radial_scale.png")
+                                      .image)),
+                    ),
                   ),
-                ),
-                Center(
-                  child: Container(
-                    width: (controllerclient.sizeClock) - 40,
-                    height: (controllerclient.sizeClock) - 40,
-                    decoration: BoxDecoration(
-                        color: colorInicialCirculo, shape: BoxShape.circle),
-                    child: Center(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '$minutes :',
-                              style: TextStyle(
-                                  fontSize: (MediaQuery.of(context).size.width *
-                                      0.05), //todo2
-                                  fontFamily: GoogleFonts.orbitron().fontFamily,
-                                  color: colorInicial,
-                                  fontWeight: FontWeight.w900),
-                            ),
-                            Text(
-                              "$segundos$seconds",
-                              style: TextStyle(
-                                  fontSize: (MediaQuery.of(context).size.width *
-                                      0.05),
-                                  color: colorInicial,
-                                  fontFamily: GoogleFonts.orbitron().fontFamily,
-                                  fontWeight: FontWeight.w900),
-                            ),
-                          ],
-                        ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            firstName,
-                            style: TextStyle(
-                                fontSize: fontSizeText,
-                                color: colorInicial,
-                                fontWeight: FontWeight.w900),
+                  Center(
+                    child: Container(
+                      width: (controllerclient.sizeClock) - 40,
+                      height: (controllerclient.sizeClock) - 40,
+                      decoration: BoxDecoration(
+                          color: colorInicialCirculo, shape: BoxShape.circle),
+                      child: Center(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '$minutes :',
+                                style: TextStyle(
+                                    fontSize:
+                                        (MediaQuery.of(context).size.width *
+                                            0.05), //todo2
+                                    fontFamily:
+                                        GoogleFonts.orbitron().fontFamily,
+                                    color: colorInicial,
+                                    fontWeight: FontWeight.w900),
+                              ),
+                              Text(
+                                "$segundos$seconds",
+                                style: TextStyle(
+                                    fontSize:
+                                        (MediaQuery.of(context).size.width *
+                                            0.05),
+                                    color: colorInicial,
+                                    fontFamily:
+                                        GoogleFonts.orbitron().fontFamily,
+                                    fontWeight: FontWeight.w900),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    )),
-                  ),
-                )
-              ],
-            ),
-          );
-        },
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              firstName,
+                              style: TextStyle(
+                                  fontSize: fontSizeText,
+                                  color: colorInicial,
+                                  fontWeight: FontWeight.w900),
+                            ),
+                          ),
+                        ],
+                      )),
+                    ),
+                  )
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -1068,9 +1121,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const Text(
-                  'Hola',
-                  style: TextStyle(
+                Text(
+                  logUser.greeting,
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 14,
                     height: 1.0,

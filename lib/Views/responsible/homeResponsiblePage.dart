@@ -319,7 +319,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                               InkWell(
                                 onTap: () {
                                   Get.toNamed(
-                                    '/CoexistencePage',
+                                    '/coexistencePageResponsible',
                                   );
                                 },
                                 child: cartsHome(
@@ -462,7 +462,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   logUser.nameUserLoggedIn,
                   style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 18,
+                    fontSize: 14,
                     fontWeight: FontWeight.w900,
                     height: 1.0,
                   ),
