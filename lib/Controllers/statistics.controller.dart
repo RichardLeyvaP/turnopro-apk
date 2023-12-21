@@ -18,6 +18,7 @@ class StatisticController extends GetxController {
   double? averageEarnings = 0.0;
   //*********************** */
   Map<String, dynamic> statisticsGeneral = {};
+  Map<String, dynamic> statisticsGeneralRespon = {};
 
   @override
   void onReady() {
@@ -58,6 +59,39 @@ class StatisticController extends GetxController {
         update();
       } else {
         statisticsGeneral = {};
+        print('Resultados correctos pero vacio');
+      }
+      update();
+    } catch (e) {
+      // print('Error StatisticController en getDataStatistic :$e');
+    }
+  }
+
+  Future<void> getDataStatisticRespon(
+      startDateIn, endDateIn, numberdayWeekIn, quantityDatesIn, mes) async {
+    //todo asi mapea bien
+    print('111111 getDataStatisticRespon');
+    final LoginController controllerLogin = Get.find<LoginController>();
+    earningByDays.clear();
+    averageEarnings = 0.0;
+    totalEarnings = 0.0;
+    dateRange = '';
+    if (quantityDatesIn > 7) {
+      quantityDates = 7;
+    } else {
+      quantityDates = quantityDatesIn;
+    }
+    dateRange = '   $startDateIn  -  $endDateIn';
+    try {
+      var responStad = await weeklyStatisticsRepository.getDayStatisticsRespon(
+          controllerLogin.branchIdLoggedIn, startDateIn, endDateIn, mes);
+      print('respuest getDataStatisticRespon----$responStad');
+
+      if (responStad['Monto Generado'] != 0) {
+        statisticsGeneralRespon = responStad;
+        update();
+      } else {
+        statisticsGeneralRespon = {};
         print('Resultados correctos pero vacio');
       }
       update();

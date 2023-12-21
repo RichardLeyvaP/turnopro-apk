@@ -12,6 +12,7 @@ import 'package:turnopro_apk/Views/professional/statistic/statisticPage.dart';
 import 'package:turnopro_apk/Views/responsible/coexistencePageResponsible.dart';
 import 'package:turnopro_apk/Views/responsible/homeResponsiblePage.dart';
 import 'package:turnopro_apk/Views/professional/shoppingCartPage.dart';
+import 'package:turnopro_apk/Views/responsible/statistic_R/statisticPage_R.dart';
 
 //todo este es el que me falta optimizar
 class Myapp extends StatelessWidget {
@@ -69,6 +70,11 @@ class Myapp extends StatelessWidget {
         name: '/coexistencePageResponsible',
         page: () => CoexistencePageResponsible(),
         binding: BindingsBuilder.put(() => CoexistenceController()),
+      ),
+      GetPage(
+        name: '/StatisticPageRespon',
+        page: () => StatisticPageRespon(),
+        binding: BindingsBuilder.put(() => StatisticController()),
       ),
       GetPage(
         name: '/loginNewPage',

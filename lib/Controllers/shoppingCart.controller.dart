@@ -64,17 +64,17 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  Future<void> loadOrderDeleteCar(int id_car) async {
-    print('estoy aqui en load');
+  Future<void> loadOrderDeleteCar(int branchId) async {
+    print('estoy aqui en loadOrderDeleteCar');
     try {
       print('1111111');
       orderDeleteCar =
-          await productRepository.serviceRequestProductDelete(id_car); //todo
+          await productRepository.serviceRequestProductDelete(branchId); //todo
       print(orderDeleteCar);
 
       update();
     } catch (e) {
-      print('DIO ERROR:$e');
+      print('DIO ERROR loadOrderDeleteCar:$e');
     }
   }
 
@@ -95,7 +95,7 @@ class ShoppingCartController extends GetxController {
     try {
       await productRepository.orderDeleteCar(id); //todo
       internetError = 0;
-      loadOrderDeleteCar(carIdClienteSelect!);
+      loadOrderDeleteCar(carIdClienteSelect!); //todo mandar branch_id errorrrr
       //todo REVISAR aqui mandando el id del carro estatico YAAAA
       update();
     } catch (e) {

@@ -20,6 +20,7 @@ class HomeResponsiblePages extends StatefulWidget {
 class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
   final ShoppingCartController controllerShoppingCart =
       Get.find<ShoppingCartController>();
+  final LoginController controllerLogin = Get.find<LoginController>();
 
   final List<Widget> _pages = [
     // homePageBody(borderRadiusValue, context, colorVariable, colorBottom,
@@ -34,10 +35,9 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
   @override
   void initState() {
     super.initState();
-    if (controllerShoppingCart.carIdClienteSelect != null) {
+    if (controllerLogin.branchIdLoggedIn != null) {
       controllerShoppingCart
-          .loadOrderDeleteCar(controllerShoppingCart.carIdClienteSelect!);
-      //todo REVISAR valor fijo YAYAYAYAAAA
+          .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
       iniciarLlamadaCada10Segundos();
     }
   }
@@ -57,8 +57,10 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
 
     // Establece un temporizador que llama a la función cada 20 segundos
     _timer = Timer.periodic(const Duration(seconds: 20), (Timer timer) {
-      controllerShoppingCart.loadOrderDeleteCar(controllerShoppingCart
-          .carIdClienteSelect!); //todo REVISAR valor fijo YAYAAAAAAAA
+      if (controllerLogin.branchIdLoggedIn != null) {
+        controllerShoppingCart
+            .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
+      }
     });
   }
 
@@ -219,7 +221,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                                     );
                                   } else {
                                     return showRequestsDelete(
-                                        context, contShopp);
+                                        context, contShopp, controllerLogin);
                                   }
                                 }),
                               ],
@@ -293,19 +295,22 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  Get.snackbar(
-                                    'Mensaje',
-                                    'Aqui van las Estadisticas',
-                                    duration:
-                                        const Duration(milliseconds: 1500),
-                                    showProgressIndicator: true,
-                                    progressIndicatorBackgroundColor:
-                                        const Color.fromARGB(255, 81, 93, 117),
-                                    progressIndicatorValueColor:
-                                        const AlwaysStoppedAnimation(
-                                            Color.fromARGB(255, 241, 130, 84)),
-                                    overlayBlur: 3,
+                                  Get.toNamed(
+                                    '/StatisticPageRespon',
                                   );
+                                  // Get.snackbar(
+                                  //   'Mensaje',
+                                  //   'Aqui van las Estadisticas',
+                                  //   duration:
+                                  //       const Duration(milliseconds: 1500),
+                                  //   showProgressIndicator: true,
+                                  //   progressIndicatorBackgroundColor:
+                                  //       const Color.fromARGB(255, 81, 93, 117),
+                                  //   progressIndicatorValueColor:
+                                  //       const AlwaysStoppedAnimation(
+                                  //           Color.fromARGB(255, 241, 130, 84)),
+                                  //   overlayBlur: 3,
+                                  // );
                                 },
                                 child: cartsHome(
                                     context,
@@ -578,7 +583,8 @@ class HomePage extends StatelessWidget {
 
 //****************************************************************************** */
 //****************************************************************************** */
-Column showRequestsDelete(context, ShoppingCartController contShopp) {
+Column showRequestsDelete(context, ShoppingCartController contShopp,
+    LoginController controllerLogin) {
   List<Widget> widgets = [];
   String titulo = "";
   bool service = false;
@@ -622,8 +628,11 @@ Column showRequestsDelete(context, ShoppingCartController contShopp) {
                       onPressed: () async {
                         await contShopp.requestDelete(
                             contShopp.orderDeleteCar[i].id, 0);
-                        await contShopp.loadOrderDeleteCar(contShopp
-                            .carIdClienteSelect!); //todo REVISAR valor fijo
+                        if (controllerLogin.branchIdLoggedIn != null) {
+                          await contShopp.loadOrderDeleteCar(
+                              controllerLogin.branchIdLoggedIn!);
+                        }
+
                         // Get.snackbar(
                         //   'Mensaje',
                         //   'Rechazada la solicitud',
@@ -760,8 +769,10 @@ Column showRequestsDelete(context, ShoppingCartController contShopp) {
                       onPressed: () async {
                         await contShopp
                             .orderDelete(contShopp.orderDeleteCar[i].id);
-                        await contShopp.loadOrderDeleteCar(contShopp
-                            .carIdClienteSelect!); //todo REVISAR valor fijo YAAAAYAAAAAA
+                        if (controllerLogin.branchIdLoggedIn != null) {
+                          await contShopp.loadOrderDeleteCar(
+                              controllerLogin.branchIdLoggedIn!);
+                        }
                         // Get.snackbar(
                         //   'Mensaje',
                         //   'Solicitud Eliminada',
