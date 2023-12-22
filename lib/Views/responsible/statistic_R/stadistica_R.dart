@@ -15,20 +15,23 @@ class StadisticaRespon extends StatefulWidget {
 class _StadisticaResponState extends State<StadisticaRespon> {
   List<String> direcc = [
     'assets/images/icons/montoGen.png',
+    'assets/images/icons/propina.png',
     'assets/images/icons/productM+Vend.png',
     'assets/images/icons/product.png',
-    'assets/images/icons/clientesAten.png',
-    'assets/images/icons/propina.png',
-    'assets/images/icons/80.png',
-    'assets/images/icons/porcentageGan.png',
-    'assets/images/icons/serviceRea.png',
-    'assets/images/icons/serviceRegul.png',
-    'assets/images/icons/serviceEsp.png',
-    'assets/images/icons/montoEsp.png',
-    'assets/images/icons/gananciaBar.png',
     'assets/images/icons/gananciaTot.png',
+    'assets/images/icons/serviceEsp.png', //errado-trocar
+    'assets/images/icons/serviceRegul.png', //errado-trocar
+    'assets/images/icons/serviceRea.png', //errado-trocar
     'assets/images/icons/seleccionado.png',
     'assets/images/icons/aleatorio.png',
+    'assets/images/icons/serviceEsp.png',
+    'assets/images/icons/montoGen.png', //errado-trocar
+    'assets/images/icons/clientesAten.png',
+    //estos de aca abajo no se estan utilizando
+    'assets/images/icons/gananciaBar.png',
+    'assets/images/icons/80.png',
+    'assets/images/icons/porcentageGan.png',
+    'assets/images/icons/montoEsp.png',
   ];
   @override
   Widget build(BuildContext context) {
@@ -143,57 +146,10 @@ class _StadisticaResponState extends State<StadisticaRespon> {
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(12)),
                                   ),
-                                  child: ListTile(
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(12)),
-                                    ),
-                                    title: Padding(
-                                      padding: const EdgeInsets.only(top: 15),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          // Agrega un contenedor para alinear el icono al centro verticalmente
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 10),
-                                            child: Image(
-                                              image: AssetImage(
-                                                direcc[
-                                                    i < 13 ? i : (i = 1) - 1],
-                                              ),
-                                              color: const Color.fromARGB(
-                                                  255, 3, 44, 97),
-                                              width: 35,
-                                              height: 35,
-                                            ),
-                                          ),
-                                          Text(
-                                            entry.key,
-                                            style: const TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    subtitle: null,
-                                    trailing: Padding(
-                                      padding: const EdgeInsets.only(top: 15),
-                                      child: Text(
-                                        '${entry.value}',
-                                        style: TextStyle(
-                                          fontSize: (MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.0279),
-                                          fontWeight: FontWeight.w800,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  child: entry.key != 'Producto mas Vendido' &&
+                                          entry.key != 'Servicio mas Brindado'
+                                      ? listTitleRow(i, entry, context)
+                                      : listTitleColumn(i, entry, context),
                                 ),
                                 const SizedBox(
                                   height: 10,
@@ -209,6 +165,102 @@ class _StadisticaResponState extends State<StadisticaRespon> {
         ),
       );
     });
+  }
+
+  ListTile listTitleRow(
+      int i, MapEntry<String, dynamic> entry, BuildContext context) {
+    return ListTile(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
+      title: Padding(
+        padding: const EdgeInsets.only(top: 15),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Agrega un contenedor para alinear el icono al centro verticalmente
+            Container(
+              margin: const EdgeInsets.only(right: 10),
+              child: Image(
+                image: AssetImage(
+                  direcc[i < 13 ? i : (i = 1) - 1],
+                ),
+                color: const Color.fromARGB(255, 3, 44, 97),
+                width: 35,
+                height: 35,
+              ),
+            ),
+            Text(
+              entry.key,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+      subtitle: null,
+      trailing: Padding(
+        padding: const EdgeInsets.only(top: 15),
+        child: Text(
+          '${entry.value}',
+          style: TextStyle(
+            fontSize: (MediaQuery.of(context).size.height * 0.0279),
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+      ),
+    );
+  }
+
+  ListTile listTitleColumn(
+      int i, MapEntry<String, dynamic> entry, BuildContext context) {
+    return ListTile(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
+      title: Padding(
+        padding: const EdgeInsets.only(top: 15),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Agrega un contenedor para alinear el icono al centro verticalmente
+            Container(
+              margin: const EdgeInsets.only(right: 10, bottom: 30),
+              child: Image(
+                image: AssetImage(
+                  direcc[i < 13 ? i : (i = 1) - 1],
+                ),
+                color: const Color.fromARGB(255, 3, 44, 97),
+                width: 35,
+                height: 35,
+              ),
+            ),
+            Column(
+              children: [
+                Text(
+                  entry.key,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  '${entry.value}',
+                  style: TextStyle(
+                    fontSize: (MediaQuery.of(context).size.height * 0.025),
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      subtitle: null,
+      trailing: null,
+    );
   }
 }
 

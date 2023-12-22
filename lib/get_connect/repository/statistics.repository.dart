@@ -14,12 +14,11 @@ class WeeklyStatisticsRepository extends GetConnect {
         var url = '';
         if (mes != -99) {
           //si manda un mes
-          url =
-              '${Env.apiEndpoint}/branch_winner_products?branch_id=$idBranch&mes=$mes';
+          url = '${Env.apiEndpoint}/branch_winner?branch_id=$idBranch&mes=$mes';
         } else {
           //si no manda un mes es porque manda yn rango de fechas
           url =
-              '${Env.apiEndpoint}/branch_winner_products?branch_id=$idBranch&startDate=$startDate&endDate=$endDate';
+              '${Env.apiEndpoint}/branch_winner?branch_id=$idBranch&startDate=$startDate&endDate=$endDate';
         }
 
         print(idBranch);
