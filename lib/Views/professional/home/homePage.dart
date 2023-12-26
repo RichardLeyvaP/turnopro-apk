@@ -368,12 +368,17 @@ class _HomePagesState extends State<HomePages> with TickerProviderStateMixin {
                                     _animationControllerInitial!,
                                   ),
                                 ] else ...[
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 50,
                                   ),
-                                  Text(
-                                      'aqui decidir que mostrar, ya que no hay nadie en cola.'),
-                                  SizedBox(
+                                  const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.attribution_sharp),
+                                      Text('No hay nadie en cola.'),
+                                    ],
+                                  ),
+                                  const SizedBox(
                                     height: 50,
                                   ),
                                 ]
