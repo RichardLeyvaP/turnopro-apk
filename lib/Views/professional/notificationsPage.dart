@@ -1,15 +1,22 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/pages.config.controller.dart';
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class NotificationsPageProf extends StatelessWidget {
-  NotificationsPageProf({super.key});
+class NotificationsPageProf extends StatefulWidget {
+  const NotificationsPageProf({super.key});
+
+  @override
+  State<NotificationsPageProf> createState() => _NotificationsPageProfState();
+}
+
+class _NotificationsPageProfState extends State<NotificationsPageProf> {
   final double valuePadding = 12;
-  final LoginController loginController = Get.find<LoginController>();
+  final PagesConfigController pagesConfigCont =
+      Get.find<PagesConfigController>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +36,9 @@ class NotificationsPageProf extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.pop(context);
+                pagesConfigCont.back();
+
+                // Navigator.pop(context);
               },
             ),
           ],

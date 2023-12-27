@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Components/BottomNavigationBar.dart';
+import 'package:turnopro_apk/Controllers/pages.config.controller.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaDiaPageNueva.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaMesPageNueva.dart';
@@ -23,6 +24,8 @@ class _StatisticPageState extends State<StatisticPage>
     with SingleTickerProviderStateMixin {
   final StatisticController controllerStatistic =
       Get.find<StatisticController>();
+  final PagesConfigController pagesConfigCont =
+      Get.find<PagesConfigController>();
   late TabController _tabController;
 
   @override
@@ -51,17 +54,15 @@ class _StatisticPageState extends State<StatisticPage>
     const backgroundColor = Color.fromARGB(255, 231, 232, 234);
     const pilateColor = Colors.white;
     List<String> description = ['Ganancia Total', 'Promedio Diario'];
-    List<int> cant$ = [255000, 41000];
     // const cyclingColor = Color.fromARGB(255, 68, 135, 211);
     // const quickWorkoutColor = Color(0xFFF18254);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: backgroundColor,
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.all((MediaQuery.of(context).size.height * 0.012)),
-          child: BottomNavigationBarNew(),
-        ),
+        //
+        //
+        //
         appBar: AppBar(
           backgroundColor: const Color(0xFFF18254), // Color de fondo del AppBar
           elevation: 0, // Sombra del AppBar
@@ -77,7 +78,8 @@ class _StatisticPageState extends State<StatisticPage>
               IconButton(
                 icon: const Icon(Icons.arrow_back), // Icono que deseas mostrar
                 onPressed: () {
-                  Get.back();
+                  pagesConfigCont.back();
+                  //Get.back();
                 }, // Evento onPress
               ),
               Column(

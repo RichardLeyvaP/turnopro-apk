@@ -7,6 +7,7 @@ import 'package:turnopro_apk/Components/BottomNavigationBar.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:turnopro_apk/Controllers/pages.config.controller.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 
 class ClientsScheduled extends StatefulWidget {
@@ -20,6 +21,7 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
   final ClientsScheduledController controllerclient =
       Get.find<ClientsScheduledController>();
   final LoginController controllerLogin = Get.find<LoginController>();
+  final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
 
   @override
   void initState() {
@@ -65,7 +67,9 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
             IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.pop(context);
+                pagesConfigC.back();
+
+                // Navigator.pop(context);
               },
             ),
           ],
@@ -419,10 +423,13 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                 ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: BottomNavigationBarNew(),
-      ),
+      //
+      //esto se comento para quitar el bottomNavigationBar y dejar uno solo en la pagina
+      //
+      // bottomNavigationBar: Padding(
+      //   padding: const EdgeInsets.all(12.0),
+      //   child: BottomNavigationBarNew(),
+      // ),
     );
   }
 }
