@@ -37,6 +37,8 @@ class ClientsScheduledController extends GetxController {
   int? carIdClientsScheduled;
   int quantityClientAttended = 0;
   bool isLoading = true;
+  bool correctConnection = true;
+
   //Variables del reloj
   double sizeClock = 135;
   int totalTimeInitial = 20; //Iniciando en 3 minutos el reloj
@@ -456,27 +458,35 @@ class ClientsScheduledController extends GetxController {
   Future<void> fetchClientsScheduled(idProfessional, idBranch) async {
     Map<String, dynamic> resultList =
         await repository.getClientsScheduledList(idProfessional, idBranch);
-
-    //aqui estoy guardando la cola del dia de hoy del profesional
-    clientsScheduledList =
-        (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
-    clientsScheduledListLength = clientsScheduledList.length;
-    //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
-    clientsScheduledNext = resultList['nextClient'];
-    quantityClientAttended = resultList['quantityClientAttended'];
-    if (quantityClientAttended == 0) {
-      clientsAttended = 'nobody';
-    }
-
-    if (clientsScheduledNext != null) {
-      int idCar = clientsScheduledNext!.car_id;
-      await searchForCustomerServices(idCar);
-      await filterShowNext();
-      setValueClock(true);
+    print(resultList);
+    //verificando , si entra al if es problemas de coneccion
+    if (resultList.containsKey('ConnectionIssues') &&
+        resultList['ConnectionIssues'] == true) {
+      correctConnection = false;
+      print(
+          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
     } else {
-      setValueClock(false);
-    }
+      correctConnection = true;
+      //aqui estoy guardando la cola del dia de hoy del profesional
+      clientsScheduledList =
+          (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
+      clientsScheduledListLength = clientsScheduledList.length;
+      //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+      clientsScheduledNext = resultList['nextClient'];
+      quantityClientAttended = resultList['quantityClientAttended'];
+      if (quantityClientAttended == 0) {
+        clientsAttended = 'nobody';
+      }
 
+      if (clientsScheduledNext != null) {
+        int idCar = clientsScheduledNext!.car_id;
+        await searchForCustomerServices(idCar);
+        await filterShowNext();
+        setValueClock(true);
+      } else {
+        setValueClock(false);
+      }
+    }
     update();
   }
 

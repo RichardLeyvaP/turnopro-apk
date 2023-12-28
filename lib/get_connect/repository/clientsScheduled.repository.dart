@@ -17,6 +17,14 @@ class ClientsScheduledRepository extends GetConnect {
         '${Env.apiEndpoint}/cola_branch_professional?professional_id=$idProfessional&branch_id=$idBranch';
 
     final response = await get(url);
+    //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
+    if (response.statusCode == null) {
+      print('response.statusCode:${response.statusCode}');
+      return {
+        "ConnectionIssues": true,
+      };
+    } else
+      print('hay coneccion');
     if (response.statusCode == 200) {
       print('ya tengo la cola de la api');
       final customers = response.body['tail'];
@@ -36,14 +44,13 @@ class ClientsScheduledRepository extends GetConnect {
           quantityClientAttended++;
         }
       }
-      return {
-        "clientList": clientList,
-        "nextClient": nextClient,
-        "quantityClientAttended": quantityClientAttended,
-      };
-    } else {
-      return clientList;
     }
+
+    return {
+      "clientList": clientList,
+      "nextClient": nextClient,
+      "quantityClientAttended": quantityClientAttended,
+    };
   }
 
   Future<List<ServiceModel>> getCustomerServicesList(idCar) async {
