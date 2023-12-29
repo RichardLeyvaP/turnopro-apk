@@ -7,8 +7,8 @@ import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 
 class ModalHelper {
-  static showModal(BuildContext context, String cliente, int reservationId,
-      int carId) async {
+  static showModal(PageController pageController, BuildContext context,
+      String cliente, int reservationId, int carId) async {
     Completer<void> closedCompleter = Completer<void>();
     List<double> sizeExpandedService = [170, 224, 280, 336, 392];
 
@@ -145,8 +145,12 @@ class ModalHelper {
                           // Cierra el modal primero
                           Navigator.pop(context);
                           //luego llamo a la pagina de servicios y productos
-                          Get.toNamed(
+                          /*Get.toNamed(
                             '/servicesProductsPage',
+                          );*/
+                          pageController.nextPage(
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.ease,
                           );
                         },
                         child: const Text(

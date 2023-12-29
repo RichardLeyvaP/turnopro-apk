@@ -7,7 +7,7 @@ import 'package:turnopro_apk/Routes/index.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:turnopro_apk/Views/professional/clientsScheduled/clientsScheduled.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/clientsScheduled(NO%20UTILIZADA).dart';
 import 'package:turnopro_apk/Views/professional/statistic/statisticPage.dart';
 import 'package:turnopro_apk/Views/responsible/coexistencePageResponsible.dart';
 import 'package:turnopro_apk/Views/responsible/homeResponsiblePage.dart';
@@ -73,7 +73,7 @@ class Myapp extends StatelessWidget {
       ),
       GetPage(
         name: '/StatisticPageRespon',
-        page: () => StatisticPageRespon(),
+        page: () => const StatisticPageRespon(),
         binding: BindingsBuilder.put(() => StatisticController()),
       ),
       GetPage(

@@ -86,7 +86,7 @@ class _StadisticaResponState extends State<StadisticaRespon> {
                             controllerStat.dateRange == ''
                                 ? '  seleccione una fecha'
                                 : dateActual == controllerStat.dateRange
-                                    ? '   Fecha de Hoy- $dateAct'
+                                    ? '   Fecha de Hoy-  $dateAct'
                                     : controllerStat.dateRange,
                             style: const TextStyle(
                                 color: Color.fromARGB(130, 0, 0, 0)),

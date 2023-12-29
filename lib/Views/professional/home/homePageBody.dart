@@ -5,7 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
-import 'package:turnopro_apk/Controllers/pages.config.controller.dart';
+import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 
 class HomePageBody extends StatefulWidget {
@@ -16,7 +16,7 @@ class HomePageBody extends StatefulWidget {
 }
 
 class _HomePageBodyState extends State<HomePageBody>
-    with TickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   AnimationController? _animationControllerInitial;
 
   AnimationController? _animationController1;
@@ -36,6 +36,9 @@ class _HomePageBodyState extends State<HomePageBody>
 
   final CoexistenceController coexistenceController =
       Get.put(CoexistenceController());
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -103,6 +106,7 @@ class _HomePageBodyState extends State<HomePageBody>
   //
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return GetBuilder<ClientsScheduledController>(builder: (controllerclient) {
       String firstName = '';
       // //todo AQUI DETENGO LOS TIMER QUE NO ESTAN VISIBLES
@@ -684,8 +688,8 @@ class _HomePageBodyState extends State<HomePageBody>
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  pagesConfigC.navigateBottomBar(
-                                      1); //index = 1 -> /Clients
+                                  pagesConfigC
+                                      .onTabTapped(1); //index = 1 -> /Clients
                                 },
                                 child: cartsHome(
                                     context,
@@ -698,7 +702,7 @@ class _HomePageBodyState extends State<HomePageBody>
                               ),
                               InkWell(
                                 onTap: () {
-                                  pagesConfigC.navigateBottomBar(
+                                  pagesConfigC.onTabTapped(
                                       2); //index = 2 -> /NotificationsPageProf
                                 },
                                 child: cartsHome(
@@ -720,7 +724,7 @@ class _HomePageBodyState extends State<HomePageBody>
                             children: [
                               InkWell(
                                 onTap: () {
-                                  pagesConfigC.navigateBottomBar(
+                                  pagesConfigC.onTabTapped(
                                       3); //index = 3 -> /StatisticPage
                                 },
                                 child: cartsHome(
@@ -734,7 +738,7 @@ class _HomePageBodyState extends State<HomePageBody>
                               ),
                               InkWell(
                                 onTap: () {
-                                  pagesConfigC.navigateBottomBar(
+                                  pagesConfigC.onTabTapped(
                                       4); //index = 4 -> /CoexistencePage
                                 },
                                 child: cartsHome(
@@ -757,6 +761,7 @@ class _HomePageBodyState extends State<HomePageBody>
         ],
       );
     });
+    //todoooooooooooooooooooooooooooooooooooooooooo
   }
 
   //todo9

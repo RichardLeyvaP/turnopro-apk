@@ -14,6 +14,7 @@ class LoginController extends GetxController {
     });
   }
 
+  bool maintainClockStatus = false;
   UserRepository usuarioLg = UserRepository();
   //*************************/
   String nameUserLoggedIn = '';
@@ -31,6 +32,11 @@ class LoginController extends GetxController {
   String qrRead = '';
   bool incorrectFields = false;
   String greeting = 'Buenos días ';
+
+  void setMaintainClockStatus() {
+    maintainClockStatus = true;
+    update();
+  }
 
   void getGreeting() {
     // Obtener la hora actual

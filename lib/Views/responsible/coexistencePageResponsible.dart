@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 import 'package:turnopro_apk/Models/professional_model.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
@@ -19,6 +20,8 @@ class CoexistencePageResponsible extends StatefulWidget {
 final ClientsScheduledController controllerClient =
     Get.find<ClientsScheduledController>();
 final LoginController controllerLogin = Get.find<LoginController>();
+final PagesConfigResponController pagesConfigCont =
+    Get.find<PagesConfigResponController>();
 
 class _CoexistencePageResponsibleState
     extends State<CoexistencePageResponsible> {
@@ -32,7 +35,8 @@ class _CoexistencePageResponsibleState
             IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.pop(context);
+                pagesConfigCont.back();
+                // Navigator.pop(context);
               },
             ),
           ],

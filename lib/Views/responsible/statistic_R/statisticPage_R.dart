@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:turnopro_apk/Components/BottomNavigationBar.dart';
+import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 //import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
@@ -21,6 +21,8 @@ class _StatisticPageResponState extends State<StatisticPageRespon>
     with SingleTickerProviderStateMixin {
   final StatisticController controllerStatistic =
       Get.find<StatisticController>();
+  final PagesConfigResponController pagesConfigCont =
+      Get.find<PagesConfigResponController>();
   late TabController _tabController;
 
   @override
@@ -52,10 +54,6 @@ class _StatisticPageResponState extends State<StatisticPageRespon>
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: backgroundColor,
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.all((MediaQuery.of(context).size.height * 0.012)),
-          child: BottomNavigationBarNew(),
-        ),
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(
               255, 26, 50, 82), // Color de fondo del AppBar
@@ -72,7 +70,8 @@ class _StatisticPageResponState extends State<StatisticPageRespon>
               IconButton(
                 icon: const Icon(Icons.arrow_back), // Icono que deseas mostrar
                 onPressed: () {
-                  Get.back();
+                  pagesConfigCont.back();
+                  //Get.back();
                 }, // Evento onPress
               ),
               Column(

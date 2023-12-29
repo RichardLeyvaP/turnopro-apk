@@ -21,6 +21,7 @@ class CoexistenceController extends GetxController {
   bool isLoading = true;
   //LLAMANDO AL CONTROLADOR
   CoexistenceController() {
+    print('estoy inicializando CoexistenceController ');
     final StatisticController controllerStad = Get.find<StatisticController>();
     final LoginController controllerLogin = Get.find<LoginController>();
     if (controllerLogin.chargeUserLoggedIn == "Barbero") {

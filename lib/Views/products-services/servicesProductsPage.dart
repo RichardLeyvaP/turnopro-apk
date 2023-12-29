@@ -2,13 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
+import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/product.controller.dart';
 import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:turnopro_apk/Views/products-services/products/productsBody.dart';
 import 'package:turnopro_apk/Views/products-services/services/servicesBodyPage.dart';
-//import 'package:turnopro_apk/Views/products-services/services/servicesBody.dart';
-import '../../Components/BottomNavigationBar.dart';
 //import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
 
@@ -31,6 +30,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
       Get.find<ClientsScheduledController>();
   final ShoppingCartController controllerShoppingCart =
       Get.find<ShoppingCartController>();
+  final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
 
   @override
   void initState() {
@@ -62,10 +62,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: backgroundColor,
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.all((MediaQuery.of(context).size.height * 0.012)),
-          child: BottomNavigationBarNew(),
-        ),
+
         appBar: AppBar(
           backgroundColor: const Color(0xFFF18254), // Color de fondo del AppBar
           elevation: 0, // Sombra del AppBar
@@ -81,7 +78,8 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
               IconButton(
                 icon: const Icon(Icons.arrow_back), // Icono que deseas mostrar
                 onPressed: () {
-                  Get.back();
+                  pagesConfigC.previousPage();
+                  //Get.back();
                 }, // Evento onPress
               ),
               Column(
@@ -143,7 +141,8 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                 // Oculta el indicador de carga y navega a la página del carrito
                                 Get.back(); // Cierra el diálogo
 
-                                Get.toNamed('/ShoppingCartPage');
+                                // Get.toNamed('/ShoppingCartPage');
+                                pagesConfigC.nextPage();
                               } catch (e) {
                                 // En caso de error, oculta el indicador de carga y muestra un mensaje de error
                                 Get.back();

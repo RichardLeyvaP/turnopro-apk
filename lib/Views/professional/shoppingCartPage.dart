@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
 //import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:get/get.dart';
 
@@ -11,6 +12,7 @@ class ShoppingCartPage extends StatelessWidget {
 
   final ShoppingCartController controllerShoppingCart =
       Get.find<ShoppingCartController>();
+  final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,8 @@ class ShoppingCartPage extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
-                  Navigator.pop(context);
+                  pagesConfigC.previousPage();
+                  //Navigator.pop(context);
                 },
               ),
             ],

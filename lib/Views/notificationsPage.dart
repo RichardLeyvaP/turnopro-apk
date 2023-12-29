@@ -4,13 +4,24 @@ import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 
-class NotificationsPageNew extends StatelessWidget {
-  NotificationsPageNew({super.key});
+class NotificationsPageNew extends StatefulWidget {
+  const NotificationsPageNew({super.key});
+
+  @override
+  State<NotificationsPageNew> createState() => _NotificationsPageNewState();
+}
+
+class _NotificationsPageNewState extends State<NotificationsPageNew> {
   final double valuePadding = 12;
+
   final LoginController loginController = Get.find<LoginController>();
+
   final NotificationController controllerasas =
       Get.put(NotificationController());
+  final PagesConfigResponController pagesConfigCont =
+      Get.find<PagesConfigResponController>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +41,8 @@ class NotificationsPageNew extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.pop(context);
+                pagesConfigCont.back();
+                // Navigator.pop(context);
               },
             ),
           ],

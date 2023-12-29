@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:get/get.dart';
-import 'package:turnopro_apk/Controllers/pages.config.controller.dart';
+import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class NotificationsPageProf extends StatefulWidget {

@@ -6,7 +6,7 @@ import 'package:animate_do/animate_do.dart';
 //import 'package:lottie/lottie.dart';
 //import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:turnopro_apk/Controllers/pages.config.controller.dart';
+import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 
 class HomePages extends StatefulWidget {
@@ -29,8 +29,11 @@ class _HomePagesState extends State<HomePages> {
           backgroundColor: const Color.fromARGB(255, 231, 232, 234),
           appBar:
               pagesConfigController.selectedIndex == 0 ? CustomAppBar() : null,
-          body: pagesConfigController.pages[
-              pagesConfigController.selectedIndex], // Muestra la página actual
+          body: PageView(
+            controller: pagesConfigController.pageHomeController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: pagesConfigController.pages,
+          ), // Muestra la página actual
           //body: homePageBody(borderRadiusValue, context, colorVariable, colorBottom, titleCart, descriptionTitleCart, iconCart),
           bottomNavigationBar: Padding(
             padding:
@@ -49,7 +52,7 @@ class _HomePagesState extends State<HomePages> {
                     fixedColor: const Color(0xFFF18254),
                     currentIndex: pagesConfigController.selectedIndex,
                     type: BottomNavigationBarType.fixed,
-                    onTap: pagesConfigController.navigateBottomBar,
+                    onTap: (index) => pagesConfigController.onTabTapped(index),
                     items: [
                       BottomNavigationBarItem(
                           icon: Badge(
