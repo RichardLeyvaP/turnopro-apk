@@ -63,7 +63,7 @@ class StatisticController extends GetxController {
       }
       update();
     } catch (e) {
-      // print('Error StatisticController en getDataStatistic :$e');
+      print('Error StatisticController en getDataStatistic :$e');
     }
   }
 
