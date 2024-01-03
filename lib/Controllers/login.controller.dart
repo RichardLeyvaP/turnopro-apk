@@ -113,6 +113,10 @@ class LoginController extends GetxController {
             print('***************SOY ENCARGADO*************');
             pagina = '/HomeResponsible';
             Get.offAllNamed('/HomeResponsible');
+          } else if (chargeUserLoggedIn == "Tecnico") {
+            print('***************SOY TECNICO CAPILAR*************');
+            pagina = '/HomeTecnico';
+            Get.offAllNamed('/HomeTecnico');
           }
         }
 

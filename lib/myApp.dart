@@ -13,6 +13,7 @@ import 'package:turnopro_apk/Views/responsible/coexistencePageResponsible.dart';
 import 'package:turnopro_apk/Views/responsible/homeResponsiblePage.dart';
 import 'package:turnopro_apk/Views/professional/shoppingCartPage.dart';
 import 'package:turnopro_apk/Views/responsible/statistic_R/statisticPage_R.dart';
+import 'package:turnopro_apk/Views/tecnico/homeTecnico/homePageTecnico.dart';
 
 //todo este es el que me falta optimizar
 class Myapp extends StatelessWidget {
@@ -33,7 +34,9 @@ class Myapp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: _.pagina == '/Professional'
             ? themeDataProfessional()
-            : themeDataResponsible(),
+            : _.pagina == '/HomeResponsible'
+                ? themeDataResponsible()
+                : themeDataTecnico(), //es tecnico
         initialRoute: '/SplashPage',
         //initialRoute: '/SplashPage',
         unknownRoute: GetPage(
@@ -64,6 +67,11 @@ class Myapp extends StatelessWidget {
       GetPage(
         name: '/HomeResponsible',
         page: () => const HomeResponsiblePages(),
+        binding: BindingsBuilder.put(() => LoginController()),
+      ),
+      GetPage(
+        name: '/HomeTecnico',
+        page: () => const HomePagesTecnico(),
         binding: BindingsBuilder.put(() => LoginController()),
       ),
       GetPage(
@@ -143,6 +151,18 @@ class Myapp extends StatelessWidget {
           GoogleFonts.poppinsTextTheme(), // Aplicar Poppins a todo el proyecto
 
       // Otras configuraciones de tema
+    );
+  }
+
+  ThemeData themeDataTecnico() {
+    return ThemeData(
+      appBarTheme: const AppBarTheme(
+        toolbarHeight: 120, // Cambia este valor según tus necesidades
+        backgroundColor: Colors.deepOrangeAccent,
+      ),
+      primaryColor: Colors.deepOrangeAccent, // Color primario
+      hintColor: Colors.brown,
+      textTheme: GoogleFonts.poppinsTextTheme(),
     );
   }
 }
