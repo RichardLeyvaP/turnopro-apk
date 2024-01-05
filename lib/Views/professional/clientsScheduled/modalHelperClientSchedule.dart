@@ -35,37 +35,95 @@ class ModalHelper {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    controllClient.statusClientTemporary == 1
-                        ? ElevatedButton(
-                            style: ButtonStyle(
-                              padding:
-                                  MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                const EdgeInsets.symmetric(
-                                    vertical: 4.0, horizontal: 10.0),
+                    controllClient.statusClientTemporary == 11
+                        ? Row(
+                            children: [
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  padding: MaterialStateProperty.all<
+                                      EdgeInsetsGeometry>(
+                                    const EdgeInsets.symmetric(
+                                        vertical: 4.0, horizontal: 10.0),
+                                  ),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.black),
+                                ),
+                                onPressed: () async {
+                                  //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
+                                  await controllClient.acceptOrRejectClient(
+                                      reservationId, 2);
+                                  Navigator.pop(context); // Cierra el modal
+                                },
+                                child: const Text(
+                                  'Cliente Atendido',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800),
+                                ),
                               ),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.black),
-                            ),
-                            onPressed: () async {
-                              //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
-                              await controllClient.acceptOrRejectClient(
-                                  reservationId, 2);
-                              Navigator.pop(context); // Cierra el modal
-                            },
-                            child: const Text(
-                              'Cliente Atendido',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w800),
-                            ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  padding: MaterialStateProperty.all<
+                                      EdgeInsetsGeometry>(
+                                    const EdgeInsets.symmetric(
+                                        vertical: 4.0, horizontal: 10.0),
+                                  ),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.black),
+                                ),
+                                onPressed: () async {
+                                  //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
+                                  await controllClient.acceptOrRejectClient(
+                                      reservationId, 4);
+                                  Navigator.pop(context); // Cierra el modal
+                                },
+                                child: const Text(
+                                  'Enviar al Técnico',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                              )
+                            ],
                           )
-                        : const Text(
-                            'Descripción de Reserva',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w800,
-                                color: Color(0xFFF18254),
-                                fontSize: 18),
-                          ),
+                        : controllClient.statusClientTemporary == 1
+                            ? ElevatedButton(
+                                style: ButtonStyle(
+                                  padding: MaterialStateProperty.all<
+                                      EdgeInsetsGeometry>(
+                                    const EdgeInsets.symmetric(
+                                        vertical: 4.0, horizontal: 10.0),
+                                  ),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.black),
+                                ),
+                                onPressed: () async {
+                                  //HACER UNA LLAMADA Y MANADAR A LA DB EL RELOJ QUE PERTENECE A ESTE CLIENTE
+                                  //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
+                                  await controllClient.acceptOrRejectClient(
+                                      reservationId, 4);
+                                  Navigator.pop(context); // Cierra el modal
+                                },
+                                child: const Text(
+                                  'Enviar al Técnico',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                              )
+                            : const Text(
+                                'Descripción de Reserva',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    color: Color(0xFFF18254),
+                                    fontSize: 18),
+                              ),
                     InkWell(
                         onTap: () {
                           Navigator.pop(context); // Cierra el modal
@@ -129,6 +187,37 @@ class ModalHelper {
                     ),
                   ),
                 ),
+                controllClient.statusClientTemporary == 11
+                    ? ElevatedButton(
+                        style: ButtonStyle(
+                          padding:
+                              MaterialStateProperty.all<EdgeInsetsGeometry>(
+                            const EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 30.0),
+                          ),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color(0xFFF18254)),
+                        ),
+                        onPressed: () async {
+                          await controllClient.watchModifyTime(reservationId);
+                          // Cierra el modal primero
+                          Navigator.pop(context);
+                          //luego llamo a la pagina de servicios y productos
+                          /*Get.toNamed(
+                            '/servicesProductsPage',
+                          );*/
+                          pageController.nextPage(
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.ease,
+                          );
+                        },
+                        child: const Text(
+                          'Añadir servicios y productos',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w700),
+                        ),
+                      )
+                    : Text(''),
                 controllClient.statusClientTemporary == 1
                     ? ElevatedButton(
                         style: ButtonStyle(

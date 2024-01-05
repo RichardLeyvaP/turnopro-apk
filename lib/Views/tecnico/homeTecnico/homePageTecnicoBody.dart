@@ -162,9 +162,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
           // Se ejecutará después de que se haya construido el widget
           //define que tipo de saludo dar dependiendo de la hora
           loginController.getGreeting();
-          controllerclient.modifingTimeClose();
           print(
-              'ENTRE A DESTRUIR LAS VARIABLES DEL TIEMPO ASIGNADO activeModifyTime SOY = ${controllerclient.activeModifyTime}');
+              'ENTRE A DESTRUIR LAS VARIABLES DESDE WidgetsBinding.instance.addPostFrameCallback TECNHICAL');
         });
       }
 
@@ -244,7 +243,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                     height: 50,
                                   ),
                                 ] else if (controllerclient
-                                        .quantityClientAttendedTechnical >
+                                        .quantityClientAttendedTechnical ==
                                     0) ...[
                                   cardTimer(
                                     UniqueKey(),
@@ -252,7 +251,9 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                     controllerclient,
                                     _animationControllerInitial!,
                                   ),
-                                ] else ...[
+                                ] else if (controllerclient
+                                        .clientsNextTechnical ==
+                                    null) ...[
                                   const SizedBox(
                                     height: 50,
                                   ),

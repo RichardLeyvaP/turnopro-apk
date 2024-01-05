@@ -15,6 +15,7 @@ class ClientsScheduledController extends GetxController {
   List<ClientsScheduledModel> clientsScheduledListTechnical =
       []; // Lista de clientes
   List<ClientsScheduledModel> selectClientsScheduledList = [];
+  List<ClientsScheduledModel> selectclientsScheduledListTechnical = [];
   ClientsScheduledModel? clientsScheduledNext; // Cliente en espera
   ClientsScheduledModel? clientsNextTechnical; // Cliente en espera
   ClientsScheduledModel? clientsAttended1; // Cliente en espera
@@ -60,6 +61,14 @@ class ClientsScheduledController extends GetxController {
   int filterShowTimer = 0; //si esta en false es que es la primera vez
   int statusClientTemporary = -99;
   String nameClientTemporary = 'Cliente';
+
+  Map<int, int> pausResumeClock = {
+    0: -99,
+    1: -99,
+    2: -99,
+    3: -99,
+  };
+  bool clockchanges = false;
 
   //Fin Variables del reloj
 
@@ -305,6 +314,19 @@ class ClientsScheduledController extends GetxController {
     }
   }
 
+  void clockChanges(bool value) {
+    clockchanges = value;
+    update();
+  }
+
+  void pauseResumeClock(int clock, int value) {
+    //si clock es 0 es que va hacer algo en el reloj 1
+    // value = 0 es pausar y value = 1 es reaunudar
+    pausResumeClock[clock] = value;
+    clockchanges = true;
+    update();
+  }
+
   Future<void> acceptOrRejectClient(reservationId, attended) async {
     final LoginController controllerLogin = Get.find<LoginController>();
 
@@ -315,7 +337,7 @@ class ClientsScheduledController extends GetxController {
       int? idProfessional = controllerLogin.idProfessionalLoggedIn;
       //aqui actualizo la cola
       await fetchClientsScheduled(idProfessional, idBranch);
-      //verificar que reloj es el que hay que detener
+      //verificar que reloj es el que hay que QUITAR
       if (attended == 2) {
         //si es 2 es que ya termino de atender al cliente1
         if (clientsAttended1 != null) {
@@ -326,6 +348,7 @@ class ClientsScheduledController extends GetxController {
             if (item.contains(0)) {
               item.remove(0);
             }
+            pausResumeClock[0] = -99;
           }
         }
         if (clientsAttended2 != null) {
@@ -337,6 +360,7 @@ class ClientsScheduledController extends GetxController {
             if (item.contains(1)) {
               item.remove(1);
             }
+            pausResumeClock[1] = -99;
           }
         }
         if (clientsAttended3 != null) {
@@ -348,6 +372,7 @@ class ClientsScheduledController extends GetxController {
             if (item.contains(2)) {
               item.remove(2);
             }
+            pausResumeClock[2] = -99;
           }
         }
         if (clientsAttended4 != null) {
@@ -359,7 +384,41 @@ class ClientsScheduledController extends GetxController {
             if (item.contains(3)) {
               item.remove(3);
             }
+            pausResumeClock[3] = -99;
           }
+        }
+      }
+      //SI ES ATEENDED = 4 ES PORQUE VA A MANDARLO AL TECNICO
+      //AQUI MANDAR A LLAMAR A LA FUNCION set_clock(TIMER), DEPENDIENDO DEL TIMER QUE SEA
+      //ESTO LO MODIFICA EN LA BD PARA QUE EL TECNICO TENGA ACCESO A EL
+      if (attended == 4) {
+        //ES PORQUE ES EL RELOJ 1
+        if (clientsAttended1 != null &&
+            reservationId == clientsAttended1!.reservation_id) {
+          //Pausar reloj 1
+          pauseResumeClock(0, 0);
+          print('..............1');
+        }
+        //ES PORQUE ES EL RELOJ 2
+        if (clientsAttended2 != null &&
+            reservationId == clientsAttended2!.reservation_id) {
+          //Pausar reloj 2
+          pauseResumeClock(1, 0);
+          print('..............2');
+        }
+        //ES PORQUE ES EL RELOJ 3
+        if (clientsAttended3 != null &&
+            reservationId == clientsAttended3!.reservation_id) {
+          //Pausar reloj 3
+          pauseResumeClock(2, 0);
+          print('..............3');
+        }
+        //ES PORQUE ES EL RELOJ 4
+        if (clientsAttended4 != null &&
+            reservationId == clientsAttended4!.reservation_id) {
+          //Pausar reloj 4
+          pauseResumeClock(3, 0);
+          print('..............4');
         }
       }
       update();
@@ -468,6 +527,19 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
+  getselectCustomerTechnical(index, idCar) async {
+    print('IdCar:$idCar');
+    // await searchForCustomerServices(idCar);
+    (selectclientsScheduledListTechnical
+            .contains(clientsScheduledListTechnical[index]))
+        ? selectclientsScheduledListTechnical
+            .remove(clientsScheduledListTechnical[index])
+        : selectclientsScheduledListTechnical
+            .add(clientsScheduledListTechnical[index]);
+
+    update();
+  }
+
   showingServiceClient(bool value) {
     print(
         'No actualizar la cola, tengo desplegado los servicios ahora mandando:$value');
@@ -484,6 +556,11 @@ class ClientsScheduledController extends GetxController {
 
   cleanselectCustomer() {
     selectClientsScheduledList.clear();
+    update();
+  }
+
+  cleanselectCustomerTechnical() {
+    selectclientsScheduledListTechnical.clear();
     update();
   }
 

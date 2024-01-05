@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/Views/professional/home/homePageBody.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/clientsScheduled.dart';
-import 'package:turnopro_apk/Views/tecnico/clientsScheduled/clientsScheduled.dart';
+import 'package:turnopro_apk/Views/tecnico/clientsScheduled/clientsTechnical.dart';
 import 'package:turnopro_apk/Views/tecnico/homeTecnico/homePageTecnicoBody.dart';
 
 class PagesConfigController extends GetxController {

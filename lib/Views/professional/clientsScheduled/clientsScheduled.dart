@@ -263,16 +263,15 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                       0.006)),
                                               child: Container(
                                                 decoration: controllerClient
-                                                        .selectClientsScheduledList
-                                                        .contains(controllerClient
-                                                                .clientsScheduledList[
-                                                            index])
+                                                            .clientsScheduledList[
+                                                                index]
+                                                            .attended ==
+                                                        4
                                                     ? BoxDecoration(
                                                         border: Border.all(
                                                             width: 0.01),
                                                         borderRadius:
-                                                            const BorderRadius
-                                                                    .all(
+                                                            const BorderRadius.all(
                                                                 Radius.circular(
                                                                     12)),
                                                         boxShadow: [
@@ -291,9 +290,9 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                             const LinearGradient(
                                                           colors: [
                                                             Color.fromARGB(255,
-                                                                231, 232, 234),
-                                                            Color.fromARGB(255,
-                                                                243, 182, 138),
+                                                                254, 254, 255),
+                                                            Color.fromARGB(82,
+                                                                236, 233, 233),
                                                           ],
                                                           stops: [0.0, 0.8],
                                                           begin:
@@ -302,37 +301,93 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                           end: FractionalOffset
                                                               .centerLeft,
                                                         ))
-                                                    : BoxDecoration(
-                                                        border: controllerClient
+                                                    : controllerClient
+                                                            .selectClientsScheduledList
+                                                            .contains(controllerClient
                                                                     .clientsScheduledList[
-                                                                        index]
-                                                                    .attended ==
-                                                                1
-                                                            ? Border.all(
-                                                                width: 2,
-                                                                color: const Color(
-                                                                    0xFFF18254))
-                                                            : Border.all(
-                                                                width: 0.01),
-                                                        color: Colors.white,
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: Colors.grey
-                                                                .withOpacity(
-                                                                    0.7),
-                                                            spreadRadius: 1,
-                                                            blurRadius: 5,
-                                                            offset: const Offset(
-                                                                -5,
-                                                                5), // Ajusta los valores para personalizar la sombra
+                                                                index])
+                                                        ? BoxDecoration(
+                                                            border:
+                                                                Border.all(width: 0.01),
+                                                            borderRadius: const BorderRadius.all(Radius.circular(12)),
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: Colors
+                                                                    .grey
+                                                                    .withOpacity(
+                                                                        0.7),
+                                                                spreadRadius: 1,
+                                                                blurRadius: 5,
+                                                                offset: const Offset(
+                                                                    -5,
+                                                                    5), // Ajusta los valores para personalizar la sombra
+                                                              ),
+                                                            ],
+                                                            gradient: const LinearGradient(
+                                                              colors: [
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    231,
+                                                                    232,
+                                                                    234),
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    243,
+                                                                    182,
+                                                                    138),
+                                                              ],
+                                                              stops: [0.0, 0.8],
+                                                              begin: FractionalOffset
+                                                                  .centerRight,
+                                                              end: FractionalOffset
+                                                                  .centerLeft,
+                                                            ))
+                                                        : BoxDecoration(
+                                                            border: controllerClient
+                                                                            .clientsScheduledList[
+                                                                                index]
+                                                                            .attended ==
+                                                                        1 ||
+                                                                    controllerClient
+                                                                            .clientsScheduledList[
+                                                                                index]
+                                                                            .attended ==
+                                                                        11
+                                                                ? Border.all(
+                                                                    width: 2,
+                                                                    color: controllerClient.clientsScheduledList[index].attended ==
+                                                                            1
+                                                                        ? const Color(
+                                                                            0xFFF18254)
+                                                                        : const Color.fromARGB(
+                                                                            255,
+                                                                            17,
+                                                                            179,
+                                                                            38))
+                                                                : Border.all(
+                                                                    width:
+                                                                        0.01),
+                                                            color: Colors.white,
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: Colors
+                                                                    .grey
+                                                                    .withOpacity(
+                                                                        0.7),
+                                                                spreadRadius: 1,
+                                                                blurRadius: 5,
+                                                                offset: const Offset(
+                                                                    -5,
+                                                                    5), // Ajusta los valores para personalizar la sombra
+                                                              ),
+                                                            ],
+                                                            borderRadius:
+                                                                const BorderRadius
+                                                                    .all(
+                                                              Radius.circular(
+                                                                  12),
+                                                            ),
                                                           ),
-                                                        ],
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                .all(
-                                                          Radius.circular(12),
-                                                        ),
-                                                      ),
                                                 child: ListTile(
                                                   shape:
                                                       const RoundedRectangleBorder(
@@ -342,68 +397,75 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                     ),
                                                   ),
                                                   onTap: () async {
-                                                    // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
-                                                    controllerClient
-                                                        .showingServiceClient(
-                                                            true);
-                                                    // aqui selecciono el cliente
-                                                    controllerClient
-                                                        .getselectCustomer(
-                                                            index,
-                                                            controllerClient
-                                                                .clientsScheduledList[
-                                                                    index]
-                                                                .car_id);
-                                                    //AQUI MANDO ID DE CARRO PAR ACARGAR EL CARRITO PARA LOS SERVICIO Y PRODUCTOS
-                                                    //Y SE ACTUALIZA LA VARIABLE GLOBAL carIdClienteSelect
-                                                    controllerClient
-                                                        .selectCarClient(
-                                                            controllerClient
-                                                                .clientsScheduledList[
-                                                                    index]
-                                                                .car_id);
-                                                    //AQUI MANDO EL ID DE RESERVACION Y ME DEVUELVE EL ESTADO DEL CLIENTE,
-                                                    //SI SE ESTA ATENDINEDO O NO , PARA ASI SABER CUANDO MOSTRAR LOS BOTONES DE ATENDIDO Y
-                                                    //SELECCIONAR SERVICIO Y PRODUCTOS
-                                                    controllerClient
-                                                        .returnClientStatus(
-                                                            controllerClient
-                                                                .clientsScheduledList[
-                                                                    index]
-                                                                .reservation_id);
-                                                    //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
-                                                    controllerClient
-                                                        .returnClientName(
-                                                            (controllerClient
-                                                                    .clientsScheduledList[
-                                                                        index]
-                                                                    .client_name)
-                                                                .toString());
+                                                    //VA A EJECUTARSE SI NO ESTA CON EL TECNICO
+                                                    if (controllerClient
+                                                            .clientsScheduledList[
+                                                                index]
+                                                            .attended !=
+                                                        4) {
+                                                      // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
+                                                      controllerClient
+                                                          .showingServiceClient(
+                                                              true);
+                                                      // aqui selecciono el cliente
+                                                      controllerClient
+                                                          .getselectCustomer(
+                                                              index,
+                                                              controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .car_id);
+                                                      //AQUI MANDO ID DE CARRO PAR ACARGAR EL CARRITO PARA LOS SERVICIO Y PRODUCTOS
+                                                      //Y SE ACTUALIZA LA VARIABLE GLOBAL carIdClienteSelect
+                                                      controllerClient
+                                                          .selectCarClient(
+                                                              controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .car_id);
+                                                      //AQUI MANDO EL ID DE RESERVACION Y ME DEVUELVE EL ESTADO DEL CLIENTE,
+                                                      //SI SE ESTA ATENDINEDO O NO , PARA ASI SABER CUANDO MOSTRAR LOS BOTONES DE ATENDIDO Y
+                                                      //SELECCIONAR SERVICIO Y PRODUCTOS
+                                                      controllerClient
+                                                          .returnClientStatus(
+                                                              controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .reservation_id);
+                                                      //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
+                                                      controllerClient
+                                                          .returnClientName(
+                                                              (controllerClient
+                                                                      .clientsScheduledList[
+                                                                          index]
+                                                                      .client_name)
+                                                                  .toString());
 
-                                                    controllerClient
-                                                        .searchForCustomerServices(
+                                                      controllerClient
+                                                          .searchForCustomerServices(
+                                                              controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .car_id)
+                                                          .then((_) {
+                                                        ModalHelper.showModal(
+                                                            pagesConfigC
+                                                                .pageController,
+                                                            context,
                                                             controllerClient
                                                                 .clientsScheduledList[
                                                                     index]
-                                                                .car_id)
-                                                        .then((_) {
-                                                      ModalHelper.showModal(
-                                                          pagesConfigC
-                                                              .pageController,
-                                                          context,
-                                                          controllerClient
-                                                              .clientsScheduledList[
-                                                                  index]
-                                                              .client_name,
-                                                          controllerClient
-                                                              .clientsScheduledList[
-                                                                  index]
-                                                              .reservation_id,
-                                                          controllerClient
-                                                              .clientsScheduledList[
-                                                                  index]
-                                                              .car_id);
-                                                    });
+                                                                .client_name,
+                                                            controllerClient
+                                                                .clientsScheduledList[
+                                                                    index]
+                                                                .reservation_id,
+                                                            controllerClient
+                                                                .clientsScheduledList[
+                                                                    index]
+                                                                .car_id);
+                                                      });
+                                                    }
                                                   },
                                                   title: Row(
                                                     mainAxisAlignment:
@@ -554,13 +616,18 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                             )
                                                           : //SI ESTA VARIABLE ES IGUAL A 1 ES QUE SE ESTA ATENDIENDO
                                                           controllerClient
-                                                                      .clientsScheduledList[
-                                                                          index]
-                                                                      .attended ==
-                                                                  1
-                                                              ? const Column(
+                                                                          .clientsScheduledList[
+                                                                              index]
+                                                                          .attended ==
+                                                                      1 ||
+                                                                  controllerClient
+                                                                          .clientsScheduledList[
+                                                                              index]
+                                                                          .attended ==
+                                                                      11
+                                                              ? Column(
                                                                   children: [
-                                                                    Image(
+                                                                    const Image(
                                                                       image:
                                                                           AssetImage(
                                                                         'assets/images/client-attended.png',
@@ -570,36 +637,70 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                           50,
                                                                     ),
                                                                     Text(
-                                                                      'Atendiendose',
+                                                                      controllerClient.clientsScheduledList[index].attended ==
+                                                                              1
+                                                                          ? 'Atendiendose'
+                                                                          : 'Terminando Servicio',
                                                                       style:
                                                                           TextStyle(
-                                                                        color: Color(
-                                                                            0xFFF18254),
+                                                                        color: controllerClient.clientsScheduledList[index].attended ==
+                                                                                1
+                                                                            ? const Color(
+                                                                                0xFFF18254)
+                                                                            : const Color.fromARGB(
+                                                                                255,
+                                                                                71,
+                                                                                143,
+                                                                                43),
                                                                       ),
                                                                     ),
                                                                   ],
                                                                 )
-                                                              : const Row(
-                                                                  //todo 99
-                                                                  children: [
-                                                                    Opacity(
-                                                                      opacity:
-                                                                          1,
-                                                                      child:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .play_circle,
-                                                                        size:
-                                                                            60,
-                                                                        color: Color.fromARGB(
-                                                                            85,
-                                                                            83,
-                                                                            82,
-                                                                            82),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                )
+                                                              : controllerClient
+                                                                          .clientsScheduledList[
+                                                                              index]
+                                                                          .attended ==
+                                                                      4
+                                                                  ? const Row(
+                                                                      //todo 999
+                                                                      children: [
+                                                                        Opacity(
+                                                                          opacity:
+                                                                              1,
+                                                                          child:
+                                                                              Image(
+                                                                            image:
+                                                                                AssetImage(
+                                                                              'assets/images/icons/lavado.png',
+                                                                            ),
+                                                                            width:
+                                                                                50,
+                                                                            height:
+                                                                                50,
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    )
+                                                                  : const Row(
+                                                                      //todo 999
+                                                                      children: [
+                                                                        Opacity(
+                                                                          opacity:
+                                                                              1,
+                                                                          child:
+                                                                              Icon(
+                                                                            Icons.play_circle,
+                                                                            size:
+                                                                                60,
+                                                                            color: Color.fromARGB(
+                                                                                85,
+                                                                                83,
+                                                                                82,
+                                                                                82),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    )
                                                     ],
                                                   ),
                                                   //subtitle: Text(controllerClient.users[index].username.toString()),

@@ -4,10 +4,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
+import 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';
 
-class ModalHelper {
-  static showModal(PageController pageController, BuildContext context,
+class ModalHelperTecnical {
+  static showModalTechnical(PageController pageController, BuildContext context,
       String cliente, int reservationId, int carId) async {
     Completer<void> closedCompleter = Completer<void>();
     List<double> sizeExpandedService = [170, 224, 280, 336, 392];
@@ -15,7 +15,7 @@ class ModalHelper {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return GetBuilder<ClientsScheduledController>(
+        return GetBuilder<ClientsTechnicalController>(
             builder: (controllClient) {
           //VARIABLES PARA AJUSTAR EL DESPLEGABLE DE MOSTRAR LOS DETALLES DE RESERVA
           int item = (controllClient.serviceCustomerSelected.length - 1);
@@ -35,7 +35,7 @@ class ModalHelper {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    controllClient.statusClientTemporary == 1
+                    controllClient.statusClientTemporary == 5
                         ? ElevatedButton(
                             style: ButtonStyle(
                               padding:
@@ -47,9 +47,9 @@ class ModalHelper {
                                   Colors.black),
                             ),
                             onPressed: () async {
-                              //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
-                              await controllClient.acceptOrRejectClient(
-                                  reservationId, 2);
+                              //llamo al ocntrolador y lo paso attended = 11 que significa que esta ya atendido y lo mando con el profesional
+                              await controllClient.acceptClientTechnical(
+                                  reservationId, 11);
                               Navigator.pop(context); // Cierra el modal
                             },
                             child: const Text(
@@ -129,48 +129,17 @@ class ModalHelper {
                     ),
                   ),
                 ),
-                controllClient.statusClientTemporary == 1
-                    ? ElevatedButton(
-                        style: ButtonStyle(
-                          padding:
-                              MaterialStateProperty.all<EdgeInsetsGeometry>(
-                            const EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 30.0),
-                          ),
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              const Color(0xFFF18254)),
-                        ),
-                        onPressed: () async {
-                          await controllClient.watchModifyTime(reservationId);
-                          // Cierra el modal primero
-                          Navigator.pop(context);
-                          //luego llamo a la pagina de servicios y productos
-                          /*Get.toNamed(
-                            '/servicesProductsPage',
-                          );*/
-                          pageController.nextPage(
-                            duration: Duration(milliseconds: 300),
-                            curve: Curves.ease,
-                          );
-                        },
-                        child: const Text(
-                          'Añadir servicios y productos',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.w700),
-                        ),
-                      )
-                    : Text(''),
               ],
             ),
           );
         });
       },
     ).whenComplete(() {
-      final ClientsScheduledController controllClient =
-          Get.find<ClientsScheduledController>();
+      final ClientsTechnicalController controllClient =
+          Get.find<ClientsTechnicalController>();
       controllClient
-          .cleanselectCustomer(); //aqui le quito estilo de seleccionado
-      controllClient.showingServiceClient(false);
+          .cleanselectCustomerTechnical(); //aqui le quito estilo de seleccionado
+      controllClient.showingServiceClientTechnical(false);
       closedCompleter.complete();
     });
     //esta no se esta utilizando pero tambien puede ser

@@ -108,6 +108,43 @@ class _HomePageBodyState extends State<HomePageBody>
   Widget build(BuildContext context) {
     super.build(context);
     return GetBuilder<ClientsScheduledController>(builder: (controllerclient) {
+      //AQUI ESCUCHANDO PARA SABER SI TENGO QUE DETENER O REAUNUDAR LOS TIMER
+      if (controllerclient.clockchanges == true) {
+        //
+        for (var i = 0; i < controllerclient.pausResumeClock.length; i++) {
+          int? value = controllerclient.pausResumeClock[i];
+          //
+          if (value != -99) {
+            if (value == 0) //hay que pausarlo
+            {
+              if (i == 0) {
+                _animationController1!.stop();
+                print('PAUSE EL RELOJ 1');
+              }
+              if (i == 1) {
+                _animationController2!.stop();
+                print('PAUSE EL RELOJ 2');
+              }
+              if (i == 2) {
+                _animationController3!.stop();
+                print('PAUSE EL RELOJ 3');
+              }
+              if (i == 3) {
+                _animationController4!.stop();
+                print('PAUSE EL RELOJ 4');
+              }
+            }
+            if (value == 1) //hay que reanudarlo
+            {
+              if (i == 0) {
+                _animationController1!.forward();
+                print('REAUNUDE EL RELOJ 1');
+              }
+            }
+          }
+        } //fin del for
+      }
+
       String firstName = '';
       // //todo AQUI DETENGO LOS TIMER QUE NO ESTAN VISIBLES
 
@@ -172,9 +209,11 @@ class _HomePageBodyState extends State<HomePageBody>
         animationCont[i]!.forward();
         print('RESETEADO YA');
 
+        //todo IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
         WidgetsBinding.instance.addPostFrameCallback((_) {
           // Se ejecutará después de que se haya construido el widget
           //define que tipo de saludo dar dependiendo de la hora
+          controllerclient.clockChanges(false);
           loginController.getGreeting();
           controllerclient.modifingTimeClose();
           print(

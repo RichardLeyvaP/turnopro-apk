@@ -3,13 +3,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
+import 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Views/products-services/servicesProductsPage.dart';
-import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Views/professional/shoppingCartPage.dart';
+import 'package:turnopro_apk/Views/tecnico/clientsScheduled/modalHelperClientTechnical.dart';
 
 class HomePageViewTechnical extends StatefulWidget {
   const HomePageViewTechnical({super.key});
@@ -19,8 +19,8 @@ class HomePageViewTechnical extends StatefulWidget {
 }
 
 class YourPageViewScreenState extends State<HomePageViewTechnical> {
-  final ClientsScheduledController controllerclient =
-      Get.find<ClientsScheduledController>();
+  final ClientsTechnicalController controllerclient =
+      Get.find<ClientsTechnicalController>();
   final LoginController controllerLogin = Get.find<LoginController>();
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
 
@@ -84,7 +84,7 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                 //
                 //todo PAGINA 1
                 Center(
-                  child: GetBuilder<ClientsScheduledController>(
+                  child: GetBuilder<ClientsTechnicalController>(
                     builder: (controllerClient) => controllerClient.isLoading
                         ? const Center(
                             child: CircularProgressIndicator(
@@ -154,13 +154,12 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                     height: 10,
                                   ),
                                   //AQUI CONTROLO SI HAY CLIENTES EN COLA LOS MUESTRO , SINO MUESTRO UN MENSAJE
-                                  controllerClient.clientsScheduledListLength >
-                                          0
+                                  controllerClient.clientsTechnicalLength > 0
                                       ? Expanded(
                                           flex: 18,
                                           child: ListView.builder(
                                             itemCount: controllerClient
-                                                .clientsScheduledListLength,
+                                                .clientsTechnicalLength,
                                             itemBuilder: (context, index) =>
                                                 //AQUI CONTROLO DESDE LA **(API)** SI ATTEENDED=3 ES QUE FUE RECHAZADO Y NO LO MUESTRO
                                                 //IGUAL SI ES ATTEENDED=2 ES QUE YA FUE ATENDIDO Y TAMPOCO LO MUESTRO
@@ -184,9 +183,9 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                       0.006)),
                                               child: Container(
                                                 decoration: controllerClient
-                                                        .selectClientsScheduledList
+                                                        .selectclientsScheduledListTechnical
                                                         .contains(controllerClient
-                                                                .clientsScheduledList[
+                                                                .clientsScheduledListTechnical[
                                                             index])
                                                     ? BoxDecoration(
                                                         border: Border.all(
@@ -225,10 +224,10 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                         ))
                                                     : BoxDecoration(
                                                         border: controllerClient
-                                                                    .clientsScheduledList[
+                                                                    .clientsScheduledListTechnical[
                                                                         index]
                                                                     .attended ==
-                                                                1
+                                                                5
                                                             ? Border.all(
                                                                 width: 2,
                                                                 color: const Color(
@@ -265,14 +264,14 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                   onTap: () async {
                                                     // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
                                                     controllerClient
-                                                        .showingServiceClient(
+                                                        .showingServiceClientTechnical(
                                                             true);
                                                     // aqui selecciono el cliente
                                                     controllerClient
-                                                        .getselectCustomer(
+                                                        .getselectCustomerTechnical(
                                                             index,
                                                             controllerClient
-                                                                .clientsScheduledList[
+                                                                .clientsScheduledListTechnical[
                                                                     index]
                                                                 .car_id);
                                                     //AQUI MANDO ID DE CARRO PAR ACARGAR EL CARRITO PARA LOS SERVICIO Y PRODUCTOS
@@ -280,7 +279,7 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                     controllerClient
                                                         .selectCarClient(
                                                             controllerClient
-                                                                .clientsScheduledList[
+                                                                .clientsScheduledListTechnical[
                                                                     index]
                                                                 .car_id);
                                                     //AQUI MANDO EL ID DE RESERVACION Y ME DEVUELVE EL ESTADO DEL CLIENTE,
@@ -289,14 +288,14 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                     controllerClient
                                                         .returnClientStatus(
                                                             controllerClient
-                                                                .clientsScheduledList[
+                                                                .clientsScheduledListTechnical[
                                                                     index]
                                                                 .reservation_id);
                                                     //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
                                                     controllerClient
                                                         .returnClientName(
                                                             (controllerClient
-                                                                    .clientsScheduledList[
+                                                                    .clientsScheduledListTechnical[
                                                                         index]
                                                                     .client_name)
                                                                 .toString());
@@ -304,24 +303,24 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                     controllerClient
                                                         .searchForCustomerServices(
                                                             controllerClient
-                                                                .clientsScheduledList[
+                                                                .clientsScheduledListTechnical[
                                                                     index]
                                                                 .car_id)
                                                         .then((_) {
-                                                      ModalHelper.showModal(
+                                                      ModalHelperTecnical.showModalTechnical(
                                                           pagesConfigC
                                                               .pageController,
                                                           context,
                                                           controllerClient
-                                                              .clientsScheduledList[
+                                                              .clientsScheduledListTechnical[
                                                                   index]
                                                               .client_name,
                                                           controllerClient
-                                                              .clientsScheduledList[
+                                                              .clientsScheduledListTechnical[
                                                                   index]
                                                               .reservation_id,
                                                           controllerClient
-                                                              .clientsScheduledList[
+                                                              .clientsScheduledListTechnical[
                                                                   index]
                                                               .car_id);
                                                     });
@@ -342,10 +341,10 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                 .start,
                                                         children: [
                                                           controllerClient
-                                                                  .selectClientsScheduledList
+                                                                  .selectclientsScheduledListTechnical
                                                                   .contains(
                                                                       controllerClient
-                                                                              .clientsScheduledList[
+                                                                              .clientsScheduledListTechnical[
                                                                           index])
                                                               ? Row(
                                                                   mainAxisAlignment:
@@ -366,7 +365,7 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                           19),
                                                                     ),
                                                                     Text(
-                                                                      'Tiempo Total: ${controllerClient.clientsScheduledList[index].total_time}',
+                                                                      'Tiempo Total: ${controllerClient.clientsScheduledListTechnical[index].total_time}',
                                                                       // AQUI CARHA LA HORA INICIAL,
                                                                       style: const TextStyle(
                                                                           height:
@@ -402,9 +401,9 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                           43),
                                                                     ),
                                                                     Text(
-                                                                      '  ${controllerClient.clientsScheduledList[index].start_time}'
+                                                                      '  ${controllerClient.clientsScheduledListTechnical[index].start_time}'
                                                                       ' - '
-                                                                      ' ${controllerClient.clientsScheduledList[index].final_hour}',
+                                                                      ' ${controllerClient.clientsScheduledListTechnical[index].final_hour}',
                                                                       // '   08:10 - 09:10',
                                                                       style:
                                                                           const TextStyle(
@@ -423,7 +422,7 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                 ),
                                                           Text(
                                                             controllerClient
-                                                                .clientsScheduledList[
+                                                                .clientsScheduledListTechnical[
                                                                     index]
                                                                 .client_name,
                                                             //AQUI EL NOMBRE DEL CLIENTE
@@ -433,10 +432,9 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                     FontWeight
                                                                         .w600),
                                                           ),
-                                                          Text(
-                                                            'Total de servicios: ${(controllerClient.clientsScheduledList[index].total_services).toString()}',
-                                                            style:
-                                                                const TextStyle(
+                                                          const Text(
+                                                            'Barbero: (Nombre del Barbero)',
+                                                            style: TextStyle(
                                                               fontSize: 14,
                                                               color: Color
                                                                   .fromARGB(148,
@@ -450,10 +448,10 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                         ],
                                                       ),
                                                       controllerClient
-                                                              .selectClientsScheduledList
+                                                              .selectclientsScheduledListTechnical
                                                               .contains(
                                                                   controllerClient
-                                                                          .clientsScheduledList[
+                                                                          .clientsScheduledListTechnical[
                                                                       index])
                                                           ? const Row(
                                                               children: [
@@ -475,16 +473,16 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                             )
                                                           : //SI ESTA VARIABLE ES IGUAL A 1 ES QUE SE ESTA ATENDIENDO
                                                           controllerClient
-                                                                      .clientsScheduledList[
+                                                                      .clientsScheduledListTechnical[
                                                                           index]
                                                                       .attended ==
-                                                                  1
+                                                                  5
                                                               ? const Column(
                                                                   children: [
                                                                     Image(
                                                                       image:
                                                                           AssetImage(
-                                                                        'assets/images/client-attended.png',
+                                                                        'assets/images/icons/lavado.png',
                                                                       ),
                                                                       width: 50,
                                                                       height:
