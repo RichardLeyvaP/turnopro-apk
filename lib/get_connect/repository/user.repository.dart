@@ -18,12 +18,14 @@ class UserRepository extends GetConnect {
       if (response.statusCode == 200) {
         final users = response.body;
         print('1dentro del code:200');
+        print('final users:$users');
         if (users != null) {
           print('2dentro del code:200 y tiene usuarios');
           print(users);
           return users;
         } else {
-          print('3dentro del code:200 pero retorno null');
+          print(
+              '3dentro del code:200 pero retorno null es porque algo dio nul , la sucursal puede ser');
           return null;
         }
       } else {

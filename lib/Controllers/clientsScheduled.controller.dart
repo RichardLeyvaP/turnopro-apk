@@ -12,9 +12,13 @@ class ClientsScheduledController extends GetxController {
   ClientsScheduledRepository repository = ClientsScheduledRepository();
 
   List<ClientsScheduledModel> clientsScheduledList = []; // Lista de clientes
+  List<ClientsScheduledModel> clientsScheduledListTechnical =
+      []; // Lista de clientes
   List<ClientsScheduledModel> selectClientsScheduledList = [];
   ClientsScheduledModel? clientsScheduledNext; // Cliente en espera
-  ClientsScheduledModel? clientsAttended1,
+  ClientsScheduledModel? clientsNextTechnical; // Cliente en espera
+  ClientsScheduledModel? clientsAttended1; // Cliente en espera
+  ClientsScheduledModel? clientsAttendedTechnical,
       clientsAttended2,
       clientsAttended3,
       clientsAttended4; // Cliente en espera
@@ -31,21 +35,28 @@ class ClientsScheduledController extends GetxController {
   int availability = 1;
   int busyClock = -99;
   String clientsAttended = 'nobody';
+  String technicalClientsAttended = 'nobody';
   List<ServiceModel> serviceCustomerSelected = [];
 
   int clientsScheduledListLength = 0;
+  int clientsTechnicalLength = 0;
   int? carIdClientsScheduled;
   int quantityClientAttended = 0;
+  int quantityClientAttendedTechnical = 0;
   bool isLoading = true;
   bool correctConnection = true;
 
   //Variables del reloj
   double sizeClock = 135;
+  double sizeClockTechnical = 135;
   int totalTimeInitial = 20; //Iniciando en 3 minutos el reloj
   bool callCliente = false; //si esta en false es que es la primera vez
   bool boolFilterShowNext = false; //si esta en false es que es la primera vez
-  bool showingServiceClients =
-      false; //saber si estoy mostrando los servicios de algun cliente ne el desplegable
+  bool boolFilterShowNextTecnhical =
+      false; //si esta en false es que es la primera vez
+  bool showingServiceClients = false;
+  bool showingServiceClientsTechnical =
+      false; //saber si estoy mostrando los servicios de algun cliente en el tecnico ne el desplegable
   int filterShowTimer = 0; //si esta en false es que es la primera vez
   int statusClientTemporary = -99;
   String nameClientTemporary = 'Cliente';
@@ -280,6 +291,20 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
+  Future<void> acceptClientTechnical(reservationId, attended) async {
+    final LoginController controllerLogin = Get.find<LoginController>();
+    quantityClientAttendedTechnical = 1;
+    boolFilterShowNextTecnhical = false;
+    update();
+    bool value = await repository.acceptOrRejectClient(reservationId, attended);
+    //si lo que devuelve es true actualizo la cola
+    if (value == true) {
+      quantityClientAttendedTechnical = 1;
+      int? idBranch = controllerLogin.branchIdLoggedIn;
+      fetchClientsTechnical(idBranch);
+    }
+  }
+
   Future<void> acceptOrRejectClient(reservationId, attended) async {
     final LoginController controllerLogin = Get.find<LoginController>();
 
@@ -450,6 +475,13 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
+  showingServiceClientTechnical(bool value) {
+    print(
+        'No actualizar la cola, tengo desplegado los servicios al  TECNICO-> ahora mandando:$value');
+    showingServiceClientsTechnical = value;
+    update();
+  }
+
   cleanselectCustomer() {
     selectClientsScheduledList.clear();
     update();
@@ -485,6 +517,38 @@ class ClientsScheduledController extends GetxController {
         setValueClock(true);
       } else {
         setValueClock(false);
+      }
+    }
+    update();
+  }
+
+  Future<void> fetchClientsTechnical(idBranch) async {
+    Map<String, dynamic> resultList =
+        await repository.getClientsTechnicalList(idBranch);
+    print('111ya entre a buscar inicialmente los clientes del tecnico');
+    print(resultList);
+    //verificando , si entra al if es problemas de coneccion
+    if (resultList.containsKey('ConnectionIssues') &&
+        resultList['ConnectionIssues'] == true) {
+      correctConnection = false;
+      print(
+          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
+    } else {
+      correctConnection = true;
+      //aqui estoy guardando la cola del dia de hoy del profesional
+      clientsScheduledListTechnical =
+          (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
+      clientsTechnicalLength = clientsScheduledListTechnical.length;
+      //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+
+      clientsNextTechnical = resultList['nextClient'];
+      quantityClientAttendedTechnical = resultList['quantityClientAttended'];
+      if (quantityClientAttendedTechnical == 0) {
+        clientsAttendedTechnical = clientsNextTechnical;
+        boolFilterShowNextTecnhical = true;
+        technicalClientsAttended = 'nobody';
+      } else {
+        boolFilterShowNextTecnhical = false;
       }
     }
     update();

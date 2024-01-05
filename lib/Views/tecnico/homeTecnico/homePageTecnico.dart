@@ -32,7 +32,7 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
           body: PageView(
             controller: pagesConfigController.pageHomeController,
             physics: const NeverScrollableScrollPhysics(),
-            children: pagesConfigController.pages,
+            children: pagesConfigController.pages2,
           ), // Muestra la página actual
           //body: homePageBody(borderRadiusValue, context, colorVariable, colorBottom, titleCart, descriptionTitleCart, iconCart),
           bottomNavigationBar: Padding(
@@ -148,7 +148,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  logUser.greeting,
+                  'Técnico-${logUser.greeting}',
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 14,

@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/Views/professional/home/homePageBody.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/clientsScheduled.dart';
+import 'package:turnopro_apk/Views/tecnico/clientsScheduled/clientsScheduled.dart';
+import 'package:turnopro_apk/Views/tecnico/homeTecnico/homePageTecnicoBody.dart';
 
 class PagesConfigController extends GetxController {
 //DECLARACION DE VARIABLES
@@ -60,6 +62,14 @@ class PagesConfigController extends GetxController {
   final List<Widget> pages = [
     const HomePageBody(), // Página 1
     const HomePageView(), // Página 1//todo poner aqui
+    const NotificationsPageProf(), // Página 2
+    const StatisticPage(), // Página 3
+    const CoexistencePage(), // Página 4
+  ];
+  //todo List<Widget> _pages2 -> esta esta solo para inicializar pero no es la que funciona
+  final List<Widget> pages2 = [
+    const HomePageTecnicoBody(), // Página 1
+    const HomePageViewTechnical(), // Página 1//todo poner aqui
     const NotificationsPageProf(), // Página 2
     const StatisticPage(), // Página 3
     const CoexistencePage(), // Página 4

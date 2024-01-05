@@ -128,6 +128,7 @@ class Myapp extends StatelessWidget {
   }
 
   ThemeData themeDataProfessional() {
+    print('themeDataProfessional');
     return ThemeData(
       appBarTheme: AppBarTheme(
         toolbarHeight: 120, // Cambia este valor según tus necesidades
@@ -140,6 +141,7 @@ class Myapp extends StatelessWidget {
   }
 
   ThemeData themeDataResponsible() {
+    print('themeDataResponsible');
     return ThemeData(
       appBarTheme: AppBarTheme(
         toolbarHeight: 120, // Cambia este valor según tus necesidades
@@ -155,12 +157,13 @@ class Myapp extends StatelessWidget {
   }
 
   ThemeData themeDataTecnico() {
+    print('themeDataTecnico');
     return ThemeData(
       appBarTheme: const AppBarTheme(
         toolbarHeight: 120, // Cambia este valor según tus necesidades
-        backgroundColor: Colors.deepOrangeAccent,
+        backgroundColor: Colors.brown,
       ),
-      primaryColor: Colors.deepOrangeAccent, // Color primario
+      primaryColor: Colors.deepPurpleAccent, // Color primario
       hintColor: Colors.brown,
       textTheme: GoogleFonts.poppinsTextTheme(),
     );

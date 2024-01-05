@@ -95,7 +95,6 @@ class LoginController extends GetxController {
         if (tokenUserLoggedIn != '' &&
             nameUserLoggedIn != '' &&
             emailUserLoggedIn != '') {
-          pagina = '/Professional';
           //Define el tipo de saludo
           getGreeting();
 
@@ -108,14 +107,17 @@ class LoginController extends GetxController {
 
             print('***************SOY BARBERO*************');
             pagina = '/Professional';
+            update();
             Get.offAllNamed('/Professional');
           } else if (chargeUserLoggedIn == "Encargado") {
             print('***************SOY ENCARGADO*************');
             pagina = '/HomeResponsible';
+            update();
             Get.offAllNamed('/HomeResponsible');
           } else if (chargeUserLoggedIn == "Tecnico") {
             print('***************SOY TECNICO CAPILAR*************');
             pagina = '/HomeTecnico';
+            update();
             Get.offAllNamed('/HomeTecnico');
           }
         }

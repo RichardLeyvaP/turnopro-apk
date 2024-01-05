@@ -7,6 +7,60 @@ import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/env.dart';
 
 class ClientsScheduledRepository extends GetConnect {
+  Future getClientsTechnicalList(idBranch) async {
+    List<ClientsScheduledModel> clientList = [];
+    ClientsScheduledModel? nextClient;
+    bool hasNextClient = false;
+    int quantityClientAttended = 0;
+
+    var url = '${Env.apiEndpoint}/cola_branch_capilar?branch_id=$idBranch';
+
+    final response = await get(url);
+    //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
+    if (response.statusCode == null) {
+      print('response.statusCode tecnico:${response.statusCode}');
+      return {
+        "ConnectionIssues": true,
+      };
+    } else
+      print('hay coneccion tecnico');
+    if (response.statusCode == 200) {
+      print('ya tengo la cola de la api tecnico');
+      final customers = response.body['tail'];
+      for (Map service in customers) {
+        ClientsScheduledModel client =
+            ClientsScheduledModel.fromJson(jsonEncode(service));
+        clientList.add(client);
+        //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
+        if (hasNextClient == false) {
+          //EL PRIMERO QUE ENCUENTRE CON 4 SERA EL SIGUIENTE
+          if (client.attended == 4) {
+            nextClient = client;
+            hasNextClient = true;
+          }
+        }
+        //AQUI PARA SABER CUANTOS ESTA ATENDIENDO por el tecnico
+        if (client.attended == 5) {
+          //HASTA AHORA EL TECNICO SOLO ATENDERA UNO SOLO
+          quantityClientAttended++;
+        }
+      }
+    }
+
+    return {
+      "clientList": clientList,
+      "nextClient": nextClient,
+      "quantityClientAttended": quantityClientAttended,
+    };
+  }
+
+  //
+  //
+  //
+  //
+  //
+  //
+
   Future getClientsScheduledList(idProfessional, idBranch) async {
     List<ClientsScheduledModel> clientList = [];
     ClientsScheduledModel? nextClient;

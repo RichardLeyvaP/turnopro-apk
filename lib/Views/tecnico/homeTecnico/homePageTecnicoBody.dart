@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,7 +8,6 @@ import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
-import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 
 class HomePageTecnicoBody extends StatefulWidget {
   const HomePageTecnicoBody({super.key});
@@ -19,13 +20,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   AnimationController? _animationControllerInitial;
 
-  AnimationController? _animationController1;
-
-  AnimationController? _animationController2;
-
-  AnimationController? _animationController3;
-
-  AnimationController? _animationController4;
+  AnimationController? _animationTechnicalController1;
 
   final ClientsScheduledController clientsScheduledController =
       Get.find<ClientsScheduledController>();
@@ -43,9 +38,9 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
   @override
   void initState() {
     super.initState();
-    //AQUI ME DEVUELVE A Q CLIENTE LE SIGUE Y ACUAL MOSTRAR EN LA COLA
-    clientsScheduledController.filterShowNext();
-    //clientsScheduledController.filterShowCardTimer();//todo ahora comente a ver que pasa
+    clientsScheduledController
+        .fetchClientsTechnical(loginController.branchIdLoggedIn);
+    iniciarLlamadaCada10Segundos();
 
     //INICIALIZANDO CONTROLES DE LOS RELOJES
     _animationControllerInitial = AnimationController(
@@ -75,19 +70,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
       }
     });
 
-    _animationController1 = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 10),
-    );
-    _animationController2 = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 10),
-    );
-    _animationController3 = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 10),
-    );
-    _animationController4 = AnimationController(
+    _animationTechnicalController1 = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 10),
     );
@@ -96,11 +79,30 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
   @override
   void dispose() {
     _animationControllerInitial!.dispose();
-    _animationController1!.dispose();
-    _animationController2!.dispose();
-    _animationController3!.dispose();
-    _animationController4!.dispose();
+    _animationTechnicalController1!.dispose();
+    // Asegúrate de cancelar el temporizador al eliminar el widget
+    _timer?.cancel();
     super.dispose();
+  }
+
+  Timer? _timer;
+
+  void iniciarLlamadaCada10Segundos() {
+    // Cancela cualquier temporizador existente para evitar duplicaciones
+    _timer?.cancel();
+
+    // Establece un temporizador que llama a la función cada 20 segundos
+    _timer = Timer.periodic(const Duration(seconds: 20), (Timer timer) {
+      // actualizo la cola
+      if (clientsScheduledController.showingServiceClientsTechnical == false) {
+        //solo
+        print(
+            'ESTOY ACTUALIZANDO LA COLA CADA 10 SEGUNDOS (TECNICO) showingServiceClients = false');
+        clientsScheduledController
+            .fetchClientsTechnical(loginController.branchIdLoggedIn);
+      }
+      //todo REVISAR valor fijo
+    });
   }
 
   //
@@ -111,30 +113,14 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
       String firstName = '';
       // //todo AQUI DETENGO LOS TIMER QUE NO ESTAN VISIBLES
 
-      if (controllerclient.clientsScheduledNext != null) {
-        String fullName = controllerclient.clientsScheduledNext!.client_name;
+      if (controllerclient.clientsNextTechnical != null) {
+        String fullName = controllerclient.clientsNextTechnical!.client_name;
         //todo1                // Dividir el nombre completo por espacios
         List<String> partsName =
             fullName.split(" "); // Tomar los primeros dos nombres (si existen)
         firstName = partsName.isNotEmpty ? partsName[0] : "";
         // String secondName = partsName.length > 1 ? partsName[1] : "";
       }
-
-//CREANDO LISTAS PARA UTILIZARLO EN EL FOR
-      List<ClientsScheduledModel?> clientsList = [
-        controllerclient.clientsAttended1,
-        controllerclient.clientsAttended2,
-        controllerclient.clientsAttended3,
-        controllerclient.clientsAttended4,
-        // Agrega más listas según sea necesario
-      ]; //CREANDO LISTAS PARA UTILIZARLO EN EL FOR
-      List<AnimationController?> animationCont = [
-        _animationController1,
-        _animationController2,
-        _animationController3,
-        _animationController4,
-        // Agrega más listas según sea necesario
-      ];
 
       _animationControllerInitial!.forward();
 
@@ -145,11 +131,11 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
         int value =
             controllerclient.modifyTime[controllerclient.modifyTimeSpecific];
         // Obtén la duración total del AnimationController
-        Duration? duracionTotal = animationCont[i]!.duration;
+        Duration? duracionTotal = _animationTechnicalController1!.duration;
 
 // Obtén el tiempo transcurrido hasta ahora en minutos
         double tiempoTranscurrido =
-            animationCont[i]!.value * duracionTotal!.inMinutes;
+            _animationTechnicalController1!.value * duracionTotal!.inMinutes;
 
 // Calcula el tiempo restante en minutos
         double tiempoRestante = duracionTotal.inMinutes - tiempoTranscurrido;
@@ -165,11 +151,11 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
 // Aumenta la duración actual en 30 segundos
         Duration nuevaDuracion = duracionSendAct;
 
-        animationCont[i]!.duration = nuevaDuracion;
+        _animationTechnicalController1!.duration = nuevaDuracion;
         print('duracionSend YA:$duracionSendAct');
 
-        animationCont[i]!.reset();
-        animationCont[i]!.forward();
+        _animationTechnicalController1!.reset();
+        _animationTechnicalController1!.forward();
         print('RESETEADO YA');
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -190,9 +176,9 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(12)),
-                    color: const Color(0xFFF18254),
+                    color: Color.fromARGB(255, 49, 167, 59),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -202,9 +188,11 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            controllerclient.item.isEmpty
+                            clientsScheduledController
+                                        .quantityClientAttendedTechnical ==
+                                    0
                                 ? 'Cliente en espera'
-                                : 'Atendiendo ${controllerclient.item.length} clientes',
+                                : 'Atendiendo al cliente',
                             style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
@@ -222,28 +210,42 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 //AQUI MUESTRA LOS TIMER DE LOS CLIENTES QUE ESTE ATENDIENDO
-                                if (clientsScheduledController
-                                    .item.isNotEmpty) ...[
-                                  for (int i = 0;
-                                      i <
-                                          clientsScheduledController
-                                              .item.length;
-                                      i++) ...[
-                                    cardTimer(
-                                      UniqueKey(),
-                                      clientsList[clientsScheduledController
-                                              .item[i]]!
-                                          .client_name,
-                                      controllerclient,
-                                      animationCont[
-                                          clientsScheduledController.item[i]]!,
-                                    ),
-                                  ],
+                                if (controllerclient.clientsAttendedTechnical !=
+                                        null &&
+                                    clientsScheduledController
+                                            .quantityClientAttendedTechnical !=
+                                        0) ...[
+                                  cardTimer(
+                                    UniqueKey(),
+                                    controllerclient
+                                        .clientsAttendedTechnical!.client_name,
+                                    controllerclient,
+                                    _animationTechnicalController1!,
+                                  ),
                                 ]
                                 //SI NO ESTA ATENDIENDOA NADIE Y HAY GENTE EN LA COLA ESPERANDO CARGA EL TIMER INICIAL
                                 else if (controllerclient
-                                        .clientsScheduledNext !=
-                                    null) ...[
+                                            .quantityClientAttendedTechnical ==
+                                        0 &&
+                                    controllerclient.clientsAttendedTechnical ==
+                                        null) ...[
+                                  const SizedBox(
+                                    height: 50,
+                                  ),
+                                  const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.attribution_sharp),
+                                      Text(
+                                          'Por favor ir a la agenda y verificar los clientes.'),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 50,
+                                  ),
+                                ] else if (controllerclient
+                                        .quantityClientAttendedTechnical >
+                                    0) ...[
                                   cardTimer(
                                     UniqueKey(),
                                     'Esperando...',
@@ -271,7 +273,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                       ),
                       //todo CLIENTES QUE ESTAN EN COLA
 
-                      controllerclient.boolFilterShowNext
+                      controllerclient.boolFilterShowNextTecnhical
                           ? Padding(
                               padding: const EdgeInsets.only(
                                   left: 8, top: 8, right: 8, bottom: 6),
@@ -284,8 +286,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                           BorderRadius.all(Radius.circular(12)),
                                     ),
                                     //AQUI CONTROLO SI HAY ALGUIEN EN COLA
-                                    child: controllerclient
-                                                .clientsScheduledNext !=
+                                    child: controllerclient //todo1
+                                                .clientsNextTechnical !=
                                             null
                                         ? Row(
                                             children: [
@@ -321,12 +323,13 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                     );
                                                     // atender este cliente
                                                     //el valor 3 es que es que lo rechazo, por alguna razon no lo va a tender
-                                                    controllerclient
+
+                                                    /* controllerclient
                                                         .acceptOrRejectClient(
                                                             controllerclient
-                                                                .clientsScheduledNext!
+                                                                .clientsNextTechnical!
                                                                 .reservation_id,
-                                                            3);
+                                                            3);*/
                                                   },
                                                   icon: Icon(
                                                     MdiIcons.thumbDown,
@@ -390,56 +393,6 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                           ),
                                                         ],
                                                       ),
-                                                      Expanded(
-                                                        child: ListView.builder(
-                                                          itemCount: controllerclient
-                                                                      .serviceCustomerSelected
-                                                                      .length >
-                                                                  2
-                                                              ? 2
-                                                              : controllerclient
-                                                                  .serviceCustomerSelected
-                                                                  .length,
-                                                          itemBuilder: (context,
-                                                                  index) =>
-                                                              Row(
-                                                            children: [
-                                                              Column(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Row(
-                                                                    children: [
-                                                                      const Icon(
-                                                                        Icons
-                                                                            .api_sharp,
-                                                                        size:
-                                                                            12,
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        width:
-                                                                            5,
-                                                                      ),
-                                                                      Text(
-                                                                        controllerclient
-                                                                            .serviceCustomerSelected[index]
-                                                                            .name,
-                                                                        style: const TextStyle(
-                                                                            fontWeight:
-                                                                                FontWeight.w700),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
                                                       Row(
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
@@ -457,7 +410,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                           Text(
                                                               //AQUI ETSA EL TIEMPO TOTAL DEL SERVICIO
                                                               (controllerclient
-                                                                  .clientsScheduledNext!
+                                                                  .clientsNextTechnical!
                                                                   .total_time),
                                                               style:
                                                                   const TextStyle(
@@ -508,90 +461,40 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                     );
                                                     //aqui manda aceptar, es decir atender este cliente
 
-                                                    // detengo el timer de 2 minutos
+                                                    // detengo todos los timers que deben detenerse
                                                     _animationControllerInitial!
                                                         .stop();
                                                     _animationControllerInitial!
                                                         .reset();
-                                                    // detengo todos los timers que deben detenerse
-                                                    for (int j = 0;
-                                                        j <
-                                                            controllerclient
-                                                                .itemDel.length;
-                                                        j++) {
-                                                      animationCont[
-                                                              controllerclient
-                                                                  .itemDel[j]]!
-                                                          .stop();
-                                                      animationCont[
-                                                              controllerclient
-                                                                  .itemDel[j]]!
-                                                          .reset();
-                                                    }
-                                                    await controllerclient
-                                                        .newClientAttended(
-                                                            controllerclient
-                                                                .clientsScheduledNext!,
-                                                            controllerclient
-                                                                .availability);
 
+                                                    _animationTechnicalController1!
+                                                        .stop();
+                                                    _animationTechnicalController1!
+                                                        .reset();
                                                     //
+                                                    //todo FALTA QUE SE MUESTRE EL RELOJ
                                                     //
-                                                    //
-                                                    //
-                                                    if (controllerclient
-                                                            .busyClock ==
-                                                        0) {
-                                                      animationCont[0]!.duration = Duration(
-                                                          seconds: controllerclient
-                                                              .convertDateSecons(
-                                                                  controllerclient
-                                                                      .clientsAttended1!
-                                                                      .total_time));
-                                                      animationCont[0]!
-                                                          .forward();
-                                                    } else if (controllerclient
-                                                            .busyClock ==
-                                                        1) {
-                                                      animationCont[1]!.duration = Duration(
-                                                          seconds: controllerclient
-                                                              .convertDateSecons(
-                                                                  controllerclient
-                                                                      .clientsAttended2!
-                                                                      .total_time));
-                                                      animationCont[1]!
-                                                          .forward();
-                                                    } else if (controllerclient
-                                                            .busyClock ==
-                                                        2) {
-                                                      animationCont[2]!.duration = Duration(
-                                                          seconds: controllerclient
-                                                              .convertDateSecons(
-                                                                  controllerclient
-                                                                      .clientsAttended3!
-                                                                      .total_time));
-                                                      animationCont[2]!
-                                                          .forward();
-                                                    } else if (controllerclient
-                                                            .busyClock ==
-                                                        3) {
-                                                      animationCont[3]!.duration = Duration(
-                                                          seconds: controllerclient
-                                                              .convertDateSecons(
-                                                                  controllerclient
-                                                                      .clientsAttended4!
-                                                                      .total_time));
-                                                      animationCont[3]!
-                                                          .forward();
-                                                    }
+                                                    _animationTechnicalController1!
+                                                            .duration =
+                                                        const Duration(
+                                                            seconds:
+                                                                300); //por ahora 5min
+                                                    /* Duration(
+                                                            seconds: controllerclient
+                                                                .convertDateSecons(
+                                                                    controllerclient
+                                                                        .clientsAttendedTechnical!
+                                                                        .total_time));*/
+                                                    _animationTechnicalController1!
+                                                        .forward();
 
                                                     //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
                                                     controllerclient
-                                                        .acceptOrRejectClient(
+                                                        .acceptClientTechnical(
                                                             controllerclient
-                                                                .clientsScheduledNext!
+                                                                .clientsNextTechnical!
                                                                 .reservation_id,
-                                                            1);
+                                                            5);
                                                   },
                                                   icon: Icon(
                                                     MdiIcons.thumbUp,
@@ -812,8 +715,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
             }
 
             return SizedBox(
-              width: controllerclient.sizeClock,
-              height: controllerclient.sizeClock,
+              width: controllerclient.sizeClockTechnical,
+              height: controllerclient.sizeClockTechnical,
               child: Stack(
                 children: [
                   ShaderMask(
@@ -828,8 +731,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                           .createShader(rect);
                     },
                     child: Container(
-                      width: controllerclient.sizeClock,
-                      height: controllerclient.sizeClock,
+                      width: controllerclient.sizeClockTechnical,
+                      height: controllerclient.sizeClockTechnical,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
@@ -840,8 +743,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                   ),
                   Center(
                     child: Container(
-                      width: (controllerclient.sizeClock) - 40,
-                      height: (controllerclient.sizeClock) - 40,
+                      width: (controllerclient.sizeClockTechnical) - 40,
+                      height: (controllerclient.sizeClockTechnical) - 40,
                       decoration: BoxDecoration(
                           color: colorInicialCirculo, shape: BoxShape.circle),
                       child: Center(
