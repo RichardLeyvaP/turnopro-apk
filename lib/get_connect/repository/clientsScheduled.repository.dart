@@ -128,6 +128,51 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+  Future sentValueClockDb(id, clock) async {
+    var url = '${Env.apiEndpoint}/set_clock?reservation_id=$id&clock=$clock';
+
+    final response = await get(url);
+    if (response.statusCode == 200) {
+      print('ya guardo el reloj que esta utilizando');
+      return true;
+    } else {
+      print('NOO guardo el reloj que esta utilizando - el codigo no fue 200');
+      print(response.statusCode);
+      return false;
+    }
+  } //
+
+//
+//
+//
+//
+//
+  Future getValueClockDb(id) async {
+    var url = '${Env.apiEndpoint}/get_clock?reservation_id=$id';
+
+    final response = await get(url);
+    if (response.statusCode == 200) {
+      final result = response.body;
+      print('EL RELOJ DEVUELTO ES :$result');
+      return result;
+    } else {
+      print('NOO DEVOLVIO NINGUN RELOJ  - el codigo no fue 200');
+      print(response.statusCode);
+      return false;
+    }
+  }
+
   /* Future<bool> getServicesSimultaneou(idCar) async {
     var url =
         '${Env.apiEndpoint}/car_services?car_id=$idCar'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo

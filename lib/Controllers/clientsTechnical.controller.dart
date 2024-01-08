@@ -67,6 +67,8 @@ class ClientsTechnicalController extends GetxController {
 
   Future<void> acceptClientTechnical(reservationId, attended) async {
     final LoginController controllerLogin = Get.find<LoginController>();
+    final ClientsScheduledController controllerSche =
+        Get.find<ClientsScheduledController>();
     quantityClientAttendedTechnical = 1;
     boolFilterShowNextTecnhical = false;
     update();
@@ -75,7 +77,10 @@ class ClientsTechnicalController extends GetxController {
     if (value == true) {
       quantityClientAttendedTechnical = 1;
       int? idBranch = controllerLogin.branchIdLoggedIn;
-      fetchClientsTechnical(idBranch);
+      await fetchClientsTechnical(idBranch);
+      //obtener de Db el clock dado reservationId
+      int clock = await controllerSche.getValueClockDb(reservationId);
+      controllerSche.pauseResumeClock((clock - 1), 1);
     }
   }
 

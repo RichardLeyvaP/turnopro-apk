@@ -349,6 +349,7 @@ class ClientsScheduledController extends GetxController {
               item.remove(0);
             }
             pausResumeClock[0] = -99;
+            await sentValueClockDb(reservationId, 0);
           }
         }
         if (clientsAttended2 != null) {
@@ -361,6 +362,7 @@ class ClientsScheduledController extends GetxController {
               item.remove(1);
             }
             pausResumeClock[1] = -99;
+            await sentValueClockDb(reservationId, 0);
           }
         }
         if (clientsAttended3 != null) {
@@ -373,6 +375,7 @@ class ClientsScheduledController extends GetxController {
               item.remove(2);
             }
             pausResumeClock[2] = -99;
+            await sentValueClockDb(reservationId, 0);
           }
         }
         if (clientsAttended4 != null) {
@@ -385,6 +388,7 @@ class ClientsScheduledController extends GetxController {
               item.remove(3);
             }
             pausResumeClock[3] = -99;
+            await sentValueClockDb(reservationId, 0);
           }
         }
       }
@@ -397,6 +401,8 @@ class ClientsScheduledController extends GetxController {
             reservationId == clientsAttended1!.reservation_id) {
           //Pausar reloj 1
           pauseResumeClock(0, 0);
+          bool clock = await sentValueClockDb(reservationId, 1);
+          print('EL RELOJ MANDO COMO RESPUESTA : $clock');
           print('..............1');
         }
         //ES PORQUE ES EL RELOJ 2
@@ -405,6 +411,8 @@ class ClientsScheduledController extends GetxController {
           //Pausar reloj 2
           pauseResumeClock(1, 0);
           print('..............2');
+          bool clock = await sentValueClockDb(reservationId, 2);
+          print('EL RELOJ MANDO COMO RESPUESTA : $clock');
         }
         //ES PORQUE ES EL RELOJ 3
         if (clientsAttended3 != null &&
@@ -412,6 +420,8 @@ class ClientsScheduledController extends GetxController {
           //Pausar reloj 3
           pauseResumeClock(2, 0);
           print('..............3');
+          bool clock = await sentValueClockDb(reservationId, 3);
+          print('EL RELOJ MANDO COMO RESPUESTA : $clock');
         }
         //ES PORQUE ES EL RELOJ 4
         if (clientsAttended4 != null &&
@@ -419,6 +429,8 @@ class ClientsScheduledController extends GetxController {
           //Pausar reloj 4
           pauseResumeClock(3, 0);
           print('..............4');
+          bool clock = await sentValueClockDb(reservationId, 4);
+          print('EL RELOJ MANDO COMO RESPUESTA : $clock');
         }
       }
       update();
@@ -654,5 +666,29 @@ class ClientsScheduledController extends GetxController {
 
     int tiempoEnSegundos = horas * 3600 + minutos * 60 + segundos;
     return tiempoEnSegundos;
+  }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+  Future<bool> sentValueClockDb(int id, int clock) async {
+    //si return = false es que no se inserto en la Db
+    return await repository.sentValueClockDb(id, clock);
+  }
+
+//
+//
+//
+//
+//
+  Future<int> getValueClockDb(int id) async {
+    //si return = false es que no se inserto en la Db
+    return await repository.getValueClockDb(id);
   }
 }

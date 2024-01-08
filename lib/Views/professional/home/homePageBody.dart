@@ -108,6 +108,7 @@ class _HomePageBodyState extends State<HomePageBody>
   Widget build(BuildContext context) {
     super.build(context);
     return GetBuilder<ClientsScheduledController>(builder: (controllerclient) {
+      //controllerclient.clientsScheduledList[index].attended ==11
       //AQUI ESCUCHANDO PARA SABER SI TENGO QUE DETENER O REAUNUDAR LOS TIMER
       if (controllerclient.clockchanges == true) {
         //
@@ -139,6 +140,18 @@ class _HomePageBodyState extends State<HomePageBody>
               if (i == 0) {
                 _animationController1!.forward();
                 print('REAUNUDE EL RELOJ 1');
+              }
+              if (i == 1) {
+                _animationController2!.forward();
+                print('REAUNUDE EL RELOJ 2');
+              }
+              if (i == 2) {
+                _animationController3!.forward();
+                print('REAUNUDE EL RELOJ 3');
+              }
+              if (i == 3) {
+                _animationController4!.forward();
+                print('REAUNUDE EL RELOJ 4');
               }
             }
           }
