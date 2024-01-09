@@ -19,6 +19,16 @@ class HomePageBody extends StatefulWidget {
 
 class _HomePageBodyState extends State<HomePageBody>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+  AnimationController? _animationControllerInitial;
+
+  AnimationController? _animationController1;
+
+  AnimationController? _animationController2;
+
+  AnimationController? _animationController3;
+
+  AnimationController? _animationController4;
+
   final ClientsScheduledController clientsScheduledController =
       Get.find<ClientsScheduledController>();
 
@@ -40,15 +50,14 @@ class _HomePageBodyState extends State<HomePageBody>
     //clientsScheduledController.filterShowCardTimer();//todo ahora comente a ver que pasa
 
     //INICIALIZANDO CONTROLES DE LOS RELOJES
-    clientsScheduledController.animationControllerInitial = AnimationController(
+    _animationControllerInitial = AnimationController(
       vsync: this,
       duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
     );
-    clientsScheduledController.animationControllerInitial!.forward();
+    _animationControllerInitial!.forward();
 
 // Inicia la animación
-    clientsScheduledController.animationControllerInitial!
-        .addStatusListener((status) {
+    _animationControllerInitial!.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         if (clientsScheduledController
                 .noncomplianceProfessional['initialTime'] !=
@@ -63,24 +72,24 @@ class _HomePageBodyState extends State<HomePageBody>
         }
 
         // La animación ha llegado al final, reiniciar
-        clientsScheduledController.animationControllerInitial!.reset();
-        clientsScheduledController.animationControllerInitial!.forward();
+        _animationControllerInitial!.reset();
+        _animationControllerInitial!.forward();
       }
     });
 
-    clientsScheduledController.animationController1 = AnimationController(
+    _animationController1 = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 10),
     );
-    clientsScheduledController.animationController2 = AnimationController(
+    _animationController2 = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 10),
     );
-    clientsScheduledController.animationController3 = AnimationController(
+    _animationController3 = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 10),
     );
-    clientsScheduledController.animationController4 = AnimationController(
+    _animationController4 = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 10),
     );
@@ -100,11 +109,11 @@ class _HomePageBodyState extends State<HomePageBody>
 
   @override
   void dispose() {
-    clientsScheduledController.animationControllerInitial!.dispose();
-    clientsScheduledController.animationController1!.dispose();
-    clientsScheduledController.animationController2!.dispose();
-    clientsScheduledController.animationController3!.dispose();
-    clientsScheduledController.animationController4!.dispose();
+    _animationControllerInitial!.dispose();
+    _animationController1!.dispose();
+    _animationController2!.dispose();
+    _animationController3!.dispose();
+    _animationController4!.dispose();
     super.dispose();
   }
 
@@ -113,65 +122,46 @@ class _HomePageBodyState extends State<HomePageBody>
   iniciarLlamadaCada10Segundos() {
     // Cancela cualquier temporizador existente para evitar duplicaciones
     _timer?.cancel();
-    int cont = 2;
+
     // Establece un temporizador que llama a la función cada 20 segundos
-    _timer = Timer.periodic(const Duration(seconds: 2), (Timer timer) async {
-      print('.........estoy entrando cada : $cont segundos........');
-      cont += 2;
+    _timer = Timer.periodic(const Duration(seconds: 10), (Timer timer) async {
+      print('.........estoy entrando cada 5 segundos........');
       // actualizo la cola
-      if (cont == 8) {
-        print('con contador en 8 llamo la funcion');
-        clientsScheduledController.fetchClientsScheduled(
-            loginController.idProfessionalLoggedIn,
-            loginController.branchIdLoggedIn);
-      }
-      if (cont == 10) {
-        print(
-            'con contador en 10 entro para activar reloges si fuera necesario');
-        for (var i = 0;
-            i < clientsScheduledController.clientsScheduledList.length;
-            i++) {
-          int clock = 0;
-          if (clientsScheduledController.clientsScheduledList[i].attended ==
-              11) {
-            int reservationId = clientsScheduledController
-                .clientsScheduledList[i].reservation_id;
-            clock =
-                await clientsScheduledController.getValueClockDb(reservationId);
-            if (clock == 1) {
-              print('activando el Clock - 1');
-              clientsScheduledController.animationController1!.forward();
-              clientsScheduledController.acceptOrRejectClient(
-                  reservationId, 111);
-              clientsScheduledController.pauseResumeClock((clock - 1), -99);
-            }
-            if (clock == 2) {
-              print('activando el Clock - 2');
-              clientsScheduledController.animationController2!.forward();
-              clientsScheduledController.acceptOrRejectClient(
-                  reservationId, 111);
-              clientsScheduledController.pauseResumeClock((clock - 1), -99);
-            }
-            if (clock == 3) {
-              print('activando el Clock - 3');
-              clientsScheduledController.animationController3!.forward();
-              clientsScheduledController.acceptOrRejectClient(
-                  reservationId, 111);
-              clientsScheduledController.pauseResumeClock((clock - 1), -99);
-            }
-            if (clock == 4) {
-              print('activando el Clock - 4');
-              clientsScheduledController.animationController4!.forward();
-              clientsScheduledController.acceptOrRejectClient(
-                  reservationId, 111);
-              clientsScheduledController.pauseResumeClock((clock - 1), -99);
-            }
-          } //fin del if
-        }
-        print('vuelvo a poner en 2 a cont');
-        cont = 2;
-      }
-      //fin del for
+      for (var i = 0;
+          i < clientsScheduledController.clientsScheduledList.length;
+          i++) {
+        int clock = 0;
+        if (clientsScheduledController.clientsScheduledList[i].attended == 11) {
+          int reservationId =
+              clientsScheduledController.clientsScheduledList[i].reservation_id;
+          clock =
+              await clientsScheduledController.getValueClockDb(reservationId);
+          if (clock == 1) {
+            print('activando el Clock - 1');
+            _animationController1!.forward();
+            clientsScheduledController.acceptOrRejectClient(reservationId, 111);
+            clientsScheduledController.pauseResumeClock((clock - 1), -99);
+          }
+          if (clock == 2) {
+            print('activando el Clock - 2');
+            _animationController2!.forward();
+            clientsScheduledController.acceptOrRejectClient(reservationId, 111);
+            clientsScheduledController.pauseResumeClock((clock - 1), -99);
+          }
+          if (clock == 3) {
+            print('activando el Clock - 3');
+            _animationController3!.forward();
+            clientsScheduledController.acceptOrRejectClient(reservationId, 111);
+            clientsScheduledController.pauseResumeClock((clock - 1), -99);
+          }
+          if (clock == 4) {
+            print('activando el Clock - 4');
+            _animationController4!.forward();
+            clientsScheduledController.acceptOrRejectClient(reservationId, 111);
+            clientsScheduledController.pauseResumeClock((clock - 1), -99);
+          }
+        } //fin del if
+      } //fin del for
     });
   }
 
@@ -194,19 +184,19 @@ class _HomePageBodyState extends State<HomePageBody>
             if (value == 0) //hay que pausarlo
             {
               if (i == 0) {
-                clientsScheduledController.animationController1!.stop();
+                _animationController1!.stop();
                 print('PAUSE EL RELOJ 1');
               }
               if (i == 1) {
-                clientsScheduledController.animationController2!.stop();
+                _animationController2!.stop();
                 print('PAUSE EL RELOJ 2');
               }
               if (i == 2) {
-                clientsScheduledController.animationController3!.stop();
+                _animationController3!.stop();
                 print('PAUSE EL RELOJ 3');
               }
               if (i == 3) {
-                clientsScheduledController.animationController4!.stop();
+                _animationController4!.stop();
                 print('PAUSE EL RELOJ 4');
               }
             }
@@ -235,14 +225,14 @@ class _HomePageBodyState extends State<HomePageBody>
         // Agrega más listas según sea necesario
       ]; //CREANDO LISTAS PARA UTILIZARLO EN EL FOR
       List<AnimationController?> animationCont = [
-        clientsScheduledController.animationController1,
-        clientsScheduledController.animationController2,
-        clientsScheduledController.animationController3,
-        clientsScheduledController.animationController4,
+        _animationController1,
+        _animationController2,
+        _animationController3,
+        _animationController4,
         // Agrega más listas según sea necesario
       ];
 
-      clientsScheduledController.animationControllerInitial!.forward();
+      _animationControllerInitial!.forward();
 
       if (controllerclient.activeModifyTime == true) {
         print(
@@ -356,8 +346,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                     UniqueKey(),
                                     'Esperando...',
                                     controllerclient,
-                                    clientsScheduledController
-                                        .animationControllerInitial!,
+                                    _animationControllerInitial!,
                                   ),
                                 ] else ...[
                                   const SizedBox(
@@ -618,11 +607,9 @@ class _HomePageBodyState extends State<HomePageBody>
                                                     //aqui manda aceptar, es decir atender este cliente
 
                                                     // detengo el timer de 2 minutos
-                                                    clientsScheduledController
-                                                        .animationControllerInitial!
+                                                    _animationControllerInitial!
                                                         .stop();
-                                                    clientsScheduledController
-                                                        .animationControllerInitial!
+                                                    _animationControllerInitial!
                                                         .reset();
                                                     // detengo todos los timers que deben detenerse
                                                     for (int j = 0;

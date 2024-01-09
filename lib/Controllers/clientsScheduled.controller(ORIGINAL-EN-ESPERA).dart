@@ -91,15 +91,8 @@ class ClientsScheduledController extends GetxController {
   //
   //
   //
-  AnimationController? animationControllerInitial;
-
-  AnimationController? animationController1;
-
   AnimationController? animationController2;
-
-  AnimationController? animationController3;
-
-  AnimationController? animationController4;
+  AnimationController? animationControllerInitial;
 
   Future<void> newClientAttended(
       ClientsScheduledModel client, int avail) async {

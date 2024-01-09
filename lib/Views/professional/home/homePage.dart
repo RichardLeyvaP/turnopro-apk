@@ -1,5 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, no_leading_underscores_for_local_identifiers
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:animate_do/animate_do.dart';
