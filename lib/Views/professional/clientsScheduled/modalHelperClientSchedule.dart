@@ -35,7 +35,8 @@ class ModalHelper {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    controllClient.statusClientTemporary == 11
+                    controllClient.statusClientTemporary == 11 ||
+                            controllClient.statusClientTemporary == 111
                         ? Row(
                             children: [
                               ElevatedButton(
@@ -91,7 +92,8 @@ class ModalHelper {
                               )
                             ],
                           )
-                        : controllClient.statusClientTemporary == 1
+                        : controllClient.statusClientTemporary == 1 ||
+                                controllClient.statusClientTemporary == 111
                             ? ElevatedButton(
                                 style: ButtonStyle(
                                   padding: MaterialStateProperty.all<
@@ -187,7 +189,8 @@ class ModalHelper {
                     ),
                   ),
                 ),
-                controllClient.statusClientTemporary == 11
+                controllClient.statusClientTemporary == 11 ||
+                        controllClient.statusClientTemporary == 111
                     ? ElevatedButton(
                         style: ButtonStyle(
                           padding:

@@ -303,12 +303,12 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                         ))
                                                     : controllerClient
                                                             .selectClientsScheduledList
-                                                            .contains(controllerClient
-                                                                    .clientsScheduledList[
-                                                                index])
+                                                            .contains(
+                                                                controllerClient
+                                                                        .clientsScheduledList[
+                                                                    index])
                                                         ? BoxDecoration(
-                                                            border:
-                                                                Border.all(width: 0.01),
+                                                            border: Border.all(width: 0.01),
                                                             borderRadius: const BorderRadius.all(Radius.circular(12)),
                                                             boxShadow: [
                                                               BoxShadow(
@@ -352,7 +352,12 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                             .clientsScheduledList[
                                                                                 index]
                                                                             .attended ==
-                                                                        11
+                                                                        11 ||
+                                                                    controllerClient
+                                                                            .clientsScheduledList[
+                                                                                index]
+                                                                            .attended ==
+                                                                        111
                                                                 ? Border.all(
                                                                     width: 2,
                                                                     color: controllerClient.clientsScheduledList[index].attended ==
@@ -593,8 +598,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                       controllerClient
                                                               .selectClientsScheduledList
                                                               .contains(
-                                                                  controllerClient
-                                                                          .clientsScheduledList[
+                                                                  controllerClient.clientsScheduledList[
                                                                       index])
                                                           ? const Row(
                                                               children: [
@@ -624,7 +628,12 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                           .clientsScheduledList[
                                                                               index]
                                                                           .attended ==
-                                                                      11
+                                                                      11 ||
+                                                                  controllerClient
+                                                                          .clientsScheduledList[
+                                                                              index]
+                                                                          .attended ==
+                                                                      111
                                                               ? Column(
                                                                   children: [
                                                                     const Image(
@@ -657,10 +666,14 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                   ],
                                                                 )
                                                               : controllerClient
-                                                                          .clientsScheduledList[
-                                                                              index]
-                                                                          .attended ==
-                                                                      4
+                                                                              .clientsScheduledList[
+                                                                                  index]
+                                                                              .attended ==
+                                                                          4 ||
+                                                                      controllerClient
+                                                                              .clientsScheduledList[index]
+                                                                              .attended ==
+                                                                          5
                                                                   ? const Row(
                                                                       //todo 999
                                                                       children: [

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -91,6 +93,18 @@ class _HomePageBodyState extends State<HomePageBody>
       vsync: this,
       duration: const Duration(seconds: 10),
     );
+//
+//
+//
+//
+
+//
+
+//
+//
+//
+//
+//
   }
 
   @override
@@ -103,12 +117,63 @@ class _HomePageBodyState extends State<HomePageBody>
     super.dispose();
   }
 
+  Timer? _timer;
+
+  iniciarLlamadaCada10Segundos() {
+    // Cancela cualquier temporizador existente para evitar duplicaciones
+    _timer?.cancel();
+
+    // Establece un temporizador que llama a la función cada 20 segundos
+    _timer = Timer.periodic(const Duration(seconds: 10), (Timer timer) async {
+      print('.........estoy entrando cada 5 segundos........');
+      // actualizo la cola
+      for (var i = 0;
+          i < clientsScheduledController.clientsScheduledList.length;
+          i++) {
+        int clock = 0;
+        if (clientsScheduledController.clientsScheduledList[i].attended == 11) {
+          int reservationId =
+              clientsScheduledController.clientsScheduledList[i].reservation_id;
+          clock =
+              await clientsScheduledController.getValueClockDb(reservationId);
+          if (clock == 1) {
+            print('activando el Clock - 1');
+            _animationController1!.forward();
+            clientsScheduledController.acceptOrRejectClient(reservationId, 111);
+            clientsScheduledController.pauseResumeClock((clock - 1), -99);
+          }
+          if (clock == 2) {
+            print('activando el Clock - 2');
+            _animationController2!.forward();
+            clientsScheduledController.acceptOrRejectClient(reservationId, 111);
+            clientsScheduledController.pauseResumeClock((clock - 1), -99);
+          }
+          if (clock == 3) {
+            print('activando el Clock - 3');
+            _animationController3!.forward();
+            clientsScheduledController.acceptOrRejectClient(reservationId, 111);
+            clientsScheduledController.pauseResumeClock((clock - 1), -99);
+          }
+          if (clock == 4) {
+            print('activando el Clock - 4');
+            _animationController4!.forward();
+            clientsScheduledController.acceptOrRejectClient(reservationId, 111);
+            clientsScheduledController.pauseResumeClock((clock - 1), -99);
+          }
+        } //fin del if
+      } //fin del for
+    });
+  }
+
   //
   @override
   Widget build(BuildContext context) {
+    //AQUI REVISO SI HAY ALGUNO POR ACTIVAR LO ACTIVO
+    iniciarLlamadaCada10Segundos();
     super.build(context);
     return GetBuilder<ClientsScheduledController>(builder: (controllerclient) {
       //controllerclient.clientsScheduledList[index].attended ==11
+
       //AQUI ESCUCHANDO PARA SABER SI TENGO QUE DETENER O REAUNUDAR LOS TIMER
       if (controllerclient.clockchanges == true) {
         //
@@ -133,25 +198,6 @@ class _HomePageBodyState extends State<HomePageBody>
               if (i == 3) {
                 _animationController4!.stop();
                 print('PAUSE EL RELOJ 4');
-              }
-            }
-            if (value == 1) //hay que reanudarlo
-            {
-              if (i == 0) {
-                _animationController1!.forward();
-                print('REAUNUDE EL RELOJ 1');
-              }
-              if (i == 1) {
-                _animationController2!.forward();
-                print('REAUNUDE EL RELOJ 2');
-              }
-              if (i == 2) {
-                _animationController3!.forward();
-                print('REAUNUDE EL RELOJ 3');
-              }
-              if (i == 3) {
-                _animationController4!.forward();
-                print('REAUNUDE EL RELOJ 4');
               }
             }
           }
