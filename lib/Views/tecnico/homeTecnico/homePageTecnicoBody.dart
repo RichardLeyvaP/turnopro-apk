@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
+import 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
@@ -22,8 +23,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
 
   AnimationController? _animationTechnicalController1;
 
-  final ClientsScheduledController clientsScheduledController =
-      Get.find<ClientsScheduledController>();
+  final ClientsTechnicalController clientsScheduledController =
+      Get.find<ClientsTechnicalController>();
 
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
 
@@ -60,7 +61,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
           int branchId = loginController.branchIdLoggedIn!;
           int professionalId = loginController.idProfessionalLoggedIn!;
           int estado = 0; //es que incumplió
-          clientsScheduledController.changeNoncomplianceP(
+          clientsScheduledController.changeNoncomplianceTecnhical(
               type, branchId, professionalId, estado);
         }
 
@@ -94,10 +95,12 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     // Establece un temporizador que llama a la función cada 20 segundos
     _timer = Timer.periodic(const Duration(seconds: 20), (Timer timer) {
       // actualizo la cola
-      if (clientsScheduledController.showingServiceClientsTechnical == false) {
+      if (clientsScheduledController.showingServiceClientsTechnical == false &&
+          loginController.branchIdLoggedIn != null &&
+          loginController.chargeUserLoggedIn == "Tecnico") {
         //solo
         print(
-            'ESTOY ACTUALIZANDO LA COLA CADA 10 SEGUNDOS (TECNICO) showingServiceClients = false');
+            'ESTOY HomePageTecnicoBody ACTUALIZANDO LA COLA CADA 10 SEGUNDOS (TECNICO) showingServiceClients = false');
         clientsScheduledController
             .fetchClientsTechnical(loginController.branchIdLoggedIn);
       }
@@ -128,8 +131,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
         print(
             'activeModifyTime SOY = ${controllerclient.activeModifyTime} Y MANDE ESTE TIEMPO ${controllerclient.modifyTime[controllerclient.modifyTimeSpecific]}');
         int i = controllerclient.modifyTimeSpecific;
-        int value =
-            controllerclient.modifyTime[controllerclient.modifyTimeSpecific];
+        int value = controllerclient.modifyTime[i];
         // Obtén la duración total del AnimationController
         Duration? duracionTotal = _animationTechnicalController1!.duration;
 

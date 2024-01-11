@@ -28,6 +28,10 @@ class CoexistenceController extends GetxController {
       print('llamando _fetchCoexistenceList(); porque soy Barbero');
       _fetchCoexistenceList();
     }
+    if (controllerLogin.chargeUserLoggedIn == "Tecnico") {
+      print('llamando _fetchCoexistenceList(); porque soy Tecnico');
+      _fetchCoexistenceList();
+    }
 
     //todo esto solo cargarlo cuando sea un Responsable
     if (controllerLogin.chargeUserLoggedIn == "Encargado") {

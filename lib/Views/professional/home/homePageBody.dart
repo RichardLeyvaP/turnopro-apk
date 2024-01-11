@@ -116,62 +116,66 @@ class _HomePageBodyState extends State<HomePageBody>
     int cont = 2;
     // Establece un temporizador que llama a la función cada 20 segundos
     _timer = Timer.periodic(const Duration(seconds: 2), (Timer timer) async {
-      print('.........estoy entrando cada : $cont segundos........');
-      cont += 2;
-      // actualizo la cola
-      if (cont == 8) {
-        print('con contador en 8 llamo la funcion');
-        clientsScheduledController.fetchClientsScheduled(
-            loginController.idProfessionalLoggedIn,
-            loginController.branchIdLoggedIn);
-      }
-      if (cont == 10) {
-        print(
-            'con contador en 10 entro para activar reloges si fuera necesario');
-        for (var i = 0;
-            i < clientsScheduledController.clientsScheduledList.length;
-            i++) {
-          int clock = 0;
-          if (clientsScheduledController.clientsScheduledList[i].attended ==
-              11) {
-            int reservationId = clientsScheduledController
-                .clientsScheduledList[i].reservation_id;
-            clock =
-                await clientsScheduledController.getValueClockDb(reservationId);
-            if (clock == 1) {
-              print('activando el Clock - 1');
-              clientsScheduledController.animationController1!.forward();
-              clientsScheduledController.acceptOrRejectClient(
-                  reservationId, 111);
-              clientsScheduledController.pauseResumeClock((clock - 1), -99);
-            }
-            if (clock == 2) {
-              print('activando el Clock - 2');
-              clientsScheduledController.animationController2!.forward();
-              clientsScheduledController.acceptOrRejectClient(
-                  reservationId, 111);
-              clientsScheduledController.pauseResumeClock((clock - 1), -99);
-            }
-            if (clock == 3) {
-              print('activando el Clock - 3');
-              clientsScheduledController.animationController3!.forward();
-              clientsScheduledController.acceptOrRejectClient(
-                  reservationId, 111);
-              clientsScheduledController.pauseResumeClock((clock - 1), -99);
-            }
-            if (clock == 4) {
-              print('activando el Clock - 4');
-              clientsScheduledController.animationController4!.forward();
-              clientsScheduledController.acceptOrRejectClient(
-                  reservationId, 111);
-              clientsScheduledController.pauseResumeClock((clock - 1), -99);
-            }
-          } //fin del if
+      if (loginController.idProfessionalLoggedIn != null &&
+          loginController.branchIdLoggedIn != null &&
+          loginController.chargeUserLoggedIn == "Barbero") {
+        print('.........estoy entrando cada : $cont segundos........');
+        cont += 2;
+        // actualizo la cola
+        if (cont == 8) {
+          print('con contador en 8 llamo la funcion');
+          clientsScheduledController.fetchClientsScheduled(
+              loginController.idProfessionalLoggedIn,
+              loginController.branchIdLoggedIn);
         }
-        print('vuelvo a poner en 2 a cont');
-        cont = 2;
+        if (cont == 10) {
+          print(
+              'con contador en 10 entro para activar reloges si fuera necesario');
+          for (var i = 0;
+              i < clientsScheduledController.clientsScheduledList.length;
+              i++) {
+            int clock = 0;
+            if (clientsScheduledController.clientsScheduledList[i].attended ==
+                11) {
+              int reservationId = clientsScheduledController
+                  .clientsScheduledList[i].reservation_id;
+              clock = await clientsScheduledController
+                  .getValueClockDb(reservationId);
+              if (clock == 1) {
+                print('activando el Clock - 1');
+                clientsScheduledController.animationController1!.forward();
+                clientsScheduledController.acceptOrRejectClient(
+                    reservationId, 111);
+                clientsScheduledController.pauseResumeClock((clock - 1), -99);
+              }
+              if (clock == 2) {
+                print('activando el Clock - 2');
+                clientsScheduledController.animationController2!.forward();
+                clientsScheduledController.acceptOrRejectClient(
+                    reservationId, 111);
+                clientsScheduledController.pauseResumeClock((clock - 1), -99);
+              }
+              if (clock == 3) {
+                print('activando el Clock - 3');
+                clientsScheduledController.animationController3!.forward();
+                clientsScheduledController.acceptOrRejectClient(
+                    reservationId, 111);
+                clientsScheduledController.pauseResumeClock((clock - 1), -99);
+              }
+              if (clock == 4) {
+                print('activando el Clock - 4');
+                clientsScheduledController.animationController4!.forward();
+                clientsScheduledController.acceptOrRejectClient(
+                    reservationId, 111);
+                clientsScheduledController.pauseResumeClock((clock - 1), -99);
+              }
+            } //fin del if
+          }
+          print('vuelvo a poner en 2 a cont');
+          cont = 2;
+        }
+        //fin del for
       }
-      //fin del for
     });
   }
 
@@ -180,6 +184,7 @@ class _HomePageBodyState extends State<HomePageBody>
   Widget build(BuildContext context) {
     //AQUI REVISO SI HAY ALGUNO POR ACTIVAR LO ACTIVO
     iniciarLlamadaCada10Segundos();
+
     super.build(context);
     return GetBuilder<ClientsScheduledController>(builder: (controllerclient) {
       //controllerclient.clientsScheduledList[index].attended ==11

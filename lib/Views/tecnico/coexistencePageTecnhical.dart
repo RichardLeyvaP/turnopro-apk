@@ -8,14 +8,15 @@ import 'package:turnopro_apk/Routes/index.dart';
 
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class CoexistencePage extends StatefulWidget {
-  const CoexistencePage({super.key});
+class CoexistencePageTecnhical extends StatefulWidget {
+  const CoexistencePageTecnhical({super.key});
 
   @override
-  State<CoexistencePage> createState() => _CoexistencePageState();
+  State<CoexistencePageTecnhical> createState() =>
+      _CoexistencePageTecnhicalState();
 }
 
-class _CoexistencePageState extends State<CoexistencePage> {
+class _CoexistencePageTecnhicalState extends State<CoexistencePageTecnhical> {
   final PagesConfigController pagesConfigCont =
       Get.find<PagesConfigController>();
   final double valuePadding = 12;

@@ -198,4 +198,27 @@ class ClientsTechnicalController extends GetxController {
     int tiempoEnSegundos = horas * 3600 + minutos * 60 + segundos;
     return tiempoEnSegundos;
   }
+
+  Future<bool> changeNoncomplianceTecnhical(
+      //todo1
+      type,
+      branchId,
+      professionalId,
+      estado) async {
+    //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
+    bool result =
+        await repository.storeByType(type, branchId, professionalId, estado);
+    if (result) {
+      print('CORRECTO actualizo el estado correctamente');
+      //AQUI ES PÓRQUE INCUMPLIO CON ALGO
+      if (estado == 1) {
+        noncomplianceProfessional[type] = 1;
+        update();
+      } else {
+        noncomplianceProfessional[type] = 0;
+        update();
+      }
+    }
+    return result;
+  }
 }
