@@ -16,8 +16,50 @@ class HomePages extends StatefulWidget {
   State<HomePages> createState() => _HomePagesState();
 }
 
-class _HomePagesState extends State<HomePages> {
+class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
+  final LoginController loginController = Get.find<LoginController>();
+  int carr = 199;
+
+  @override
+  void initState() {
+    super.initState();
+    // Agregar el observador del ciclo de vida
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    // Eliminar el observador del ciclo de vida al finalizar
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.paused) {
+      // La aplicación se está pausando (puede ir a segundo plano)
+      print('La aplicación se está pausando (yendo a segundo plano)');
+      print(
+          'La aplicación se está Enviar id:${loginController.idUserLoggedIn}');
+      print(
+          'La aplicación se está Enviar email:${loginController.emailUserLoggedIn}');
+    } else if (state == AppLifecycleState.resumed) {
+      // La aplicación se cierra completamente
+      print('La aplicación se está Reaunudandose nuevamente');
+      print(
+          'La aplicación se está Reaunudandose ${loginController.idUserLoggedIn}');
+      // Agrega tu lógica para guardar en la base de datos aquí.
+    } else if (state == AppLifecycleState.detached) {
+      // La aplicación se cierra completamente
+      print('La aplicación se está cerrando completamente');
+      print('La aplicación se está Enviar ${loginController.idUserLoggedIn}');
+      print('La aplicación se está Carr $carr');
+      // Agrega tu lógica para guardar en la base de datos aquí.
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

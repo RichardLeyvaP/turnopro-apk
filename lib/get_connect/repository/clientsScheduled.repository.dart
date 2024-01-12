@@ -63,6 +63,7 @@ class ClientsScheduledRepository extends GetConnect {
 
   Future getClientsScheduledList(idProfessional, idBranch) async {
     List<ClientsScheduledModel> clientList = [];
+    List<int>? attendingClient;
     ClientsScheduledModel? nextClient;
     bool hasNextClient = false;
     int quantityClientAttended = 0;
@@ -85,8 +86,12 @@ class ClientsScheduledRepository extends GetConnect {
       for (Map service in customers) {
         ClientsScheduledModel client =
             ClientsScheduledModel.fromJson(jsonEncode(service));
+        //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
+        if (client.detached != false) {}
+
         clientList.add(client);
         //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
+
         if (hasNextClient == false) {
           if (client.attended == 0) {
             nextClient = client;
@@ -104,6 +109,7 @@ class ClientsScheduledRepository extends GetConnect {
       "clientList": clientList,
       "nextClient": nextClient,
       "quantityClientAttended": quantityClientAttended,
+      "attendingClient": attendingClient, //puede ser null
     };
   }
 
