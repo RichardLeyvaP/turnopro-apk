@@ -652,6 +652,8 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                           : 'Terminando Servicio',
                                                                       style:
                                                                           TextStyle(
+                                                                        fontSize:
+                                                                            14,
                                                                         color: controllerClient.clientsScheduledList[index].attended ==
                                                                                 1
                                                                             ? const Color(
