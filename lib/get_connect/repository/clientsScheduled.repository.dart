@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/env.dart';
+import 'package:intl/intl.dart';
 
 class ClientsScheduledRepository extends GetConnect {
   Future getClientsTechnicalList(idBranch) async {
@@ -63,7 +64,7 @@ class ClientsScheduledRepository extends GetConnect {
 
   Future getClientsScheduledList(idProfessional, idBranch) async {
     List<ClientsScheduledModel> clientList = [];
-    List<int>? attendingClient;
+    List<Map> attendingClientList = [];
     ClientsScheduledModel? nextClient;
     bool hasNextClient = false;
     int quantityClientAttended = 0;
@@ -87,7 +88,16 @@ class ClientsScheduledRepository extends GetConnect {
         ClientsScheduledModel client =
             ClientsScheduledModel.fromJson(jsonEncode(service));
         //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
-        if (client.detached != false) {}
+        if (client.detached == 1) {
+          Map newValue = {
+            "reservation_id": client.reservation_id,
+            "updated_at": convertDateTimeToMinutes(client.updated_at!),
+            "clock": client.clock!,
+            "timeClock": client.timeClock! * 60,
+            "client": client,
+          };
+          attendingClientList.add(newValue);
+        }
 
         clientList.add(client);
         //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
@@ -109,8 +119,24 @@ class ClientsScheduledRepository extends GetConnect {
       "clientList": clientList,
       "nextClient": nextClient,
       "quantityClientAttended": quantityClientAttended,
-      "attendingClient": attendingClient, //puede ser null
+      "attendingClient": attendingClientList, //puede ser null
     };
+  }
+
+  String convertDateTimeToString(DateTime dateTimeDb) {
+    final formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+    return formatter.format(dateTimeDb);
+  }
+
+  int convertDateTimeToMinutes(String dateTimeDb) {
+    // String dateTimeString = convertDateTimeToString(dateTimeDb);
+    // Parsing the date and time string to a DateTime object
+    DateTime dateTime = DateTime.parse(dateTimeDb);
+
+    // Getting the total minutes elapsed since the epoch (1970-01-01 00:00:00)
+    int minutes = dateTime.toUtc().millisecondsSinceEpoch ~/ (1000 * 60);
+
+    return minutes;
   }
 
   Future<List<ServiceModel>> getCustomerServicesList(idCar) async {
@@ -210,6 +236,20 @@ class ClientsScheduledRepository extends GetConnect {
       print('typeOfService(idProfessional, idBranch) async:$typeService');
       return typeService;
     } else {
+      return false;
+    }
+  }
+
+  Future<bool> setTimeClock(reservationId, timeClock, detached, clock) async {
+    var url =
+        '${Env.apiEndpoint}/set_timeClock?reservation_id=$reservationId&timeClock=$timeClock&detached=$detached&clock=$clock';
+
+    final response = await get(url);
+    if (response.statusCode == 200) {
+      print('repositorio set_timeClock devolviendo true');
+      return true;
+    } else {
+      print('repositorio set_timeClock devolviendo false');
       return false;
     }
   }

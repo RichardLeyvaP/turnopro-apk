@@ -1,6 +1,5 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'dart:async';
 import 'dart:convert';
 
 class ClientsScheduledModel {
@@ -12,11 +11,11 @@ class ClientsScheduledModel {
   String client_name;
   int client_id;
   int attended;
-  DateTime updated_at;
+  String? updated_at;
   int total_services;
   int? clock;
   int? timeClock;
-  bool? detached;
+  int? detached;
 
   ClientsScheduledModel({
     required this.reservation_id,
@@ -27,7 +26,7 @@ class ClientsScheduledModel {
     required this.client_name,
     required this.client_id,
     required this.attended,
-    required this.updated_at,
+    this.updated_at,
     required this.total_services,
     this.clock,
     this.timeClock,
@@ -65,7 +64,7 @@ class ClientsScheduledModel {
       total_services: map['total_services'] ?? 0,
       clock: map['clock'] ?? 0,
       timeClock: map['timeClock'] ?? 0,
-      detached: map['detached'] ?? false,
+      detached: map['detached'] ?? 0,
     );
   }
 

@@ -187,7 +187,48 @@ class _HomePageBodyState extends State<HomePageBody>
 
     super.build(context);
     return GetBuilder<ClientsScheduledController>(builder: (controllerclient) {
-      //controllerclient.clientsScheduledList[index].attended ==11
+      //CREANDO LISTAS PARA UTILIZARLO EN EL FOR
+      List<ClientsScheduledModel?> clientsList = [
+        controllerclient.clientsAttended1,
+        controllerclient.clientsAttended2,
+        controllerclient.clientsAttended3,
+        controllerclient.clientsAttended4,
+        // Agrega más listas según sea necesario
+      ]; //CREANDO LISTAS PARA UTILIZARLO EN EL FOR
+      List<AnimationController?> animationCont = [
+        clientsScheduledController.animationController1,
+        clientsScheduledController.animationController2,
+        clientsScheduledController.animationController3,
+        clientsScheduledController.animationController4,
+        // Agrega más listas según sea necesario
+      ];
+
+      activeClock() {
+        for (var i = 0; i < clientsScheduledController.item.length; i++) {
+          if (clientsScheduledController.item[i] == 0) {
+            animationCont[0]!.duration =
+                Duration(seconds: controllerclient.timeClientsAttended1!);
+            animationCont[0]!.forward();
+          } else if (clientsScheduledController.item[i] == 1) {
+            animationCont[1]!.duration =
+                Duration(seconds: controllerclient.timeClientsAttended2!);
+            animationCont[1]!.forward();
+          } else if (clientsScheduledController.item[i] == 2) {
+            animationCont[2]!.duration =
+                Duration(seconds: controllerclient.timeClientsAttended3!);
+            animationCont[2]!.forward();
+          } else if (clientsScheduledController.item[i] == 3) {
+            animationCont[3]!.duration =
+                Duration(seconds: controllerclient.timeClientsAttended4!);
+            animationCont[3]!.forward();
+          }
+        }
+      }
+
+      if (controllerclient.closeIesperado == true) {
+        print('Hubo un cierre inesperado y se estan activando los relojes');
+        activeClock();
+      }
 
       //AQUI ESCUCHANDO PARA SABER SI TENGO QUE DETENER O REAUNUDAR LOS TIMER
       if (controllerclient.clockchanges == true) {
@@ -231,22 +272,6 @@ class _HomePageBodyState extends State<HomePageBody>
         // String secondName = partsName.length > 1 ? partsName[1] : "";
       }
 
-//CREANDO LISTAS PARA UTILIZARLO EN EL FOR
-      List<ClientsScheduledModel?> clientsList = [
-        controllerclient.clientsAttended1,
-        controllerclient.clientsAttended2,
-        controllerclient.clientsAttended3,
-        controllerclient.clientsAttended4,
-        // Agrega más listas según sea necesario
-      ]; //CREANDO LISTAS PARA UTILIZARLO EN EL FOR
-      List<AnimationController?> animationCont = [
-        clientsScheduledController.animationController1,
-        clientsScheduledController.animationController2,
-        clientsScheduledController.animationController3,
-        clientsScheduledController.animationController4,
-        // Agrega más listas según sea necesario
-      ];
-
       clientsScheduledController.animationControllerInitial!.forward();
 
       if (controllerclient.activeModifyTime == true) {
@@ -287,6 +312,7 @@ class _HomePageBodyState extends State<HomePageBody>
         WidgetsBinding.instance.addPostFrameCallback((_) {
           // Se ejecutará después de que se haya construido el widget
           //define que tipo de saludo dar dependiendo de la hora
+          controllerclient.setCloseIesperado(false);
           controllerclient.clockChanges(false);
           loginController.getGreeting();
           controllerclient.modifingTimeClose();
@@ -303,9 +329,9 @@ class _HomePageBodyState extends State<HomePageBody>
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(12)),
-                    color: const Color(0xFFF18254),
+                    color: Color(0xFFF18254),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -654,49 +680,49 @@ class _HomePageBodyState extends State<HomePageBody>
                                                     //
                                                     //
                                                     //
-                                                    //
+                                                    //HACE LAS VERIFICACIONES NECESARIAS PARA ACTIVAR LOS RELOJES QUE NECESITEN SER ACTIVADOS
                                                     if (controllerclient
                                                             .busyClock ==
                                                         0) {
-                                                      animationCont[0]!.duration = Duration(
-                                                          seconds: controllerclient
-                                                              .convertDateSecons(
+                                                      animationCont[0]!
+                                                              .duration =
+                                                          Duration(
+                                                              seconds:
                                                                   controllerclient
-                                                                      .clientsAttended1!
-                                                                      .total_time));
+                                                                      .timeClientsAttended1!);
                                                       animationCont[0]!
                                                           .forward();
                                                     } else if (controllerclient
                                                             .busyClock ==
                                                         1) {
-                                                      animationCont[1]!.duration = Duration(
-                                                          seconds: controllerclient
-                                                              .convertDateSecons(
+                                                      animationCont[1]!
+                                                              .duration =
+                                                          Duration(
+                                                              seconds:
                                                                   controllerclient
-                                                                      .clientsAttended2!
-                                                                      .total_time));
+                                                                      .timeClientsAttended2!);
                                                       animationCont[1]!
                                                           .forward();
                                                     } else if (controllerclient
                                                             .busyClock ==
                                                         2) {
-                                                      animationCont[2]!.duration = Duration(
-                                                          seconds: controllerclient
-                                                              .convertDateSecons(
+                                                      animationCont[2]!
+                                                              .duration =
+                                                          Duration(
+                                                              seconds:
                                                                   controllerclient
-                                                                      .clientsAttended3!
-                                                                      .total_time));
+                                                                      .timeClientsAttended3!);
                                                       animationCont[2]!
                                                           .forward();
                                                     } else if (controllerclient
                                                             .busyClock ==
                                                         3) {
-                                                      animationCont[3]!.duration = Duration(
-                                                          seconds: controllerclient
-                                                              .convertDateSecons(
+                                                      animationCont[3]!
+                                                              .duration =
+                                                          Duration(
+                                                              seconds:
                                                                   controllerclient
-                                                                      .clientsAttended4!
-                                                                      .total_time));
+                                                                      .timeClientsAttended4!);
                                                       animationCont[3]!
                                                           .forward();
                                                     }

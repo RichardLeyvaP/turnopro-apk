@@ -24,6 +24,15 @@ class ClientsScheduledController extends GetxController {
       clientsAttended2,
       clientsAttended3,
       clientsAttended4; // Cliente en espera
+  int? timeClientsAttended1,
+      timeClientsAttended2,
+      timeClientsAttended3,
+      timeClientsAttended4;
+
+  int? timeClientsActAttended1,
+      timeClientsActAttended2,
+      timeClientsActAttended3,
+      timeClientsActAttended4;
   List<int> item = [];
   List<int> itemDel = [];
   bool activeModifyTime = false;
@@ -70,6 +79,12 @@ class ClientsScheduledController extends GetxController {
     3: -99,
   };
   bool clockchanges = false;
+  bool closeIesperado = false;
+
+  void setCloseIesperado(bool value) {
+    closeIesperado = value;
+    update();
+  }
 
   //Fin Variables del reloj
 
@@ -101,23 +116,61 @@ class ClientsScheduledController extends GetxController {
 
   AnimationController? animationController4;
 
+  upadateVariablesValueTimers() async {
+    bool hasClient1 = clientsAttended1 != null;
+    // bool hasClient2 = clientsAttended2 != null;
+    // bool hasClient3 = clientsAttended3 != null;
+    // bool hasClient4 = clientsAttended4 != null;
+    int remainingTime1, reservationId, clock, detached;
+    if (hasClient1) {
+      double currentTimeDouble = animationController1!.value *
+          animationController1!.duration!.inSeconds.toDouble();
+      int totalTimeInSeconds = animationController1!.duration!.inSeconds;
+      remainingTime1 = totalTimeInSeconds - currentTimeDouble.toInt();
+
+      // Convertir a minutos
+      int remainingMinutes1 = (remainingTime1 / 60).floor(); //MINUTOS RESTANTES
+      //int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
+      timeClientsActAttended1 = remainingMinutes1; //DB - timeClock
+      reservationId = clientsAttended1!.reservation_id; //DB - reservation_id
+      clock = 1; //DB - clock
+      detached = 1; //DB - detached
+      //  await set_timeClock(reservation_id,timeClock,detached,clock);
+      await setTimeClock(
+          reservationId, timeClientsActAttended1, detached, clock);
+      print(
+          'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended1 reservation_id : $reservationId -  clock : $clock - detached :$detached');
+    } else {
+      print('EL TIEMPO ACTUAL DEL RELOJ 1 ES Nulo:$timeClientsActAttended1 ');
+    }
+
+    // timeClientsActAttended2 = time2;
+    // timeClientsActAttended3 = time3;
+    // timeClientsActAttended4 = time4;
+    update();
+  }
+
   Future<void> newClientAttended(
       ClientsScheduledModel client, int avail) async {
     //este nuevo cliente se le va a signar un reloj
     if (avail == 1) {
       clientsAttended1 = client;
+      timeClientsAttended1 = convertDateSecons(client.total_time);
       busyClock = 0;
     }
     if (avail == 2) {
       clientsAttended2 = client;
+      timeClientsAttended2 = convertDateSecons(client.total_time);
       busyClock = 1;
     }
     if (avail == 3) {
       clientsAttended3 = client;
+      timeClientsAttended3 = convertDateSecons(client.total_time);
       busyClock = 2;
     }
     if (avail == 4) {
       clientsAttended4 = client;
+      timeClientsAttended4 = convertDateSecons(client.total_time);
       busyClock = 3;
     }
     filterShowCardTimer();
@@ -482,6 +535,20 @@ class ClientsScheduledController extends GetxController {
     }
   }
 
+  Future<void> setTimeClock(reservationId, timeClock, detached, clock) async {
+    try {
+      bool result = await repository.setTimeClock(
+          reservationId, timeClock, detached, clock);
+      if (result) {
+        print('************** true');
+      } else {
+        print('************** false');
+      }
+    } catch (e) {
+      print('set_timeClock:$e');
+    }
+  }
+
   Future<void> returnClientStatus(int reservationId) async {
     try {
       int result = await repository.returnClientStatus(reservationId);
@@ -553,19 +620,6 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
-  getselectCustomerTechnical(index, idCar) async {
-    print('IdCar:$idCar');
-    // await searchForCustomerServices(idCar);
-    (selectclientsScheduledListTechnical
-            .contains(clientsScheduledListTechnical[index]))
-        ? selectclientsScheduledListTechnical
-            .remove(clientsScheduledListTechnical[index])
-        : selectclientsScheduledListTechnical
-            .add(clientsScheduledListTechnical[index]);
-
-    update();
-  }
-
   showingServiceClient(bool value) {
     print(
         'No actualizar la cola, tengo desplegado los servicios ahora mandando:$value');
@@ -606,6 +660,20 @@ class ClientsScheduledController extends GetxController {
       clientsScheduledList =
           (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
       clientsScheduledListLength = clientsScheduledList.length;
+      //
+      //
+      if (closeIesperado == true) //es que cerró inesperadamente
+      {
+        if (resultList.containsKey('attendingClient')) {
+          List<Map>? attendingClientList = resultList['attendingClient'];
+          logicaInesperada(attendingClientList);
+        } else {
+          // La clave 'attendingClient' no está presente en el mapa
+          print(
+              '!!!!!!!!!!!!!!!!!!!!La clave "attendingClient" no está presente en el mapa.');
+        }
+      }
+
       //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
       clientsScheduledNext = resultList['nextClient'];
       quantityClientAttended = resultList['quantityClientAttended'];
@@ -625,6 +693,101 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
+  Future<void> logicaInesperada(List<Map>? attendingClientList) async {
+    if (attendingClientList != null && attendingClientList.isNotEmpty) {
+      // La lista no es nula y tiene elementos
+      // Hacer algo con la lista...
+      print(
+          '!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo no está vacía.');
+      print('clientes asistiendo : ${attendingClientList.length}');
+      // Usando un bucle for-in
+      for (var map in attendingClientList) {
+        int? id;
+        int? updated;
+        int? clock;
+        int? timeClock;
+        ClientsScheduledModel? client;
+
+        map.forEach((key, value) {
+          // Asignar valores a las variables según la clave
+          switch (key) {
+            case "reservation_id":
+              id = value;
+              break;
+            case "updated_at":
+              updated = value;
+              break;
+            case "clock":
+              clock = value;
+              break;
+            case "timeClock":
+              timeClock = value;
+              break;
+            case "client":
+              client = value;
+              break;
+            default:
+              // Manejar otras claves si es necesario
+              break;
+          }
+        });
+
+        // Lógica adicional si es necesario con las variables asignadas
+        if (clock == 1) {
+          // Asignar a variables específicas para clock 1
+          clientsAttended1 = client;
+          timeClientsAttended1 = timeClock;
+          //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
+          //  await set_timeClock(reservation_id,timeClock,detached,clock);
+          await setTimeClock(client!.reservation_id, 0, 0, 1);
+          // ... otras asignaciones para clock 1
+        } else if (clock == 2) {
+          // Asignar a variables específicas para clock 2
+          clientsAttended2 = client;
+          timeClientsAttended2 = timeClock;
+          //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
+          //  await set_timeClock(reservation_id,timeClock,detached,clock);
+          await setTimeClock(client!.reservation_id, 0, 0, 2);
+          // ... otras asignaciones para clock 2
+        } else if (clock == 3) {
+          // Asignar a variables específicas para clock 3
+          clientsAttended3 = client;
+          timeClientsAttended3 = timeClock;
+          //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
+          //  await set_timeClock(reservation_id,timeClock,detached,clock);
+          await setTimeClock(client!.reservation_id, 0, 0, 3);
+
+          // ... otras asignaciones para clock 3
+        } else if (clock == 4) {
+          // Asignar a variables específicas para clock 3
+          clientsAttended4 = client;
+          timeClientsAttended4 = timeClock;
+          //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
+          //  await set_timeClock(reservation_id,timeClock,detached,clock);
+          await setTimeClock(client!.reservation_id, 0, 0, 4);
+
+          // ... otras asignaciones para clock 3
+        }
+        // Puedes agregar más condiciones según sea necesario para otros valores de clock
+      } //cierre for (var map in attendingClientList)
+      //VERIFICO QUE RELOJ ESTA OCUPADO Y VEO SI HAY DISPONIBILIDAD
+      filterShowCardTimer();
+      update();
+      //
+    } else {
+      // La lista es nula o está vacía
+      print(
+          '!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo es nula o está vacía.');
+    }
+  }
+
+//
+//
+//
+//
+//
+//
+//
   Future<void> fetchClientsTechnical(idBranch) async {
     Map<String, dynamic> resultList =
         await repository.getClientsTechnicalList(idBranch);
