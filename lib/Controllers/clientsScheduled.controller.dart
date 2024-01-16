@@ -196,7 +196,7 @@ class ClientsScheduledController extends GetxController {
       int remainingMinutes4 = (remainingTime4 / 60).floor(); //MINUTOS RESTANTES
       //int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
       timeClientsActAttended4 = remainingMinutes4; //DB - timeClock
-      reservationId = clientsAttended3!.reservation_id; //DB - reservation_id
+      reservationId = clientsAttended4!.reservation_id; //DB - reservation_id
       clock = 4; //DB - clock
       detached = 1; //DB - detached
       //  await set_timeClock(reservation_id,timeClock,detached,clock);
