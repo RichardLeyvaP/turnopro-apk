@@ -38,13 +38,13 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
 
     if (state == AppLifecycleState.paused) {
       // La aplicación se está pausando (puede ir a segundo plano)
       print('La aplicación se está pausando (yendo a segundo plano)');
-      clientController.upadateVariablesValueTimers();
+      await clientController.upadateVariablesValueTimers();
       print(
           'La aplicación se está Enviar email:${loginController.emailUserLoggedIn}');
     } else if (state == AppLifecycleState.resumed) {

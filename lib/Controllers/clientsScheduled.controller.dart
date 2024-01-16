@@ -118,10 +118,17 @@ class ClientsScheduledController extends GetxController {
 
   upadateVariablesValueTimers() async {
     bool hasClient1 = clientsAttended1 != null;
-    // bool hasClient2 = clientsAttended2 != null;
-    // bool hasClient3 = clientsAttended3 != null;
-    // bool hasClient4 = clientsAttended4 != null;
-    int remainingTime1, reservationId, clock, detached;
+    bool hasClient2 = clientsAttended2 != null;
+    bool hasClient3 = clientsAttended3 != null;
+    bool hasClient4 = clientsAttended4 != null;
+    //
+    int remainingTime1,
+        remainingTime2,
+        remainingTime3,
+        remainingTime4,
+        reservationId,
+        clock,
+        detached;
     if (hasClient1) {
       double currentTimeDouble = animationController1!.value *
           animationController1!.duration!.inSeconds.toDouble();
@@ -140,6 +147,63 @@ class ClientsScheduledController extends GetxController {
           reservationId, timeClientsActAttended1, detached, clock);
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended1 reservation_id : $reservationId -  clock : $clock - detached :$detached');
+    }
+    if (hasClient2) {
+      double currentTimeDouble = animationController2!.value *
+          animationController2!.duration!.inSeconds.toDouble();
+      int totalTimeInSeconds = animationController2!.duration!.inSeconds;
+      remainingTime2 = totalTimeInSeconds - currentTimeDouble.toInt();
+
+      // Convertir a minutos
+      int remainingMinutes2 = (remainingTime2 / 60).floor(); //MINUTOS RESTANTES
+      //int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
+      timeClientsActAttended2 = remainingMinutes2; //DB - timeClock
+      reservationId = clientsAttended2!.reservation_id; //DB - reservation_id
+      clock = 2; //DB - clock
+      detached = 1; //DB - detached
+      //  await set_timeClock(reservation_id,timeClock,detached,clock);
+      await setTimeClock(
+          reservationId, timeClientsActAttended2, detached, clock);
+      print(
+          'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended2 reservation_id : $reservationId -  clock : $clock - detached :$detached');
+    }
+    if (hasClient3) {
+      double currentTimeDouble = animationController3!.value *
+          animationController3!.duration!.inSeconds.toDouble();
+      int totalTimeInSeconds = animationController3!.duration!.inSeconds;
+      remainingTime3 = totalTimeInSeconds - currentTimeDouble.toInt();
+
+      // Convertir a minutos
+      int remainingMinutes3 = (remainingTime3 / 60).floor(); //MINUTOS RESTANTES
+      //int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
+      timeClientsActAttended3 = remainingMinutes3; //DB - timeClock
+      reservationId = clientsAttended3!.reservation_id; //DB - reservation_id
+      clock = 3; //DB - clock
+      detached = 1; //DB - detached
+      //  await set_timeClock(reservation_id,timeClock,detached,clock);
+      await setTimeClock(
+          reservationId, timeClientsActAttended3, detached, clock);
+      print(
+          'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended3 reservation_id : $reservationId -  clock : $clock - detached :$detached');
+    }
+    if (hasClient4) {
+      double currentTimeDouble = animationController4!.value *
+          animationController4!.duration!.inSeconds.toDouble();
+      int totalTimeInSeconds = animationController4!.duration!.inSeconds;
+      remainingTime4 = totalTimeInSeconds - currentTimeDouble.toInt();
+
+      // Convertir a minutos
+      int remainingMinutes4 = (remainingTime4 / 60).floor(); //MINUTOS RESTANTES
+      //int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
+      timeClientsActAttended4 = remainingMinutes4; //DB - timeClock
+      reservationId = clientsAttended3!.reservation_id; //DB - reservation_id
+      clock = 4; //DB - clock
+      detached = 1; //DB - detached
+      //  await set_timeClock(reservation_id,timeClock,detached,clock);
+      await setTimeClock(
+          reservationId, timeClientsActAttended4, detached, clock);
+      print(
+          'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended4 reservation_id : $reservationId -  clock : $clock - detached :$detached');
     } else {
       print('EL TIEMPO ACTUAL DEL RELOJ 1 ES Nulo:$timeClientsActAttended1 ');
     }
@@ -416,7 +480,8 @@ class ClientsScheduledController extends GetxController {
               item.remove(0);
             }
             pausResumeClock[0] = -99;
-            await sentValueClockDb(reservationId, 0);
+            //await sentValueClockDb(reservationId, 0);
+            await setTimeClock(reservationId, 0, 0, 0);
           }
         }
         if (clientsAttended2 != null) {
@@ -429,7 +494,8 @@ class ClientsScheduledController extends GetxController {
               item.remove(1);
             }
             pausResumeClock[1] = -99;
-            await sentValueClockDb(reservationId, 0);
+            // await sentValueClockDb(reservationId, 0);
+            await setTimeClock(reservationId, 0, 0, 0);
           }
         }
         if (clientsAttended3 != null) {
@@ -442,7 +508,8 @@ class ClientsScheduledController extends GetxController {
               item.remove(2);
             }
             pausResumeClock[2] = -99;
-            await sentValueClockDb(reservationId, 0);
+            // await sentValueClockDb(reservationId, 0);
+            await setTimeClock(reservationId, 0, 0, 0);
           }
         }
         if (clientsAttended4 != null) {
@@ -455,7 +522,8 @@ class ClientsScheduledController extends GetxController {
               item.remove(3);
             }
             pausResumeClock[3] = -99;
-            await sentValueClockDb(reservationId, 0);
+            //await sentValueClockDb(reservationId, 0);
+            await setTimeClock(reservationId, 0, 0, 0);
           }
         }
       }
@@ -541,6 +609,8 @@ class ClientsScheduledController extends GetxController {
           reservationId, timeClock, detached, clock);
       if (result) {
         print('************** true');
+        print(
+            '************** true $reservationId - $timeClock - $detached - $clock');
       } else {
         print('************** false');
       }
@@ -739,7 +809,7 @@ class ClientsScheduledController extends GetxController {
           timeClientsAttended1 = timeClock;
           //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
           //  await set_timeClock(reservation_id,timeClock,detached,clock);
-          await setTimeClock(client!.reservation_id, 0, 0, 1);
+          // await setTimeClock(client!.reservation_id, 0, 0, 1);//todo comente a ver si ya lo hace bien
           // ... otras asignaciones para clock 1
         } else if (clock == 2) {
           // Asignar a variables específicas para clock 2
@@ -747,7 +817,7 @@ class ClientsScheduledController extends GetxController {
           timeClientsAttended2 = timeClock;
           //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
           //  await set_timeClock(reservation_id,timeClock,detached,clock);
-          await setTimeClock(client!.reservation_id, 0, 0, 2);
+          // await setTimeClock(client!.reservation_id, 0, 0, 2);//todo comente a ver si ya lo hace bien
           // ... otras asignaciones para clock 2
         } else if (clock == 3) {
           // Asignar a variables específicas para clock 3
@@ -755,7 +825,7 @@ class ClientsScheduledController extends GetxController {
           timeClientsAttended3 = timeClock;
           //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
           //  await set_timeClock(reservation_id,timeClock,detached,clock);
-          await setTimeClock(client!.reservation_id, 0, 0, 3);
+          // await setTimeClock(client!.reservation_id, 0, 0, 3);//todo comente a ver si ya lo hace bien
 
           // ... otras asignaciones para clock 3
         } else if (clock == 4) {
@@ -764,7 +834,7 @@ class ClientsScheduledController extends GetxController {
           timeClientsAttended4 = timeClock;
           //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
           //  await set_timeClock(reservation_id,timeClock,detached,clock);
-          await setTimeClock(client!.reservation_id, 0, 0, 4);
+          // await setTimeClock(client!.reservation_id, 0, 0, 4);//todo comente a ver si ya lo hace bien
 
           // ... otras asignaciones para clock 3
         }

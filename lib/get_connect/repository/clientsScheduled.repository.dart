@@ -93,7 +93,7 @@ class ClientsScheduledRepository extends GetConnect {
             "reservation_id": client.reservation_id,
             "updated_at": convertDateTimeToMinutes(client.updated_at!),
             "clock": client.clock!,
-            "timeClock": client.timeClock! * 60,
+            "timeClock": client.timeClock! * 60, //convirtiendolo en minutos
             "client": client,
           };
           attendingClientList.add(newValue);
