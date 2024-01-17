@@ -11,6 +11,8 @@ class ModalHelper {
       String cliente, int reservationId, int carId) async {
     Completer<void> closedCompleter = Completer<void>();
     List<double> sizeExpandedService = [170, 224, 280, 336, 392];
+    // Declarar un controlador fuera del método
+    TextEditingController commentController = TextEditingController();
 
     showModalBottomSheet(
       context: context,
@@ -52,9 +54,124 @@ class ModalHelper {
                                 ),
                                 onPressed: () async {
                                   //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
-                                  await controllClient.acceptOrRejectClient(
-                                      reservationId, 2);
-                                  Navigator.pop(context); // Cierra el modal
+                                  //todo mandar estos valores para acabar servicio
+                                  // await controllClient.acceptOrRejectClient(
+                                  //     reservationId, 2);
+                                  // Navigator.pop(context); // Cierra el modal
+                                  //
+                                  //
+                                  //
+                                  //
+                                  //
+                                  //
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text(
+                                          'Comentario',
+                                        ),
+                                        content: SizedBox(
+                                          width: 100,
+                                          height: 150,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Expanded(
+                                                child: Container(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 10),
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.grey),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                  ),
+                                                  child: TextFormField(
+                                                    controller:
+                                                        commentController, // Asignar el controlador al TextFormField
+                                                    maxLines: 6,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      border: InputBorder.none,
+                                                      hintText:
+                                                          'Escribe tu comentario aquí...',
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(height: 20),
+                                            ],
+                                          ),
+                                        ),
+                                        // Botón de aceptar
+                                        actions: [
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              // Lógica para cancelar
+
+                                              Navigator.pop(context, 'Cerrar');
+                                              print('Comentario cancelado');
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                                primary: Colors.red),
+                                            child: const Text('Cancelar'),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () async {
+                                              // Lógica para enviar el comentario
+                                              // Obtener el valor del campo de texto
+                                              String commentText =
+                                                  commentController.text;
+                                              // Eliminar espacios en blanco al principio y al final
+                                              String textWithoutSpaces =
+                                                  commentText.trim();
+
+                                              // Verificar que el campo no esté vacío
+                                              if (textWithoutSpaces
+                                                  .isNotEmpty) {
+                                                // Cerrar el primer modal
+                                                Navigator.pop(context);
+
+                                                // Cerrar el segundo modal (AlertDialog)
+                                                Navigator.pop(context);
+
+                                                // Mandar el comentario
+                                                await controllClient
+                                                    .storeByReservationId(
+                                                        reservationId,
+                                                        commentText);
+
+                                                // Lógica para enviar el comentario
+                                                await controllClient
+                                                    .acceptOrRejectClient(
+                                                        reservationId, 2);
+
+                                                print(
+                                                    'Comentario enviado - $commentText ');
+                                              } else {
+                                                // El campo de texto está vacío, puedes mostrar un mensaje o realizar alguna acción
+                                                print(
+                                                    'El comentario no puede estar vacío');
+                                              }
+                                            },
+                                            child: Text('Enviar'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+
+                                  //
+                                  //
+                                  //
+                                  //
+                                  //
+                                  //
+                                  //
                                 },
                                 child: const Text(
                                   'Cliente Atendido',

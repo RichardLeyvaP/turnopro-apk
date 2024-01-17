@@ -312,4 +312,28 @@ class ClientsScheduledRepository extends GetConnect {
       return false;
     }
   }
+
+  Future<bool> storeByReservationId(reservationId, look) async {
+    bool value = false;
+    var url = '${Env.apiEndpoint}/storeByReservationId';
+
+    // Parámetros que deseas enviar en la solicitud POST
+    final Map<String, dynamic> body = {
+      'reservation_id': reservationId,
+      'look': look,
+    };
+    // Realizar la solicitud POST
+    final response = await post(url, body);
+    if (response.statusCode == 200) {
+      print('storeByReservationId value = true');
+      value = true;
+      return value;
+    } else {
+      print('ERROR:storeByReservationId value = false');
+      print(
+          'ERROR:storeByReservationId value = false : ${response.statusCode}');
+
+      return false;
+    }
+  }
 }

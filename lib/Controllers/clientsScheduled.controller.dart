@@ -445,6 +445,11 @@ class ClientsScheduledController extends GetxController {
     }
   }
 
+  Future<void> storeByReservationId(reservationId, look) async {
+    bool value = await repository.storeByReservationId(reservationId, look);
+    print('si es - $value - ha o no enviado el comentario');
+  }
+
   void clockChanges(bool value) {
     clockchanges = value;
     update();
