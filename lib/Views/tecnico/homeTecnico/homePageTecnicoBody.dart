@@ -112,7 +112,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return GetBuilder<ClientsScheduledController>(builder: (controllerclient) {
+    return GetBuilder<ClientsTechnicalController>(builder: (controllerclient) {
       String firstName = '';
       // //todo AQUI DETENGO LOS TIMER QUE NO ESTAN VISIBLES
 
@@ -127,48 +127,6 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
 
       _animationControllerInitial!.forward();
 
-      if (controllerclient.activeModifyTime == true) {
-        print(
-            'activeModifyTime SOY = ${controllerclient.activeModifyTime} Y MANDE ESTE TIEMPO ${controllerclient.modifyTime[controllerclient.modifyTimeSpecific]}');
-        int i = controllerclient.modifyTimeSpecific;
-        int value = controllerclient.modifyTime[i];
-        // Obtén la duración total del AnimationController
-        Duration? duracionTotal = _animationTechnicalController1!.duration;
-
-// Obtén el tiempo transcurrido hasta ahora en minutos
-        double tiempoTranscurrido =
-            _animationTechnicalController1!.value * duracionTotal!.inMinutes;
-
-// Calcula el tiempo restante en minutos
-        double tiempoRestante = duracionTotal.inMinutes - tiempoTranscurrido;
-
-        print('Tiempo duracionTotal: $duracionTotal');
-        print('Tiempo tiempoTranscurrido: ${tiempoTranscurrido.truncate()}');
-        print('Tiempo restante: $tiempoRestante');
-
-        Duration duracionSendAct = Duration(
-          minutes: tiempoRestante.truncate() + value,
-        );
-
-// Aumenta la duración actual en 30 segundos
-        Duration nuevaDuracion = duracionSendAct;
-
-        _animationTechnicalController1!.duration = nuevaDuracion;
-        print('duracionSend YA:$duracionSendAct');
-
-        _animationTechnicalController1!.reset();
-        _animationTechnicalController1!.forward();
-        print('RESETEADO YA');
-
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          // Se ejecutará después de que se haya construido el widget
-          //define que tipo de saludo dar dependiendo de la hora
-          loginController.getGreeting();
-          print(
-              'ENTRE A DESTRUIR LAS VARIABLES DESDE WidgetsBinding.instance.addPostFrameCallback TECNHICAL');
-        });
-      }
-
       return Column(
         //Cart anaranjado grande inicial que tiene el cronometro
         children: [
@@ -179,7 +137,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                 child: Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(12)),
-                    color: Color.fromARGB(255, 49, 167, 59),
+                    color: Color(0xFFF18254),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -231,18 +189,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                     controllerclient.clientsAttendedTechnical ==
                                         null) ...[
                                   const SizedBox(
-                                    height: 50,
-                                  ),
-                                  const Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.attribution_sharp),
-                                      Text(
-                                          'Por favor ir a la agenda y verificar los clientes.'),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 50,
+                                    height: 70,
                                   ),
                                 ] else if (controllerclient
                                         .quantityClientAttendedTechnical ==
@@ -516,28 +463,15 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                             padding: const EdgeInsets.all(8.0),
                                             child: GetBuilder<LoginController>(
                                                 builder: (controllerLogin) {
-                                              return Row(
+                                              return const Row(
                                                 children: [
-                                                  const Text(
+                                                  Icon(Icons.person_off),
+                                                  Text(
                                                       'No hay clientes en cola',
                                                       style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           fontSize: 12)),
-                                                  InkWell(
-                                                      onTap: () {
-                                                        controllerclient
-                                                            .fetchClientsScheduled(
-                                                                controllerLogin
-                                                                    .idProfessionalLoggedIn,
-                                                                controllerLogin
-                                                                    .branchIdLoggedIn);
-                                                      },
-                                                      child: const Text(
-                                                        '   Actualizar cola',
-                                                        style: TextStyle(
-                                                            color: Colors.red),
-                                                      )),
                                                 ],
                                               );
                                             }),
@@ -674,7 +608,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
   Padding cardTimer(
     Key uniqueKey,
     String name,
-    ClientsScheduledController controllerclient,
+    ClientsTechnicalController controllerclient,
     AnimationController _animationController,
   ) {
     String segundos = "";

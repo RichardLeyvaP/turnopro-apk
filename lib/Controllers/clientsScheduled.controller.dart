@@ -48,6 +48,7 @@ class ClientsScheduledController extends GetxController {
   String clientsAttended = 'nobody';
   String technicalClientsAttended = 'nobody';
   List<ServiceModel> serviceCustomerSelected = [];
+  List<ServiceModel> serviceCustomerSelectedForm = [];
 
   int clientsScheduledListLength = 0;
   int clientsTechnicalLength = 0;
@@ -80,6 +81,7 @@ class ClientsScheduledController extends GetxController {
   };
   bool clockchanges = false;
   bool closeIesperado = false;
+  String? imagePath;
 
   void setCloseIesperado(bool value) {
     closeIesperado = value;
@@ -90,18 +92,7 @@ class ClientsScheduledController extends GetxController {
 
   //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
   //ESTA VARIABLE HAY QUE LLENARLA DIRECTAMENTE DE LA DB
-  Map<String, int> noncomplianceProfessional = {
-    /* //el tiempo para escoger los clientes inicial (3min)
-    'initialTime': 3,
-    'teamQuota': 3, //Cuidado de equipo
-    'punctuality': 3, //Puntualidad
-    'clearCommunication': 3, //Comunicacion clara
-    'confidentiality': 3, //Confidencialidad
-    'cleanlinessOrder': 3, //Limpieza y Orden
-    'drugProhibition': 3, //Prohibición de Drogas y Alcohol
-    'respectTreatment': 3, //Respeto y Trato Cordial
-    /******************AGREGAR AQUI TODS LOS QUE DESEN*********************/*/
-  };
+  Map<String, int> noncomplianceProfessional = {};
 
   //
   //
@@ -645,6 +636,9 @@ class ClientsScheduledController extends GetxController {
 
   Future<void> searchForCustomerServices(idCar) async {
     serviceCustomerSelected = await repository.getCustomerServicesList(idCar);
+    if (showingServiceClients == false) {
+      serviceCustomerSelectedForm = serviceCustomerSelected;
+    }
     update();
   }
 

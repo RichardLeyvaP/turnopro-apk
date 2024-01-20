@@ -1,6 +1,8 @@
 //****************************************************************************** */
 //****************************************************************************** */
-import 'dart:async';
+
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
@@ -26,36 +28,12 @@ class YourPageViewScreenState extends State<HomePageView> {
 
   @override
   void initState() {
-    super.initState(); //todo REVISAR valor fijo
-    iniciarLlamadaCada10Segundos();
+    super.initState();
   }
 
   @override
   void dispose() {
-    // Asegúrate de cancelar el temporizador al eliminar el widget
-    _timer?.cancel();
     super.dispose();
-  }
-
-  Timer? _timer;
-
-  void iniciarLlamadaCada10Segundos() {
-    // Cancela cualquier temporizador existente para evitar duplicaciones
-    _timer?.cancel();
-
-    // Establece un temporizador que llama a la función cada 20 segundos
-    _timer = Timer.periodic(const Duration(seconds: 10), (Timer timer) {
-      // actualizo la cola
-      if (controllerclient.showingServiceClients == false) {
-        //solo
-        print(
-            'ESTOY ACTUALIZANDO LA COLA CADA 10 SEGUNDOS solo si showingServiceClients = false');
-        controllerclient.fetchClientsScheduled(
-            controllerLogin.idProfessionalLoggedIn,
-            controllerLogin.branchIdLoggedIn);
-      }
-      //todo REVISAR valor fijo
-    });
   }
 
   @override
@@ -453,22 +431,27 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                       index]
                                                                   .car_id)
                                                           .then((_) {
+                                                        String clientName =
+                                                            controllerClient
+                                                                .clientsScheduledList[
+                                                                    index]
+                                                                .client_name;
+                                                        int reservationId =
+                                                            controllerClient
+                                                                .clientsScheduledList[
+                                                                    index]
+                                                                .reservation_id;
+                                                        int carId = controllerClient
+                                                            .clientsScheduledList[
+                                                                index]
+                                                            .car_id;
                                                         ModalHelper.showModal(
                                                             pagesConfigC
                                                                 .pageController,
                                                             context,
-                                                            controllerClient
-                                                                .clientsScheduledList[
-                                                                    index]
-                                                                .client_name,
-                                                            controllerClient
-                                                                .clientsScheduledList[
-                                                                    index]
-                                                                .reservation_id,
-                                                            controllerClient
-                                                                .clientsScheduledList[
-                                                                    index]
-                                                                .car_id);
+                                                            clientName,
+                                                            reservationId,
+                                                            carId);
                                                       });
                                                     }
                                                   },

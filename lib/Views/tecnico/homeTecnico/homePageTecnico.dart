@@ -6,6 +6,7 @@ import 'package:animate_do/animate_do.dart';
 //import 'package:lottie/lottie.dart';
 //import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 
@@ -44,56 +45,59 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                     topLeft: Radius.circular(10),
                     bottomLeft: Radius.circular(10),
                     bottomRight: Radius.circular(10)),
-                child: BottomNavigationBar(
-                    showSelectedLabels: false,
-                    showUnselectedLabels: false,
-                    unselectedItemColor: Colors.white,
-                    backgroundColor: const Color.fromARGB(255, 43, 44, 49),
-                    fixedColor: const Color(0xFFF18254),
-                    currentIndex: pagesConfigController.selectedIndex,
-                    type: BottomNavigationBarType.fixed,
-                    onTap: (index) => pagesConfigController.onTabTapped(index),
-                    items: [
-                      BottomNavigationBarItem(
-                          icon: Badge(
-                            label:
-                                Text('${pagesConfigController.selectedIndex}'),
-                            child: Icon(
-                              Icons.person,
+                child: GetBuilder<ClientsTechnicalController>(
+                    builder: (controClient) {
+                  return BottomNavigationBar(
+                      showSelectedLabels: false,
+                      showUnselectedLabels: false,
+                      unselectedItemColor: Colors.white,
+                      backgroundColor: const Color.fromARGB(255, 43, 44, 49),
+                      fixedColor: const Color(0xFFF18254),
+                      currentIndex: pagesConfigController.selectedIndex,
+                      type: BottomNavigationBarType.fixed,
+                      onTap: (index) =>
+                          pagesConfigController.onTabTapped(index),
+                      items: [
+                        BottomNavigationBarItem(
+                            icon: Icon(
+                              Icons.home,
                               size: MediaQuery.of(context).size.width * 0.08,
                             ),
-                          ),
-                          label: 'Perfil'),
-                      BottomNavigationBarItem(
-                          icon: Icon(
-                            Icons.storage,
-                            size: MediaQuery.of(context).size.width * 0.08,
-                          ),
-                          label: 'Agenda'),
-                      BottomNavigationBarItem(
-                          icon: Badge(
-                            label:
-                                Text('${pagesConfigController.selectedIndex}'),
-                            child: Icon(
-                              Icons.notifications,
+                            label: 'Home'),
+                        BottomNavigationBarItem(
+                            icon: Badge(
+                              label: Text(
+                                  '${controClient.clientsTechnicalLength}'),
+                              child: Icon(
+                                Icons.perm_contact_calendar,
+                                size: MediaQuery.of(context).size.width * 0.08,
+                              ),
+                            ),
+                            label: 'Agenda'),
+                        BottomNavigationBarItem(
+                            icon: Badge(
+                              label: Text('0'),
+                              child: Icon(
+                                Icons.notifications,
+                                size: MediaQuery.of(context).size.width * 0.08,
+                              ),
+                            ),
+                            label: 'Notificaciones'),
+                        BottomNavigationBarItem(
+                            icon: Icon(
+                              Icons.bar_chart,
                               size: MediaQuery.of(context).size.width * 0.08,
                             ),
-                          ),
-                          label: 'Notificaciones'),
-                      BottomNavigationBarItem(
+                            label: 'Estadistica'),
+                        BottomNavigationBarItem(
                           icon: Icon(
-                            Icons.bar_chart,
+                            Icons.star,
                             size: MediaQuery.of(context).size.width * 0.08,
                           ),
-                          label: 'Estadistica'),
-                      BottomNavigationBarItem(
-                        icon: Icon(
-                          Icons.insert_emoticon,
-                          size: MediaQuery.of(context).size.width * 0.08,
+                          label: 'Convivencia',
                         ),
-                        label: 'Home',
-                      ),
-                    ])),
+                      ]);
+                })),
           ),
         );
       }),

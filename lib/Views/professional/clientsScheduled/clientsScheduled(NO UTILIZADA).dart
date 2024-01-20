@@ -1,6 +1,5 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: depend_on_referenced_packages, file_names
 
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
@@ -14,6 +13,7 @@ class ClientsScheduled extends StatefulWidget {
   const ClientsScheduled({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _ClientsScheduledState createState() => _ClientsScheduledState();
 }
 
@@ -26,35 +26,11 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
   @override
   void initState() {
     super.initState(); //todo REVISAR valor fijo
-    iniciarLlamadaCada10Segundos();
   }
 
   @override
   void dispose() {
-    // Asegúrate de cancelar el temporizador al eliminar el widget
-    _timer?.cancel();
     super.dispose();
-  }
-
-  Timer? _timer;
-
-  void iniciarLlamadaCada10Segundos() {
-    // Cancela cualquier temporizador existente para evitar duplicaciones
-    _timer?.cancel();
-
-    // Establece un temporizador que llama a la función cada 20 segundos
-    _timer = Timer.periodic(const Duration(seconds: 10), (Timer timer) {
-      // actualizo la cola
-      if (controllerclient.showingServiceClients == false) {
-        //solo
-        print(
-            'ESTOY ACTUALIZANDO LA COLA CADA 10 SEGUNDOS solo si showingServiceClients = false');
-        controllerclient.fetchClientsScheduled(
-            controllerLogin.idProfessionalLoggedIn,
-            controllerLogin.branchIdLoggedIn);
-      }
-      //todo REVISAR valor fijo
-    });
   }
 
   @override

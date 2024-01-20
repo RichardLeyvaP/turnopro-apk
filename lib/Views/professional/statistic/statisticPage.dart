@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:turnopro_apk/Components/BottomNavigationBar.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaDiaPageNueva.dart';

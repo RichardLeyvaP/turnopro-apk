@@ -392,17 +392,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                   ),
                                 ] else ...[
                                   const SizedBox(
-                                    height: 50,
-                                  ),
-                                  const Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.attribution_sharp),
-                                      Text('No hay nadie en cola.'),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 50,
+                                    height: 70,
                                   ),
                                 ]
                               ]),
@@ -752,28 +742,15 @@ class _HomePageBodyState extends State<HomePageBody>
                                             padding: const EdgeInsets.all(8.0),
                                             child: GetBuilder<LoginController>(
                                                 builder: (controllerLogin) {
-                                              return Row(
+                                              return const Row(
                                                 children: [
-                                                  const Text(
+                                                  Icon(Icons.person_off),
+                                                  Text(
                                                       'No hay clientes en cola',
                                                       style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           fontSize: 12)),
-                                                  InkWell(
-                                                      onTap: () {
-                                                        controllerclient
-                                                            .fetchClientsScheduled(
-                                                                controllerLogin
-                                                                    .idProfessionalLoggedIn,
-                                                                controllerLogin
-                                                                    .branchIdLoggedIn);
-                                                      },
-                                                      child: const Text(
-                                                        '   Actualizar cola',
-                                                        style: TextStyle(
-                                                            color: Colors.red),
-                                                      )),
                                                 ],
                                               );
                                             }),

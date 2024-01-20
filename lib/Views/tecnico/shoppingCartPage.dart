@@ -413,55 +413,58 @@ class ShoppingCartPage extends StatelessWidget {
                     : const Text('')
                 : const Text(
                     'Fallo su conexion a Internet,por favor revise su conexión.'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Total a pagar:',
-                  style: TextStyle(
-                      fontSize: (MediaQuery.of(context).size.height * 0.02),
-                      fontWeight: FontWeight.w900),
-                ),
-                InkWell(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialogPago(
-                          totalPrice: controllerShoppingCart.totalPrice,
-                        ); // Muestra el AlertDialog
-                      },
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 120,
-                      height: 40,
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(borderRadiusValue)),
-                          gradient: LinearGradient(
-                            colors: [
-                              Color.fromARGB(255, 140, 141, 143),
-                              Color.fromARGB(255, 241, 130, 84),
-                            ],
-                            stops: [0.0, 0.8],
-                            begin: FractionalOffset.centerLeft,
-                            end: FractionalOffset.centerRight,
-                          )),
-                      child: const Center(child: Text('Confirmar')),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Total a pagar:',
+                    style: TextStyle(
+                        fontSize: (MediaQuery.of(context).size.height * 0.02),
+                        fontWeight: FontWeight.w900),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialogPago(
+                            totalPrice: controllerShoppingCart.totalPrice,
+                          ); // Muestra el AlertDialog
+                        },
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 120,
+                        height: 40,
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(borderRadiusValue)),
+                            gradient: LinearGradient(
+                              colors: [
+                                Color.fromARGB(255, 140, 141, 143),
+                                Color.fromARGB(255, 241, 130, 84),
+                              ],
+                              stops: [0.0, 0.8],
+                              begin: FractionalOffset.centerLeft,
+                              end: FractionalOffset.centerRight,
+                            )),
+                        child: const Center(child: Text('Confirmar')),
+                      ),
                     ),
                   ),
-                ),
-                Text(
-                  controllerShoppingCart.totalPrice.toStringAsFixed(2),
-                  /*esto garantiza 2 lugares despues de la coma */
-                  style: TextStyle(
-                      fontSize: (MediaQuery.of(context).size.height * 0.031),
-                      fontWeight: FontWeight.w800),
-                ),
-              ],
+                  Text(
+                    controllerShoppingCart.totalPrice.toStringAsFixed(2),
+                    /*esto garantiza 2 lugares despues de la coma */
+                    style: TextStyle(
+                        fontSize: (MediaQuery.of(context).size.height * 0.031),
+                        fontWeight: FontWeight.w800),
+                  ),
+                ],
+              ),
             )
           ],
         ));

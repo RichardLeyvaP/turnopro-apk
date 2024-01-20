@@ -1,10 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ModalHelper {
   static showModal(PageController pageController, BuildContext context,
@@ -20,7 +22,7 @@ class ModalHelper {
         return GetBuilder<ClientsScheduledController>(
             builder: (controllClient) {
           //VARIABLES PARA AJUSTAR EL DESPLEGABLE DE MOSTRAR LOS DETALLES DE RESERVA
-          int item = (controllClient.serviceCustomerSelected.length - 1);
+          int item = (controllClient.serviceCustomerSelectedForm.length - 1);
           item > 4 ? item = 4 : null;
 
           return Container(
@@ -38,6 +40,7 @@ class ModalHelper {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     controllClient.statusClientTemporary == 11 ||
+                            controllClient.statusClientTemporary == 1 ||
                             controllClient.statusClientTemporary == 111
                         ? Row(
                             children: [
@@ -73,34 +76,58 @@ class ModalHelper {
                                         ),
                                         content: SizedBox(
                                           width: 100,
-                                          height: 150,
+                                          height: 200,
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Expanded(
-                                                child: Container(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 10),
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Colors.grey),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                  ),
-                                                  child: TextFormField(
-                                                    controller:
-                                                        commentController, // Asignar el controlador al TextFormField
-                                                    maxLines: 6,
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      border: InputBorder.none,
-                                                      hintText:
-                                                          'Escribe tu comentario aquí...',
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 10),
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color: Colors.grey),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                      ),
+                                                      child: TextFormField(
+                                                        controller:
+                                                            commentController, // Asignar el controlador al TextFormField
+                                                        maxLines: 4,
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          border:
+                                                              InputBorder.none,
+                                                          hintText:
+                                                              'Escribe tu comentario aquí...',
+                                                        ),
+                                                      ),
                                                     ),
-                                                  ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    const Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Icon(Icons.camera),
+                                                        Text(
+                                                            'Foto al cliente...'),
+                                                      ],
+                                                    ),
+                                                    (controllClient.imagePath ==
+                                                            null)
+                                                        ? Container()
+                                                        : Image.file(File(
+                                                            controllClient
+                                                                .imagePath!)),
+                                                  ],
                                                 ),
                                               ),
                                               const SizedBox(height: 20),
@@ -119,6 +146,26 @@ class ModalHelper {
                                             style: ElevatedButton.styleFrom(
                                                 primary: Colors.red),
                                             child: const Text('Cancelar'),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () async {
+                                              final ImagePicker _picker =
+                                                  ImagePicker();
+                                              XFile? pickedFile =
+                                                  await _picker.pickImage(
+                                                source: ImageSource.camera,
+                                              );
+
+                                              // Verifica si pickedFile no es nulo antes de acceder a su propiedad path
+                                              if (pickedFile != null) {
+                                                controllClient.imagePath =
+                                                    pickedFile.path;
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.green,
+                                            ),
+                                            child: const Text('Tirar foto'),
                                           ),
                                           ElevatedButton(
                                             onPressed: () async {
@@ -158,7 +205,7 @@ class ModalHelper {
                                                     'El comentario no puede estar vacío');
                                               }
                                             },
-                                            child: Text('Enviar'),
+                                            child: const Text('Enviar'),
                                           ),
                                         ],
                                       );
@@ -209,40 +256,13 @@ class ModalHelper {
                               )
                             ],
                           )
-                        : controllClient.statusClientTemporary == 1 ||
-                                controllClient.statusClientTemporary == 111
-                            ? ElevatedButton(
-                                style: ButtonStyle(
-                                  padding: MaterialStateProperty.all<
-                                      EdgeInsetsGeometry>(
-                                    const EdgeInsets.symmetric(
-                                        vertical: 4.0, horizontal: 10.0),
-                                  ),
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.black),
-                                ),
-                                onPressed: () async {
-                                  //HACER UNA LLAMADA Y MANADAR A LA DB EL RELOJ QUE PERTENECE A ESTE CLIENTE
-                                  //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
-                                  await controllClient.acceptOrRejectClient(
-                                      reservationId, 4);
-                                  Navigator.pop(context); // Cierra el modal
-                                },
-                                child: const Text(
-                                  'Enviar al Técnico',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w800),
-                                ),
-                              )
-                            : const Text(
-                                'Descripción de Reserva',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    color: Color(0xFFF18254),
-                                    fontSize: 18),
-                              ),
+                        : const Text(
+                            'Descripción de Reserva',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                color: Color(0xFFF18254),
+                                fontSize: 18),
+                          ),
                     InkWell(
                         onTap: () {
                           Navigator.pop(context); // Cierra el modal
@@ -266,7 +286,8 @@ class ModalHelper {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: controllClient.serviceCustomerSelected.length,
+                    itemCount:
+                        controllClient.serviceCustomerSelectedForm.length,
                     itemBuilder: (context, index) => Row(
                       children: [
                         Column(
@@ -284,19 +305,19 @@ class ModalHelper {
                                 ),
                                 Text(
                                   controllClient
-                                      .serviceCustomerSelected[index].name,
+                                      .serviceCustomerSelectedForm[index].name,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w700),
                                 ),
                               ],
                             ),
                             Text(
-                              'Precio: ${controllClient.serviceCustomerSelected[index].price_service}',
+                              'Precio: ${controllClient.serviceCustomerSelectedForm[index].price_service}',
                               style: const TextStyle(
                                   fontWeight: FontWeight.w300, fontSize: 12),
                             ),
                             Text(
-                              'Duración: ${controllClient.serviceCustomerSelected[index].duration_service}',
+                              'Duración: ${controllClient.serviceCustomerSelectedForm[index].duration_service}',
                               style: const TextStyle(
                                   fontWeight: FontWeight.w300, fontSize: 12),
                             ),
@@ -363,7 +384,7 @@ class ModalHelper {
                           );
                         },
                         child: const Text(
-                          'Añadir servicios y productos',
+                          'Servicios y productos',
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.w700),
                         ),

@@ -36,7 +36,7 @@ class Myapp extends StatelessWidget {
             ? themeDataProfessional()
             : _.pagina == '/HomeResponsible'
                 ? themeDataResponsible()
-                : themeDataTecnico(), //es tecnico
+                : themeDataProfessional(), //themeDataTecnico(), //es tecnico
         initialRoute: '/SplashPage',
         //initialRoute: '/SplashPage',
         unknownRoute: GetPage(
