@@ -70,145 +70,168 @@ class ModalHelper {
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text(
-                                          'Comentario',
-                                        ),
-                                        content: SizedBox(
-                                          width: 100,
-                                          height: 200,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Expanded(
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 10),
-                                                      decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            color: Colors.grey),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                      ),
-                                                      child: TextFormField(
-                                                        controller:
-                                                            commentController, // Asignar el controlador al TextFormField
-                                                        maxLines: 4,
+                                      return GetBuilder<
+                                              ClientsScheduledController>(
+                                          builder: (_) {
+                                        return AlertDialog(
+                                          title: const Text(
+                                            'Comentario',
+                                          ),
+                                          content: SizedBox(
+                                            width: 110,
+                                            height: 280,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Expanded(
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 10),
                                                         decoration:
-                                                            const InputDecoration(
-                                                          border:
-                                                              InputBorder.none,
-                                                          hintText:
-                                                              'Escribe tu comentario aquí...',
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.grey),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        ),
+                                                        child: TextFormField(
+                                                          controller:
+                                                              commentController, // Asignar el controlador al TextFormField
+                                                          maxLines: 4,
+                                                          decoration:
+                                                              const InputDecoration(
+                                                            border: InputBorder
+                                                                .none,
+                                                            hintText:
+                                                                'Escribe tu comentario aquí...',
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    const Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Icon(Icons.camera),
-                                                        Text(
-                                                            'Foto al cliente...'),
-                                                      ],
-                                                    ),
-                                                    (controllClient.imagePath ==
-                                                            null)
-                                                        ? Container()
-                                                        : Image.file(File(
-                                                            controllClient
-                                                                .imagePath!)),
-                                                  ],
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      const Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Icon(Icons.camera),
+                                                          Text(
+                                                              'Foto al cliente...'),
+                                                        ],
+                                                      ),
+                                                      (_.imagePath == null)
+                                                          ? Container()
+                                                          : SizedBox(
+                                                              width:
+                                                                  100, // Establece el ancho deseado
+                                                              height:
+                                                                  100, // Establece la altura deseada
+                                                              child: Image.file(
+                                                                File(_
+                                                                    .imagePath!),
+                                                                fit: BoxFit
+                                                                    .cover, // Puedes ajustar el modo de ajuste según tus necesidades
+                                                              ),
+                                                            ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                              const SizedBox(height: 20),
-                                            ],
-                                          ),
-                                        ),
-                                        // Botón de aceptar
-                                        actions: [
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              // Lógica para cancelar
-
-                                              Navigator.pop(context, 'Cerrar');
-                                              print('Comentario cancelado');
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                                primary: Colors.red),
-                                            child: const Text('Cancelar'),
-                                          ),
-                                          ElevatedButton(
-                                            onPressed: () async {
-                                              final ImagePicker _picker =
-                                                  ImagePicker();
-                                              XFile? pickedFile =
-                                                  await _picker.pickImage(
-                                                source: ImageSource.camera,
-                                              );
-
-                                              // Verifica si pickedFile no es nulo antes de acceder a su propiedad path
-                                              if (pickedFile != null) {
-                                                controllClient.imagePath =
-                                                    pickedFile.path;
-                                              }
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                              primary: Colors.green,
+                                                const SizedBox(height: 20),
+                                              ],
                                             ),
-                                            child: const Text('Tirar foto'),
                                           ),
-                                          ElevatedButton(
-                                            onPressed: () async {
-                                              // Lógica para enviar el comentario
-                                              // Obtener el valor del campo de texto
-                                              String commentText =
-                                                  commentController.text;
-                                              // Eliminar espacios en blanco al principio y al final
-                                              String textWithoutSpaces =
-                                                  commentText.trim();
+                                          // Botón de aceptar
+                                          actions: [
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                // Lógica para cancelar
 
-                                              // Verificar que el campo no esté vacío
-                                              if (textWithoutSpaces
-                                                  .isNotEmpty) {
-                                                // Cerrar el primer modal
-                                                Navigator.pop(context);
+                                                Navigator.pop(
+                                                    context, 'Cerrar');
+                                                print('Comentario cancelado');
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.red),
+                                              child: const Text('Cancelar'),
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () async {
+                                                final ImagePicker _picker =
+                                                    ImagePicker();
+                                                _.setPickedFile(
+                                                    await _picker.pickImage(
+                                                  source: ImageSource.camera,
+                                                ));
 
-                                                // Cerrar el segundo modal (AlertDialog)
-                                                Navigator.pop(context);
-
-                                                // Mandar el comentario
-                                                await controllClient
-                                                    .storeByReservationId(
-                                                        reservationId,
-                                                        commentText);
-
+                                                // Verifica si pickedFile no es nulo antes de acceder a su propiedad path
+                                                if (_.pickedFile != null) {
+                                                  _.setImagePath(
+                                                      _.pickedFile!.path);
+                                                }
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.green,
+                                              ),
+                                              child: const Text('Tirar foto'),
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () async {
                                                 // Lógica para enviar el comentario
-                                                await controllClient
-                                                    .acceptOrRejectClient(
-                                                        reservationId, 2);
+                                                // Obtener el valor del campo de texto
+                                                String commentText =
+                                                    commentController.text;
+                                                // Eliminar espacios en blanco al principio y al final
+                                                String textWithoutSpaces =
+                                                    commentText.trim();
 
-                                                print(
-                                                    'Comentario enviado - $commentText ');
-                                              } else {
-                                                // El campo de texto está vacío, puedes mostrar un mensaje o realizar alguna acción
-                                                print(
-                                                    'El comentario no puede estar vacío');
-                                              }
-                                            },
-                                            child: const Text('Enviar'),
-                                          ),
-                                        ],
-                                      );
+                                                // Verificar que el campo no esté vacío
+                                                if (textWithoutSpaces
+                                                    .isNotEmpty) {
+                                                  // Cerrar el primer modal
+                                                  Navigator.pop(context);
+
+                                                  // Cerrar el segundo modal (AlertDialog)
+                                                  Navigator.pop(context);
+
+                                                  // Mandar el comentario
+                                                  await controllClient
+                                                      .storeByReservationId(
+                                                          reservationId,
+                                                          commentText);
+                                                  _.pickedFile
+                                                      ?.readAsBytes()
+                                                      .then((imageApi) {
+                                                    print(
+                                                        'enviando imagen a la api');
+                                                    print(imageApi);
+                                                  });
+
+                                                  // Lógica para enviar el comentario
+                                                  await controllClient
+                                                      .acceptOrRejectClient(
+                                                          reservationId, 2);
+
+                                                  print(
+                                                      'Comentario enviado - $commentText ');
+                                                } else {
+                                                  // El campo de texto está vacío, puedes mostrar un mensaje o realizar alguna acción
+                                                  print(
+                                                      'El comentario no puede estar vacío');
+                                                }
+                                              },
+                                              child: const Text('Enviar'),
+                                            ),
+                                          ],
+                                        );
+                                      });
                                     },
                                   );
 

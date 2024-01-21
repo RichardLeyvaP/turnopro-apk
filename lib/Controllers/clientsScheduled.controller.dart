@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
@@ -82,6 +83,17 @@ class ClientsScheduledController extends GetxController {
   bool clockchanges = false;
   bool closeIesperado = false;
   String? imagePath;
+  XFile? pickedFile;
+
+  void setImagePath(value) {
+    imagePath = value;
+    update();
+  }
+
+  void setPickedFile(value) {
+    pickedFile = value;
+    update();
+  }
 
   void setCloseIesperado(bool value) {
     closeIesperado = value;
