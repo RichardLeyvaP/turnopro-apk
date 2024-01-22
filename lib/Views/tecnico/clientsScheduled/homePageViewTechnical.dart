@@ -112,7 +112,7 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                         color: Colors.white,
                                                       ),
                                                       Text(
-                                                        'Mis Clientes(Técnico)',
+                                                        'Mis Clientes',
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.w700,
@@ -533,7 +533,7 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                   Icon(Icons
                                                       .assignment_ind_sharp),
                                                   Text(
-                                                    'No hay ningún cliente para hoy',
+                                                    'No hay ningún cliente en espera',
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w700),

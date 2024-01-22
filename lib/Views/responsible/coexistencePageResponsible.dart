@@ -128,11 +128,14 @@ class _CoexistencePageResponsibleState
                                   builder: (BuildContext context) {
                                     return AlertDialog(
                                       title: Text(
-                                        controll.coexistence[index].name
-                                            .toString(),
-                                      ),
+                                          controll.coexistence[index].name
+                                              .toString(),
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w800,
+                                          )),
                                       content: SizedBox(
-                                        width: 100,
+                                        width: 150,
                                         height: 150,
                                         child: Column(
                                           children: [
@@ -160,10 +163,10 @@ class _CoexistencePageResponsibleState
                                                       99, 244, 67, 54),
                                                   borderRadius:
                                                       BorderRadius.all(
-                                                          Radius.circular(20)),
+                                                          Radius.circular(4)),
                                                 ),
                                                 child: const Padding(
-                                                  padding: EdgeInsets.all(8.0),
+                                                  padding: EdgeInsets.all(10.0),
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -172,6 +175,7 @@ class _CoexistencePageResponsibleState
                                                       Text('Incumplió'),
                                                       Icon(
                                                         Icons.star,
+                                                        size: 30,
                                                         color: Colors.red,
                                                       ),
                                                     ],
@@ -203,10 +207,10 @@ class _CoexistencePageResponsibleState
                                                       108, 76, 175, 79),
                                                   borderRadius:
                                                       BorderRadius.all(
-                                                          Radius.circular(20)),
+                                                          Radius.circular(4)),
                                                 ),
                                                 child: const Padding(
-                                                  padding: EdgeInsets.all(8.0),
+                                                  padding: EdgeInsets.all(10.0),
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -215,6 +219,7 @@ class _CoexistencePageResponsibleState
                                                       Text('Cumplió'),
                                                       Icon(
                                                         Icons.star,
+                                                        size: 30,
                                                         color: Color.fromARGB(
                                                             255, 10, 116, 13),
                                                       ),
@@ -228,15 +233,34 @@ class _CoexistencePageResponsibleState
                                       ),
                                       // Botón de aceptar
                                       actions: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            // Lógica para el botón de aceptar
-                                            Navigator.pop(context, 'Cerrar');
-                                          },
-                                          child: const Text(
-                                            'Cerrar',
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                        Center(
+                                          child: Container(
+                                            width: 100,
+                                            child: ElevatedButton(
+                                              style: ButtonStyle(
+                                                padding: MaterialStateProperty
+                                                    .all<EdgeInsetsGeometry>(
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 4.0,
+                                                      horizontal: 10.0),
+                                                ),
+                                                backgroundColor:
+                                                    MaterialStateProperty.all<
+                                                        Color>(Colors.black),
+                                              ),
+                                              onPressed: () {
+                                                // Lógica para el botón de aceptar
+                                                Navigator.pop(
+                                                    context, 'Cerrar');
+                                              },
+                                              child: const Center(
+                                                child: Text(
+                                                  'Cerrar',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ],

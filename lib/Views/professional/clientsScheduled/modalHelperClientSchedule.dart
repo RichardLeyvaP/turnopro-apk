@@ -74,8 +74,20 @@ class ModalHelper {
                                               ClientsScheduledController>(
                                           builder: (_) {
                                         return AlertDialog(
-                                          title: const Text(
-                                            'Comentario',
+                                          title: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              const Text(
+                                                'Comentario',
+                                              ),
+                                              InkWell(
+                                                  onTap: () {
+                                                    Navigator.pop(
+                                                        context, 'Cerrar');
+                                                  },
+                                                  child: Icon(Icons.close))
+                                            ],
                                           ),
                                           content: SizedBox(
                                             width: 110,
@@ -150,18 +162,19 @@ class ModalHelper {
                                           ),
                                           // Botón de aceptar
                                           actions: [
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                // Lógica para cancelar
+                                            // ElevatedButton(
+                                            //   onPressed: () {
+                                            //     // Lógica para cancelar
 
-                                                Navigator.pop(
-                                                    context, 'Cerrar');
-                                                print('Comentario cancelado');
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors.red),
-                                              child: const Text('Cancelar'),
-                                            ),
+                                            //     Navigator.pop(
+                                            //         context, 'Cerrar');
+                                            //     print('Comentario cancelado');
+                                            //   },
+                                            //   style: ElevatedButton.styleFrom(
+                                            //       backgroundColor:
+                                            //           Colors.black),
+                                            //   child: const Text('Cancelar'),
+                                            // ),
                                             ElevatedButton(
                                               onPressed: () async {
                                                 final ImagePicker _picker =
@@ -178,11 +191,16 @@ class ModalHelper {
                                                 }
                                               },
                                               style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.green,
+                                                backgroundColor: Colors.black,
                                               ),
-                                              child: const Text('Tirar foto'),
+                                              child: const Text(
+                                                'Tomar Foto',
+                                              ),
                                             ),
                                             ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.black,
+                                              ),
                                               onPressed: () async {
                                                 // Lógica para enviar el comentario
                                                 // Obtener el valor del campo de texto
@@ -227,7 +245,7 @@ class ModalHelper {
                                                       'El comentario no puede estar vacío');
                                                 }
                                               },
-                                              child: const Text('Enviar'),
+                                              child: const Text('Subir'),
                                             ),
                                           ],
                                         );
