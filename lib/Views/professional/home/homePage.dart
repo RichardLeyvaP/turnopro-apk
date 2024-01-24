@@ -8,6 +8,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/env.dart';
 
 class HomePages extends StatefulWidget {
   const HomePages({super.key});
@@ -65,8 +66,11 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
           GetBuilder<PagesConfigController>(builder: (pagesConfigController) {
         return Scaffold(
           backgroundColor: const Color.fromARGB(255, 231, 232, 234),
-          appBar:
-              pagesConfigController.selectedIndex == 0 ? CustomAppBar() : null,
+          appBar: pagesConfigController.selectedIndex == 0
+              ? CustomAppBar(
+                  id: loginController
+                      .idProfessionalLoggedIn) //aqui paso el id del profesional que es el nombre de la imagen
+              : null,
           body: PageView(
             controller: pagesConfigController.pageHomeController,
             physics: const NeverScrollableScrollPhysics(),
@@ -145,14 +149,23 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
 //DEFINIENDO EL AppBar
 // ignore: must_be_immutable
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  CustomAppBar({super.key});
+  final int? id;
+  const CustomAppBar({Key? key, required this.id}) : super(key: key);
 
   @override
   //Size get preferredSize => const Size.fromHeight(kToolbarHeight);
   Size get preferredSize =>
       const Size.fromHeight(70); // Ajusta el tamaño del AppBar aquí
 
-  String imageDirection = 'assets/images/image_perfil.jpg';
+  // Utilizar una función o getter para obtener imageDirection
+  String get imageDirection {
+    if (id != null && id != -99) {
+      return '${Env.apiEndpoint}/images/professional/$id.jpg';
+    } else {
+      // Si id es null o igual a -99, devuelve la ruta para la foto de perfil incógnito
+      return '${Env.apiEndpoint}/images/professional/default_profile.jpg';
+    }
+  }
 
   @override //todo AppBar
   Widget build(BuildContext context) {
@@ -176,7 +189,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
               child: CircleAvatar(
-                backgroundImage: AssetImage(imageDirection),
+                backgroundImage: NetworkImage(imageDirection),
                 radius: 25, // Ajusta el tamaño del círculo aquí
               ),
             ),

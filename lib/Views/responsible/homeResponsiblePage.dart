@@ -11,6 +11,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/env.dart';
 
 class HomeResponsiblePages extends StatefulWidget {
   const HomeResponsiblePages({super.key});
@@ -71,8 +72,11 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
           GetBuilder<PagesConfigResponController>(builder: (pagesConfigRespC) {
         return Scaffold(
           backgroundColor: const Color.fromARGB(255, 231, 232, 234),
-          appBar:
-              pagesConfigRespC.selectedIndexResp == 0 ? CustomAppBar() : null,
+          appBar: pagesConfigRespC.selectedIndexResp == 0
+              ? CustomAppBar(
+                  id: -99, //controllerLogin.idProfessionalLoggedIn,
+                )
+              : null,
           body: PageView(
             controller: pagesConfigRespC.pageRespController,
             physics: const NeverScrollableScrollPhysics(),
@@ -151,14 +155,23 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
 //DEFINIENDO EL AppBar
 // ignore: must_be_immutable
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  CustomAppBar({super.key});
+  final int? id;
+  const CustomAppBar({Key? key, required this.id}) : super(key: key);
 
   @override
   //Size get preferredSize => const Size.fromHeight(kToolbarHeight);
   Size get preferredSize =>
       const Size.fromHeight(70); // Ajusta el tamaño del AppBar aquí
 
-  String imageDirection = 'assets/images/Responsable.jpg';
+  // Utilizar una función o getter para obtener imageDirection
+  String get imageDirection {
+    if (id != null && id != -99) {
+      return '${Env.apiEndpoint}/images/responsible/$id.jpg';
+    } else {
+      // Si id es null o igual a -99, devuelve la ruta para la foto de perfil incógnito
+      return '${Env.apiEndpoint}/images/responsible/default_profile.jpg';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -182,7 +195,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
               child: CircleAvatar(
-                backgroundImage: AssetImage(imageDirection),
+                backgroundImage: NetworkImage(imageDirection),
                 radius: 25, // Ajusta el tamaño del círculo aquí
               ),
             ),
