@@ -25,6 +25,7 @@ dependencies:
   fl_chart: ^0.64.0
   syncfusion_flutter_datepicker: ^23.1.43
   image_picker: ^1.0.7
+  dio: ^5.4.0
   
   
 flutter_native_splash:  

@@ -6,6 +6,7 @@ import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/env.dart';
 import 'package:intl/intl.dart';
+import 'package:dio/dio.dart' as dio;
 
 class ClientsScheduledRepository extends GetConnect {
   Future getClientsTechnicalList(idBranch) async {
@@ -313,14 +314,36 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
-  Future<bool> storeByReservationId(reservationId, look) async {
-    bool value = false;
-    var url = '${Env.apiEndpoint}/storeByReservationId';
+  Future<bool> storeByReservationId(
+      imag, reservationId, commentText, dioClient) async {
+    // Crear FormData y agregar la imagen
+    dio.FormData formData = dio.FormData.fromMap({
+      'client_look':
+          await dio.MultipartFile.fromFile(imag, filename: 'client_look.jpg'),
+      'reservation_id': reservationId,
+      'look': commentText,
+    });
+
+    try {
+      dio.Response response = await dioClient.post(
+        '${Env.apiEndpoint}/storeByReservationId',
+        data: formData,
+      );
+      print('++++++++++++++++++++');
+      print(response.data);
+      return true;
+    } catch (e) {
+      print('Error al subir la imagen: $e');
+      return false;
+    }
+
+    /*  var url = '${Env.apiEndpoint}/storeByReservationId';
 
     // Parámetros que deseas enviar en la solicitud POST
     final Map<String, dynamic> body = {
       'reservation_id': reservationId,
       'look': look,
+      'client_look': image,
     };
     // Realizar la solicitud POST
     final response = await post(url, body);
@@ -334,6 +357,6 @@ class ClientsScheduledRepository extends GetConnect {
           'ERROR:storeByReservationId value = false : ${response.statusCode}');
 
       return false;
-    }
+    }*/
   }
 }

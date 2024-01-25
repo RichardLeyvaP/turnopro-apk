@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:turnopro_apk/env.dart';
 
 class ModalHelper {
   static showModal(PageController pageController, BuildContext context,
@@ -189,6 +191,8 @@ class ModalHelper {
                                                   _.setImagePath(
                                                       _.pickedFile!.path);
                                                 }
+                                                print(
+                                                    'DIRECCIONDELAIMAGEN : ${_.imagePath}');
                                               },
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: Colors.black,
@@ -219,18 +223,19 @@ class ModalHelper {
                                                   // Cerrar el segundo modal (AlertDialog)
                                                   Navigator.pop(context);
 
-                                                  // Mandar el comentario
-                                                  await controllClient
-                                                      .storeByReservationId(
-                                                          reservationId,
-                                                          commentText);
-                                                  _.pickedFile
-                                                      ?.readAsBytes()
-                                                      .then((imageApi) {
-                                                    print(
-                                                        'enviando imagen a la api');
-                                                    print(imageApi);
-                                                  });
+                                                  if (_.pickedFile != null) {
+                                                    dio.Dio dioClient =
+                                                        dio.Dio();
+                                                    String imag =
+                                                        _.pickedFile!.path;
+
+                                                    await controllClient
+                                                        .storeByReservationId(
+                                                            imag,
+                                                            reservationId,
+                                                            commentText,
+                                                            dioClient);
+                                                  }
 
                                                   // Lógica para enviar el comentario
                                                   await controllClient
