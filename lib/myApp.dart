@@ -7,6 +7,8 @@ import 'package:turnopro_apk/Routes/index.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:turnopro_apk/Views/coordinator/homeCoordinator/homeCoordinatorPage.dart';
+import 'package:turnopro_apk/Views/coordinator/profile/profileClient.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/clientsScheduled(NO%20UTILIZADA).dart';
 import 'package:turnopro_apk/Views/professional/statistic/statisticPage.dart';
 import 'package:turnopro_apk/Views/responsible/coexistencePageResponsible.dart';
@@ -34,7 +36,7 @@ class Myapp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: _.pagina == '/Professional'
             ? themeDataProfessional()
-            : _.pagina == '/HomeResponsible'
+            : (_.pagina == '/HomeResponsible' || _.pagina == '/HomeCordinador')
                 ? themeDataResponsible()
                 : themeDataProfessional(), //themeDataTecnico(), //es tecnico
         initialRoute: '/SplashPage',
@@ -75,8 +77,14 @@ class Myapp extends StatelessWidget {
         binding: BindingsBuilder.put(() => LoginController()),
       ),
       GetPage(
+        name: '/HomeCordinador', //todo cordinador
+        page: () => const ProfileClient(),
+        //page: () => const HomeCoordinatorPages(),
+        binding: BindingsBuilder.put(() => LoginController()),
+      ),
+      GetPage(
         name: '/coexistencePageResponsible',
-        page: () => CoexistencePageResponsible(),
+        page: () => ProfileClient(),
         binding: BindingsBuilder.put(() => CoexistenceController()),
       ),
       GetPage(

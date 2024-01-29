@@ -120,6 +120,11 @@ class LoginController extends GetxController {
             pagina = '/HomeTecnico';
             update();
             Get.offAllNamed('/HomeTecnico');
+          } else if (chargeUserLoggedIn == "Cordinador") {
+            print('***************SOY Cordinador del local*************');
+            pagina = '/HomeCordinador';
+            update();
+            Get.offAllNamed('/HomeCordinador');
           }
         }
 

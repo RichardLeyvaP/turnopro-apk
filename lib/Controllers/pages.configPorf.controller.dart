@@ -2,8 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/Views/coordinator/coexistencePageCoordinator.dart';
+import 'package:turnopro_apk/Views/coordinator/homeCoordinator/homeCoordinatorBody.dart';
 import 'package:turnopro_apk/Views/professional/home/homePageBody.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/clientsScheduled.dart';
+import 'package:turnopro_apk/Views/responsible/coexistencePageResponsible.dart';
 import 'package:turnopro_apk/Views/tecnico/clientsScheduled/homePageViewTechnical.dart';
 import 'package:turnopro_apk/Views/tecnico/coexistencePageTecnhical.dart';
 import 'package:turnopro_apk/Views/tecnico/homeTecnico/homePageTecnicoBody.dart';
@@ -74,6 +77,15 @@ class PagesConfigController extends GetxController {
     const NotificationsPageProf(), // Página 2
     const StatisticPage(), // Página 3
     const CoexistencePageTecnhical(), // Página 4
+  ];
+
+  //todo List<Widget> _pages2 -> esta esta solo para inicializar pero no es la que funciona
+  final List<Widget> pages3 = [
+    const HomeCoordinatorBody(), // Página 1//todo ESTOY EN ESTA
+    const HomePageViewTechnical(), // Página 1
+    const NotificationsPageProf(), // Página 2
+    const StatisticPage(), // Página 3
+    const CoexistencePageCoordinator(), // Página 4//todo estoy en esta
   ];
 
   @override

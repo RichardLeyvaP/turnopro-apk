@@ -8,6 +8,7 @@ import 'package:animate_do/animate_do.dart';
 //import 'package:lottie/lottie.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 
@@ -24,8 +25,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages> {
       Get.find<ShoppingCartController>();
   final LoginController controllerLogin = Get.find<LoginController>();
 
-  final PagesConfigResponController pagesConfigReC =
-      Get.find<PagesConfigResponController>();
+  final PagesConfigController pagesConfigReC =
+      Get.find<PagesConfigController>();
 
   @override
   void initState() {

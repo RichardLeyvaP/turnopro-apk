@@ -130,7 +130,6 @@ class _LineChartSample2State extends State<LineChartSample2> {
 
                             return Column(
                               children: [
-                                //todo1 estructura de los cart
                                 Container(
                                   height: (MediaQuery.of(context).size.height *
                                       0.09),

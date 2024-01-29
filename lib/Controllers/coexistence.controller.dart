@@ -38,6 +38,11 @@ class CoexistenceController extends GetxController {
       print('llamando fetchBranchProfessionals(); porque soy Encargado');
       fetchBranchProfessionals();
     }
+
+    if (controllerLogin.chargeUserLoggedIn == "Cordinador") {
+      print('llamando fetchBranchProfessionals(); porque soy Cordinador');
+      fetchBranchProfessionals();
+    }
     //esto CARGAR este metodo si es RESPONSABLE
 
     //AQUI CARGO LA ESTADISTICA DEL DIA DE HOY INICIALMENTE JASTA QUE SELECCIONES ALGUNA FECHA
