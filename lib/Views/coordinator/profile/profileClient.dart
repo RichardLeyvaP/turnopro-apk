@@ -20,21 +20,7 @@ class _ProfileClientState extends State<ProfileClient> {
   int cantVisitas = 3;
   String imageDirection =
       '${Env.apiEndpoint}/images/professional/default_profile.jpg';
-  List<String> direcc = [
-    'assets/images/icons/montoGen.png',
-    'assets/images/icons/propina.png',
-    'assets/images/icons/80.png',
-    'assets/images/icons/porcentageGan.png',
-    'assets/images/icons/serviceRea.png',
-    'assets/images/icons/serviceRegul.png',
-    'assets/images/icons/serviceEsp.png',
-    'assets/images/icons/montoEsp.png',
-    'assets/images/icons/gananciaBar.png',
-    'assets/images/icons/gananciaTot.png',
-    'assets/images/icons/clientesAten.png',
-    'assets/images/icons/seleccionado.png',
-    'assets/images/icons/aleatorio.png',
-  ];
+
   String title = 'Servicios';
   Icon icon = Icon(
     MdiIcons.tag,
