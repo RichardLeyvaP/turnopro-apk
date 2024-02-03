@@ -402,361 +402,8 @@ class _HomePageBodyState extends State<HomePageBody>
                       //todo CLIENTES QUE ESTAN EN COLA
 
                       controllerclient.boolFilterShowNext
-                          ? Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, top: 8, right: 8, bottom: 6),
-                              child: FittedBox(
-                                fit: BoxFit.contain,
-                                child: Container(
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(12)),
-                                    ),
-                                    //AQUI CONTROLO SI HAY ALGUIEN EN COLA
-                                    child: controllerclient
-                                                .clientsScheduledNext !=
-                                            null
-                                        ? Row(
-                                            children: [
-                                              Container(
-                                                height: (MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.115),
-                                                width: (MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.20),
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    color: Colors
-                                                        .white, // Color blanco para el borde
-                                                    width:
-                                                        1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                                                  ),
-                                                  color:
-                                                      const Color(0xFFF18254),
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(12)),
-                                                ),
-                                                child: IconButton(
-                                                  onPressed: () {
-                                                    Get.snackbar(
-                                                      'Mensaje',
-                                                      'Cancelar',
-                                                      duration: const Duration(
-                                                          milliseconds: 2000),
-                                                    );
-                                                    // atender este cliente
-                                                    //el valor 3 es que es que lo rechazo, por alguna razon no lo va a tender
-                                                    controllerclient
-                                                        .acceptOrRejectClient(
-                                                            controllerclient
-                                                                .clientsScheduledNext!
-                                                                .reservation_id,
-                                                            3);
-                                                  },
-                                                  icon: Icon(
-                                                    MdiIcons.thumbDown,
-                                                    color: Colors.white,
-                                                    size:
-                                                        (MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.04),
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                height: (MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.115),
-                                                width: (MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.8),
-                                                decoration: const BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(12)),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 30, top: 8),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          const Icon(
-                                                            Icons.person,
-                                                            color: Colors.black,
-                                                            size: 22,
-                                                          ),
-                                                          Text(
-                                                            firstName,
-                                                            softWrap: true,
-                                                            style: const TextStyle(
-                                                                height: 1.0,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontSize: 20),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Expanded(
-                                                        child: ListView.builder(
-                                                          itemCount: controllerclient
-                                                                      .serviceCustomerSelected
-                                                                      .length >
-                                                                  2
-                                                              ? 2
-                                                              : controllerclient
-                                                                  .serviceCustomerSelected
-                                                                  .length,
-                                                          itemBuilder: (context,
-                                                                  index) =>
-                                                              Row(
-                                                            children: [
-                                                              Column(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Row(
-                                                                    children: [
-                                                                      const Icon(
-                                                                        Icons
-                                                                            .api_sharp,
-                                                                        size:
-                                                                            12,
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        width:
-                                                                            5,
-                                                                      ),
-                                                                      Text(
-                                                                        controllerclient
-                                                                            .serviceCustomerSelected[index]
-                                                                            .name,
-                                                                        style: const TextStyle(
-                                                                            fontWeight:
-                                                                                FontWeight.w700),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Icon(Icons.timer,
-                                                              color: const Color
-                                                                      .fromARGB(
-                                                                  180, 0, 0, 0),
-                                                              size: (MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .height *
-                                                                  0.018)),
-                                                          Text(
-                                                              //AQUI ETSA EL TIEMPO TOTAL DEL SERVICIO
-                                                              (controllerclient
-                                                                  .clientsScheduledNext!
-                                                                  .total_time),
-                                                              style:
-                                                                  const TextStyle(
-                                                                height: 1.2,
-                                                                fontSize: 16,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        180,
-                                                                        0,
-                                                                        0,
-                                                                        0),
-                                                              )),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                height: (MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.115),
-                                                width: (MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.20),
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      color: Colors
-                                                          .white, // Color blanco para el borde
-                                                      width:
-                                                          1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                                                    ),
-                                                    color: const Color.fromARGB(
-                                                        255, 32, 32, 32),
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(
-                                                                12))),
-                                                child: IconButton(
-                                                  onPressed: () async {
-                                                    Get.snackbar(
-                                                      'Mensaje',
-                                                      'Aceptar',
-                                                      duration: const Duration(
-                                                          milliseconds: 2000),
-                                                    );
-                                                    //aqui manda aceptar, es decir atender este cliente
-
-                                                    // detengo el timer de 2 minutos
-                                                    clientsScheduledController
-                                                        .animationControllerInitial!
-                                                        .stop();
-                                                    clientsScheduledController
-                                                        .animationControllerInitial!
-                                                        .reset();
-                                                    // detengo todos los timers que deben detenerse
-                                                    for (int j = 0;
-                                                        j <
-                                                            controllerclient
-                                                                .itemDel.length;
-                                                        j++) {
-                                                      animationCont[
-                                                              controllerclient
-                                                                  .itemDel[j]]!
-                                                          .stop();
-                                                      animationCont[
-                                                              controllerclient
-                                                                  .itemDel[j]]!
-                                                          .reset();
-                                                    }
-                                                    await controllerclient
-                                                        .newClientAttended(
-                                                            controllerclient
-                                                                .clientsScheduledNext!,
-                                                            controllerclient
-                                                                .availability);
-
-                                                    //
-                                                    //
-                                                    //
-                                                    //HACE LAS VERIFICACIONES NECESARIAS PARA ACTIVAR LOS RELOJES QUE NECESITEN SER ACTIVADOS
-                                                    if (controllerclient
-                                                            .busyClock ==
-                                                        0) {
-                                                      animationCont[0]!
-                                                              .duration =
-                                                          Duration(
-                                                              seconds:
-                                                                  controllerclient
-                                                                      .timeClientsAttended1!);
-                                                      animationCont[0]!
-                                                          .forward();
-                                                    } else if (controllerclient
-                                                            .busyClock ==
-                                                        1) {
-                                                      animationCont[1]!
-                                                              .duration =
-                                                          Duration(
-                                                              seconds:
-                                                                  controllerclient
-                                                                      .timeClientsAttended2!);
-                                                      animationCont[1]!
-                                                          .forward();
-                                                    } else if (controllerclient
-                                                            .busyClock ==
-                                                        2) {
-                                                      animationCont[2]!
-                                                              .duration =
-                                                          Duration(
-                                                              seconds:
-                                                                  controllerclient
-                                                                      .timeClientsAttended3!);
-                                                      animationCont[2]!
-                                                          .forward();
-                                                    } else if (controllerclient
-                                                            .busyClock ==
-                                                        3) {
-                                                      animationCont[3]!
-                                                              .duration =
-                                                          Duration(
-                                                              seconds:
-                                                                  controllerclient
-                                                                      .timeClientsAttended4!);
-                                                      animationCont[3]!
-                                                          .forward();
-                                                    }
-
-                                                    //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
-                                                    controllerclient
-                                                        .acceptOrRejectClient(
-                                                            controllerclient
-                                                                .clientsScheduledNext!
-                                                                .reservation_id,
-                                                            1);
-                                                  },
-                                                  icon: Icon(
-                                                    MdiIcons.thumbUp,
-                                                    color: Colors.white,
-                                                    size:
-                                                        (MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.04),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        : Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: GetBuilder<LoginController>(
-                                                builder: (controllerLogin) {
-                                              return const Row(
-                                                children: [
-                                                  Icon(Icons.person_off),
-                                                  Text(
-                                                      'No hay clientes en cola',
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          fontSize: 12)),
-                                                ],
-                                              );
-                                            }),
-                                          )),
-                              ),
-                            )
+                          ? cardClientTails(controllerclient, context,
+                              firstName, animationCont)
                           : const Column(
                               children: [
                                 SizedBox(
@@ -881,6 +528,255 @@ class _HomePageBodyState extends State<HomePageBody>
       );
     });
     //todoooooooooooooooooooooooooooooooooooooooooo
+  }
+
+  Padding cardClientTails(
+      ClientsScheduledController controllerclient,
+      BuildContext context,
+      String firstName,
+      List<AnimationController?> animationCont) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 6),
+      child: FittedBox(
+        fit: BoxFit.contain,
+        child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+            ),
+            //AQUI CONTROLO SI HAY ALGUIEN EN COLA
+            child: controllerclient.clientsScheduledNext != null
+                ? Row(
+                    children: [
+                      Container(
+                        height: (MediaQuery.of(context).size.height * 0.115),
+                        width: (MediaQuery.of(context).size.width * 0.20),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.white, // Color blanco para el borde
+                            width:
+                                1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                          ),
+                          color: const Color(0xFFF18254),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(12)),
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            Get.snackbar(
+                              'Mensaje',
+                              'Cancelar',
+                              duration: const Duration(milliseconds: 2000),
+                            );
+                            // atender este cliente
+                            //el valor 3 es que es que lo rechazo, por alguna razon no lo va a tender
+                            controllerclient.acceptOrRejectClient(
+                                controllerclient
+                                    .clientsScheduledNext!.reservation_id,
+                                3);
+                          },
+                          icon: Icon(
+                            MdiIcons.thumbDown,
+                            color: Colors.white,
+                            size: (MediaQuery.of(context).size.height * 0.04),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: (MediaQuery.of(context).size.height * 0.115),
+                        width: (MediaQuery.of(context).size.width * 0.8),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 30, top: 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  const Icon(
+                                    Icons.person,
+                                    color: Colors.black,
+                                    size: 22,
+                                  ),
+                                  Text(
+                                    firstName,
+                                    softWrap: true,
+                                    style: const TextStyle(
+                                        height: 1.0,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 20),
+                                  ),
+                                ],
+                              ),
+                              Expanded(
+                                child: ListView.builder(
+                                  itemCount: controllerclient
+                                              .serviceCustomerSelected.length >
+                                          2
+                                      ? 2
+                                      : controllerclient
+                                          .serviceCustomerSelected.length,
+                                  itemBuilder: (context, index) => Row(
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.api_sharp,
+                                                size: 12,
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                controllerclient
+                                                    .serviceCustomerSelected[
+                                                        index]
+                                                    .name,
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Icon(Icons.timer,
+                                      color: const Color.fromARGB(180, 0, 0, 0),
+                                      size:
+                                          (MediaQuery.of(context).size.height *
+                                              0.018)),
+                                  Text(
+                                      //AQUI ETSA EL TIEMPO TOTAL DEL SERVICIO
+                                      (controllerclient
+                                          .clientsScheduledNext!.total_time),
+                                      style: const TextStyle(
+                                        height: 1.2,
+                                        fontSize: 16,
+                                        color: Color.fromARGB(180, 0, 0, 0),
+                                      )),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: (MediaQuery.of(context).size.height * 0.115),
+                        width: (MediaQuery.of(context).size.width * 0.20),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white, // Color blanco para el borde
+                              width:
+                                  1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                            ),
+                            color: const Color.fromARGB(255, 32, 32, 32),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(12))),
+                        child: IconButton(
+                          onPressed: () async {
+                            Get.snackbar(
+                              'Mensaje',
+                              'Aceptar',
+                              duration: const Duration(milliseconds: 2000),
+                            );
+                            //aqui manda aceptar, es decir atender este cliente
+
+                            // detengo el timer de 2 minutos
+                            clientsScheduledController
+                                .animationControllerInitial!
+                                .stop();
+                            clientsScheduledController
+                                .animationControllerInitial!
+                                .reset();
+                            // detengo todos los timers que deben detenerse
+                            for (int j = 0;
+                                j < controllerclient.itemDel.length;
+                                j++) {
+                              animationCont[controllerclient.itemDel[j]]!
+                                  .stop();
+                              animationCont[controllerclient.itemDel[j]]!
+                                  .reset();
+                            }
+                            await controllerclient.newClientAttended(
+                                controllerclient.clientsScheduledNext!,
+                                controllerclient.availability);
+
+                            //
+                            //
+                            //
+                            //HACE LAS VERIFICACIONES NECESARIAS PARA ACTIVAR LOS RELOJES QUE NECESITEN SER ACTIVADOS
+                            if (controllerclient.busyClock == 0) {
+                              animationCont[0]!.duration = Duration(
+                                  seconds:
+                                      controllerclient.timeClientsAttended1!);
+                              animationCont[0]!.forward();
+                            } else if (controllerclient.busyClock == 1) {
+                              animationCont[1]!.duration = Duration(
+                                  seconds:
+                                      controllerclient.timeClientsAttended2!);
+                              animationCont[1]!.forward();
+                            } else if (controllerclient.busyClock == 2) {
+                              animationCont[2]!.duration = Duration(
+                                  seconds:
+                                      controllerclient.timeClientsAttended3!);
+                              animationCont[2]!.forward();
+                            } else if (controllerclient.busyClock == 3) {
+                              animationCont[3]!.duration = Duration(
+                                  seconds:
+                                      controllerclient.timeClientsAttended4!);
+                              animationCont[3]!.forward();
+                            }
+
+                            //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
+                            controllerclient.acceptOrRejectClient(
+                                controllerclient
+                                    .clientsScheduledNext!.reservation_id,
+                                1);
+                          },
+                          icon: Icon(
+                            MdiIcons.thumbUp,
+                            color: Colors.white,
+                            size: (MediaQuery.of(context).size.height * 0.04),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child:
+                        GetBuilder<LoginController>(builder: (controllerLogin) {
+                      return const Row(
+                        children: [
+                          Icon(Icons.person_off),
+                          Text('No hay clientes en cola',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 12)),
+                        ],
+                      );
+                    }),
+                  )),
+      ),
+    );
   }
 
   //todo9

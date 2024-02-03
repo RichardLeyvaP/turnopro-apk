@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/env.dart';
@@ -42,7 +43,10 @@ class _ProductClientState extends State<ProductClient> {
                 IconButton(
                   icon: const Icon(Icons.arrow_back),
                   onPressed: () {
-                    pagesConfigCont.back();
+                    //pagesConfigCont.back();
+                    //pagesConfigCont.goToPreviousPage();
+                    pagesConfigCont.goToPage(
+                        1, pagesConfigCont.pageController2);
 
                     // Navigator.pop(context);
                   },
@@ -111,38 +115,36 @@ class _ProductClientState extends State<ProductClient> {
         //shadowColor: Colors.amber, // Removes visual elevation
       ),
       backgroundColor: const Color.fromARGB(255, 231, 232, 234),
-      body: GetBuilder<NotificationController>(
-        builder: (_) {
-          return 1 == 4 //todo saber si hay barberos disponibles
-              ? const Center(
-                  child: CircularProgressIndicator(
-                    color: Color.fromARGB(255, 241, 130, 84),
-                  ),
+      body: GetBuilder<ClientsCoordinatorController>(
+        builder: (controllerCORD) {
+          return controllerCORD
+                  .productCORD.isNotEmpty //todo si hay cargarlos aqui
+              ? Column(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: ListView.builder(
+                        itemCount: controllerCORD.productCORD.length,
+                        itemBuilder: (context, index) {
+                          // Utiliza la función cardOptions para construir cada Card
+                          return cardOptions(
+                            context,
+                            // Pasa aquí los datos necesarios para cardOptions
+                            icon,
+                            controllerCORD.productCORD[index].name,
+                            controllerCORD.truncateText(
+                                controllerCORD.productCORD[index].description,
+                                30),
+                            controllerCORD.productCORD[index].cant,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 )
-              : 5 > 0 //todo si hay cargarlos aqui
-                  ? Column(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: ListView.builder(
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              // Utiliza la función cardOptions para construir cada Card
-                              return cardOptions(
-                                context,
-                                // Pasa aquí los datos necesarios para cardOptions
-                                icon,
-                                name,
-                                description, cant,
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    )
-                  : const Center(
-                      child: Text('No hay Barberos disponibles'),
-                    );
+              : const Center(
+                  child: Text('No ha comprado Productos'),
+                );
         },
       ),
     );
@@ -212,14 +214,14 @@ class _ProductClientState extends State<ProductClient> {
                           height: 1.1,
                         ),
                       ),
-                      Text(
-                        fecha.toString(),
-                        style: const TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                          color: Color.fromARGB(167, 241, 131, 84),
-                        ),
-                      ),
+                      // Text(
+                      //   description.toString(),
+                      //   style: const TextStyle(
+                      //     fontSize: 12,
+                      //     fontWeight: FontWeight.w600,
+                      //     color: Color.fromARGB(167, 241, 131, 84),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ],

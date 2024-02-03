@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:turnopro_apk/Controllers/clientsCoordinator.dart';
+import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';

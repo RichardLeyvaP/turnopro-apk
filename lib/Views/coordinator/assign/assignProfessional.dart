@@ -5,6 +5,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/env.dart';
+
+import '../../../Controllers/clientsCoordinatorController.dart';
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class AssignProfessional extends StatefulWidget {
@@ -44,113 +46,117 @@ class _AssignProfessionalState extends State<AssignProfessional> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 150,
-        leading: Stack(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    pagesConfigCont.back();
+    return GetBuilder<ClientsCoordinatorController>(builder: (controllerCoord) {
+      return Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 150,
+          leading: Stack(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () {
+                      pagesConfigCont.back();
 
-                    // Navigator.pop(context);
-                  },
-                ),
-              ],
-            ),
-            Positioned(
-              bottom: -20,
-              left: -20,
-              child: Container(
-                width: 72.0, // Ajusta el tamaño del círculo según sea necesario
-                height: 72.0,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color.fromARGB(76, 224, 224,
-                      224), // Puedes ajustar el tono del gris según tus preferencias
-                ),
+                      // Navigator.pop(context);
+                    },
+                  ),
+                ],
               ),
-            )
-          ],
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
+              Positioned(
+                bottom: -20,
+                left: -20,
+                child: Container(
+                  width:
+                      72.0, // Ajusta el tamaño del círculo según sea necesario
+                  height: 72.0,
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 32, 32, 32),
-                      width:
-                          2, // Ajusta el ancho del borde según tus preferencias
+                    color: Color.fromARGB(76, 224, 224,
+                        224), // Puedes ajustar el tono del gris según tus preferencias
+                  ),
+                ),
+              )
+            ],
+          ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: const Color.fromARGB(255, 32, 32, 32),
+                        width:
+                            2, // Ajusta el ancho del borde según tus preferencias
+                      ),
+                    ),
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(imageDirection),
+                      radius: 40, // Ajusta el tamaño del círculo aquí
                     ),
                   ),
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(imageDirection),
-                    radius: 40, // Ajusta el tamaño del círculo aquí
+                  Text(
+                    controllerCoord.clientNameCORD,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w700, fontSize: 20),
                   ),
-                ),
-                const Text(
-                  'Richard Leyva',
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
-                ),
-                const Text(
-                  'Reasignar',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
-                ),
-              ],
-            ),
-            SizedBox(
-              width: (MediaQuery.of(context).size.width * 0.14),
-            ),
-          ],
+                  const Text(
+                    'Reasignar',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: (MediaQuery.of(context).size.width * 0.14),
+              ),
+            ],
+          ),
+          //actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
+          elevation: 0, // Quits the shadow
+          //shadowColor: Colors.amber, // Removes visual elevation
         ),
-        //actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
-        elevation: 0, // Quits the shadow
-        //shadowColor: Colors.amber, // Removes visual elevation
-      ),
-      backgroundColor: const Color.fromARGB(255, 231, 232, 234),
-      body: GetBuilder<NotificationController>(
-        builder: (_) {
-          return 1 == 4 //todo saber si hay barberos disponibles
-              ? const Center(
-                  child: CircularProgressIndicator(
-                    color: Color.fromARGB(255, 241, 130, 84),
-                  ),
-                )
-              : 5 > 0 //todo si hay cargarlos aqui
-                  ? Column(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: ListView.builder(
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              // Utiliza la función cardOptions para construir cada Card
-                              return cardOptions(
-                                context,
-                                // Pasa aquí los datos necesarios para cardOptions
-                                icon,
-                                title,
-                                name,
-                              );
-                            },
+        backgroundColor: const Color.fromARGB(255, 231, 232, 234),
+        body: GetBuilder<NotificationController>(
+          builder: (_) {
+            return 1 == 4 //todo saber si hay barberos disponibles
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: Color.fromARGB(255, 241, 130, 84),
+                    ),
+                  )
+                : 5 > 0 //todo si hay cargarlos aqui
+                    ? Column(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: ListView.builder(
+                              itemCount: 5,
+                              itemBuilder: (context, index) {
+                                // Utiliza la función cardOptions para construir cada Card
+                                return cardOptions(
+                                  context,
+                                  // Pasa aquí los datos necesarios para cardOptions
+                                  icon,
+                                  title,
+                                  name,
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                      ],
-                    )
-                  : const Center(
-                      child: Text('No hay Barberos disponibles'),
-                    );
-        },
-      ),
-    );
+                        ],
+                      )
+                    : const Center(
+                        child: Text('No hay Barberos disponibles'),
+                      );
+          },
+        ),
+      );
+    });
   }
 
   Padding cardOptions(BuildContext context, icon, title, name) {

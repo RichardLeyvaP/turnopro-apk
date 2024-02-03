@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/env.dart';
@@ -31,124 +32,126 @@ class _ServicesClientState extends State<ServicesClient> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 150,
-        leading: Stack(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    pagesConfigCont.back();
+    return GetBuilder<ClientsCoordinatorController>(builder: (controllerCORD) {
+      return Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 150,
+          leading: Stack(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () {
+                      // pagesConfigCont.back();
+                      pagesConfigCont.goToPreviousPage();
 
-                    // Navigator.pop(context);
-                  },
-                ),
-              ],
-            ),
-            Positioned(
-              bottom: -20,
-              left: -20,
-              child: Container(
-                width: 72.0, // Ajusta el tamaño del círculo según sea necesario
-                height: 72.0,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color.fromARGB(76, 224, 224,
-                      224), // Puedes ajustar el tono del gris según tus preferencias
-                ),
-              ),
-            )
-          ],
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 32, 32, 32),
-                      width:
-                          2, // Ajusta el ancho del borde según tus preferencias
-                    ),
+                      // Navigator.pop(context);
+                    },
                   ),
-                  child: Container(
-                    width: 100.0,
-                    height: 100.0,
+                ],
+              ),
+              Positioned(
+                bottom: -20,
+                left: -20,
+                child: Container(
+                  width:
+                      72.0, // Ajusta el tamaño del círculo según sea necesario
+                  height: 72.0,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color.fromARGB(76, 224, 224,
+                        224), // Puedes ajustar el tono del gris según tus preferencias
+                  ),
+                ),
+              )
+            ],
+          ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: Colors.white, // Color del borde blanco
-                        width: 2.0, // Ancho del borde
+                        color: const Color.fromARGB(255, 32, 32, 32),
+                        width:
+                            2, // Ajusta el ancho del borde según tus preferencias
                       ),
                     ),
-                    child: Icon(
-                      MdiIcons.server,
-                      size: 50.0,
-                      color: Colors.white, // Color del ícono
+                    child: Container(
+                      width: 100.0,
+                      height: 100.0,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.white, // Color del borde blanco
+                          width: 2.0, // Ancho del borde
+                        ),
+                      ),
+                      child: Icon(
+                        MdiIcons.server,
+                        size: 50.0,
+                        color: Colors.white, // Color del ícono
+                      ),
                     ),
                   ),
-                ),
-                const Text(
-                  'SERVICIOS',
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
-                ),
-              ],
-            ),
-            SizedBox(
-              width: (MediaQuery.of(context).size.width * 0.14),
-            ),
-          ],
-        ),
-        //actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
-        elevation: 0, // Quits the shadow
-        //shadowColor: Colors.amber, // Removes visual elevation
-      ),
-      backgroundColor: const Color.fromARGB(255, 231, 232, 234),
-      body: GetBuilder<NotificationController>(
-        builder: (_) {
-          return 1 == 4 //todo saber si hay barberos disponibles
-              ? const Center(
-                  child: CircularProgressIndicator(
-                    color: Color.fromARGB(255, 26, 50, 82),
+                  const Text(
+                    'SERVICIOS',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20,
+                        color: Colors.white),
                   ),
-                )
-              : 5 > 0 //todo si hay cargarlos aqui
-                  ? Column(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: ListView.builder(
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              // Utiliza la función cardOptions para construir cada Card
-                              return cardOptions(
-                                context,
-                                // Pasa aquí los datos necesarios para cardOptions
-                                icon,
-                                name,
-                                description, cant,
-                              );
-                            },
-                          ),
+                ],
+              ),
+              SizedBox(
+                width: (MediaQuery.of(context).size.width * 0.14),
+              ),
+            ],
+          ),
+          //actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
+          elevation: 0, // Quits the shadow
+          //shadowColor: Colors.amber, // Removes visual elevation
+        ),
+        backgroundColor: const Color.fromARGB(255, 231, 232, 234),
+        body: GetBuilder<NotificationController>(
+          builder: (_) {
+            return controllerCORD
+                    .serviceCORD.isNotEmpty //todo si hay cargarlos aqui
+                ? Column(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: ListView.builder(
+                          itemCount: controllerCORD.serviceCORD.length,
+                          itemBuilder: (context, index) {
+                            // Utiliza la función cardOptions para construir cada Card
+                            return cardOptions(
+                              context,
+                              // Pasa aquí los datos necesarios para cardOptions
+                              controllerCORD.serviceCORD[index].name,
+                              controllerCORD.serviceCORD[index].type_service,
+                              controllerCORD.serviceCORD[index].cant,
+                            );
+                          },
                         ),
-                      ],
-                    )
-                  : const Center(
-                      child: Text('No hay Servicios para mostrar'),
-                    );
-        },
-      ),
-    );
+                      ),
+                    ],
+                  )
+                : const Center(
+                    child: Text('No hay Servicios para mostrar'),
+                  );
+          },
+        ),
+      );
+    });
   }
 
-  Padding cardOptions(BuildContext context, icon, name, description, cant) {
+  Padding cardOptions(BuildContext context, name, description, cant) {
     return Padding(
       padding: const EdgeInsets.only(right: 10, top: 8, left: 10),
       child: Container(

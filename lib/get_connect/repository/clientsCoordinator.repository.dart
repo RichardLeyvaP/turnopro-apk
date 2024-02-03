@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
+import 'package:turnopro_apk/Models/product_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/env.dart';
 import 'package:intl/intl.dart';
@@ -62,7 +63,100 @@ class ClientsCoordinatorRepository extends GetConnect {
   //
   //
   //
+  Future getClientsScheduledListBranch(idBranch) async {
+    List<ClientsScheduledModel> clientList = [];
 
+    var url = '${Env.apiEndpoint}/cola_branch_data?branch_id=$idBranch';
+
+    final response = await get(url);
+    //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
+    if (response.statusCode == null) {
+      print('response.statusCode:${response.statusCode}');
+      return {
+        "ConnectionIssues": true,
+      };
+    } else
+      print('hay coneccion getClientsScheduledListBranch');
+    if (response.statusCode == 200) {
+      print('ya tengo la cola de la api getClientsScheduledListBranch');
+      final customers = response.body['tail'];
+      for (Map service in customers) {
+        ClientsScheduledModel client =
+            ClientsScheduledModel.fromJson(jsonEncode(service));
+        clientList.add(client);
+        //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
+      }
+    }
+
+    return {"clientList": clientList};
+  }
+
+  //
+  //
+  //
+  Future getClientHistory(idClient, idBranch) async {
+    try {
+      List<ServiceModel> serviceCustomer = [];
+      List<ProductModel> productCustomer = [];
+
+      var url =
+          '${Env.apiEndpoint}/client-history?client_id=$idClient&branch_id=$idBranch';
+
+      final response = await get(url);
+
+      // Verifica si hubo algún problema de conexión.
+      if (response.statusCode != 200) {
+        print('Error de conexión: ${response.statusCode}');
+        return {
+          "ConnectionIssues": true,
+        };
+      } else {
+        print('Conexión exitosa');
+      }
+      print('111jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
+      // Decodifica el cuerpo de la respuesta.
+      final Map<String, dynamic> responseBody = response.body['clientHistory'];
+      //aqui cogemos las variables
+      String clientName = responseBody['clientName'];
+      String imageLook = responseBody['imageLook'] ?? 'default_profile.jpg';
+      int cantVisit = responseBody['cantVisit'];
+      String endLook = responseBody['endLook'];
+      String frecuencia = responseBody['frecuencia'];
+      print('333jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
+      final serv = responseBody['services'];
+      for (Map service in serv) {
+        print('1');
+        ServiceModel u = ServiceModel.fromJson(jsonEncode(service));
+        serviceCustomer.add(u);
+        //AQUI LA LOGICA DE SABER CUAL ES EL QUE LE SIGUE
+      }
+      print('444jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
+      final prod = responseBody['products'];
+      for (Map product in prod) {
+        print('1');
+        ProductModel u = ProductModel.fromJson(jsonEncode(product));
+        productCustomer.add(u);
+        //AQUI LA LOGICA DE SABER CUAL ES EL QUE LE SIGUE
+      }
+      print('444jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
+
+      return {
+        "clientName": clientName,
+        "imageLook": imageLook,
+        "cantVisit": cantVisit,
+        "endLook": endLook,
+        "frecuencia": frecuencia,
+        "services": serviceCustomer,
+        "products": productCustomer,
+      };
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+//
+  //
+  //
   Future getClientsScheduledList(idProfessional, idBranch) async {
     List<ClientsScheduledModel> clientList = [];
     List<Map> attendingClientList = [];

@@ -35,7 +35,7 @@ class ClientsTechnicalController extends GetxController {
 
   //Variables del reloj
 
-  double sizeClockTechnical = 135;
+  double sizeClockTechnical = 145;
   int totalTimeInitial = 20; //Iniciando en 3 minutos el reloj
   bool callCliente = false; //si esta en false es que es la primera vez
   bool boolFilterShowNext = false; //si esta en false es que es la primera vez

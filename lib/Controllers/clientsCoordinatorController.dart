@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
+import 'package:turnopro_apk/Models/product_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/get_connect/repository/clientsCoordinator.repository.dart';
@@ -16,6 +17,7 @@ class ClientsCoordinatorController extends GetxController {
   List<ClientsScheduledModel> clientsScheduledList = []; // Lista de clientes
   List<ClientsScheduledModel> clientsScheduledListTechnical =
       []; // Lista de clientes
+  List<ClientsScheduledModel> clientsScheduledListBranch = [];
   List<ClientsScheduledModel> selectClientsScheduledList = [];
   List<ClientsScheduledModel> selectclientsScheduledListTechnical = [];
   ClientsScheduledModel? clientsScheduledNext; // Cliente en espera
@@ -52,6 +54,7 @@ class ClientsCoordinatorController extends GetxController {
   List<ServiceModel> serviceCustomerSelectedForm = [];
 
   int clientsScheduledListLength = 0;
+  int clientsScheduledListBranchLength = 0;
   int clientsTechnicalLength = 0;
   int? carIdClientsScheduled;
   int quantityClientAttended = 0;
@@ -60,8 +63,8 @@ class ClientsCoordinatorController extends GetxController {
   bool correctConnection = true;
 
   //Variables del reloj
-  double sizeClock = 135;
-  double sizeClockTechnical = 135;
+  double sizeClock = 145;
+  double sizeClockTechnical = 145;
   int totalTimeInitial = 20; //Iniciando en 3 minutos el reloj
   bool callCliente = false; //si esta en false es que es la primera vez
   bool boolFilterShowNext = false; //si esta en false es que es la primera vez
@@ -85,6 +88,22 @@ class ClientsCoordinatorController extends GetxController {
   String? imagePath;
   XFile? pickedFile;
 
+  //
+  //
+  //VARIABLES PARA EL COORDINADOR
+  String clientNameCORD = '';
+  String imageLookCORD = '';
+  int cantVisitCORD = 0;
+  String endLookCORD = '';
+  String frecuenciaCORD = '';
+
+  List<ProductModel> productCORD = [];
+  List<ServiceModel> serviceCORD = [];
+  List<ClientsScheduledModel> clientAttenCORD = [];
+
+  //
+  //
+
   void setImagePath(value) {
     imagePath = value;
     update();
@@ -102,7 +121,29 @@ class ClientsCoordinatorController extends GetxController {
 
   //Fin Variables del reloj
 
-  //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
+  Future<void> fetchClientsScheduledBranch(idBranch) async {
+    Map<String, dynamic> resultList =
+        await repository.getClientsScheduledListBranch(idBranch);
+    print(resultList);
+    //verificando , si entra al if es problemas de coneccion
+    if (resultList.containsKey('ConnectionIssues') &&
+        resultList['ConnectionIssues'] == true) {
+      correctConnection = false;
+      print(
+          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
+    } else {
+      correctConnection = true;
+      //aqui estoy guardando la cola del dia de hoy del profesional
+      clientsScheduledListBranch =
+          (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
+      clientsScheduledListBranchLength = clientsScheduledListBranch.length;
+      print(
+          '-******-*********-*-****-* $clientsScheduledListBranchLength -****-************-* ');
+      //
+    }
+    update();
+  } //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
+
   //ESTA VARIABLE HAY QUE LLENARLA DIRECTAMENTE DE LA DB
   Map<String, int> noncomplianceProfessional = {};
 
@@ -727,6 +768,49 @@ class ClientsCoordinatorController extends GetxController {
     update();
   }
 
+//todo este es el que estoy haciendo
+  Future<void> getClientHistory(idClient, idBranch) async {
+    print('estoy en :Controller getClientHistory(idClient, idBranch)');
+    Map<String, dynamic> resultList =
+        await repository.getClientHistory(idClient, idBranch);
+    print(resultList);
+    //verificando , si entra al if es problemas de coneccion
+    if (resultList.containsKey('ConnectionIssues') &&
+        resultList['ConnectionIssues'] == true) {
+      correctConnection = false;
+      print(
+          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
+    } else {
+      correctConnection = true;
+
+      //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+      clientNameCORD = resultList['clientName'];
+      imageLookCORD = resultList['imageLook'];
+      cantVisitCORD = resultList['cantVisit'];
+      endLookCORD = resultList['endLook'];
+      frecuenciaCORD = resultList['frecuencia'];
+      productCORD = resultList['products'];
+      serviceCORD = resultList['services'];
+
+      print(clientNameCORD);
+      print(imageLookCORD);
+      print(cantVisitCORD);
+      print(endLookCORD);
+      print(frecuenciaCORD);
+      print(frecuenciaCORD);
+      print(productCORD);
+      print(serviceCORD);
+    }
+    update();
+  }
+
+  String truncateText(String text, int maxLength) {
+    if (text.length > maxLength) {
+      return '${text.substring(0, maxLength)}...';
+    }
+    return text;
+  }
+
   Future<void> fetchClientsScheduled(idProfessional, idBranch) async {
     Map<String, dynamic> resultList =
         await repository.getClientsScheduledList(idProfessional, idBranch);
@@ -912,7 +996,7 @@ class ClientsCoordinatorController extends GetxController {
 
   setValueClock(bool value) {
     if (value == true) {
-      sizeClock = 135;
+      sizeClock = 145;
     } else {
       sizeClock = 160;
     }

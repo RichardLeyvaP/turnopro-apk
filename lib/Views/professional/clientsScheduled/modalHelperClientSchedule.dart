@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:turnopro_apk/env.dart';
 
 class ModalHelper {
   static showModal(PageController pageController, BuildContext context,
@@ -104,7 +103,7 @@ class ModalHelper {
                                                       Container(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .symmetric(
+                                                                .symmetric(
                                                                 horizontal: 10),
                                                         decoration:
                                                             BoxDecoration(

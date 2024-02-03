@@ -11,6 +11,12 @@ import 'package:turnopro_apk/Views/tecnico/clientsScheduled/homePageViewTechnica
 import 'package:turnopro_apk/Views/tecnico/coexistencePageTecnhical.dart';
 import 'package:turnopro_apk/Views/tecnico/homeTecnico/homePageTecnicoBody.dart';
 
+import '../Views/coordinator/assign/assignProfessional.dart';
+import '../Views/coordinator/attending/attendingClient.dart';
+import '../Views/coordinator/product/productClient.dart';
+import '../Views/coordinator/profile/profileClient.dart';
+import '../Views/coordinator/services/servicesClient.dart';
+
 class PagesConfigController extends GetxController {
 //DECLARACION DE VARIABLES
 
@@ -19,25 +25,29 @@ class PagesConfigController extends GetxController {
   int selectedIndex = 0;
   List<int> selectedIndexBackList = [];
   int selectedIndexBack = 0;
+  int pages31Index = 0;
 
   //
   //todo **************** CONFIGURACIONES PARA HOME-PROFESIONAL ************************
   //
   PageController pageController = PageController();
+  PageController pageController2 = PageController();
   PageController pageHomeController = PageController();
 
   bool isPageViewEnabled =
       false; // Variable para habilitar/deshabilitar PageView.
   int currentPageIndex = 0;
+  bool showappBar = true;
 
   @override
   void onInit() {
     super.onInit();
     pageHomeController = PageController(
         initialPage: selectedIndex); //ESTE CONTROLA EL TAB PRINCIPAL DE ABAJO
-    pageController = PageController(
+    pageController = PageController(initialPage: currentPageIndex);
+    pageController2 = PageController(
         initialPage:
-            currentPageIndex); //CON ESTE CONTROLO LA NAVEGACION DE LA COLA,AGREGAR SERVICIOS,EL CARRO
+            pages31Index); //CON ESTE CONTROLO LA NAVEGACION DE LA COLA,AGREGAR SERVICIOS,EL CARRO
   }
 
   @override
@@ -53,12 +63,33 @@ class PagesConfigController extends GetxController {
     );
   }
 
+  void goToPage(int page, PageController pController) {
+    pController.animateToPage(
+      page,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.ease,
+    );
+  }
+
+  void goToPreviousPage() {
+    pageController2.previousPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.ease,
+    );
+  }
+
   void previousPage() {
     pageController.previousPage(
       duration: const Duration(milliseconds: 1000),
       curve: Curves.fastOutSlowIn,
     );
   }
+
+  void updateSelectedIndex() {
+    selectedIndex = 10;
+    update();
+  }
+
   //
   //
 
@@ -79,13 +110,20 @@ class PagesConfigController extends GetxController {
     const CoexistencePageTecnhical(), // Página 4
   ];
 
-  //todo List<Widget> _pages2 -> esta esta solo para inicializar pero no es la que funciona
+  //todo List<Widget> _pages3
   final List<Widget> pages3 = [
     const HomeCoordinatorBody(), // Página 1//todo ESTOY EN ESTA
-    const HomePageViewTechnical(), // Página 1
-    const NotificationsPageProf(), // Página 2
-    const StatisticPage(), // Página 3
-    const CoexistencePageCoordinator(), // Página 4//todo estoy en esta
+    const AssignProfessional(), // Página 2
+    const NotificationsPageProf(), // Página 3
+    const StatisticPage(), // Página 4
+    const CoexistencePageCoordinator(), // Página 5
+  ]; //todo List<Widget> _pages31
+  final List<Widget> pages31 = [
+    const ProfileClient(), // Página 1
+    const ServicesClient(), // Página 2//todo ESTOY EN ESTA
+    const ProductClient(), // Página 3
+    const AttendingClient(), // Página 4
+    const CoexistencePageCoordinator(), // Página 5
   ];
 
   @override
@@ -117,6 +155,11 @@ class PagesConfigController extends GetxController {
     pageController.dispose();
     pageHomeController.dispose();
     super.onClose();
+  }
+
+  Future showAppBar(value) async {
+    showappBar = value;
+    update();
   }
 
   //************************************************** */

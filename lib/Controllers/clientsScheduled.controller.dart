@@ -14,6 +14,7 @@ class ClientsScheduledController extends GetxController {
   ClientsScheduledRepository repository = ClientsScheduledRepository();
 
   List<ClientsScheduledModel> clientsScheduledList = []; // Lista de clientes
+  // Lista de clientes
   List<ClientsScheduledModel> clientsScheduledListTechnical =
       []; // Lista de clientes
   List<ClientsScheduledModel> selectClientsScheduledList = [];
@@ -60,8 +61,8 @@ class ClientsScheduledController extends GetxController {
   bool correctConnection = true;
 
   //Variables del reloj
-  double sizeClock = 135;
-  double sizeClockTechnical = 135;
+  double sizeClock = 145;
+  double sizeClockTechnical = 145;
   int totalTimeInitial = 20; //Iniciando en 3 minutos el reloj
   bool callCliente = false; //si esta en false es que es la primera vez
   bool boolFilterShowNext = false; //si esta en false es que es la primera vez
@@ -912,7 +913,7 @@ class ClientsScheduledController extends GetxController {
 
   setValueClock(bool value) {
     if (value == true) {
-      sizeClock = 135;
+      sizeClock = 145;
     } else {
       sizeClock = 160;
     }

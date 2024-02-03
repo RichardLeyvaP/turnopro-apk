@@ -81,11 +81,11 @@ class Myapp extends StatelessWidget {
       ),
       GetPage(
         name: '/HomeCordinador', //todo cordinador
-        page: () => const ServicesClient(),
+        //page: () => const ServicesClient(),
         //page: () => const ProductClient(),
-        // page: () => const AssignProfessional(),
+        // page: () => const AssignProfessional(),//ya asignado
         //page: () => const ProfileClient(),
-        //page: () => const HomeCoordinatorPages(),
+        page: () => const HomeCoordinatorPages(),
         binding: BindingsBuilder.put(() => LoginController()),
       ),
       GetPage(

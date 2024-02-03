@@ -6,7 +6,7 @@ import 'package:animate_do/animate_do.dart';
 //import 'package:lottie/lottie.dart';
 //import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:turnopro_apk/Controllers/clientsCoordinator.dart';
+import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/env.dart';
@@ -67,8 +67,9 @@ class _HomeCoordinatorPagesState extends State<HomeCoordinatorPages>
           GetBuilder<PagesConfigController>(builder: (pagesConfigController) {
         return Scaffold(
           backgroundColor: const Color.fromARGB(255, 231, 232, 234),
-          appBar: pagesConfigController.selectedIndex == 0
-              ? CustomAppBar(
+          appBar: pagesConfigController.selectedIndex == 0 &&
+                  pagesConfigController.showappBar == true
+              ? const CustomAppBar(
                   id: -99) //loginController.idProfessionalLoggedIn) //aqui paso el id del profesional que es el nombre de la imagen
               : null,
           body: PageView(
@@ -96,8 +97,15 @@ class _HomeCoordinatorPagesState extends State<HomeCoordinatorPages>
                       fixedColor: const Color(0xFFF18254),
                       currentIndex: pagesConfigController.selectedIndex,
                       type: BottomNavigationBarType.fixed,
-                      onTap: (index) =>
-                          pagesConfigController.onTabTapped(index),
+                      onTap: (index) {
+                        if (index == 0) {
+                          pagesConfigC.pageController2
+                              .jumpToPage(0); //AQUI VA  AL HOME
+                          pagesConfigController.showAppBar(true);
+                        }
+                        print('mostrando aqui el valor de index : $index');
+                        pagesConfigController.onTabTapped(index);
+                      },
                       items: [
                         BottomNavigationBarItem(
                             icon: Icon(

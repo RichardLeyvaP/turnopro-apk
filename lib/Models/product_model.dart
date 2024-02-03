@@ -16,6 +16,7 @@ class ProductModel {
   String updated_at;
   int? request_delete;
   int? is_product;
+  int? cant;
 
   ProductModel({
     required this.id,
@@ -30,6 +31,7 @@ class ProductModel {
     required this.updated_at,
     this.request_delete,
     this.is_product,
+    this.cant,
   });
 
   Map<String, dynamic> toMap() {
@@ -46,6 +48,7 @@ class ProductModel {
       'updated_at': updated_at,
       'request_delete': request_delete,
       'is_product': is_product,
+      'cant': cant,
     };
   }
 
@@ -63,6 +66,7 @@ class ProductModel {
       updated_at: map['updated_at'] ?? '',
       request_delete: map['request_delete'] ?? 0,
       is_product: map['is_product'] ?? 0,
+      cant: map['cant'] ?? 0,
     );
   }
 
