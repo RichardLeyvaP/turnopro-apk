@@ -2,14 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:turnopro_apk/Components/BottomNavigationBar.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaDiaPageNueva.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaMesPageNueva.dart';
 //import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+//import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaPageNueva.dart';
 
@@ -316,7 +315,7 @@ class BuildCalendar extends StatefulWidget {
 }
 
 class _BuildCalendarState extends State<BuildCalendar> {
-  final DateRangePickerController _controller = DateRangePickerController();
+  // final DateRangePickerController _controller = DateRangePickerController();
   final StatisticController controllerStatistic =
       Get.find<StatisticController>();
 
@@ -380,43 +379,45 @@ class _BuildCalendarState extends State<BuildCalendar> {
           child: const Text('Seleccionar nuevamente'),
         ),
       ],
-      content: SizedBox(
-        height: 255, // Ajusta la altura según tu necesidad
-        width: 300,
-        child: AspectRatio(
-          aspectRatio: 1.0,
-          child: SfDateRangePicker(
-            controller: _controller,
-            view: DateRangePickerView.month,
-            initialDisplayDate: initialDate,
-            minDate: selectDate == 0 ? null : _minDate,
-            maxDate: selectDate == 0 ? null : _maxDate,
-            selectionColor: const Color(0xFFF18254),
-            startRangeSelectionColor: const Color(0xFFF18254),
-            endRangeSelectionColor: const Color(0xFFF18254),
-            selectionMode: DateRangePickerSelectionMode.range,
-            showActionButtons: _endDate != null ? true : false,
-            onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-              if (args.value != null && args.value.startDate != null) {
-                setState(() {
-                  selectDate = 1;
-                  if (_startDate != null) {
-                    _minDate = _startDate = args.value.startDate;
-                    _endDate = args.value.endDate;
-                    _maxDate = _startDate!.add(const Duration(days: 6));
-                    selectDate = 1;
-                  }
-                });
-              }
-            },
-            confirmText: 'Aceptar',
-            cancelText: '',
-            onSubmit: (dateRange) {
-              getFormatterDate();
-            },
-          ),
-        ),
-      ),
+      content:
+          //  SizedBox(
+          //   height: 255, // Ajusta la altura según tu necesidad
+          //   width: 300,
+          //   child: AspectRatio(
+          //     aspectRatio: 1.0,
+          //     child: SfDateRangePicker(
+          //       controller: _controller,
+          //       view: DateRangePickerView.month,
+          //       initialDisplayDate: initialDate,
+          //       minDate: selectDate == 0 ? null : _minDate,
+          //       maxDate: selectDate == 0 ? null : _maxDate,
+          //       selectionColor: const Color(0xFFF18254),
+          //       startRangeSelectionColor: const Color(0xFFF18254),
+          //       endRangeSelectionColor: const Color(0xFFF18254),
+          //       selectionMode: DateRangePickerSelectionMode.range,
+          //       showActionButtons: _endDate != null ? true : false,
+          //       onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+          //         if (args.value != null && args.value.startDate != null) {
+          //           setState(() {
+          //             selectDate = 1;
+          //             if (_startDate != null) {
+          //               _minDate = _startDate = args.value.startDate;
+          //               _endDate = args.value.endDate;
+          //               _maxDate = _startDate!.add(const Duration(days: 6));
+          //               selectDate = 1;
+          //             }
+          //           });
+          //         }
+          //       },
+          //       confirmText: 'Aceptar',
+          //       cancelText: '',
+          //       onSubmit: (dateRange) {
+          //         getFormatterDate();
+          //       },
+          //     ),
+          //   ),
+          // ),
+          Text('comentando todo lo referente a syncfusion_flutter_datepicker'),
     );
   }
 }
