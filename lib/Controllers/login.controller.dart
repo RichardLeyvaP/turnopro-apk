@@ -38,6 +38,11 @@ class LoginController extends GetxController {
     update();
   }
 
+  Future<void> loadingValue(bool value) async {
+    isLoading = value;
+    update();
+  }
+
   void getGreeting() {
     // Obtener la hora actual
     DateTime now = DateTime.now();
@@ -108,6 +113,7 @@ class LoginController extends GetxController {
 
             print('***************SOY BARBERO*************');
             pagina = '/Professional';
+            await loadingValue(false);
             update();
             Get.offAllNamed('/Professional');
           } else if (chargeUserLoggedIn == "Encargado") {
@@ -123,6 +129,7 @@ class LoginController extends GetxController {
           } else if (chargeUserLoggedIn == "Cordinador") {
             print('***************SOY Cordinador del local*************');
             pagina = '/HomeCordinador';
+            await loadingValue(false);
             update();
             Get.offAllNamed('/HomeCordinador');
           }

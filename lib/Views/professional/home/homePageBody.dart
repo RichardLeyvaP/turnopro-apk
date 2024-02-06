@@ -325,7 +325,7 @@ class _HomePageBodyState extends State<HomePageBody>
         //Cart anaranjado grande inicial que tiene el cronometro
         children: [
           Expanded(
-              flex: 11,
+              flex: 13,
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Container(
@@ -429,7 +429,7 @@ class _HomePageBodyState extends State<HomePageBody>
                 ),
               )),
           Expanded(
-              flex: 14, // 85% del espacio disponible para esta parte
+              flex: 15, // 85% del espacio disponible para esta parte
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(12, 0, 12, 1),
                 child: Container(
@@ -747,7 +747,7 @@ class _HomePageBodyState extends State<HomePageBody>
                             }
 
                             //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
-                            controllerclient.acceptOrRejectClient(
+                            await controllerclient.acceptOrRejectClient(
                                 controllerclient
                                     .clientsScheduledNext!.reservation_id,
                                 1);
@@ -872,7 +872,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                 style: TextStyle(
                                     fontSize:
                                         (MediaQuery.of(context).size.width *
-                                            0.05), //todo2
+                                            0.04), //todo2
                                     fontFamily:
                                         GoogleFonts.orbitron().fontFamily,
                                     color: colorInicial,
@@ -883,7 +883,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                 style: TextStyle(
                                     fontSize:
                                         (MediaQuery.of(context).size.width *
-                                            0.05),
+                                            0.04),
                                     color: colorInicial,
                                     fontFamily:
                                         GoogleFonts.orbitron().fontFamily,
@@ -924,7 +924,7 @@ class _HomePageBodyState extends State<HomePageBody>
       iconCart) {
     return Container(
       width: (MediaQuery.of(context).size.width * 0.46), //Tamaño de los Cards
-      height: (MediaQuery.of(context).size.height * 0.20),
+      height: (MediaQuery.of(context).size.height * 0.18),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
         color: colorVariable,

@@ -149,7 +149,7 @@ class LoginFormPage extends StatelessWidget {
                                   },
                                   child: const Text('Recuperar Contraseña'))),
                           const SizedBox(
-                            height: 40,
+                            height: 20,
                           ),
                           Row(
                             children: [
@@ -190,6 +190,7 @@ class LoginFormPage extends StatelessWidget {
                                           overlayBlur: 3,
                                         );
                                       } else {
+                                        await _.loadingValue(true);
                                         await _.loginGetIn(
                                             _usserController.text,
                                             _passController.text);
@@ -214,13 +215,19 @@ class LoginFormPage extends StatelessWidget {
                                         }
                                       }
                                     },
-                                    child: const Text(
-                                      'LOGIN',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w800),
-                                    )),
+                                    child: _.isLoading
+                                        ? const CircularProgressIndicator(
+                                            color: Color.fromARGB(
+                                                255, 241, 130, 84),
+                                            strokeWidth: 4,
+                                          )
+                                        : const Text(
+                                            'LOGIN',
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w800),
+                                          )),
                               ),
                             ],
                           ),

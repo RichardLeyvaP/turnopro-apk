@@ -381,6 +381,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                   ),
                                                   onTap: () async {
                                                     //VA A EJECUTARSE SI NO ESTA CON EL TECNICO
+
                                                     if (controllerClient
                                                             .clientsScheduledList[
                                                                 index]
@@ -583,21 +584,32 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                               .contains(
                                                                   controllerClient.clientsScheduledList[
                                                                       index])
-                                                          ? const Row(
+                                                          ? Row(
                                                               children: [
                                                                 Opacity(
                                                                   opacity: 1,
-                                                                  child: Icon(
-                                                                    Icons
-                                                                        .play_circle,
-                                                                    size: 60,
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            255,
-                                                                            150,
-                                                                            37,
-                                                                            19),
-                                                                  ),
+                                                                  child: controllerClient
+                                                                          .isLoading
+                                                                      ? const CircularProgressIndicator(
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              241,
+                                                                              130,
+                                                                              84),
+                                                                          strokeWidth:
+                                                                              4,
+                                                                        )
+                                                                      : const Icon(
+                                                                          Icons
+                                                                              .play_circle,
+                                                                          size:
+                                                                              60,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              150,
+                                                                              37,
+                                                                              19),
+                                                                        ),
                                                                 ),
                                                               ],
                                                             )

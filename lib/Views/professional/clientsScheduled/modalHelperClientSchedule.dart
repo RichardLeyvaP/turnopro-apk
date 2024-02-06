@@ -103,7 +103,7 @@ class ModalHelper {
                                                       Container(
                                                         padding:
                                                             const EdgeInsets
-                                                                .symmetric(
+                                                                    .symmetric(
                                                                 horizontal: 10),
                                                         decoration:
                                                             BoxDecoration(

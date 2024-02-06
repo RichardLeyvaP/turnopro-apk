@@ -91,6 +91,11 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
+  Future<void> loadingValue(bool value) async {
+    isLoading = value;
+    update();
+  }
+
   void setPickedFile(value) {
     pickedFile = value;
     update();
