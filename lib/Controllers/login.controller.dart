@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/get_connect/repository/user.repository.dart';
@@ -12,6 +13,7 @@ class LoginController extends GetxController {
       isLoading = false;
       update();
     });
+    androidInfo();
   }
 
   bool maintainClockStatus = false;
@@ -32,6 +34,11 @@ class LoginController extends GetxController {
   String qrRead = '';
   bool incorrectFields = false;
   String greeting = 'Buenos días ';
+
+  //******************* */
+  //propiedades de telefone
+  double? androidInfoDisplay;
+  int? androidInfoVersion;
 
   void setMaintainClockStatus() {
     maintainClockStatus = true;
@@ -59,6 +66,16 @@ class LoginController extends GetxController {
     } else {
       greeting = 'Buenas noches ';
     }
+    update();
+  }
+
+  androidInfo() async {
+    // Obtener información sobre el dispositivo
+    AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
+    print("Android SDK Version222: ${androidInfo.version.release}");
+    print("Android SDK Version222: ${androidInfo.displayMetrics.sizeInches}");
+    androidInfoDisplay = androidInfo.displayMetrics.sizeInches;
+    androidInfoVersion = int.parse(androidInfo.version.release);
     update();
   }
 
@@ -139,6 +156,7 @@ class LoginController extends GetxController {
       } //cierre if (result != null) {
       else {
         incorrectFields = true;
+        await loadingValue(false);
         update();
         print(' result == null por eso no entro');
       }

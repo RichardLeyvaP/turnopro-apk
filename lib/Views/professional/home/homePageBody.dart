@@ -123,7 +123,7 @@ class _HomePageBodyState extends State<HomePageBody>
         cont += 2;
         // actualizo la cola
         if (cont == 8) {
-          print('con contador en 8 llamo la funcion');
+          print('con contador en 8 llamo la funcion1');
           clientsScheduledController.fetchClientsScheduled(
               loginController.idProfessionalLoggedIn,
               loginController.branchIdLoggedIn);
@@ -325,7 +325,10 @@ class _HomePageBodyState extends State<HomePageBody>
         //Cart anaranjado grande inicial que tiene el cronometro
         children: [
           Expanded(
-              flex: 13,
+              flex: loginController.androidInfoDisplay! >=
+                      6.6 //propiedades de telefone
+                  ? 12
+                  : 13,
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Container(
@@ -924,7 +927,10 @@ class _HomePageBodyState extends State<HomePageBody>
       iconCart) {
     return Container(
       width: (MediaQuery.of(context).size.width * 0.46), //Tamaño de los Cards
-      height: (MediaQuery.of(context).size.height * 0.18),
+      height:
+          loginController.androidInfoDisplay! >= 6.6 //propiedades de telefone
+              ? (MediaQuery.of(context).size.height * 0.198)
+              : (MediaQuery.of(context).size.height * 0.185),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
         color: colorVariable,

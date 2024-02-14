@@ -4,6 +4,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 //import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class LineChartSample2 extends StatefulWidget {
   const LineChartSample2({super.key});
@@ -45,6 +46,8 @@ class _LineChartSample2State extends State<LineChartSample2> {
             const SizedBox(
               height: 8,
             ),
+            //todo aqui comente el que estaba
+
             Container(
               width: (MediaQuery.of(context).size.width * 0.95),
               height: 40,
@@ -56,17 +59,18 @@ class _LineChartSample2State extends State<LineChartSample2> {
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
                   onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return BuildCalendar(
-                          d: DateTime.now(),
-                          m: DateTime.now(),
-                          a: DateTime.now(),
-                          // totalPrice: controllerShoppingCart.totalPrice,
-                        ); // Muestra el AlertDialog
-                      },
-                    );
+                    _showCalendarModal(context, textContDate);
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (BuildContext context) {
+                    //     return BuildCalendar(
+                    //       d: DateTime.now(),
+                    //       m: DateTime.now(),
+                    //       a: DateTime.now(),
+                    //       // totalPrice: controllerShoppingCart.totalPrice,
+                    //     ); // Muestra el AlertDialog
+                    //   },
+                    // );
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -97,6 +101,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
                 ),
               ),
             ),
+
             const SizedBox(
               height: 10,
             ),
@@ -208,90 +213,141 @@ class _LineChartSample2State extends State<LineChartSample2> {
       );
     });
   }
-}
 
-class BuildCalendar extends StatefulWidget {
-  final DateTime d;
-  final DateTime m;
-  final DateTime a;
+  int currentStep = 0;
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _selectedDay = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
+  TextEditingController textContDate = TextEditingController();
+  DateTime?
+      startDate; // Variable para almacenar la fecha de inicio del rango seleccionado
+  DateTime? endDate;
+  DateTime?
+      _rangeAuxDay; // Variable para almacenar la fecha de fin del rango seleccionado
+  final DateTime _startDate = DateTime.now();
+  final DateTime _endDate = DateTime.now();
 
-  const BuildCalendar(
-      {Key? key, required this.d, required this.m, required this.a})
-      : super(key: key);
-
-  @override
-  State<BuildCalendar> createState() => _BuildCalendarState();
-}
-
-class _BuildCalendarState extends State<BuildCalendar> {
-  // final DateRangePickerController _controller = DateRangePickerController();
-  final StatisticController controllerStatistic =
-      Get.find<StatisticController>();
-
-  late DateTime? _startDate;
-  late DateTime? _endDate;
-  int selectDate = 0;
-  DateTime? _minDate;
-  DateTime? _maxDate;
-  final formatterDate = DateFormat('yyyy-MM-dd');
-
-  void getFormatterDate() async {
-    final startDate = formatterDate.format(_startDate!);
-    final endDate = formatterDate.format(_endDate!);
-
-    int numberdayWeek = _startDate!.weekday;
-
-    Duration diferencia = _endDate!.difference(_startDate!);
-    int quantityDates = diferencia.inDays + 1;
-
-    //EN ESTA DEVUELVE LAS GANANCIAS EN ESE INTERVALO DE FECHAS
-    print('intervalo-1 ----:$startDate');
-    print('intervalo-2 ----:$endDate');
-    await controllerStatistic.getDataStatisticDay(startDate, endDate,
-        numberdayWeek, quantityDates); //todo LLAMANDO AL CONTROLADOR DEL DIA
-    // ignore: use_build_context_synchronously
-    Navigator.of(context).pop();
+  Widget _buildTextFieldCalendar(
+      String labelText, TextEditingController tEcontroller) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        readOnly: true,
+        controller: tEcontroller,
+        decoration: InputDecoration(
+          labelText: labelText,
+          suffixIcon: Icon(Icons.calendar_today),
+        ),
+        onTap: () {
+          _showCalendarModal(context, tEcontroller);
+        },
+      ),
+    );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _startDate = DateTime.now();
-    _endDate = null;
-  }
+  Future<void> _showCalendarModal(
+      BuildContext context, TextEditingController tController) async {
+    final StatisticController controllerStatistic =
+        Get.find<StatisticController>();
 
-  @override
-  Widget build(BuildContext context) {
-    final DateTime initialDate = DateTime(2023, 1, 1);
-    return AlertDialog(
-      //title: const Text('Confirmación'),
-      actionsPadding: const EdgeInsets.only(right: 20),
-      actions: [
-        TextButton(
-          style: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(
-            Color.fromARGB(20, 0, 0, 0),
-          )),
-          onPressed: () {
-            Navigator.of(context).pop();
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              height: 400,
+              child: Column(
+                children: [
+                  TableCalendar(
+                    locale: 'es_ES',
+                    calendarFormat: _calendarFormat,
+                    focusedDay: _focusedDay,
+                    firstDay: DateTime(2023, 1, 1),
+                    lastDay: DateTime(2025, 12, 31),
+                    selectedDayPredicate: (day) {
+                      return isSameDay(_selectedDay, day);
+                    },
+                    rangeStartDay: startDate,
+                    rangeEndDay: endDate,
+                    onDaySelected: (selectedDay, focusedDay) {
+                      setState(() {
+                        if (startDate == null) {
+                          startDate = selectedDay;
+                        } else if (endDate == null ||
+                            selectedDay.isBefore(startDate!)) {
+                          endDate = selectedDay;
+                        } else {
+                          startDate = selectedDay;
+                          endDate = null;
+                        }
+                      });
+                    },
+                    headerStyle: const HeaderStyle(
+                      titleCentered: true,
+                      formatButtonVisible: false,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        style: const ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll(
+                          Color.fromARGB(255, 0, 0, 0),
+                        )),
+                        onPressed: () {
+                          setState(() {
+                            startDate = null;
+                            endDate = null;
+                          });
+                          Navigator.pop(context);
+                        },
+                        child: Text('Cancelar'),
+                      ),
+                      ElevatedButton(
+                        style: const ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll(
+                          Color.fromARGB(255, 0, 0, 0),
+                        )),
+                        onPressed: () async {
+                          /*  String formattedStartDate = DateFormat('yyyy-MM-dd')
+                              .format(startDate ?? DateTime.now());
+                          String formattedEndDate = DateFormat('yyyy-MM-dd')
+                              .format(endDate ?? DateTime.now());
+                          print(
+                              'Fechas seleccionadas: $formattedStartDate - $formattedEndDate');*/
+                          final formatterDate = DateFormat('yyyy-MM-dd');
+
+                          final startDate1 = formatterDate.format(startDate!);
+                          final endDate1 = formatterDate.format(endDate!);
+                          int numberdayWeek = _startDate.weekday;
+
+                          Duration diferencia = _endDate.difference(_startDate);
+                          int quantityDates = diferencia.inDays + 1;
+
+                          //EN ESTA DEVUELVE LAS GANANCIAS EN ESE INTERVALO DE FECHAS
+                          print('intervalo-1 ----:$startDate1');
+                          print('intervalo-2 ----:$endDate1');
+                          print('intervalo-quantityDates ----:$quantityDates');
+                          print('intervalo-numberdayWeek ----:$numberdayWeek');
+                          await controllerStatistic.getDataStatisticDay(
+                              startDate1,
+                              endDate1,
+                              numberdayWeek,
+                              quantityDates);
+                          Navigator.pop(context);
+                        },
+                        child: Text('Seleccionar'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
           },
-          child: const Text('Cancelar'),
-        ),
-        TextButton(
-          style: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(
-            Color.fromARGB(20, 0, 0, 0),
-          )),
-          onPressed: () {
-            setState(() {
-              selectDate = 0;
-            });
-          },
-          child: const Text('Seleccionar nuevamente'),
-        ),
-      ],
-      content:
-          Text('comentando todo lo referente a syncfusion_flutter_datepicker'),
+        );
+      },
     );
   }
 }

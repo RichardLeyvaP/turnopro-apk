@@ -25,6 +25,8 @@ dependencies:
   fl_chart: ^0.64.0
   image_picker: ^1.0.7
   dio: ^5.4.0
+  device_info_plus: ^9.1.2
+  table_calendar: ^3.0.9
   
   
 flutter_native_splash:  

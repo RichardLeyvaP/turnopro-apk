@@ -603,6 +603,7 @@ class ClientsScheduledController extends GetxController {
       final LoginController controllerLogin = Get.find<LoginController>();
       int? idBranch = controllerLogin.branchIdLoggedIn;
       int? idProfessional = controllerLogin.idProfessionalLoggedIn;
+      print('mostrando idProfessiona:$idProfessional y IdBranch:$idBranch');
 
       bool resultTypeService =
           await repository.typeOfService(idProfessional, idBranch);
@@ -656,6 +657,7 @@ class ClientsScheduledController extends GetxController {
 
   Future<void> searchForCustomerServices(idCar) async {
     serviceCustomerSelected = await repository.getCustomerServicesList(idCar);
+    print('showingServiceClients:$showingServiceClients');
     if (showingServiceClients == false) {
       serviceCustomerSelectedForm = serviceCustomerSelected;
     }
@@ -734,6 +736,7 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<void> fetchClientsScheduled(idProfessional, idBranch) async {
+    print('con contador en 8 llamo la funcion2');
     Map<String, dynamic> resultList =
         await repository.getClientsScheduledList(idProfessional, idBranch);
     print(resultList);
@@ -776,6 +779,7 @@ class ClientsScheduledController extends GetxController {
         await filterShowNext();
         setValueClock(true);
       } else {
+        print('if (clientsScheduledNext != null) ESTOY DANDO null');
         setValueClock(false);
       }
     }

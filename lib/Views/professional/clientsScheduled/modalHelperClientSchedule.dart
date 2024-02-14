@@ -8,12 +8,21 @@ import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:turnopro_apk/Controllers/login.controller.dart';
+
+final LoginController loginController = Get.find<LoginController>();
 
 class ModalHelper {
   static showModal(PageController pageController, BuildContext context,
       String cliente, int reservationId, int carId) async {
     Completer<void> closedCompleter = Completer<void>();
-    List<double> sizeExpandedService = [170, 224, 280, 336, 392];
+    List<double> sizeExpandedService = [];
+    if (loginController.androidInfoDisplay! >= 6.6) {
+      sizeExpandedService = [170, 224, 280, 336, 392];
+    } else {
+      sizeExpandedService = [224, 280, 336, 392, 448];
+    }
+
     // Declarar un controlador fuera del método
     TextEditingController commentController = TextEditingController();
 
@@ -325,7 +334,8 @@ class ModalHelper {
                     const Icon(Icons.person),
                     Text(
                       cliente,
-                      style: const TextStyle(fontWeight: FontWeight.w800),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w800, fontSize: 18),
                     ),
                   ],
                 ),
@@ -339,32 +349,47 @@ class ModalHelper {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.api_sharp,
-                                  size: 12,
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  controllClient
-                                      .serviceCustomerSelectedForm[index].name,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ],
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.api_sharp,
+                                    size: 12,
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    controllClient
+                                        .serviceCustomerSelectedForm[index]
+                                        .name,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ],
+                              ),
                             ),
-                            Text(
-                              'Precio: ${controllClient.serviceCustomerSelectedForm[index].price_service}',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w300, fontSize: 12),
-                            ),
-                            Text(
-                              'Duración: ${controllClient.serviceCustomerSelectedForm[index].duration_service}',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w300, fontSize: 12),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 30),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Precio: ${controllClient.serviceCustomerSelectedForm[index].price_service}',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 12),
+                                  ),
+                                  Text(
+                                    'Duración: ${controllClient.serviceCustomerSelectedForm[index].duration_service}',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 12),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -440,7 +465,7 @@ class ModalHelper {
           );
         });
       },
-    ).whenComplete(() {
+    ).whenComplete(() async {
       final ClientsScheduledController controllClient =
           Get.find<ClientsScheduledController>();
       controllClient

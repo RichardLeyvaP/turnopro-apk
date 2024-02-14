@@ -41,86 +41,8 @@ class YourPageViewScreenState extends State<HomePageView> {
     print(
         '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\currentPageIndex:${pagesConfigC.currentPageIndex}');
     return Scaffold(
-      // appBar: pagesConfigC.currentPageIndex == 0
-      //     ? AppBar(
-      //         leading: Row(
-      //           crossAxisAlignment: CrossAxisAlignment.start,
-      //           children: [
-      //             IconButton(
-      //               icon: const Icon(Icons.arrow_back),
-      //               onPressed: () {
-      //                 pagesConfigC.back();
-
-      //                 // Navigator.pop(context);
-      //               },
-      //             ),
-      //           ],
-      //         ),
-      //         title: Row(
-      //           mainAxisAlignment: MainAxisAlignment.center,
-      //           children: [
-      //             const Column(
-      //               children: [
-      //                 Icon(
-      //                   Icons.person,
-      //                   size: 70,
-      //                 ),
-      //                 Text(
-      //                   'Mis Clientes',
-      //                   style: TextStyle(
-      //                       fontWeight: FontWeight.w700, fontSize: 20),
-      //                 ),
-      //               ],
-      //             ),
-      //             SizedBox(
-      //               width: (MediaQuery.of(context).size.width * 0.14),
-      //             ),
-      //           ],
-      //         ),
-      //         //actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
-      //         elevation: 0, // Quits the shadow
-      //         //shadowColor: Colors.amber, // Removes visual elevation
-      //       )
-      //     : null,
       body: Column(
         children: [
-          //todo esto de abajo son botones para manejar el desplazamiento de las paginas y hacer o no scroll
-          // Row(
-          //   children: [
-          //     ElevatedButton(
-          //       onPressed: () {
-          //         setState(() {
-          //           isPageViewEnabled = !isPageViewEnabled;
-          //         });
-          //       },
-          //       child:
-          //           Text(isPageViewEnabled ? 'Deshab Scroll' : 'Habili Scroll'),
-          //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.all(8.0),
-          //       child: ElevatedButton(
-          //         onPressed: () {
-          //           // Cambiar a la siguiente página.
-          //           _pageController.nextPage(
-          //             duration: Duration(milliseconds: 300),
-          //             curve: Curves.ease,
-          //           );
-          //         },
-          //         child: Text('Siguiente Página'),
-          //       ),
-          //     ),
-          //     ElevatedButton(
-          //       onPressed: () {
-          //         // Cambiar a la siguiente página.
-          //         _pageController.previousPage(
-          //           duration: Duration(milliseconds: 1000),
-          //           curve: Curves.fastOutSlowIn,
-          //         );
-          //       },
-          //       child: Text('Atras'),
-          //     ),
-          //   ],
-          // ),
           Expanded(
             child: PageView(
               controller: pagesConfigC.pageController,
@@ -207,9 +129,6 @@ class YourPageViewScreenState extends State<HomePageView> {
                                     ),
                                   ),
 
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
                                   //AQUI CONTROLO SI HAY CLIENTES EN COLA LOS MUESTRO , SINO MUESTRO UN MENSAJE
                                   controllerClient.clientsScheduledListLength >
                                           0
@@ -387,10 +306,6 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                 index]
                                                             .attended !=
                                                         4) {
-                                                      // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
-                                                      controllerClient
-                                                          .showingServiceClient(
-                                                              true);
                                                       // aqui selecciono el cliente
                                                       controllerClient
                                                           .getselectCustomer(
@@ -425,7 +340,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                       .client_name)
                                                                   .toString());
 
-                                                      controllerClient
+                                                      await controllerClient
                                                           .searchForCustomerServices(
                                                               controllerClient
                                                                   .clientsScheduledList[
@@ -453,6 +368,10 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                             clientName,
                                                             reservationId,
                                                             carId);
+                                                        // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
+                                                        controllerClient
+                                                            .showingServiceClient(
+                                                                true);
                                                       });
                                                     }
                                                   },

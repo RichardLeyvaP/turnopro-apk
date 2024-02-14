@@ -148,10 +148,12 @@ class ClientsScheduledRepository extends GetConnect {
     if (response.statusCode == 200) {
       print('ya tengo los servicios');
       final customers = response.body['services'];
+      int i = 1;
       for (Map service in customers) {
-        print('1');
+        print('IdCar:$i');
         ServiceModel u = ServiceModel.fromJson(jsonEncode(service));
         serviceCustomer.add(u);
+        i++;
         //AQUI LA LOGICA DE SABER CUAL ES EL QUE LE SIGUE
       }
       print('2 okkkkkkkk');
