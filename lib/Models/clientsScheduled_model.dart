@@ -4,20 +4,20 @@ import 'dart:convert';
 
 class ClientsScheduledModel {
   int reservation_id;
-  int car_id;
+  int car_id; //
   String start_time;
   String final_hour;
   String total_time;
   String client_name;
-  int client_id;
-  int attended;
+  int client_id; //
+  int attended; //
   String? updated_at;
   String? professional_name;
-  int? professional_id;
+  int? professional_id; //
   int total_services;
-  int? clock;
-  int? timeClock;
-  int? detached;
+  int? clock; //
+  int? timeClock; //
+  int? detached; //
 
   ClientsScheduledModel({
     required this.reservation_id,
@@ -59,20 +59,20 @@ class ClientsScheduledModel {
   factory ClientsScheduledModel.fromMap(Map<String, dynamic> map) {
     return ClientsScheduledModel(
       reservation_id: map['reservation_id'],
-      car_id: map['car_id'],
+      car_id: int.tryParse(map['car_id'] ?? '0')!,
       start_time: map['start_time'],
       final_hour: map['final_hour'],
       total_time: map['total_time'],
       client_name: map['client_name'],
-      client_id: map['client_id'],
-      attended: map['attended'] ?? 0,
+      client_id: int.tryParse(map['client_id'] ?? '0')!,
+      attended: int.tryParse(map['attended'] ?? '0')!,
       updated_at: map['updated_at'],
       professional_name: map['professional_name'],
-      professional_id: map['professional_id'] ?? 0,
+      professional_id: int.tryParse(map['professional_id'] ?? '0')!,
       total_services: map['total_services'] ?? 0,
-      clock: map['clock'] ?? 0,
-      timeClock: map['timeClock'] ?? 0,
-      detached: map['detached'] ?? 0,
+      clock: int.tryParse(map['clock'] ?? '0')!,
+      timeClock: int.tryParse(map['timeClock'] ?? '0')!,
+      detached: int.tryParse(map['detached'] ?? '0')!,
     );
   }
 

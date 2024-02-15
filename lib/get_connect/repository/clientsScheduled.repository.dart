@@ -83,11 +83,28 @@ class ClientsScheduledRepository extends GetConnect {
     } else
       print('hay coneccion');
     if (response.statusCode == 200) {
-      print('ya tengo la cola de la api');
+      print('ya tengo la cola de la api es estaa *****************');
       final customers = response.body['tail'];
+      print('ya tengo la cola de la api es estaa${customers}');
+
+// //todo LEER TIPOS DE DATOS QUE VIENEN D LA API
+//       for (int i = 0; i < customers.length; i++) {
+//         print(
+//             'ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
+//         customers[i].forEach((key, value) {
+//           print(
+//               'ya tengo la cola de la api es estaa $key: ${value.runtimeType}');
+//         });
+//       }
+// //todo LEER TIPOS DE DATOS QUE VIENEN D LA API
+
       for (Map service in customers) {
+        print(
+            'ya tengo la cola de la api es estaa *********for (Map service in customers)********');
         ClientsScheduledModel client =
             ClientsScheduledModel.fromJson(jsonEncode(service));
+        print(
+            'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
         //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
         if (client.detached == 1) {
           Map newValue = {
