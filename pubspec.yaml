@@ -27,6 +27,7 @@ dependencies:
   dio: ^5.4.0
   device_info_plus: ^9.1.2
   table_calendar: ^3.0.9
+  soundpool: ^2.3.0
   
   
 flutter_native_splash:  
@@ -91,3 +92,4 @@ flutter:
      - assets/images/icons/error-connection.png
      - assets/images/icons/lavado.png
      - assets/images/icons/lavado2.png
+     - assets/sound/livechat-129007.mp3
