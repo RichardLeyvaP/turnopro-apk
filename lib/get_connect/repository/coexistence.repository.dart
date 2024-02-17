@@ -13,6 +13,7 @@ class CoexistenceRepository extends GetConnect {
 
   Future<List<CoexistenceModel>> getCoexistenceList(
       idProfessional, idBranch) async {
+    print('actualizando las convivencias iniciales.RLP- getCoexistenceList');
     List<CoexistenceModel> coexistenceList = [];
     try {
       var url =

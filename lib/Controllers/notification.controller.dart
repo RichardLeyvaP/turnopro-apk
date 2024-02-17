@@ -6,13 +6,13 @@ import 'package:turnopro_apk/get_connect/repository/notification.repository.dart
 
 class NotificationController extends GetxController {
   //LLAMANDO AL CONTROLADOR
-  NotificationController() {
-    _fetchNotificationList();
-  }
+  NotificationController();
 //DECLARACION DE VARIABLES
   NotificationRepository repository = NotificationRepository();
   int notificationListLength = 0;
+  int notificationListNewLength = 0;
   List<NotificationModel> notification = []; // Lista de Notificaciones
+  List<NotificationModel> notificationListNew = []; // Lista de Notificaciones
   List<NotificationModel> selectNotification = [];
   bool isLoading = true;
 
@@ -36,9 +36,18 @@ class NotificationController extends GetxController {
     update();
   }
 
-  Future<void> _fetchNotificationList() async {
-    notification = await repository.getNotificationList();
+  Future<void> fetchNotificationList(idBranch, idProfe) async {
+    print('este es nuevo y estoy llamando a la db a cargar las notificaciones');
+    Map<String, dynamic> result =
+        await repository.getNotificationList(idBranch, idProfe);
+
+    notification = result['notificationList'];
     notificationListLength = notification.length;
+
+    notificationListNew = result['notificationListNew'];
+    notificationListNewLength = notificationListNew.length;
+    print(
+        'estoy aqui en getNotificationList-   notificationListLength:$notificationListLength');
     update();
   }
 }

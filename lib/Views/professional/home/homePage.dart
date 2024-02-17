@@ -22,6 +22,7 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
   final LoginController loginController = Get.find<LoginController>();
   final ClientsScheduledController clientController =
       Get.find<ClientsScheduledController>();
+  final NotificationController notiCont = Get.find<NotificationController>();
   int carr = 199;
 
   @override
@@ -117,7 +118,12 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                             label: 'Agenda'),
                         BottomNavigationBarItem(
                             icon: Badge(
-                              label: Text('0'),
+                              label: GetBuilder<NotificationController>(
+                                  builder: (_notiCont) {
+                                return Text(
+                                    (_notiCont.notificationListNewLength)
+                                        .toString());
+                              }),
                               child: Icon(
                                 Icons.notifications,
                                 size: MediaQuery.of(context).size.width * 0.08,

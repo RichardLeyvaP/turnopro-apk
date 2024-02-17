@@ -130,23 +130,25 @@ class LoginController extends GetxController {
 
             print('***************SOY BARBERO*************');
             pagina = '/Professional';
-            await loadingValue(false);
+            loadingValue(false);
             update();
             Get.offAllNamed('/Professional');
           } else if (chargeUserLoggedIn == "Encargado") {
             print('***************SOY ENCARGADO*************');
             pagina = '/HomeResponsible';
+            loadingValue(false);
             update();
             Get.offAllNamed('/HomeResponsible');
           } else if (chargeUserLoggedIn == "Tecnico") {
             print('***************SOY TECNICO CAPILAR*************');
             pagina = '/HomeTecnico';
+            loadingValue(false);
             update();
             Get.offAllNamed('/HomeTecnico');
           } else if (chargeUserLoggedIn == "Cordinador") {
             print('***************SOY Cordinador del local*************');
             pagina = '/HomeCordinador';
-            await loadingValue(false);
+            loadingValue(false);
             update();
             Get.offAllNamed('/HomeCordinador');
           }

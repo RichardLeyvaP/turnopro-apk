@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
-import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
-import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
+import 'package:turnopro_apk/Routes/index.dart';
 
 class HomePageBody extends StatefulWidget {
   const HomePageBody({super.key});
@@ -28,6 +26,7 @@ class _HomePageBodyState extends State<HomePageBody>
 
   final CoexistenceController coexistenceController =
       Get.put(CoexistenceController());
+  NotificationController notiController = Get.find<NotificationController>();
 
   @override
   bool get wantKeepAlive => true;
@@ -123,6 +122,8 @@ class _HomePageBodyState extends State<HomePageBody>
         cont += 2;
         // actualizo la cola
         if (cont == 8) {
+          notiController.fetchNotificationList(loginController.branchIdLoggedIn,
+              loginController.idProfessionalLoggedIn);
           print('con contador en 8 llamo la funcion1');
           clientsScheduledController.fetchClientsScheduled(
               loginController.idProfessionalLoggedIn,
@@ -470,7 +471,9 @@ class _HomePageBodyState extends State<HomePageBody>
                                     Icons.perm_contact_calendar),
                               ),
                               InkWell(
-                                onTap: () {
+                                onTap: () async {
+                                  await notiController.fetchNotificationList(
+                                      1, 11);
                                   pagesConfigC.onTabTapped(
                                       2); //index = 2 -> /NotificationsPageProf
                                 },

@@ -18,8 +18,8 @@ class CoexistencePageCoordinator extends StatefulWidget {
       _CoexistencePageCoordinatorState();
 }
 
-final ClientsCoordinatorController controllerClient =
-    Get.find<ClientsCoordinatorController>();
+final ClientsScheduledController controllerClient =
+    Get.find<ClientsScheduledController>();
 final LoginController controllerLogin = Get.find<LoginController>();
 final PagesConfigController pagesConfigCont = Get.find<PagesConfigController>();
 

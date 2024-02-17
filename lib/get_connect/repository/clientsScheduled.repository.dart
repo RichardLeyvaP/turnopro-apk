@@ -88,14 +88,14 @@ class ClientsScheduledRepository extends GetConnect {
       print('ya tengo la cola de la api es estaa${customers}');
 
 // //todo LEER TIPOS DE DATOS QUE VIENEN D LA API
-//       for (int i = 0; i < customers.length; i++) {
-//         print(
-//             'ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
-//         customers[i].forEach((key, value) {
-//           print(
-//               'ya tengo la cola de la api es estaa $key: ${value.runtimeType}');
-//         });
-//       }
+      for (int i = 0; i < customers.length; i++) {
+        print(
+            'ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
+        customers[i].forEach((key, value) {
+          print(
+              'ya tengo la cola de la api es estaa $key: ${value.runtimeType}');
+        });
+      }
 // //todo LEER TIPOS DE DATOS QUE VIENEN D LA API
 
       for (Map service in customers) {

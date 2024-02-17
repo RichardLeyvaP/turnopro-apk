@@ -25,8 +25,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages> {
       Get.find<ShoppingCartController>();
   final LoginController controllerLogin = Get.find<LoginController>();
 
-  final PagesConfigController pagesConfigReC =
-      Get.find<PagesConfigController>();
+  final PagesConfigResponController pagesConfigReC =
+      Get.find<PagesConfigResponController>();
 
   @override
   void initState() {

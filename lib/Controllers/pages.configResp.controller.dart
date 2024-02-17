@@ -21,7 +21,9 @@ class PagesConfigResponController extends GetxController {
   //todo List<Widget> _pages -> esta esta solo para inicializar pero no es la que funciona
   final List<Widget> pages = [
     HomeResponsibleBodyPages(), // Página 1//todo poner aqui
-    Text('Aqui van la Agenda'), // Página 1//todo poner aqui
+    Container(
+        child: Center(
+            child: Text('Aqui van la Agenda'))), // Página 1//todo poner aqui
     const NotificationsPageNew(), // Pagina 2 okokokokok
     const StatisticPageRespon(), // Página 3 okkkkkkkk
     const CoexistencePageResponsible(), // Página 4 okkkkk

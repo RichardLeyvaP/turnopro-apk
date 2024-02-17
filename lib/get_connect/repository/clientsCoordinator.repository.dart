@@ -3,8 +3,10 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
+import 'package:turnopro_apk/Models/coexistence_model.dart';
 import 'package:turnopro_apk/Models/product_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
+import 'package:turnopro_apk/Views/coordinator/coexistencePageCoordinator.dart';
 import 'package:turnopro_apk/env.dart';
 import 'package:intl/intl.dart';
 import 'package:dio/dio.dart' as dio;
@@ -367,7 +369,7 @@ class ClientsCoordinatorRepository extends GetConnect {
     print(estado);
     print(response.statusCode);
     if (response.statusCode == 200) {
-      print('Acacba de incumplir en este type de convivencia:$type');
+      print('Acacba de cambiar el type de convivencia:$type');
       return true;
     } else {
       print(

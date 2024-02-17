@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
+import 'package:turnopro_apk/Models/coexistence_model.dart';
 import 'package:turnopro_apk/Models/product_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
@@ -31,6 +32,9 @@ class ClientsCoordinatorController extends GetxController {
       timeClientsAttended2,
       timeClientsAttended3,
       timeClientsAttended4;
+
+  List<CoexistenceModel> coexistence = [];
+  int coexistenceListLength = 0;
 
   int? timeClientsActAttended1,
       timeClientsActAttended2,

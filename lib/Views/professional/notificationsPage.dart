@@ -218,194 +218,235 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
                                                             Radius.circular(
                                                                 borderRadiusValue)),
                                                   ),
-                                            child: ListTile(
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(
-                                                        borderRadiusValue)),
-                                              ),
-                                              onTap: () {
-                                                _.getSelectNotification(index);
-                                              },
-                                              title: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 2),
-                                                    child: Text(
-                                                      'Eliminación de Servicio',
-                                                      style: TextStyle(
-                                                        fontSize: _
-                                                                .selectNotification
-                                                                .contains(
-                                                                    _.notification[
-                                                                        index])
-                                                            ? 23
-                                                            : 16,
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        height: 1.0,
-                                                      ),
-                                                    ),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                ListTile(
+                                                  shape:
+                                                      const RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius
+                                                        .all(Radius.circular(
+                                                            borderRadiusValue)),
                                                   ),
-                                                  Text(
-                                                    '8.000',
-                                                    style: TextStyle(
-                                                        fontSize: _
-                                                                .selectNotification
-                                                                .contains(
-                                                                    _.notification[
-                                                                        index])
-                                                            ? 28
-                                                            : 25,
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                                  ),
-                                                ],
-                                              ),
-                                              subtitle: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 2),
-                                                    child: Text(
-                                                      'Masaje capilar',
-                                                      style: TextStyle(
-                                                        fontSize: _
-                                                                .selectNotification
-                                                                .contains(
-                                                                    _.notification[
-                                                                        index])
-                                                            ? 20
-                                                            : 14,
-                                                        color: const Color
-                                                                .fromARGB(
-                                                            148, 0, 0, 0),
-                                                        height: 1.0,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Column(
+                                                  onTap: () {
+                                                    // _.getSelectNotification(index);
+                                                  },
+                                                  title: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
                                                     children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Icon(
-                                                            MdiIcons.accountTie,
-                                                            color: Colors.black,
-                                                            size: _.selectNotification
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 2),
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                              _
+                                                                  .notification[
+                                                                      index]
+                                                                  .tittle,
+                                                              style: TextStyle(
+                                                                fontSize: _
+                                                                        .selectNotification
+                                                                        .contains(
+                                                                            _.notification[index])
+                                                                    ? 23
+                                                                    : 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w800,
+                                                                height: 1.0,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      _.notification[index]
+                                                                  .state ==
+                                                              0
+                                                          ? const Icon(
+                                                              Icons
+                                                                  .notifications_active,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      17,
+                                                                      94,
+                                                                      14),
+                                                            )
+                                                          : Text(''),
+                                                    ],
+                                                  ),
+                                                  subtitle: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 2),
+                                                        child: Text(
+                                                          _.notification[index]
+                                                              .description,
+                                                          style: TextStyle(
+                                                            fontSize: _
+                                                                    .selectNotification
                                                                     .contains(
                                                                         _.notification[
                                                                             index])
                                                                 ? 20
-                                                                : 16,
+                                                                : 14,
+                                                            color: const Color
+                                                                    .fromARGB(
+                                                                148, 0, 0, 0),
+                                                            height: 1.2,
                                                           ),
-                                                          Text(
-                                                            'Paula Rego',
-                                                            style: TextStyle(
-                                                              fontSize: _
-                                                                      .selectNotification
-                                                                      .contains(
-                                                                          _.notification[
-                                                                              index])
-                                                                  ? 20
-                                                                  : 14,
-                                                              color: const Color
-                                                                      .fromARGB(
-                                                                  148, 0, 0, 0),
-                                                              height: 1.0,
-                                                            ),
-                                                          ),
-                                                        ],
+                                                        ),
                                                       ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Icon(
-                                                                MdiIcons
-                                                                    .account,
-                                                                color: Colors
-                                                                    .black,
-                                                                size: _.selectNotification
-                                                                        .contains(
-                                                                            _.notification[index])
-                                                                    ? 20
-                                                                    : 16,
-                                                              ),
-                                                              Text(
-                                                                'Wiliam Miller',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize: _
-                                                                          .selectNotification
-                                                                          .contains(
-                                                                              _.notification[index])
-                                                                      ? 20
-                                                                      : 14,
-                                                                  color: const Color
-                                                                          .fromARGB(
-                                                                      148,
-                                                                      0,
-                                                                      0,
-                                                                      0),
-                                                                  height: 1.0,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Icon(Icons.timer,
-                                                                  color: Colors
-                                                                      .black,
-                                                                  size: (MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.016)),
-                                                              Text(
-                                                                '15 Minutos',
-                                                                style: TextStyle(
-                                                                    fontSize: _
-                                                                            .selectNotification
-                                                                            .contains(_.notification[
-                                                                                index])
-                                                                        ? 16
-                                                                        : 12,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
+
+                                                      // Column(
+                                                      //   children: [
+                                                      //     Row(
+                                                      //       mainAxisAlignment:
+                                                      //           MainAxisAlignment
+                                                      //               .start,
+                                                      //       children: [
+                                                      //         Icon(
+                                                      //           MdiIcons.accountTie,
+                                                      //           color: Colors.black,
+                                                      //           size: _.selectNotification
+                                                      //                   .contains(
+                                                      //                       _.notification[
+                                                      //                           index])
+                                                      //               ? 20
+                                                      //               : 16,
+                                                      //         ),
+                                                      //         Text(
+                                                      //           'Paula Rego',
+                                                      //           style: TextStyle(
+                                                      //             fontSize: _
+                                                      //                     .selectNotification
+                                                      //                     .contains(
+                                                      //                         _.notification[
+                                                      //                             index])
+                                                      //                 ? 20
+                                                      //                 : 14,
+                                                      //             color: const Color
+                                                      //                     .fromARGB(
+                                                      //                 148, 0, 0, 0),
+                                                      //             height: 1.0,
+                                                      //           ),
+                                                      //         ),
+                                                      //       ],
+                                                      //     ),
+                                                      //     Row(
+                                                      //       mainAxisAlignment:
+                                                      //           MainAxisAlignment
+                                                      //               .spaceBetween,
+                                                      //       children: [
+                                                      //         Row(
+                                                      //           mainAxisAlignment:
+                                                      //               MainAxisAlignment
+                                                      //                   .end,
+                                                      //           children: [
+                                                      //             Icon(
+                                                      //               MdiIcons
+                                                      //                   .account,
+                                                      //               color: Colors
+                                                      //                   .black,
+                                                      //               size: _.selectNotification
+                                                      //                       .contains(
+                                                      //                           _.notification[index])
+                                                      //                   ? 20
+                                                      //                   : 16,
+                                                      //             ),
+                                                      //             Text(
+                                                      //               'Wiliam Miller',
+                                                      //               style:
+                                                      //                   TextStyle(
+                                                      //                 fontSize: _
+                                                      //                         .selectNotification
+                                                      //                         .contains(
+                                                      //                             _.notification[index])
+                                                      //                     ? 20
+                                                      //                     : 14,
+                                                      //                 color: const Color
+                                                      //                         .fromARGB(
+                                                      //                     148,
+                                                      //                     0,
+                                                      //                     0,
+                                                      //                     0),
+                                                      //                 height: 1.0,
+                                                      //               ),
+                                                      //             ),
+                                                      //           ],
+                                                      //         ),
+                                                      //         Row(
+                                                      //           mainAxisAlignment:
+                                                      //               MainAxisAlignment
+                                                      //                   .end,
+                                                      //           children: [
+                                                      //             Icon(Icons.timer,
+                                                      //                 color: Colors
+                                                      //                     .black,
+                                                      //                 size: (MediaQuery.of(
+                                                      //                             context)
+                                                      //                         .size
+                                                      //                         .height *
+                                                      //                     0.016)),
+                                                      //             Text(
+                                                      //               '15 Minutos',
+                                                      //               style: TextStyle(
+                                                      //                   fontSize: _
+                                                      //                           .selectNotification
+                                                      //                           .contains(_.notification[
+                                                      //                               index])
+                                                      //                       ? 16
+                                                      //                       : 12,
+                                                      //                   fontWeight:
+                                                      //                       FontWeight
+                                                      //                           .w500),
+                                                      //             ),
+                                                      //           ],
+                                                      //         ),
+                                                      //       ],
+                                                      //     ),
+                                                      //   ],
+                                                      // ),
                                                     ],
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 20),
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.bottomRight,
+                                                    child: Text(
+                                                      _.notification[index]
+                                                          .created_at,
+                                                      style: TextStyle(
+                                                          fontSize: _
+                                                                  .selectNotification
+                                                                  .contains(
+                                                                      _.notification[
+                                                                          index])
+                                                              ? 12
+                                                              : 12,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                           /*todo*/ Visibility(

@@ -88,9 +88,13 @@ class CoexistenceController extends GetxController {
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idBranch = controllerLogin.branchIdLoggedIn;
     professional = await repository.getBranchProfessionals(idBranch);
-    print('%%%%%%%%%%%%%%%%% Profesionales por branch %%%%%%%%%%%%%%%%%%%%');
+    print(
+        'actualizando las convivencias iniciales.RLP- getCoexistenceList111111 %%%%%%%%%%%%%%%%% Profesionales por branch %%%%%%%%%%%%%%%%%%%%');
     print(professional.length);
     professionalListLength = professional.length;
+//todo agregue esto nuevo
+    print(
+        'actualizando las convivencias iniciales.RLP- getCoexistenceList222222222 %%%%%%%%%%%%%%%%% Profesionales por branch %%%%%%%%%%%%%%%%%%%%');
     update();
   }
 }

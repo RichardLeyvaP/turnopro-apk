@@ -6,7 +6,6 @@ import 'package:turnopro_apk/Views/coordinator/coexistencePageCoordinator.dart';
 import 'package:turnopro_apk/Views/coordinator/homeCoordinator/homeCoordinatorBody.dart';
 import 'package:turnopro_apk/Views/professional/home/homePageBody.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/clientsScheduled.dart';
-import 'package:turnopro_apk/Views/responsible/coexistencePageResponsible.dart';
 import 'package:turnopro_apk/Views/tecnico/clientsScheduled/homePageViewTechnical.dart';
 import 'package:turnopro_apk/Views/tecnico/coexistencePageTecnhical.dart';
 import 'package:turnopro_apk/Views/tecnico/homeTecnico/homePageTecnicoBody.dart';
@@ -19,7 +18,7 @@ import '../Views/coordinator/services/servicesClient.dart';
 
 class PagesConfigController extends GetxController {
 //DECLARACION DE VARIABLES
-
+  NotificationController notiController = Get.find<NotificationController>();
   bool isLoading = true;
   bool loadedFirstTime = false;
   int selectedIndex = 0;
@@ -137,9 +136,16 @@ class PagesConfigController extends GetxController {
 
 //todo nueva probando
 //******************************************************* */
-  void onTabTapped(int index) {
+  Future<void> onTabTapped(int index) async {
     //CON ESTO GARANDIZO QUE SI DA EN EL MISMO TAB QUE NO VUELVA A DIBUJAR EL WIDGET,SOLO QUE DIBUJE CUANDO DE EN UNO DIFERENTE
+    print('selectedIndex:$selectedIndex');
+    print('index:$index');
     if (selectedIndex != index) {
+      if (index == 2) {
+        print('llamar a notificACIONES-1');
+        await notiController.fetchNotificationList(1, 3); //3 es deyler
+        print('llamar a notificACIONES-2 listo');
+      }
       selectedIndexBack = selectedIndex;
       selectedIndex = index;
       selectedIndexBackList.add(selectedIndexBack);
