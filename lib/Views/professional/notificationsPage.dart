@@ -4,6 +4,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
+import 'package:turnopro_apk/Routes/index.dart';
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class NotificationsPageProf extends StatefulWidget {
@@ -17,6 +18,14 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
   final double valuePadding = 12;
   final PagesConfigController pagesConfigCont =
       Get.find<PagesConfigController>();
+  final NotificationController notifCont = Get.find<NotificationController>();
+  final LoginController logCont = Get.find<LoginController>();
+  @override
+  void initState() {
+    super.initState();
+    notifCont.updateNotifications(
+        logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn);
+  }
 
   @override
   Widget build(BuildContext context) {

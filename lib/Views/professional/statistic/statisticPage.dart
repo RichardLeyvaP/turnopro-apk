@@ -5,12 +5,14 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaDiaPageNueva.dart';
+import 'package:turnopro_apk/Views/professional/statistic/stadisticaMensualPageNueva.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaMesPageNueva.dart';
 //import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
 //import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaPageNueva.dart';
+import 'package:turnopro_apk/Views/professional/statistic/stadisticaSemanalPageNueva.dart';
 
 class StatisticPage extends StatefulWidget {
   const StatisticPage({super.key});
@@ -133,85 +135,87 @@ class _StatisticPageState extends State<StatisticPage>
             controller: _tabController,
             children: [
               const LineChartSample2(),
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    BarChartSample6(),
-                    Container(
-                      width: (MediaQuery.of(context).size.width * 0.8),
-                      height: 40,
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
-                        color: Colors.white,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return BuildCalendar(
-                                  d: DateTime.now(),
-                                  m: DateTime.now(),
-                                  a: DateTime.now(),
-                                  // totalPrice: controllerShoppingCart.totalPrice,
-                                ); // Muestra el AlertDialog
-                              },
-                            );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    MdiIcons.calendarBlank,
-                                    color: const Color.fromARGB(130, 0, 0, 0),
-                                  ),
-                                  Text(
-                                    contStat.dateRange == ''
-                                        ? '  seleccione una fecha'
-                                        : contStat.dateRange,
-                                    style: const TextStyle(
-                                        color: Color.fromARGB(130, 0, 0, 0)),
-                                  ),
-                                ],
-                              ),
-                              Icon(
-                                MdiIcons.arrowDownThin,
-                                color: const Color.fromARGB(130, 0, 0, 0),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 135,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            CartOption(
-                                color: pilateColor,
-                                icon: Icon(
-                                  MdiIcons.cash,
-                                ),
-                                totalEarnings:
-                                    controllerStatistic.totalEarnings,
-                                averageEarnings:
-                                    controllerStatistic.averageEarnings,
-                                description: description),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const LineChartSample5(),
+              // SingleChildScrollView(
+              //   child: Column(
+              //     children: [
+              //       BarChartSample6(),
+              //       Container(
+              //         width: (MediaQuery.of(context).size.width * 0.8),
+              //         height: 40,
+              //         decoration: const BoxDecoration(
+              //           borderRadius: BorderRadius.all(Radius.circular(16)),
+              //           color: Colors.white,
+              //         ),
+              //         child: Padding(
+              //           padding: const EdgeInsets.all(8.0),
+              //           child: InkWell(
+              //             onTap: () {
+              //               showDialog(
+              //                 context: context,
+              //                 builder: (BuildContext context) {
+              //                   return BuildCalendar(
+              //                     d: DateTime.now(),
+              //                     m: DateTime.now(),
+              //                     a: DateTime.now(),
+              //                     // totalPrice: controllerShoppingCart.totalPrice,
+              //                   ); // Muestra el AlertDialog
+              //                 },
+              //               );
+              //             },
+              //             child: Row(
+              //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //               children: [
+              //                 Row(
+              //                   children: [
+              //                     Icon(
+              //                       MdiIcons.calendarBlank,
+              //                       color: const Color.fromARGB(130, 0, 0, 0),
+              //                     ),
+              //                     Text(
+              //                       contStat.dateRange == ''
+              //                           ? '  seleccione una fecha'
+              //                           : contStat.dateRange,
+              //                       style: const TextStyle(
+              //                           color: Color.fromARGB(130, 0, 0, 0)),
+              //                     ),
+              //                   ],
+              //                 ),
+              //                 Icon(
+              //                   MdiIcons.arrowDownThin,
+              //                   color: const Color.fromARGB(130, 0, 0, 0),
+              //                 ),
+              //               ],
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //       SizedBox(
+              //         height: 135,
+              //         child: Padding(
+              //           padding: const EdgeInsets.all(8.0),
+              //           child: Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //             children: [
+              //               CartOption(
+              //                   color: pilateColor,
+              //                   icon: Icon(
+              //                     MdiIcons.cash,
+              //                   ),
+              //                   totalEarnings:
+              //                       controllerStatistic.totalEarnings,
+              //                   averageEarnings:
+              //                       controllerStatistic.averageEarnings,
+              //                   description: description),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              StadisticaSemanalPageNueva(),
+              //const LineChartSample5(),
+              StadisticaMensualPageNueva(),
             ],
           );
         }), // Muestra el AlertDialog

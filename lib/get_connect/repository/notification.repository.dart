@@ -8,30 +8,60 @@ import 'package:turnopro_apk/env.dart';
 
 class NotificationRepository extends GetConnect {
   Future getNotificationList(idBranch, idProf) async {
-    print('estoy aqui en getNotificationList');
-    List<NotificationModel> notificationList = [];
-    List<NotificationModel> notificationListNew = [];
-    var url =
-        '${Env.apiEndpoint}/notification-professional?branch_id=$idBranch&professional_id=$idProf'; //cambiar aqui por servicios en la api
+    try {
+      print('estoy aqui en getNotificationList');
+      List<NotificationModel> notificationList = [];
+      List<NotificationModel> notificationListNew = [];
+      var url =
+          '${Env.apiEndpoint}/notification-professional?branch_id=$idBranch&professional_id=$idProf'; //cambiar aqui por servicios en la api
 
-    final response = await get(url);
-    if (response.statusCode == 200) {
-      final notifications = response.body['notifications'];
-      for (Map notification in notifications) {
-        NotificationModel u =
-            NotificationModel.fromJson(jsonEncode(notification));
-        notificationList.add(u);
-        if (u.state == 0) {
-          notificationListNew.add(u);
+      final response = await get(url);
+      if (response.statusCode == 200) {
+        final notifications = response.body['notifications'];
+        for (Map notification in notifications) {
+          NotificationModel u =
+              NotificationModel.fromJson(jsonEncode(notification));
+          notificationList.add(u);
+          if (u.state == 0) {
+            notificationListNew.add(u);
+          }
         }
-      }
 
+        return {
+          "notificationList": notificationList,
+          "notificationListNew": notificationListNew,
+        };
+      } else {
+        return notificationList;
+      }
+    } catch (e) {
+      print(
+          'mandar alguna variable para la vista Error en Future getNotificationList:e');
       return {
-        "notificationList": notificationList,
-        "notificationListNew": notificationListNew,
+        'Erroor': true
+      }; //si retorna null es que dio error deve ser de conexion
+    }
+  }
+
+  Future<int> updateNotifications(idBranch, idProf) async {
+    try {
+      var url = '${Env.apiEndpoint}/notification';
+
+      // Parámetros que deseas enviar en la solicitud POST
+      final Map<String, dynamic> body = {
+        'branch_id': idBranch,
+        'professional_id': idProf,
       };
-    } else {
-      return notificationList;
+
+      final response = await put(url, body);
+      //print('MANDE A ELIMINAR:$body');
+      if (response.statusCode == 200) {
+        return 1;
+      } else {
+        return -990099;
+      }
+    } catch (e) {
+      return -990099;
     }
   }
 }

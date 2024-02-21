@@ -54,10 +54,36 @@ class WeeklyStatisticsRepository extends GetConnect {
         final response = await http.get(Uri.parse(url));
         print(response.statusCode);
         if (response.statusCode == 200) {
-          print('response.statusCode == 200');
+          print('response.statusCode == Future getDayStatisticsList 200');
           final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
           print(
-              '***************************....********:${jsonResponse['earningPeriodo']}');
+              'response.statusCode == Future getDayStatisticsList ....********:${jsonResponse['earningPeriodo']}');
+          return jsonResponse['earningPeriodo'];
+        }
+
+        return null; // Retornando lista vacía
+      }
+    } catch (e) {
+      print('ERROR WeeklyStatisticsRepository: $e');
+    }
+  }
+
+  Future getDayStatisticsListMen(idProfessional, idBranch, mes, year) async {
+    try {
+      if (idProfessional != null) {
+        var url =
+            '${Env.apiEndpoint}/professionals_ganancias_branch?professional_id=$idProfessional&branch_id=$idBranch&mes=$mes&year=$year';
+        print(idProfessional);
+        print(idBranch);
+        print(mes);
+        print(year);
+        final response = await http.get(Uri.parse(url));
+        print(response.statusCode);
+        if (response.statusCode == 200) {
+          print('response.statusCode == Future getDayStatisticsList 200');
+          final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+          print(
+              'response.statusCode == Future getDayStatisticsList ....********:${jsonResponse['earningPeriodo']}');
           return jsonResponse['earningPeriodo'];
         }
 

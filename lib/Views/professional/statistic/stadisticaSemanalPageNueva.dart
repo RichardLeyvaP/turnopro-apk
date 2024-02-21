@@ -6,14 +6,16 @@ import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class LineChartSample2 extends StatefulWidget {
-  const LineChartSample2({super.key});
+class StadisticaSemanalPageNueva extends StatefulWidget {
+  const StadisticaSemanalPageNueva({super.key});
 
   @override
-  State<LineChartSample2> createState() => _LineChartSample2State();
+  State<StadisticaSemanalPageNueva> createState() =>
+      _StadisticaSemanalPageNuevaState();
 }
 
-class _LineChartSample2State extends State<LineChartSample2> {
+class _StadisticaSemanalPageNuevaState
+    extends State<StadisticaSemanalPageNueva> {
   List<String> direcc = [
     'assets/images/icons/montoGen.png',
     'assets/images/icons/propina.png',
@@ -85,7 +87,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
                             controllerStat.dateRange == ''
                                 ? '  seleccione una fecha'
                                 : dateActual == controllerStat.dateRange
-                                    ? '   Fecha de Hoy- $dateAct'
+                                    ? '   Seleccione una semana'
                                     : controllerStat.dateRange,
                             style: const TextStyle(
                                 color: Color.fromARGB(130, 0, 0, 0)),
@@ -120,16 +122,22 @@ class _LineChartSample2State extends State<LineChartSample2> {
                           height: 10,
                         ),
                         if (startDate1 != null && endDate1 != null) ...[
-                          Text(
-                            'No tiene estadisticas en ($startDate1 - $endDate1)',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 16),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'No tiene estadisticas en la semana seleccionada de  ($startDate1 - $endDate1)',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 16),
+                            ),
                           ),
                         ] else ...[
-                          Text(
-                            'No tiene estadisticas en $dateAct',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 16),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'No tiene estadisticas en la semana seleccionada de $dateAct',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 16),
+                            ),
                           )
                         ]
                       ],
@@ -230,20 +238,43 @@ class _LineChartSample2State extends State<LineChartSample2> {
   }
 
   int currentStep = 0;
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
   TextEditingController textContDate = TextEditingController();
-  DateTime?
-      startDate; // Variable para almacenar la fecha de inicio del rango seleccionado
+  DateTime? startDate = DateTime(1990, 1,
+      1); // Variable para almacenar la fecha de inicio del rango seleccionado
   var startDate1;
   var endDate1;
   DateTime? endDate;
   DateTime? auxDate;
   DateTime?
       _rangeAuxDay; // Variable para almacenar la fecha de fin del rango seleccionado
-  final DateTime _startDate = DateTime.now();
+  final DateTime _startDate = DateTime(1990, 1, 1);
   final DateTime _endDate = DateTime.now();
+  //
+  //
+  //
+  // Define el año inicial y el año actual
+  final int initialYear =
+      1990; //aqui el año en que el se registro en la empresa
+  int _selectedYear = DateTime.now().year;
+  final int currentYear = DateTime.now().year;
+  int _selectedMonth = DateTime.now().month;
+  final List<String> _months = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre'
+  ];
 
   Widget _buildTextFieldCalendar(
       String labelText, TextEditingController tEcontroller) {
@@ -274,45 +305,91 @@ class _LineChartSample2State extends State<LineChartSample2> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return Container(
-              height: 435,
+              height: 200,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     TableCalendar(
+                      onHeaderTapped: (focusedDay) {
+                        print('_selectedMonth::$focusedDay');
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Seleccione mes y/o año'),
+                              content: Row(
+                                children: [
+                                  DropdownButton<int>(
+                                    value: _selectedYear,
+                                    onChanged: (int? newValue) {
+                                      setState(() {
+                                        _selectedYear = newValue!;
+                                        _focusedDay =
+                                            DateTime(_selectedYear, 1, 1);
+                                      });
+                                    },
+                                    items: List<DropdownMenuItem<int>>.generate(
+                                        currentYear - initialYear + 1,
+                                        (int index) {
+                                      return DropdownMenuItem<int>(
+                                        value: initialYear + index,
+                                        child: Center(
+                                            child:
+                                                Text('${initialYear + index}')),
+                                      );
+                                    }),
+                                  ),
+                                  DropdownButton<int>(
+                                    value: _selectedMonth,
+                                    onChanged: (int? newValue) {
+                                      setState(() {
+                                        _selectedMonth = newValue!;
+                                        _focusedDay = DateTime(
+                                            _selectedYear, _selectedMonth, 1);
+                                      });
+                                    },
+                                    items: List<DropdownMenuItem<int>>.generate(
+                                        12, (int index) {
+                                      print('_selectedMonth:$index');
+                                      return DropdownMenuItem<int>(
+                                        value: index + 1,
+                                        child: Text(_months[index]),
+                                      );
+                                    }),
+                                  ),
+                                ],
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Cerrar'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      onHeaderLongPressed: (focusedDay) {
+                        // print('_selectedMonth::$focusedDay');
+                      },
                       locale: 'es_ES',
                       calendarFormat: _calendarFormat,
-                      focusedDay: startDate == null ? _focusedDay : startDate!,
-                      firstDay: DateTime(2023, 1, 1),
-                      lastDay: DateTime(2025, 12, 31),
+                      focusedDay: _focusedDay,
+                      onPageChanged: (focusedDay) {
+                        setState(() {
+                          _focusedDay = focusedDay;
+                        });
+                      },
+                      firstDay: DateTime(1900, 1,
+                          1), //fecha de registro en la empresa del barbero
+                      lastDay: DateTime.now(),
                       selectedDayPredicate: (day) {
                         return isSameDay(_selectedDay, day);
                       },
                       rangeStartDay: startDate,
                       rangeEndDay: endDate,
-                      onDaySelected: (selectedDay, focusedDay) {
-                        setState(() {
-                          print('date-* startDate:$startDate');
-                          print('date-* endDate:$endDate');
-
-                          if (startDate == null) {
-                            startDate = selectedDay;
-                          } else if (endDate == null) {
-                            if (selectedDay.isBefore(startDate!)) {
-                              auxDate = startDate;
-                              startDate = selectedDay;
-                              endDate = auxDate;
-                            } else {
-                              endDate = selectedDay;
-                            }
-                          } else {
-                            startDate = selectedDay;
-                            endDate = null;
-                          }
-                          print('date-* ***************');
-                          print('date-* 2 startDate:$startDate');
-                          print('date-* 2 endDate:$endDate');
-                        });
-                      },
                       headerStyle: const HeaderStyle(
                         titleCentered: true,
                         formatButtonVisible: false,
@@ -345,54 +422,46 @@ class _LineChartSample2State extends State<LineChartSample2> {
                           },
                           child: Text('Cancelar'),
                         ),
-                        startDate != null && endDate != null
-                            ? ElevatedButton(
-                                style: const ButtonStyle(
-                                    backgroundColor: MaterialStatePropertyAll(
-                                  Color.fromARGB(255, 0, 0, 0),
-                                )),
-                                onPressed: () async {
-                                  /*  String formattedStartDate = DateFormat('yyyy-MM-dd')
-                                .format(startDate ?? DateTime.now());
-                            String formattedEndDate = DateFormat('yyyy-MM-dd')
-                                .format(endDate ?? DateTime.now());
+                        ElevatedButton(
+                          style: const ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll(
+                            Color.fromARGB(255, 0, 0, 0),
+                          )),
+                          onPressed: () async {
+                            // Obtener el primer día de la semana
+                            DateTime firstDayOfWeek = _focusedDay.subtract(
+                                Duration(
+                                    days:
+                                        _focusedDay.weekday - DateTime.monday));
+                            firstDayOfWeek =
+                                firstDayOfWeek.subtract(Duration(days: 1));
+
+                            // Obtener el último día de la semana
+                            DateTime lastDayOfWeek = _focusedDay.add(Duration(
+                                days: DateTime.daysPerWeek -
+                                    _focusedDay.weekday));
+                            lastDayOfWeek =
+                                lastDayOfWeek.subtract(Duration(days: 1));
+
+                            // Imprimir los resultados para verificar
                             print(
-                                'Fechas seleccionadas: $formattedStartDate - $formattedEndDate');*/
-                                  final formatterDate =
-                                      DateFormat('yyyy-MM-dd');
+                                'rtrt Primer día de la semana: ${firstDayOfWeek}');
+                            print(
+                                'rtrt Último día de la semana: $lastDayOfWeek');
 
-                                  startDate1 = formatterDate.format(startDate!);
-                                  endDate1 = formatterDate.format(endDate!);
-                                  int numberdayWeek = _startDate.weekday;
+                            final formatterDate = DateFormat('yyyy-MM-dd');
 
-                                  Duration diferencia =
-                                      _endDate.difference(_startDate);
-                                  int quantityDates = diferencia.inDays + 1;
+                            startDate1 = formatterDate.format(firstDayOfWeek);
+                            endDate1 = formatterDate.format(lastDayOfWeek);
 
-                                  //EN ESTA DEVUELVE LAS GANANCIAS EN ESE INTERVALO DE FECHAS
-                                  print('intervalo-1 ----:$startDate1');
-                                  print('intervalo-2 ----:$endDate1');
-                                  print(
-                                      'intervalo-quantityDates ----:$quantityDates');
-                                  print(
-                                      'intervalo-numberdayWeek ----:$numberdayWeek');
-                                  await controllerStatistic.getDataStatisticDay(
-                                      startDate1,
-                                      endDate1,
-                                      numberdayWeek,
-                                      quantityDates);
-                                  Navigator.pop(context);
-                                },
-                                child: Text('Seleccionar'),
-                              )
-                            : ElevatedButton(
-                                style: const ButtonStyle(
-                                    backgroundColor: MaterialStatePropertyAll(
-                                  Color.fromARGB(60, 0, 0, 0),
-                                )),
-                                onPressed: () => null,
-                                child: Text('Seleccionar'),
-                              ),
+                            await controllerStatistic.getDataStatisticDay(
+                                startDate1, endDate1, firstDayOfWeek.day, 7);
+                            Navigator.pop(context);
+
+                            // Aquí puedes usar los valores firstDayOfWeek y lastDayOfWeek como desees
+                          },
+                          child: Text('Seleccionar'),
+                        ),
                       ],
                     ),
                   ],

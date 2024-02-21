@@ -67,6 +67,35 @@ class StatisticController extends GetxController {
     }
   }
 
+  Future<void> getDataStatisticMen(mes, year) async {
+    //todo asi mapea bien
+    print('111111 getDataStatisticDay');
+    final LoginController controllerLogin = Get.find<LoginController>();
+    earningByDays.clear();
+    averageEarnings = 0.0;
+    totalEarnings = 0.0;
+
+    try {
+      var responseId = await weeklyStatisticsRepository.getDayStatisticsListMen(
+          controllerLogin.idProfessionalLoggedIn,
+          controllerLogin.branchIdLoggedIn,
+          mes,
+          year);
+      print('respuest getDayStatisticsList----$responseId');
+
+      if (responseId['Monto Generado'] != 0) {
+        statisticsGeneral = responseId;
+        update();
+      } else {
+        statisticsGeneral = {};
+        print('Resultados correctos pero vacio');
+      }
+      update();
+    } catch (e) {
+      print('Error StatisticController en getDataStatistic :$e');
+    }
+  }
+
   Future<void> getDataStatisticRespon(
       startDateIn, endDateIn, numberdayWeekIn, quantityDatesIn, mes) async {
     //todo asi mapea bien

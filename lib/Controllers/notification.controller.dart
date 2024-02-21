@@ -11,6 +11,7 @@ class NotificationController extends GetxController {
   NotificationRepository repository = NotificationRepository();
   int notificationListLength = 0;
   int notificationListNewLength = 0;
+  int notificationListBack = 0;
   List<NotificationModel> notification = []; // Lista de Notificaciones
   List<NotificationModel> notificationListNew = []; // Lista de Notificaciones
   List<NotificationModel> selectNotification = [];
@@ -29,6 +30,11 @@ class NotificationController extends GetxController {
     return notification;
   }
 
+  updateNotificationListBack(int value) {
+    notificationListBack = value;
+    update();
+  }
+
   getSelectNotification(index) {
     (selectNotification.contains(notification[index]))
         ? selectNotification.remove(notification[index])
@@ -40,14 +46,33 @@ class NotificationController extends GetxController {
     print('este es nuevo y estoy llamando a la db a cargar las notificaciones');
     Map<String, dynamic> result =
         await repository.getNotificationList(idBranch, idProfe);
+    if (result.containsKey('Erroor') && result['Erroor'] == true) {
+      print(
+          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor, el error fue en Future<void> fetchNotificationList');
+    } else {
+      notification = result['notificationList'];
+      notificationListLength = notification.length;
 
-    notification = result['notificationList'];
-    notificationListLength = notification.length;
+      notificationListNew = result['notificationListNew'];
+      notificationListNewLength = notificationListNew.length;
+      print(
+          'estoy aqui en getNotificationList-   notificationListLength:$notificationListLength');
+      update();
+    }
+  }
 
-    notificationListNew = result['notificationListNew'];
-    notificationListNewLength = notificationListNew.length;
-    print(
-        'estoy aqui en getNotificationList-   notificationListLength:$notificationListLength');
-    update();
+  Future<void> updateNotifications(idBranch, idProf) async {
+    try {
+      int result = await repository.updateNotifications(idBranch, idProf);
+      if (result == 1) {
+        print('Las notificaciones fueron vistas');
+      } else {
+        print('No modifico las notificaciones como vistas');
+      }
+
+      update();
+    } catch (e) {
+      print('error de notification:$e');
+    }
   }
 }

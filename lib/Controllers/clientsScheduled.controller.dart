@@ -736,141 +736,150 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<void> fetchClientsScheduled(idProfessional, idBranch) async {
-    print('con contador en 8 llamo la funcion2');
-    Map<String, dynamic> resultList =
-        await repository.getClientsScheduledList(idProfessional, idBranch);
-    print(resultList);
-    //verificando , si entra al if es problemas de coneccion
-    if (resultList.containsKey('ConnectionIssues') &&
-        resultList['ConnectionIssues'] == true) {
-      correctConnection = false;
-      print(
-          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
-    } else {
-      correctConnection = true;
-      //aqui estoy guardando la cola del dia de hoy del profesional
-      clientsScheduledList =
-          (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
-      clientsScheduledListLength = clientsScheduledList.length;
-      //
-      //
-      if (closeIesperado == true) //es que cerró inesperadamente
-      {
-        if (resultList.containsKey('attendingClient')) {
-          List<Map>? attendingClientList = resultList['attendingClient'];
-          logicaInesperada(attendingClientList);
+    try {
+      print('con contador en 8 llamo la funcion2');
+      Map<String, dynamic> resultList =
+          await repository.getClientsScheduledList(idProfessional, idBranch);
+      print(resultList);
+      //verificando , si entra al if es problemas de coneccion
+      if (resultList.containsKey('ConnectionIssues') &&
+          resultList['ConnectionIssues'] == true) {
+        correctConnection = false;
+        print(
+            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
+      } else {
+        correctConnection = true;
+        //aqui estoy guardando la cola del dia de hoy del profesional
+        clientsScheduledList =
+            (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
+        clientsScheduledListLength = clientsScheduledList.length;
+        //
+        //
+        if (closeIesperado == true) //es que cerró inesperadamente
+        {
+          if (resultList.containsKey('attendingClient')) {
+            List<Map>? attendingClientList = resultList['attendingClient'];
+            logicaInesperada(attendingClientList);
+          } else {
+            // La clave 'attendingClient' no está presente en el mapa
+            print(
+                '!!!!!!!!!!!!!!!!!!!!La clave "attendingClient" no está presente en el mapa.');
+          }
+        }
+
+        //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+        clientsScheduledNext = resultList['nextClient'];
+        quantityClientAttended = resultList['quantityClientAttended'];
+        if (quantityClientAttended == 0) {
+          clientsAttended = 'nobody';
+        }
+
+        if (clientsScheduledNext != null) {
+          int idCar = clientsScheduledNext!.car_id;
+          await searchForCustomerServices(idCar);
+          await filterShowNext();
+          setValueClock(true);
         } else {
-          // La clave 'attendingClient' no está presente en el mapa
-          print(
-              '!!!!!!!!!!!!!!!!!!!!La clave "attendingClient" no está presente en el mapa.');
+          print('if (clientsScheduledNext != null) ESTOY DANDO null');
+          setValueClock(false);
         }
       }
-
-      //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
-      clientsScheduledNext = resultList['nextClient'];
-      quantityClientAttended = resultList['quantityClientAttended'];
-      if (quantityClientAttended == 0) {
-        clientsAttended = 'nobody';
-      }
-
-      if (clientsScheduledNext != null) {
-        int idCar = clientsScheduledNext!.car_id;
-        await searchForCustomerServices(idCar);
-        await filterShowNext();
-        setValueClock(true);
-      } else {
-        print('if (clientsScheduledNext != null) ESTOY DANDO null');
-        setValueClock(false);
-      }
+      update();
+    } catch (e) {
+      print(
+          'Dio error en Future<void> fetchClientsScheduled que se encuentra en el controlador del Login:$e');
     }
-    update();
   }
 
   Future<void> logicaInesperada(List<Map>? attendingClientList) async {
-    if (attendingClientList != null && attendingClientList.isNotEmpty) {
-      // La lista no es nula y tiene elementos
-      // Hacer algo con la lista...
-      print(
-          '!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo no está vacía.');
-      print('clientes asistiendo : ${attendingClientList.length}');
-      // Usando un bucle for-in
-      for (var map in attendingClientList) {
-        int? id;
-        int? updated;
-        int? clock;
-        int? timeClock;
-        ClientsScheduledModel? client;
+    try {
+      if (attendingClientList != null && attendingClientList.isNotEmpty) {
+        // La lista no es nula y tiene elementos
+        // Hacer algo con la lista...
+        print(
+            '!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo no está vacía.');
+        print('clientes asistiendo : ${attendingClientList.length}');
+        // Usando un bucle for-in
+        for (var map in attendingClientList) {
+          int? id;
+          int? updated;
+          int? clock;
+          int? timeClock;
+          ClientsScheduledModel? client;
 
-        map.forEach((key, value) {
-          // Asignar valores a las variables según la clave
-          switch (key) {
-            case "reservation_id":
-              id = value;
-              break;
-            case "updated_at":
-              updated = value;
-              break;
-            case "clock":
-              clock = value;
-              break;
-            case "timeClock":
-              timeClock = value;
-              break;
-            case "client":
-              client = value;
-              break;
-            default:
-              // Manejar otras claves si es necesario
-              break;
+          map.forEach((key, value) {
+            // Asignar valores a las variables según la clave
+            switch (key) {
+              case "reservation_id":
+                id = value;
+                break;
+              case "updated_at":
+                updated = value;
+                break;
+              case "clock":
+                clock = value;
+                break;
+              case "timeClock":
+                timeClock = value;
+                break;
+              case "client":
+                client = value;
+                break;
+              default:
+                // Manejar otras claves si es necesario
+                break;
+            }
+          });
+
+          // Lógica adicional si es necesario con las variables asignadas
+          if (clock == 1) {
+            // Asignar a variables específicas para clock 1
+            clientsAttended1 = client;
+            timeClientsAttended1 = timeClock;
+            //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
+            //  await set_timeClock(reservation_id,timeClock,detached,clock);
+            // await setTimeClock(client!.reservation_id, 0, 0, 1);//todo comente a ver si ya lo hace bien
+            // ... otras asignaciones para clock 1
+          } else if (clock == 2) {
+            // Asignar a variables específicas para clock 2
+            clientsAttended2 = client;
+            timeClientsAttended2 = timeClock;
+            //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
+            //  await set_timeClock(reservation_id,timeClock,detached,clock);
+            // await setTimeClock(client!.reservation_id, 0, 0, 2);//todo comente a ver si ya lo hace bien
+            // ... otras asignaciones para clock 2
+          } else if (clock == 3) {
+            // Asignar a variables específicas para clock 3
+            clientsAttended3 = client;
+            timeClientsAttended3 = timeClock;
+            //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
+            //  await set_timeClock(reservation_id,timeClock,detached,clock);
+            // await setTimeClock(client!.reservation_id, 0, 0, 3);//todo comente a ver si ya lo hace bien
+
+            // ... otras asignaciones para clock 3
+          } else if (clock == 4) {
+            // Asignar a variables específicas para clock 3
+            clientsAttended4 = client;
+            timeClientsAttended4 = timeClock;
+            //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
+            //  await set_timeClock(reservation_id,timeClock,detached,clock);
+            // await setTimeClock(client!.reservation_id, 0, 0, 4);//todo comente a ver si ya lo hace bien
+
+            // ... otras asignaciones para clock 3
           }
-        });
-
-        // Lógica adicional si es necesario con las variables asignadas
-        if (clock == 1) {
-          // Asignar a variables específicas para clock 1
-          clientsAttended1 = client;
-          timeClientsAttended1 = timeClock;
-          //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
-          //  await set_timeClock(reservation_id,timeClock,detached,clock);
-          // await setTimeClock(client!.reservation_id, 0, 0, 1);//todo comente a ver si ya lo hace bien
-          // ... otras asignaciones para clock 1
-        } else if (clock == 2) {
-          // Asignar a variables específicas para clock 2
-          clientsAttended2 = client;
-          timeClientsAttended2 = timeClock;
-          //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
-          //  await set_timeClock(reservation_id,timeClock,detached,clock);
-          // await setTimeClock(client!.reservation_id, 0, 0, 2);//todo comente a ver si ya lo hace bien
-          // ... otras asignaciones para clock 2
-        } else if (clock == 3) {
-          // Asignar a variables específicas para clock 3
-          clientsAttended3 = client;
-          timeClientsAttended3 = timeClock;
-          //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
-          //  await set_timeClock(reservation_id,timeClock,detached,clock);
-          // await setTimeClock(client!.reservation_id, 0, 0, 3);//todo comente a ver si ya lo hace bien
-
-          // ... otras asignaciones para clock 3
-        } else if (clock == 4) {
-          // Asignar a variables específicas para clock 3
-          clientsAttended4 = client;
-          timeClientsAttended4 = timeClock;
-          //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
-          //  await set_timeClock(reservation_id,timeClock,detached,clock);
-          // await setTimeClock(client!.reservation_id, 0, 0, 4);//todo comente a ver si ya lo hace bien
-
-          // ... otras asignaciones para clock 3
-        }
-        // Puedes agregar más condiciones según sea necesario para otros valores de clock
-      } //cierre for (var map in attendingClientList)
-      //VERIFICO QUE RELOJ ESTA OCUPADO Y VEO SI HAY DISPONIBILIDAD
-      filterShowCardTimer();
-      update();
-      //
-    } else {
-      // La lista es nula o está vacía
-      print(
-          '!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo es nula o está vacía.');
+          // Puedes agregar más condiciones según sea necesario para otros valores de clock
+        } //cierre for (var map in attendingClientList)
+        //VERIFICO QUE RELOJ ESTA OCUPADO Y VEO SI HAY DISPONIBILIDAD
+        filterShowCardTimer();
+        update();
+        //
+      } else {
+        // La lista es nula o está vacía
+        print(
+            '!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo es nula o está vacía.');
+      }
+    } catch (e) {
+      print('ERROR en Future<void> logicaInesperada:$e');
     }
   }
 
