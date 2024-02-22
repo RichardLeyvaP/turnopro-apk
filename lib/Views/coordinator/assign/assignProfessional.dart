@@ -20,6 +20,8 @@ class _AssignProfessionalState extends State<AssignProfessional> {
   final double valuePadding = 12;
   final PagesConfigController pagesConfigCont =
       Get.find<PagesConfigController>();
+  final ClientsCoordinatorController clientCord =
+      Get.find<ClientsCoordinatorController>();
   int cantVisitas = 3;
   String imageDirection = '${Env.apiEndpoint}/images/professional/ejemplo1.jpg';
   List<String> direcc = [
@@ -258,19 +260,45 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                         // Añadir más propiedades de estilo aquí
                       ),
                       onPressed: () async {
-                        Get.snackbar(
-                          'Mensaje',
-                          'Aquí llamar a la DB y asignar a cliente',
-                          duration: const Duration(milliseconds: 2500),
-                          backgroundColor:
-                              const Color.fromARGB(118, 255, 255, 255),
-                          showProgressIndicator: true,
-                          progressIndicatorBackgroundColor:
-                              const Color.fromARGB(255, 203, 205, 209),
-                          progressIndicatorValueColor:
-                              const AlwaysStoppedAnimation(Color(0xFFF18254)),
-                          overlayBlur: 3,
-                        );
+                        //(reservationId, clientId, professionalId)
+                        int clientIdCORD = clientCord.clientIdCORD;
+                        int reservationId = clientCord.idReservCORD;
+                        bool result = await clientCord.reasignedClient(
+                            reservationId,
+                            clientIdCORD,
+                            3); //todo profesional esta fijo
+                        if (result == true) {
+                          Get.snackbar(
+                            'Mensaje',
+                            'Cliente reasignado correctamente',
+                            duration: const Duration(milliseconds: 2500),
+                            backgroundColor:
+                                const Color.fromARGB(118, 255, 255, 255),
+                            showProgressIndicator: true,
+                            progressIndicatorBackgroundColor:
+                                const Color.fromARGB(255, 203, 205, 209),
+                            progressIndicatorValueColor:
+                                const AlwaysStoppedAnimation(Color(0xFFF18254)),
+                            overlayBlur: 3,
+                          );
+                        } else {
+                          {
+                            Get.snackbar(
+                              'Error',
+                              'Cliente no pudo ser reasignado,Inténtelo nuevamnete.',
+                              duration: const Duration(milliseconds: 2500),
+                              backgroundColor:
+                                  Color.fromARGB(118, 216, 150, 150),
+                              showProgressIndicator: true,
+                              progressIndicatorBackgroundColor:
+                                  const Color.fromARGB(255, 203, 205, 209),
+                              progressIndicatorValueColor:
+                                  const AlwaysStoppedAnimation(
+                                      Color(0xFFF18254)),
+                              overlayBlur: 3,
+                            );
+                          }
+                        }
                       },
                       child: const Text(
                         'ASIGNAR',

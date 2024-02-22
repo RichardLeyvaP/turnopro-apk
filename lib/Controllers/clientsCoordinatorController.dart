@@ -100,6 +100,8 @@ class ClientsCoordinatorController extends GetxController {
   int cantVisitCORD = 0;
   String endLookCORD = '';
   String frecuenciaCORD = '';
+  int clientIdCORD = -99;
+  int idReservCORD = -99;
 
   List<ProductModel> productCORD = [];
   List<ServiceModel> serviceCORD = [];
@@ -146,6 +148,29 @@ class ClientsCoordinatorController extends GetxController {
       //
     }
     update();
+  } //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
+
+  Future<bool> reasignedClient(reservationId, clientId, professionalId) async {
+    Map<String, dynamic> resultList = await repository.reasignedClient(
+        reservationId, clientId, professionalId);
+    print(resultList);
+    //verificando , si entra al if es problemas de coneccion
+    if (resultList.containsKey('ConnectionIssues') &&
+        resultList['ConnectionIssues'] == true) {
+      correctConnection = false;
+      update();
+      print(
+          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
+      return false;
+    } else if (resultList['result'] == true) {
+      correctConnection = true;
+      update();
+      print('Cliente reasignado correctamente');
+      return true;
+      //
+    } else {
+      return false;
+    }
   } //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
 
   //ESTA VARIABLE HAY QUE LLENARLA DIRECTAMENTE DE LA DB
@@ -773,7 +798,7 @@ class ClientsCoordinatorController extends GetxController {
   }
 
 //todo este es el que estoy haciendo
-  Future<void> getClientHistory(idClient, idBranch) async {
+  Future<void> getClientHistory(idClient, idBranch, idReserv) async {
     print('estoy en :Controller getClientHistory(idClient, idBranch)');
     Map<String, dynamic> resultList =
         await repository.getClientHistory(idClient, idBranch);
@@ -795,6 +820,8 @@ class ClientsCoordinatorController extends GetxController {
       frecuenciaCORD = resultList['frecuencia'];
       productCORD = resultList['products'];
       serviceCORD = resultList['services'];
+      clientIdCORD = idClient;
+      idReservCORD = idReserv;
 
       print(clientNameCORD);
       print(imageLookCORD);
@@ -804,6 +831,7 @@ class ClientsCoordinatorController extends GetxController {
       print(frecuenciaCORD);
       print(productCORD);
       print(serviceCORD);
+      print(clientIdCORD);
     }
     update();
   }

@@ -65,6 +65,34 @@ class ClientsCoordinatorRepository extends GetConnect {
   //
   //
   //
+  Future reasignedClient(reservationId, clientId, professionalId) async {
+    List<ClientsScheduledModel> clientList = [];
+
+    var url =
+        '${Env.apiEndpoint}/reasigned_client?reservation_id=$reservationId&client_id=$clientId&professional_id=$professionalId';
+
+    final response = await get(url);
+    //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
+    if (response.statusCode == null) {
+      print('response.statusCode:${response.statusCode}');
+      return {
+        "ConnectionIssues": true,
+      };
+    } else if (response.statusCode == 200) {
+      print(
+          'hay coneccion reasignedClient devuelve true,response.statusCode == 200 ');
+      return {
+        "result": true,
+      };
+    }
+
+    return {"clientList": clientList};
+  }
+
+  //
+  //
+  //
+  //
   Future getClientsScheduledListBranch(idBranch) async {
     List<ClientsScheduledModel> clientList = [];
 
@@ -159,7 +187,7 @@ class ClientsCoordinatorRepository extends GetConnect {
         "endLook": endLook,
         "frecuencia": frecuencia,
         "services": serviceCustomer,
-        "products": productCustomer,
+        "products": productCustomer
       };
     } catch (e) {
       print('Error: $e');
@@ -399,6 +427,8 @@ class ClientsCoordinatorRepository extends GetConnect {
           'Future<int> returnClientStatus(reservationId) async {:$statusClient');
       return statusClient;
     } else {
+      print(
+          'Future<int> returnClientStatus(reservationId) async {:${response.statusCode}');
       return -99;
     }
   }

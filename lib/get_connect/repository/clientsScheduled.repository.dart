@@ -312,6 +312,8 @@ class ClientsScheduledRepository extends GetConnect {
           'Future<int> returnClientStatus(reservationId) async {:$statusClient');
       return statusClient;
     } else {
+      print(
+          'Future<int> returnClientStatus(reservationId) async {:${response.statusCode}');
       return -99;
     }
   }

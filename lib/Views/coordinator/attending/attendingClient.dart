@@ -299,11 +299,14 @@ class _AttendingClientState extends State<AttendingClient> {
                                     int idClient = controllerclient
                                         .clientsScheduledListBranch[index]
                                         .client_id;
+                                    int idReserv = controllerclient
+                                        .clientsScheduledListBranch[index]
+                                        .reservation_id;
                                     int idBranch =
                                         loginController.branchIdLoggedIn!;
                                     // aqui llamar a la db y pedir todos los datos del cliente
                                     await controllerclient.getClientHistory(
-                                        idClient, idBranch);
+                                        idClient, idBranch, idReserv);
                                     //pagesConfigC.updateSelectedIndex();
                                     await pagesConfigC.showAppBar(false);
                                     pageController2.nextPage(

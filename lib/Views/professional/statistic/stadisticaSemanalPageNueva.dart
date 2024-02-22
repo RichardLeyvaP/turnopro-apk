@@ -320,6 +320,63 @@ class _StadisticaSemanalPageNuevaState
                               content: Row(
                                 children: [
                                   DropdownButton<int>(
+                                    value: _selectedMonth,
+                                    onChanged: (int? newValue) {
+                                      setState(() {
+                                        _selectedMonth = newValue!;
+                                        var yearAct = DateTime.now().year;
+                                        var monthAct = DateTime.now().month;
+                                        print('rtrt yearAct:$yearAct');
+                                        print('rtrt monthAct:$monthAct');
+                                        print(
+                                            'rtrt _selectedMonth:$_selectedMonth');
+                                        if (_selectedYear >= yearAct) {
+                                          if (_selectedMonth > monthAct) {
+                                            showDialog(
+                                              context:
+                                                  context, // Necesitas pasar el contexto actual
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text('Mensaje'),
+                                                  content: Text(
+                                                      'La fecha seleccionada no puede ser mayor que la fecha actual.'),
+                                                  actions: <Widget>[
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop(); // Cierra el AlertDialog
+                                                      },
+                                                      child: Text('Aceptar'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          } else {
+                                            _focusedDay = DateTime(
+                                                _selectedYear,
+                                                _selectedMonth,
+                                                1);
+                                          }
+                                        } else {
+                                          _focusedDay = DateTime(
+                                              _selectedYear, _selectedMonth, 1);
+                                        }
+                                      });
+                                    },
+                                    items: List<DropdownMenuItem<int>>.generate(
+                                        12, (int index) {
+                                      print('_selectedMonth:$index');
+                                      return DropdownMenuItem<int>(
+                                        value: index + 1,
+                                        child: Text(_months[index]),
+                                      );
+                                    }),
+                                  ),
+                                  SizedBox(
+                                    width: 25,
+                                  ),
+                                  DropdownButton<int>(
                                     value: _selectedYear,
                                     onChanged: (int? newValue) {
                                       setState(() {
@@ -336,24 +393,6 @@ class _StadisticaSemanalPageNuevaState
                                         child: Center(
                                             child:
                                                 Text('${initialYear + index}')),
-                                      );
-                                    }),
-                                  ),
-                                  DropdownButton<int>(
-                                    value: _selectedMonth,
-                                    onChanged: (int? newValue) {
-                                      setState(() {
-                                        _selectedMonth = newValue!;
-                                        _focusedDay = DateTime(
-                                            _selectedYear, _selectedMonth, 1);
-                                      });
-                                    },
-                                    items: List<DropdownMenuItem<int>>.generate(
-                                        12, (int index) {
-                                      print('_selectedMonth:$index');
-                                      return DropdownMenuItem<int>(
-                                        value: index + 1,
-                                        child: Text(_months[index]),
                                       );
                                     }),
                                   ),
