@@ -119,6 +119,38 @@ class ClientsCoordinatorRepository extends GetConnect {
     }
 
     return {"clientList": clientList};
+  } //
+
+  //
+  //
+  //
+  Future clientsAttendBranch(idBranch) async {
+    //clientes que se estan atendiendo de una branch
+    List<ClientsScheduledModel> clientList = [];
+
+    var url = '${Env.apiEndpoint}/tail_branch_attended?branch_id=$idBranch';
+
+    final response = await get(url);
+    //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
+    if (response.statusCode == null) {
+      print('response.statusCode:${response.statusCode}');
+      return {
+        "ConnectionIssues": true,
+      };
+    } else
+      print('hay coneccion getClientsScheduledListBranch');
+    if (response.statusCode == 200) {
+      print('ya tengo la cola de la api getClientsScheduledListBranch');
+      final customers = response.body['tail'];
+      for (Map service in customers) {
+        ClientsScheduledModel client =
+            ClientsScheduledModel.fromJson(jsonEncode(service));
+        clientList.add(client);
+        //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
+      }
+    }
+
+    return {"clientAttendList": clientList};
   }
 
   //

@@ -19,6 +19,7 @@ class ClientsCoordinatorController extends GetxController {
   List<ClientsScheduledModel> clientsScheduledListTechnical =
       []; // Lista de clientes
   List<ClientsScheduledModel> clientsScheduledListBranch = [];
+  List<ClientsScheduledModel> clientAttendBranch = [];
   List<ClientsScheduledModel> selectClientsScheduledList = [];
   List<ClientsScheduledModel> selectclientsScheduledListTechnical = [];
   ClientsScheduledModel? clientsScheduledNext; // Cliente en espera
@@ -59,6 +60,7 @@ class ClientsCoordinatorController extends GetxController {
 
   int clientsScheduledListLength = 0;
   int clientsScheduledListBranchLength = 0;
+  int clientAttendBranchLength = 0;
   int clientsTechnicalLength = 0;
   int? carIdClientsScheduled;
   int quantityClientAttended = 0;
@@ -145,6 +147,29 @@ class ClientsCoordinatorController extends GetxController {
       clientsScheduledListBranchLength = clientsScheduledListBranch.length;
       print(
           '-******-*********-*-****-* $clientsScheduledListBranchLength -****-************-* ');
+      //
+    }
+    update();
+  } //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
+
+  Future<void> clientsAttendBranch(idBranch) async {
+    Map<String, dynamic> resultList =
+        await repository.clientsAttendBranch(idBranch);
+    print(resultList);
+    //verificando , si entra al if es problemas de coneccion
+    if (resultList.containsKey('ConnectionIssues') &&
+        resultList['ConnectionIssues'] == true) {
+      correctConnection = false;
+      print(
+          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor(clientsAttendBranch)');
+    } else {
+      correctConnection = true;
+      //aqui estoy guardando la cola del dia de hoy del profesional
+      clientAttendBranch =
+          (resultList['clientAttendList'] ?? []).cast<ClientsScheduledModel>();
+      clientAttendBranchLength = clientAttendBranch.length;
+      print(
+          '-******-clientAttendBranchLength-****-* $clientsScheduledListBranchLength -****-************-* ');
       //
     }
     update();

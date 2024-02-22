@@ -3,17 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
-import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
-import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/env.dart';
-
-import '../profile/profileClient.dart';
 
 class HomeCoordinatorBody extends StatefulWidget {
   const HomeCoordinatorBody({super.key});
@@ -177,6 +172,9 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                     GestureDetector(
                                       onTap: () async {
                                         await pagesConfigC.showAppBar(false);
+                                        await clientsScheduledController
+                                            .clientsAttendBranch(loginController
+                                                .branchIdLoggedIn);
                                         pagesConfigC.goToPage(
                                             4, pagesConfigC.pageController2);
                                       },
