@@ -1,6 +1,8 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:soundpool/soundpool.dart';
 import 'package:turnopro_apk/Models/notification_model.dart';
 import 'package:turnopro_apk/get_connect/repository/notification.repository.dart';
 
@@ -28,6 +30,19 @@ class NotificationController extends GetxController {
 
   getList() {
     return notification;
+  }
+
+  Future<void> reproducirSound() async {
+    Soundpool pool = Soundpool(streamType: StreamType.notification);
+    print('reproduciendo el sonido-1');
+    int soundId = await rootBundle
+        .load("assets/sound/livechat-129007.mp3")
+        .then((ByteData soundData) {
+      print('reproduciendo el sonido-3');
+      return pool.load(soundData);
+    });
+    int streamId = await pool.play(soundId);
+    print('reproduciendo el sonido-2');
   }
 
   updateNotificationListBack(int value) {
@@ -69,8 +84,6 @@ class NotificationController extends GetxController {
       } else {
         print('No modifico las notificaciones como vistas');
       }
-
-      update();
     } catch (e) {
       print('error de notification:$e');
     }

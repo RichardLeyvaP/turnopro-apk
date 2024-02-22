@@ -33,6 +33,11 @@ class ShoppingCartController extends GetxController {
   bool isLoading = true;
   int? carIdClienteSelect;
 
+  void setLoading(value) {
+    isLoading = value;
+    update();
+  }
+
   Future<void> loadCart() async {
     print('estoy cargando el carro de id car :$carIdClienteSelect');
 
@@ -131,10 +136,6 @@ class ShoppingCartController extends GetxController {
       loadCart();
       //******************************************************************************** */
       internetError = 0;
-      Future.delayed(const Duration(seconds: 2), () {
-        isLoading = false;
-        update();
-      });
     } catch (e) {
       internetError = -99;
       update();

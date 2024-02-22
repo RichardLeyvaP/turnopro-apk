@@ -777,15 +777,15 @@ class ClientsCoordinatorController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    Future.delayed(const Duration(seconds: 2), () {
-      isLoading = false;
-
-      update();
-    });
   }
 
   getList() {
     return clientsScheduledList;
+  }
+
+  void setLoading(value) {
+    isLoading = value;
+    update();
   }
 
   getselectCustomer(index, idCar) async {

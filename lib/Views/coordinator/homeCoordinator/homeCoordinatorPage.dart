@@ -125,7 +125,28 @@ class _HomeCoordinatorPagesState extends State<HomeCoordinatorPages>
                             label: 'Agenda'),
                         BottomNavigationBarItem(
                             icon: Badge(
-                              label: Text('0'),
+                              label: GetBuilder<NotificationController>(
+                                  builder: (_notiCont) {
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  // Se ejecutará después de que se haya construido el widget
+                                  //define que tipo de saludo dar dependiendo de la hora
+                                  if (_notiCont.notificationListNewLength !=
+                                      _notiCont.notificationListBack) {
+                                    _notiCont.updateNotificationListBack(
+                                        _notiCont.notificationListNewLength);
+                                  }
+                                });
+
+                                if (_notiCont.notificationListNewLength !=
+                                        _notiCont.notificationListBack &&
+                                    _notiCont.notificationListNewLength != 0) {
+                                  _notiCont.reproducirSound();
+                                }
+                                return Text(
+                                    (_notiCont.notificationListNewLength)
+                                        .toString());
+                              }),
                               child: Icon(
                                 Icons.notifications,
                                 size: MediaQuery.of(context).size.width * 0.08,

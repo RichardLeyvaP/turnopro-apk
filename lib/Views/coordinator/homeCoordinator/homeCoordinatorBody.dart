@@ -7,6 +7,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/env.dart';
 
@@ -28,32 +29,49 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
 
   final CoexistenceController coexistenceController =
       Get.put(CoexistenceController());
+  NotificationController notiController = Get.find<NotificationController>();
 
   @override
   void initState() {
     super.initState();
-    iniciarLlamadaCada10Segundos();
+    if (loginController.idProfessionalLoggedIn != null &&
+        loginController.branchIdLoggedIn != null) {
+      iniciarLlamadaCada10Segundos();
+    }
   }
 
   Timer? _timer;
   iniciarLlamadaCada10Segundos() {
     // Cancela cualquier temporizador existente para evitar duplicaciones
     _timer?.cancel();
-    int cont = 2;
+    int cont = -1;
     // Establece un temporizador que llama a la función cada 20 segundos
-    _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) async {
+    _timer = Timer.periodic(const Duration(seconds: 2), (Timer timer) async {
       print('hola entrando en 10 min;;');
       if (loginController.branchIdLoggedIn != null &&
           loginController.chargeUserLoggedIn == "Cordinador") {
-        print('.........estoy entrando cada : $cont segundos........');
+        cont += 1;
+        if (cont == 0) {
+          print('Aqui entro solo la primera vez (cont == 0)');
+          notiController.fetchNotificationList(loginController.branchIdLoggedIn,
+              loginController.idProfessionalLoggedIn);
 
-        // actualizo la cola
+          await clientsScheduledController
+              .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
+          clientsScheduledController.setLoading(false);
+        }
+        if (cont == 4) {
+          // actualizo la cola
+          notiController.fetchNotificationList(loginController.branchIdLoggedIn,
+              loginController.idProfessionalLoggedIn);
+          print('con contador en 8 llamo la funcion');
+          await clientsScheduledController
+              .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
+          clientsScheduledController.setLoading(false);
 
-        print('con contador en 8 llamo la funcion');
-        clientsScheduledController
-            .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
-
-        //fin del for
+          //fin del for
+          cont = 0;
+        }
       }
     });
   }
@@ -101,8 +119,23 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                         color: Color.fromARGB(255, 26, 50, 82),
                       ),
-                      child:
-                          controllerclient.clientsScheduledListBranchLength > 0
+                      child: controllerclient.isLoading
+                          ? const Center(
+                              child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircularProgressIndicator(
+                                  color: Color.fromARGB(255, 241, 130, 84),
+                                ),
+                                Text(
+                                  'Cargando lista de clientes...',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 12),
+                                )
+                              ],
+                            ))
+                          : controllerclient.clientsScheduledListBranchLength >
+                                  0
                               ? Padding(
                                   padding: const EdgeInsets.only(
                                       top: 12, left: 12, right: 12, bottom: 12),

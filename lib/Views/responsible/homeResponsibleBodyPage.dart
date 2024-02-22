@@ -8,7 +8,7 @@ import 'package:animate_do/animate_do.dart';
 //import 'package:lottie/lottie.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
+import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 
@@ -20,22 +20,20 @@ class HomeResponsibleBodyPages extends StatefulWidget {
       _HomeResponsibleBodyPagesState();
 }
 
-class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages> {
+class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   final ShoppingCartController controllerShoppingCart =
       Get.find<ShoppingCartController>();
   final LoginController controllerLogin = Get.find<LoginController>();
 
   final PagesConfigResponController pagesConfigReC =
       Get.find<PagesConfigResponController>();
-
+  NotificationController notiController = Get.find<NotificationController>();
+  @override
+  bool get wantKeepAlive => true;
   @override
   void initState() {
     super.initState();
-    if (controllerLogin.branchIdLoggedIn != null) {
-      controllerShoppingCart
-          .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
-      iniciarLlamadaCada10Segundos();
-    }
   }
 
   @override
@@ -50,18 +48,42 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages> {
   void iniciarLlamadaCada10Segundos() {
     // Cancela cualquier temporizador existente para evitar duplicaciones
     _timer?.cancel();
-
+    int cont = -1;
     // Establece un temporizador que llama a la función cada 20 segundos
-    _timer = Timer.periodic(const Duration(seconds: 20), (Timer timer) {
-      if (controllerLogin.branchIdLoggedIn != null) {
-        controllerShoppingCart
-            .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
+    _timer = Timer.periodic(const Duration(seconds: 2), (Timer timer) async {
+      cont += 1;
+      print('Aqui entro solo la primera vez 111');
+      if (cont == 0) {
+        print('Aqui entro solo la primera vez (cont == 0)');
+
+        if (controllerLogin.branchIdLoggedIn != null &&
+            controllerLogin.idProfessionalLoggedIn != null) {
+          notiController.fetchNotificationList(controllerLogin.branchIdLoggedIn,
+              controllerLogin.idProfessionalLoggedIn);
+          await controllerShoppingCart
+              .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
+          controllerShoppingCart.setLoading(false);
+        }
+      }
+      if (cont == 4) {
+        //estoy entrando cada 8 segundos
+        print('Aqui entro solo ACTUALIZAR');
+        if (controllerLogin.branchIdLoggedIn != null &&
+            controllerLogin.idProfessionalLoggedIn != null) {
+          notiController.fetchNotificationList(controllerLogin.branchIdLoggedIn,
+              controllerLogin.idProfessionalLoggedIn);
+          await controllerShoppingCart
+              .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
+          controllerShoppingCart.setLoading(false);
+        }
+        cont = 0;
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    iniciarLlamadaCada10Segundos();
 //ESTRUCTURA DE LOS CARTS
     final twoPi = 3.14 * 2;
 
@@ -102,13 +124,32 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages> {
                           child: FadeIn(
                             duration: const Duration(seconds: 2),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 GetBuilder<ShoppingCartController>(
                                     builder: (contShopp) {
-                                  if (contShopp.load_request == true) {
+                                  if (controllerShoppingCart.isLoading ==
+                                      true) {
                                     return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
+                                        child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          height: 45,
+                                        ),
+                                        CircularProgressIndicator(
+                                          color:
+                                              Color.fromARGB(255, 241, 130, 84),
+                                        ),
+                                        Text(
+                                          'Cargando lista de solicitudes...',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12),
+                                        )
+                                      ],
+                                    ));
                                   } else {
                                     return showRequestsDelete(
                                         context, contShopp, controllerLogin);

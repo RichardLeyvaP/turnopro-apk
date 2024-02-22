@@ -19,6 +19,7 @@ import '../Views/coordinator/services/servicesClient.dart';
 class PagesConfigController extends GetxController {
 //DECLARACION DE VARIABLES
   NotificationController notiController = Get.find<NotificationController>();
+  LoginController logController = Get.find<LoginController>();
   bool isLoading = true;
   bool loadedFirstTime = false;
   int selectedIndex = 0;
@@ -143,7 +144,10 @@ class PagesConfigController extends GetxController {
     if (selectedIndex != index) {
       if (index == 2) {
         print('llamar a notificACIONES-1');
-        await notiController.fetchNotificationList(1, 3); //3 es deyler
+        int idBranch = logController.branchIdLoggedIn!;
+        int idProfess = logController.idProfessionalLoggedIn!;
+        await notiController.fetchNotificationList(
+            idBranch, idProfess); //3 es deyler
         print('llamar a notificACIONES-2 listo');
       }
       selectedIndexBack = selectedIndex;

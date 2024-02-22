@@ -287,14 +287,13 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                               'Error',
                               'Cliente no pudo ser reasignado,Inténtelo nuevamnete.',
                               duration: const Duration(milliseconds: 2500),
-                              backgroundColor:
-                                  Color.fromARGB(118, 216, 150, 150),
+                              backgroundColor: Color.fromARGB(118, 230, 30, 30),
                               showProgressIndicator: true,
                               progressIndicatorBackgroundColor:
                                   const Color.fromARGB(255, 203, 205, 209),
                               progressIndicatorValueColor:
                                   const AlwaysStoppedAnimation(
-                                      Color(0xFFF18254)),
+                                      Color.fromARGB(255, 250, 6, 6)),
                               overlayBlur: 3,
                             );
                           }

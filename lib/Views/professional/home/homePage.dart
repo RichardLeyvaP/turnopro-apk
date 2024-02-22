@@ -10,7 +10,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/env.dart';
-import 'package:soundpool/soundpool.dart';
 
 class HomePages extends StatefulWidget {
   const HomePages({super.key});
@@ -136,7 +135,7 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                                 if (_notiCont.notificationListNewLength !=
                                         _notiCont.notificationListBack &&
                                     _notiCont.notificationListNewLength != 0) {
-                                  _reproducirSound();
+                                  _notiCont.reproducirSound();
                                 }
                                 return Text(
                                     (_notiCont.notificationListNewLength)
@@ -167,19 +166,6 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
         );
       }),
     );
-  }
-
-  Future<void> _reproducirSound() async {
-    Soundpool pool = Soundpool(streamType: StreamType.notification);
-    print('reproduciendo el sonido-1');
-    int soundId = await rootBundle
-        .load("assets/sound/livechat-129007.mp3")
-        .then((ByteData soundData) {
-      print('reproduciendo el sonido-3');
-      return pool.load(soundData);
-    });
-    int streamId = await pool.play(soundId);
-    print('reproduciendo el sonido-2');
   }
 }
 

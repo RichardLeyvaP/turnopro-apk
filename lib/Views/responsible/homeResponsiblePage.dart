@@ -35,33 +35,13 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
     coexistenceController = Get.put<CoexistenceController>(
         CoexistenceController(),
         permanent: true);
-    if (controllerLogin.branchIdLoggedIn != null) {
-      controllerShoppingCart
-          .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
-      iniciarLlamadaCada10Segundos();
-    }
   }
 
   @override
   void dispose() {
     // Asegúrate de cancelar el temporizador al eliminar el widget
-    _timer?.cancel();
+
     super.dispose();
-  }
-
-  Timer? _timer;
-
-  void iniciarLlamadaCada10Segundos() {
-    // Cancela cualquier temporizador existente para evitar duplicaciones
-    _timer?.cancel();
-
-    // Establece un temporizador que llama a la función cada 20 segundos
-    _timer = Timer.periodic(const Duration(seconds: 20), (Timer timer) {
-      if (controllerLogin.branchIdLoggedIn != null) {
-        controllerShoppingCart
-            .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
-      }
-    });
   }
 
   @override
@@ -92,56 +72,79 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                     topLeft: Radius.circular(10),
                     bottomLeft: Radius.circular(10),
                     bottomRight: Radius.circular(10)),
-                child: BottomNavigationBar(
-                    showSelectedLabels: false,
-                    showUnselectedLabels: false,
-                    unselectedItemColor: Colors.white,
-                    backgroundColor: const Color.fromARGB(255, 43, 44, 49),
-                    fixedColor: const Color(0xFFF18254),
-                    currentIndex: pagesConfigRespC.selectedIndexResp,
-                    type: BottomNavigationBarType.fixed,
-                    onTap: (index) => pagesConfigRespC.onTabTapped(index),
-                    items: [
-                      BottomNavigationBarItem(
-                          icon: Badge(
-                            label:
-                                Text('${pagesConfigRespC.selectedIndexResp}'),
-                            child: Icon(
-                              Icons.person,
+                child: GetBuilder<ClientsScheduledController>(
+                    builder: (controClient) {
+                  return BottomNavigationBar(
+                      showSelectedLabels: false,
+                      showUnselectedLabels: false,
+                      unselectedItemColor: Colors.white,
+                      backgroundColor: const Color.fromARGB(255, 43, 44, 49),
+                      fixedColor: const Color(0xFFF18254),
+                      currentIndex: pagesConfigRespC.selectedIndexResp,
+                      type: BottomNavigationBarType.fixed,
+                      onTap: (index) => pagesConfigRespC.onTabTapped(index),
+                      items: [
+                        BottomNavigationBarItem(
+                            icon: Icon(
+                              Icons.home,
                               size: MediaQuery.of(context).size.width * 0.08,
                             ),
-                          ),
-                          label: 'Perfil'),
-                      BottomNavigationBarItem(
-                          icon: Icon(
-                            Icons.storage,
-                            size: MediaQuery.of(context).size.width * 0.08,
-                          ),
-                          label: 'Agenda'),
-                      BottomNavigationBarItem(
-                          icon: Badge(
-                            label:
-                                Text('${pagesConfigRespC.selectedIndexResp}'),
-                            child: Icon(
-                              Icons.notifications,
+                            label: 'Home'),
+                        BottomNavigationBarItem(
+                            icon: Badge(
+                              label: Text(
+                                  '${controClient.clientsScheduledListLength}'),
+                              child: Icon(
+                                Icons.perm_contact_calendar,
+                                size: MediaQuery.of(context).size.width * 0.08,
+                              ),
+                            ),
+                            label: 'Agenda'),
+                        BottomNavigationBarItem(
+                            icon: Badge(
+                              label: GetBuilder<NotificationController>(
+                                  builder: (_notiCont) {
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  // Se ejecutará después de que se haya construido el widget
+                                  //define que tipo de saludo dar dependiendo de la hora
+                                  if (_notiCont.notificationListNewLength !=
+                                      _notiCont.notificationListBack) {
+                                    _notiCont.updateNotificationListBack(
+                                        _notiCont.notificationListNewLength);
+                                  }
+                                });
+
+                                if (_notiCont.notificationListNewLength !=
+                                        _notiCont.notificationListBack &&
+                                    _notiCont.notificationListNewLength != 0) {
+                                  _notiCont.reproducirSound();
+                                }
+                                return Text(
+                                    (_notiCont.notificationListNewLength)
+                                        .toString());
+                              }),
+                              child: Icon(
+                                Icons.notifications,
+                                size: MediaQuery.of(context).size.width * 0.08,
+                              ),
+                            ),
+                            label: 'Notificaciones'),
+                        BottomNavigationBarItem(
+                            icon: Icon(
+                              Icons.bar_chart,
                               size: MediaQuery.of(context).size.width * 0.08,
                             ),
-                          ),
-                          label: 'Notificaciones'),
-                      BottomNavigationBarItem(
+                            label: 'Estadistica'),
+                        BottomNavigationBarItem(
                           icon: Icon(
-                            Icons.bar_chart,
+                            Icons.star,
                             size: MediaQuery.of(context).size.width * 0.08,
                           ),
-                          label: 'Estadistica'),
-                      BottomNavigationBarItem(
-                        icon: Icon(
-                          Icons.insert_emoticon,
-                          size: MediaQuery.of(context).size.width * 0.08,
+                          label: 'Convivencia',
                         ),
-                        label: 'Home',
-                      ),
-                    ])),
+                      ]);
+                })),
           ),
         );
       }),

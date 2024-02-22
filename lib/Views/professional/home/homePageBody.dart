@@ -121,6 +121,10 @@ class _HomePageBodyState extends State<HomePageBody>
         print('.........estoy entrando cada : $cont segundos........');
         cont += 2;
         // actualizo la cola
+        if (cont == 2) {
+          notiController.fetchNotificationList(loginController.branchIdLoggedIn,
+              loginController.idProfessionalLoggedIn);
+        }
         if (cont == 8) {
           notiController.fetchNotificationList(loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn);
