@@ -23,7 +23,11 @@ dependencies:
   qr_code_scanner: ^1.0.1
   material_design_icons_flutter: ^7.0.7296
   fl_chart: ^0.64.0
-  syncfusion_flutter_datepicker: ^23.1.43
+  image_picker: ^1.0.7
+  dio: ^5.4.0
+  device_info_plus: ^9.1.2
+  table_calendar: ^3.0.9
+  soundpool: ^2.3.0
   
   
 flutter_native_splash:  
@@ -83,3 +87,9 @@ flutter:
      - assets/images/icons/serviceRegul.png
      - assets/images/icons/gananciaBar.png
      - assets/images/icons/serviceRea.png
+     - assets/images/icons/product.png
+     - assets/images/icons/productM+Vend.png
+     - assets/images/icons/error-connection.png
+     - assets/images/icons/lavado.png
+     - assets/images/icons/lavado2.png
+     - assets/sound/livechat-129007.mp3

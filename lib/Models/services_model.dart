@@ -16,6 +16,7 @@ class ServiceModel {
   String? nameService;
   int? request_delete;
   int? is_product;
+  int? cant;
 
   ServiceModel({
     required this.id,
@@ -30,6 +31,7 @@ class ServiceModel {
     this.nameService,
     this.request_delete,
     this.is_product,
+    this.cant,
   });
 
   Map<dynamic, dynamic> toMap() {
@@ -46,6 +48,7 @@ class ServiceModel {
       'nameService': nameService,
       'request_delete': request_delete,
       'is_product': is_product,
+      'cant': cant,
     };
   }
 
@@ -63,6 +66,7 @@ class ServiceModel {
       nameService: map['nameService'] ?? '',
       request_delete: map['request_delete'] ?? 0,
       is_product: map['is_product'] ?? 0,
+      cant: map['cant'] ?? 0,
     );
   }
 

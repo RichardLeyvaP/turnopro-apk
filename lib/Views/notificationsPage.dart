@@ -1,16 +1,33 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
-import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:get/get.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
+import 'package:turnopro_apk/Routes/index.dart';
+//import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class NotificationsPageNew extends StatelessWidget {
-  NotificationsPageNew({super.key});
+class NotificationsPageNew extends StatefulWidget {
+  const NotificationsPageNew({super.key});
+
+  @override
+  State<NotificationsPageNew> createState() => _NotificationsPageNewState();
+}
+
+class _NotificationsPageNewState extends State<NotificationsPageNew> {
   final double valuePadding = 12;
-  final LoginController loginController = Get.find<LoginController>();
-  final NotificationController controllerasas =
-      Get.put(NotificationController());
+
+  final PagesConfigResponController pagesConfigCont =
+      Get.find<PagesConfigResponController>();
+  final NotificationController notifCont = Get.find<NotificationController>();
+  final LoginController logCont = Get.find<LoginController>();
+  @override
+  void initState() {
+    super.initState();
+    notifCont.updateNotifications(
+        logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +47,9 @@ class NotificationsPageNew extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.pop(context);
+                pagesConfigCont.back();
+
+                // Navigator.pop(context);
               },
             ),
           ],
@@ -69,6 +88,9 @@ class NotificationsPageNew extends StatelessWidget {
             : _.notificationListLength > 0
                 ? Column(
                     children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
                       Expanded(
                         flex:
                             heightFlexBody, // 85% del espacio disponible para esta parte
@@ -87,8 +109,6 @@ class NotificationsPageNew extends StatelessWidget {
                                   child: FittedBox(
                                     fit: BoxFit.contain,
                                     child: Container(
-                                      //todo
-
                                       decoration: BoxDecoration(
                                           border: Border.all(width: 0.01),
                                           borderRadius: const BorderRadius.all(
@@ -125,11 +145,11 @@ class NotificationsPageNew extends StatelessWidget {
                                               height: (MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  0.130),
+                                                  0.168),
                                               width: (MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.16),
+                                                  0.20),
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(
                                                     255, 241, 130, 84),
@@ -176,11 +196,11 @@ class NotificationsPageNew extends StatelessWidget {
                                                 ? (MediaQuery.of(context)
                                                         .size
                                                         .height *
-                                                    0.130)
+                                                    0.168)
                                                 : (MediaQuery.of(context)
                                                         .size
                                                         .height *
-                                                    0.115),
+                                                    0.12),
                                             width: (MediaQuery.of(context)
                                                     .size
                                                     .width *
@@ -191,6 +211,8 @@ class NotificationsPageNew extends StatelessWidget {
                                                     .contains(_.notifications[index])*/
                                                 ? null
                                                 : BoxDecoration(
+                                                    border:
+                                                        Border.all(width: 0.01),
                                                     color: Colors.white,
                                                     boxShadow: [
                                                       BoxShadow(
@@ -207,150 +229,125 @@ class NotificationsPageNew extends StatelessWidget {
                                                             Radius.circular(
                                                                 borderRadiusValue)),
                                                   ),
-                                            child: ListTile(
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(12)),
-                                              ),
-                                              onTap: () {
-                                                _.getSelectNotification(index);
-                                              },
-                                              title: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  const Text(
-                                                    'Eliminación de Servicio',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w800),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                ListTile(
+                                                  shape:
+                                                      const RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius
+                                                        .all(Radius.circular(
+                                                            borderRadiusValue)),
                                                   ),
-                                                  Text(
-                                                    '8.000',
-                                                    style: TextStyle(
-                                                        fontSize: _
-                                                                .selectNotification
-                                                                .contains(
-                                                                    _.notification[
-                                                                        index])
-                                                            ? (MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                0.03)
-                                                            : (MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                0.022),
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                                  ),
-                                                ],
-                                              ),
-                                              subtitle: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const Text('Masaje capilar'),
-                                                  Column(
+                                                  onTap: () {
+                                                    // _.getSelectNotification(index);
+                                                  },
+                                                  title: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
                                                     children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Icon(
-                                                              Icons
-                                                                  .person_2_outlined,
-                                                              color:
-                                                                  Colors.black,
-                                                              size: (MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .height *
-                                                                  0.016)),
-                                                          Text(
-                                                            'Paula Rego',
-                                                            style: TextStyle(
-                                                                fontSize: (MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height *
-                                                                    0.014),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 2),
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                              _
+                                                                  .notification[
+                                                                      index]
+                                                                  .tittle,
+                                                              style: TextStyle(
+                                                                fontSize: _
+                                                                        .selectNotification
+                                                                        .contains(
+                                                                            _.notification[index])
+                                                                    ? 23
+                                                                    : 16,
                                                                 fontWeight:
                                                                     FontWeight
-                                                                        .w500),
-                                                          ),
-                                                        ],
+                                                                        .w800,
+                                                                height: 1.0,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Icon(Icons.person,
-                                                                  color: Colors
-                                                                      .black,
-                                                                  size: (MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.016)),
-                                                              Text(
-                                                                'Wiliam Miller',
-                                                                style: TextStyle(
-                                                                    fontSize: (MediaQuery.of(context)
-                                                                            .size
-                                                                            .height *
-                                                                        0.014),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                            ],
+                                                      _.notification[index]
+                                                                  .state ==
+                                                              0
+                                                          ? const Icon(
+                                                              Icons
+                                                                  .notifications_active,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      17,
+                                                                      94,
+                                                                      14),
+                                                            )
+                                                          : Text(''),
+                                                    ],
+                                                  ),
+                                                  subtitle: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 2),
+                                                        child: Text(
+                                                          _.notification[index]
+                                                              .description,
+                                                          style: TextStyle(
+                                                            fontSize: _
+                                                                    .selectNotification
+                                                                    .contains(
+                                                                        _.notification[
+                                                                            index])
+                                                                ? 20
+                                                                : 14,
+                                                            color: const Color
+                                                                    .fromARGB(
+                                                                148, 0, 0, 0),
+                                                            height: 1.2,
                                                           ),
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Icon(Icons.timer,
-                                                                  color: Colors
-                                                                      .black,
-                                                                  size: (MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.016)),
-                                                              Text(
-                                                                '15 Minutos',
-                                                                style: TextStyle(
-                                                                    fontSize: (MediaQuery.of(context)
-                                                                            .size
-                                                                            .height *
-                                                                        0.014),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 20),
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.bottomRight,
+                                                    child: Text(
+                                                      _.notification[index]
+                                                          .created_at,
+                                                      style: TextStyle(
+                                                          fontSize: _
+                                                                  .selectNotification
+                                                                  .contains(
+                                                                      _.notification[
+                                                                          index])
+                                                              ? 12
+                                                              : 12,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                           /*todo*/ Visibility(
@@ -361,11 +358,11 @@ class NotificationsPageNew extends StatelessWidget {
                                               height: (MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  0.130),
+                                                  0.168),
                                               width: (MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.16),
+                                                  0.20),
                                               decoration: const BoxDecoration(
                                                   color: Color.fromARGB(
                                                       255, 32, 32, 32),

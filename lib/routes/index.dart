@@ -11,7 +11,7 @@ export 'package:turnopro_apk/Views/common/loginFormPage.dart';
 export 'package:turnopro_apk/Views/common/loginNewPage.dart';
 export 'package:turnopro_apk/Views/common/auth_check.dart';
 export 'package:turnopro_apk/Views/professional/notificationsPage.dart';
-export 'package:turnopro_apk/Views/professional/clientsScheduled/clientsScheduled.dart';
+export 'package:turnopro_apk/Views/professional/clientsScheduled/clientsScheduled(NO%20UTILIZADA).dart';
 //export 'package:turnopro_apk/Views/shoppingCartPage.dart';
 export 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 export 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';

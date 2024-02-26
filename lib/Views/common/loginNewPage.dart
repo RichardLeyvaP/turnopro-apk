@@ -57,7 +57,7 @@ class LoginNewPage extends StatelessWidget {
                       )),
                   child: Padding(
                     padding:
-                        const EdgeInsets.only(top: 60, left: 16, right: 16),
+                        const EdgeInsets.only(top: 40, left: 16, right: 16),
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

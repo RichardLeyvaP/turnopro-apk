@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+//import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class LineChartSample2 extends StatefulWidget {
   const LineChartSample2({super.key});
@@ -45,6 +46,8 @@ class _LineChartSample2State extends State<LineChartSample2> {
             const SizedBox(
               height: 8,
             ),
+            //todo aqui comente el que estaba
+
             Container(
               width: (MediaQuery.of(context).size.width * 0.95),
               height: 40,
@@ -56,17 +59,18 @@ class _LineChartSample2State extends State<LineChartSample2> {
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
                   onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return BuildCalendar(
-                          d: DateTime.now(),
-                          m: DateTime.now(),
-                          a: DateTime.now(),
-                          // totalPrice: controllerShoppingCart.totalPrice,
-                        ); // Muestra el AlertDialog
-                      },
-                    );
+                    _showCalendarModal(context, textContDate);
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (BuildContext context) {
+                    //     return BuildCalendar(
+                    //       d: DateTime.now(),
+                    //       m: DateTime.now(),
+                    //       a: DateTime.now(),
+                    //       // totalPrice: controllerShoppingCart.totalPrice,
+                    //     ); // Muestra el AlertDialog
+                    //   },
+                    // );
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -97,21 +101,37 @@ class _LineChartSample2State extends State<LineChartSample2> {
                 ),
               ),
             ),
+
             const SizedBox(
               height: 10,
             ),
             controllerStat.statisticsGeneral.isEmpty
-                ? const Center(
+                ? Center(
                     child: Column(
                       children: [
-                        Image(
+                        SizedBox(
+                          height: 20,
+                        ),
+                        const Image(
                           image: AssetImage('assets/images/imageGrafic.png'),
+                          width: 40,
                         ),
-                        Text(
-                          'No tiene estadisticas en esta fecha',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700, fontSize: 16),
+                        SizedBox(
+                          height: 10,
                         ),
+                        if (startDate1 != null && endDate1 != null) ...[
+                          Text(
+                            'No tiene estadisticas en ($startDate1 - $endDate1)',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 16),
+                          ),
+                        ] else ...[
+                          Text(
+                            'No tiene estadisticas en $dateAct',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 16),
+                          )
+                        ]
                       ],
                     ),
                   )
@@ -130,6 +150,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
 
                             return Column(
                               children: [
+                                //todo1 estructura de los cart
                                 Container(
                                   height: (MediaQuery.of(context).size.height *
                                       0.09),
@@ -169,7 +190,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
                                           Text(
                                             entry.key,
                                             style: const TextStyle(
-                                              fontSize: 18,
+                                              fontSize: 16,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
@@ -207,125 +228,180 @@ class _LineChartSample2State extends State<LineChartSample2> {
       );
     });
   }
-}
 
-class BuildCalendar extends StatefulWidget {
-  final DateTime d;
-  final DateTime m;
-  final DateTime a;
+  int currentStep = 0;
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _selectedDay = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
+  TextEditingController textContDate = TextEditingController();
+  DateTime?
+      startDate; // Variable para almacenar la fecha de inicio del rango seleccionado
+  var startDate1;
+  var endDate1;
+  DateTime? endDate;
+  DateTime? auxDate;
+  DateTime?
+      _rangeAuxDay; // Variable para almacenar la fecha de fin del rango seleccionado
+  final DateTime _startDate = DateTime.now();
+  final DateTime _endDate = DateTime.now();
 
-  const BuildCalendar(
-      {Key? key, required this.d, required this.m, required this.a})
-      : super(key: key);
-
-  @override
-  State<BuildCalendar> createState() => _BuildCalendarState();
-}
-
-class _BuildCalendarState extends State<BuildCalendar> {
-  final DateRangePickerController _controller = DateRangePickerController();
-  final StatisticController controllerStatistic =
-      Get.find<StatisticController>();
-
-  late DateTime? _startDate;
-  late DateTime? _endDate;
-  int selectDate = 0;
-  DateTime? _minDate;
-  DateTime? _maxDate;
-  final formatterDate = DateFormat('yyyy-MM-dd');
-
-  void getFormatterDate() async {
-    final startDate = formatterDate.format(_startDate!);
-    final endDate = formatterDate.format(_endDate!);
-
-    int numberdayWeek = _startDate!.weekday;
-
-    Duration diferencia = _endDate!.difference(_startDate!);
-    int quantityDates = diferencia.inDays + 1;
-
-    //EN ESTA DEVUELVE LAS GANANCIAS EN ESE INTERVALO DE FECHAS
-    print('intervalo-1 ----:$startDate');
-    print('intervalo-2 ----:$endDate');
-    await controllerStatistic.getDataStatisticDay(startDate, endDate,
-        numberdayWeek, quantityDates); //todo LLAMANDO AL CONTROLADOR DEL DIA
-    // ignore: use_build_context_synchronously
-    Navigator.of(context).pop();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _startDate = DateTime.now();
-    _endDate = null;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final DateTime initialDate = DateTime(2023, 1, 1);
-    return AlertDialog(
-      //title: const Text('Confirmación'),
-      actionsPadding: const EdgeInsets.only(right: 20),
-      actions: [
-        TextButton(
-          style: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(
-            Color.fromARGB(20, 0, 0, 0),
-          )),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Cancelar'),
+  Widget _buildTextFieldCalendar(
+      String labelText, TextEditingController tEcontroller) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        readOnly: true,
+        controller: tEcontroller,
+        decoration: InputDecoration(
+          labelText: labelText,
+          suffixIcon: Icon(Icons.calendar_today),
         ),
-        TextButton(
-          style: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(
-            Color.fromARGB(20, 0, 0, 0),
-          )),
-          onPressed: () {
-            setState(() {
-              selectDate = 0;
-            });
-          },
-          child: const Text('Seleccionar nuevamente'),
-        ),
-      ],
-      content: SizedBox(
-        height: 255, // Ajusta la altura según tu necesidad
-        width: 300,
-        child: AspectRatio(
-          aspectRatio: 1.0,
-          child: SfDateRangePicker(
-            controller: _controller,
-            view: DateRangePickerView.month,
-            initialDisplayDate: initialDate,
-            minDate: selectDate == 0 ? null : _minDate,
-            maxDate: selectDate == 0 ? null : _maxDate,
-            selectionColor: const Color(0xFFF18254),
-            startRangeSelectionColor: const Color(0xFFF18254),
-            endRangeSelectionColor: const Color(0xFFF18254),
-            selectionMode: DateRangePickerSelectionMode.range,
-            showActionButtons: _endDate != null ? true : false,
-            onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-              if (args.value != null && args.value.startDate != null) {
-                setState(() {
-                  selectDate = 1;
-                  if (_startDate != null) {
-                    _minDate = _startDate = args.value.startDate;
-                    _endDate = args.value.endDate;
-                    _maxDate = _startDate!.add(const Duration(days: 6));
-                    selectDate = 1;
-                  }
-                });
-              }
-            },
-            confirmText: 'Aceptar',
-            cancelText: '',
-            onSubmit: (dateRange) {
-              getFormatterDate();
-            },
-          ),
-        ),
+        onTap: () {
+          _showCalendarModal(context, tEcontroller);
+        },
       ),
+    );
+  }
+
+  Future<void> _showCalendarModal(
+      BuildContext context, TextEditingController tController) async {
+    final StatisticController controllerStatistic =
+        Get.find<StatisticController>();
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              height: 435,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    TableCalendar(
+                      locale: 'es_ES',
+                      calendarFormat: _calendarFormat,
+                      focusedDay: startDate == null ? _focusedDay : startDate!,
+                      firstDay: DateTime(2023, 1, 1),
+                      lastDay: DateTime(2025, 12, 31),
+                      selectedDayPredicate: (day) {
+                        return isSameDay(_selectedDay, day);
+                      },
+                      rangeStartDay: startDate,
+                      rangeEndDay: endDate,
+                      onDaySelected: (selectedDay, focusedDay) {
+                        setState(() {
+                          print('date-* startDate:$startDate');
+                          print('date-* endDate:$endDate');
+
+                          if (startDate == null) {
+                            startDate = selectedDay;
+                          } else if (endDate == null) {
+                            if (selectedDay.isBefore(startDate!)) {
+                              auxDate = startDate;
+                              startDate = selectedDay;
+                              endDate = auxDate;
+                            } else {
+                              endDate = selectedDay;
+                            }
+                          } else {
+                            startDate = selectedDay;
+                            endDate = null;
+                          }
+                          print('date-* ***************');
+                          print('date-* 2 startDate:$startDate');
+                          print('date-* 2 endDate:$endDate');
+                        });
+                      },
+                      headerStyle: const HeaderStyle(
+                        titleCentered: true,
+                        formatButtonVisible: false,
+                      ),
+                      daysOfWeekStyle: const DaysOfWeekStyle(
+                        weekdayStyle:
+                            TextStyle(color: Colors.black, fontSize: 12),
+                        weekendStyle:
+                            TextStyle(color: Colors.black, fontSize: 12),
+                      ),
+                      // availableCalendarFormats: const {
+                      //   CalendarFormat.month: 'Mes',
+                      // },
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                          style: const ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll(
+                            Color.fromARGB(255, 0, 0, 0),
+                          )),
+                          onPressed: () {
+                            setState(() {
+                              startDate = null;
+                              endDate = null;
+                              auxDate = null;
+                            });
+                            Navigator.pop(context);
+                          },
+                          child: Text('Cancelar'),
+                        ),
+                        startDate != null && endDate != null
+                            ? ElevatedButton(
+                                style: const ButtonStyle(
+                                    backgroundColor: MaterialStatePropertyAll(
+                                  Color.fromARGB(255, 0, 0, 0),
+                                )),
+                                onPressed: () async {
+                                  /*  String formattedStartDate = DateFormat('yyyy-MM-dd')
+                                .format(startDate ?? DateTime.now());
+                            String formattedEndDate = DateFormat('yyyy-MM-dd')
+                                .format(endDate ?? DateTime.now());
+                            print(
+                                'Fechas seleccionadas: $formattedStartDate - $formattedEndDate');*/
+                                  final formatterDate =
+                                      DateFormat('yyyy-MM-dd');
+
+                                  startDate1 = formatterDate.format(startDate!);
+                                  endDate1 = formatterDate.format(endDate!);
+                                  int numberdayWeek = _startDate.weekday;
+
+                                  Duration diferencia =
+                                      _endDate.difference(_startDate);
+                                  int quantityDates = diferencia.inDays + 1;
+
+                                  //EN ESTA DEVUELVE LAS GANANCIAS EN ESE INTERVALO DE FECHAS
+                                  print('intervalo-1 ----:$startDate1');
+                                  print('intervalo-2 ----:$endDate1');
+                                  print(
+                                      'intervalo-quantityDates ----:$quantityDates');
+                                  print(
+                                      'intervalo-numberdayWeek ----:$numberdayWeek');
+                                  await controllerStatistic.getDataStatisticDay(
+                                      startDate1,
+                                      endDate1,
+                                      numberdayWeek,
+                                      quantityDates);
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Seleccionar'),
+                              )
+                            : ElevatedButton(
+                                style: const ButtonStyle(
+                                    backgroundColor: MaterialStatePropertyAll(
+                                  Color.fromARGB(60, 0, 0, 0),
+                                )),
+                                onPressed: () => null,
+                                child: Text('Seleccionar'),
+                              ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

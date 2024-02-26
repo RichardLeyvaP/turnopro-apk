@@ -13,6 +13,7 @@ class CoexistenceRepository extends GetConnect {
 
   Future<List<CoexistenceModel>> getCoexistenceList(
       idProfessional, idBranch) async {
+    print('actualizando las convivencias iniciales.RLP- getCoexistenceList');
     List<CoexistenceModel> coexistenceList = [];
     try {
       var url =
@@ -54,7 +55,7 @@ class CoexistenceRepository extends GetConnect {
           ProfessionalModel u =
               ProfessionalModel.fromJson(jsonEncode(professional));
           //AQUI SOLO COJO QUE NO SEAN RESPONSABLES
-          if (u.charge_id != 3) {
+          if (u.charge_id != 3 && u.charge_id != 8) {
             //charge_id=3 es un responsable
             professionalList.add(u);
           }

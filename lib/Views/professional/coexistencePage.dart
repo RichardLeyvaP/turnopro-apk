@@ -3,13 +3,23 @@
 import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class CoexistencePage extends StatelessWidget {
+class CoexistencePage extends StatefulWidget {
   const CoexistencePage({super.key});
+
+  @override
+  State<CoexistencePage> createState() => _CoexistencePageState();
+}
+
+class _CoexistencePageState extends State<CoexistencePage> {
+  final PagesConfigController pagesConfigCont =
+      Get.find<PagesConfigController>();
   final double valuePadding = 12;
+
   final String imageDirection = 'assets/images/image_perfil.jpg';
 
   @override
@@ -29,7 +39,8 @@ class CoexistencePage extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.pop(context);
+                pagesConfigCont.back();
+                // Navigator.pop(context);
               },
             ),
           ],

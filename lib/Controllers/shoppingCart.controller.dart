@@ -33,6 +33,11 @@ class ShoppingCartController extends GetxController {
   bool isLoading = true;
   int? carIdClienteSelect;
 
+  void setLoading(value) {
+    isLoading = value;
+    update();
+  }
+
   Future<void> loadCart() async {
     print('estoy cargando el carro de id car :$carIdClienteSelect');
 
@@ -64,43 +69,53 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  Future<void> loadOrderDeleteCar(int id_car) async {
-    print('estoy aqui en load');
+  Future<void> loadOrderDeleteCar(int branchId) async {
+    print('estoy aqui en loadOrderDeleteCar');
     try {
       print('1111111');
       orderDeleteCar =
-          await productRepository.serviceRequestProductDelete(id_car); //todo
+          await productRepository.serviceRequestProductDelete(branchId); //todo
       print(orderDeleteCar);
 
       update();
     } catch (e) {
-      print('DIO ERROR:$e');
+      print('DIO ERROR loadOrderDeleteCar:$e');
     }
   }
 
-  Future<void> requestDelete(int id, int request_delete) async {
+  Future<int> requestDelete(int id, int request_delete) async {
     //todooooooooo
     try {
-      await productRepository.awaitRequestDelete(id, request_delete);
-      requestDeleteOrder.add(id);
-      internetError = 0;
+      int result =
+          await productRepository.awaitRequestDelete(id, request_delete);
+      if (result == 1) {
+        requestDeleteOrder.add(id);
+        internetError = 0;
+      }
       update();
+      return result;
     } catch (e) {
       internetError = -99;
       update();
+      return -99;
     }
   }
 
-  Future<void> orderDelete(id) async {
+  Future<int> orderDelete(id) async {
     try {
-      await productRepository.orderDeleteCar(id); //todo
-      internetError = 0;
-      loadOrderDeleteCar(carIdClienteSelect!);
-      //todo REVISAR aqui mandando el id del carro estatico YAAAA
-      update();
+      int result = await productRepository.orderDeleteCar(id); //todo
+      if (result == 1) {
+        internetError = 0;
+        loadOrderDeleteCar(
+            carIdClienteSelect!); //todo mandar branch_id errorrrr
+        //todo REVISAR aqui mandando el id del carro estatico YAAAA
+        update();
+      }
+      return result;
     } catch (e) {
       internetError = -99;
       update();
+      return -99;
     }
   }
 
@@ -131,10 +146,6 @@ class ShoppingCartController extends GetxController {
       loadCart();
       //******************************************************************************** */
       internetError = 0;
-      Future.delayed(const Duration(seconds: 2), () {
-        isLoading = false;
-        update();
-      });
     } catch (e) {
       internetError = -99;
       update();

@@ -21,16 +21,26 @@ class CoexistenceController extends GetxController {
   bool isLoading = true;
   //LLAMANDO AL CONTROLADOR
   CoexistenceController() {
+    print('estoy inicializando CoexistenceController ');
     final StatisticController controllerStad = Get.find<StatisticController>();
     final LoginController controllerLogin = Get.find<LoginController>();
     if (controllerLogin.chargeUserLoggedIn == "Barbero") {
       print('llamando _fetchCoexistenceList(); porque soy Barbero');
       _fetchCoexistenceList();
     }
+    if (controllerLogin.chargeUserLoggedIn == "Tecnico") {
+      print('llamando _fetchCoexistenceList(); porque soy Tecnico');
+      _fetchCoexistenceList();
+    }
 
     //todo esto solo cargarlo cuando sea un Responsable
     if (controllerLogin.chargeUserLoggedIn == "Encargado") {
       print('llamando fetchBranchProfessionals(); porque soy Encargado');
+      fetchBranchProfessionals();
+    }
+
+    if (controllerLogin.chargeUserLoggedIn == "Cordinador") {
+      print('llamando fetchBranchProfessionals(); porque soy Cordinador');
       fetchBranchProfessionals();
     }
     //esto CARGAR este metodo si es RESPONSABLE
@@ -78,9 +88,13 @@ class CoexistenceController extends GetxController {
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idBranch = controllerLogin.branchIdLoggedIn;
     professional = await repository.getBranchProfessionals(idBranch);
-    print('%%%%%%%%%%%%%%%%% Profesionales por branch %%%%%%%%%%%%%%%%%%%%');
+    print(
+        'actualizando las convivencias iniciales.RLP- getCoexistenceList111111 %%%%%%%%%%%%%%%%% Profesionales por branch %%%%%%%%%%%%%%%%%%%%');
     print(professional.length);
     professionalListLength = professional.length;
+//todo agregue esto nuevo
+    print(
+        'actualizando las convivencias iniciales.RLP- getCoexistenceList222222222 %%%%%%%%%%%%%%%%% Profesionales por branch %%%%%%%%%%%%%%%%%%%%');
     update();
   }
 }

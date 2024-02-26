@@ -2,15 +2,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:turnopro_apk/Components/BottomNavigationBar.dart';
+import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaDiaPageNueva.dart';
+import 'package:turnopro_apk/Views/professional/statistic/stadisticaMensualPageNueva.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaMesPageNueva.dart';
 //import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+//import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaPageNueva.dart';
+import 'package:turnopro_apk/Views/professional/statistic/stadisticaSemanalPageNueva.dart';
 
 class StatisticPage extends StatefulWidget {
   const StatisticPage({super.key});
@@ -23,6 +25,8 @@ class _StatisticPageState extends State<StatisticPage>
     with SingleTickerProviderStateMixin {
   final StatisticController controllerStatistic =
       Get.find<StatisticController>();
+  final PagesConfigController pagesConfigCont =
+      Get.find<PagesConfigController>();
   late TabController _tabController;
 
   @override
@@ -51,17 +55,15 @@ class _StatisticPageState extends State<StatisticPage>
     const backgroundColor = Color.fromARGB(255, 231, 232, 234);
     const pilateColor = Colors.white;
     List<String> description = ['Ganancia Total', 'Promedio Diario'];
-    List<int> cant$ = [255000, 41000];
     // const cyclingColor = Color.fromARGB(255, 68, 135, 211);
     // const quickWorkoutColor = Color(0xFFF18254);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: backgroundColor,
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.all((MediaQuery.of(context).size.height * 0.012)),
-          child: BottomNavigationBarNew(),
-        ),
+        //
+        //
+        //
         appBar: AppBar(
           backgroundColor: const Color(0xFFF18254), // Color de fondo del AppBar
           elevation: 0, // Sombra del AppBar
@@ -77,7 +79,8 @@ class _StatisticPageState extends State<StatisticPage>
               IconButton(
                 icon: const Icon(Icons.arrow_back), // Icono que deseas mostrar
                 onPressed: () {
-                  Get.back();
+                  pagesConfigCont.back();
+                  //Get.back();
                 }, // Evento onPress
               ),
               Column(
@@ -132,85 +135,87 @@ class _StatisticPageState extends State<StatisticPage>
             controller: _tabController,
             children: [
               const LineChartSample2(),
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    BarChartSample6(),
-                    Container(
-                      width: (MediaQuery.of(context).size.width * 0.8),
-                      height: 40,
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
-                        color: Colors.white,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return BuildCalendar(
-                                  d: DateTime.now(),
-                                  m: DateTime.now(),
-                                  a: DateTime.now(),
-                                  // totalPrice: controllerShoppingCart.totalPrice,
-                                ); // Muestra el AlertDialog
-                              },
-                            );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    MdiIcons.calendarBlank,
-                                    color: const Color.fromARGB(130, 0, 0, 0),
-                                  ),
-                                  Text(
-                                    contStat.dateRange == ''
-                                        ? '  seleccione una fecha'
-                                        : contStat.dateRange,
-                                    style: const TextStyle(
-                                        color: Color.fromARGB(130, 0, 0, 0)),
-                                  ),
-                                ],
-                              ),
-                              Icon(
-                                MdiIcons.arrowDownThin,
-                                color: const Color.fromARGB(130, 0, 0, 0),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 135,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            CartOption(
-                                color: pilateColor,
-                                icon: Icon(
-                                  MdiIcons.cash,
-                                ),
-                                totalEarnings:
-                                    controllerStatistic.totalEarnings,
-                                averageEarnings:
-                                    controllerStatistic.averageEarnings,
-                                description: description),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const LineChartSample5(),
+              // SingleChildScrollView(
+              //   child: Column(
+              //     children: [
+              //       BarChartSample6(),
+              //       Container(
+              //         width: (MediaQuery.of(context).size.width * 0.8),
+              //         height: 40,
+              //         decoration: const BoxDecoration(
+              //           borderRadius: BorderRadius.all(Radius.circular(16)),
+              //           color: Colors.white,
+              //         ),
+              //         child: Padding(
+              //           padding: const EdgeInsets.all(8.0),
+              //           child: InkWell(
+              //             onTap: () {
+              //               showDialog(
+              //                 context: context,
+              //                 builder: (BuildContext context) {
+              //                   return BuildCalendar(
+              //                     d: DateTime.now(),
+              //                     m: DateTime.now(),
+              //                     a: DateTime.now(),
+              //                     // totalPrice: controllerShoppingCart.totalPrice,
+              //                   ); // Muestra el AlertDialog
+              //                 },
+              //               );
+              //             },
+              //             child: Row(
+              //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //               children: [
+              //                 Row(
+              //                   children: [
+              //                     Icon(
+              //                       MdiIcons.calendarBlank,
+              //                       color: const Color.fromARGB(130, 0, 0, 0),
+              //                     ),
+              //                     Text(
+              //                       contStat.dateRange == ''
+              //                           ? '  seleccione una fecha'
+              //                           : contStat.dateRange,
+              //                       style: const TextStyle(
+              //                           color: Color.fromARGB(130, 0, 0, 0)),
+              //                     ),
+              //                   ],
+              //                 ),
+              //                 Icon(
+              //                   MdiIcons.arrowDownThin,
+              //                   color: const Color.fromARGB(130, 0, 0, 0),
+              //                 ),
+              //               ],
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //       SizedBox(
+              //         height: 135,
+              //         child: Padding(
+              //           padding: const EdgeInsets.all(8.0),
+              //           child: Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //             children: [
+              //               CartOption(
+              //                   color: pilateColor,
+              //                   icon: Icon(
+              //                     MdiIcons.cash,
+              //                   ),
+              //                   totalEarnings:
+              //                       controllerStatistic.totalEarnings,
+              //                   averageEarnings:
+              //                       controllerStatistic.averageEarnings,
+              //                   description: description),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              StadisticaSemanalPageNueva(),
+              //const LineChartSample5(),
+              StadisticaMensualPageNueva(),
             ],
           );
         }), // Muestra el AlertDialog
@@ -314,7 +319,7 @@ class BuildCalendar extends StatefulWidget {
 }
 
 class _BuildCalendarState extends State<BuildCalendar> {
-  final DateRangePickerController _controller = DateRangePickerController();
+  // final DateRangePickerController _controller = DateRangePickerController();
   final StatisticController controllerStatistic =
       Get.find<StatisticController>();
 
@@ -378,43 +383,8 @@ class _BuildCalendarState extends State<BuildCalendar> {
           child: const Text('Seleccionar nuevamente'),
         ),
       ],
-      content: SizedBox(
-        height: 255, // Ajusta la altura según tu necesidad
-        width: 300,
-        child: AspectRatio(
-          aspectRatio: 1.0,
-          child: SfDateRangePicker(
-            controller: _controller,
-            view: DateRangePickerView.month,
-            initialDisplayDate: initialDate,
-            minDate: selectDate == 0 ? null : _minDate,
-            maxDate: selectDate == 0 ? null : _maxDate,
-            selectionColor: const Color(0xFFF18254),
-            startRangeSelectionColor: const Color(0xFFF18254),
-            endRangeSelectionColor: const Color(0xFFF18254),
-            selectionMode: DateRangePickerSelectionMode.range,
-            showActionButtons: _endDate != null ? true : false,
-            onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-              if (args.value != null && args.value.startDate != null) {
-                setState(() {
-                  selectDate = 1;
-                  if (_startDate != null) {
-                    _minDate = _startDate = args.value.startDate;
-                    _endDate = args.value.endDate;
-                    _maxDate = _startDate!.add(const Duration(days: 6));
-                    selectDate = 1;
-                  }
-                });
-              }
-            },
-            confirmText: 'Aceptar',
-            cancelText: '',
-            onSubmit: (dateRange) {
-              getFormatterDate();
-            },
-          ),
-        ),
-      ),
+      content:
+          Text('comentando todo lo referente a syncfusion_flutter_datepicker'),
     );
   }
 }

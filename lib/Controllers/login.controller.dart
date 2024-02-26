@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/get_connect/repository/user.repository.dart';
@@ -12,8 +13,10 @@ class LoginController extends GetxController {
       isLoading = false;
       update();
     });
+    androidInfo();
   }
 
+  bool maintainClockStatus = false;
   UserRepository usuarioLg = UserRepository();
   //*************************/
   String nameUserLoggedIn = '';
@@ -32,6 +35,21 @@ class LoginController extends GetxController {
   bool incorrectFields = false;
   String greeting = 'Buenos días ';
 
+  //******************* */
+  //propiedades de telefone
+  double? androidInfoDisplay;
+  int? androidInfoVersion;
+
+  void setMaintainClockStatus() {
+    maintainClockStatus = true;
+    update();
+  }
+
+  Future<void> loadingValue(bool value) async {
+    isLoading = value;
+    update();
+  }
+
   void getGreeting() {
     // Obtener la hora actual
     DateTime now = DateTime.now();
@@ -48,6 +66,16 @@ class LoginController extends GetxController {
     } else {
       greeting = 'Buenas noches ';
     }
+    update();
+  }
+
+  androidInfo() async {
+    // Obtener información sobre el dispositivo
+    AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
+    print("Android SDK Version222: ${androidInfo.version.release}");
+    print("Android SDK Version222: ${androidInfo.displayMetrics.sizeInches}");
+    androidInfoDisplay = androidInfo.displayMetrics.sizeInches;
+    androidInfoVersion = int.parse(androidInfo.version.release);
     update();
   }
 
@@ -89,24 +117,40 @@ class LoginController extends GetxController {
         if (tokenUserLoggedIn != '' &&
             nameUserLoggedIn != '' &&
             emailUserLoggedIn != '') {
-          pagina = '/Professional';
           //Define el tipo de saludo
           getGreeting();
 
           if (chargeUserLoggedIn == "Barbero") {
             //aqui cargo la cola del barbero para poder tener en el home al siguiente de la cola inicialmente
             print('estoy aqui al cargar datos del controlador de client');
+            clientsScheduledController.setCloseIesperado(true);
             await clientsScheduledController.fetchClientsScheduled(
                 idProfessionalLoggedIn, branchIdLoggedIn);
             print(' ya no llegue aqui voy a cargar la pagina del profesional');
 
             print('***************SOY BARBERO*************');
             pagina = '/Professional';
+            loadingValue(false);
+            update();
             Get.offAllNamed('/Professional');
           } else if (chargeUserLoggedIn == "Encargado") {
             print('***************SOY ENCARGADO*************');
             pagina = '/HomeResponsible';
+            loadingValue(false);
+            update();
             Get.offAllNamed('/HomeResponsible');
+          } else if (chargeUserLoggedIn == "Tecnico") {
+            print('***************SOY TECNICO CAPILAR*************');
+            pagina = '/HomeTecnico';
+            loadingValue(false);
+            update();
+            Get.offAllNamed('/HomeTecnico');
+          } else if (chargeUserLoggedIn == "Cordinador") {
+            print('***************SOY Cordinador del local*************');
+            pagina = '/HomeCordinador';
+            loadingValue(false);
+            update();
+            Get.offAllNamed('/HomeCordinador');
           }
         }
 
@@ -114,6 +158,7 @@ class LoginController extends GetxController {
       } //cierre if (result != null) {
       else {
         incorrectFields = true;
+        await loadingValue(false);
         update();
         print(' result == null por eso no entro');
       }

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:turnopro_apk/Controllers/notification.controller.dart';
+import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 import 'package:turnopro_apk/Models/professional_model.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
@@ -19,6 +21,9 @@ class CoexistencePageResponsible extends StatefulWidget {
 final ClientsScheduledController controllerClient =
     Get.find<ClientsScheduledController>();
 final LoginController controllerLogin = Get.find<LoginController>();
+final PagesConfigResponController pagesConfigCont =
+    Get.find<PagesConfigResponController>();
+NotificationController notiController = Get.find<NotificationController>();
 
 class _CoexistencePageResponsibleState
     extends State<CoexistencePageResponsible> {
@@ -32,7 +37,8 @@ class _CoexistencePageResponsibleState
             IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.pop(context);
+                pagesConfigCont.back();
+                // Navigator.pop(context);
               },
             ),
           ],
@@ -124,18 +130,21 @@ class _CoexistencePageResponsibleState
                                   builder: (BuildContext context) {
                                     return AlertDialog(
                                       title: Text(
-                                        controll.coexistence[index].name
-                                            .toString(),
-                                      ),
+                                          controll.coexistence[index].name
+                                              .toString(),
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w800,
+                                          )),
                                       content: SizedBox(
-                                        width: 100,
+                                        width: 150,
                                         height: 150,
                                         child: Column(
                                           children: [
                                             // Opción 1
                                             SimpleDialogOption(
-                                              onPressed: () {
-                                                controllerClient
+                                              onPressed: () async {
+                                                bool result = await controllerClient
                                                     .changeNoncomplianceP(
                                                         controll
                                                             .coexistence[index]
@@ -146,6 +155,16 @@ class _CoexistencePageResponsibleState
                                                             .selectedProfessional!
                                                             .id,
                                                         0);
+                                                if (result == true) {
+                                                  notiController.storeNotification(
+                                                      'Incumplimiento de convivencia',
+                                                      controllerLogin
+                                                          .branchIdLoggedIn,
+                                                      controll
+                                                          .selectedProfessional!
+                                                          .id,
+                                                      'Infelizmente no cumpliste la regla : "${controll.coexistence[index].description}"..Esfuerzate más.');
+                                                }
                                                 // Lógica para la opción 1
                                                 Navigator.pop(context,
                                                     'Opción 1 seleccionada');
@@ -156,10 +175,10 @@ class _CoexistencePageResponsibleState
                                                       99, 244, 67, 54),
                                                   borderRadius:
                                                       BorderRadius.all(
-                                                          Radius.circular(20)),
+                                                          Radius.circular(4)),
                                                 ),
                                                 child: const Padding(
-                                                  padding: EdgeInsets.all(8.0),
+                                                  padding: EdgeInsets.all(10.0),
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -168,6 +187,7 @@ class _CoexistencePageResponsibleState
                                                       Text('Incumplió'),
                                                       Icon(
                                                         Icons.star,
+                                                        size: 30,
                                                         color: Colors.red,
                                                       ),
                                                     ],
@@ -177,8 +197,8 @@ class _CoexistencePageResponsibleState
                                             ),
                                             // Opción 2
                                             SimpleDialogOption(
-                                              onPressed: () {
-                                                controllerClient
+                                              onPressed: () async {
+                                                bool result = await controllerClient
                                                     .changeNoncomplianceP(
                                                         controll
                                                             .coexistence[index]
@@ -189,6 +209,18 @@ class _CoexistencePageResponsibleState
                                                             .selectedProfessional!
                                                             .id,
                                                         1);
+                                                if (result == true) {
+                                                  notiController.storeNotification(
+                                                      controll
+                                                          .coexistence[index]
+                                                          .name,
+                                                      controllerLogin
+                                                          .branchIdLoggedIn,
+                                                      controll
+                                                          .selectedProfessional!
+                                                          .id,
+                                                      '!!Felicidadess regla : "${controll.coexistence[index].description}"..Cumlpida!!!');
+                                                }
                                                 // Lógica para la opción 2
                                                 Navigator.pop(
                                                     context, 'Cumplió');
@@ -199,10 +231,10 @@ class _CoexistencePageResponsibleState
                                                       108, 76, 175, 79),
                                                   borderRadius:
                                                       BorderRadius.all(
-                                                          Radius.circular(20)),
+                                                          Radius.circular(4)),
                                                 ),
                                                 child: const Padding(
-                                                  padding: EdgeInsets.all(8.0),
+                                                  padding: EdgeInsets.all(10.0),
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -211,6 +243,7 @@ class _CoexistencePageResponsibleState
                                                       Text('Cumplió'),
                                                       Icon(
                                                         Icons.star,
+                                                        size: 30,
                                                         color: Color.fromARGB(
                                                             255, 10, 116, 13),
                                                       ),
@@ -224,15 +257,34 @@ class _CoexistencePageResponsibleState
                                       ),
                                       // Botón de aceptar
                                       actions: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            // Lógica para el botón de aceptar
-                                            Navigator.pop(context, 'Cerrar');
-                                          },
-                                          child: const Text(
-                                            'Cerrar',
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                        Center(
+                                          child: Container(
+                                            width: 100,
+                                            child: ElevatedButton(
+                                              style: ButtonStyle(
+                                                padding: MaterialStateProperty
+                                                    .all<EdgeInsetsGeometry>(
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 4.0,
+                                                      horizontal: 10.0),
+                                                ),
+                                                backgroundColor:
+                                                    MaterialStateProperty.all<
+                                                        Color>(Colors.black),
+                                              ),
+                                              onPressed: () {
+                                                // Lógica para el botón de aceptar
+                                                Navigator.pop(
+                                                    context, 'Cerrar');
+                                              },
+                                              child: const Center(
+                                                child: Text(
+                                                  'Cerrar',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ],

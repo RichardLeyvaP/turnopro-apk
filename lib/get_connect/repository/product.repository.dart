@@ -59,11 +59,11 @@ class ProductRepository extends GetConnect {
     }
   }
 
-  Future serviceRequestProductDelete(int id_car) async {
+  Future serviceRequestProductDelete(int branchId) async {
     try {
       List<OrderDeleteModel> orderDEL = [];
       var url =
-          '${Env.apiEndpoint}/car_order_delete?id=$id_car'; //AHORA MISMO EL QUE TIENE ES EL ID=6
+          '${Env.apiEndpoint}/car_order_delete_branch?branch_id=$branchId'; //AHORA MISMO EL QUE TIENE ES EL ID=6
       // category_branch?branch_id=10
       final response = await get(url);
       if (response.statusCode == 200) {
