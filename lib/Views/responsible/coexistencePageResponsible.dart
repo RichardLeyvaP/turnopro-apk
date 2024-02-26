@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 import 'package:turnopro_apk/Models/professional_model.dart';
 // ignore: depend_on_referenced_packages
@@ -22,6 +23,7 @@ final ClientsScheduledController controllerClient =
 final LoginController controllerLogin = Get.find<LoginController>();
 final PagesConfigResponController pagesConfigCont =
     Get.find<PagesConfigResponController>();
+NotificationController notiController = Get.find<NotificationController>();
 
 class _CoexistencePageResponsibleState
     extends State<CoexistencePageResponsible> {
@@ -141,8 +143,8 @@ class _CoexistencePageResponsibleState
                                           children: [
                                             // Opción 1
                                             SimpleDialogOption(
-                                              onPressed: () {
-                                                controllerClient
+                                              onPressed: () async {
+                                                bool result = await controllerClient
                                                     .changeNoncomplianceP(
                                                         controll
                                                             .coexistence[index]
@@ -153,6 +155,16 @@ class _CoexistencePageResponsibleState
                                                             .selectedProfessional!
                                                             .id,
                                                         0);
+                                                if (result == true) {
+                                                  notiController.storeNotification(
+                                                      'Incumplimiento de convivencia',
+                                                      controllerLogin
+                                                          .branchIdLoggedIn,
+                                                      controll
+                                                          .selectedProfessional!
+                                                          .id,
+                                                      'Infelizmente no cumpliste la regla : "${controll.coexistence[index].description}"..Esfuerzate más.');
+                                                }
                                                 // Lógica para la opción 1
                                                 Navigator.pop(context,
                                                     'Opción 1 seleccionada');
@@ -185,8 +197,8 @@ class _CoexistencePageResponsibleState
                                             ),
                                             // Opción 2
                                             SimpleDialogOption(
-                                              onPressed: () {
-                                                controllerClient
+                                              onPressed: () async {
+                                                bool result = await controllerClient
                                                     .changeNoncomplianceP(
                                                         controll
                                                             .coexistence[index]
@@ -197,6 +209,18 @@ class _CoexistencePageResponsibleState
                                                             .selectedProfessional!
                                                             .id,
                                                         1);
+                                                if (result == true) {
+                                                  notiController.storeNotification(
+                                                      controll
+                                                          .coexistence[index]
+                                                          .name,
+                                                      controllerLogin
+                                                          .branchIdLoggedIn,
+                                                      controll
+                                                          .selectedProfessional!
+                                                          .id,
+                                                      '!!Felicidadess regla : "${controll.coexistence[index].description}"..Cumlpida!!!');
+                                                }
                                                 // Lógica para la opción 2
                                                 Navigator.pop(
                                                     context, 'Cumplió');

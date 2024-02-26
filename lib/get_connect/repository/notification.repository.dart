@@ -7,6 +7,34 @@ import 'package:turnopro_apk/env.dart';
 //todo REVISAR aqui se esta cargando una API de ejemplo no la de SIMPLIFI
 
 class NotificationRepository extends GetConnect {
+//insertar notificaciones
+  Future<bool> storeNotification(
+      tittle, branchId, professionalId, description) async {
+    var url = '${Env.apiEndpoint}/notification';
+    print('inserto correctamente ********** la notificacio:$tittle');
+    final Map<String, dynamic> body = {
+      'tittle': tittle,
+      'branch_id': branchId,
+      'professional_id': professionalId,
+      'description': description,
+    };
+
+    final response = await post(url, body);
+    print(tittle);
+    print(branchId);
+    print(professionalId);
+    print(description);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      print('inserto correctamente la notificacio:$tittle');
+      return true;
+    } else {
+      print('inserto correctamente ********** ERRORRR');
+      print('ERROR no inserto la notificacio');
+      return false;
+    }
+  }
+
   Future getNotificationList(idBranch, idProf) async {
     try {
       print('estoy aqui en getNotificationList');

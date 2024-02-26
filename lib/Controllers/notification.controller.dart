@@ -32,6 +32,21 @@ class NotificationController extends GetxController {
     return notification;
   }
 
+  Future<bool> storeNotification(
+      //todo1
+      tittle,
+      branchId,
+      professionalId,
+      description) async {
+    //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
+    bool result = await repository.storeNotification(
+        tittle, branchId, professionalId, description);
+    if (result) {
+      print('CORRECTO inserto una nueva notificacion ');
+    }
+    return result;
+  }
+
   Future<void> reproducirSound() async {
     Soundpool pool = Soundpool(streamType: StreamType.notification);
     print('reproduciendo el sonido-1');
@@ -59,20 +74,27 @@ class NotificationController extends GetxController {
 
   Future<void> fetchNotificationList(idBranch, idProfe) async {
     print('este es nuevo y estoy llamando a la db a cargar las notificaciones');
-    Map<String, dynamic> result =
-        await repository.getNotificationList(idBranch, idProfe);
-    if (result.containsKey('Erroor') && result['Erroor'] == true) {
-      print(
-          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor, el error fue en Future<void> fetchNotificationList');
-    } else {
-      notification = result['notificationList'];
-      notificationListLength = notification.length;
+    try {
+      Map<String, dynamic> result =
+          await repository.getNotificationList(idBranch, idProfe);
 
-      notificationListNew = result['notificationListNew'];
-      notificationListNewLength = notificationListNew.length;
-      print(
-          'estoy aqui en getNotificationList-   notificationListLength:$notificationListLength');
-      update();
+      if (result.containsKey('Erroor') && result['Erroor'] == true) {
+        print(
+            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor, el error fue en Future<void> fetchNotificationList');
+      } else if (result.containsKey('notificationList') &&
+          result.containsKey('notificationListNew')) {
+        notification = result['notificationList'];
+        notificationListLength = notification.length;
+
+        notificationListNew = result['notificationListNew'];
+        notificationListNewLength = notificationListNew.length;
+        print(
+            'estoy aqui en getNotificationList-   notificationListLength:$notificationListLength');
+        update();
+      }
+    } catch (e) {
+      // Manejo de errores
+      print('Error al obtener la lista de notificaciones: $e');
     }
   }
 

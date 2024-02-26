@@ -69,6 +69,7 @@ class ClientsScheduledRepository extends GetConnect {
     ClientsScheduledModel? nextClient;
     bool hasNextClient = false;
     int quantityClientAttended = 0;
+    bool varclientswaiting = false;
 
     var url =
         '${Env.apiEndpoint}/cola_branch_professional?professional_id=$idProfessional&branch_id=$idBranch';
@@ -130,6 +131,13 @@ class ClientsScheduledRepository extends GetConnect {
         if (client.attended == 1) {
           quantityClientAttended++;
         }
+        //Saber si no esta atendiendo a nadie
+        if (quantityClientAttended == 0) {
+          //para saber si hay algun cliente en espera
+          if (nextClient != null) {
+            varclientswaiting = true;
+          }
+        }
       }
     }
 
@@ -138,6 +146,8 @@ class ClientsScheduledRepository extends GetConnect {
       "nextClient": nextClient,
       "quantityClientAttended": quantityClientAttended,
       "attendingClient": attendingClientList, //puede ser null
+      "varclientswaiting":
+          varclientswaiting, //este me dice si hay que mandar alguna notificacion recordando que hay cliente esperando en cola por ser atendido
     };
   }
 
@@ -211,17 +221,20 @@ class ClientsScheduledRepository extends GetConnect {
 //
 //
   Future getValueClockDb(id) async {
-    var url = '${Env.apiEndpoint}/get_clock?reservation_id=$id';
+    try {
+      var url = '${Env.apiEndpoint}/get_clock?reservation_id=$id';
 
-    final response = await get(url);
-    if (response.statusCode == 200) {
-      final result = response.body;
-      print('EL RELOJ DEVUELTO ES :$result');
-      return result;
-    } else {
+      final response = await get(url);
+      if (response.statusCode == 200) {
+        final result = response.body;
+        print('EL RELOJ DEVUELTO ES :$result');
+        return result;
+      }
+    } catch (e) {
+      print(e);
       print('NOO DEVOLVIO NINGUN RELOJ  - el codigo no fue 200');
-      print(response.statusCode);
-      return false;
+
+      return -99;
     }
   }
 

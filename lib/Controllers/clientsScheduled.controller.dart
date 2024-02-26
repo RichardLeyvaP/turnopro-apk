@@ -30,6 +30,11 @@ class ClientsScheduledController extends GetxController {
       timeClientsAttended2,
       timeClientsAttended3,
       timeClientsAttended4;
+  //en estas variables de notificationClients es para no repetir las notificaciones de un mismo cliente
+  int? notificationClients1,
+      notificationClients2,
+      notificationClients3,
+      notificationClients4;
 
   int? timeClientsActAttended1,
       timeClientsActAttended2,
@@ -74,6 +79,10 @@ class ClientsScheduledController extends GetxController {
   int filterShowTimer = 0; //si esta en false es que es la primera vez
   int statusClientTemporary = -99;
   String nameClientTemporary = 'Cliente';
+  bool varClientsWaiting = false;
+  int contClientsWaiting = 0;
+  int endingTime =
+      3; //Tiempo restante de un servicio en minutos,ahi se le manda una notificacion
 
   Map<int, int> pausResumeClock = {
     0: -99,
@@ -88,6 +97,41 @@ class ClientsScheduledController extends GetxController {
 
   void setImagePath(value) {
     imagePath = value;
+
+    update();
+  }
+
+  void setNotificationClients1(int value, int idClient) {
+    if (value == 1) {
+      notificationClients1 = idClient;
+    }
+    if (value == 2) {
+      notificationClients2 = idClient;
+    }
+    if (value == 3) {
+      notificationClients3 = idClient;
+    }
+    if (value == 4) {
+      notificationClients4 = idClient;
+    }
+    update();
+  }
+
+  void setContClientsWaiting(int value) {
+    if (value == -90009) //-999 indica que es para igualar 0
+    {
+      contClientsWaiting = 0;
+    } else if (value == -91119) {
+      //esto es sumarle 1;
+      contClientsWaiting += 1;
+    } else {
+      contClientsWaiting = value;
+    }
+    update();
+  }
+
+  void clientsWaiting(value) {
+    varClientsWaiting = value;
     update();
   }
 
@@ -491,6 +535,7 @@ class ClientsScheduledController extends GetxController {
           if (reservationId == clientsAttended1!.reservation_id) {
             //SACO DE MI LISTA A clientsAttended1
             clientsAttended1 = null;
+
             //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended1
             if (item.contains(0)) {
               item.remove(0);
@@ -505,6 +550,7 @@ class ClientsScheduledController extends GetxController {
           if (reservationId == clientsAttended2!.reservation_id) {
             //SACO DE MI LISTA A clientsAttended2
             clientsAttended2 = null;
+            pauseResumeClock(1, 0);
             //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended2
             if (item.contains(1)) {
               item.remove(1);
@@ -519,6 +565,7 @@ class ClientsScheduledController extends GetxController {
           if (reservationId == clientsAttended3!.reservation_id) {
             //SACO DE MI LISTA A clientsAttended3
             clientsAttended3 = null;
+            pauseResumeClock(2, 0);
             //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended3
             if (item.contains(2)) {
               item.remove(2);
@@ -533,6 +580,7 @@ class ClientsScheduledController extends GetxController {
           if (reservationId == clientsAttended4!.reservation_id) {
             //SACO DE MI LISTA A clientsAttended4
             clientsAttended4 = null;
+            pauseResumeClock(3, 0);
             //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended4
             if (item.contains(3)) {
               item.remove(3);
@@ -770,6 +818,7 @@ class ClientsScheduledController extends GetxController {
         //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
         clientsScheduledNext = resultList['nextClient'];
         quantityClientAttended = resultList['quantityClientAttended'];
+        varClientsWaiting = resultList['varclientswaiting'];
         if (quantityClientAttended == 0) {
           clientsAttended = 'nobody';
         }
@@ -967,7 +1016,12 @@ class ClientsScheduledController extends GetxController {
 //
 //
   Future<int> getValueClockDb(int id) async {
+    try {
+      return await repository.getValueClockDb(id);
+    } catch (e) {
+      print(e);
+      return -99;
+    }
     //si return = false es que no se inserto en la Db
-    return await repository.getValueClockDb(id);
   }
 }

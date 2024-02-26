@@ -375,8 +375,27 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                       ),
                       child: IconButton(
                         onPressed: () async {
-                          await contShopp.requestDelete(
+                          //rechazar la eliminacion
+                          int result = await contShopp.requestDelete(
                               contShopp.orderDeleteCar[i].id, 0);
+                          //aqui mandar notificacion
+                          if (result == 1) {
+                            String serviceProduct = 'Servicio';
+                            String? nameServiceProduct =
+                                contShopp.orderDeleteCar[i].nameService;
+                            if (contShopp.orderDeleteCar[i].nameService ==
+                                null) {
+                              serviceProduct = 'Producto';
+                              nameServiceProduct =
+                                  contShopp.orderDeleteCar[i].nameProduct;
+                            }
+
+                            notiController.storeNotification(
+                                'Solicitud de Eliminacion Rechazada',
+                                controllerLogin.branchIdLoggedIn,
+                                contShopp.orderDeleteCar[i].profesional_id,
+                                '!Atención..El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} no fue aprobado para su eliminación.');
+                          }
                           if (controllerLogin.branchIdLoggedIn != null) {
                             await contShopp.loadOrderDeleteCar(
                                 controllerLogin.branchIdLoggedIn!);
@@ -518,8 +537,26 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                               const BorderRadius.all(Radius.circular(12))),
                       child: IconButton(
                         onPressed: () async {
-                          await contShopp
+                          int result = await contShopp
                               .orderDelete(contShopp.orderDeleteCar[i].id);
+                          //aqui mandar notificacion
+                          if (result == 1) {
+                            String serviceProduct = 'Servicio';
+                            String? nameServiceProduct =
+                                contShopp.orderDeleteCar[i].nameService;
+                            if (contShopp.orderDeleteCar[i].nameService ==
+                                null) {
+                              serviceProduct = 'Producto';
+                              nameServiceProduct =
+                                  contShopp.orderDeleteCar[i].nameProduct;
+                            }
+
+                            notiController.storeNotification(
+                                'Aceptada su Solicitud de Eliminacion ',
+                                controllerLogin.branchIdLoggedIn,
+                                contShopp.orderDeleteCar[i].profesional_id,
+                                'El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} aprobado y eliminado satisfactoriamente.');
+                          }
                           if (controllerLogin.branchIdLoggedIn != null) {
                             await contShopp.loadOrderDeleteCar(
                                 controllerLogin.branchIdLoggedIn!);

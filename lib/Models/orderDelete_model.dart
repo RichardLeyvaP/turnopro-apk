@@ -5,6 +5,7 @@ import 'dart:convert';
 //todo REVISAR aqui datos estaticos en el modelo, los valores enteros YAYAAAAA
 class OrderDeleteModel {
   int id;
+  int profesional_id;
   String nameClient;
   String nameProfesional;
   String hora;
@@ -15,6 +16,7 @@ class OrderDeleteModel {
 
   OrderDeleteModel({
     required this.id,
+    required this.profesional_id,
     required this.nameClient,
     required this.nameProfesional,
     required this.hora,
@@ -27,6 +29,7 @@ class OrderDeleteModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'profesional_id': profesional_id,
       'nombreClients': nameClient,
       'surname': nameProfesional,
       'hora': hora,
@@ -40,6 +43,7 @@ class OrderDeleteModel {
   factory OrderDeleteModel.fromMap(Map<String, dynamic> map) {
     return OrderDeleteModel(
       id: map['id'] ?? 0,
+      profesional_id: map['profesional_id'] ?? 0,
       nameClient: map['nameClient'] ?? '',
       nameProfesional: map['nameProfesional'] ?? '',
       hora: map['hora'] ?? '',

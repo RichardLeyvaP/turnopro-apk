@@ -288,7 +288,7 @@ class ModalHelper {
                                           Colors.black),
                                 ),
                                 onPressed: () async {
-                                  //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
+                                  //llamo al controlador y lo paso attended = 4 que significa que va para el tecnico capilar
                                   await controllClient.acceptOrRejectClient(
                                       reservationId, 4);
                                   Navigator.pop(context); // Cierra el modal
