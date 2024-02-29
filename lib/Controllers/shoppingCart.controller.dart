@@ -106,13 +106,14 @@ class ShoppingCartController extends GetxController {
       int result = await productRepository.orderDeleteCar(id); //todo
       if (result == 1) {
         internetError = 0;
-        loadOrderDeleteCar(
-            carIdClienteSelect!); //todo mandar branch_id errorrrr
+        //  loadOrderDeleteCar(carIdClienteSelect!); //todo mandar branch_id errorrrr
         //todo REVISAR aqui mandando el id del carro estatico YAAAA
         update();
       }
+      print('return resul: $result');
       return result;
     } catch (e) {
+      print('return resul: Error desde el controlador $e');
       internetError = -99;
       update();
       return -99;

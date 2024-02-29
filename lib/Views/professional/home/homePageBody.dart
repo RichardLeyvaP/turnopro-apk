@@ -158,7 +158,7 @@ class _HomePageBodyState extends State<HomePageBody>
                       '!Alerta...',
                       branchId,
                       professionalId,
-                      'El tiempo de servicio del cliente $nameClient se esta agotando, solo quedan $endingTime minutos para finalizar.');
+                      'El tiempo de servicio del cliente $nameClient se esta agotando, solo quedan aproximadamente $endingTime minutos para finalizar.');
                   //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
                   clientsScheduledController.setNotificationClients1(1,
                       clientsScheduledController.clientsAttended1!.client_id);
@@ -213,7 +213,7 @@ class _HomePageBodyState extends State<HomePageBody>
                       '!Alerta...',
                       branchId,
                       professionalId,
-                      'El tiempo de servicio del cliente $nameClient se esta agotando, solo quedan $endingTime minutos para finalizar.');
+                      'El tiempo de servicio del cliente $nameClient se esta agotando, solo quedan aproximadamente $endingTime minutos para finalizar.');
                   //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
                   clientsScheduledController.setNotificationClients1(2,
                       clientsScheduledController.clientsAttended2!.client_id);
@@ -268,7 +268,7 @@ class _HomePageBodyState extends State<HomePageBody>
                       '!Alerta...',
                       branchId,
                       professionalId,
-                      'El tiempo de servicio del cliente $nameClient se esta agotando, solo quedan $endingTime minutos para finalizar.');
+                      'El tiempo de servicio del cliente $nameClient se esta agotando, solo quedan aproximadamente $endingTime minutos para finalizar.');
                   //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
                   clientsScheduledController.setNotificationClients1(3,
                       clientsScheduledController.clientsAttended3!.client_id);
@@ -324,7 +324,7 @@ class _HomePageBodyState extends State<HomePageBody>
                       '!Alerta...',
                       branchId,
                       professionalId,
-                      'El tiempo de servicio del cliente $nameClient se esta agotando, solo quedan $endingTime minutos para finalizar.');
+                      'El tiempo de servicio del cliente $nameClient se esta agotando, solo quedan aproximadamente $endingTime minutos para finalizar.');
                   //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
                   clientsScheduledController.setNotificationClients1(4,
                       clientsScheduledController.clientsAttended4!.client_id);
@@ -352,6 +352,7 @@ class _HomePageBodyState extends State<HomePageBody>
     // Cancela cualquier temporizador existente para evitar duplicaciones
     _timer?.cancel();
     int cont = 2;
+    int endingtime = 1;
     // Establece un temporizador que llama a la función cada 20 segundos
     _timer = Timer.periodic(const Duration(seconds: 2), (Timer timer) async {
       if (loginController.idProfessionalLoggedIn != null &&
@@ -361,8 +362,13 @@ class _HomePageBodyState extends State<HomePageBody>
         //Este metodo es para verificar si hay relojes activos
         //Si hubiera activos ver y mandar una notificacion si el tiempo se estuviera acabando
         //en este caso son 3 minutos que esta definido en el controlador
-        verifyingClockTime(
-            clientsScheduledController, clientsScheduledController.endingTime);
+        if (endingtime == 30) //verificar en 30 segundos
+        {
+          verifyingClockTime(clientsScheduledController,
+              clientsScheduledController.endingTime);
+          endingtime = 1;
+        }
+        endingtime++;
 
         cont += 2;
         if (clientsScheduledController.varClientsWaiting == true) {
@@ -376,7 +382,7 @@ class _HomePageBodyState extends State<HomePageBody>
                 'Clientes en cola',
                 loginController.branchIdLoggedIn,
                 loginController.idProfessionalLoggedIn,
-                'Por favor, recuerda que tienes clientes esperando en cola. ¡No los mantengas esperando por mucho tiempo! Que d tengas buen dia de trabajo.');
+                'Por favor, recuerda que tienes clientes esperando en cola. ¡No los mantengas esperando por mucho tiempo!');
             //para controlar que con este cliente solo le avise una vez
             clientsScheduledController.setContClientsWaiting(20);
           } else if (clientsScheduledController.contClientsWaiting ==
@@ -584,20 +590,20 @@ class _HomePageBodyState extends State<HomePageBody>
         animationCont[i]!.reset();
         animationCont[i]!.forward();
         print('RESETEADO YA');
-
-        //todo IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          // Se ejecutará después de que se haya construido el widget
-          //define que tipo de saludo dar dependiendo de la hora
-          controllerclient.setCloseIesperado(false);
-          controllerclient.clockChanges(false);
-          loginController.getGreeting();
-          controllerclient.modifingTimeClose();
-          print(
-              'ENTRE A DESTRUIR LAS VARIABLES DEL TIEMPO ASIGNADO activeModifyTime SOY = ${controllerclient.activeModifyTime}');
-        });
       }
-
+      // print('clientes asistiendo Antes de addPostFrameCallback');
+      //todo IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // Se ejecutará después de que se haya construido el widget
+        //define que tipo de saludo dar dependiendo de la hora
+        controllerclient.setCloseIesperado(false);
+        controllerclient.clockChanges(false);
+        loginController.getGreeting();
+        controllerclient.modifingTimeClose();
+        // print(
+        //     'clientes asistiendo ENTRE A DESTRUIR LAS VARIABLES DEL TIEMPO ASIGNADO activeModifyTime SOY = ${controllerclient.activeModifyTime}');
+      });
+      // print('clientes asistiendo Después de addPostFrameCallback');
       return Column(
         //Cart anaranjado grande inicial que tiene el cronometro
         children: [

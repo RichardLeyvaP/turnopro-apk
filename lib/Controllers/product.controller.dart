@@ -14,6 +14,7 @@ class ProductController extends GetxController {
   int productListLength = 0;
   int categoryListLength = 0;
   List<ProductModel> product = []; // Lista de Notificaciones
+  List<int> cantProduct = List<int>.filled(10000, 0); // Lista de Notificaciones
   List<CategoryModel> category = []; // Lista de Notificaciones
   List<ProductModel> selectproduct = []; //Notificaciones seleccionados vacia
   bool isLoading = true, isLoadingCategory = true;
@@ -29,6 +30,13 @@ class ProductController extends GetxController {
 
   void updateAppBarValue(int newValue) {
     shoppingCart += newValue;
+    update();
+  }
+
+  void buyProduct(int index) {
+    print('productooo cantProduct[index]:${cantProduct[index]}');
+    print('productooo index:$index');
+    cantProduct[index] = (cantProduct[index] - 1);
     update();
   }
 

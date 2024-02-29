@@ -110,7 +110,8 @@ class ClientsScheduledRepository extends GetConnect {
         if (client.detached == 1) {
           Map newValue = {
             "reservation_id": client.reservation_id,
-            "updated_at": convertDateTimeToMinutes(client.updated_at!),
+            //"updated_at": convertDateTimeToMinutes(client.updated_at!),
+            "updated_at": client.updated_at!,
             "clock": client.clock!,
             "timeClock": client.timeClock! * 60, //convirtiendolo en minutos
             "client": client,

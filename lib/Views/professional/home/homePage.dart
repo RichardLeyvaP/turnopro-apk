@@ -277,23 +277,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 const SizedBox(
                   width: 10,
                 ),
-                InkWell(
-                  onTap: () {
-                    _.exit(_
-                        .tokenUserLoggedIn); //todooooooooooooooooooooooooooooooooooooooooo
-                    // Get.offAllNamed('/loginNewPage');
-                  },
-                  child: CircleAvatar(
-                    radius: 22, // Tamaño del CircleAvatar
-                    backgroundColor: const Color(
-                        0xFF2B3141), // Color de fondo del CircleAvatar
-                    child: Icon(
-                      MdiIcons.exitToApp,
-                      size: MediaQuery.of(context).size.width * 0.06,
-                      color: const Color.fromARGB(255, 231, 233, 233),
+                GetBuilder<ClientsScheduledController>(builder: (clCont) {
+                  return InkWell(
+                    onTap: () async {
+                      await clCont.upadateVariablesValueTimers();
+                      _.exit(_
+                          .tokenUserLoggedIn); //todooooooooooooooooooooooooooooooooooooooooo
+                      // Get.offAllNamed('/loginNewPage');
+                    },
+                    child: CircleAvatar(
+                      radius: 22, // Tamaño del CircleAvatar
+                      backgroundColor: const Color(
+                          0xFF2B3141), // Color de fondo del CircleAvatar
+                      child: Icon(
+                        MdiIcons.exitToApp,
+                        size: MediaQuery.of(context).size.width * 0.06,
+                        color: const Color.fromARGB(255, 231, 233, 233),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                }),
                 const SizedBox(
                   width: 18,
                 )

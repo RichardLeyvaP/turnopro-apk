@@ -68,7 +68,7 @@ class ClientsScheduledController extends GetxController {
   //Variables del reloj
   double sizeClock = 145;
   double sizeClockTechnical = 145;
-  int totalTimeInitial = 20; //Iniciando en 3 minutos el reloj
+  int totalTimeInitial = 3 * 60; //Iniciando en 3 minutos el reloj
   bool callCliente = false; //si esta en false es que es la primera vez
   bool boolFilterShowNext = false; //si esta en false es que es la primera vez
   bool boolFilterShowNextTecnhical =
@@ -845,25 +845,30 @@ class ClientsScheduledController extends GetxController {
       if (attendingClientList != null && attendingClientList.isNotEmpty) {
         // La lista no es nula y tiene elementos
         // Hacer algo con la lista...
-        print(
-            '!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo no está vacía.');
-        print('clientes asistiendo : ${attendingClientList.length}');
+        // print(
+        //   'clientes asistiendo!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo no está vacía.');
+        //print('clientes asistiendo : ${attendingClientList.length}');
+        // Obtener la hora actual
+        DateTime horaActual = DateTime.now();
+        DateTime hora1 = DateTime.parse('2024-02-27 19:34:45');
+        int diferenciaSegundos = 0;
+        // print('clientes asistiendo horaActual :$horaActual');
+        // print('clientes asistiendo hora1 :$hora1');
         // Usando un bucle for-in
         for (var map in attendingClientList) {
           int? id;
-          int? updated;
+          String? updated; // Definir la hora1
           int? clock;
           int? timeClock;
           ClientsScheduledModel? client;
 
           map.forEach((key, value) {
+            // print('clientes asistiendo key :$key');
+            // print('clientes asistiendo value :$value');
             // Asignar valores a las variables según la clave
             switch (key) {
               case "reservation_id":
                 id = value;
-                break;
-              case "updated_at":
-                updated = value;
                 break;
               case "clock":
                 clock = value;
@@ -874,17 +879,38 @@ class ClientsScheduledController extends GetxController {
               case "client":
                 client = value;
                 break;
+              case "updated_at":
+                hora1 = DateTime.parse(value);
+                // updated = value;
+                break;
               default:
                 // Manejar otras claves si es necesario
                 break;
             }
           });
+          /*   if (hora1 != null) {
+            hora1 = DateTime.parse(updated!);
+            diferenciaSegundos = horaActual.difference(hora1).inSeconds;
+          } else {
+            diferenciaSegundos = 0;
+          }*/
+          // Calcular la diferencia en segundos entre hora1 y la hora actual
+          int diferenciaSegundos = horaActual.difference(hora1).inSeconds;
 
+          print('clientes asistiendo hora1:$hora1');
+          print('clientes asistiendo horaActual:$horaActual');
+          print(
+              'clientes asistiendo hora diferenciaSegundos:$diferenciaSegundos');
+          print('clientes asistiendo hora timeClock:$timeClock');
+          print(
+              'clientes asistiendo hora timeClock:${(timeClock! - diferenciaSegundos)}');
           // Lógica adicional si es necesario con las variables asignadas
           if (clock == 1) {
             // Asignar a variables específicas para clock 1
             clientsAttended1 = client;
-            timeClientsAttended1 = timeClock;
+            timeClientsAttended1 = (timeClock! - diferenciaSegundos) <= 0
+                ? 0
+                : (timeClock! - diferenciaSegundos); //tiempo en segundos
             //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
             //  await set_timeClock(reservation_id,timeClock,detached,clock);
             // await setTimeClock(client!.reservation_id, 0, 0, 1);//todo comente a ver si ya lo hace bien
@@ -892,7 +918,9 @@ class ClientsScheduledController extends GetxController {
           } else if (clock == 2) {
             // Asignar a variables específicas para clock 2
             clientsAttended2 = client;
-            timeClientsAttended2 = timeClock;
+            timeClientsAttended2 = (timeClock! - diferenciaSegundos) <= 0
+                ? 0
+                : (timeClock! - diferenciaSegundos); //tiempo en segundos
             //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
             //  await set_timeClock(reservation_id,timeClock,detached,clock);
             // await setTimeClock(client!.reservation_id, 0, 0, 2);//todo comente a ver si ya lo hace bien
@@ -900,7 +928,9 @@ class ClientsScheduledController extends GetxController {
           } else if (clock == 3) {
             // Asignar a variables específicas para clock 3
             clientsAttended3 = client;
-            timeClientsAttended3 = timeClock;
+            timeClientsAttended3 = (timeClock! - diferenciaSegundos) <= 0
+                ? 0
+                : (timeClock! - diferenciaSegundos); //tiempo en segundos
             //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
             //  await set_timeClock(reservation_id,timeClock,detached,clock);
             // await setTimeClock(client!.reservation_id, 0, 0, 3);//todo comente a ver si ya lo hace bien
@@ -909,7 +939,9 @@ class ClientsScheduledController extends GetxController {
           } else if (clock == 4) {
             // Asignar a variables específicas para clock 3
             clientsAttended4 = client;
-            timeClientsAttended4 = timeClock;
+            timeClientsAttended4 = (timeClock! - diferenciaSegundos) <= 0
+                ? 0
+                : (timeClock! - diferenciaSegundos); //tiempo en segundos
             //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
             //  await set_timeClock(reservation_id,timeClock,detached,clock);
             // await setTimeClock(client!.reservation_id, 0, 0, 4);//todo comente a ver si ya lo hace bien
