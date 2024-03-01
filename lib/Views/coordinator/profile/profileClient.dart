@@ -190,6 +190,8 @@ class _ProfileClientState extends State<ProfileClient> {
                               'https://www.calgaryhispano.com/wp-content/uploads/2020/05/barberos-en-alberta.jpg',
                               fit: BoxFit
                                   .cover, // Puedes ajustar el modo de ajuste según sea necesario
+                              width: 360,
+                              height: 240,
                             ),
                           ),
                         ],

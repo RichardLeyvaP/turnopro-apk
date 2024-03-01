@@ -399,7 +399,8 @@ class _HomePageBodyState extends State<HomePageBody>
         }
 
         // actualizo la cola
-        if (cont == 2 * 3) {
+        if (cont == 4 || cont == 10 || cont == 20 || cont == 30) {
+          print('ENTRO A BUSCAR NOTIFICACIONES');
           notiController.fetchNotificationList(loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn);
         }

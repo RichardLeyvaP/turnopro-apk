@@ -318,7 +318,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                 index]
                                                             .car_id;
                                                         //   _mostrarBottomSheet(          context);
-                                                        // showMyDialog(context);
+                                                        //  showMyDialog(context);
                                                         ModalHelper.showModal(
                                                             pagesConfigC
                                                                 .pageController,
@@ -572,53 +572,6 @@ class YourPageViewScreenState extends State<HomePageView> {
           ),
         ],
       ),
-    );
-  }
-
-  void showMyDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ), //this right here
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 241, 130, 84),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'Encabezado Naranja',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.close, color: Colors.white),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: Text('Aquí va el contenido del modal.'),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 

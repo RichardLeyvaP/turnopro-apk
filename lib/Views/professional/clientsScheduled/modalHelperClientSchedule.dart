@@ -324,7 +324,7 @@ class ModalHelper {
                                       color: const Color.fromARGB(
                                           167, 241, 131, 84),
                                       borderRadius: BorderRadius.circular(
-                                          6), // La mitad de la altura para hacerlo circular
+                                          3), // La mitad de la altura para hacerlo circular
                                     ),
                                     child: const Center(
                                       child: Text(
@@ -428,11 +428,20 @@ class ModalHelper {
                                 reservationId, 4);
                             Navigator.pop(context); // Cierra el modal
                           },
-                          child: const Text(
-                            'ENVIAR AL TÉCNICO',
-                            style: TextStyle(
+                          child: Row(
+                            children: [
+                              const Text(
+                                'ENVIAR AL TÉCNICO',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800),
+                              ),
+                              Icon(
+                                MdiIcons.sendCircleOutline,
                                 color: Colors.white,
-                                fontWeight: FontWeight.w800),
+                                size: 25,
+                              ),
+                            ],
                           ),
                         ),
                         //
@@ -457,178 +466,397 @@ class ModalHelper {
                             //     reservationId, 2);
                             // Navigator.pop(context); // Cierra el modal
 
+                            // showDialog(
+                            //   context: context,
+                            //   builder: (BuildContext context) {
+                            //     return GetBuilder<ClientsScheduledController>(
+                            //         builder: (_) {
+                            //       return AlertDialog(
+                            //         title: Row(
+                            //           mainAxisAlignment:
+                            //               MainAxisAlignment.spaceBetween,
+                            //           children: [
+                            //             const Text(
+                            //               'Comentario',
+                            //             ),
+                            //             InkWell(
+                            //                 onTap: () {
+                            //                   Navigator.pop(context, 'Cerrar');
+                            //                 },
+                            //                 child: Icon(Icons.close))
+                            //           ],
+                            //         ),
+                            //         content: SizedBox(
+                            //           width: 110,
+                            //           height: 280,
+                            //           child: Column(
+                            //             crossAxisAlignment:
+                            //                 CrossAxisAlignment.start,
+                            //             children: [
+                            //               Expanded(
+                            //                 child: Column(
+                            //                   children: [
+                            //                     Container(
+                            //                       padding: const EdgeInsets
+                            //                               .symmetric(
+                            //                           horizontal: 10),
+                            //                       decoration: BoxDecoration(
+                            //                         border: Border.all(
+                            //                             color: Colors.grey),
+                            //                         borderRadius:
+                            //                             BorderRadius.circular(
+                            //                                 5),
+                            //                       ),
+                            //                       child: TextFormField(
+                            //                         controller:
+                            //                             commentController, // Asignar el controlador al TextFormField
+                            //                         maxLines: 4,
+                            //                         decoration:
+                            //                             const InputDecoration(
+                            //                           border: InputBorder.none,
+                            //                           hintText:
+                            //                               'Escribe tu comentario aquí...',
+                            //                         ),
+                            //                       ),
+                            //                     ),
+                            //                     const SizedBox(
+                            //                       height: 10,
+                            //                     ),
+                            //                     const Row(
+                            //                       mainAxisAlignment:
+                            //                           MainAxisAlignment.center,
+                            //                       children: [
+                            //                         Icon(Icons.camera),
+                            //                         Text('Foto al cliente...'),
+                            //                       ],
+                            //                     ),
+                            //                     (_.imagePath == null)
+                            //                         ? Container()
+                            //                         : SizedBox(
+                            //                             width:
+                            //                                 100, // Establece el ancho deseado
+                            //                             height:
+                            //                                 100, // Establece la altura deseada
+                            //                             child: Image.file(
+                            //                               File(_.imagePath!),
+                            //                               fit: BoxFit
+                            //                                   .cover, // Puedes ajustar el modo de ajuste según tus necesidades
+                            //                             ),
+                            //                           ),
+                            //                   ],
+                            //                 ),
+                            //               ),
+                            //               const SizedBox(height: 20),
+                            //             ],
+                            //           ),
+                            //         ),
+                            //         // Botón de aceptar
+                            //         actions: [
+                            //
+                            //         ],
+                            //       );
+                            //     });
+                            //   },
+                            // );
+
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return GetBuilder<ClientsScheduledController>(
                                     builder: (_) {
-                                  return AlertDialog(
-                                    title: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Text(
-                                          'Comentario',
+                                  return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ), //this right here
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Container(
+                                          decoration: const BoxDecoration(
+                                            color: Color.fromARGB(
+                                                255, 241, 130, 84),
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(8),
+                                              topRight: Radius.circular(8),
+                                            ),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              const Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 12),
+                                                child: Text(
+                                                  'Comentario',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                              ),
+                                              IconButton(
+                                                icon: Icon(Icons.close,
+                                                    color: Colors.white),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                        InkWell(
-                                            onTap: () {
-                                              Navigator.pop(context, 'Cerrar');
-                                            },
-                                            child: Icon(Icons.close))
-                                      ],
-                                    ),
-                                    content: SizedBox(
-                                      width: 110,
-                                      height: 280,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Expanded(
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 10),
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Colors.grey),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                  ),
-                                                  child: TextFormField(
-                                                    controller:
-                                                        commentController, // Asignar el controlador al TextFormField
-                                                    maxLines: 4,
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      border: InputBorder.none,
-                                                      hintText:
-                                                          'Escribe tu comentario aquí...',
-                                                    ),
+                                        Container(
+                                          height:
+                                              (_.imagePath == null) ? 230 : 300,
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                  left: 16,
+                                                  right: 16,
+                                                ),
+                                                child: TextFormField(
+                                                  controller: commentController,
+                                                  maxLines: 5,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    border: InputBorder.none,
+                                                    hintText:
+                                                        'Escribe tu comentario aquí...',
+                                                    hintStyle: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          120, 241, 131, 84),
+                                                    ), // Cambiar el color del hintText
                                                   ),
                                                 ),
-                                                const SizedBox(
-                                                  height: 10,
-                                                ),
-                                                const Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(Icons.camera),
-                                                    Text('Foto al cliente...'),
-                                                  ],
-                                                ),
-                                                (_.imagePath == null)
-                                                    ? Container()
-                                                    : SizedBox(
-                                                        width:
-                                                            100, // Establece el ancho deseado
-                                                        height:
-                                                            100, // Establece la altura deseada
+                                              ),
+                                              //
+                                              //
+                                              //
+
+                                              (_.imagePath == null)
+                                                  ? const Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Icon(Icons
+                                                            .image_outlined),
+                                                        Text(
+                                                          'Cargar foto del cliente',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  : Container(
+                                                      width:
+                                                          70, // Establece el ancho deseado
+                                                      height:
+                                                          70, // Establece la altura deseada
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10), // Establece el radio de borde deseado
+                                                      ),
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10), // Asegúrate de que este radio sea igual al radio del borde del BoxDecoration
                                                         child: Image.file(
                                                           File(_.imagePath!),
                                                           fit: BoxFit
                                                               .cover, // Puedes ajustar el modo de ajuste según tus necesidades
                                                         ),
                                                       ),
-                                              ],
-                                            ),
+                                                    ),
+
+                                              //
+                                              //
+                                              //
+                                              //
+                                              ButtonBar(
+                                                alignment: MainAxisAlignment
+                                                    .spaceEvenly,
+                                                children: <Widget>[
+                                                  ElevatedButton(
+                                                    style: ButtonStyle(
+                                                      padding:
+                                                          MaterialStateProperty.all<
+                                                              EdgeInsetsGeometry>(
+                                                        const EdgeInsets
+                                                                .symmetric(
+                                                            vertical: 0,
+                                                            horizontal: 26.0),
+                                                      ),
+                                                      backgroundColor:
+                                                          MaterialStateProperty
+                                                              .all<Color>(Color(
+                                                                  0xFF2B3141)),
+                                                    ),
+                                                    onPressed: () async {
+                                                      final ImagePicker
+                                                          _picker =
+                                                          ImagePicker();
+                                                      _.setPickedFile(
+                                                          await _picker
+                                                              .pickImage(
+                                                        source:
+                                                            ImageSource.camera,
+                                                      ));
+
+                                                      // Verifica si pickedFile no es nulo antes de acceder a su propiedad path
+                                                      if (_.pickedFile !=
+                                                          null) {
+                                                        _.setImagePath(
+                                                            _.pickedFile!.path);
+                                                      }
+                                                      print(
+                                                          'DIRECCIONDELAIMAGEN : ${_.imagePath}');
+                                                    },
+                                                    child: Row(
+                                                      children: [
+                                                        const Text(
+                                                          'FOTO',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 6,
+                                                        ),
+                                                        Icon(
+                                                          MdiIcons.camera,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  ElevatedButton(
+                                                    style: ButtonStyle(
+                                                      padding:
+                                                          MaterialStateProperty.all<
+                                                              EdgeInsetsGeometry>(
+                                                        const EdgeInsets
+                                                                .symmetric(
+                                                            vertical: 0,
+                                                            horizontal: 26.0),
+                                                      ),
+                                                      backgroundColor:
+                                                          MaterialStateProperty
+                                                              .all<Color>(Color(
+                                                                  0xFF2B3141)),
+                                                    ),
+                                                    onPressed: () async {
+                                                      // Lógica para enviar el comentario
+                                                      // Obtener el valor del campo de texto
+                                                      String commentText =
+                                                          commentController
+                                                              .text;
+                                                      // Eliminar espacios en blanco al principio y al final
+                                                      String textWithoutSpaces =
+                                                          commentText.trim();
+
+                                                      // Verificar que el campo no esté vacío
+                                                      if (textWithoutSpaces
+                                                          .isNotEmpty) {
+                                                        // Cerrar el primer modal
+                                                        Navigator.pop(context);
+
+                                                        // Cerrar el segundo modal (AlertDialog)
+                                                        Navigator.pop(context);
+
+                                                        if (_.pickedFile !=
+                                                            null) {
+                                                          dio.Dio dioClient =
+                                                              dio.Dio();
+                                                          String imag = _
+                                                              .pickedFile!.path;
+
+                                                          await controllClient
+                                                              .storeByReservationId(
+                                                                  imag,
+                                                                  reservationId,
+                                                                  commentText,
+                                                                  dioClient);
+                                                        }
+
+                                                        // Lógica para enviar el comentario
+                                                        await controllClient
+                                                            .acceptOrRejectClient(
+                                                                reservationId,
+                                                                2);
+
+                                                        print(
+                                                            'Comentario enviado - $commentText ');
+                                                      } else {
+                                                        // El campo de texto está vacío, puedes mostrar un mensaje o realizar alguna acción
+                                                        print(
+                                                            'El comentario no puede estar vacío');
+                                                      }
+                                                    },
+                                                    child: Row(
+                                                      children: [
+                                                        const Text(
+                                                          'ENVIAR',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 6,
+                                                        ),
+                                                        Icon(
+                                                          MdiIcons.send,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
                                           ),
-                                          const SizedBox(height: 20),
-                                        ],
-                                      ),
+                                        )
+                                      ],
                                     ),
-                                    // Botón de aceptar
-                                    actions: [
-                                      ElevatedButton(
-                                        onPressed: () async {
-                                          final ImagePicker _picker =
-                                              ImagePicker();
-                                          _.setPickedFile(
-                                              await _picker.pickImage(
-                                            source: ImageSource.camera,
-                                          ));
-
-                                          // Verifica si pickedFile no es nulo antes de acceder a su propiedad path
-                                          if (_.pickedFile != null) {
-                                            _.setImagePath(_.pickedFile!.path);
-                                          }
-                                          print(
-                                              'DIRECCIONDELAIMAGEN : ${_.imagePath}');
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Color(0xFF2B3141),
-                                        ),
-                                        child: const Text(
-                                          'Tomar Foto',
-                                        ),
-                                      ),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Color(0xFF2B3141),
-                                        ),
-                                        onPressed: () async {
-                                          // Lógica para enviar el comentario
-                                          // Obtener el valor del campo de texto
-                                          String commentText =
-                                              commentController.text;
-                                          // Eliminar espacios en blanco al principio y al final
-                                          String textWithoutSpaces =
-                                              commentText.trim();
-
-                                          // Verificar que el campo no esté vacío
-                                          if (textWithoutSpaces.isNotEmpty) {
-                                            // Cerrar el primer modal
-                                            Navigator.pop(context);
-
-                                            // Cerrar el segundo modal (AlertDialog)
-                                            Navigator.pop(context);
-
-                                            if (_.pickedFile != null) {
-                                              dio.Dio dioClient = dio.Dio();
-                                              String imag = _.pickedFile!.path;
-
-                                              await controllClient
-                                                  .storeByReservationId(
-                                                      imag,
-                                                      reservationId,
-                                                      commentText,
-                                                      dioClient);
-                                            }
-
-                                            // Lógica para enviar el comentario
-                                            await controllClient
-                                                .acceptOrRejectClient(
-                                                    reservationId, 2);
-
-                                            print(
-                                                'Comentario enviado - $commentText ');
-                                          } else {
-                                            // El campo de texto está vacío, puedes mostrar un mensaje o realizar alguna acción
-                                            print(
-                                                'El comentario no puede estar vacío');
-                                          }
-                                        },
-                                        child: const Text('Subir'),
-                                      ),
-                                    ],
                                   );
                                 });
                               },
-                            );
+                            ).whenComplete(() async {
+                              final ClientsScheduledController cliCont =
+                                  Get.find<ClientsScheduledController>();
+                              cliCont.setImagePath(null);
+                              closedCompleter.complete();
+                            });
 
                             //
                             //
                             //
                           },
-                          child: const Text(
-                            'CLIENTE ATENDIDO',
-                            style: TextStyle(
+                          child: Row(
+                            children: [
+                              const Text(
+                                'CLIENTE ATENDIDO',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800),
+                              ),
+                              Icon(
+                                MdiIcons.stopCircleOutline,
                                 color: Colors.white,
-                                fontWeight: FontWeight.w800),
+                                size: 25,
+                              ),
+                            ],
                           ),
                         ),
                       ],
