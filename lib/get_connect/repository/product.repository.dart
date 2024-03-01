@@ -146,6 +146,10 @@ class ProductRepository extends GetConnect {
       service_id,
       type) async {
     try {
+      print('internetError car_id:$car_id');
+      print('internetError product_id:$product_id');
+      print('internetError service_id:$service_id');
+      print('internetError type:$type');
       var url = '${Env.apiEndpoint}/order';
 
       // Parámetros que deseas enviar en la solicitud POST
@@ -165,7 +169,8 @@ class ProductRepository extends GetConnect {
         print(id_order);
         return id_order;
       } else {
-        print('addOrderCartList return -990099;');
+        print(
+            'internetError addOrderCartList return -990099;:response.statusCode:${response.statusCode}');
         return -990099;
       }
     } catch (e) {

@@ -168,7 +168,8 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                         border: Border.all(
                                                             width: 0.01),
                                                         borderRadius:
-                                                            const BorderRadius.all(
+                                                            const BorderRadius
+                                                                    .all(
                                                                 Radius.circular(
                                                                     12)),
                                                         boxShadow: [
@@ -198,98 +199,53 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                           end: FractionalOffset
                                                               .centerLeft,
                                                         ))
-                                                    : controllerClient
-                                                            .selectClientsScheduledList
-                                                            .contains(
+                                                    : BoxDecoration(
+                                                        border: controllerClient
+                                                                        .clientsScheduledList[
+                                                                            index]
+                                                                        .attended ==
+                                                                    1 ||
                                                                 controllerClient
                                                                         .clientsScheduledList[
-                                                                    index])
-                                                        ? BoxDecoration(
-                                                            border: Border.all(width: 0.01),
-                                                            borderRadius: const BorderRadius.all(Radius.circular(12)),
-                                                            boxShadow: [
-                                                              BoxShadow(
-                                                                color: Colors
-                                                                    .grey
-                                                                    .withOpacity(
-                                                                        0.7),
-                                                                spreadRadius: 1,
-                                                                blurRadius: 5,
-                                                                offset: const Offset(
-                                                                    -5,
-                                                                    5), // Ajusta los valores para personalizar la sombra
-                                                              ),
-                                                            ],
-                                                            gradient: const LinearGradient(
-                                                              colors: [
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    231,
-                                                                    232,
-                                                                    234),
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    243,
-                                                                    182,
-                                                                    138),
-                                                              ],
-                                                              stops: [0.0, 0.8],
-                                                              begin: FractionalOffset
-                                                                  .centerRight,
-                                                              end: FractionalOffset
-                                                                  .centerLeft,
-                                                            ))
-                                                        : BoxDecoration(
-                                                            border: controllerClient
-                                                                            .clientsScheduledList[
-                                                                                index]
-                                                                            .attended ==
-                                                                        1 ||
-                                                                    controllerClient
-                                                                            .clientsScheduledList[
-                                                                                index]
-                                                                            .attended ==
-                                                                        11 ||
-                                                                    controllerClient
-                                                                            .clientsScheduledList[
-                                                                                index]
-                                                                            .attended ==
-                                                                        111
-                                                                ? Border.all(
-                                                                    width: 2,
-                                                                    color: controllerClient.clientsScheduledList[index].attended ==
-                                                                            1
-                                                                        ? const Color(
-                                                                            0xFFF18254)
-                                                                        : const Color.fromARGB(
-                                                                            255,
-                                                                            17,
-                                                                            179,
-                                                                            38))
-                                                                : Border.all(
-                                                                    width:
-                                                                        0.01),
-                                                            color: Colors.white,
-                                                            boxShadow: [
-                                                              BoxShadow(
-                                                                color: Colors
-                                                                    .grey
-                                                                    .withOpacity(
-                                                                        0.7),
-                                                                spreadRadius: 1,
-                                                                blurRadius: 5,
-                                                                offset: const Offset(
-                                                                    -5,
-                                                                    5), // Ajusta los valores para personalizar la sombra
-                                                              ),
-                                                            ],
-                                                            borderRadius:
-                                                                const BorderRadius
-                                                                    .all(
-                                                              Radius.circular(
-                                                                  12),
-                                                            ),
+                                                                            index]
+                                                                        .attended ==
+                                                                    11 ||
+                                                                controllerClient
+                                                                        .clientsScheduledList[
+                                                                            index]
+                                                                        .attended ==
+                                                                    111
+                                                            ? Border.all(
+                                                                width: 2,
+                                                                color: controllerClient.clientsScheduledList[index].attended == 1
+                                                                    ? const Color(
+                                                                        0xFFF18254)
+                                                                    : const Color.fromARGB(
+                                                                        255,
+                                                                        17,
+                                                                        179,
+                                                                        38))
+                                                            : Border.all(
+                                                                width: 0.01),
+                                                        color: Colors.white,
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: Colors.grey
+                                                                .withOpacity(
+                                                                    0.7),
+                                                            spreadRadius: 1,
+                                                            blurRadius: 5,
+                                                            offset: const Offset(
+                                                                -5,
+                                                                5), // Ajusta los valores para personalizar la sombra
                                                           ),
+                                                        ],
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                .all(
+                                                          Radius.circular(12),
+                                                        ),
+                                                      ),
                                                 child: ListTile(
                                                   shape:
                                                       const RoundedRectangleBorder(
@@ -361,6 +317,8 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                             .clientsScheduledList[
                                                                 index]
                                                             .car_id;
+                                                        //   _mostrarBottomSheet(          context);
+                                                        // showMyDialog(context);
                                                         ModalHelper.showModal(
                                                             pagesConfigC
                                                                 .pageController,
@@ -390,86 +348,43 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                             MainAxisAlignment
                                                                 .start,
                                                         children: [
-                                                          controllerClient
-                                                                  .selectClientsScheduledList
-                                                                  .contains(
-                                                                      controllerClient
-                                                                              .clientsScheduledList[
-                                                                          index])
-                                                              ? Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .end,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    Icon(
-                                                                      MdiIcons
-                                                                          .formatListNumbered, //todo
-                                                                      color: const Color
-                                                                              .fromARGB(
-                                                                          255,
-                                                                          150,
-                                                                          37,
-                                                                          19),
-                                                                    ),
-                                                                    Text(
-                                                                      'Tiempo Total: ${controllerClient.clientsScheduledList[index].total_time}',
-                                                                      // AQUI CARHA LA HORA INICIAL,
-                                                                      style: const TextStyle(
-                                                                          height:
-                                                                              1.0,
-                                                                          fontSize:
-                                                                              12,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              150,
-                                                                              37,
-                                                                              19),
-                                                                          fontWeight:
-                                                                              FontWeight.bold),
-                                                                    ),
-                                                                  ],
-                                                                )
-                                                              : Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .end,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    Icon(
-                                                                      MdiIcons
-                                                                          .clockPlus,
-                                                                      color: const Color
-                                                                              .fromARGB(
-                                                                          255,
-                                                                          71,
-                                                                          143,
-                                                                          43),
-                                                                    ),
-                                                                    Text(
-                                                                      '  ${controllerClient.clientsScheduledList[index].start_time}'
-                                                                      ' - '
-                                                                      ' ${controllerClient.clientsScheduledList[index].final_hour}',
-                                                                      // '   08:10 - 09:10',
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        height:
-                                                                            1.0,
-                                                                        fontSize:
-                                                                            12,
-                                                                        color: Color.fromARGB(
-                                                                            180,
-                                                                            0,
-                                                                            0,
-                                                                            0),
-                                                                      ),
-                                                                    ),
-                                                                  ],
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Icon(
+                                                                MdiIcons
+                                                                    .clockPlus,
+                                                                color: const Color
+                                                                        .fromARGB(
+                                                                    255,
+                                                                    71,
+                                                                    143,
+                                                                    43),
+                                                              ),
+                                                              Text(
+                                                                '  ${controllerClient.clientsScheduledList[index].start_time}'
+                                                                ' - '
+                                                                ' ${controllerClient.clientsScheduledList[index].final_hour}',
+                                                                // '   08:10 - 09:10',
+                                                                style:
+                                                                    const TextStyle(
+                                                                  height: 1.0,
+                                                                  fontSize: 12,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          180,
+                                                                          0,
+                                                                          0,
+                                                                          0),
                                                                 ),
+                                                              ),
+                                                            ],
+                                                          ),
                                                           Text(
                                                             controllerClient
                                                                 .clientsScheduledList[
@@ -498,138 +413,107 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                           )
                                                         ],
                                                       ),
+                                                      //SI ESTA VARIABLE ES IGUAL A 1 ES QUE SE ESTA ATENDIENDO
                                                       controllerClient
-                                                              .selectClientsScheduledList
-                                                              .contains(
-                                                                  controllerClient.clientsScheduledList[
-                                                                      index])
-                                                          ? Row(
+                                                                      .clientsScheduledList[
+                                                                          index]
+                                                                      .attended ==
+                                                                  1 ||
+                                                              controllerClient
+                                                                      .clientsScheduledList[
+                                                                          index]
+                                                                      .attended ==
+                                                                  11 ||
+                                                              controllerClient
+                                                                      .clientsScheduledList[
+                                                                          index]
+                                                                      .attended ==
+                                                                  111
+                                                          ? Column(
                                                               children: [
-                                                                Opacity(
-                                                                  opacity: 1,
-                                                                  child: controllerClient
-                                                                          .isLoading
-                                                                      ? const CircularProgressIndicator(
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              241,
-                                                                              130,
-                                                                              84),
-                                                                          strokeWidth:
-                                                                              4,
-                                                                        )
-                                                                      : const Icon(
-                                                                          Icons
-                                                                              .play_circle,
-                                                                          size:
-                                                                              60,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              150,
-                                                                              37,
-                                                                              19),
-                                                                        ),
+                                                                const Image(
+                                                                  image:
+                                                                      AssetImage(
+                                                                    'assets/images/client-attended.png',
+                                                                  ),
+                                                                  width: 50,
+                                                                  height: 50,
+                                                                ),
+                                                                Text(
+                                                                  controllerClient
+                                                                              .clientsScheduledList[index]
+                                                                              .attended ==
+                                                                          1
+                                                                      ? 'Atendiendose'
+                                                                      : 'Terminando Servicio',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        14,
+                                                                    color: controllerClient.clientsScheduledList[index].attended ==
+                                                                            1
+                                                                        ? const Color(
+                                                                            0xFFF18254)
+                                                                        : const Color.fromARGB(
+                                                                            255,
+                                                                            71,
+                                                                            143,
+                                                                            43),
+                                                                  ),
                                                                 ),
                                                               ],
                                                             )
-                                                          : //SI ESTA VARIABLE ES IGUAL A 1 ES QUE SE ESTA ATENDIENDO
-                                                          controllerClient
+                                                          : controllerClient
                                                                           .clientsScheduledList[
                                                                               index]
                                                                           .attended ==
-                                                                      1 ||
+                                                                      4 ||
                                                                   controllerClient
                                                                           .clientsScheduledList[
                                                                               index]
                                                                           .attended ==
-                                                                      11 ||
-                                                                  controllerClient
-                                                                          .clientsScheduledList[
-                                                                              index]
-                                                                          .attended ==
-                                                                      111
-                                                              ? Column(
+                                                                      5
+                                                              ? const Row(
+                                                                  //todo 999
                                                                   children: [
-                                                                    const Image(
-                                                                      image:
-                                                                          AssetImage(
-                                                                        'assets/images/client-attended.png',
-                                                                      ),
-                                                                      width: 50,
-                                                                      height:
-                                                                          50,
-                                                                    ),
-                                                                    Text(
-                                                                      controllerClient.clientsScheduledList[index].attended ==
-                                                                              1
-                                                                          ? 'Atendiendose'
-                                                                          : 'Terminando Servicio',
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            14,
-                                                                        color: controllerClient.clientsScheduledList[index].attended ==
-                                                                                1
-                                                                            ? const Color(
-                                                                                0xFFF18254)
-                                                                            : const Color.fromARGB(
-                                                                                255,
-                                                                                71,
-                                                                                143,
-                                                                                43),
+                                                                    Opacity(
+                                                                      opacity:
+                                                                          1,
+                                                                      child:
+                                                                          Image(
+                                                                        image:
+                                                                            AssetImage(
+                                                                          'assets/images/icons/lavado.png',
+                                                                        ),
+                                                                        width:
+                                                                            50,
+                                                                        height:
+                                                                            50,
                                                                       ),
                                                                     ),
                                                                   ],
                                                                 )
-                                                              : controllerClient
-                                                                              .clientsScheduledList[
-                                                                                  index]
-                                                                              .attended ==
-                                                                          4 ||
-                                                                      controllerClient
-                                                                              .clientsScheduledList[index]
-                                                                              .attended ==
-                                                                          5
-                                                                  ? const Row(
-                                                                      //todo 999
-                                                                      children: [
-                                                                        Opacity(
-                                                                          opacity:
-                                                                              1,
-                                                                          child:
-                                                                              Image(
-                                                                            image:
-                                                                                AssetImage(
-                                                                              'assets/images/icons/lavado.png',
-                                                                            ),
-                                                                            width:
-                                                                                50,
-                                                                            height:
-                                                                                50,
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    )
-                                                                  : const Row(
-                                                                      //todo 999
-                                                                      children: [
-                                                                        Opacity(
-                                                                          opacity:
-                                                                              1,
-                                                                          child:
-                                                                              Icon(
-                                                                            Icons.play_circle,
-                                                                            size:
-                                                                                60,
-                                                                            color: Color.fromARGB(
-                                                                                85,
-                                                                                83,
-                                                                                82,
-                                                                                82),
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    )
+                                                              : const Row(
+                                                                  //todo 999
+                                                                  children: [
+                                                                    Opacity(
+                                                                      opacity:
+                                                                          1,
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .play_circle,
+                                                                        size:
+                                                                            60,
+                                                                        color: Color.fromARGB(
+                                                                            85,
+                                                                            83,
+                                                                            82,
+                                                                            82),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                )
                                                     ],
                                                   ),
                                                   //subtitle: Text(controllerClient.users[index].username.toString()),
@@ -688,6 +572,101 @@ class YourPageViewScreenState extends State<HomePageView> {
           ),
         ],
       ),
+    );
+  }
+
+  void showMyDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ), //this right here
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 241, 130, 84),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      'Encabezado Naranja',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.close, color: Colors.white),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: Text('Aquí va el contenido del modal.'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  //
+  //
+  //
+  //
+  //
+  //
+  void _mostrarBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          color: Color(0xff123456), // Color de fondo del Bottom Sheet
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                color: Colors
+                    .orange, // Color de fondo del encabezado dentro del Bottom Sheet
+                width: double.infinity,
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Encabezado Naranja',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: const Color.fromARGB(
+                        255, 122, 121, 121), // Color del texto del encabezado
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Contenido del Bottom Sheet',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Color(
+                        0xffffffff), // Este es blanco, pero puedes cambiarlo como desees
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

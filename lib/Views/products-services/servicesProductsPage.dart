@@ -195,8 +195,8 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                 ],
               )
             : AlertDialogPago(
-                controllerShoppingCart:
-                    controllerShoppingCart), // Muestra el AlertDialog
+                controllerShoppingCart: controllerShoppingCart,
+                pagesConfigC: pagesConfigC), // Muestra el AlertDialog
       ),
     );
   }
@@ -204,13 +204,17 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
 
 class AlertDialogPago extends StatelessWidget {
   final ShoppingCartController controllerShoppingCart;
-  const AlertDialogPago({Key? key, required this.controllerShoppingCart})
+  final PagesConfigController pagesConfigC;
+  const AlertDialogPago(
+      {Key? key,
+      required this.controllerShoppingCart,
+      required this.pagesConfigC})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Error'),
+      title: const Text('Error de conexión'),
       content: const SizedBox(
         height: 30.0, // Ajusta la altura según tu necesidad
         child: Column(
@@ -226,7 +230,9 @@ class AlertDialogPago extends StatelessWidget {
         TextButton(
           onPressed: () {
             // Cerrar el AlertDialog
-            Get.back();
+            // Get.back();
+            controllerShoppingCart.loadDataInitiallyNecessary();
+            pagesConfigC.previousPage();
           },
           child: const Text('Atras'),
         ),
@@ -235,13 +241,15 @@ class AlertDialogPago extends StatelessWidget {
             // Cerrar el AlertDialog
             try {
               await controllerShoppingCart.loadDataInitiallyNecessary();
-              Get.toNamed(
-                '/Professional',
-              );
+              // Get.toNamed(
+              //   '/Professional',
+              // );
+              pagesConfigC.previousPage();
             } catch (e) {
-              Get.toNamed(
-                '/Professional',
-              );
+              // Get.toNamed(
+              //   '/Professional',
+              // );
+              pagesConfigC.previousPage();
             }
           },
           child: const Text('Volver Intentarlo'),

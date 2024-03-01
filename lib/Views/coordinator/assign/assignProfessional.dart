@@ -51,7 +51,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
     return GetBuilder<ClientsCoordinatorController>(builder: (controllerCoord) {
       return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 150,
+          toolbarHeight: 170,
           leading: Stack(
             children: [
               Row(

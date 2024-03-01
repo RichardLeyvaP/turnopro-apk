@@ -421,18 +421,18 @@ class ShoppingCartPage extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'Total a pagar: ',
+                        '       ',
                         style: TextStyle(
                             fontSize:
                                 (MediaQuery.of(context).size.height * 0.02),
                             fontWeight: FontWeight.w900),
                       ),
                       Text(
-                        controllerShoppingCart.totalPrice.toStringAsFixed(2),
+                        '  ',
                         /*esto garantiza 2 lugares despues de la coma */
                         style: TextStyle(
                             fontSize:
-                                (MediaQuery.of(context).size.height * 0.031),
+                                (MediaQuery.of(context).size.height * 0.02),
                             fontWeight: FontWeight.w900),
                       ),
                     ],
@@ -441,25 +441,39 @@ class ShoppingCartPage extends StatelessWidget {
                     style: ButtonStyle(
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                         const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 30.0),
+                            vertical: 2.0, horizontal: 20.0),
                       ),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color(0xFFF18254)),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.black),
                     ),
                     onPressed: () async {
-                      showDialog(
+                      /* showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialogPago(
                             totalPrice: controllerShoppingCart.totalPrice,
                           ); // Muestra el AlertDialog
                         },
-                      );
+                      );*/
                     },
-                    child: const Text(
-                      'Confirmar',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.w700),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Total a pagar: ',
+                          style: TextStyle(
+                              fontSize:
+                                  (MediaQuery.of(context).size.height * 0.02),
+                              fontWeight: FontWeight.w200),
+                        ),
+                        Text(
+                          controllerShoppingCart.totalPrice.toStringAsFixed(2),
+                          /*esto garantiza 2 lugares despues de la coma */
+                          style: TextStyle(
+                              fontSize:
+                                  (MediaQuery.of(context).size.height * 0.02),
+                              fontWeight: FontWeight.w900),
+                        ),
+                      ],
                     ),
                   ),
                 ],

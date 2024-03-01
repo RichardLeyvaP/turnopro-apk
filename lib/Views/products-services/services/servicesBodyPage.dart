@@ -320,7 +320,8 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                 ),
                               )),
                     ),
-                    Expanded(
+                    //todo este era el que decia abajo total a pagar
+                    /* Expanded(
                       //ESTE EXPANDED ES EL QUE TIENE EL TOTAL A PAGAR
                       flex: 1,
                       child: Padding(
@@ -351,7 +352,7 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                           ],
                         ),
                       ),
-                    ),
+                    ),*/
                   ],
                 )
               : const Center(

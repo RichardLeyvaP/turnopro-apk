@@ -29,6 +29,7 @@ class _ProfileClientState extends State<ProfileClient> {
   String title = 'Servicios';
   Icon icon = Icon(
     MdiIcons.tag,
+    color: const Color.fromARGB(211, 0, 0, 0),
   );
 
   @override
@@ -36,7 +37,7 @@ class _ProfileClientState extends State<ProfileClient> {
     return GetBuilder<ClientsCoordinatorController>(builder: (controllerCoord) {
       return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 150,
+          toolbarHeight: 170,
           leading: Stack(
             children: [
               Row(
@@ -73,34 +74,57 @@ class _ProfileClientState extends State<ProfileClient> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: const Color.fromARGB(255, 32, 32, 32),
-                        width:
-                            2, // Ajusta el ancho del borde según tus preferencias
+              Stack(children: [
+                Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Color.fromARGB(255, 240, 238, 238),
+                          width:
+                              2, // Ajusta el ancho del borde según tus preferencias
+                        ),
+                      ),
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(imageDirection),
+                        radius: 40, // Ajusta el tamaño del círculo aquí
                       ),
                     ),
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(imageDirection),
-                      radius: 40, // Ajusta el tamaño del círculo aquí
+                    SizedBox(height: 10),
+                    Text(
+                      controllerCoord.clientNameCORD,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w700, fontSize: 20),
+                    ),
+                    Text(
+                      'Visitas : ${controllerCoord.cantVisitCORD}',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 12),
+                    ),
+                  ],
+                ),
+                Positioned(
+                  top: 68,
+                  right: 78,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: const Color(0xFFF18254)
+                        // Puedes agregar otras propiedades de estilo aquí si es necesario
+                        ),
+                    width: 80,
+                    height: 16,
+                    child: Center(
+                      child: Text(
+                        controllerCoord.frecuenciaCORD,
+                        style: TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.w800),
+                      ),
                     ),
                   ),
-                  Text(
-                    controllerCoord.clientNameCORD,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w700, fontSize: 20),
-                  ),
-                  Text(
-                    'Visitas : ${controllerCoord.cantVisitCORD}',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 12),
-                  ),
-                ],
-              ),
+                ),
+              ]),
               SizedBox(
                 width: (MediaQuery.of(context).size.width * 0.14),
               ),
@@ -113,7 +137,7 @@ class _ProfileClientState extends State<ProfileClient> {
         backgroundColor: const Color.fromARGB(255, 231, 232, 234),
         body: Center(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.only(left: 16, right: 16),
             child: SingleChildScrollView(
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,7 +153,7 @@ class _ProfileClientState extends State<ProfileClient> {
                     const SizedBox(
                       height: 10,
                     ),
-                    cardOptions(
+                    /* cardOptions(
                         context,
                         Icon(
                           MdiIcons.camera,
@@ -137,27 +161,42 @@ class _ProfileClientState extends State<ProfileClient> {
                         'Último look',
                         pagesConfigCont,
                         pagesConfigCont.pageController2,
-                        null),
+                        null),*/
                     const SizedBox(
-                      height: 10,
+                      height: 0,
                     ),
                     Container(
                       decoration: BoxDecoration(
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
                         // Puedes agregar otras propiedades de estilo aquí si es necesario
                       ),
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.network(
-                          'https://www.calgaryhispano.com/wp-content/uploads/2020/05/barberos-en-alberta.jpg',
-                          fit: BoxFit
-                              .cover, // Puedes ajustar el modo de ajuste según sea necesario
-                        ),
+                      height: MediaQuery.of(context).size.height * 0.35,
+                      child: Column(
+                        children: [
+                          cardOptions(
+                              context,
+                              Icon(
+                                MdiIcons.camera,
+                                color: const Color.fromARGB(211, 0, 0, 0),
+                              ),
+                              'Último look',
+                              pagesConfigCont,
+                              pagesConfigCont.pageController2,
+                              null),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.network(
+                              'https://www.calgaryhispano.com/wp-content/uploads/2020/05/barberos-en-alberta.jpg',
+                              fit: BoxFit
+                                  .cover, // Puedes ajustar el modo de ajuste según sea necesario
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(
-                      height: 15,
+                      height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -213,7 +252,7 @@ class _ProfileClientState extends State<ProfileClient> {
                                                 children: [
                                                   Container(
                                                     padding: const EdgeInsets
-                                                        .symmetric(
+                                                            .symmetric(
                                                         horizontal: 10),
                                                     decoration: BoxDecoration(
                                                       border: Border.all(
@@ -318,6 +357,9 @@ class _ProfileClientState extends State<ProfileClient> {
                                   fontWeight: FontWeight.w800),
                             )),
                       ],
+                    ),
+                    SizedBox(
+                      height: 45,
                     )
                   ]),
             ),
@@ -374,21 +416,44 @@ class _ProfileClientState extends State<ProfileClient> {
                 height: 35,
                 child: icon,
               ),
-              Text(
-                title.toString(),
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              page != null
+                  ? Text(
+                      title.toString(),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title.toString(),
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              height: 1.2),
+                        ),
+                        Text(
+                          'Le queda bien el degradado desde el 0',
+                          style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w300,
+                              height: 1.2),
+                        ),
+                      ],
+                    )
             ],
           ),
           subtitle: null,
-          trailing: Icon(
-            Icons.navigate_next,
-            color: Colors.black, // Cambia el color a negro
-            size: 30.0,
-          ),
+          trailing: page != null
+              ? Icon(
+                  Icons.navigate_next,
+                  color: Colors.black, // Cambia el color a negro
+                  size: 30.0,
+                )
+              : null,
         ),
       ),
     );

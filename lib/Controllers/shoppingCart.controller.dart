@@ -185,6 +185,7 @@ class ShoppingCartController extends GetxController {
     try {
       responseId = await productRepository.addOrderCartList(
           car_id, product_id, service_id, type);
+      print('internetError responseId:$responseId');
       if (responseId != -990099) {
         print('agregar responseId');
         productCarr.add(responseId);

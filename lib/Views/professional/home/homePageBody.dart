@@ -399,11 +399,11 @@ class _HomePageBodyState extends State<HomePageBody>
         }
 
         // actualizo la cola
-        if (cont == 2) {
+        if (cont == 2 * 3) {
           notiController.fetchNotificationList(loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn);
         }
-        if (cont == 8) {
+        if (cont == 9 * 5) {
           notiController.fetchNotificationList(loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn);
           print('con contador en 8 llamo la funcion1');
@@ -411,7 +411,7 @@ class _HomePageBodyState extends State<HomePageBody>
               loginController.idProfessionalLoggedIn,
               loginController.branchIdLoggedIn);
         }
-        if (cont == 10) {
+        if (cont == 10 * 5) {
           print(
               'con contador en 10 entro para activar reloges si fuera necesario');
           for (var i = 0;
@@ -623,13 +623,13 @@ class _HomePageBodyState extends State<HomePageBody>
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       /*todo texto arriba */ Padding(
-                        padding: const EdgeInsets.only(left: 8),
+                        padding: const EdgeInsets.only(left: 8, top: 5),
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: Text(
                             controllerclient.item.isEmpty
                                 ? 'Cliente en espera'
-                                : 'Atendiendo ${controllerclient.item.length} clientes',
+                                : 'Atendiendo ${controllerclient.item.length} cliente(s)',
                             style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
@@ -851,11 +851,11 @@ class _HomePageBodyState extends State<HomePageBody>
                         ),
                         child: IconButton(
                           onPressed: () {
-                            Get.snackbar(
-                              'Mensaje',
-                              'Cancelar',
-                              duration: const Duration(milliseconds: 2000),
-                            );
+                            // Get.snackbar(
+                            //   'Mensaje',
+                            //   'Cancelar',
+                            //   duration: const Duration(milliseconds: 2000),
+                            // );
                             // atender este cliente
                             //el valor 3 es que es que lo rechazo, por alguna razon no lo va a tender
                             controllerclient.acceptOrRejectClient(
@@ -981,11 +981,11 @@ class _HomePageBodyState extends State<HomePageBody>
                                 const BorderRadius.all(Radius.circular(12))),
                         child: IconButton(
                           onPressed: () async {
-                            Get.snackbar(
-                              'Mensaje',
-                              'Aceptar',
-                              duration: const Duration(milliseconds: 2000),
-                            );
+                            // Get.snackbar(
+                            //   'Mensaje',
+                            //   'Aceptar',
+                            //   duration: const Duration(milliseconds: 2000),
+                            // );
                             //aqui manda aceptar, es decir atender este cliente
                             clientsScheduledController.clientsWaiting(false);
                             // detengo el timer de 2 minutos
