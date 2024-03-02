@@ -404,17 +404,19 @@ class _HomePageBodyState extends State<HomePageBody>
           notiController.fetchNotificationList(loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn);
         }
-        if (cont == 9 * 5) {
+        if (cont == 60) {
+          print('con contador en 8 llamo la funcion1 111');
           notiController.fetchNotificationList(loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn);
-          print('con contador en 8 llamo la funcion1');
+
           clientsScheduledController.fetchClientsScheduled(
               loginController.idProfessionalLoggedIn,
               loginController.branchIdLoggedIn);
+          print('con contador en 8 llamo la funcion1 222');
         }
-        if (cont == 10 * 5) {
+        if (cont == 20 || cont == 40 || cont == 60) {
           print(
-              'con contador en 10 entro para activar reloges si fuera necesario');
+              'con contador en 8 llamo la funcion1 con contador en 10 entro para activar reloges si fuera necesario');
           for (var i = 0;
               i < clientsScheduledController.clientsScheduledList.length;
               i++) {
@@ -455,8 +457,10 @@ class _HomePageBodyState extends State<HomePageBody>
               }
             } //fin del if
           }
-          print('vuelvo a poner en 2 a cont');
-          cont = 2;
+          if (cont == 60) {
+            print('vuelvo a poner en 2 a cont');
+            cont = 2;
+          }
         }
         //fin del for
       }
