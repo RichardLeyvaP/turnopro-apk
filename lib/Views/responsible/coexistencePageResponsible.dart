@@ -80,8 +80,8 @@ class _CoexistencePageResponsibleState
                         setState(() {
                           controll.selectedProfessional = newValue;
                           if (newValue != null) {
-                            print('${newValue.name}');
-                            print('${newValue.id}');
+                            print('ijk name ${newValue.name}');
+                            print('ijk id ${newValue.id}');
                             int idProfessional = newValue.id;
                             controll.specificCoexistenceList(idProfessional);
                           }
@@ -163,7 +163,7 @@ class _CoexistencePageResponsibleState
                                                       controll
                                                           .selectedProfessional!
                                                           .id,
-                                                      'Infelizmente no cumpliste la regla : "${controll.coexistence[index].description}"..Esfuerzate más.');
+                                                      'Infelizmente no cumpliste la regla : "${controll.coexistence[index].description}"');
                                                 }
                                                 // Lógica para la opción 1
                                                 Navigator.pop(context,

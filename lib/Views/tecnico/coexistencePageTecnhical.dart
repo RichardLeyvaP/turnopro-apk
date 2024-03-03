@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
 //import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
@@ -129,7 +130,7 @@ class _CoexistencePageTecnhicalState extends State<CoexistencePageTecnhical> {
                                                         borderRadiusValue)),
                                           ),
                                           child: GetBuilder<
-                                                  ClientsScheduledController>(
+                                                  ClientsTechnicalController>(
                                               builder: (controllerClient) {
                                             return ListTile(
                                                 shape:

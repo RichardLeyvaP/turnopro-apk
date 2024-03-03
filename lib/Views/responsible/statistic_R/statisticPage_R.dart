@@ -8,7 +8,9 @@ import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:get/get.dart';
 //import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
-import 'package:turnopro_apk/Views/responsible/statistic_R/stadistica_R.dart';
+import 'package:turnopro_apk/Views/responsible/statistic_R/stadisticaMenRespon.dart';
+import 'package:turnopro_apk/Views/responsible/statistic_R/stadisticaSemRespon.dart';
+import 'package:turnopro_apk/Views/responsible/statistic_R/stadisticaRangoRespon.dart';
 
 class StatisticPageRespon extends StatefulWidget {
   const StatisticPageRespon({super.key});
@@ -28,7 +30,7 @@ class _StatisticPageResponState extends State<StatisticPageRespon>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -112,7 +114,8 @@ class _StatisticPageResponState extends State<StatisticPageRespon>
                   automaticIndicatorColorAdjustment: false,
                   controller: _tabController,
                   tabs: const [
-                    Tab(text: 'Diario'),
+                    Tab(text: 'Rango'),
+                    Tab(text: 'Semanal'),
                     Tab(text: 'Mensual'),
                   ],
                 ),
@@ -123,9 +126,10 @@ class _StatisticPageResponState extends State<StatisticPageRespon>
         body: GetBuilder<StatisticController>(builder: (contStat) {
           return TabBarView(
             controller: _tabController,
-            children: [
-              const StadisticaRespon(),
-              Text('AQUI UN SELECT PARA ESCOGER EL MES'),
+            children: const [
+              StadisticaRespon(),
+              StadisticaSemRespon(),
+              StadisticaMenRespon(),
             ],
           );
         }), // Muestra el AlertDialog

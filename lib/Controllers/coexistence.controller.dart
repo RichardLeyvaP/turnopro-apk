@@ -35,12 +35,12 @@ class CoexistenceController extends GetxController {
 
     //todo esto solo cargarlo cuando sea un Responsable
     if (controllerLogin.chargeUserLoggedIn == "Encargado") {
-      print('llamando fetchBranchProfessionals(); porque soy Encargado');
+      print('llamando _fetchCoexistenceList(); porque soy Encargado');
       fetchBranchProfessionals();
     }
 
     if (controllerLogin.chargeUserLoggedIn == "Cordinador") {
-      print('llamando fetchBranchProfessionals(); porque soy Cordinador');
+      print('llamando _fetchCoexistenceList(); porque soy Cordinador');
       fetchBranchProfessionals();
     }
     //esto CARGAR este metodo si es RESPONSABLE
@@ -72,6 +72,7 @@ class CoexistenceController extends GetxController {
     coexistence = await repository.getCoexistenceList(idProfessional, idBranch);
     print(coexistence.length);
     coexistenceListLength = coexistence.length;
+    print('a15627 coexistenceListLength:${coexistenceListLength}');
     update();
   }
 

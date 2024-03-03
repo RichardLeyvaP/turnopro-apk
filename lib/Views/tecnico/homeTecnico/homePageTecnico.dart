@@ -9,7 +9,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
-import 'package:turnopro_apk/Views/responsible/coexistencePageResponsible.dart';
 import 'package:turnopro_apk/env.dart';
 
 class HomePagesTecnico extends StatefulWidget {
@@ -21,6 +20,7 @@ class HomePagesTecnico extends StatefulWidget {
 
 class _HomePagesTecnicoState extends State<HomePagesTecnico> {
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
+  final NotificationController notiCont = Get.find<NotificationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -79,15 +79,47 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                               ),
                             ),
                             label: 'Agenda'),
-                        BottomNavigationBarItem(
-                            icon: Badge(
-                              label: Text('0'),
-                              child: Icon(
-                                Icons.notifications,
-                                size: MediaQuery.of(context).size.width * 0.08,
-                              ),
-                            ),
-                            label: 'Notificaciones'),
+                        notiCont.notificationListNewLength != 0
+                            ? BottomNavigationBarItem(
+                                icon: Badge(
+                                  label: GetBuilder<NotificationController>(
+                                      builder: (_notiCont) {
+                                    WidgetsBinding.instance
+                                        .addPostFrameCallback((_) {
+                                      // Se ejecutará después de que se haya construido el widget
+                                      //define que tipo de saludo dar dependiendo de la hora
+                                      if (_notiCont.notificationListNewLength !=
+                                          _notiCont.notificationListBack) {
+                                        _notiCont.updateNotificationListBack(
+                                            _notiCont
+                                                .notificationListNewLength);
+                                      }
+                                    });
+
+                                    if (_notiCont.notificationListNewLength !=
+                                            _notiCont.notificationListBack &&
+                                        _notiCont.notificationListNewLength !=
+                                            0) {
+                                      _notiCont.reproducirSound();
+                                    }
+                                    return Text(
+                                        (_notiCont.notificationListNewLength)
+                                            .toString());
+                                  }),
+                                  child: Icon(
+                                    Icons.notifications,
+                                    size: MediaQuery.of(context).size.width *
+                                        0.08,
+                                  ),
+                                ),
+                                label: 'Notificaciones')
+                            : BottomNavigationBarItem(
+                                icon: Icon(
+                                  Icons.notifications,
+                                  size:
+                                      MediaQuery.of(context).size.width * 0.08,
+                                ),
+                                label: 'Notificaciones'),
                         BottomNavigationBarItem(
                             icon: Icon(
                               Icons.bar_chart,

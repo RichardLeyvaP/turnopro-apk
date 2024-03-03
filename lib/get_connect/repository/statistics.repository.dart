@@ -8,13 +8,14 @@ import 'package:turnopro_apk/env.dart';
 import 'package:http/http.dart' as http; // Asegúrate de importar http
 
 class WeeklyStatisticsRepository extends GetConnect {
-  Future getDayStatisticsRespon(idBranch, startDate, endDate, mes) async {
+  Future getDayStatisticsRespon(idBranch, startDate, endDate, mes, year) async {
     try {
       if (idBranch != null) {
         String url = '';
         if (mes != -99) {
           //si manda un mes
-          url = '${Env.apiEndpoint}/branch_winner?branch_id=$idBranch&mes=$mes';
+          url =
+              '${Env.apiEndpoint}/branch_winner?branch_id=$idBranch&mes=$mes&year=$year';
         } else {
           //si no manda un mes es porque manda yn rango de fechas
           url =

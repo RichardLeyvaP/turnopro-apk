@@ -25,7 +25,7 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
 
   @override
   void initState() {
-    super.initState(); //todo REVISAR valor fijo
+    super.initState();
   }
 
   @override
@@ -167,88 +167,36 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                               .height *
                                                           0.006)),
                                                   child: Container(
-                                                    decoration: clientsScheduledController
-                                                            .selectclientsScheduledListTechnical
-                                                            .contains(
-                                                                clientsScheduledController
-                                                                        .clientsScheduledListTechnical[
-                                                                    index])
-                                                        ? BoxDecoration(
-                                                            border: Border.all(
-                                                                width: 0.01),
-                                                            borderRadius:
-                                                                const BorderRadius
-                                                                        .all(
-                                                                    Radius
-                                                                        .circular(
-                                                                            12)),
-                                                            boxShadow: [
-                                                              BoxShadow(
-                                                                color: Colors
-                                                                    .grey
-                                                                    .withOpacity(
-                                                                        0.7),
-                                                                spreadRadius: 1,
-                                                                blurRadius: 5,
-                                                                offset: const Offset(
-                                                                    -5,
-                                                                    5), // Ajusta los valores para personalizar la sombra
-                                                              ),
-                                                            ],
-                                                            gradient:
-                                                                const LinearGradient(
-                                                              colors: [
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    231,
-                                                                    232,
-                                                                    234),
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    243,
-                                                                    182,
-                                                                    138),
-                                                              ],
-                                                              stops: [0.0, 0.8],
-                                                              begin: FractionalOffset
-                                                                  .centerRight,
-                                                              end: FractionalOffset
-                                                                  .centerLeft,
-                                                            ))
-                                                        : BoxDecoration(
-                                                            border: clientsScheduledController
-                                                                        .clientsScheduledListTechnical[
-                                                                            index]
-                                                                        .attended ==
-                                                                    5
-                                                                ? Border.all(
-                                                                    width: 2,
-                                                                    color: const Color(
-                                                                        0xFFF18254))
-                                                                : Border.all(
-                                                                    width:
-                                                                        0.01),
-                                                            color: Colors.white,
-                                                            boxShadow: [
-                                                              BoxShadow(
-                                                                color: Colors
-                                                                    .grey
-                                                                    .withOpacity(
-                                                                        0.7),
-                                                                spreadRadius: 1,
-                                                                blurRadius: 5,
-                                                                offset: const Offset(
-                                                                    -5,
-                                                                    5), // Ajusta los valores para personalizar la sombra
-                                                              ),
-                                                            ],
-                                                            borderRadius:
-                                                                const BorderRadius
-                                                                    .all(
-                                                              Radius.circular(
-                                                                  12),
-                                                            ),
-                                                          ),
+                                                    decoration: BoxDecoration(
+                                                      border: clientsScheduledController
+                                                                  .clientsScheduledListTechnical[
+                                                                      index]
+                                                                  .attended ==
+                                                              5
+                                                          ? Border.all(
+                                                              width: 2,
+                                                              color: const Color(
+                                                                  0xFFF18254))
+                                                          : Border.all(
+                                                              width: 0.01),
+                                                      color: Colors.white,
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.grey
+                                                              .withOpacity(0.7),
+                                                          spreadRadius: 1,
+                                                          blurRadius: 5,
+                                                          offset: const Offset(
+                                                              -5,
+                                                              5), // Ajusta los valores para personalizar la sombra
+                                                        ),
+                                                      ],
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .all(
+                                                        Radius.circular(12),
+                                                      ),
+                                                    ),
                                                     child: ListTile(
                                                       shape:
                                                           const RoundedRectangleBorder(
@@ -303,22 +251,28 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                         index]
                                                                     .car_id)
                                                             .then((_) {
-                                                          ModalHelperTecnical.showModalTechnical(
-                                                              pagesConfigC
-                                                                  .pageController,
-                                                              context,
-                                                              clientsScheduledController
-                                                                  .clientsScheduledListTechnical[
-                                                                      index]
-                                                                  .client_name,
-                                                              clientsScheduledController
-                                                                  .clientsScheduledListTechnical[
-                                                                      index]
-                                                                  .reservation_id,
-                                                              clientsScheduledController
-                                                                  .clientsScheduledListTechnical[
-                                                                      index]
-                                                                  .car_id);
+                                                          ModalHelperTecnical
+                                                              .showModalTechnical(
+                                                                  //todo 1
+                                                                  pagesConfigC
+                                                                      .pageController,
+                                                                  context,
+                                                                  clientsScheduledController
+                                                                      .clientsScheduledListTechnical[
+                                                                          index]
+                                                                      .client_name,
+                                                                  clientsScheduledController
+                                                                      .clientsScheduledListTechnical[
+                                                                          index]
+                                                                      .reservation_id,
+                                                                  clientsScheduledController
+                                                                      .clientsScheduledListTechnical[
+                                                                          index]
+                                                                      .car_id,
+                                                                  clientsScheduledController
+                                                                      .clientsScheduledListTechnical[
+                                                                          index]
+                                                                      .professional_id!);
                                                         });
                                                       },
                                                       title: Row(
@@ -337,76 +291,45 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                 MainAxisAlignment
                                                                     .start,
                                                             children: [
-                                                              clientsScheduledController
-                                                                      .selectclientsScheduledListTechnical
-                                                                      .contains(
-                                                                          clientsScheduledController
-                                                                              .clientsScheduledListTechnical[index])
-                                                                  ? Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .end,
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Icon(
-                                                                          MdiIcons
-                                                                              .formatListNumbered, //todo
-                                                                          color: const Color.fromARGB(
-                                                                              255,
-                                                                              150,
-                                                                              37,
-                                                                              19),
-                                                                        ),
-                                                                        Text(
-                                                                          'Tiempo Total: ${clientsScheduledController.clientsScheduledListTechnical[index].total_time}',
-                                                                          // AQUI CARHA LA HORA INICIAL,
-                                                                          style: const TextStyle(
-                                                                              height: 1.0,
-                                                                              fontSize: 12,
-                                                                              color: Color.fromARGB(255, 150, 37, 19),
-                                                                              fontWeight: FontWeight.bold),
-                                                                        ),
-                                                                      ],
-                                                                    )
-                                                                  : Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .end,
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Icon(
-                                                                          MdiIcons
-                                                                              .clockPlus,
-                                                                          color: const Color.fromARGB(
-                                                                              255,
-                                                                              71,
-                                                                              143,
-                                                                              43),
-                                                                        ),
-                                                                        Text(
-                                                                          '  ${clientsScheduledController.clientsScheduledListTechnical[index].start_time}'
-                                                                          ' - '
-                                                                          ' ${clientsScheduledController.clientsScheduledListTechnical[index].final_hour}',
-                                                                          // '   08:10 - 09:10',
-                                                                          style:
-                                                                              const TextStyle(
-                                                                            height:
-                                                                                1.0,
-                                                                            fontSize:
-                                                                                12,
-                                                                            color: Color.fromARGB(
-                                                                                180,
-                                                                                0,
-                                                                                0,
-                                                                                0),
-                                                                          ),
-                                                                        ),
-                                                                      ],
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .end,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Icon(
+                                                                    MdiIcons
+                                                                        .clockPlus,
+                                                                    color: const Color
+                                                                            .fromARGB(
+                                                                        255,
+                                                                        71,
+                                                                        143,
+                                                                        43),
+                                                                  ),
+                                                                  Text(
+                                                                    '  ${clientsScheduledController.clientsScheduledListTechnical[index].start_time}'
+                                                                    ' - '
+                                                                    ' ${clientsScheduledController.clientsScheduledListTechnical[index].final_hour}',
+                                                                    // '   08:10 - 09:10',
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      height:
+                                                                          1.0,
+                                                                      fontSize:
+                                                                          12,
+                                                                      color: Color
+                                                                          .fromARGB(
+                                                                              180,
+                                                                              0,
+                                                                              0,
+                                                                              0),
                                                                     ),
+                                                                  ),
+                                                                ],
+                                                              ),
                                                               Text(
                                                                 clientsScheduledController
                                                                     .clientsScheduledListTechnical[
@@ -438,14 +361,34 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                 height: 12,
                                                               )
                                                             ],
-                                                          ),
+                                                          ), //SI ESTA VARIABLE ES IGUAL A 1 ES QUE SE ESTA ATENDIENDO
                                                           clientsScheduledController
-                                                                  .selectclientsScheduledListTechnical
-                                                                  .contains(
-                                                                      clientsScheduledController
-                                                                              .clientsScheduledListTechnical[
-                                                                          index])
-                                                              ? const Row(
+                                                                      .clientsScheduledListTechnical[
+                                                                          index]
+                                                                      .attended ==
+                                                                  5
+                                                              ? const Column(
+                                                                  children: [
+                                                                    Image(
+                                                                      image:
+                                                                          AssetImage(
+                                                                        'assets/images/icons/lavado.png',
+                                                                      ),
+                                                                      width: 50,
+                                                                      height:
+                                                                          50,
+                                                                    ),
+                                                                    Text(
+                                                                      'Atendiendose',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Color(
+                                                                            0xFFF18254),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                )
+                                                              : const Row(
                                                                   children: [
                                                                     Opacity(
                                                                       opacity:
@@ -457,62 +400,14 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                         size:
                                                                             60,
                                                                         color: Color.fromARGB(
-                                                                            255,
-                                                                            150,
-                                                                            37,
-                                                                            19),
+                                                                            85,
+                                                                            83,
+                                                                            82,
+                                                                            82),
                                                                       ),
                                                                     ),
                                                                   ],
                                                                 )
-                                                              : //SI ESTA VARIABLE ES IGUAL A 1 ES QUE SE ESTA ATENDIENDO
-                                                              clientsScheduledController
-                                                                          .clientsScheduledListTechnical[
-                                                                              index]
-                                                                          .attended ==
-                                                                      5
-                                                                  ? const Column(
-                                                                      children: [
-                                                                        Image(
-                                                                          image:
-                                                                              AssetImage(
-                                                                            'assets/images/icons/lavado.png',
-                                                                          ),
-                                                                          width:
-                                                                              50,
-                                                                          height:
-                                                                              50,
-                                                                        ),
-                                                                        Text(
-                                                                          'Atendiendose',
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                Color(0xFFF18254),
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    )
-                                                                  : const Row(
-                                                                      //todo 99
-                                                                      children: [
-                                                                        Opacity(
-                                                                          opacity:
-                                                                              1,
-                                                                          child:
-                                                                              Icon(
-                                                                            Icons.play_circle,
-                                                                            size:
-                                                                                60,
-                                                                            color: Color.fromARGB(
-                                                                                85,
-                                                                                83,
-                                                                                82,
-                                                                                82),
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    )
                                                         ],
                                                       ),
                                                       //subtitle: Text(clientsScheduledController.users[index].username.toString()),

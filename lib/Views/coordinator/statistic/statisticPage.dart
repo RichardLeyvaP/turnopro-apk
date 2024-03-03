@@ -119,7 +119,7 @@ class _StatisticPageState extends State<StatisticPage>
                   automaticIndicatorColorAdjustment: false,
                   controller: _tabController,
                   tabs: const [
-                    Tab(text: 'Diario'),
+                    Tab(text: 'Rango'),
                     Tab(text: 'Semananal'),
                     Tab(text: 'Mensual'),
                   ],

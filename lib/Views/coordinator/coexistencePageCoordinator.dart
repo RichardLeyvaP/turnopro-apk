@@ -1,7 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
@@ -9,6 +9,8 @@ import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Models/professional_model.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:turnopro_apk/env.dart';
 
 class CoexistencePageCoordinator extends StatefulWidget {
   const CoexistencePageCoordinator({super.key});
@@ -25,6 +27,16 @@ final PagesConfigController pagesConfigCont = Get.find<PagesConfigController>();
 
 class _CoexistencePageCoordinatorState
     extends State<CoexistencePageCoordinator> {
+  // Utilizar una función o getter para obtener imageDirection
+  String get imageDirection {
+    // Si id es null o igual a -99, devuelve la ruta para la foto de perfil incógnito
+    return '${Env.apiEndpoint}/images/coordinator/default_profile.jpg';
+  }
+
+//
+//
+//
+//
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,35 +84,242 @@ class _CoexistencePageCoordinatorState
               child: Center(
                 child: Column(
                   children: [
-                    DropdownButton<ProfessionalModel>(
-                      value: controll.selectedProfessional,
-                      onChanged: (ProfessionalModel? newValue) {
-                        setState(() {
-                          controll.selectedProfessional = newValue;
-                          if (newValue != null) {
-                            print('${newValue.name}');
-                            print('${newValue.id}');
-                            int idProfessional = newValue.id;
-                            controll.specificCoexistenceList(idProfessional);
-                          }
-                        });
-                      },
-                      items: [
-                        const DropdownMenuItem<ProfessionalModel>(
-                          value: null,
-                          child: Text(' Seleccione un profesional '),
-                        ),
-                        ...profesionales
-                            .map<DropdownMenuItem<ProfessionalModel>>(
-                          (ProfessionalModel profesional) {
-                            return DropdownMenuItem<ProfessionalModel>(
-                              value: profesional,
-                              child: Text(profesional.name),
-                            );
-                          },
-                        ),
-                      ].toList(),
+                    SizedBox(
+                      height: 10,
                     ),
+                    DropdownButtonHideUnderline(
+                      child: DropdownButton2<ProfessionalModel>(
+                        isExpanded: true,
+                        hint: const Row(
+                          children: [
+                            Icon(
+                              Icons.person,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Expanded(
+                              child: Text(
+                                'Selecciona al profesional',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors
+                                      .white, // Cambia el color del texto a blanco
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        value: controll.selectedProfessional,
+                        onChanged: (ProfessionalModel? newValue) {
+                          setState(() {
+                            controll.selectedProfessional = newValue;
+                            if (newValue != null) {
+                              print('${newValue.name}');
+                              print('${newValue.id}');
+                              int idProfessional = newValue.id;
+                              controll.specificCoexistenceList(idProfessional);
+                            }
+                          });
+                        },
+                        items: [
+                          ...profesionales
+                              .map<DropdownMenuItem<ProfessionalModel>>(
+                            (ProfessionalModel profesional) {
+                              return DropdownMenuItem<ProfessionalModel>(
+                                value: profesional,
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundImage:
+                                          NetworkImage(imageDirection),
+                                      radius:
+                                          25, // Ajusta el tamaño del círculo aquí
+                                    ),
+                                    Text(
+                                      '  ${profesional.name} ${profesional.surname}',
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ].toList(),
+                        buttonStyleData: ButtonStyleData(
+                          height: 60,
+                          width: 300,
+                          padding: const EdgeInsets.only(
+                              top: 2, left: 14, right: 14, bottom: 2),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
+                              color: Colors.black26,
+                            ),
+                            color: Color.fromARGB(255, 26, 50, 82),
+                          ),
+                          elevation: 2,
+                        ),
+                        iconStyleData: const IconStyleData(
+                          icon: Icon(
+                            Icons.arrow_forward_ios_outlined,
+                          ),
+                          iconSize: 14,
+                          iconEnabledColor: Colors.white,
+                          iconDisabledColor: Colors.grey,
+                        ),
+                        dropdownStyleData: DropdownStyleData(
+                          maxHeight: 340,
+                          width: 262,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14),
+                            color: Color.fromARGB(155, 26, 50, 82),
+                          ),
+                          offset: const Offset(40, 0),
+                          scrollbarTheme: ScrollbarThemeData(
+                            radius: const Radius.circular(40),
+                            thickness: MaterialStateProperty.all(6),
+                            thumbVisibility: MaterialStateProperty.all(true),
+                          ),
+                        ),
+                        menuItemStyleData: const MenuItemStyleData(
+                          height: 50,
+                          padding:
+                              EdgeInsets.only(left: 14, right: 14, bottom: 5),
+                        ),
+                      ),
+                    ),
+
+                    /*
+                    DropdownButtonHideUnderline(
+                      child: DropdownButton2<String>(
+                        isExpanded: true,
+                        hint: const Row(
+                          children: [
+                            Icon(
+                              Icons.person,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Expanded(
+                              child: Text(
+                                'Selecciona al profesional',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        items: items
+                            .map((String item) => DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Text(
+                                    item,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ))
+                            .toList(),
+                        value: selectedValue,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedValue = value;
+                          });
+                        },
+                        buttonStyleData: ButtonStyleData(
+                          height: 50,
+                          width: 300,
+                          padding: const EdgeInsets.only(left: 14, right: 14),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
+                              color: Colors.black26,
+                            ),
+                            color: Color.fromARGB(255, 26, 50, 82),
+                          ),
+                          elevation: 2,
+                        ),
+                        iconStyleData: const IconStyleData(
+                          icon: Icon(
+                            Icons.arrow_forward_ios_outlined,
+                          ),
+                          iconSize: 14,
+                          iconEnabledColor: Colors.white,
+                          iconDisabledColor: Colors.grey,
+                        ),
+                        dropdownStyleData: DropdownStyleData(
+                          maxHeight: 200,
+                          width: 340,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14),
+                            color: Color.fromARGB(155, 26, 50, 82),
+                          ),
+                          offset: const Offset(-20, 0),
+                          scrollbarTheme: ScrollbarThemeData(
+                            radius: const Radius.circular(40),
+                            thickness: MaterialStateProperty.all(6),
+                            thumbVisibility: MaterialStateProperty.all(true),
+                          ),
+                        ),
+                        menuItemStyleData: const MenuItemStyleData(
+                          height: 40,
+                          padding: EdgeInsets.only(left: 14, right: 14),
+                        ),
+                      ),
+
+                      //
+                      //
+                      //
+                      //
+                      // DropdownButton<ProfessionalModel>(
+                      //   value: controll.selectedProfessional,
+                      //   onChanged: (ProfessionalModel? newValue) {
+                      //     setState(() {
+                      //       controll.selectedProfessional = newValue;
+                      //       if (newValue != null) {
+                      //         print('${newValue.name}');
+                      //         print('${newValue.id}');
+                      //         int idProfessional = newValue.id;
+                      //         controll.specificCoexistenceList(idProfessional);
+                      //       }
+                      //     });
+                      //   },
+                      //   items: [
+                      //     const DropdownMenuItem<ProfessionalModel>(
+                      //       value: null,
+                      //       child: Text(' Seleccione un profesional '),
+                      //     ),
+                      //     ...profesionales
+                      //         .map<DropdownMenuItem<ProfessionalModel>>(
+                      //       (ProfessionalModel profesional) {
+                      //         return DropdownMenuItem<ProfessionalModel>(
+                      //           value: profesional,
+                      //           child: Text(profesional.name),
+                      //         );
+                      //       },
+                      //     ),
+                      //   ].toList(),
+                      // ),
+                    )
+                 */
                   ],
                 ),
               ),
@@ -108,305 +327,659 @@ class _CoexistencePageCoordinatorState
             controll.selectedProfessional != null
                 ? Expanded(
                     flex: 8,
-                    child: ListView.builder(
-                      itemCount: controll.coexistenceListLength,
-                      itemBuilder: (context, index) => Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          (MediaQuery.of(context).size.height * 0.013),
-                          (MediaQuery.of(context).size.height * 0.006),
-                          (MediaQuery.of(context).size.height * 0.013),
-                          (MediaQuery.of(context).size.height * 0.006),
-                        ),
-                        child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: InkWell(
-                            onTap: () {
-                              {
-                                // Mostrar el modal al hacer clic en el botón
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Text(
-                                          controll.coexistence[index].name
-                                              .toString(),
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w800,
-                                          )),
-                                      content: SizedBox(
-                                        width: 150,
-                                        height: 150,
-                                        child: Column(
-                                          children: [
-                                            // Opción 1
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                controllerClient
-                                                    .changeNoncomplianceP(
-                                                        controll
-                                                            .coexistence[index]
-                                                            .type,
-                                                        controllerLogin
-                                                            .branchIdLoggedIn,
-                                                        controll
-                                                            .selectedProfessional!
-                                                            .id,
-                                                        0);
-                                                // Lógica para la opción 1
-                                                Navigator.pop(context,
-                                                    'Opción 1 seleccionada');
-                                              },
-                                              child: Container(
-                                                decoration: const BoxDecoration(
-                                                  color: Color.fromARGB(
-                                                      99, 244, 67, 54),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(4)),
+                    child: controll.coexistenceListLength > 0
+                        ? ListView.builder(
+                            itemCount: controll.coexistenceListLength,
+                            itemBuilder: (context, index) => Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                (MediaQuery.of(context).size.height * 0.013),
+                                (MediaQuery.of(context).size.height * 0.006),
+                                (MediaQuery.of(context).size.height * 0.013),
+                                (MediaQuery.of(context).size.height * 0.006),
+                              ),
+                              child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: InkWell(
+                                  onTap: () {
+                                    {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return GetBuilder<
+                                                  ClientsScheduledController>(
+                                              builder: (_) {
+                                            return Dialog(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                              ), //this right here
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Container(
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      color: Color(0xFF2B3141),
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        topLeft:
+                                                            Radius.circular(8),
+                                                        topRight:
+                                                            Radius.circular(8),
+                                                      ),
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: <Widget>[
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 12),
+                                                          child: Text(
+                                                            controll
+                                                                .coexistence[
+                                                                    index]
+                                                                .name
+                                                                .toString(),
+                                                            style: const TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700),
+                                                          ),
+                                                        ),
+                                                        IconButton(
+                                                          icon: Icon(
+                                                              Icons.close,
+                                                              color:
+                                                                  Colors.white),
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    height: 210,
+                                                    child: Column(
+                                                      children: [
+                                                        //Cart de cumplida
+                                                        InkWell(
+                                                          onTap: () {
+                                                            controllerClient.changeNoncomplianceP(
+                                                                controll
+                                                                    .coexistence[
+                                                                        index]
+                                                                    .type,
+                                                                controllerLogin
+                                                                    .branchIdLoggedIn,
+                                                                controll
+                                                                    .selectedProfessional!
+                                                                    .id,
+                                                                1);
+                                                            // Lógica para la opción 2
+                                                            Navigator.pop(
+                                                                context,
+                                                                'Cumplió');
+                                                          },
+                                                          child: Container(
+                                                            height: 90,
+                                                            width: 210,
+                                                            color: Colors
+                                                                .transparent,
+                                                            child: Stack(
+                                                              children: [
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      top: 28),
+                                                                  child:
+                                                                      Container(
+                                                                    height: 40,
+                                                                    width: 180,
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerLeft,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              10),
+                                                                      border:
+                                                                          Border
+                                                                              .all(
+                                                                        color: Color.fromARGB(
+                                                                            255,
+                                                                            9,
+                                                                            59,
+                                                                            100),
+                                                                        width:
+                                                                            3,
+                                                                      ),
+                                                                      boxShadow: [
+                                                                        BoxShadow(
+                                                                          color: Colors
+                                                                              .black
+                                                                              .withOpacity(0.2),
+                                                                          spreadRadius:
+                                                                              2,
+                                                                          blurRadius:
+                                                                              5,
+                                                                          offset: const Offset(
+                                                                              0,
+                                                                              3),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    child:
+                                                                        const Padding(
+                                                                      padding: EdgeInsets.symmetric(
+                                                                          horizontal:
+                                                                              10),
+                                                                      child:
+                                                                          Text(
+                                                                        'CUMPLIDA',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              20,
+                                                                          color:
+                                                                              Colors.black,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                const Positioned(
+                                                                  top: -3,
+                                                                  right: -6,
+                                                                  bottom: 0,
+                                                                  child: Icon(
+                                                                    Icons.star,
+                                                                    size:
+                                                                        100, // Tamaño de la estrella
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            33,
+                                                                            139,
+                                                                            38),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        //Cart de  imcumplida
+                                                        InkWell(
+                                                          onTap: () {
+                                                            controllerClient.changeNoncomplianceP(
+                                                                controll
+                                                                    .coexistence[
+                                                                        index]
+                                                                    .type,
+                                                                controllerLogin
+                                                                    .branchIdLoggedIn,
+                                                                controll
+                                                                    .selectedProfessional!
+                                                                    .id,
+                                                                0);
+                                                            // Lógica para la opción 1
+                                                            Navigator.pop(
+                                                                context,
+                                                                'Incumplio');
+                                                          },
+                                                          child: Container(
+                                                            height: 90,
+                                                            width: 210,
+                                                            color: Colors
+                                                                .transparent,
+                                                            child: Stack(
+                                                              children: [
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      top: 28),
+                                                                  child:
+                                                                      Container(
+                                                                    height: 40,
+                                                                    width: 180,
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerLeft,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              10),
+                                                                      border:
+                                                                          Border
+                                                                              .all(
+                                                                        color: Color.fromARGB(
+                                                                            255,
+                                                                            9,
+                                                                            59,
+                                                                            100),
+                                                                        width:
+                                                                            3,
+                                                                      ),
+                                                                      boxShadow: [
+                                                                        BoxShadow(
+                                                                          color: Colors
+                                                                              .black
+                                                                              .withOpacity(0.2),
+                                                                          spreadRadius:
+                                                                              2,
+                                                                          blurRadius:
+                                                                              5,
+                                                                          offset: const Offset(
+                                                                              0,
+                                                                              3),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    child:
+                                                                        const Padding(
+                                                                      padding: EdgeInsets.symmetric(
+                                                                          horizontal:
+                                                                              10),
+                                                                      child:
+                                                                          Text(
+                                                                        'INCUMPLIDA',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              20,
+                                                                          color:
+                                                                              Colors.black,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                const Positioned(
+                                                                  top: -3,
+                                                                  right: -6,
+                                                                  bottom: 0,
+                                                                  child: Icon(
+                                                                    Icons.star,
+                                                                    size:
+                                                                        100, // Tamaño de la estrella
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            248,
+                                                                            73,
+                                                                            50),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            );
+                                          });
+                                        },
+                                      );
+
+                                      // Mostrar el modal al hacer clic en el botón
+                                      // showDialog(
+                                      //   context: context,
+                                      //   builder: (BuildContext context) {
+                                      //     return AlertDialog(
+                                      //       title: Text(
+                                      //           controll.coexistence[index].name
+                                      //               .toString(),
+                                      //           style: const TextStyle(
+                                      //             fontSize: 16,
+                                      //             fontWeight: FontWeight.w800,
+                                      //           )),
+                                      //       content: SizedBox(
+                                      //         width: 150,
+                                      //         height: 150,
+                                      //         child: Column(
+                                      //           children: [
+                                      //             // Opción 1
+                                      //             SimpleDialogOption(
+                                      //               onPressed: () {
+                                      //                 controllerClient
+                                      //                     .changeNoncomplianceP(
+                                      //                         controll
+                                      //                             .coexistence[
+                                      //                                 index]
+                                      //                             .type,
+                                      //                         controllerLogin
+                                      //                             .branchIdLoggedIn,
+                                      //                         controll
+                                      //                             .selectedProfessional!
+                                      //                             .id,
+                                      //                         0);
+                                      //                 // Lógica para la opción 1
+                                      //                 Navigator.pop(context,
+                                      //                     'Opción 1 seleccionada');
+                                      //               },
+                                      //               child: Container(
+                                      //                 decoration:
+                                      //                     const BoxDecoration(
+                                      //                   color: Color.fromARGB(
+                                      //                       99, 244, 67, 54),
+                                      //                   borderRadius:
+                                      //                       BorderRadius.all(
+                                      //                           Radius.circular(
+                                      //                               4)),
+                                      //                 ),
+                                      //                 child: const Padding(
+                                      //                   padding: EdgeInsets.all(
+                                      //                       10.0),
+                                      //                   child: Row(
+                                      //                     mainAxisAlignment:
+                                      //                         MainAxisAlignment
+                                      //                             .spaceBetween,
+                                      //                     children: [
+                                      //                       Text('Incumplió'),
+                                      //                       Icon(
+                                      //                         Icons.star,
+                                      //                         size: 30,
+                                      //                         color: Colors.red,
+                                      //                       ),
+                                      //                     ],
+                                      //                   ),
+                                      //                 ),
+                                      //               ),
+                                      //             ),
+                                      //             // Opción 2
+                                      //             SimpleDialogOption(
+                                      //               onPressed: () {
+                                      //                 controllerClient
+                                      //                     .changeNoncomplianceP(
+                                      //                         controll
+                                      //                             .coexistence[
+                                      //                                 index]
+                                      //                             .type,
+                                      //                         controllerLogin
+                                      //                             .branchIdLoggedIn,
+                                      //                         controll
+                                      //                             .selectedProfessional!
+                                      //                             .id,
+                                      //                         1);
+                                      //                 // Lógica para la opción 2
+                                      //                 Navigator.pop(
+                                      //                     context, 'Cumplió');
+                                      //               },
+                                      //               child: Container(
+                                      //                 decoration:
+                                      //                     const BoxDecoration(
+                                      //                   color: Color.fromARGB(
+                                      //                       108, 76, 175, 79),
+                                      //                   borderRadius:
+                                      //                       BorderRadius.all(
+                                      //                           Radius.circular(
+                                      //                               4)),
+                                      //                 ),
+                                      //                 child: const Padding(
+                                      //                   padding: EdgeInsets.all(
+                                      //                       10.0),
+                                      //                   child: Row(
+                                      //                     mainAxisAlignment:
+                                      //                         MainAxisAlignment
+                                      //                             .spaceBetween,
+                                      //                     children: [
+                                      //                       Text('Cumplió'),
+                                      //                       Icon(
+                                      //                         Icons.star,
+                                      //                         size: 30,
+                                      //                         color: Color
+                                      //                             .fromARGB(
+                                      //                                 255,
+                                      //                                 10,
+                                      //                                 116,
+                                      //                                 13),
+                                      //                       ),
+                                      //                     ],
+                                      //                   ),
+                                      //                 ),
+                                      //               ),
+                                      //             ),
+                                      //           ],
+                                      //         ),
+                                      //       ),
+                                      //       // Botón de aceptar
+                                      //       actions: [
+                                      //         Center(
+                                      //           child: Container(
+                                      //             width: 100,
+                                      //             child: ElevatedButton(
+                                      //               style: ButtonStyle(
+                                      //                 padding:
+                                      //                     MaterialStateProperty.all<
+                                      //                         EdgeInsetsGeometry>(
+                                      //                   const EdgeInsets
+                                      //                           .symmetric(
+                                      //                       vertical: 4.0,
+                                      //                       horizontal: 10.0),
+                                      //                 ),
+                                      //                 backgroundColor:
+                                      //                     MaterialStateProperty
+                                      //                         .all<Color>(
+                                      //                             Colors.black),
+                                      //               ),
+                                      //               onPressed: () {
+                                      //                 // Lógica para el botón de aceptar
+                                      //                 Navigator.pop(
+                                      //                     context, 'Cerrar');
+                                      //               },
+                                      //               child: const Center(
+                                      //                 child: Text(
+                                      //                   'Cerrar',
+                                      //                   style: TextStyle(
+                                      //                       color:
+                                      //                           Colors.white),
+                                      //                 ),
+                                      //               ),
+                                      //             ),
+                                      //           ),
+                                      //         ),
+                                      //       ],
+                                      //     );
+                                      //   },
+                                      // );
+                                    }
+                                  },
+                                  child: GetBuilder<ClientsScheduledController>(
+                                      builder: (controllerCient) {
+                                    return Row(
+                                      children: [
+                                        Container(
+                                          height: (MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.11),
+                                          width: (MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              1),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey
+                                                    .withOpacity(0.7),
+                                                spreadRadius: 1,
+                                                blurRadius: 5,
+                                                offset: const Offset(-5, 5),
+                                              ),
+                                            ],
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                              Radius.circular(12),
+                                            ),
+                                          ),
+                                          child: ListTile(
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(12)),
+                                            ),
+                                            title: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    const SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    SizedBox(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.77,
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            controll
+                                                                .coexistence[
+                                                                    index]
+                                                                .name
+                                                                .toString(),
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            controll
+                                                                .coexistence[
+                                                                    index]
+                                                                .description
+                                                                .toString(),
+                                                            maxLines: 2,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 14,
+                                                              color: Color
+                                                                  .fromARGB(148,
+                                                                      0, 0, 0),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                child: const Padding(
-                                                  padding: EdgeInsets.all(10.0),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text('Incumplió'),
-                                                      Icon(
+                                                controllerCient.noncomplianceProfessional[
+                                                            controll
+                                                                .coexistence[
+                                                                    index]
+                                                                .type] ==
+                                                        0
+                                                    ? const Icon(
                                                         Icons.star,
-                                                        size: 30,
                                                         color: Colors.red,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            // Opción 2
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                controllerClient
-                                                    .changeNoncomplianceP(
-                                                        controll
-                                                            .coexistence[index]
-                                                            .type,
-                                                        controllerLogin
-                                                            .branchIdLoggedIn,
-                                                        controll
-                                                            .selectedProfessional!
-                                                            .id,
-                                                        1);
-                                                // Lógica para la opción 2
-                                                Navigator.pop(
-                                                    context, 'Cumplió');
-                                              },
-                                              child: Container(
-                                                decoration: const BoxDecoration(
-                                                  color: Color.fromARGB(
-                                                      108, 76, 175, 79),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(4)),
-                                                ),
-                                                child: const Padding(
-                                                  padding: EdgeInsets.all(10.0),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text('Cumplió'),
-                                                      Icon(
-                                                        Icons.star,
-                                                        size: 30,
-                                                        color: Color.fromARGB(
-                                                            255, 10, 116, 13),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      // Botón de aceptar
-                                      actions: [
-                                        Center(
-                                          child: Container(
-                                            width: 100,
-                                            child: ElevatedButton(
-                                              style: ButtonStyle(
-                                                padding: MaterialStateProperty
-                                                    .all<EdgeInsetsGeometry>(
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 4.0,
-                                                      horizontal: 10.0),
-                                                ),
-                                                backgroundColor:
-                                                    MaterialStateProperty.all<
-                                                        Color>(Colors.black),
-                                              ),
-                                              onPressed: () {
-                                                // Lógica para el botón de aceptar
-                                                Navigator.pop(
-                                                    context, 'Cerrar');
-                                              },
-                                              child: const Center(
-                                                child: Text(
-                                                  'Cerrar',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                              ),
+                                                        shadows: [
+                                                          Shadow(
+                                                              offset: Offset(
+                                                                  0.5, 0.9))
+                                                        ],
+                                                        size: 50,
+                                                      )
+                                                    : controllerCient
+                                                                    .noncomplianceProfessional[
+                                                                controll
+                                                                    .coexistence[
+                                                                        index]
+                                                                    .type] ==
+                                                            1
+                                                        ? const Icon(
+                                                            Icons.star,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    26,
+                                                                    177,
+                                                                    71,
+                                                                    1),
+                                                            shadows: [
+                                                              Shadow(
+                                                                  offset:
+                                                                      Offset(
+                                                                          0.5,
+                                                                          0.9))
+                                                            ],
+                                                            size: 50,
+                                                          )
+                                                        : const Icon(
+                                                            Icons.star,
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    145,
+                                                                    148,
+                                                                    145,
+                                                                    1),
+                                                            shadows: [
+                                                              Shadow(
+                                                                  offset:
+                                                                      Offset(
+                                                                          0.5,
+                                                                          0.9))
+                                                            ],
+                                                            size: 50,
+                                                          ),
+                                              ],
                                             ),
                                           ),
                                         ),
                                       ],
                                     );
-                                  },
-                                );
-                              }
-                            },
-                            child: GetBuilder<ClientsScheduledController>(
-                                builder: (controllerCient) {
-                              return Row(
-                                children: [
-                                  Container(
-                                    height:
-                                        (MediaQuery.of(context).size.height *
-                                            0.11),
-                                    width:
-                                        (MediaQuery.of(context).size.width * 1),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.7),
-                                          spreadRadius: 1,
-                                          blurRadius: 5,
-                                          offset: const Offset(-5, 5),
-                                        ),
-                                      ],
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(12),
-                                      ),
-                                    ),
-                                    child: ListTile(
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(12)),
-                                      ),
-                                      title: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-                                              SizedBox(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.77,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      controll
-                                                          .coexistence[index]
-                                                          .name
-                                                          .toString(),
-                                                      style: const TextStyle(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      controll
-                                                          .coexistence[index]
-                                                          .description
-                                                          .toString(),
-                                                      maxLines: 2,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                        fontSize: 14,
-                                                        color: Color.fromARGB(
-                                                            148, 0, 0, 0),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          controllerCient.noncomplianceProfessional[
-                                                      controll
-                                                          .coexistence[index]
-                                                          .type] ==
-                                                  0
-                                              ? const Icon(
-                                                  Icons.star,
-                                                  color: Colors.red,
-                                                  shadows: [
-                                                    Shadow(
-                                                        offset:
-                                                            Offset(0.5, 0.9))
-                                                  ],
-                                                  size: 50,
-                                                )
-                                              : controllerCient
-                                                              .noncomplianceProfessional[
-                                                          controll
-                                                              .coexistence[
-                                                                  index]
-                                                              .type] ==
-                                                      1
-                                                  ? const Icon(
-                                                      Icons.star,
-                                                      color: Color.fromRGBO(
-                                                          26, 177, 71, 1),
-                                                      shadows: [
-                                                        Shadow(
-                                                            offset: Offset(
-                                                                0.5, 0.9))
-                                                      ],
-                                                      size: 50,
-                                                    )
-                                                  : const Icon(
-                                                      Icons.star,
-                                                      color: Color.fromRGBO(
-                                                          145, 148, 145, 1),
-                                                      shadows: [
-                                                        Shadow(
-                                                            offset: Offset(
-                                                                0.5, 0.9))
-                                                      ],
-                                                      size: 50,
-                                                    ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            }),
-                          ),
-                        ),
-                      ),
-                    ),
+                                  }),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Center(
+                            child: Text(
+                            'No tiene reglas de convivencia definidas aún',
+                            style: TextStyle(fontWeight: FontWeight.w700),
+                          )),
                   )
                 : Expanded(
                     flex: 2,

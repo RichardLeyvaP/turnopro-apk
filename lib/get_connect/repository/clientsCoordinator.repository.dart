@@ -160,40 +160,74 @@ class ClientsCoordinatorRepository extends GetConnect {
     try {
       List<ServiceModel> serviceCustomer = [];
       List<ProductModel> productCustomer = [];
+      String frecuencia = 'No frecuente';
+      String endLook = 'No hay comentarios al respecto';
 
+      print('llamando _fetchCoexistenceList(); --- getClientHistory1');
+      print('llamando _fetchCoexistenceList(); --- idClient:$idClient');
+      print('llamando _fetchCoexistenceList(); --- idBranch:$idBranch');
       var url =
           '${Env.apiEndpoint}/client-history?client_id=$idClient&branch_id=$idBranch';
 
       final response = await get(url);
-
+      print('llamando _fetchCoexistenceList(); --- getClientHistory2');
       // Verifica si hubo algún problema de conexión.
       if (response.statusCode != 200) {
-        print('Error de conexión: ${response.statusCode}');
+        print(
+            'llamando _fetchCoexistenceList(); --- getClientHistory-- response.statusCode != 200');
+        print(
+            'llamando _fetchCoexistenceList(); Error de conexión: ${response.statusCode}');
         return {
           "ConnectionIssues": true,
         };
       } else {
+        print(
+            'llamando _fetchCoexistenceList(); --- getClientHistory -- Conexión exitosa');
         print('Conexión exitosa');
       }
-      print('111jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
+      print(
+          'llamando _fetchCoexistenceList(); 111jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
       // Decodifica el cuerpo de la respuesta.
+
       final Map<String, dynamic> responseBody = response.body['clientHistory'];
+      print(
+          'llamando _fetchCoexistenceList(); 111--111--1111jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
       //aqui cogemos las variables
       String clientName = responseBody['clientName'];
+      print(
+          'llamando _fetchCoexistenceList(); 111--222jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
       String imageLook = responseBody['imageLook'] ?? 'default_profile.jpg';
+      print(
+          'llamando _fetchCoexistenceList(); 111--333jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
       int cantVisit = responseBody['cantVisit'];
-      String endLook = responseBody['endLook'];
-      String frecuencia = responseBody['frecuencia'];
-      print('333jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
+      print(
+          'llamando _fetchCoexistenceList(); 111--444jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
+      if (responseBody['endLook'] is String) {
+        endLook = responseBody['endLook'];
+      }
+
+      print(
+          'llamando _fetchCoexistenceList(); 111--555jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
+      //REVISANDO QUE LLEGUE UN STRING
+      if (responseBody['frecuencia'] is String) {
+        frecuencia = responseBody['frecuencia'];
+      }
+      print(
+          'llamando _fetchCoexistenceList(); 111--666jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
+
       final serv = responseBody['services'];
+      print(
+          'llamando _fetchCoexistenceList(); 111--777jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
       for (Map service in serv) {
         print('1');
         ServiceModel u = ServiceModel.fromJson(jsonEncode(service));
         serviceCustomer.add(u);
         //AQUI LA LOGICA DE SABER CUAL ES EL QUE LE SIGUE
       }
-      print('444jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
+
       final prod = responseBody['products'];
+      print(
+          'llamando _fetchCoexistenceList(); 111--888jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
 //       // //todo LEER TIPOS DE DATOS QUE VIENEN D LA API
 //       for (int i = 0; i < prod.length; i++) {
 //         print(
@@ -210,7 +244,8 @@ class ClientsCoordinatorRepository extends GetConnect {
         productCustomer.add(u);
         //AQUI LA LOGICA DE SABER CUAL ES EL QUE LE SIGUE
       }
-      print('444jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
+      print(
+          'llamando _fetchCoexistenceList(); 555jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
 
       return {
         "clientName": clientName,
@@ -222,7 +257,7 @@ class ClientsCoordinatorRepository extends GetConnect {
         "products": productCustomer
       };
     } catch (e) {
-      print('Error: $e');
+      print('Error llamando _fetchCoexistenceList();: $e');
     }
   }
 

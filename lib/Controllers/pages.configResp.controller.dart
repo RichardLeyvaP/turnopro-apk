@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/Views/responsible/agendaResponsible.dart';
 import 'package:turnopro_apk/Views/responsible/coexistencePageResponsible.dart';
 import 'package:turnopro_apk/Views/responsible/homeResponsibleBodyPage.dart';
 import 'package:turnopro_apk/Views/responsible/statistic_R/statisticPage_R.dart';
@@ -21,9 +22,7 @@ class PagesConfigResponController extends GetxController {
   //todo List<Widget> _pages -> esta esta solo para inicializar pero no es la que funciona
   final List<Widget> pages = [
     HomeResponsibleBodyPages(), // Página 1//todo poner aqui
-    Container(
-        child: Center(
-            child: Text('Aqui van la Agenda'))), // Página 1//todo poner aqui
+    AgendaResponsible(), // Página 1//todo poner aqui
     const NotificationsPageNew(), // Pagina 2 okokokokok
     const StatisticPageRespon(), // Página 3 okkkkkkkk
     const CoexistencePageResponsible(), // Página 4 okkkkk

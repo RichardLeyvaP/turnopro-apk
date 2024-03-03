@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
+import 'package:turnopro_apk/Models/professional_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/env.dart';
 import 'package:intl/intl.dart';
@@ -330,6 +331,32 @@ class ClientsScheduledRepository extends GetConnect {
           'Future<int> returnClientStatus(reservationId) async {:${response.statusCode}');
       return -99;
     }
+  }
+
+  Future getProfessionalState(idBranch) async {
+    List<ProfessionalModel> professionalList = [];
+    var url = '${Env.apiEndpoint}/professional-state?branch_id=$idBranch';
+
+    final response = await get(url);
+    if (response.statusCode == 200) {
+      final professionals = response.body['professionals'];
+      for (Map professional in professionals) {
+        ProfessionalModel u =
+            ProfessionalModel.fromJson(jsonEncode(professional));
+        //AQUI SOLO COJO QUE NO SEAN RESPONSABLES
+        if (u.charge_id != 3 && u.charge_id != 8) {
+          //charge_id=3 es un responsable
+          professionalList.add(u);
+        }
+      }
+      print('getProfessionalState(idBranch) async');
+      print(professionalList.length);
+      print(
+          'getProfessionalState(idBranch) async professionalList.length:${professionalList.length}');
+      return professionalList;
+    }
+
+    return professionalList;
   }
 
   Future<bool> acceptOrRejectClient(reservationId, attended) async {

@@ -49,7 +49,7 @@ class ProfessionalModel {
       surname: map['surname'] ?? '',
       second_surname: map['second_surname'] ?? '',
       email: map['email'] ?? '',
-      phone: map['phone'] ?? '',
+      phone: map['phone'].toString(),
     );
   }
 

@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 //import 'package:lottie/lottie.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -25,6 +26,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
   final ShoppingCartController controllerShoppingCart =
       Get.find<ShoppingCartController>();
   final LoginController controllerLogin = Get.find<LoginController>();
+  final ClientsCoordinatorController clientCorControl =
+      Get.find<ClientsCoordinatorController>();
 
   final PagesConfigResponController pagesConfigReC =
       Get.find<PagesConfigResponController>();
@@ -83,6 +86,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     iniciarLlamadaCada10Segundos();
 //ESTRUCTURA DE LOS CARTS
     final twoPi = 3.14 * 2;
@@ -191,14 +195,19 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               GestureDetector(
-                                onTap: () {
+                                onTap: () async {
+                                  print('cargando valores 1');
+                                  await clientCorControl
+                                      .fetchClientsScheduledBranch(
+                                          controllerLogin.branchIdLoggedIn);
                                   pagesConfigReC.onTabTapped(1);
+                                  print('cargando valores 2');
                                 },
                                 child: cartsHome(
                                     context,
-                                    const Color.fromARGB(255, 81, 93, 117),
-                                    'Agenda',
-                                    'Agenda del día',
+                                    const Color(0xFF2B3141),
+                                    'Clientes',
+                                    'Clientes del día',
                                     Icons.notifications),
                               ),
                               InkWell(

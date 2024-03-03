@@ -28,6 +28,7 @@ dependencies:
   device_info_plus: ^9.1.2
   table_calendar: ^3.0.9
   soundpool: ^2.3.0
+  dropdown_button2: ^2.3.9
   
   
 flutter_native_splash:  

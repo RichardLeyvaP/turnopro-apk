@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
+import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/env.dart';
 
@@ -21,6 +22,9 @@ class _ProfileClientState extends State<ProfileClient> {
   final double valuePadding = 12;
   final PagesConfigController pagesConfigCont =
       Get.find<PagesConfigController>();
+  final ClientsScheduledController clientSchedControl =
+      Get.find<ClientsScheduledController>();
+  final LoginController loginControl = Get.find<LoginController>();
 
   int cantVisitas = 3;
   String imageDirection =
@@ -31,6 +35,8 @@ class _ProfileClientState extends State<ProfileClient> {
     MdiIcons.tag,
     color: const Color.fromARGB(211, 0, 0, 0),
   );
+
+  get closedCompleter => null;
 
   @override
   Widget build(BuildContext context) {
@@ -74,57 +80,61 @@ class _ProfileClientState extends State<ProfileClient> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Stack(children: [
-                Column(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Color.fromARGB(255, 240, 238, 238),
-                          width:
-                              2, // Ajusta el ancho del borde según tus preferencias
+              Column(
+                children: [
+                  Column(
+                    children: [
+                      Stack(children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Color.fromARGB(255, 240, 238, 238),
+                              width:
+                                  2, // Ajusta el ancho del borde según tus preferencias
+                            ),
+                          ),
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(imageDirection),
+                            radius: 40, // Ajusta el tamaño del círculo aquí
+                          ),
                         ),
-                      ),
-                      child: CircleAvatar(
-                        backgroundImage: NetworkImage(imageDirection),
-                        radius: 40, // Ajusta el tamaño del círculo aquí
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      controllerCoord.clientNameCORD,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 20),
-                    ),
-                    Text(
-                      'Visitas : ${controllerCoord.cantVisitCORD}',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 12),
-                    ),
-                  ],
-                ),
-                Positioned(
-                  top: 68,
-                  right: 78,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: const Color(0xFFF18254)
-                        // Puedes agregar otras propiedades de estilo aquí si es necesario
+                        Positioned(
+                          top: 68,
+                          right: 4,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: const Color(0xFFF18254)
+                                // Puedes agregar otras propiedades de estilo aquí si es necesario
+                                ),
+                            width: 80,
+                            height: 16,
+                            child: Center(
+                              child: Text(
+                                controllerCoord.frecuenciaCORD,
+                                style: TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.w800),
+                              ),
+                            ),
+                          ),
                         ),
-                    width: 80,
-                    height: 16,
-                    child: Center(
-                      child: Text(
-                        controllerCoord.frecuenciaCORD,
-                        style: TextStyle(
-                            fontSize: 10, fontWeight: FontWeight.w800),
-                      ),
-                    ),
+                      ]),
+                    ],
                   ),
-                ),
-              ]),
+                  SizedBox(height: 10),
+                  Text(
+                    controllerCoord.clientNameCORD,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w700, fontSize: 20),
+                  ),
+                  Text(
+                    'Visitas : ${controllerCoord.cantVisitCORD}',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w600, fontSize: 12),
+                  ),
+                ],
+              ),
               SizedBox(
                 width: (MediaQuery.of(context).size.width * 0.14),
               ),
@@ -174,16 +184,17 @@ class _ProfileClientState extends State<ProfileClient> {
                       height: MediaQuery.of(context).size.height * 0.35,
                       child: Column(
                         children: [
-                          cardOptions(
-                              context,
-                              Icon(
-                                MdiIcons.camera,
-                                color: const Color.fromARGB(211, 0, 0, 0),
-                              ),
-                              'Último look',
-                              pagesConfigCont,
-                              pagesConfigCont.pageController2,
-                              null),
+                          cardOptionsImage(
+                            context,
+                            Icon(
+                              MdiIcons.camera,
+                              color: const Color.fromARGB(211, 0, 0, 0),
+                            ),
+                            'Último look',
+                            pagesConfigCont,
+                            pagesConfigCont.pageController2,
+                            controllerCoord.endLookCORD,
+                          ),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(12),
                             child: Image.network(
@@ -221,103 +232,151 @@ class _ProfileClientState extends State<ProfileClient> {
                                 builder: (BuildContext context) {
                                   return GetBuilder<ClientsScheduledController>(
                                       builder: (_) {
-                                    return AlertDialog(
-                                      title: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text(
-                                            'Eliminar',
-                                          ),
-                                          InkWell(
-                                              onTap: () {
-                                                Navigator.pop(
-                                                    context, 'Cerrar');
-                                              },
-                                              child: CircleAvatar(
-                                                  backgroundColor: Colors.black,
-                                                  child: Icon(
-                                                    Icons.close,
-                                                    color: Colors.white,
-                                                  )))
-                                        ],
-                                      ),
-                                      content: SizedBox(
-                                        width: 110,
-                                        height: 135,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 10),
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors.grey),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                    ),
-                                                    child: TextFormField(
-                                                      controller:
-                                                          commentController, // Asignar el controlador al TextFormField
-                                                      maxLines: 4,
-                                                      decoration:
-                                                          const InputDecoration(
-                                                        border:
-                                                            InputBorder.none,
-                                                        hintText:
-                                                            'Escribe el motivo porque va a ser eliminado el cliente...',
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
+                                    return Dialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ), //this right here
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          Container(
+                                            decoration: const BoxDecoration(
+                                              color: Color(0xFF2B3141),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(8),
+                                                topRight: Radius.circular(8),
                                               ),
                                             ),
-                                            const SizedBox(height: 20),
-                                          ],
-                                        ),
-                                      ),
-                                      // Botón de aceptar
-                                      actions: [
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.black,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                const Padding(
+                                                  padding:
+                                                      EdgeInsets.only(left: 12),
+                                                  child: Text(
+                                                    'Comentario',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(Icons.close,
+                                                      color: Colors.white),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                          onPressed: () async {
-                                            // Lógica para enviar el comentario
+                                          Container(
+                                            height: 210,
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    left: 16,
+                                                    right: 16,
+                                                  ),
+                                                  child: TextFormField(
+                                                    controller:
+                                                        commentController,
+                                                    maxLines: 5,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      border: InputBorder.none,
+                                                      hintText:
+                                                          'Escribe el motivo porque va a ser eliminado el cliente...',
+                                                      hintStyle: TextStyle(
+                                                        color: Color.fromARGB(
+                                                            137, 43, 49, 65),
+                                                      ), // Cambiar el color del hintText
+                                                    ),
+                                                  ),
+                                                ),
+                                                //
 
-                                            // Obtener el valor del campo de texto
-                                            //   String commentText =  commentController.text;
+                                                ButtonBar(
+                                                  alignment: MainAxisAlignment
+                                                      .spaceEvenly,
+                                                  children: <Widget>[
+                                                    ElevatedButton(
+                                                      style: ButtonStyle(
+                                                        padding:
+                                                            MaterialStateProperty
+                                                                .all<
+                                                                    EdgeInsetsGeometry>(
+                                                          const EdgeInsets
+                                                                  .symmetric(
+                                                              vertical: 0,
+                                                              horizontal: 26.0),
+                                                        ),
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all<Color>(Color(
+                                                                    0xFF2B3141)),
+                                                      ),
+                                                      onPressed: () async {
+                                                        // Lógica para enviar el comentario
+                                                        // Obtener el valor del campo de texto
+                                                        String commentText =
+                                                            commentController
+                                                                .text;
+                                                        // Eliminar espacios en blanco al principio y al final
+                                                        String
+                                                            textWithoutSpaces =
+                                                            commentText.trim();
 
-                                            // Eliminar espacios en blanco al principio y al final
-                                            String textWithoutSpaces =
-                                                ''; //commentText.trim();
+                                                        // Verificar que el campo no esté vacío
+                                                        if (textWithoutSpaces
+                                                            .isNotEmpty) {
+                                                          // Cerrar el primer modal
+                                                          Navigator.pop(
+                                                              context);
 
-                                            // Verificar que el campo no esté vacío
-                                            if (textWithoutSpaces.isNotEmpty) {
-                                              // Cerrar el primer modal
-                                              Navigator.pop(context);
-
-                                              // Lógica para enviar el comentario
-                                              // await controllClient
-                                              //     .acceptOrRejectClient(
-                                              //         reservationId, 2);
-                                            } else {
-                                              // El campo de texto está vacío, puedes mostrar un mensaje o realizar alguna acción
-                                              print(
-                                                  'El comentario no puede estar vacío');
-                                            }
-                                          },
-                                          child:
-                                              const Text('Enviar y Eliminar'),
-                                        ),
-                                      ],
+                                                          print(
+                                                              'El comentario enviado - $commentText ');
+                                                        } else {
+                                                          // El campo de texto está vacío, puedes mostrar un mensaje o realizar alguna acción
+                                                          print(
+                                                              'El comentario no puede estar vacío');
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          const Text(
+                                                            'ENVIAR y ELIMINAR',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w800),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 6,
+                                                          ),
+                                                          Icon(
+                                                            MdiIcons.send,
+                                                            color: Colors.white,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     );
                                   });
                                 },
@@ -349,6 +408,9 @@ class _ProfileClientState extends State<ProfileClient> {
                               // Añadir más propiedades de estilo aquí
                             ),
                             onPressed: () async {
+                              //llamar el ENPOINT professional-state
+                              await clientSchedControl.getProfessionalState(
+                                  loginControl.branchIdLoggedIn);
                               pagesConfigCont.onTabTapped(1);
                             },
                             child: const Text(
@@ -384,9 +446,8 @@ class _ProfileClientState extends State<ProfileClient> {
         await pagesConfigCont.showAppBar(false);
 
         // pageController2.jumpToPage(1);
-        if (page != null) {
-          pagesConfigCont.goToPage(page, pageController2);
-        }
+
+        pagesConfigCont.goToPage(page, pageController2);
 
         /*pageController2.nextPage(
           duration: Duration(milliseconds: 300),
@@ -418,34 +479,13 @@ class _ProfileClientState extends State<ProfileClient> {
                 height: 35,
                 child: icon,
               ),
-              page != null
-                  ? Text(
-                      title.toString(),
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title.toString(),
-                          style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              height: 1.2),
-                        ),
-                        Text(
-                          'Le queda bien el degradado desde el 0',
-                          style: const TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w300,
-                              height: 1.2),
-                        ),
-                      ],
-                    )
+              Text(
+                title.toString(),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              )
             ],
           ),
           subtitle: null,
@@ -456,6 +496,67 @@ class _ProfileClientState extends State<ProfileClient> {
                   size: 30.0,
                 )
               : null,
+        ),
+      ),
+    );
+  }
+
+  InkWell cardOptionsImage(
+      BuildContext context,
+      icon,
+      title,
+      PagesConfigController pagesConfigCont,
+      PageController pageController2,
+      endLook) {
+    return InkWell(
+      onTap: () async {
+        print('estoy dando click');
+      },
+      child: Container(
+        height: (MediaQuery.of(context).size.height * 0.07),
+        width: (MediaQuery.of(context).size.width * 0.95),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
+        child: ListTile(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+          ),
+          title: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Agrega un contenedor para alinear el icono al centro verticalmente
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(55, 124, 123, 123),
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                ),
+                margin: const EdgeInsets.only(right: 10),
+                width: 35,
+                height: 35,
+                child: icon,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title.toString(),
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w600, height: 1.2),
+                  ),
+                  Text(
+                    endLook,
+                    style: const TextStyle(
+                        fontSize: 13, fontWeight: FontWeight.w300, height: 1.2),
+                  ),
+                ],
+              )
+            ],
+          ),
+          subtitle: null,
+          trailing: null,
         ),
       ),
     );

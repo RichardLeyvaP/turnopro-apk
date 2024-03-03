@@ -146,7 +146,7 @@ class ClientsCoordinatorController extends GetxController {
           (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
       clientsScheduledListBranchLength = clientsScheduledListBranch.length;
       print(
-          '-******-*********-*-****-* $clientsScheduledListBranchLength -****-************-* ');
+          'cargando valores -******-*********-*-****-* lenght: $clientsScheduledListBranchLength -****-************-* ');
       //
     }
     update();
@@ -824,41 +824,45 @@ class ClientsCoordinatorController extends GetxController {
 
 //todo este es el que estoy haciendo
   Future<void> getClientHistory(idClient, idBranch, idReserv) async {
-    print('estoy en :Controller getClientHistory(idClient, idBranch)');
-    Map<String, dynamic> resultList =
-        await repository.getClientHistory(idClient, idBranch);
-    print(resultList);
-    //verificando , si entra al if es problemas de coneccion
-    if (resultList.containsKey('ConnectionIssues') &&
-        resultList['ConnectionIssues'] == true) {
-      correctConnection = false;
-      print(
-          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
-    } else {
-      correctConnection = true;
+    try {
+      print('estoy en :Controller getClientHistory(idClient, idBranch)');
+      Map<String, dynamic> resultList =
+          await repository.getClientHistory(idClient, idBranch);
+      print(resultList);
+      //verificando , si entra al if es problemas de coneccion
+      if (resultList.containsKey('ConnectionIssues') &&
+          resultList['ConnectionIssues'] == true) {
+        correctConnection = false;
+        print(
+            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
+      } else {
+        correctConnection = true;
 
-      //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
-      clientNameCORD = resultList['clientName'];
-      imageLookCORD = resultList['imageLook'];
-      cantVisitCORD = resultList['cantVisit'];
-      endLookCORD = resultList['endLook'];
-      frecuenciaCORD = resultList['frecuencia'];
-      productCORD = resultList['products'];
-      serviceCORD = resultList['services'];
-      clientIdCORD = idClient;
-      idReservCORD = idReserv;
+        //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+        clientNameCORD = resultList['clientName'];
+        imageLookCORD = resultList['imageLook'];
+        cantVisitCORD = resultList['cantVisit'];
+        endLookCORD = resultList['endLook'];
+        frecuenciaCORD = resultList['frecuencia'];
+        productCORD = resultList['products'];
+        serviceCORD = resultList['services'];
+        clientIdCORD = idClient;
+        idReservCORD = idReserv;
 
-      print(clientNameCORD);
-      print(imageLookCORD);
-      print(cantVisitCORD);
-      print(endLookCORD);
-      print(frecuenciaCORD);
-      print(frecuenciaCORD);
-      print(productCORD);
-      print(serviceCORD);
-      print(clientIdCORD);
+        print(clientNameCORD);
+        print(imageLookCORD);
+        print(cantVisitCORD);
+        print(endLookCORD);
+        print(frecuenciaCORD);
+        print(frecuenciaCORD);
+        print(productCORD);
+        print(serviceCORD);
+        print(clientIdCORD);
+      }
+      update();
+    } catch (e) {
+      print('llamando _fetchCoexistenceList(); error del catch:$e');
     }
-    update();
   }
 
   String truncateText(String text, int maxLength) {

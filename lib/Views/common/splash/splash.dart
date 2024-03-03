@@ -35,26 +35,25 @@ class _SplashPageState extends State<SplashPage> {
               image: AssetImage(
                 'assets/images/ico.png',
               ),
-              width: 90,
-              height: 90,
+              width: 88,
+              height: 88,
             ),
+          ),
+          SizedBox(
+            height: 4,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              BounceInRight(
-                duration: const Duration(seconds: 4),
-                delay: const Duration(seconds: 1),
-                child: const Visibility(
-                  visible: true,
-                  child: Text(
-                    'Simplifies',
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
-                  ),
+              const Visibility(
+                visible: true,
+                child: Text(
+                  '  Simplifies',
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
                 ),
               ),
               const SizedBox(
-                width: 8,
+                width: 10,
               ),
               FadeIn(
                 duration: const Duration(seconds: 2),

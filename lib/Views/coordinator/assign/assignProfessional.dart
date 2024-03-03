@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/env.dart';
@@ -123,30 +124,31 @@ class _AssignProfessionalState extends State<AssignProfessional> {
           //shadowColor: Colors.amber, // Removes visual elevation
         ),
         backgroundColor: const Color.fromARGB(255, 231, 232, 234),
-        body: GetBuilder<NotificationController>(
+        body: GetBuilder<ClientsScheduledController>(
           builder: (_) {
-            return 1 == 4 //todo saber si hay barberos disponibles
+            return 1 == 4 //aqui si no ha cargado aun mostrar el  indicador
                 ? const Center(
                     child: CircularProgressIndicator(
                       color: Color.fromARGB(255, 241, 130, 84),
                     ),
                   )
-                : 5 > 0 //todo si hay cargarlos aqui
+                : _.professionalDisponLength > 0 //todo si hay cargarlos aqui
                     ? Column(
                         children: [
                           Expanded(
-                            flex: 1,
+                            flex:
+                                1, //cantidad aqui de profesionales disponibles
                             child: ListView.builder(
-                              itemCount: 5,
+                              itemCount: _.professionalDisponLength,
                               itemBuilder: (context, index) {
                                 // Utiliza la función cardOptions para construir cada Card
                                 return cardOptions(
-                                  context,
-                                  // Pasa aquí los datos necesarios para cardOptions
-                                  icon,
-                                  title,
-                                  name,
-                                );
+                                    context,
+                                    // Pasa aquí los datos necesarios para cardOptions
+                                    icon,
+                                    title,
+                                    '${_.professionalDispon[index].name}  ${_.professionalDispon[index].surname}',
+                                    _.professionalDispon[index].id);
                               },
                             ),
                           ),
@@ -161,7 +163,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
     });
   }
 
-  Padding cardOptions(BuildContext context, icon, title, name) {
+  Padding cardOptions(BuildContext context, icon, title, name, idProfess) {
     return Padding(
       padding: const EdgeInsets.only(right: 10, top: 8, left: 10),
       child: Container(
@@ -264,9 +266,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                         int clientIdCORD = clientCord.clientIdCORD;
                         int reservationId = clientCord.idReservCORD;
                         bool result = await clientCord.reasignedClient(
-                            reservationId,
-                            clientIdCORD,
-                            3); //todo profesional esta fijo
+                            reservationId, clientIdCORD, idProfess);
                         if (result == true) {
                           Get.snackbar(
                             'Mensaje',
@@ -281,6 +281,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                                 const AlwaysStoppedAnimation(Color(0xFFF18254)),
                             overlayBlur: 3,
                           );
+                          //ENVIAR UNA NOTIFICACION AL PROFESSIONAL //TODO
                         } else {
                           {
                             Get.snackbar(

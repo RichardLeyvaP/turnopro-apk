@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
+import 'package:turnopro_apk/Models/professional_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/get_connect/repository/clientsScheduled.repository.dart';
@@ -56,6 +57,8 @@ class ClientsScheduledController extends GetxController {
   String technicalClientsAttended = 'nobody';
   List<ServiceModel> serviceCustomerSelected = [];
   List<ServiceModel> serviceCustomerSelectedForm = [];
+  List<ProfessionalModel> professionalDispon = [];
+  int professionalDisponLength = 0;
 
   int clientsScheduledListLength = 0;
   int clientsTechnicalLength = 0;
@@ -481,6 +484,13 @@ class ClientsScheduledController extends GetxController {
   void modifingTimeClose() {
     modifyTime.addAll([-1]);
     activeModifyTime = false;
+    update();
+  }
+
+  Future getProfessionalState(idBranch) async {
+    //todo nuevo
+    professionalDispon = await repository.getProfessionalState(idBranch);
+    professionalDisponLength = professionalDispon.length;
     update();
   }
 

@@ -137,14 +137,17 @@ class ShoppingCartController extends GetxController {
     //TODO REVISAR ESTA FUNCION BIEN CONEXION INTERNET
     try {
       final ServiceController controllerService = Get.find<ServiceController>();
+
       if (controllerService.loadedFirstTime == false) {
         await controllerService.loadListService();
       }
       await _fetchServiceList(); //todo revisar para que yo queria saber si tenia servicio y productos el profesional
       // await _fetchProductList();
+
       print('************* onReady:****serviceCart:${serviceCart.length}');
       // _fetchProductList();
       loadCart();
+
       //******************************************************************************** */
       internetError = 0;
     } catch (e) {

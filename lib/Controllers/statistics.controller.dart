@@ -96,24 +96,27 @@ class StatisticController extends GetxController {
     }
   }
 
-  Future<void> getDataStatisticRespon(
-      startDateIn, endDateIn, numberdayWeekIn, quantityDatesIn, mes) async {
+  Future<void> getDataStatisticRespon(startDateIn, endDateIn, numberdayWeekIn,
+      quantityDatesIn, mes, year) async {
     //todo asi mapea bien
     print('111111 getDataStatisticRespon');
     final LoginController controllerLogin = Get.find<LoginController>();
     earningByDays.clear();
     averageEarnings = 0.0;
     totalEarnings = 0.0;
-    dateRange = '';
-    if (quantityDatesIn > 7) {
-      quantityDates = 7;
-    } else {
-      quantityDates = quantityDatesIn;
+    if (mes == -99 && year == -99) {
+      dateRange = '';
+      if (quantityDatesIn > 7) {
+        quantityDates = 7;
+      } else {
+        quantityDates = quantityDatesIn;
+      }
+      dateRange = '   $startDateIn  -  $endDateIn';
     }
-    dateRange = '   $startDateIn  -  $endDateIn';
+
     try {
       var responStad = await weeklyStatisticsRepository.getDayStatisticsRespon(
-          controllerLogin.branchIdLoggedIn, startDateIn, endDateIn, mes);
+          controllerLogin.branchIdLoggedIn, startDateIn, endDateIn, mes, year);
       print('respuest getDataStatisticRespon----$responStad');
 
       if (responStad['Monto Generado'] != 0) {
@@ -121,11 +124,12 @@ class StatisticController extends GetxController {
         update();
       } else {
         statisticsGeneralRespon = {};
-        print('Resultados correctos pero vacio');
+        print('Resultados getDataStatisticRespon CORRECTOS pero vacio');
       }
       update();
     } catch (e) {
-      // print('Error StatisticController en getDataStatistic :$e');
+      print(
+          'Resultados getDataStatisticRespon ERROR StatisticController en getDataStatistic :$e');
     }
   }
 
