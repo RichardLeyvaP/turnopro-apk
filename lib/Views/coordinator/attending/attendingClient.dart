@@ -205,7 +205,7 @@ class _AttendingClientState extends State<AttendingClient> {
                                   children: [
                                     const Icon(
                                       Icons.person,
-                                      color: const Color.fromARGB(255, 43, 44, 49),
+                                      color: Colors.black,
                                       size: 22,
                                     ),
                                     Text(
@@ -226,7 +226,7 @@ class _AttendingClientState extends State<AttendingClient> {
                                   children: [
                                     const Icon(
                                       Icons.person,
-                                      color: const Color.fromARGB(255, 43, 44, 49),
+                                      color: Colors.black,
                                       size: 22,
                                     ),
                                     Text(
@@ -246,7 +246,7 @@ class _AttendingClientState extends State<AttendingClient> {
                                   children: [
                                     const Icon(
                                       Icons.person,
-                                      color: const Color.fromARGB(255, 43, 44, 49),
+                                      color: Colors.black,
                                       size: 22,
                                     ),
                                     Text(

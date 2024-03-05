@@ -78,7 +78,7 @@ class ModalHelper {
     //                       Navigator.pop(context); // Cierra el modal
     //                     },
     //                     child: const CircleAvatar(
-    //                         backgroundColor: const Color.fromARGB(255, 43, 44, 49),
+    //                         backgroundColor: Colors.black,
     //                         child: Icon(
     //                           Icons.close,
     //                           color: Colors.white,

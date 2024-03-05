@@ -187,8 +187,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 Text(
                                   'Dashboard',
                                   style: TextStyle(
-                                      color:
-                                          const Color.fromARGB(255, 43, 44, 49),
+                                      color: Colors.black,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700),
                                 ),
@@ -348,8 +347,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   children: [
                                     const Icon(
                                       Icons.person,
-                                      color:
-                                          const Color.fromARGB(255, 43, 44, 49),
+                                      color: Colors.black,
                                       size: 22,
                                     ),
                                     Text(
@@ -371,8 +369,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   children: [
                                     const Icon(
                                       Icons.person,
-                                      color:
-                                          const Color.fromARGB(255, 43, 44, 49),
+                                      color: Colors.black,
                                       size: 22,
                                     ),
                                     Text(
@@ -392,8 +389,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   children: [
                                     const Icon(
                                       Icons.person,
-                                      color:
-                                          const Color.fromARGB(255, 43, 44, 49),
+                                      color: Colors.black,
                                       size: 22,
                                     ),
                                     Text(

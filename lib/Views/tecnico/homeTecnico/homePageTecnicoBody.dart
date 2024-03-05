@@ -336,9 +336,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                       children: [
                                                         const Icon(
                                                           Icons.person,
-                                                          color: const Color
-                                                                  .fromARGB(
-                                                              255, 43, 44, 49),
+                                                          color: Colors.black,
                                                           size: 22,
                                                         ),
                                                         Text(
@@ -521,7 +519,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                           Text(
                             'Dashboard',
                             style: TextStyle(
-                                color: const Color.fromARGB(255, 43, 44, 49),
+                                color: Colors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700),
                           ),

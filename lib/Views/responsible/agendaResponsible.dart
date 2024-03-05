@@ -192,8 +192,7 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                                   children: [
                                     const Icon(
                                       Icons.person,
-                                      color:
-                                          const Color.fromARGB(255, 43, 44, 49),
+                                      color: Colors.black,
                                     ),
                                     Text(
                                       controllerclient

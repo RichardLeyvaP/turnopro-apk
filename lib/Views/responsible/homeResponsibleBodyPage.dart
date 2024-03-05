@@ -189,7 +189,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                           Text(
                             'Dashboard',
                             style: TextStyle(
-                                color: const Color.fromARGB(255, 43, 44, 49),
+                                color: Colors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700),
                           ),

@@ -223,7 +223,7 @@ class _ProfileClientState extends State<ProfileClient> {
                                     horizontal: 60.0), // Ajusta el padding
                               ),
                               backgroundColor: MaterialStateProperty.all<Color>(
-                                  const Color.fromARGB(255, 43, 44, 49)),
+                                  Colors.black),
                               // Añadir más propiedades de estilo aquí
                             ),
                             onPressed: () async {
@@ -432,8 +432,7 @@ class _ProfileClientState extends State<ProfileClient> {
                                   Colors.white),
                               side: MaterialStateProperty.all<BorderSide>(
                                 BorderSide(
-                                    color:
-                                        const Color.fromARGB(255, 43, 44, 49),
+                                    color: Colors.black,
                                     width:
                                         2.0), // Ajusta el grosor del borde según sea necesario
                               ),
@@ -451,7 +450,7 @@ class _ProfileClientState extends State<ProfileClient> {
                               'REASIGNAR',
                               style: TextStyle(
                                   fontSize: 12,
-                                  color: const Color.fromARGB(255, 43, 44, 49),
+                                  color: Colors.black,
                                   fontWeight: FontWeight.w800),
                             )),
                       ],
@@ -518,8 +517,7 @@ class _ProfileClientState extends State<ProfileClient> {
           trailing: page != null
               ? Icon(
                   Icons.navigate_next,
-                  color: const Color.fromARGB(
-                      255, 43, 44, 49), // Cambia el color a negro
+                  color: Colors.black, // Cambia el color a negro
                   size: 30.0,
                 )
               : null,

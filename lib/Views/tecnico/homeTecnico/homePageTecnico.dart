@@ -200,7 +200,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Text(
                   logUser.greeting,
                   style: const TextStyle(
-                    color: const Color.fromARGB(255, 43, 44, 49),
+                    color: Colors.black,
                     fontSize: 14,
                     height: 1.0,
                   ),
@@ -208,7 +208,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Text(
                   logUser.nameUserLoggedIn,
                   style: const TextStyle(
-                    color: const Color.fromARGB(255, 43, 44, 49),
+                    color: Colors.black,
                     fontSize: 14,
                     fontWeight: FontWeight.w900,
                     height: 1.2,
@@ -217,7 +217,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 const Text(
                   'Técnico',
                   style: TextStyle(
-                      color: const Color.fromARGB(255, 43, 44, 49),
+                      color: Colors.black,
                       fontSize: 12,
                       height: 1.2,
                       fontWeight: FontWeight.w100),

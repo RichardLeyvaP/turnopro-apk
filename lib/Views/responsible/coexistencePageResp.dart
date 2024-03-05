@@ -162,7 +162,7 @@ class _CoexistencePageResponsibleState
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14),
                             border: Border.all(
-                              color: const Color.fromARGB(255, 43, 44, 49),
+                              color: Colors.black26,
                             ),
                             color: Color.fromARGB(255, 26, 50, 82),
                           ),
@@ -581,7 +581,7 @@ class _CoexistencePageResponsibleState
                                       //                 backgroundColor:
                                       //                     MaterialStateProperty
                                       //                         .all<Color>(
-                                      //                             const Color.fromARGB(255, 43, 44, 49)),
+                                      //                             Colors.black),
                                       //               ),
                                       //               onPressed: () {
                                       //                 // Lógica para el botón de aceptar
@@ -808,7 +808,7 @@ class _CoexistencePageResponsibleState
                                 const TextSpan(
                                   text: 'Por favor ',
                                   style: TextStyle(
-                                      fontSize: 14.0, color: const Color.fromARGB(255, 43, 44, 49)),
+                                      fontSize: 14.0, color: Colors.black),
                                 ),
                                 TextSpan(
                                   text: controllerLogin.nameUserLoggedIn,
@@ -824,7 +824,7 @@ class _CoexistencePageResponsibleState
                                   text:
                                       ', seleccione algún profesional y podrá modificar las reglas del mismo.',
                                   style: TextStyle(
-                                      fontSize: 14.0, color: const Color.fromARGB(255, 43, 44, 49)),
+                                      fontSize: 14.0, color: Colors.black),
                                 ),
                               ],
                             ),

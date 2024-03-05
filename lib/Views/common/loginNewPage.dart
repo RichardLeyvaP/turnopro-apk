@@ -105,9 +105,9 @@ class LoginNewPage extends StatelessWidget {
                                           horizontal:
                                               60.0), // Ajusta el padding
                                     ),
-                                    backgroundColor: MaterialStateProperty.all<
-                                            Color>(
-                                        const Color.fromARGB(255, 43, 44, 49)),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.black),
                                     // Añadir más propiedades de estilo aquí
                                   ),
                                   onPressed: () {
@@ -146,8 +146,7 @@ class LoginNewPage extends StatelessWidget {
                                     'QR SCANNER',
                                     style: TextStyle(
                                         fontSize: 12,
-                                        color: const Color.fromARGB(
-                                            255, 43, 44, 49),
+                                        color: Colors.black,
                                         fontWeight: FontWeight.w800),
                                   )),
                             ],
