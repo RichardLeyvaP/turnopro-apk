@@ -448,12 +448,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Icon(
-                                    Icons.delete,
-                                    color: Colors.black,
-                                  ),
                                   Text(
-                                    titulo,
+                                    ' $titulo',
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontFamily: AutofillHints.familyName,
@@ -470,12 +466,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                   children: [
                                     Text(
                                         service
-                                            ? contShopp
-                                                .orderDeleteCar[i].nameService
-                                                .toString()
-                                            : contShopp
-                                                .orderDeleteCar[i].nameProduct
-                                                .toString(),
+                                            ? ' ${contShopp.orderDeleteCar[i].nameService}'
+                                            : ' ${contShopp.orderDeleteCar[i].nameProduct}',
                                         style: TextStyle(
                                             fontSize: (MediaQuery.of(context)
                                                     .size
@@ -498,9 +490,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Icon(
-                                    Icons.person,
-                                    color: Color.fromARGB(180, 0, 0, 0),
+                                  Icon(
+                                    MdiIcons.accountTie,
                                   ),
                                   Text(
                                     contShopp.orderDeleteCar[i].nameProfesional

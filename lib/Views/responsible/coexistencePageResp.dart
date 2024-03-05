@@ -1,32 +1,32 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
-import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
+import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 import 'package:turnopro_apk/Models/professional_model.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:turnopro_apk/env.dart';
 
-class CoexistencePageCoordinator extends StatefulWidget {
-  const CoexistencePageCoordinator({super.key});
+class CoexistencePageResponsible extends StatefulWidget {
+  const CoexistencePageResponsible({super.key});
 
   @override
-  _CoexistencePageCoordinatorState createState() =>
-      _CoexistencePageCoordinatorState();
+  _CoexistencePageResponsibleState createState() =>
+      _CoexistencePageResponsibleState();
 }
 
 final ClientsScheduledController controllerClient =
     Get.find<ClientsScheduledController>();
 final LoginController controllerLogin = Get.find<LoginController>();
-final PagesConfigController pagesConfigCont = Get.find<PagesConfigController>();
+final PagesConfigResponController pagesConfigCont =
+    Get.find<PagesConfigResponController>();
 
-class _CoexistencePageCoordinatorState
-    extends State<CoexistencePageCoordinator> {
+class _CoexistencePageResponsibleState
+    extends State<CoexistencePageResponsible> {
   // Utilizar una función o getter para obtener imageDirection
   String get imageDirection {
     // Si id es null o igual a -99, devuelve la ruta para la foto de perfil incógnito

@@ -430,16 +430,19 @@ class ModalHelper {
                           },
                           child: Row(
                             children: [
+                              Icon(
+                                MdiIcons.send,
+                                color: Colors.white,
+                                //size: 25,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
                               const Text(
                                 'ENVIAR AL TÉCNICO',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800),
-                              ),
-                              Icon(
-                                MdiIcons.sendCircleOutline,
-                                color: Colors.white,
-                                size: 25,
                               ),
                             ],
                           ),
@@ -758,16 +761,19 @@ class ModalHelper {
                           },
                           child: Row(
                             children: [
+                              Icon(
+                                MdiIcons.stop,
+                                color: Colors.white,
+                                // size: 25,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
                               const Text(
                                 'CLIENTE ATENDIDO',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800),
-                              ),
-                              Icon(
-                                MdiIcons.stopCircleOutline,
-                                color: Colors.white,
-                                size: 25,
                               ),
                             ],
                           ),

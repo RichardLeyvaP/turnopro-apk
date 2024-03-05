@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/Views/responsible/agendaResponsible.dart';
-import 'package:turnopro_apk/Views/responsible/coexistencePageResponsible.dart';
+import 'package:turnopro_apk/Views/responsible/coexistencePageResp.dart';
 import 'package:turnopro_apk/Views/responsible/homeResponsibleBodyPage.dart';
 import 'package:turnopro_apk/Views/responsible/statistic_R/statisticPage_R.dart';
 

@@ -193,7 +193,6 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                                     const Icon(
                                       Icons.person,
                                       color: Colors.black,
-                                      size: 22,
                                     ),
                                     Text(
                                       controllerclient
@@ -212,10 +211,8 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    const Icon(
-                                      Icons.person,
-                                      color: Colors.black,
-                                      size: 22,
+                                    Icon(
+                                      MdiIcons.clockOutline,
                                     ),
                                     Text(
                                       '${controllerclient.clientsScheduledListBranch[index].start_time} - ${controllerclient.clientsScheduledListBranch[index].final_hour}',
@@ -232,10 +229,8 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    const Icon(
-                                      Icons.person,
-                                      color: Colors.black,
-                                      size: 22,
+                                    Icon(
+                                      MdiIcons.accountTie,
                                     ),
                                     Text(
                                       controllerclient
