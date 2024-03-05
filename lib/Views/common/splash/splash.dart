@@ -48,7 +48,7 @@ class _SplashPageState extends State<SplashPage> {
               const Visibility(
                 visible: true,
                 child: Text(
-                  '  Simplifies',
+                  '     Simplifies',
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
                 ),
               ),

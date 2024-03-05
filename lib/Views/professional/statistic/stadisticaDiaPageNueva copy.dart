@@ -52,7 +52,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
                   fontWeight: FontWeight.w700,
                   color: showAvg
                       ? const Color(0xFFF18254).withOpacity(1)
-                      : Colors.black,
+                      : const Color.fromARGB(255, 43, 44, 49),
                 ),
               ),
             ),

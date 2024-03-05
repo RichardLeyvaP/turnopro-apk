@@ -8,7 +8,7 @@ class BarChartSample6 extends StatelessWidget {
   final pilateColor = const Color.fromARGB(180, 76, 75, 75);
   final cyclingColor = const Color.fromARGB(255, 68, 135, 211);
   final quickWorkoutColor = const Color(0xFFF18254);
-  final sexWorkoutColor = Colors.black;
+  final sexWorkoutColor = const Color.fromARGB(255, 43, 44, 49);
 
   // final pilateColor = AppColors.contentColorPurple;
   // final cyclingColor = AppColors.contentColorCyan;

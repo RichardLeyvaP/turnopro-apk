@@ -434,10 +434,12 @@ class _StadisticaSemanalPageNuevaState
                         formatButtonVisible: false,
                       ),
                       daysOfWeekStyle: const DaysOfWeekStyle(
-                        weekdayStyle:
-                            TextStyle(color: Colors.black, fontSize: 12),
-                        weekendStyle:
-                            TextStyle(color: Colors.black, fontSize: 12),
+                        weekdayStyle: TextStyle(
+                            color: const Color.fromARGB(255, 43, 44, 49),
+                            fontSize: 12),
+                        weekendStyle: TextStyle(
+                            color: const Color.fromARGB(255, 43, 44, 49),
+                            fontSize: 12),
                       ),
                       // availableCalendarFormats: const {
                       //   CalendarFormat.month: 'Mes',

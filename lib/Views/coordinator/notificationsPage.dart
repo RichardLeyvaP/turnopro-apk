@@ -304,7 +304,12 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
                                                         children: [
                                                           Icon(
                                                             MdiIcons.accountTie,
-                                                            color: Colors.black,
+                                                            color: const Color
+                                                                    .fromARGB(
+                                                                255,
+                                                                43,
+                                                                44,
+                                                                49),
                                                             size: _.selectNotification
                                                                     .contains(
                                                                         _.notification[
