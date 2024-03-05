@@ -87,7 +87,7 @@ class LoginNewPage extends StatelessWidget {
                             height: 12,
                           ),
                           const Text(
-                            'Estamos emocionados de tenerte como parte de nuestro equipo,para comenzar a trabajar presione QR SCANNER,si no estás trabajando y necesitas revisar tus estadisticas,agendas,etc. presione LOGIN',
+                            'Estamos emocionados de tenerte como parte de nuestro equipo,para comenzar a trabajar presione QR SCANNER,si no estás trabajando y necesitas revisar tus Estadísticas,agendas,etc. presione LOGIN',
                             style: TextStyle(fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(

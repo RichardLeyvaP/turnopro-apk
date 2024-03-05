@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class StadisticaMenRespon extends StatefulWidget {
-  const StadisticaMenRespon({super.key});
+class StadisticaMenCordi extends StatefulWidget {
+  const StadisticaMenCordi({super.key});
 
   @override
-  State<StadisticaMenRespon> createState() => _StadisticaMenResponState();
+  State<StadisticaMenCordi> createState() => _StadisticaMenCordiState();
 }
 
-class _StadisticaMenResponState extends State<StadisticaMenRespon> {
+class _StadisticaMenCordiState extends State<StadisticaMenCordi> {
   final StatisticController controllerStatistic =
       Get.find<StatisticController>();
   List<String> direcc = [

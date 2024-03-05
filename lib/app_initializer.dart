@@ -27,5 +27,6 @@ class AppInitializer {
     Get.put(StatisticController());
     Get.put(PagesConfigController());
     Get.put(PagesConfigResponController());
+    Get.put(ServiceController());
   }
 }

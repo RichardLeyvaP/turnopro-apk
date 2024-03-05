@@ -52,7 +52,7 @@ class LoginController extends GetxController {
 
   void getGreeting() {
     // Obtener la hora actual
-    DateTime now = DateTime.now();
+    /* DateTime now = DateTime.now();
 
     // Obtener la hora del día
     int hour = now.hour;
@@ -65,7 +65,8 @@ class LoginController extends GetxController {
       greeting = 'Buenas tardes ';
     } else {
       greeting = 'Buenas noches ';
-    }
+    }*/
+    greeting = 'Hola ';
     update();
   }
 
@@ -174,7 +175,7 @@ class LoginController extends GetxController {
         result = await usuarioLg.userLogout(token);
         if (result != null) {
           await clearSessionData();
-          Get.offAllNamed('/loginNewPage');
+          Get.offAllNamed('/LoginFormPage');
         } else {
           print('NO CERRO SECION');
         }

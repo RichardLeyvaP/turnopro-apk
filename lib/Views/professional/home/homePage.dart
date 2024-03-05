@@ -70,8 +70,10 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
           backgroundColor: const Color.fromARGB(255, 231, 232, 234),
           appBar: pagesConfigController.selectedIndex == 0
               ? CustomAppBar(
-                  id: loginController
-                      .idProfessionalLoggedIn) //aqui paso el id del profesional que es el nombre de la imagen
+                  id: loginController.idProfessionalLoggedIn ==
+                          3 //todo falta ponerlo dinamico
+                      ? 3
+                      : -99) //aqui paso el id del profesional que es el nombre de la imagen
               : null,
           body: PageView(
             controller: pagesConfigController.pageHomeController,
@@ -152,7 +154,7 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                               Icons.bar_chart,
                               size: MediaQuery.of(context).size.width * 0.08,
                             ),
-                            label: 'Estadistica'),
+                            label: 'Estadística'),
                         BottomNavigationBarItem(
                           icon: Icon(
                             Icons.star,
@@ -238,8 +240,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     color: Colors.black,
                     fontSize: 14,
                     fontWeight: FontWeight.w900,
-                    height: 1.0,
+                    height: 1.2,
                   ),
+                ),
+                const Text(
+                  'Barbero',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      height: 1.2,
+                      fontWeight: FontWeight.w100),
                 ),
               ],
             ),
@@ -253,7 +263,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               _.exit(_.tokenUserLoggedIn); //todo
 
               // _.exit();
-              // Get.offAllNamed('/loginNewPage');
+              // Get.offAllNamed('/LoginFormPage');
             },
             child: Row(
               children: [
@@ -283,7 +293,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       await clCont.upadateVariablesValueTimers();
                       _.exit(_
                           .tokenUserLoggedIn); //todooooooooooooooooooooooooooooooooooooooooo
-                      // Get.offAllNamed('/loginNewPage');
+                      // Get.offAllNamed('/LoginFormPage');
                     },
                     child: CircleAvatar(
                       radius: 22, // Tamaño del CircleAvatar

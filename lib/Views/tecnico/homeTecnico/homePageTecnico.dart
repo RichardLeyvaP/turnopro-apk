@@ -125,7 +125,7 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                               Icons.bar_chart,
                               size: MediaQuery.of(context).size.width * 0.08,
                             ),
-                            label: 'Estadistica'),
+                            label: 'Estadística'),
                         BottomNavigationBarItem(
                           icon: Icon(
                             Icons.star,
@@ -198,7 +198,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  'Técnico-${logUser.greeting}',
+                  logUser.greeting,
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 14,
@@ -211,8 +211,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     color: Colors.black,
                     fontSize: 14,
                     fontWeight: FontWeight.w900,
-                    height: 1.0,
+                    height: 1.2,
                   ),
+                ),
+                const Text(
+                  'Técnico',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      height: 1.2,
+                      fontWeight: FontWeight.w100),
                 ),
               ],
             ),
@@ -226,7 +234,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               _.exit(_.tokenUserLoggedIn); //todo
 
               // _.exit();
-              // Get.offAllNamed('/loginNewPage');
+              // Get.offAllNamed('/LoginFormPage');
             },
             child: Row(
               children: [
@@ -254,7 +262,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   onTap: () {
                     _.exit(_
                         .tokenUserLoggedIn); //todooooooooooooooooooooooooooooooooooooooooo
-                    // Get.offAllNamed('/loginNewPage');
+                    // Get.offAllNamed('/LoginFormPage');
                   },
                   child: CircleAvatar(
                     radius: 22, // Tamaño del CircleAvatar

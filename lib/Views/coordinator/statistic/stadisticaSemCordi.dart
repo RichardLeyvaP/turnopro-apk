@@ -6,14 +6,14 @@ import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class StadisticaSemRespon extends StatefulWidget {
-  const StadisticaSemRespon({super.key});
+class StadisticaSemCordi extends StatefulWidget {
+  const StadisticaSemCordi({super.key});
 
   @override
-  State<StadisticaSemRespon> createState() => _StadisticaSemResponState();
+  State<StadisticaSemCordi> createState() => _StadisticaSemCordiState();
 }
 
-class _StadisticaSemResponState extends State<StadisticaSemRespon> {
+class _StadisticaSemCordiState extends State<StadisticaSemCordi> {
   List<String> direcc = [
     'assets/images/icons/montoGen.png',
     'assets/images/icons/propina.png',

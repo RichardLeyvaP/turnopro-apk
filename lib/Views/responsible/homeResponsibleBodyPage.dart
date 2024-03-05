@@ -66,9 +66,11 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
           await controllerShoppingCart
               .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
           controllerShoppingCart.setLoading(false);
+          clientCorControl
+              .fetchClientsScheduledBranch(controllerLogin.branchIdLoggedIn);
         }
       }
-      if (cont == 4) {
+      if (cont == 4 || cont == 10 || cont == 20) {
         //estoy entrando cada 8 segundos
         print('Aqui entro solo ACTUALIZAR');
         if (controllerLogin.branchIdLoggedIn != null &&
@@ -78,8 +80,12 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
           await controllerShoppingCart
               .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
           controllerShoppingCart.setLoading(false);
+          clientCorControl
+              .fetchClientsScheduledBranch(controllerLogin.branchIdLoggedIn);
         }
-        cont = 0;
+        if (cont == 20) {
+          cont = 1;
+        }
       }
     });
   }
@@ -240,7 +246,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                   );*/
                                   // Get.snackbar(
                                   //   'Mensaje',
-                                  //   'Aqui van las Estadisticas',
+                                  //   'Aqui van las Estadísticas',
                                   //   duration:
                                   //       const Duration(milliseconds: 1500),
                                   //   showProgressIndicator: true,
@@ -255,7 +261,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 child: cartsHome(
                                     context,
                                     const Color.fromARGB(255, 177, 174, 174),
-                                    'Estadisticas',
+                                    'Estadísticas',
                                     'Revisa Tus Ingresos',
                                     Icons.bar_chart),
                               ),

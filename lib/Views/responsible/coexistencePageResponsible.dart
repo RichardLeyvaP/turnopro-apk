@@ -157,13 +157,13 @@ class _CoexistencePageResponsibleState
                                                         0);
                                                 if (result == true) {
                                                   notiController.storeNotification(
-                                                      'Incumplimiento de convivencia',
+                                                      'Convivencia',
                                                       controllerLogin
                                                           .branchIdLoggedIn,
                                                       controll
                                                           .selectedProfessional!
                                                           .id,
-                                                      'Infelizmente no cumpliste la regla : "${controll.coexistence[index].description}"');
+                                                      'Infelizmente incumpliste la regla de convivencia : "${controll.coexistence[index].description}"');
                                                 }
                                                 // Lógica para la opción 1
                                                 Navigator.pop(context,
@@ -432,7 +432,9 @@ class _CoexistencePageResponsibleState
                       ),
                     ),
                   )
-                : Expanded(
+                : Text(' ')
+            /*
+                Expanded(
                     flex: 2,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -486,7 +488,7 @@ class _CoexistencePageResponsibleState
                       ),
                     ),
                   )
-            //todo
+            */
             //AQUI PONER EL SINO HA SELECCIONADO A NADIE
           ],
         );

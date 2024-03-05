@@ -7,14 +7,10 @@ import 'package:turnopro_apk/Routes/index.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:turnopro_apk/Views/coordinator/assign/assignProfessional.dart';
 import 'package:turnopro_apk/Views/coordinator/homeCoordinator/homeCoordinatorPage.dart';
-import 'package:turnopro_apk/Views/coordinator/product/productClient.dart';
 import 'package:turnopro_apk/Views/coordinator/profile/profileClient.dart';
-import 'package:turnopro_apk/Views/coordinator/services/servicesClient.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/clientsScheduled(NO%20UTILIZADA).dart';
 import 'package:turnopro_apk/Views/professional/statistic/statisticPage.dart';
-import 'package:turnopro_apk/Views/responsible/coexistencePageResponsible.dart';
 import 'package:turnopro_apk/Views/responsible/homeResponsiblePage.dart';
 import 'package:turnopro_apk/Views/professional/shoppingCartPage.dart';
 import 'package:turnopro_apk/Views/responsible/statistic_R/statisticPage_R.dart';

@@ -343,10 +343,13 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                         FontWeight
                                                                             .w600),
                                                               ),
-                                                              const Text(
-                                                                'Barbero: (Nombre del Barbero)',
+                                                              Text(
+                                                                clientsScheduledController
+                                                                    .clientsScheduledListTechnical[
+                                                                        index]
+                                                                    .professional_name!,
                                                                 style:
-                                                                    TextStyle(
+                                                                    const TextStyle(
                                                                   fontSize: 14,
                                                                   color: Color
                                                                       .fromARGB(

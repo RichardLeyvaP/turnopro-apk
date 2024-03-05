@@ -508,6 +508,23 @@ class ClientsScheduledController extends GetxController {
     }
   }
 
+  Future<void> deleteReservationClient(reservationId, cause) async {
+    try {
+      bool value =
+          await repository.deleteReservationClient(reservationId, cause);
+      //si lo que devuelve es true actualizo la cola
+      if (value == true) {
+        print(
+            'Cliente eliminado correctamente de la cola deleteReservationClient value = :$value');
+      } else {
+        print(
+            'Cliente NO fue eliminado de la cola deleteReservationClient value = :$value');
+      }
+    } catch (e) {
+      print('deleteReservationClient value e:$e');
+    }
+  }
+
   Future<void> storeByReservationId(
       imag, reservationId, commentText, dioClient) async {
     bool value = await repository.storeByReservationId(
@@ -806,6 +823,7 @@ class ClientsScheduledController extends GetxController {
         print(
             'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
       } else {
+        print('con contador en 8 llamo la funcion3');
         correctConnection = true;
         //aqui estoy guardando la cola del dia de hoy del profesional
         clientsScheduledList =

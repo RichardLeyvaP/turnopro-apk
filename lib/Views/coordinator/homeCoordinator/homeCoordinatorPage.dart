@@ -103,6 +103,7 @@ class _HomeCoordinatorPagesState extends State<HomeCoordinatorPages>
                               .jumpToPage(0); //AQUI VA  AL HOME
                           pagesConfigController.showAppBar(true);
                         }
+
                         print('mostrando aqui el valor de index : $index');
                         pagesConfigController.onTabTapped(index);
                       },
@@ -115,8 +116,12 @@ class _HomeCoordinatorPagesState extends State<HomeCoordinatorPages>
                             label: 'Home'),
                         BottomNavigationBarItem(
                             icon: Badge(
-                              label: Text(
-                                  '${controClient.clientsScheduledListLength}'),
+                              label: GetBuilder<ClientsCoordinatorController>(
+                                  builder: (cCordContr) {
+                                return Text(
+                                    '${cCordContr.clientAttendBranchLength}');
+                              }),
+                              //  '${controClient.clientsScheduledListLength}'),
                               child: Icon(
                                 Icons.perm_contact_calendar,
                                 size: MediaQuery.of(context).size.width * 0.08,
@@ -158,7 +163,7 @@ class _HomeCoordinatorPagesState extends State<HomeCoordinatorPages>
                               Icons.bar_chart,
                               size: MediaQuery.of(context).size.width * 0.08,
                             ),
-                            label: 'Estadistica'),
+                            label: 'Estadística'),
                         BottomNavigationBarItem(
                           icon: Icon(
                             Icons.star,
@@ -244,8 +249,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     color: Colors.black,
                     fontSize: 14,
                     fontWeight: FontWeight.w900,
-                    height: 1.0,
+                    height: 1.2,
                   ),
+                ),
+                const Text(
+                  'Coordinador',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      height: 1.2,
+                      fontWeight: FontWeight.w100),
                 ),
               ],
             ),
@@ -259,7 +272,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               _.exit(_.tokenUserLoggedIn); //todo
 
               // _.exit();
-              // Get.offAllNamed('/loginNewPage');
+              // Get.offAllNamed('/LoginFormPage');
             },
             child: Row(
               children: [
@@ -287,7 +300,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   onTap: () {
                     _.exit(_
                         .tokenUserLoggedIn); //todooooooooooooooooooooooooooooooooooooooooo
-                    // Get.offAllNamed('/loginNewPage');
+                    // Get.offAllNamed('/LoginFormPage');
                   },
                   child: CircleAvatar(
                     radius: 22, // Tamaño del CircleAvatar

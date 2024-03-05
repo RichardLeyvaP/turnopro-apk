@@ -1,9 +1,11 @@
 // ignore_for_file: depend_on_referenced_packages
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/Views/coordinator/coexistencePageCoordinator.dart';
 import 'package:turnopro_apk/Views/coordinator/homeCoordinator/homeCoordinatorBody.dart';
+import 'package:turnopro_apk/Views/coordinator/statistic/statisticPageCordi.dart';
 import 'package:turnopro_apk/Views/professional/home/homePageBody.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/clientsScheduled.dart';
 import 'package:turnopro_apk/Views/tecnico/clientsScheduled/homePageViewTechnical.dart';
@@ -20,6 +22,8 @@ class PagesConfigController extends GetxController {
 //DECLARACION DE VARIABLES
   NotificationController notiController = Get.find<NotificationController>();
   LoginController logController = Get.find<LoginController>();
+  ClientsCoordinatorController clientsScheduledController =
+      Get.find<ClientsCoordinatorController>();
   bool isLoading = true;
   bool loadedFirstTime = false;
   int selectedIndex = 0;
@@ -113,9 +117,10 @@ class PagesConfigController extends GetxController {
   //todo List<Widget> _pages3
   final List<Widget> pages3 = [
     const HomeCoordinatorBody(), // Página 1//todo ESTOY EN ESTA
-    const AssignProfessional(), // Página 2
+    const AttendingClient(), // Página 2
     const NotificationsPageProf(), // Página 3
-    const StatisticPage(), // Página 4
+    const StatisticPageCordin(),
+    // const StatisticPage(), // Página 4
     const CoexistencePageCoordinator(), // Página 5
   ]; //todo List<Widget> _pages31
   final List<Widget> pages31 = [
@@ -124,6 +129,7 @@ class PagesConfigController extends GetxController {
     const ProductClient(), // Página 3
     const AttendingClient(), // Página 4
     const CoexistencePageCoordinator(), // Página 5
+    const AssignProfessional(), // Página 6
   ];
 
   @override
@@ -141,7 +147,21 @@ class PagesConfigController extends GetxController {
     //CON ESTO GARANDIZO QUE SI DA EN EL MISMO TAB QUE NO VUELVA A DIBUJAR EL WIDGET,SOLO QUE DIBUJE CUANDO DE EN UNO DIFERENTE
     print('selectedIndex:$selectedIndex');
     print('index:$index');
+
     if (selectedIndex != index) {
+      /*  if (index == 1 && logController.chargeUserLoggedIn == 'Cordinador') {
+        await showAppBar(false);
+        await clientsScheduledController
+            .clientsAttendBranch(logController.branchIdLoggedIn);
+        goToPage(4, pageController2);
+        selectedIndexBack = selectedIndex;
+        selectedIndex = index;
+        selectedIndexBackList.add(selectedIndexBack);
+        // pageHomeController.jumpToPage(index);
+        //
+
+        update();
+      } else {*/
       if (index == 2) {
         print('llamar a notificACIONES-1');
         int idBranch = logController.branchIdLoggedIn!;
@@ -150,6 +170,7 @@ class PagesConfigController extends GetxController {
             idBranch, idProfess); //3 es deyler
         print('llamar a notificACIONES-2 listo');
       }
+
       selectedIndexBack = selectedIndex;
       selectedIndex = index;
       selectedIndexBackList.add(selectedIndexBack);
@@ -157,6 +178,7 @@ class PagesConfigController extends GetxController {
       //
 
       update();
+      //}
     }
   }
 

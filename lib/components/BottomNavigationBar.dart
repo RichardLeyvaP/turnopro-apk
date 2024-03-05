@@ -107,7 +107,7 @@ class _BottomNavigationBarNewState extends State<BottomNavigationBarNew> {
                     Icons.bar_chart,
                     size: MediaQuery.of(context).size.width * 0.08,
                   ),
-                  label: 'Estadistica'),
+                  label: 'Estadística'),
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.insert_emoticon,
@@ -152,7 +152,7 @@ class StatisticsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Estadisticas Page'));
+    return const Center(child: Text('Estadísticas Page'));
   }
 }
 

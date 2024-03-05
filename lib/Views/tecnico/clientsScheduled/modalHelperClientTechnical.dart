@@ -165,7 +165,7 @@ class ModalHelperTecnical {
                                 'Cliente Regresando',
                                 loginController.branchIdLoggedIn,
                                 idProf,
-                                'El Reloj del cliente $cliente ha sido reaunudado y está disponible para culminar el servicio con usted.');
+                                ' El cliente $cliente ya está disponible para que continúes con el servicio');
                             Navigator.pop(context); // Cierra el modal
                           },
                           child: Row(

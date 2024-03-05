@@ -121,7 +121,7 @@ class _StadisticaMensualPageNuevaState
                         child: ElevatedButton(
                           style: const ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
-                            Color.fromARGB(255, 0, 0, 0),
+                            const Color.fromARGB(255, 43, 44, 49),
                           )),
                           onPressed: () async {
                             await controllerStatistic.getDataStatisticMen(
@@ -159,7 +159,7 @@ class _StadisticaMensualPageNuevaState
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              'No tiene estadisticas en el mes de  ($mesEscogido)',
+                              'No tiene Estadísticas en el mes de  ($mesEscogido)',
                               style: const TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 16),
                             ),
@@ -168,7 +168,7 @@ class _StadisticaMensualPageNuevaState
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              'No tiene estadisticas hasta el momento',
+                              'No tiene Estadísticas hasta el momento',
                               style: const TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 16),
                             ),

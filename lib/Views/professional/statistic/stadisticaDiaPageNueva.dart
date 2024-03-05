@@ -121,13 +121,13 @@ class _LineChartSample2State extends State<LineChartSample2> {
                         ),
                         if (startDate1 != null && endDate1 != null) ...[
                           Text(
-                            'No tiene estadisticas en ($startDate1 - $endDate1)',
+                            'No tiene Estadísticas en ($startDate1 - $endDate1)',
                             style: const TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 16),
                           ),
                         ] else ...[
                           Text(
-                            'No tiene estadisticas en $dateAct',
+                            'No tiene Estadísticas en $dateAct',
                             style: const TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 16),
                           )
@@ -333,7 +333,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
                         ElevatedButton(
                           style: const ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
-                            Color.fromARGB(255, 0, 0, 0),
+                            const Color.fromARGB(255, 43, 44, 49),
                           )),
                           onPressed: () {
                             setState(() {
@@ -349,7 +349,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
                             ? ElevatedButton(
                                 style: const ButtonStyle(
                                     backgroundColor: MaterialStatePropertyAll(
-                                  Color.fromARGB(255, 0, 0, 0),
+                                  const Color.fromARGB(255, 43, 44, 49),
                                 )),
                                 onPressed: () async {
                                   /*  String formattedStartDate = DateFormat('yyyy-MM-dd')

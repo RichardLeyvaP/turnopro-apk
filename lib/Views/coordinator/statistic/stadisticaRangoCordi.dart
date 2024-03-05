@@ -6,14 +6,14 @@ import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class StadisticaSemRespon extends StatefulWidget {
-  const StadisticaSemRespon({super.key});
+class StadisticaCordi extends StatefulWidget {
+  const StadisticaCordi({super.key});
 
   @override
-  State<StadisticaSemRespon> createState() => _StadisticaSemResponState();
+  State<StadisticaCordi> createState() => _StadisticaCordiState();
 }
 
-class _StadisticaSemResponState extends State<StadisticaSemRespon> {
+class _StadisticaCordiState extends State<StadisticaCordi> {
   List<String> direcc = [
     'assets/images/icons/montoGen.png',
     'assets/images/icons/propina.png',
@@ -29,6 +29,7 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
     'assets/images/icons/seleccionado.png',
     'assets/images/icons/aleatorio.png',
   ];
+
   @override
   Widget build(BuildContext context) {
     //ASIGNANDO LA FECHA ACTUAL
@@ -74,7 +75,7 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
                             controllerStat.dateRange == ''
                                 ? '  seleccione una fecha'
                                 : dateActual == controllerStat.dateRange
-                                    ? '   Seleccione una semana'
+                                    ? '   Fecha de Hoy- $dateAct'
                                     : controllerStat.dateRange,
                             style: const TextStyle(
                                 color: Color.fromARGB(130, 0, 0, 0)),
@@ -109,22 +110,16 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
                           height: 10,
                         ),
                         if (startDate1 != null && endDate1 != null) ...[
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'No tiene Estadísticas en la semana seleccionada de  ($startDate1 - $endDate1)',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w700, fontSize: 16),
-                            ),
+                          Text(
+                            'No tiene Estadísticas en ($startDate1 - $endDate1)',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 16),
                           ),
                         ] else ...[
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'No tiene Estadísticas en la semana seleccionada de $dateAct',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w700, fontSize: 16),
-                            ),
+                          Text(
+                            'No tiene Estadísticas en $dateAct',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 16),
                           )
                         ]
                       ],
@@ -274,43 +269,20 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
   }
 
   int currentStep = 0;
-  CalendarFormat _calendarFormat = CalendarFormat.week;
+  CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
   TextEditingController textContDate = TextEditingController();
-  DateTime? startDate = DateTime(1990, 1,
-      1); // Variable para almacenar la fecha de inicio del rango seleccionado
+  DateTime?
+      startDate; // Variable para almacenar la fecha de inicio del rango seleccionado
   var startDate1;
   var endDate1;
   DateTime? endDate;
   DateTime? auxDate;
   DateTime?
       _rangeAuxDay; // Variable para almacenar la fecha de fin del rango seleccionado
-  final DateTime _startDate = DateTime(1990, 1, 1);
+  final DateTime _startDate = DateTime.now();
   final DateTime _endDate = DateTime.now();
-  //
-  //
-  //
-  // Define el año inicial y el año actual
-  final int initialYear =
-      1990; //aqui el año en que el se registro en la empresa
-  int _selectedYear = DateTime.now().year;
-  final int currentYear = DateTime.now().year;
-  int _selectedMonth = DateTime.now().month;
-  final List<String> _months = [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre'
-  ];
 
   Widget _buildTextFieldCalendar(
       String labelText, TextEditingController tEcontroller) {
@@ -341,132 +313,45 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return Container(
-              height: 200,
+              height: 435,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     TableCalendar(
-                      onHeaderTapped: (focusedDay) {
-                        print('_selectedMonth::$focusedDay');
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Seleccione mes y/o año'),
-                              content: Row(
-                                children: [
-                                  DropdownButton<int>(
-                                    value: _selectedMonth,
-                                    onChanged: (int? newValue) {
-                                      setState(() {
-                                        _selectedMonth = newValue!;
-                                        var yearAct = DateTime.now().year;
-                                        var monthAct = DateTime.now().month;
-                                        print('rtrt yearAct:$yearAct');
-                                        print('rtrt monthAct:$monthAct');
-                                        print(
-                                            'rtrt _selectedMonth:$_selectedMonth');
-                                        if (_selectedYear >= yearAct) {
-                                          if (_selectedMonth > monthAct) {
-                                            showDialog(
-                                              context:
-                                                  context, // Necesitas pasar el contexto actual
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text('Mensaje'),
-                                                  content: Text(
-                                                      'La fecha seleccionada no puede ser mayor que la fecha actual.'),
-                                                  actions: <Widget>[
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop(); // Cierra el AlertDialog
-                                                      },
-                                                      child: Text('Aceptar'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          } else {
-                                            _focusedDay = DateTime(
-                                                _selectedYear,
-                                                _selectedMonth,
-                                                1);
-                                          }
-                                        } else {
-                                          _focusedDay = DateTime(
-                                              _selectedYear, _selectedMonth, 1);
-                                        }
-                                      });
-                                      Navigator.of(context).pop();
-                                    },
-                                    items: List<DropdownMenuItem<int>>.generate(
-                                        12, (int index) {
-                                      print('_selectedMonth:$index');
-                                      return DropdownMenuItem<int>(
-                                        value: index + 1,
-                                        child: Text(_months[index]),
-                                      );
-                                    }),
-                                  ),
-                                  SizedBox(
-                                    width: 25,
-                                  ),
-                                  DropdownButton<int>(
-                                    value: _selectedYear,
-                                    onChanged: (int? newValue) {
-                                      setState(() {
-                                        _selectedYear = newValue!;
-                                        _focusedDay =
-                                            DateTime(_selectedYear, 1, 1);
-                                      });
-                                      Navigator.of(context).pop();
-                                    },
-                                    items: List<DropdownMenuItem<int>>.generate(
-                                        currentYear - initialYear + 1,
-                                        (int index) {
-                                      return DropdownMenuItem<int>(
-                                        value: initialYear + index,
-                                        child: Center(
-                                            child:
-                                                Text('${initialYear + index}')),
-                                      );
-                                    }),
-                                  ),
-                                ],
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('Cerrar'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      onHeaderLongPressed: (focusedDay) {
-                        // print('_selectedMonth::$focusedDay');
-                      },
                       locale: 'es_ES',
                       calendarFormat: _calendarFormat,
-                      focusedDay: _focusedDay,
-                      onPageChanged: (focusedDay) {
-                        setState(() {
-                          _focusedDay = focusedDay;
-                        });
-                      },
-                      firstDay: DateTime(1900, 1,
-                          1), //fecha de registro en la empresa del barbero
-                      lastDay: DateTime.now(),
+                      focusedDay: startDate == null ? _focusedDay : startDate!,
+                      firstDay: DateTime(2023, 1, 1),
+                      lastDay: DateTime(2025, 12, 31),
                       selectedDayPredicate: (day) {
                         return isSameDay(_selectedDay, day);
                       },
                       rangeStartDay: startDate,
                       rangeEndDay: endDate,
+                      onDaySelected: (selectedDay, focusedDay) {
+                        setState(() {
+                          print('date-* startDate:$startDate');
+                          print('date-* endDate:$endDate');
+
+                          if (startDate == null) {
+                            startDate = selectedDay;
+                          } else if (endDate == null) {
+                            if (selectedDay.isBefore(startDate!)) {
+                              auxDate = startDate;
+                              startDate = selectedDay;
+                              endDate = auxDate;
+                            } else {
+                              endDate = selectedDay;
+                            }
+                          } else {
+                            startDate = selectedDay;
+                            endDate = null;
+                          }
+                          print('date-* ***************');
+                          print('date-* 2 startDate:$startDate');
+                          print('date-* 2 endDate:$endDate');
+                        });
+                      },
                       headerStyle: const HeaderStyle(
                         titleCentered: true,
                         formatButtonVisible: false,
@@ -499,50 +384,60 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
                           },
                           child: Text('Cancelar'),
                         ),
-                        ElevatedButton(
-                          style: const ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(
-                            const Color.fromARGB(255, 43, 44, 49),
-                          )),
-                          onPressed: () async {
-                            // Obtener el primer día de la semana
-                            DateTime firstDayOfWeek = _focusedDay.subtract(
-                                Duration(
-                                    days:
-                                        _focusedDay.weekday - DateTime.monday));
-                            firstDayOfWeek =
-                                firstDayOfWeek.subtract(Duration(days: 1));
-
-                            // Obtener el último día de la semana
-                            DateTime lastDayOfWeek = _focusedDay.add(Duration(
-                                days: DateTime.daysPerWeek -
-                                    _focusedDay.weekday));
-                            lastDayOfWeek =
-                                lastDayOfWeek.subtract(Duration(days: 1));
-
-                            // Imprimir los resultados para verificar
+                        startDate != null && endDate != null
+                            ? ElevatedButton(
+                                style: const ButtonStyle(
+                                    backgroundColor: MaterialStatePropertyAll(
+                                  const Color.fromARGB(255, 43, 44, 49),
+                                )),
+                                onPressed: () async {
+                                  /*  String formattedStartDate = DateFormat('yyyy-MM-dd')
+                                .format(startDate ?? DateTime.now());
+                            String formattedEndDate = DateFormat('yyyy-MM-dd')
+                                .format(endDate ?? DateTime.now());
                             print(
-                                'rtrt Primer día de la semana: ${firstDayOfWeek}');
-                            print(
-                                'rtrt Último día de la semana: $lastDayOfWeek');
+                                'Fechas seleccionadas: $formattedStartDate - $formattedEndDate');*/
+                                  final formatterDate =
+                                      DateFormat('yyyy-MM-dd');
 
-                            final formatterDate = DateFormat('yyyy-MM-dd');
+                                  startDate1 = formatterDate.format(startDate!);
+                                  endDate1 = formatterDate.format(endDate!);
+                                  int numberdayWeek = _startDate.weekday;
 
-                            startDate1 = formatterDate.format(firstDayOfWeek);
-                            endDate1 = formatterDate.format(lastDayOfWeek);
+                                  Duration diferencia =
+                                      _endDate.difference(_startDate);
+                                  int quantityDates = diferencia.inDays + 1;
 
-                            int mes = -99;
-                            int year = -99;
+                                  //EN ESTA DEVUELVE LAS GANANCIAS EN ESE INTERVALO DE FECHAS
+                                  print('intervalo-1 ----:$startDate1');
+                                  print('intervalo-2 ----:$endDate1');
+                                  print(
+                                      'intervalo-quantityDates ----:$quantityDates');
+                                  print(
+                                      'intervalo-numberdayWeek ----:$numberdayWeek');
+                                  int mes = -99;
+                                  int year = -99;
 
-                            await controllerStatistic.getDataStatisticRespon(
-                                startDate1, endDate1, 1, 7, mes, year);
-
-                            Navigator.pop(context);
-
-                            // Aquí puedes usar los valores firstDayOfWeek y lastDayOfWeek como desees
-                          },
-                          child: Text('Seleccionar'),
-                        ),
+                                  await controllerStatistic
+                                      .getDataStatisticRespon(
+                                          startDate1,
+                                          endDate1,
+                                          numberdayWeek,
+                                          quantityDates,
+                                          mes,
+                                          year);
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Seleccionar'),
+                              )
+                            : ElevatedButton(
+                                style: const ButtonStyle(
+                                    backgroundColor: MaterialStatePropertyAll(
+                                  Color.fromARGB(60, 0, 0, 0),
+                                )),
+                                onPressed: () => null,
+                                child: Text('Seleccionar'),
+                              ),
                       ],
                     ),
                   ],

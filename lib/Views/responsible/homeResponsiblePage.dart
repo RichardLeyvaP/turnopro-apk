@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 //import 'package:lottie/lottie.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -72,7 +73,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                     topLeft: Radius.circular(10),
                     bottomLeft: Radius.circular(10),
                     bottomRight: Radius.circular(10)),
-                child: GetBuilder<ClientsScheduledController>(
+                child: GetBuilder<ClientsCoordinatorController>(
                     builder: (controClient) {
                   return BottomNavigationBar(
                       showSelectedLabels: false,
@@ -93,7 +94,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                         BottomNavigationBarItem(
                             icon: Badge(
                               label: Text(
-                                  '${controClient.clientsScheduledListLength}'),
+                                  '${controClient.clientsScheduledListBranchLength}'),
                               child: Icon(
                                 Icons.perm_contact_calendar,
                                 size: MediaQuery.of(context).size.width * 0.08,
@@ -135,7 +136,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                               Icons.bar_chart,
                               size: MediaQuery.of(context).size.width * 0.08,
                             ),
-                            label: 'Estadistica'),
+                            label: 'Estadística'),
                         BottomNavigationBarItem(
                           icon: Icon(
                             Icons.star,
@@ -209,11 +210,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Encargado del Local',
-                  style: TextStyle(
+                Text(
+                  logUser.greeting,
+                  style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 16,
+                    fontSize: 14,
                     height: 1.0,
                   ),
                 ),
@@ -223,8 +224,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     color: Colors.black,
                     fontSize: 14,
                     fontWeight: FontWeight.w900,
-                    height: 1.0,
+                    height: 1.2,
                   ),
+                ),
+                const Text(
+                  'Encargado',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      height: 1.2,
+                      fontWeight: FontWeight.w100),
                 ),
               ],
             ),

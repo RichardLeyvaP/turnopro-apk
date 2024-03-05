@@ -376,6 +376,30 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
+  Future<bool> deleteReservationClient(reservationId, cause) async {
+    try {
+      bool value = false;
+      var url = '${Env.apiEndpoint}/reservation-destroy';
+      print('deleteReservationClient value reservationId :$reservationId');
+      print('deleteReservationClient value cause :$cause');
+      final Map<String, dynamic> body = {
+        'id': reservationId,
+        'cause': cause,
+      };
+      final response = await post(url, body);
+      print(
+          'deleteReservationClient value response.statusCode :${response.statusCode}');
+      if (response.statusCode == 200) {
+        value = true;
+      }
+      print('deleteReservationClient value = :$value');
+      return value;
+    } catch (e) {
+      print('deleteReservationClient repos value e:$e');
+      return false;
+    }
+  }
+
   Future<bool> storeByReservationId(
       imag, reservationId, commentText, dioClient) async {
     // Crear FormData y agregar la imagen

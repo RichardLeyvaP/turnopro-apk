@@ -125,7 +125,7 @@ class _StadisticaSemanalPageNuevaState
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              'No tiene estadisticas en la semana seleccionada de  ($startDate1 - $endDate1)',
+                              'No tiene Estadísticas en la semana seleccionada de  ($startDate1 - $endDate1)',
                               style: const TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 16),
                             ),
@@ -134,7 +134,7 @@ class _StadisticaSemanalPageNuevaState
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              'No tiene estadisticas en la semana seleccionada de $dateAct',
+                              'No tiene Estadísticas en la semana seleccionada de $dateAct',
                               style: const TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 16),
                             ),
@@ -449,7 +449,7 @@ class _StadisticaSemanalPageNuevaState
                         ElevatedButton(
                           style: const ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
-                            Color.fromARGB(255, 0, 0, 0),
+                            const Color.fromARGB(255, 43, 44, 49),
                           )),
                           onPressed: () {
                             setState(() {
@@ -464,7 +464,7 @@ class _StadisticaSemanalPageNuevaState
                         ElevatedButton(
                           style: const ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
-                            Color.fromARGB(255, 0, 0, 0),
+                            const Color.fromARGB(255, 43, 44, 49),
                           )),
                           onPressed: () async {
                             // Obtener el primer día de la semana

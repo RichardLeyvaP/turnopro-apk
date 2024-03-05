@@ -108,7 +108,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
                           image: AssetImage('assets/images/imageGrafic.png'),
                         ),
                         Text(
-                          'No tiene estadisticas en esta fecha',
+                          'No tiene Estadísticas en esta fecha',
                           style: TextStyle(
                               fontWeight: FontWeight.w700, fontSize: 16),
                         ),

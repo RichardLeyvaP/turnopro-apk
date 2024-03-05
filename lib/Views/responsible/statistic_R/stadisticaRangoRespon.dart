@@ -111,13 +111,13 @@ class _StadisticaResponState extends State<StadisticaRespon> {
                         ),
                         if (startDate1 != null && endDate1 != null) ...[
                           Text(
-                            'No tiene estadisticas en ($startDate1 - $endDate1)',
+                            'No tiene Estadísticas en ($startDate1 - $endDate1)',
                             style: const TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 16),
                           ),
                         ] else ...[
                           Text(
-                            'No tiene estadisticas en $dateAct',
+                            'No tiene Estadísticas en $dateAct',
                             style: const TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 16),
                           )
@@ -209,7 +209,7 @@ class _StadisticaResponState extends State<StadisticaRespon> {
       trailing: Padding(
         padding: const EdgeInsets.only(top: 15),
         child: Text(
-          '${entry.value}',
+          entry.value == null ? '0' : '${entry.value}',
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w800,
@@ -252,7 +252,7 @@ class _StadisticaResponState extends State<StadisticaRespon> {
                   ),
                 ),
                 Text(
-                  '${entry.value}',
+                  entry.value == null ? '0' : '${entry.value}',
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
@@ -372,7 +372,7 @@ class _StadisticaResponState extends State<StadisticaRespon> {
                         ElevatedButton(
                           style: const ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
-                            Color.fromARGB(255, 0, 0, 0),
+                            const Color.fromARGB(255, 43, 44, 49),
                           )),
                           onPressed: () {
                             setState(() {
@@ -388,7 +388,7 @@ class _StadisticaResponState extends State<StadisticaRespon> {
                             ? ElevatedButton(
                                 style: const ButtonStyle(
                                     backgroundColor: MaterialStatePropertyAll(
-                                  Color.fromARGB(255, 0, 0, 0),
+                                  const Color.fromARGB(255, 43, 44, 49),
                                 )),
                                 onPressed: () async {
                                   /*  String formattedStartDate = DateFormat('yyyy-MM-dd')

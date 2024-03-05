@@ -70,7 +70,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
               'Incumplimiento de convivencia',
               branchId,
               professionalId,
-              'Tiempo de espera agotado, solo tenias 3 minutos para escoger a un nuevo al cliente que tiene en cola esperando.');
+              'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado.');
         }
 
         // La animación ha llegado al final, reiniciar
@@ -470,10 +470,6 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                             builder: (controllerLogin) {
                                           return const Row(
                                             children: [
-                                              Icon(
-                                                Icons.person_off,
-                                                color: Colors.white,
-                                              ),
                                               Text('No hay clientes en cola',
                                                   style: TextStyle(
                                                     color: Colors.white,
@@ -580,7 +576,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                     12,
                                     const Color.fromARGB(255, 177, 174, 174),
                                     Color.fromARGB(255, 231, 233, 233),
-                                    'Estadisticas',
+                                    'Estadísticas',
                                     'Revisa Tus Ingresos',
                                     Icons.bar_chart),
                               ),

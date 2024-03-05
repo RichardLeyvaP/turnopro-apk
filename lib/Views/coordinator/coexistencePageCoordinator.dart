@@ -156,7 +156,7 @@ class _CoexistencePageCoordinatorState
                         ].toList(),
                         buttonStyleData: ButtonStyleData(
                           height: 60,
-                          width: 300,
+                          width: (MediaQuery.of(context).size.width * 0.95),
                           padding: const EdgeInsets.only(
                               top: 2, left: 14, right: 14, bottom: 2),
                           decoration: BoxDecoration(
@@ -178,10 +178,10 @@ class _CoexistencePageCoordinatorState
                         ),
                         dropdownStyleData: DropdownStyleData(
                           maxHeight: 340,
-                          width: 262,
+                          width: (MediaQuery.of(context).size.width * 0.85),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14),
-                            color: Color.fromARGB(155, 26, 50, 82),
+                            color: const Color.fromARGB(155, 26, 50, 82),
                           ),
                           offset: const Offset(40, 0),
                           scrollbarTheme: ScrollbarThemeData(
@@ -197,136 +197,13 @@ class _CoexistencePageCoordinatorState
                         ),
                       ),
                     ),
-
-                    /*
-                    DropdownButtonHideUnderline(
-                      child: DropdownButton2<String>(
-                        isExpanded: true,
-                        hint: const Row(
-                          children: [
-                            Icon(
-                              Icons.person,
-                              color: Colors.white,
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Expanded(
-                              child: Text(
-                                'Selecciona al profesional',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                        items: items
-                            .map((String item) => DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Text(
-                                    item,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
-                            .toList(),
-                        value: selectedValue,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedValue = value;
-                          });
-                        },
-                        buttonStyleData: ButtonStyleData(
-                          height: 50,
-                          width: 300,
-                          padding: const EdgeInsets.only(left: 14, right: 14),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                              color: Colors.black26,
-                            ),
-                            color: Color.fromARGB(255, 26, 50, 82),
-                          ),
-                          elevation: 2,
-                        ),
-                        iconStyleData: const IconStyleData(
-                          icon: Icon(
-                            Icons.arrow_forward_ios_outlined,
-                          ),
-                          iconSize: 14,
-                          iconEnabledColor: Colors.white,
-                          iconDisabledColor: Colors.grey,
-                        ),
-                        dropdownStyleData: DropdownStyleData(
-                          maxHeight: 200,
-                          width: 340,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            color: Color.fromARGB(155, 26, 50, 82),
-                          ),
-                          offset: const Offset(-20, 0),
-                          scrollbarTheme: ScrollbarThemeData(
-                            radius: const Radius.circular(40),
-                            thickness: MaterialStateProperty.all(6),
-                            thumbVisibility: MaterialStateProperty.all(true),
-                          ),
-                        ),
-                        menuItemStyleData: const MenuItemStyleData(
-                          height: 40,
-                          padding: EdgeInsets.only(left: 14, right: 14),
-                        ),
-                      ),
-
-                      //
-                      //
-                      //
-                      //
-                      // DropdownButton<ProfessionalModel>(
-                      //   value: controll.selectedProfessional,
-                      //   onChanged: (ProfessionalModel? newValue) {
-                      //     setState(() {
-                      //       controll.selectedProfessional = newValue;
-                      //       if (newValue != null) {
-                      //         print('${newValue.name}');
-                      //         print('${newValue.id}');
-                      //         int idProfessional = newValue.id;
-                      //         controll.specificCoexistenceList(idProfessional);
-                      //       }
-                      //     });
-                      //   },
-                      //   items: [
-                      //     const DropdownMenuItem<ProfessionalModel>(
-                      //       value: null,
-                      //       child: Text(' Seleccione un profesional '),
-                      //     ),
-                      //     ...profesionales
-                      //         .map<DropdownMenuItem<ProfessionalModel>>(
-                      //       (ProfessionalModel profesional) {
-                      //         return DropdownMenuItem<ProfessionalModel>(
-                      //           value: profesional,
-                      //           child: Text(profesional.name),
-                      //         );
-                      //       },
-                      //     ),
-                      //   ].toList(),
-                      // ),
-                    )
-                 */
                   ],
                 ),
               ),
             ),
             controll.selectedProfessional != null
                 ? Expanded(
-                    flex: 8,
+                    flex: 7,
                     child: controll.coexistenceListLength > 0
                         ? ListView.builder(
                             itemCount: controll.coexistenceListLength,
@@ -407,11 +284,19 @@ class _CoexistencePageCoordinatorState
                                                       ],
                                                     ),
                                                   ),
-                                                  Container(
-                                                    height: 210,
+                                                  SizedBox(
+                                                    height: 150,
                                                     child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
                                                       children: [
                                                         //Cart de cumplida
+
+                                                        //Cart de  imcumplida
                                                         InkWell(
                                                           onTap: () {
                                                             controllerClient.changeNoncomplianceP(
@@ -431,101 +316,56 @@ class _CoexistencePageCoordinatorState
                                                                 'Cumplió');
                                                           },
                                                           child: Container(
-                                                            height: 90,
-                                                            width: 210,
-                                                            color: Colors
-                                                                .transparent,
-                                                            child: Stack(
-                                                              children: [
-                                                                Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      top: 28),
-                                                                  child:
-                                                                      Container(
-                                                                    height: 40,
-                                                                    width: 180,
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerLeft,
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              10),
-                                                                      border:
-                                                                          Border
-                                                                              .all(
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            9,
-                                                                            59,
-                                                                            100),
-                                                                        width:
-                                                                            3,
-                                                                      ),
-                                                                      boxShadow: [
-                                                                        BoxShadow(
-                                                                          color: Colors
-                                                                              .black
-                                                                              .withOpacity(0.2),
-                                                                          spreadRadius:
-                                                                              2,
-                                                                          blurRadius:
-                                                                              5,
-                                                                          offset: const Offset(
-                                                                              0,
-                                                                              3),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                    child:
-                                                                        const Padding(
-                                                                      padding: EdgeInsets.symmetric(
-                                                                          horizontal:
-                                                                              10),
-                                                                      child:
-                                                                          Text(
-                                                                        'CUMPLIDA',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              20,
-                                                                          color:
-                                                                              Colors.black,
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ),
+                                                            height: 40,
+                                                            width: (MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.7),
+                                                            alignment: Alignment
+                                                                .centerLeft,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      82,
+                                                                      51,
+                                                                      172,
+                                                                      27),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              border:
+                                                                  Border.all(
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        210,
+                                                                        13,
+                                                                        75,
+                                                                        26),
+                                                                width: 1,
+                                                              ),
+                                                            ),
+                                                            child: const Center(
+                                                              child: Text(
+                                                                'CUMPLIÓ',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 20,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
                                                                 ),
-                                                                const Positioned(
-                                                                  top: -3,
-                                                                  right: -6,
-                                                                  bottom: 0,
-                                                                  child: Icon(
-                                                                    Icons.star,
-                                                                    size:
-                                                                        100, // Tamaño de la estrella
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            255,
-                                                                            33,
-                                                                            139,
-                                                                            38),
-                                                                  ),
-                                                                ),
-                                                              ],
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
                                                         SizedBox(
-                                                          height: 5,
+                                                          height: 20,
                                                         ),
-                                                        //Cart de  imcumplida
                                                         InkWell(
                                                           onTap: () {
                                                             controllerClient.changeNoncomplianceP(
@@ -545,94 +385,50 @@ class _CoexistencePageCoordinatorState
                                                                 'Incumplio');
                                                           },
                                                           child: Container(
-                                                            height: 90,
-                                                            width: 210,
-                                                            color: Colors
-                                                                .transparent,
-                                                            child: Stack(
-                                                              children: [
-                                                                Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      top: 28),
-                                                                  child:
-                                                                      Container(
-                                                                    height: 40,
-                                                                    width: 180,
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerLeft,
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              10),
-                                                                      border:
-                                                                          Border
-                                                                              .all(
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            9,
-                                                                            59,
-                                                                            100),
-                                                                        width:
-                                                                            3,
-                                                                      ),
-                                                                      boxShadow: [
-                                                                        BoxShadow(
-                                                                          color: Colors
-                                                                              .black
-                                                                              .withOpacity(0.2),
-                                                                          spreadRadius:
-                                                                              2,
-                                                                          blurRadius:
-                                                                              5,
-                                                                          offset: const Offset(
-                                                                              0,
-                                                                              3),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                    child:
-                                                                        const Padding(
-                                                                      padding: EdgeInsets.symmetric(
-                                                                          horizontal:
-                                                                              10),
-                                                                      child:
-                                                                          Text(
-                                                                        'INCUMPLIDA',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              20,
-                                                                          color:
-                                                                              Colors.black,
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ),
+                                                            height: 40,
+                                                            width: (MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.7),
+                                                            alignment: Alignment
+                                                                .centerLeft,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: const Color
+                                                                      .fromARGB(
+                                                                  83,
+                                                                  244,
+                                                                  67,
+                                                                  54),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              border:
+                                                                  Border.all(
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        211,
+                                                                        223,
+                                                                        18,
+                                                                        18),
+                                                                width: 1,
+                                                              ),
+                                                            ),
+                                                            child: const Center(
+                                                              child: Text(
+                                                                'INCUMPLIÓ',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 20,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
                                                                 ),
-                                                                const Positioned(
-                                                                  top: -3,
-                                                                  right: -6,
-                                                                  bottom: 0,
-                                                                  child: Icon(
-                                                                    Icons.star,
-                                                                    size:
-                                                                        100, // Tamaño de la estrella
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            255,
-                                                                            248,
-                                                                            73,
-                                                                            50),
-                                                                  ),
-                                                                ),
-                                                              ],
+                                                              ),
                                                             ),
                                                           ),
                                                         )
@@ -981,7 +777,9 @@ class _CoexistencePageCoordinatorState
                             style: TextStyle(fontWeight: FontWeight.w700),
                           )),
                   )
-                : Expanded(
+                : Text(' '),
+            /*
+                 Expanded(
                     flex: 2,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -1035,7 +833,7 @@ class _CoexistencePageCoordinatorState
                       ),
                     ),
                   )
-            //todo
+            */
             //AQUI PONER EL SINO HA SELECCIONADO A NADIE
           ],
         );

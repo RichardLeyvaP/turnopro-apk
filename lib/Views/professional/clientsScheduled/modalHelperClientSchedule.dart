@@ -626,6 +626,13 @@ class ModalHelper {
                                                     },
                                                     child: Row(
                                                       children: [
+                                                        Icon(
+                                                          MdiIcons.camera,
+                                                          color: Colors.white,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 6,
+                                                        ),
                                                         const Text(
                                                           'FOTO',
                                                           style: TextStyle(
@@ -634,13 +641,6 @@ class ModalHelper {
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w800),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 6,
-                                                        ),
-                                                        Icon(
-                                                          MdiIcons.camera,
-                                                          color: Colors.white,
                                                         ),
                                                       ],
                                                     ),
@@ -699,6 +699,12 @@ class ModalHelper {
                                                             .acceptOrRejectClient(
                                                                 reservationId,
                                                                 2);
+                                                        controllClient
+                                                            .fetchClientsScheduled(
+                                                                loginController
+                                                                    .idProfessionalLoggedIn,
+                                                                loginController
+                                                                    .branchIdLoggedIn);
 
                                                         print(
                                                             'Comentario enviado - $commentText ');
@@ -710,6 +716,13 @@ class ModalHelper {
                                                     },
                                                     child: Row(
                                                       children: [
+                                                        Icon(
+                                                          MdiIcons.send,
+                                                          color: Colors.white,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 6,
+                                                        ),
                                                         const Text(
                                                           'ENVIAR',
                                                           style: TextStyle(
@@ -718,13 +731,6 @@ class ModalHelper {
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w800),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 6,
-                                                        ),
-                                                        Icon(
-                                                          MdiIcons.send,
-                                                          color: Colors.white,
                                                         ),
                                                       ],
                                                     ),

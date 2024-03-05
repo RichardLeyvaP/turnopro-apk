@@ -66,7 +66,7 @@ class _HomePageBodyState extends State<HomePageBody>
               'Incumplimiento de convivencia',
               branchId,
               professionalId,
-              'Tiempo de espera agotado, solo tenias 3 minutos para escoger a un nuevo al cliente que tiene en cola esperando.');
+              'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado');
         }
 
         // La animación ha llegado al final, reiniciar
@@ -155,10 +155,10 @@ class _HomePageBodyState extends State<HomePageBody>
                 if ((idClient ==
                     clientsScheduledController.clientsAttended1?.client_id)) {
                   notiController.storeNotification(
-                      '!Alerta...',
+                      '!Alerta',
                       branchId,
                       professionalId,
-                      'El tiempo de servicio del cliente $nameClient se esta agotando, solo quedan aproximadamente $endingTime minutos para finalizar.');
+                      'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos');
                   //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
                   clientsScheduledController.setNotificationClients1(1,
                       clientsScheduledController.clientsAttended1!.client_id);
@@ -210,10 +210,10 @@ class _HomePageBodyState extends State<HomePageBody>
                 if ((idClient ==
                     clientsScheduledController.clientsAttended2?.client_id)) {
                   notiController.storeNotification(
-                      '!Alerta...',
+                      '!Alerta',
                       branchId,
                       professionalId,
-                      'El tiempo de servicio del cliente $nameClient se esta agotando, solo quedan aproximadamente $endingTime minutos para finalizar.');
+                      'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos');
                   //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
                   clientsScheduledController.setNotificationClients1(2,
                       clientsScheduledController.clientsAttended2!.client_id);
@@ -265,10 +265,10 @@ class _HomePageBodyState extends State<HomePageBody>
                 if ((idClient ==
                     clientsScheduledController.clientsAttended3?.client_id)) {
                   notiController.storeNotification(
-                      '!Alerta...',
+                      '!Alerta',
                       branchId,
                       professionalId,
-                      'El tiempo de servicio del cliente $nameClient se esta agotando, solo quedan aproximadamente $endingTime minutos para finalizar.');
+                      'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos');
                   //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
                   clientsScheduledController.setNotificationClients1(3,
                       clientsScheduledController.clientsAttended3!.client_id);
@@ -321,10 +321,10 @@ class _HomePageBodyState extends State<HomePageBody>
                 if ((idClient ==
                     clientsScheduledController.clientsAttended4?.client_id)) {
                   notiController.storeNotification(
-                      '!Alerta...',
+                      '!Alerta',
                       branchId,
                       professionalId,
-                      'El tiempo de servicio del cliente $nameClient se esta agotando, solo quedan aproximadamente $endingTime minutos para finalizar.');
+                      'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos');
                   //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
                   clientsScheduledController.setNotificationClients1(4,
                       clientsScheduledController.clientsAttended4!.client_id);
@@ -382,7 +382,7 @@ class _HomePageBodyState extends State<HomePageBody>
                 'Clientes en cola',
                 loginController.branchIdLoggedIn,
                 loginController.idProfessionalLoggedIn,
-                'Por favor, recuerda que tienes clientes esperando en cola. ¡No los mantengas esperando por mucho tiempo!');
+                'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!');
             //para controlar que con este cliente solo le avise una vez
             clientsScheduledController.setContClientsWaiting(20);
           } else if (clientsScheduledController.contClientsWaiting ==
@@ -791,7 +791,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                     12,
                                     const Color.fromARGB(255, 177, 174, 174),
                                     Color.fromARGB(255, 231, 233, 233),
-                                    'Estadisticas',
+                                    'Estadísticas',
                                     'Revisa Tus Ingresos',
                                     Icons.bar_chart),
                               ),
@@ -1053,7 +1053,6 @@ class _HomePageBodyState extends State<HomePageBody>
                 child: GetBuilder<LoginController>(builder: (controllerLogin) {
                   return const Row(
                     children: [
-                      Icon(Icons.person_off),
                       Text('No hay clientes en cola',
                           style: TextStyle(
                               fontWeight: FontWeight.w700,

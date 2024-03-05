@@ -45,9 +45,10 @@ class _AttendingClientState extends State<AttendingClient> {
                 IconButton(
                   icon: const Icon(Icons.arrow_back),
                   onPressed: () {
-                    pagesConfigCont.pageController2
-                        .jumpToPage(0); //AQUI VA  AL HOME
+                    /*  pagesConfigCont.pageController2
+                        .jumpToPage(0); //AQUI VA  AL HOME*/
                     pagesConfigCont.showAppBar(true);
+                    pagesConfigCont.back();
                     // pagesConfigCont.back();
                     // pagesConfigCont.goToPreviousPage();
                     // pagesConfigCont.goToPage(

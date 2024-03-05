@@ -67,26 +67,33 @@ class ClientsCoordinatorRepository extends GetConnect {
   //
   Future reasignedClient(reservationId, clientId, professionalId) async {
     List<ClientsScheduledModel> clientList = [];
+    try {
+      var url =
+          '${Env.apiEndpoint}/reasigned_client?reservation_id=$reservationId&client_id=$clientId&professional_id=$professionalId';
 
-    var url =
-        '${Env.apiEndpoint}/reasigned_client?reservation_id=$reservationId&client_id=$clientId&professional_id=$professionalId';
+      final response = await get(url);
+      //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
+      print('response.statusCode reservationId:${reservationId}');
+      print('response.statusCode clientId:${clientId}');
+      print('response.statusCode professionalId:${professionalId}');
+      if (response.statusCode == null) {
+        print('response.statusCode:${response.statusCode}');
+        return {
+          "ConnectionIssues": true,
+        };
+      } else if (response.statusCode == 200) {
+        print(
+            'hay coneccion reasignedClient devuelve true,response.statusCode == 200 ');
+        return {
+          "result": true,
+        };
+      }
 
-    final response = await get(url);
-    //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
-    if (response.statusCode == null) {
-      print('response.statusCode:${response.statusCode}');
-      return {
-        "ConnectionIssues": true,
-      };
-    } else if (response.statusCode == 200) {
-      print(
-          'hay coneccion reasignedClient devuelve true,response.statusCode == 200 ');
-      return {
-        "result": true,
-      };
+      return {"clientList": clientList};
+    } catch (e) {
+      print('response.statusCode:${e}');
+      print(e);
     }
-
-    return {"clientList": clientList};
   }
 
   //
@@ -145,8 +152,8 @@ class ClientsCoordinatorRepository extends GetConnect {
       for (Map service in customers) {
         ClientsScheduledModel client =
             ClientsScheduledModel.fromJson(jsonEncode(service));
+
         clientList.add(client);
-        //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
       }
     }
 

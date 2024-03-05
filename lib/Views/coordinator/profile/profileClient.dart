@@ -24,6 +24,8 @@ class _ProfileClientState extends State<ProfileClient> {
       Get.find<PagesConfigController>();
   final ClientsScheduledController clientSchedControl =
       Get.find<ClientsScheduledController>();
+  final ClientsCoordinatorController clientCoordControl =
+      Get.find<ClientsCoordinatorController>();
   final LoginController loginControl = Get.find<LoginController>();
 
   int cantVisitas = 3;
@@ -153,13 +155,11 @@ class _ProfileClientState extends State<ProfileClient> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //todo1 estructura de los cart
-                    cardOptions(context, icon, 'Servicios', pagesConfigCont,
-                        pagesConfigCont.pageController2, 2),
+                    cardOptions(context, icon, 'Servicios', pagesConfigCont, 2),
                     const SizedBox(
                       height: 10,
                     ),
-                    cardOptions(context, icon, 'Productos', pagesConfigCont,
-                        pagesConfigCont.pageController2, 3),
+                    cardOptions(context, icon, 'Productos', pagesConfigCont, 3),
                     const SizedBox(
                       height: 10,
                     ),
@@ -257,7 +257,7 @@ class _ProfileClientState extends State<ProfileClient> {
                                                   padding:
                                                       EdgeInsets.only(left: 12),
                                                   child: Text(
-                                                    'Comentario',
+                                                    'Motivo',
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 15,
@@ -320,8 +320,9 @@ class _ProfileClientState extends State<ProfileClient> {
                                                         ),
                                                         backgroundColor:
                                                             MaterialStateProperty
-                                                                .all<Color>(Color(
-                                                                    0xFF2B3141)),
+                                                                .all<Color>(
+                                                                    const Color(
+                                                                        0xFF2B3141)),
                                                       ),
                                                       onPressed: () async {
                                                         // Lógica para enviar el comentario
@@ -337,9 +338,39 @@ class _ProfileClientState extends State<ProfileClient> {
                                                         // Verificar que el campo no esté vacío
                                                         if (textWithoutSpaces
                                                             .isNotEmpty) {
+                                                          print(
+                                                              'Cliente eliminado correctamente de la cola deleteReservationClient value = :1');
+                                                          //todo falta poner un cargando
+                                                          await _.deleteReservationClient(
+                                                              controllerCoord
+                                                                  .idReservCORD,
+                                                              commentText);
+                                                          //aqui actualizo la cola
+                                                          await clientCoordControl
+                                                              .fetchClientsScheduledBranch(
+                                                                  loginControl
+                                                                      .branchIdLoggedIn);
+                                                          clientCoordControl
+                                                              .setLoading(
+                                                                  false);
+                                                          Get.snackbar(
+                                                            'Mensaje',
+                                                            'Cliente eliminado de la cola',
+                                                            duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        3000),
+                                                          );
+                                                          //todo falta mandar mensaje al profesional que se le elimino tal cliente de la cola poruqe no habia llegado
+                                                          print(
+                                                              'Cliente eliminado correctamente de la cola deleteReservationClient value = :2');
                                                           // Cerrar el primer modal
                                                           Navigator.pop(
                                                               context);
+                                                          await pagesConfigCont
+                                                              .showAppBar(true);
+                                                          pagesConfigCont
+                                                              .goToPreviousPage();
 
                                                           print(
                                                               'El comentario enviado - $commentText ');
@@ -411,7 +442,9 @@ class _ProfileClientState extends State<ProfileClient> {
                               //llamar el ENPOINT professional-state
                               await clientSchedControl.getProfessionalState(
                                   loginControl.branchIdLoggedIn);
-                              pagesConfigCont.onTabTapped(1);
+                              await pagesConfigCont.showAppBar(false);
+                              pagesConfigCont.goToPage(
+                                  6, pagesConfigCont.pageController2);
                             },
                             child: const Text(
                               'REASIGNAR',
@@ -433,21 +466,13 @@ class _ProfileClientState extends State<ProfileClient> {
     });
   }
 
-  InkWell cardOptions(
-      BuildContext context,
-      icon,
-      title,
-      PagesConfigController pagesConfigCont,
-      PageController pageController2,
-      page) {
+  InkWell cardOptions(BuildContext context, icon, title,
+      PagesConfigController pagesConfigCont, page) {
     return InkWell(
       onTap: () async {
         print('estoy dando click');
         await pagesConfigCont.showAppBar(false);
-
-        // pageController2.jumpToPage(1);
-
-        pagesConfigCont.goToPage(page, pageController2);
+        pagesConfigCont.goToPage(page, pagesConfigCont.pageController2);
 
         /*pageController2.nextPage(
           duration: Duration(milliseconds: 300),

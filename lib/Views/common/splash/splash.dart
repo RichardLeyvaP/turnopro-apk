@@ -16,7 +16,7 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
     Future.delayed(const Duration(seconds: 6), () {
       Get.offAllNamed(
-        '/loginNewPage',
+        '/LoginFormPage',
       );
     });
   }

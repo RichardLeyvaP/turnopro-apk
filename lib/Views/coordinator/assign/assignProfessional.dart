@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
-import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/env.dart';
 
@@ -61,7 +60,8 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                   IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () {
-                      pagesConfigCont.back();
+                      pagesConfigCont.goToPage(
+                          1, pagesConfigCont.pageController2);
 
                       // Navigator.pop(context);
                     },
@@ -265,9 +265,16 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                         //(reservationId, clientId, professionalId)
                         int clientIdCORD = clientCord.clientIdCORD;
                         int reservationId = clientCord.idReservCORD;
+                        //todo falta poner un cargando
                         bool result = await clientCord.reasignedClient(
                             reservationId, clientIdCORD, idProfess);
                         if (result == true) {
+                          print('Aqui lo mando al home despue de reasinarlo');
+                          //aqui lo mando al home
+                          //todo falta probarlo porque en el momento que se hizo no habia barberos disponibles
+                          pagesConfigCont.pageController2
+                              .jumpToPage(0); //AQUI VA  AL HOME
+                          pagesConfigCont.showAppBar(true);
                           Get.snackbar(
                             'Mensaje',
                             'Cliente reasignado correctamente',

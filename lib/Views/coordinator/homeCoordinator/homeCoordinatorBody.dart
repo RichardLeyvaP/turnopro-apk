@@ -52,6 +52,11 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
           loginController.chargeUserLoggedIn == "Cordinador") {
         cont += 1;
         if (cont == 0) {
+          //SOLO ESTRA UNA SOLA VEZ AL INICIO
+          await clientsScheduledController
+              .clientsAttendBranch(loginController.branchIdLoggedIn);
+        }
+        if (cont == 1) {
           print('Aqui entro solo la primera vez (cont == 0)');
           notiController.fetchNotificationList(loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn);
@@ -60,7 +65,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
               .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
           clientsScheduledController.setLoading(false);
         }
-        if (cont == 4) {
+        if (cont == 10) {
           // actualizo la cola
           notiController.fetchNotificationList(loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn);
@@ -68,9 +73,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
           await clientsScheduledController
               .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
           clientsScheduledController.setLoading(false);
-
           //fin del for
-          cont = 0;
+          cont = 1;
         }
       }
     });
@@ -157,13 +161,6 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(
-                                        Icons.person_off,
-                                        color: Colors.white,
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
                                       Text(
                                         'No hay clientes en cola',
                                         style: TextStyle(
@@ -208,8 +205,9 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                         await clientsScheduledController
                                             .clientsAttendBranch(loginController
                                                 .branchIdLoggedIn);
-                                        pagesConfigC.goToPage(
-                                            4, pagesConfigC.pageController2);
+                                        pagesConfigC.onTabTapped(1);
+                                        /* pagesConfigC.goToPage(
+                                            4, pagesConfigC.pageController2);*/
                                       },
                                       child: cartsHome(
                                           context,
@@ -257,7 +255,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                           const Color.fromARGB(
                                               255, 177, 174, 174),
                                           Color.fromARGB(255, 231, 233, 233),
-                                          'Estadisticas',
+                                          'Estadísticas',
                                           'Revisa Tus Ingresos',
                                           Icons.bar_chart),
                                     ),
@@ -290,6 +288,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
             pagesConfigC.pages31[1],
             pagesConfigC.pages31[2],
             pagesConfigC.pages31[3],
+            pagesConfigC.pages31[4],
+            pagesConfigC.pages31[5],
           ]);
     });
     //todoooooooooooooooooooooooooooooooooooooooooo

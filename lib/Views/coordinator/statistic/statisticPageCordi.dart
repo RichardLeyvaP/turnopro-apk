@@ -3,23 +3,24 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
+import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
-import 'package:turnopro_apk/Views/professional/statistic/stadisticaDiaPageNueva.dart';
-import 'package:turnopro_apk/Views/professional/statistic/stadisticaMesPageNueva.dart';
 //import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
 //import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
-import 'package:turnopro_apk/Views/professional/statistic/stadisticaPageNueva.dart';
+import 'package:turnopro_apk/Views/responsible/statistic_R/stadisticaMenRespon.dart';
+import 'package:turnopro_apk/Views/responsible/statistic_R/stadisticaSemRespon.dart';
+import 'package:turnopro_apk/Views/responsible/statistic_R/stadisticaRangoRespon.dart';
 
-class StatisticPage extends StatefulWidget {
-  const StatisticPage({super.key});
+class StatisticPageCordin extends StatefulWidget {
+  const StatisticPageCordin({super.key});
 
   @override
-  State<StatisticPage> createState() => _StatisticPageState();
+  State<StatisticPageCordin> createState() => _StatisticPageCordinState();
 }
 
-class _StatisticPageState extends State<StatisticPage>
+class _StatisticPageCordinState extends State<StatisticPageCordin>
     with SingleTickerProviderStateMixin {
   final StatisticController controllerStatistic =
       Get.find<StatisticController>();
@@ -51,19 +52,14 @@ class _StatisticPageState extends State<StatisticPage>
       borderRadius: BorderRadius.all(Radius.circular(20)),
     );
     const backgroundColor = Color.fromARGB(255, 231, 232, 234);
-    const pilateColor = Colors.white;
-    List<String> description = ['Ganancia Total', 'Promedio Diario'];
-    // const cyclingColor = Color.fromARGB(255, 68, 135, 211);
-    // const quickWorkoutColor = Color(0xFFF18254);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: backgroundColor,
-        //
-        //
-        //
         appBar: AppBar(
-          backgroundColor: const Color(0xFFF18254), // Color de fondo del AppBar
+          backgroundColor: const Color.fromARGB(
+              255, 26, 50, 82), // Color de fondo del AppBar
           elevation: 0, // Sombra del AppBar
           toolbarHeight: 120, // Altura del AppBar
           // actions: [
@@ -114,13 +110,13 @@ class _StatisticPageState extends State<StatisticPage>
                 child: TabBar(
                   // isScrollable: true,//rlp si son muchos tab para que tenga scroll entre los tab
                   indicator: clickServicesDecoration,
-                  labelColor: const Color(0xFFF18254),
+                  labelColor: const Color.fromARGB(255, 26, 50, 82),
                   unselectedLabelColor: Colors.white,
                   automaticIndicatorColorAdjustment: false,
                   controller: _tabController,
                   tabs: const [
                     Tab(text: 'Rango'),
-                    Tab(text: 'Semananal'),
+                    Tab(text: 'Semanal'),
                     Tab(text: 'Mensual'),
                   ],
                 ),
@@ -131,87 +127,10 @@ class _StatisticPageState extends State<StatisticPage>
         body: GetBuilder<StatisticController>(builder: (contStat) {
           return TabBarView(
             controller: _tabController,
-            children: [
-              const LineChartSample2(),
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    BarChartSample6(),
-                    Container(
-                      width: (MediaQuery.of(context).size.width * 0.8),
-                      height: 40,
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
-                        color: Colors.white,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return BuildCalendar(
-                                  d: DateTime.now(),
-                                  m: DateTime.now(),
-                                  a: DateTime.now(),
-                                  // totalPrice: controllerShoppingCart.totalPrice,
-                                ); // Muestra el AlertDialog
-                              },
-                            );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    MdiIcons.calendarBlank,
-                                    color: const Color.fromARGB(130, 0, 0, 0),
-                                  ),
-                                  Text(
-                                    contStat.dateRange == ''
-                                        ? '  seleccione una fecha'
-                                        : contStat.dateRange,
-                                    style: const TextStyle(
-                                        color: Color.fromARGB(130, 0, 0, 0)),
-                                  ),
-                                ],
-                              ),
-                              Icon(
-                                MdiIcons.arrowDownThin,
-                                color: const Color.fromARGB(130, 0, 0, 0),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 135,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            CartOption(
-                                color: pilateColor,
-                                icon: Icon(
-                                  MdiIcons.cash,
-                                ),
-                                totalEarnings:
-                                    controllerStatistic.totalEarnings,
-                                averageEarnings:
-                                    controllerStatistic.averageEarnings,
-                                description: description),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const LineChartSample5(),
+            children: const [
+              StadisticaRespon(),
+              StadisticaSemRespon(),
+              StadisticaMenRespon(),
             ],
           );
         }), // Muestra el AlertDialog
@@ -315,7 +234,7 @@ class BuildCalendar extends StatefulWidget {
 }
 
 class _BuildCalendarState extends State<BuildCalendar> {
-//  final DateRangePickerController _controller = DateRangePickerController();
+  //final DateRangePickerController _controller = DateRangePickerController();
   final StatisticController controllerStatistic =
       Get.find<StatisticController>();
 
@@ -380,7 +299,7 @@ class _BuildCalendarState extends State<BuildCalendar> {
         ),
       ],
       content:
-          //  SizedBox(
+          // SizedBox(
           //   height: 255, // Ajusta la altura según tu necesidad
           //   width: 300,
           //   child: AspectRatio(

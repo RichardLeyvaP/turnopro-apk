@@ -45,7 +45,7 @@ class CoexistenceController extends GetxController {
     }
     //esto CARGAR este metodo si es RESPONSABLE
 
-    //AQUI CARGO LA ESTADISTICA DEL DIA DE HOY INICIALMENTE JASTA QUE SELECCIONES ALGUNA FECHA
+    //AQUI CARGO LA Estadística DEL DIA DE HOY INICIALMENTE JASTA QUE SELECCIONES ALGUNA FECHA
     final now = DateTime.now();
     final formatter = DateFormat('yyyy-MM-dd');
     final dateAct = formatter.format(now);
