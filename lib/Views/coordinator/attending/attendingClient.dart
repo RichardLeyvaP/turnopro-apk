@@ -83,7 +83,7 @@ class _AttendingClientState extends State<AttendingClient> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: const Color.fromARGB(255, 32, 32, 32),
+                      color: const Color.fromARGB(255, 43, 44, 49),
                       width:
                           2, // Ajusta el ancho del borde según tus preferencias
                     ),
@@ -205,7 +205,8 @@ class _AttendingClientState extends State<AttendingClient> {
                                   children: [
                                     const Icon(
                                       Icons.person,
-                                      color: const Color.fromARGB(255, 43, 44, 49),
+                                      color:
+                                          const Color.fromARGB(255, 43, 44, 49),
                                       size: 22,
                                     ),
                                     Text(
@@ -224,9 +225,10 @@ class _AttendingClientState extends State<AttendingClient> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    const Icon(
-                                      Icons.person,
-                                      color: const Color.fromARGB(255, 43, 44, 49),
+                                    Icon(
+                                      MdiIcons.clockOutline,
+                                      color:
+                                          const Color.fromARGB(255, 43, 44, 49),
                                       size: 22,
                                     ),
                                     Text(
@@ -244,9 +246,10 @@ class _AttendingClientState extends State<AttendingClient> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    const Icon(
-                                      Icons.person,
-                                      color: const Color.fromARGB(255, 43, 44, 49),
+                                    Icon(
+                                      MdiIcons.accountTie,
+                                      color:
+                                          const Color.fromARGB(255, 43, 44, 49),
                                       size: 22,
                                     ),
                                     Text(
@@ -289,7 +292,7 @@ class _AttendingClientState extends State<AttendingClient> {
                       //         width:
                       //             1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                       //       ),
-                      //       color: const Color.fromARGB(255, 32, 32, 32),
+                      //       color: const Color.fromARGB(255, 43, 44, 49),
                       //       borderRadius:
                       //           const BorderRadius.all(Radius.circular(12))),
                       //   child: Column(

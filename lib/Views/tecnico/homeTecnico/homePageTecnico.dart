@@ -180,7 +180,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: const Color.fromARGB(255, 32, 32, 32),
+                  color: const Color.fromARGB(255, 43, 44, 49),
                   width: 2, // Ajusta el ancho del borde según tus preferencias
                 ),
               ),

@@ -8,6 +8,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
+import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/Views/products-services/servicesProductsPage.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:get/get.dart';
@@ -25,6 +26,7 @@ class YourPageViewScreenState extends State<HomePageView> {
       Get.find<ClientsScheduledController>();
   final LoginController controllerLogin = Get.find<LoginController>();
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
+  final ShoppingCartController chopCont = Get.find<ShoppingCartController>();
 
   @override
   void initState() {
@@ -303,6 +305,8 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                       index]
                                                                   .car_id)
                                                           .then((_) {
+                                                        chopCont
+                                                            .loadDataInitiallyNecessary();
                                                         String clientName =
                                                             controllerClient
                                                                 .clientsScheduledList[

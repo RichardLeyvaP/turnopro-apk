@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
@@ -95,23 +94,51 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
   }
 
   Timer? _timer;
+  int cont = 0;
+  int aux = 0;
 
   void iniciarLlamadaCada10Segundos() {
     // Cancela cualquier temporizador existente para evitar duplicaciones
     _timer?.cancel();
 
     // Establece un temporizador que llama a la función cada 20 segundos
-    _timer = Timer.periodic(const Duration(seconds: 20), (Timer timer) {
-      // actualizo la cola
-      if (clientsScheduledController.showingServiceClientsTechnical == false &&
-          loginController.branchIdLoggedIn != null &&
-          loginController.chargeUserLoggedIn == "Tecnico") {
-        //solo
-        print(
-            'ESTOY HomePageTecnicoBody ACTUALIZANDO LA COLA CADA 10 SEGUNDOS (TECNICO) showingServiceClients = false');
-        clientsScheduledController
-            .fetchClientsTechnical(loginController.branchIdLoggedIn);
+    _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
+      cont += 1;
+      print('iniciarLlamadaCada10Segundos');
+      if (clientsScheduledController.boolFilterShowNextTecnhical == true) {
+        print('iniciarLlamadaCada10Segundos true y aux = $aux');
+        aux += 1;
+        if (aux == 4) {
+          notiController.storeNotification(
+              'Clientes en cola',
+              loginController.branchIdLoggedIn,
+              loginController.idProfessionalLoggedIn,
+              'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!');
+        }
+      } else {
+        aux = 0;
       }
+
+      if (cont == 1 ||
+          cont == 3 ||
+          cont == 6) //han pasado 15 segundos si aseptar al cliente
+      {
+        // actualizo la cola
+        if (clientsScheduledController.showingServiceClientsTechnical ==
+                false &&
+            loginController.branchIdLoggedIn != null &&
+            loginController.chargeUserLoggedIn == "Tecnico") {
+          //solo
+          print(
+              'ESTOY HomePageTecnicoBody ACTUALIZANDO LA COLA CADA 10 SEGUNDOS (TECNICO) showingServiceClients = false');
+          clientsScheduledController
+              .fetchClientsTechnical(loginController.branchIdLoggedIn);
+        }
+      }
+      if (cont == 6) {
+        cont = 1;
+      }
+
       //todo REVISAR valor fijo
     });
   }

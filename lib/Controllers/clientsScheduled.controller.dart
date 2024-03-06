@@ -916,6 +916,7 @@ class ClientsScheduledController extends GetxController {
                 break;
             }
           });
+
           /*   if (hora1 != null) {
             hora1 = DateTime.parse(updated!);
             diferenciaSegundos = horaActual.difference(hora1).inSeconds;
@@ -943,6 +944,7 @@ class ClientsScheduledController extends GetxController {
             //  await set_timeClock(reservation_id,timeClock,detached,clock);
             // await setTimeClock(client!.reservation_id, 0, 0, 1);//todo comente a ver si ya lo hace bien
             // ... otras asignaciones para clock 1
+            setTimeClock(client!.reservation_id, 0, 0, 0);
           } else if (clock == 2) {
             // Asignar a variables específicas para clock 2
             clientsAttended2 = client;
@@ -953,6 +955,7 @@ class ClientsScheduledController extends GetxController {
             //  await set_timeClock(reservation_id,timeClock,detached,clock);
             // await setTimeClock(client!.reservation_id, 0, 0, 2);//todo comente a ver si ya lo hace bien
             // ... otras asignaciones para clock 2
+            setTimeClock(client!.reservation_id, 0, 0, 0);
           } else if (clock == 3) {
             // Asignar a variables específicas para clock 3
             clientsAttended3 = client;
@@ -964,6 +967,7 @@ class ClientsScheduledController extends GetxController {
             // await setTimeClock(client!.reservation_id, 0, 0, 3);//todo comente a ver si ya lo hace bien
 
             // ... otras asignaciones para clock 3
+            setTimeClock(client!.reservation_id, 0, 0, 0);
           } else if (clock == 4) {
             // Asignar a variables específicas para clock 3
             clientsAttended4 = client;
@@ -975,6 +979,7 @@ class ClientsScheduledController extends GetxController {
             // await setTimeClock(client!.reservation_id, 0, 0, 4);//todo comente a ver si ya lo hace bien
 
             // ... otras asignaciones para clock 3
+            setTimeClock(client!.reservation_id, 0, 0, 0);
           }
           // Puedes agregar más condiciones según sea necesario para otros valores de clock
         } //cierre for (var map in attendingClientList)

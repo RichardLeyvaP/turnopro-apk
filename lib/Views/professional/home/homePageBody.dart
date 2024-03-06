@@ -978,7 +978,7 @@ class _HomePageBodyState extends State<HomePageBody>
                             width:
                                 1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                           ),
-                          color: const Color.fromARGB(255, 32, 32, 32),
+                          color: const Color.fromARGB(255, 43, 44, 49),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(12))),
                       child: IconButton(

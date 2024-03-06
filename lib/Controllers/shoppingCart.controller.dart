@@ -18,6 +18,7 @@ class ShoppingCartController extends GetxController {
   List<ProductModel> productCart = [], selectproduct = []; // Lista de product
   List<ServiceModel> serviceCart = [],
       selectserviceCart = []; // Lista de service
+  List<String> idServiceCart = []; // Lista de service
   List<OrderDeleteModel> orderDeleteCar = [];
   List<int> requestDeleteOrder = []; // id de las ordenes solicitadas a eliminar
   List<int> productCarr = [];
@@ -61,6 +62,9 @@ class ShoppingCartController extends GetxController {
       productListLength = selectproduct.length;
       serviceListLength = selectserviceCart.length;
 
+      for (int i = 0; i < selectserviceCart.length; i++) {
+        idServiceCart.add(selectserviceCart[i].nameService!);
+      }
       shoppingCart = productListLength + serviceListLength;
 
       update();

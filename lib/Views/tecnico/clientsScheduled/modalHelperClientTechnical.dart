@@ -170,16 +170,15 @@ class ModalHelperTecnical {
                           },
                           child: Row(
                             children: [
+                              Icon(
+                                MdiIcons.stop,
+                                color: Colors.white,
+                              ),
                               const Text(
                                 'CLIENTE ATENDIDO',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800),
-                              ),
-                              Icon(
-                                MdiIcons.stopCircleOutline,
-                                color: Colors.white,
-                                size: 25,
                               ),
                             ],
                           ),

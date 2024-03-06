@@ -391,6 +391,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                       child: IconButton(
                         onPressed: () async {
                           //rechazar la eliminacion
+                          controllerShoppingCart.setLoading(true);
                           int result = await contShopp.requestDelete(
                               contShopp.orderDeleteCar[i].id, 0);
                           //aqui mandar notificacion
@@ -414,6 +415,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                           if (controllerLogin.branchIdLoggedIn != null) {
                             await contShopp.loadOrderDeleteCar(
                                 controllerLogin.branchIdLoggedIn!);
+                            controllerShoppingCart.setLoading(false);
                           }
 
                           // Get.snackbar(
@@ -538,11 +540,12 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                             width:
                                 1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                           ),
-                          color: const Color.fromARGB(255, 32, 32, 32),
+                          color: const Color.fromARGB(255, 43, 44, 49),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(12))),
                       child: IconButton(
                         onPressed: () async {
+                          controllerShoppingCart.setLoading(true);
                           int result = await contShopp
                               .orderDelete(contShopp.orderDeleteCar[i].id);
                           //aqui mandar notificacion
@@ -577,6 +580,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                           if (controllerLogin.branchIdLoggedIn != null) {
                             await contShopp.loadOrderDeleteCar(
                                 controllerLogin.branchIdLoggedIn!);
+                            controllerShoppingCart.setLoading(false);
                           }
                           // Get.snackbar(
                           //   'Mensaje',

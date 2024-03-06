@@ -369,8 +369,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    const Icon(
-                                      Icons.person,
+                                    Icon(
+                                      MdiIcons.clockOutline,
                                       color:
                                           const Color.fromARGB(255, 43, 44, 49),
                                       size: 22,
@@ -390,8 +390,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    const Icon(
-                                      Icons.person,
+                                    Icon(
+                                      MdiIcons.accountTie,
                                       color:
                                           const Color.fromARGB(255, 43, 44, 49),
                                       size: 22,
@@ -422,64 +422,70 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                           curve: Curves.ease,
                         );
                       },
-                      child: Container(
-                        height: (MediaQuery.of(context).size.height * 0.115),
-                        width: (MediaQuery.of(context).size.width * 0.20),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.white, // Color blanco para el borde
-                              width:
-                                  1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                            ),
-                            color: const Color.fromARGB(255, 32, 32, 32),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(12))),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                IconButton(
-                                  onPressed: () async {
-                                    int idClient = controllerclient
-                                        .clientsScheduledListBranch[index]
-                                        .client_id;
-                                    int idReserv = controllerclient
-                                        .clientsScheduledListBranch[index]
-                                        .reservation_id;
-                                    int idBranch =
-                                        loginController.branchIdLoggedIn!;
-                                    // aqui llamar a la db y pedir todos los datos del cliente
-                                    await controllerclient.getClientHistory(
-                                        idClient, idBranch, idReserv);
-                                    //pagesConfigC.updateSelectedIndex();
-                                    await pagesConfigC.showAppBar(false);
-                                    pageController2.nextPage(
-                                      duration: Duration(milliseconds: 300),
-                                      curve: Curves.ease,
-                                    );
-                                  },
-                                  icon: Icon(
-                                    MdiIcons.eye,
-                                    color: Colors.white,
-                                    size: (MediaQuery.of(context).size.height *
-                                        0.05),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 4, bottom: 4, right: 6.0),
+                        child: Container(
+                          height: (MediaQuery.of(context).size.height * 0.115),
+                          width: (MediaQuery.of(context).size.width * 0.20),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color:
+                                    Colors.white, // Color blanco para el borde
+                                width:
+                                    1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                              ),
+                              color: const Color.fromARGB(255, 43, 44, 49),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(12))),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  IconButton(
+                                    onPressed: () async {
+                                      int idClient = controllerclient
+                                          .clientsScheduledListBranch[index]
+                                          .client_id;
+                                      int idReserv = controllerclient
+                                          .clientsScheduledListBranch[index]
+                                          .reservation_id;
+                                      int idBranch =
+                                          loginController.branchIdLoggedIn!;
+                                      // aqui llamar a la db y pedir todos los datos del cliente
+                                      await controllerclient.getClientHistory(
+                                          idClient, idBranch, idReserv);
+                                      //pagesConfigC.updateSelectedIndex();
+                                      await pagesConfigC.showAppBar(false);
+                                      pageController2.nextPage(
+                                        duration: Duration(milliseconds: 300),
+                                        curve: Curves.ease,
+                                      );
+                                    },
+                                    icon: Icon(
+                                      MdiIcons.eye,
+                                      color: Colors.white,
+                                      size:
+                                          (MediaQuery.of(context).size.height *
+                                              0.05),
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                )
-                              ],
-                            ),
-                            const Text(
-                              'VER MÁS',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w800),
-                            ),
-                          ],
+                                  const SizedBox(
+                                    width: 10,
+                                  )
+                                ],
+                              ),
+                              const Text(
+                                'VER MÁS',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
