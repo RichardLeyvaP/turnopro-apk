@@ -443,8 +443,8 @@ class ShoppingCartPage extends StatelessWidget {
                         const EdgeInsets.symmetric(
                             vertical: 2.0, horizontal: 20.0),
                       ),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color.fromARGB(255, 43, 44, 49)),
                     ),
                     onPressed: () async {
                       /* showDialog(

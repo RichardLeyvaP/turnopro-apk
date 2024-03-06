@@ -195,7 +195,7 @@ class _QRViewPageState extends State<QRViewPage> {
                             fontWeight: FontWeight.w800,
                             color: loginController.pagina == 'nothing' ||
                                     loginController.pagina == '/Professional'
-                                ? Colors.black
+                                ? const Color.fromARGB(255, 43, 44, 49)
                                 : Colors.white,
                           )),
                     ),

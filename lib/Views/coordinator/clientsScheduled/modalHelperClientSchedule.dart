@@ -53,9 +53,9 @@ class ModalHelper {
                                     const EdgeInsets.symmetric(
                                         vertical: 4.0, horizontal: 10.0),
                                   ),
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.black),
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      const Color.fromARGB(255, 43, 44, 49)),
                                 ),
                                 onPressed: () async {
                                   //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
@@ -174,7 +174,7 @@ class ModalHelper {
                                             //   },
                                             //   style: ElevatedButton.styleFrom(
                                             //       backgroundColor:
-                                            //           Colors.black),
+                                            //           const Color.fromARGB(255, 43, 44, 49)),
                                             //   child: const Text('Cancelar'),
                                             // ),
                                             ElevatedButton(
@@ -195,7 +195,9 @@ class ModalHelper {
                                                     'DIRECCIONDELAIMAGEN : ${_.imagePath}');
                                               },
                                               style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.black,
+                                                backgroundColor:
+                                                    const Color.fromARGB(
+                                                        255, 43, 44, 49),
                                               ),
                                               child: const Text(
                                                 'Tomar Foto',
@@ -203,7 +205,9 @@ class ModalHelper {
                                             ),
                                             ElevatedButton(
                                               style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.black,
+                                                backgroundColor:
+                                                    const Color.fromARGB(
+                                                        255, 43, 44, 49),
                                               ),
                                               onPressed: () async {
                                                 // Lógica para enviar el comentario
@@ -283,9 +287,9 @@ class ModalHelper {
                                     const EdgeInsets.symmetric(
                                         vertical: 4.0, horizontal: 10.0),
                                   ),
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.black),
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      const Color.fromARGB(255, 43, 44, 49)),
                                 ),
                                 onPressed: () async {
                                   //llamo al controlador y lo paso attended = 4 que significa que va para el tecnico capilar
@@ -314,7 +318,8 @@ class ModalHelper {
                           Navigator.pop(context); // Cierra el modal
                         },
                         child: const CircleAvatar(
-                            backgroundColor: Colors.black,
+                            backgroundColor:
+                                const Color.fromARGB(255, 43, 44, 49),
                             child: Icon(
                               Icons.close,
                               color: Colors.white,

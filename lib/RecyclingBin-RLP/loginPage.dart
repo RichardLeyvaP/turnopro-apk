@@ -33,7 +33,7 @@
 //                 Text(
 //                   _.login ? logMeIn : registerMe,
 //                   style: const TextStyle(
-//                       color: Colors.black,
+//                       color: const Color.fromARGB(255, 43, 44, 49),
 //                       fontSize: 30,
 //                       fontWeight: FontWeight.w900),
 //                 ),
@@ -186,7 +186,7 @@
 //                                       'LOG IN',
 //                                       style: TextStyle(
 //                                           fontSize: 12,
-//                                           color: Colors.black,
+//                                           color: const Color.fromARGB(255, 43, 44, 49),
 //                                           fontWeight: FontWeight.w800),
 //                                     )),
 //                               ],
@@ -343,7 +343,7 @@
 //                                       'Registrarme',
 //                                       style: TextStyle(
 //                                           fontSize: 12,
-//                                           color: Colors.black,
+//                                           color: const Color.fromARGB(255, 43, 44, 49),
 //                                           fontWeight: FontWeight.w800),
 //                                     )),
 //                               ],
@@ -497,7 +497,7 @@
 //                               'Registrarme',
 //                               style: TextStyle(
 //                                   fontSize: 12,
-//                                   color: Colors.black,
+//                                   color: const Color.fromARGB(255, 43, 44, 49),
 //                                   fontWeight: FontWeight.w800),
 //                             )),
 //                       ],

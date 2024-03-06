@@ -91,7 +91,7 @@ class _ProductsBodyState extends State<ProductsBody>
                   height: (MediaQuery.of(context).size.width) * 0.09,
                   child: TabBar(
                     isScrollable: true,
-                    labelColor: Colors.black,
+                    labelColor: const Color.fromARGB(255, 43, 44, 49),
                     indicatorColor: const Color(0xFFF18254),
                     controller: _tabController,
                     tabs: tabs2,

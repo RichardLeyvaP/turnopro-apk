@@ -133,7 +133,8 @@ class LoginFormPage extends StatelessWidget {
                                     Get.snackbar(
                                       '',
                                       'Cargar Formulario Recuperar Contraseña',
-                                      colorText: Colors.black,
+                                      colorText:
+                                          const Color.fromARGB(255, 43, 44, 49),
                                       titleText: const Text('Mensaje'),
                                       duration: const Duration(seconds: 4),
                                       showProgressIndicator: true,
@@ -165,7 +166,8 @@ class LoginFormPage extends StatelessWidget {
                                       ),
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                              Colors.black),
+                                              const Color.fromARGB(
+                                                  255, 43, 44, 49)),
                                       // Añadir más propiedades de estilo aquí
                                     ),
                                     onPressed: () async {
@@ -176,7 +178,8 @@ class LoginFormPage extends StatelessWidget {
                                         Get.snackbar(
                                           '',
                                           'Campos Vacio.',
-                                          colorText: Colors.black,
+                                          colorText: const Color.fromARGB(
+                                              255, 43, 44, 49),
                                           titleText: const Text('Error'),
                                           duration: const Duration(seconds: 1),
                                           showProgressIndicator: true,
@@ -198,7 +201,8 @@ class LoginFormPage extends StatelessWidget {
                                           Get.snackbar(
                                             '',
                                             'Usuario o Contraseña Incorrectos.',
-                                            colorText: Colors.black,
+                                            colorText: const Color.fromARGB(
+                                                255, 43, 44, 49),
                                             titleText: const Text('Error'),
                                             duration:
                                                 const Duration(seconds: 2),
@@ -275,7 +279,7 @@ class LoginFormPage extends StatelessWidget {
                                 'LOG IN',
                                 style: TextStyle(
                                     fontSize: 12,
-                                    color: Colors.black,
+                                    color: const Color.fromARGB(255, 43, 44, 49),
                                     fontWeight: FontWeight.w800),
                               )),*/
                         ],
