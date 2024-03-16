@@ -300,6 +300,7 @@ class _StadisticaSemanalPageNuevaState
         Get.find<StatisticController>();
 
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(

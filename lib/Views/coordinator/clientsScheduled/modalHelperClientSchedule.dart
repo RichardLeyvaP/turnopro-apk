@@ -19,6 +19,7 @@ class ModalHelper {
     TextEditingController commentController = TextEditingController();
 
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
         return GetBuilder<ClientsScheduledController>(

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
+import 'package:turnopro_apk/Views/tecnico/clientsScheduled/modalHelperClientTechnical.dart';
 import 'package:turnopro_apk/env.dart';
 
 import '../../../Controllers/clientsCoordinatorController.dart';
@@ -23,7 +24,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
   final ClientsCoordinatorController clientCord =
       Get.find<ClientsCoordinatorController>();
   int cantVisitas = 3;
-  String imageDirection = '${Env.apiEndpoint}/images/professional/ejemplo1.jpg';
+
   List<String> direcc = [
     'assets/images/icons/montoGen.png',
     'assets/images/icons/propina.png',
@@ -41,7 +42,6 @@ class _AssignProfessionalState extends State<AssignProfessional> {
   ];
 
   String title = 'Modulo 1';
-  String name = 'John Rivera';
   Icon icon = Icon(
     MdiIcons.tag,
   );
@@ -99,7 +99,8 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                       ),
                     ),
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage(imageDirection),
+                      backgroundImage: NetworkImage(
+                          '${Env.apiEndpoint}/images/${controllerCoord.imageLookCORD}'), //todo Modo de cargar la foto),),
                       radius: 40, // Ajusta el tamaño del círculo aquí
                     ),
                   ),
@@ -108,9 +109,17 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                     style: const TextStyle(
                         fontWeight: FontWeight.w700, fontSize: 20),
                   ),
+                  Text(
+                    'Barbero Actual: ${controllerCoord.professActualNameCORD}',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w100, fontSize: 11, height: 1.0),
+                  ),
                   const Text(
                     'Reasignar',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
                   ),
                 ],
               ),
@@ -148,7 +157,8 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                                     icon,
                                     title,
                                     '${_.professionalDispon[index].name}  ${_.professionalDispon[index].surname}',
-                                    _.professionalDispon[index].id);
+                                    _.professionalDispon[index].id,
+                                    _.professionalDispon[index].image_url);
                               },
                             ),
                           ),
@@ -163,7 +173,8 @@ class _AssignProfessionalState extends State<AssignProfessional> {
     });
   }
 
-  Padding cardOptions(BuildContext context, icon, title, name, idProfess) {
+  Padding cardOptions(
+      BuildContext context, icon, title, name, idProfess, imageUrl) {
     return Padding(
       padding: const EdgeInsets.only(right: 10, top: 8, left: 10),
       child: Container(
@@ -183,7 +194,8 @@ class _AssignProfessionalState extends State<AssignProfessional> {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: NetworkImage(imageDirection),
+                    backgroundImage: NetworkImage(
+                        '${Env.apiEndpoint}/images/$imageUrl'), //todo Modo de cargar la foto),
                     radius: 30, // Ajusta el tamaño del círculo aquí
                   ),
                   const SizedBox(
@@ -266,15 +278,10 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                         int clientIdCORD = clientCord.clientIdCORD;
                         int reservationId = clientCord.idReservCORD;
                         //todo falta poner un cargando
+                        clientCord.setLoading(true);
                         bool result = await clientCord.reasignedClient(
                             reservationId, clientIdCORD, idProfess);
                         if (result == true) {
-                          print('Aqui lo mando al home despue de reasinarlo');
-                          //aqui lo mando al home
-                          //todo falta probarlo porque en el momento que se hizo no habia barberos disponibles
-                          pagesConfigCont.pageController2
-                              .jumpToPage(0); //AQUI VA  AL HOME
-                          pagesConfigCont.showAppBar(true);
                           Get.snackbar(
                             'Mensaje',
                             'Cliente reasignado correctamente',
@@ -288,6 +295,17 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                                 const AlwaysStoppedAnimation(Color(0xFFF18254)),
                             overlayBlur: 3,
                           );
+                          //aqui actualizo la cola que se muestra en el home
+                          await clientCord.fetchClientsScheduledBranch(
+                              loginController.branchIdLoggedIn);
+                          //clientCord.setLoading(false);
+                          print('Aqui lo mando al home despue de reasinarlo');
+                          //aqui lo mando al home
+                          //todo falta probarlo porque en el momento que se hizo no habia barberos disponibles
+                          pagesConfigCont.pageController2
+                              .jumpToPage(0); //AQUI VA  AL HOME
+                          pagesConfigCont.showAppBar(true);
+
                           //ENVIAR UNA NOTIFICACION AL PROFESSIONAL //TODO
                         } else {
                           {

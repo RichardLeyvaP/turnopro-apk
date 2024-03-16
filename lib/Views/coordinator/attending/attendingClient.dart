@@ -141,8 +141,7 @@ class _AttendingClientState extends State<AttendingClient> {
                                 context,
                                 index,
                                 pagesConfigCont.pageController2,
-                                pagesConfigCont,
-                                imag);
+                                pagesConfigCont);
                           },
                         ),
                       ),
@@ -162,8 +161,7 @@ class _AttendingClientState extends State<AttendingClient> {
       BuildContext context,
       index,
       PageController pageController2,
-      PagesConfigController pagesConfigC,
-      imageDirection) {
+      PagesConfigController pagesConfigC) {
     return FittedBox(
         fit: BoxFit.contain,
         child: Column(
@@ -179,7 +177,8 @@ class _AttendingClientState extends State<AttendingClient> {
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: CircleAvatar(
-                        backgroundImage: NetworkImage(imageDirection),
+                        backgroundImage: NetworkImage(
+                            '${Env.apiEndpoint}/images/${controllerclient.clientAttendBranch[index].client_image}'),
                         radius: 40, // Ajusta el tamaño del círculo aquí
                       ),
                     ),

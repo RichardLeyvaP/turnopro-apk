@@ -10,6 +10,7 @@ import 'package:turnopro_apk/Views/products-services/products/productsBody.dart'
 import 'package:turnopro_apk/Views/products-services/services/servicesBodyPage.dart';
 //import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/env.dart';
 
 class ServicesProductsPage extends StatefulWidget {
   const ServicesProductsPage({super.key});
@@ -84,9 +85,10 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
               ),
               Column(
                 children: [
-                  Icon(
-                    Icons.person,
-                    size: (MediaQuery.of(context).size.width * 0.22),
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        '${Env.apiEndpoint}/images/${clientsController.urlImageTemporary}'),
+                    radius: 40, // Ajusta el tamaño del círculo aquí
                   ),
                   Text(clientsController.nameClientTemporary,
                       style: const TextStyle(

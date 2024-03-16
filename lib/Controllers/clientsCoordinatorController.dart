@@ -98,11 +98,15 @@ class ClientsCoordinatorController extends GetxController {
   //
   //VARIABLES PARA EL COORDINADOR
   String clientNameCORD = '';
+  String professionalNameCORD = '';
+  String professActualNameCORD = '';
+  String imageUrlCORD = '';
   String imageLookCORD = '';
   int cantVisitCORD = 0;
   String endLookCORD = '';
   String frecuenciaCORD = '';
   int clientIdCORD = -99;
+  int professionalIdCORD = -99;
   int idReservCORD = -99;
 
   List<ProductModel> productCORD = [];
@@ -111,9 +115,18 @@ class ClientsCoordinatorController extends GetxController {
 
   //
   //
+  /* saveIdProfessional(int id) {
+    professionalIdCORD = id;
+    update();
+  }*/
 
   void setImagePath(value) {
     imagePath = value;
+    update();
+  }
+
+  void setActualNameCORD(name) {
+    professActualNameCORD = name;
     update();
   }
 
@@ -130,26 +143,30 @@ class ClientsCoordinatorController extends GetxController {
   //Fin Variables del reloj
 
   Future<void> fetchClientsScheduledBranch(idBranch) async {
-    Map<String, dynamic> resultList =
-        await repository.getClientsScheduledListBranch(idBranch);
-    print(resultList);
-    //verificando , si entra al if es problemas de coneccion
-    if (resultList.containsKey('ConnectionIssues') &&
-        resultList['ConnectionIssues'] == true) {
-      correctConnection = false;
-      print(
-          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
-    } else {
-      correctConnection = true;
-      //aqui estoy guardando la cola del dia de hoy del profesional
-      clientsScheduledListBranch =
-          (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
-      clientsScheduledListBranchLength = clientsScheduledListBranch.length;
-      print(
-          'cargando valores -******-*********-*-****-* lenght: $clientsScheduledListBranchLength -****-************-* ');
-      //
+    try {
+      Map<String, dynamic> resultList =
+          await repository.getClientsScheduledListBranch(idBranch);
+      print(resultList);
+      //verificando , si entra al if es problemas de coneccion
+      if (resultList.containsKey('ConnectionIssues') &&
+          resultList['ConnectionIssues'] == true) {
+        correctConnection = false;
+        print(
+            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
+      } else {
+        correctConnection = true;
+        //aqui estoy guardando la cola del dia de hoy del profesional
+        clientsScheduledListBranch =
+            (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
+        clientsScheduledListBranchLength = clientsScheduledListBranch.length;
+        print(
+            'cargando valores -******-*********-*-****-* lenght: $clientsScheduledListBranchLength -****-************-* ');
+        //
+      }
+      update();
+    } catch (e) {
+      print(e);
     }
-    update();
   } //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
 
   Future<void> clientsAttendBranch(idBranch) async {
@@ -840,6 +857,8 @@ class ClientsCoordinatorController extends GetxController {
 
         //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
         clientNameCORD = resultList['clientName'];
+        professionalNameCORD = resultList['professionalName'];
+        imageUrlCORD = resultList['image_url'];
         imageLookCORD = resultList['imageLook'];
         cantVisitCORD = resultList['cantVisit'];
         endLookCORD = resultList['endLook'];

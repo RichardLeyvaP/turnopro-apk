@@ -63,7 +63,7 @@ class StatisticController extends GetxController {
       }
       update();
     } catch (e) {
-      print('Error StatisticController en getDataStatistic :$e');
+      print('Error StatisticController en getDataStatistic nueva :$e');
     }
   }
 
@@ -92,7 +92,7 @@ class StatisticController extends GetxController {
       }
       update();
     } catch (e) {
-      print('Error StatisticController en getDataStatistic :$e');
+      print('Error StatisticController en getDataStatistic otra :$e');
     }
   }
 
@@ -129,7 +129,7 @@ class StatisticController extends GetxController {
       update();
     } catch (e) {
       print(
-          'Resultados getDataStatisticRespon ERROR StatisticController en getDataStatistic :$e');
+          'Resultados getDataStatisticRespon ERROR StatisticController en getDataStatistic esta otra :$e');
     }
   }
 

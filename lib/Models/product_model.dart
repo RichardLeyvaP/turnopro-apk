@@ -21,7 +21,7 @@ class ProductModel {
   ProductModel({
     required this.id,
     required this.name,
-    required this.code,
+    required dynamic code,
     required this.description,
     required this.product_exit,
     required this.status_product,
@@ -32,7 +32,7 @@ class ProductModel {
     this.request_delete,
     this.is_product,
     this.cant,
-  });
+  }) : code = code is int ? code.toString() : code;
 
   Map<String, dynamic> toMap() {
     return {

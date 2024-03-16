@@ -676,7 +676,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                     null) ...[
                                   cardTimer(
                                     UniqueKey(),
-                                    'Esperando...',
+                                    'Esperando',
                                     controllerclient,
                                     clientsScheduledController
                                         .animationControllerInitial!,
@@ -1076,7 +1076,7 @@ class _HomePageBodyState extends State<HomePageBody>
     String segundos = "";
     Color colorInicial = Colors.white;
     Color colorInicialCirculo = const Color(0xFFF18254);
-    double fontSizeText = (MediaQuery.of(context).size.width * 0.035);
+    double fontSizeText = (MediaQuery.of(context).size.width * 0.030);
     // Dividir el nombre completo por espacios
 
     List<String> partsName =
@@ -1212,9 +1212,9 @@ class _HomePageBodyState extends State<HomePageBody>
     return Container(
       width: (MediaQuery.of(context).size.width * 0.46), //Tamaño de los Cards
       height:
-          loginController.androidInfoDisplay! >= 6.6 //propiedades de telefone
+          loginController.androidInfoWidth! >= 867.42 //propiedades de telefone
               ? (MediaQuery.of(context).size.height * 0.198)
-              : (MediaQuery.of(context).size.height * 0.185),
+              : (MediaQuery.of(context).size.height * 0.180),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
         color: colorVariable,

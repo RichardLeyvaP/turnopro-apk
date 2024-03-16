@@ -175,13 +175,15 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
 // ignore: must_be_immutable
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final int? id;
-  const CustomAppBar({Key? key, required this.id}) : super(key: key);
+  CustomAppBar({Key? key, required this.id}) : super(key: key);
 
   @override
   //Size get preferredSize => const Size.fromHeight(kToolbarHeight);
   Size get preferredSize =>
       const Size.fromHeight(70); // Ajusta el tamaño del AppBar aquí
-
+  final ClientsScheduledController clientCon =
+      Get.find<ClientsScheduledController>();
+/*
   // Utilizar una función o getter para obtener imageDirection
   String get imageDirection {
     if (id != null && id != -99) {
@@ -190,7 +192,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       // Si id es null o igual a -99, devuelve la ruta para la foto de perfil incógnito
       return '${Env.apiEndpoint}/images/professional/default_profile.jpg';
     }
-  }
+  }*/
 
   @override //todo AppBar
   Widget build(BuildContext context) {
@@ -209,12 +211,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: const Color.fromARGB(255, 43, 44, 49),
+                  color: const Color.fromARGB(255, 32, 32, 32),
                   width: 2, // Ajusta el ancho del borde según tus preferencias
                 ),
               ),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(imageDirection),
+                backgroundImage: NetworkImage(
+                    '${Env.apiEndpoint}/images/${logUser.imageUrlLoggedIn}'), //todo Modo de cargar la foto
                 radius: 25, // Ajusta el tamaño del círculo aquí
               ),
             ),
@@ -258,60 +261,350 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       }),
       actions: [
         GetBuilder<LoginController>(builder: (_) {
-          return InkWell(
-            onTap: () {
-              _.exit(_.tokenUserLoggedIn); //todo
+          return Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  //verifico si esta atendiendo a alguien no puede leer un nuevo codigo
+                  if (clientCon.verificateValueTimers() == true) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return GetBuilder<LoginController>(builder: (_) {
+                          return Dialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ), //this right here
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Container(
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xFFF18254),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(8),
+                                      topRight: Radius.circular(8),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      const Padding(
+                                        padding: EdgeInsets.only(left: 12),
+                                        child: Text(
+                                          'Mensaje',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.close,
+                                            color: Colors.white),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 166,
+                                  child: Column(
+                                    children: [
+                                      const Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 20,
+                                              left: 16,
+                                              right: 16,
+                                              bottom: 10),
+                                          child: Text(
+                                              'No puede leer un nuevo código de entrada, debe salir de la aplicación primero')),
+                                      //
 
-              // _.exit();
-              // Get.offAllNamed('/LoginFormPage');
-            },
-            child: Row(
-              children: [
-                InkWell(
-                  onTap: () {
+                                      ButtonBar(
+                                        alignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          ElevatedButton(
+                                            style: ButtonStyle(
+                                              padding: MaterialStateProperty
+                                                  .all<EdgeInsetsGeometry>(
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 0,
+                                                    horizontal: 26.0),
+                                              ),
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                          Color>(
+                                                      const Color(0xFF2B3141)),
+                                            ),
+                                            onPressed: () async {
+                                              // Lógica para enviar el comentario
+
+                                              // Cerrar el primer modal
+                                              Navigator.pop(context);
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  MdiIcons.check,
+                                                  color: Colors.white,
+                                                ),
+                                                SizedBox(
+                                                  width: 6,
+                                                ),
+                                                const Text(
+                                                  'Aceptar',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w800),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        });
+                      },
+                    );
+                  } else {
                     Get.toNamed(
                       '/QRViewExample',
                     );
+                  }
+                },
+                child: CircleAvatar(
+                  radius: 22, // Tamaño del CircleAvatar
+                  backgroundColor: const Color(
+                      0xFF2B3141), // Color de fondo del CircleAvatar
+                  child: Icon(
+                    MdiIcons.qrcodeScan,
+                    size: MediaQuery.of(context).size.width * 0.06,
+                    color: const Color.fromARGB(255, 231, 233, 233),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              GetBuilder<ClientsScheduledController>(builder: (clCont) {
+                return InkWell(
+                  onTap: () async {
+                    //verificar si no tiene servicios activos
+                    //mostrar un mensaje si no pudiera salir
+                    //Y de igual forma si pudiera preguntarle si realmente quiere salir
+
+                    //ESTE ES PQARA CUANDO VA A SALIR SABER SI PUEDE O NO
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return GetBuilder<LoginController>(builder: (_) {
+                          return Dialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ), //this right here
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Container(
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xFFF18254),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(8),
+                                      topRight: Radius.circular(8),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      const Padding(
+                                        padding: EdgeInsets.only(left: 12),
+                                        child: Text(
+                                          'Mensaje',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.close,
+                                            color: Colors.white),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 150,
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 30,
+                                              left: 16,
+                                              right: 16,
+                                              bottom: 10),
+                                          child: clCont
+                                                      .verificateValueTimers() ==
+                                                  true
+                                              ? Text(
+                                                  'No puedes salir del sistema,tienes clientes atendiendo!')
+                                              : Text(
+                                                  'Deseas salir de la aplicación?                         ')),
+                                      //
+
+                                      ButtonBar(
+                                        alignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          ElevatedButton(
+                                            style: ButtonStyle(
+                                              padding: MaterialStateProperty
+                                                  .all<EdgeInsetsGeometry>(
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 0,
+                                                    horizontal: 26.0),
+                                              ),
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                          Color>(
+                                                      const Color(0xFF2B3141)),
+                                            ),
+                                            onPressed: () async {
+                                              // Lógica para enviar el comentario
+
+                                              // Cerrar el primer modal
+                                              Navigator.pop(context);
+                                            },
+                                            child: (clientCon
+                                                        .verificateValueTimers() ==
+                                                    true)
+                                                ? Row(
+                                                    children: [
+                                                      Icon(
+                                                        MdiIcons.check,
+                                                        color: Colors.white,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 6,
+                                                      ),
+                                                      const Text(
+                                                        'Aceptar',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w800),
+                                                      ),
+                                                    ],
+                                                  )
+                                                : Row(
+                                                    children: [
+                                                      Icon(
+                                                        MdiIcons.cancel,
+                                                        color: Colors.white,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 6,
+                                                      ),
+                                                      const Text(
+                                                        'Cancelar',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w800),
+                                                      ),
+                                                    ],
+                                                  ),
+                                          ),
+                                          if (!clCont.verificateValueTimers())
+                                            ElevatedButton(
+                                              style: ButtonStyle(
+                                                padding: MaterialStateProperty
+                                                    .all<EdgeInsetsGeometry>(
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 0,
+                                                      horizontal: 26.0),
+                                                ),
+                                                backgroundColor:
+                                                    MaterialStateProperty
+                                                        .all<Color>(const Color(
+                                                            0xFF2B3141)),
+                                              ),
+                                              onPressed: () async {
+                                                // Lógica para enviar el comentario
+                                                await clCont
+                                                    .upadateVariablesValueTimers();
+                                                _.exit(_.tokenUserLoggedIn);
+
+                                                // Cerrar el primer modal
+                                                Navigator.pop(context);
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    MdiIcons.exitToApp,
+                                                    color: Colors.white,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 6,
+                                                  ),
+                                                  const Text(
+                                                    '  Salir  ',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w800),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        });
+                      },
+                    );
+
+                    //todooooooooooooooooooooooooooooooooooooooooo
+                    // Get.offAllNamed('/LoginFormPage');
                   },
                   child: CircleAvatar(
                     radius: 22, // Tamaño del CircleAvatar
                     backgroundColor: const Color(
                         0xFF2B3141), // Color de fondo del CircleAvatar
                     child: Icon(
-                      MdiIcons.qrcodeScan,
+                      MdiIcons.exitToApp,
                       size: MediaQuery.of(context).size.width * 0.06,
                       color: const Color.fromARGB(255, 231, 233, 233),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                GetBuilder<ClientsScheduledController>(builder: (clCont) {
-                  return InkWell(
-                    onTap: () async {
-                      await clCont.upadateVariablesValueTimers();
-                      _.exit(_
-                          .tokenUserLoggedIn); //todooooooooooooooooooooooooooooooooooooooooo
-                      // Get.offAllNamed('/LoginFormPage');
-                    },
-                    child: CircleAvatar(
-                      radius: 22, // Tamaño del CircleAvatar
-                      backgroundColor: const Color(
-                          0xFF2B3141), // Color de fondo del CircleAvatar
-                      child: Icon(
-                        MdiIcons.exitToApp,
-                        size: MediaQuery.of(context).size.width * 0.06,
-                        color: const Color.fromARGB(255, 231, 233, 233),
-                      ),
-                    ),
-                  );
-                }),
-                const SizedBox(
-                  width: 18,
-                )
-              ],
-            ),
+                );
+              }),
+              const SizedBox(
+                width: 18,
+              )
+            ],
           );
         }),
       ],

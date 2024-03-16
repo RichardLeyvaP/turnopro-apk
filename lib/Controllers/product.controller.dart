@@ -19,6 +19,80 @@ class ProductController extends GetxController {
   List<ProductModel> selectproduct = []; //Notificaciones seleccionados vacia
   bool isLoading = true, isLoadingCategory = true;
 
+  /************************************************************* */
+  // Mapa para almacenar la información de productos por categoría
+  RxMap<int, Map<int, int>> categoriasProductos = RxMap<int, Map<int, int>>();
+  // Método para inicializar el mapa
+  void inicializarMapa() {
+    // Aquí podrías cargar los datos iniciales del mapa si es necesario
+    categoriasProductos.value = {}; // Inicializamos con un mapa vacío
+  }
+
+  // Método para actualizar la cantidad de un producto en una categoría
+  void actualizarCantidad(int categoriaId, int productoId, int nuevaCantidad) {
+    if (categoriasProductos.containsKey(categoriaId)) {
+      if (categoriasProductos[categoriaId]!.containsKey(productoId)) {
+        categoriasProductos[categoriaId]![productoId] = nuevaCantidad;
+        update(); // Actualiza el widget cuando cambia el estado
+      }
+    }
+  }
+
+  // Método para agregar una nueva categoría
+  void agregarCategoria(int categoriaId) {
+    if (!categoriasProductos.containsKey(categoriaId)) {
+      categoriasProductos[categoriaId] = {1: 2};
+      print('categoriasProductos agregando id categorias bien');
+      // Asignamos un nuevo mapa vacío para la nueva categoría
+      update(); // Actualiza el widget cuando cambia el estado
+    } else {
+      print('categoriasProductos YAAAA esta agregando id categorias');
+      print(
+          'categoriasProductos YAAAA esta categoriasProductos[categoriaId] ${categoriasProductos[categoriaId]}');
+    }
+  }
+
+  // Método para agregar un producto a una categoría
+  void agregarProductoACategoria(
+      int categoriaId, int productoId, int cantidad) {
+    if (categoriasProductos.containsKey(categoriaId)) {
+      categoriasProductos[categoriaId]![productoId] = cantidad;
+      update(); // Actualiza el widget cuando cambia el estado
+    } else {
+      // Si la categoría no existe, podrías crearla automáticamente
+      agregarCategoria(categoriaId);
+      categoriasProductos[categoriaId]![productoId] = cantidad;
+      update(); // Actualiza el widget cuando cambia el estado
+    }
+  }
+
+  int obtenerCantidadProducto(int categoriaId, int productoId) {
+    if (categoriasProductos.containsKey(categoriaId)) {
+      Map<int, int>? productos = categoriasProductos[categoriaId];
+      if (productos != null && productos.containsKey(productoId)) {
+        return productos[productoId]!;
+      }
+    }
+    // En caso de que la categoría o el producto no existan, retornamos 0 o un valor predeterminado
+    return 0;
+  }
+//Forma de saber la cantidad
+//int cantidad = obtenerCantidadProducto(34, 23);
+
+  void modificarCantidadProducto(
+      int categoriaId, int productoId, int nuevaCantidad) {
+    if (categoriasProductos.containsKey(categoriaId)) {
+      Map<int, int>? productos = categoriasProductos[categoriaId];
+      if (productos != null && productos.containsKey(productoId)) {
+        productos[productoId] = nuevaCantidad;
+        update(); // Actualiza el widget cuando cambia el estado
+      }
+    }
+  }
+//FORMA de modificar la cantidad
+//modificarCantidadProducto(34, 23, 150);
+  /************************************************************************** */
+
   @override
   void onReady() {
     super.onReady();
@@ -71,6 +145,13 @@ class ProductController extends GetxController {
         if (category.isNotEmpty) {
           categoryListLength = category.length;
           idInicial = category[0].id;
+
+          //aqui gusrdo los id de las categorias
+          for (int i = 0; i < categoryListLength; i++) {
+            agregarCategoria(category[i].id);
+          }
+          print(
+              'La lista de categorías está categoriasProductos:${categoriasProductos.length}');
           update();
         } else {
           // Manejo de caso en el que la lista de categorías está vacía

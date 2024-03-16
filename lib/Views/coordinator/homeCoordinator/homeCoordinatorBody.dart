@@ -83,8 +83,6 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
   @override
   bool get wantKeepAlive => true;
 
-  String imag = '${Env.apiEndpoint}/images/coordinator/default_profile.jpg';
-
   //
   @override
   Widget build(BuildContext context) {
@@ -152,8 +150,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                             context,
                                             index,
                                             pagesConfigC.pageController2,
-                                            pagesConfigC,
-                                            imag),
+                                            pagesConfigC),
                                   ),
                                 )
                               : const Padding(
@@ -305,8 +302,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
       BuildContext context,
       index,
       PageController pageController2,
-      PagesConfigController pagesConfigC,
-      imageDirection) {
+      PagesConfigController pagesConfigC) {
     return FittedBox(
         fit: BoxFit.contain,
         child: Column(
@@ -322,7 +318,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: CircleAvatar(
-                        backgroundImage: NetworkImage(imageDirection),
+                        backgroundImage: NetworkImage(
+                            '${Env.apiEndpoint}/images/${controllerclient.clientsScheduledListBranch[index].client_image}'),
                         radius: 40, // Ajusta el tamaño del círculo aquí
                       ),
                     ),
@@ -456,9 +453,17 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       int idBranch =
                                           loginController.branchIdLoggedIn!;
                                       // aqui llamar a la db y pedir todos los datos del cliente
+                                      /*   clientsScheduledController
+                                          .saveIdProfessional(controllerclient
+                                              .clientsScheduledListBranch[index]
+                                              .professional_id!);*/
+                                      controllerclient.setActualNameCORD(
+                                          controllerclient
+                                              .clientsScheduledListBranch[index]
+                                              .professional_name);
                                       await controllerclient.getClientHistory(
                                           idClient, idBranch, idReserv);
-                                      //pagesConfigC.updateSelectedIndex();
+                                      // pagesConfigC.updateSelectedIndex();
                                       await pagesConfigC.showAppBar(false);
                                       pageController2.nextPage(
                                         duration: Duration(milliseconds: 300),
@@ -513,7 +518,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
       iconCart) {
     return Container(
       width: (MediaQuery.of(context).size.width * 0.46), //Tamaño de los Cards
-      height: (MediaQuery.of(context).size.height * 0.20),
+      height: (MediaQuery.of(context).size.height *
+          0.192), //todo cambiadoNuevoValores
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
         color: colorVariable,

@@ -45,7 +45,7 @@ class _ProfileClientState extends State<ProfileClient> {
     return GetBuilder<ClientsCoordinatorController>(builder: (controllerCoord) {
       return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 170,
+          toolbarHeight: (loginControl.androidInfoHeight! * 0.199),
           leading: Stack(
             children: [
               Row(
@@ -97,7 +97,8 @@ class _ProfileClientState extends State<ProfileClient> {
                             ),
                           ),
                           child: CircleAvatar(
-                            backgroundImage: NetworkImage(imageDirection),
+                            backgroundImage: NetworkImage(
+                                '${Env.apiEndpoint}/images/${controllerCoord.imageLookCORD}'),
                             radius: 40, // Ajusta el tamaño del círculo aquí
                           ),
                         ),
@@ -124,7 +125,7 @@ class _ProfileClientState extends State<ProfileClient> {
                       ]),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 5),
                   Text(
                     controllerCoord.clientNameCORD,
                     style: const TextStyle(
@@ -155,6 +156,9 @@ class _ProfileClientState extends State<ProfileClient> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //todo1 estructura de los cart
+                    SizedBox(
+                      height: 5,
+                    ),
                     cardOptions(context, icon, 'Servicios', pagesConfigCont, 2),
                     const SizedBox(
                       height: 10,
@@ -181,7 +185,7 @@ class _ProfileClientState extends State<ProfileClient> {
                         borderRadius: BorderRadius.circular(12),
                         // Puedes agregar otras propiedades de estilo aquí si es necesario
                       ),
-                      height: MediaQuery.of(context).size.height * 0.35,
+                      height: MediaQuery.of(context).size.height * 0.425,
                       child: Column(
                         children: [
                           cardOptionsImage(
@@ -194,15 +198,22 @@ class _ProfileClientState extends State<ProfileClient> {
                             pagesConfigCont,
                             pagesConfigCont.pageController2,
                             controllerCoord.endLookCORD,
+                            controllerCoord.professionalNameCORD,
+                            controllerCoord
+                                .imageUrlCORD, // 'CARGAR LA IMAGEN DEL BARBERO',
+                          ),
+                          SizedBox(
+                            height: 5,
                           ),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(12),
                             child: Image.network(
-                              'https://www.calgaryhispano.com/wp-content/uploads/2020/05/barberos-en-alberta.jpg',
+                              '${Env.apiEndpoint}/images/${controllerCoord.imageLookCORD}',
                               fit: BoxFit
                                   .cover, // Puedes ajustar el modo de ajuste según sea necesario
                               width: 360,
-                              height: 240,
+                              height: (loginControl.androidInfoHeight! *
+                                  0.275), //todo cambiadoNuevoValores
                             ),
                           ),
                         ],
@@ -220,7 +231,7 @@ class _ProfileClientState extends State<ProfileClient> {
                                   MaterialStateProperty.all<EdgeInsetsGeometry>(
                                 const EdgeInsets.symmetric(
                                     vertical: 10.0,
-                                    horizontal: 60.0), // Ajusta el padding
+                                    horizontal: 52.0), // Ajusta el padding
                               ),
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   const Color.fromARGB(255, 43, 44, 49)),
@@ -276,7 +287,7 @@ class _ProfileClientState extends State<ProfileClient> {
                                             ),
                                           ),
                                           Container(
-                                            height: 210,
+                                            height: 240,
                                             child: Column(
                                               children: [
                                                 Padding(
@@ -426,7 +437,7 @@ class _ProfileClientState extends State<ProfileClient> {
                                   MaterialStateProperty.all<EdgeInsetsGeometry>(
                                 const EdgeInsets.symmetric(
                                     vertical: 10.0,
-                                    horizontal: 60.0), // Ajusta el padding
+                                    horizontal: 52.0), // Ajusta el padding
                               ),
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   Colors.white),
@@ -534,57 +545,140 @@ class _ProfileClientState extends State<ProfileClient> {
       title,
       PagesConfigController pagesConfigCont,
       PageController pageController2,
-      endLook) {
+      endLook,
+      ultimateBarber,
+      imageUltimateBarber) {
     return InkWell(
       onTap: () async {
         print('estoy dando click');
       },
-      child: Container(
-        height: (MediaQuery.of(context).size.height * 0.07),
-        width: (MediaQuery.of(context).size.width * 0.95),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-        ),
-        child: ListTile(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-          ),
-          title: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Agrega un contenedor para alinear el icono al centro verticalmente
-              Container(
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(55, 124, 123, 123),
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                ),
-                margin: const EdgeInsets.only(right: 10),
-                width: 35,
-                height: 35,
-                child: icon,
+      child: Column(
+        children: [
+          /**último look */ Container(
+            height: (MediaQuery.of(context).size.height * 0.07),
+            width: (MediaQuery.of(context).size.width * 0.95),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+            ),
+            child: ListTile(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12)),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              title: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    title.toString(),
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.w600, height: 1.2),
+                  // Agrega un contenedor para alinear el icono al centro verticalmente
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(55, 124, 123, 123),
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
+                    margin: const EdgeInsets.only(right: 10),
+                    width: 35,
+                    height: 35,
+                    child: icon,
                   ),
-                  Text(
-                    endLook,
-                    style: const TextStyle(
-                        fontSize: 13, fontWeight: FontWeight.w300, height: 1.2),
-                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title.toString(),
+                        style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            height: 1.2),
+                      ),
+                      Text(
+                        endLook,
+                        style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w300,
+                            height: 1.2),
+                      ),
+                    ],
+                  )
                 ],
-              )
-            ],
+              ),
+              subtitle: null,
+              trailing: null,
+            ),
           ),
-          subtitle: null,
-          trailing: null,
-        ),
+          /**último professional */ Container(
+            height: (MediaQuery.of(context).size.height * 0.07),
+            width: (MediaQuery.of(context).size.width * 0.95),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+            ),
+            child: ListTile(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+              ),
+              title: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Agrega un contenedor para alinear el icono al centro verticalmente
+                  // Container(
+                  //   decoration: const BoxDecoration(
+                  //     color: Color.fromARGB(55, 124, 123, 123),
+                  //     borderRadius: BorderRadius.all(Radius.circular(12)),
+                  //   ),
+                  //   margin: const EdgeInsets.only(right: 10),
+                  //   width: 35,
+                  //   height: 35,
+                  //   child: Icon(
+                  //     MdiIcons.accountTie,
+                  //     color: const Color.fromARGB(255, 43, 44, 49),
+                  //   ),
+                  // ),
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        '${Env.apiEndpoint}/images/$imageUltimateBarber'),
+                    radius: 18, // Ajusta el tamaño del círculo aquí
+                  ),
+                  SizedBox(
+                    width: 6,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Row(
+                        children: [
+                          Text(
+                            'Último barbero ',
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                height: 1.2),
+                          ),
+                          /*  Text(
+                            '(16/01/2024)',
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                height: 1.2),
+                          ),*/
+                        ],
+                      ),
+                      Text(
+                        ultimateBarber,
+                        style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w300,
+                            height: 1.2),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              subtitle: null,
+              trailing: null,
+            ),
+          ),
+        ],
       ),
     );
   }

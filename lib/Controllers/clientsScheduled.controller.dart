@@ -9,10 +9,12 @@ import 'package:turnopro_apk/Models/professional_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/get_connect/repository/clientsScheduled.repository.dart';
+import 'package:turnopro_apk/get_connect/repository/user.repository.dart';
 
 class ClientsScheduledController extends GetxController {
   //DECLARACION DE VARIABLES
   ClientsScheduledRepository repository = ClientsScheduledRepository();
+  UserRepository repositoryUser = UserRepository();
 
   List<ClientsScheduledModel> clientsScheduledList = []; // Lista de clientes
   // Lista de clientes
@@ -82,6 +84,7 @@ class ClientsScheduledController extends GetxController {
   int filterShowTimer = 0; //si esta en false es que es la primera vez
   int statusClientTemporary = -99;
   String nameClientTemporary = 'Cliente';
+  String urlImageTemporary = 'comments/default_profile.jpg';
   bool varClientsWaiting = false;
   int contClientsWaiting = 0;
   int endingTime =
@@ -171,6 +174,18 @@ class ClientsScheduledController extends GetxController {
   AnimationController? animationController3;
 
   AnimationController? animationController4;
+
+  bool verificateValueTimers() {
+    bool hasClient1 = clientsAttended1 != null;
+    bool hasClient2 = clientsAttended2 != null;
+    bool hasClient3 = clientsAttended3 != null;
+    bool hasClient4 = clientsAttended4 != null;
+    if (hasClient1 || hasClient2 || hasClient3 || hasClient4) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   upadateVariablesValueTimers() async {
     bool hasClient1 = clientsAttended1 != null;
@@ -730,6 +745,16 @@ class ClientsScheduledController extends GetxController {
     }
   }
 
+  void returnImageName(String url) async {
+    try {
+      urlImageTemporary = url;
+      print('cambiando image:$url');
+      update();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<void> searchForCustomerServices(idCar) async {
     serviceCustomerSelected = await repository.getCustomerServicesList(idCar);
     print('showingServiceClients:$showingServiceClients');
@@ -855,10 +880,10 @@ class ClientsScheduledController extends GetxController {
           int idCar = clientsScheduledNext!.car_id;
           await searchForCustomerServices(idCar);
           await filterShowNext();
-          setValueClock(true);
+          //  setValueClock(true);
         } else {
           print('if (clientsScheduledNext != null) ESTOY DANDO null');
-          setValueClock(false);
+          //  setValueClock(false);
         }
       }
       update();
@@ -997,13 +1022,6 @@ class ClientsScheduledController extends GetxController {
     }
   }
 
-//
-//
-//
-//
-//
-//
-//
   Future<void> fetchClientsTechnical(idBranch) async {
     Map<String, dynamic> resultList =
         await repository.getClientsTechnicalList(idBranch);
@@ -1043,12 +1061,25 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
-  setValueClock(bool value) {
+  /* setValueClock(bool value) {
     if (value == true) {
       sizeClock = 145;
     } else {
       sizeClock = 160;
     }
+  }*/
+
+//en este le doy el tamaño al reloj dependiendo del tamaño del telefono
+  setValueClockDinamic(double value) {
+    sizeClock = value;
+    update();
+  }
+
+  double calcularH(double heightNew) {
+    double h2 = heightNew * 0.155;
+    print('ESTE ES EL VALOR NUEVO DEL CLOCK heightAntComponet:$heightNew');
+    print('ESTE ES EL VALOR NUEVO DEL CLOCK h2:$h2');
+    return h2.roundToDouble();
   }
 
   int convertDateSecons(String tiempo) {

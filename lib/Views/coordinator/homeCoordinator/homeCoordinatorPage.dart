@@ -223,7 +223,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(imageDirection),
+                // backgroundImage: NetworkImage(imageDirection),
+                backgroundImage: NetworkImage(
+                    '${Env.apiEndpoint}/images/${logUser.imageUrlLoggedIn}'),
                 radius: 25, // Ajusta el tamaño del círculo aquí
               ),
             ),

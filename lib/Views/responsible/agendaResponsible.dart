@@ -166,7 +166,8 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: CircleAvatar(
-                        backgroundImage: NetworkImage(imageDirection),
+                        backgroundImage: NetworkImage(
+                            '${Env.apiEndpoint}/images/${controllerclient.clientsScheduledListBranch[index].client_image}'),
                         radius: 40, // Ajusta el tamaño del círculo aquí
                       ),
                     ),

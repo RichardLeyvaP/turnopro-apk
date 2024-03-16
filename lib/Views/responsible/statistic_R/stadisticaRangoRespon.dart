@@ -308,6 +308,7 @@ class _StadisticaResponState extends State<StadisticaRespon> {
         Get.find<StatisticController>();
 
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(

@@ -12,6 +12,7 @@ class ProfessionalModel {
   String? second_surname;
   String? email;
   String? phone;
+  String? image_url;
 
   ProfessionalModel({
     required this.id,
@@ -23,6 +24,7 @@ class ProfessionalModel {
     this.second_surname,
     this.email,
     this.phone,
+    this.image_url,
   });
 
   Map<String, dynamic> toMap() {
@@ -36,6 +38,7 @@ class ProfessionalModel {
       'second_surname': second_surname,
       'email': email,
       'phone': phone,
+      'image_url': image_url,
     };
   }
 
@@ -50,6 +53,7 @@ class ProfessionalModel {
       second_surname: map['second_surname'] ?? '',
       email: map['email'] ?? '',
       phone: map['phone'].toString(),
+      image_url: map['image_url'].toString(),
     );
   }
 

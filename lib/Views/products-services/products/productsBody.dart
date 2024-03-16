@@ -99,8 +99,8 @@ class _ProductsBodyState extends State<ProductsBody>
                 ),
                 controllerProduct.productListLength != -99
                     ? controllerProduct.isLoadingCategory == true
-                        ? Padding(
-                            padding: const EdgeInsets.only(top: 240),
+                        ? const Padding(
+                            padding: EdgeInsets.only(top: 240),
                             child: CircularProgressIndicator(
                               color: Color(0xFFF18254),
                             ),

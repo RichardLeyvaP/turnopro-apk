@@ -27,12 +27,6 @@ final PagesConfigResponController pagesConfigCont =
 
 class _CoexistencePageResponsibleState
     extends State<CoexistencePageResponsible> {
-  // Utilizar una función o getter para obtener imageDirection
-  String get imageDirection {
-    // Si id es null o igual a -99, devuelve la ruta para la foto de perfil incógnito
-    return '${Env.apiEndpoint}/images/coordinator/default_profile.jpg';
-  }
-
 //
 //
 //
@@ -134,8 +128,8 @@ class _CoexistencePageResponsibleState
                                 child: Row(
                                   children: [
                                     CircleAvatar(
-                                      backgroundImage:
-                                          NetworkImage(imageDirection),
+                                      backgroundImage: NetworkImage(
+                                          '${Env.apiEndpoint}/images/${profesional.image_url}'),
                                       radius:
                                           25, // Ajusta el tamaño del círculo aquí
                                     ),

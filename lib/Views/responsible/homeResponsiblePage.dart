@@ -54,9 +54,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
         return Scaffold(
           backgroundColor: const Color.fromARGB(255, 231, 232, 234),
           appBar: pagesConfigRespC.selectedIndexResp == 0
-              ? CustomAppBar(
-                  id: -99, //controllerLogin.idProfessionalLoggedIn,
-                )
+              ? const CustomAppBar()
               : null,
           body: PageView(
             controller: pagesConfigRespC.pageRespController,
@@ -159,23 +157,12 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
 //DEFINIENDO EL AppBar
 // ignore: must_be_immutable
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final int? id;
-  const CustomAppBar({Key? key, required this.id}) : super(key: key);
+  const CustomAppBar({Key? key}) : super(key: key);
 
   @override
   //Size get preferredSize => const Size.fromHeight(kToolbarHeight);
   Size get preferredSize =>
       const Size.fromHeight(70); // Ajusta el tamaño del AppBar aquí
-
-  // Utilizar una función o getter para obtener imageDirection
-  String get imageDirection {
-    if (id != null && id != -99) {
-      return '${Env.apiEndpoint}/images/responsible/$id.jpg';
-    } else {
-      // Si id es null o igual a -99, devuelve la ruta para la foto de perfil incógnito
-      return '${Env.apiEndpoint}/images/responsible/default_profile.jpg';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +186,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(imageDirection),
+                backgroundImage: NetworkImage(
+                    '${Env.apiEndpoint}/images/${logUser.imageUrlLoggedIn}'),
                 radius: 25, // Ajusta el tamaño del círculo aquí
               ),
             ),

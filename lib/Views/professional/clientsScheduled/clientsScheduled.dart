@@ -297,6 +297,12 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                           index]
                                                                       .client_name)
                                                                   .toString());
+                                                      controllerClient.returnImageName(
+                                                          (controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .client_image)
+                                                              .toString());
 
                                                       await controllerClient
                                                           .searchForCustomerServices(
@@ -312,6 +318,11 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                 .clientsScheduledList[
                                                                     index]
                                                                 .client_name;
+                                                        String urlImage =
+                                                            controllerClient
+                                                                .clientsScheduledList[
+                                                                    index]
+                                                                .client_image;
                                                         int reservationId =
                                                             controllerClient
                                                                 .clientsScheduledList[
@@ -329,7 +340,8 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                             context,
                                                             clientName,
                                                             reservationId,
-                                                            carId);
+                                                            carId,
+                                                            urlImage);
                                                         // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
                                                         controllerClient
                                                             .showingServiceClient(
@@ -587,6 +599,7 @@ class YourPageViewScreenState extends State<HomePageView> {
   //
   void _mostrarBottomSheet(BuildContext context) {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
         return Container(

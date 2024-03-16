@@ -60,17 +60,6 @@ class _LineChartSample2State extends State<LineChartSample2> {
                 child: InkWell(
                   onTap: () {
                     _showCalendarModal(context, textContDate);
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (BuildContext context) {
-                    //     return BuildCalendar(
-                    //       d: DateTime.now(),
-                    //       m: DateTime.now(),
-                    //       a: DateTime.now(),
-                    //       // totalPrice: controllerShoppingCart.totalPrice,
-                    //     ); // Muestra el AlertDialog
-                    //   },
-                    // );
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -269,6 +258,8 @@ class _LineChartSample2State extends State<LineChartSample2> {
         Get.find<StatisticController>();
 
     showModalBottomSheet(
+      isScrollControlled: true,
+      //backgroundColor: Colors.transparent,
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(

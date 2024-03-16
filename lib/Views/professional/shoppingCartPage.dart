@@ -1,9 +1,11 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
 //import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/env.dart';
 
 class ShoppingCartPage extends StatelessWidget {
   ShoppingCartPage({super.key});
@@ -13,6 +15,8 @@ class ShoppingCartPage extends StatelessWidget {
   final ShoppingCartController controllerShoppingCart =
       Get.find<ShoppingCartController>();
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
+  final ClientsScheduledController clientsController =
+      Get.find<ClientsScheduledController>();
 
   @override
   Widget build(BuildContext context) {
@@ -441,7 +445,7 @@ class ShoppingCartPage extends StatelessWidget {
                     style: ButtonStyle(
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                         const EdgeInsets.symmetric(
-                            vertical: 2.0, horizontal: 20.0),
+                            vertical: 2.0, horizontal: 4.0),
                       ),
                       backgroundColor: MaterialStateProperty.all<Color>(
                           const Color.fromARGB(255, 43, 44, 49)),
@@ -458,6 +462,14 @@ class ShoppingCartPage extends StatelessWidget {
                     },
                     child: Row(
                       children: [
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              '${Env.apiEndpoint}/images/${clientsController.urlImageTemporary}'),
+                          radius: 30, // Ajusta el tamaño del círculo aquí
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
                         Text(
                           'Total a pagar: ',
                           style: TextStyle(

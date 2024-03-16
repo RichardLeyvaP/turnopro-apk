@@ -18,6 +18,7 @@ class ModalHelperTecnical {
         '${Env.apiEndpoint}/images/professional/ejemplo1.jpg';
 
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),

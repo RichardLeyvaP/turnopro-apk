@@ -2,16 +2,31 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:animate_do/animate_do.dart';
 
 class LoginFormPage extends StatelessWidget {
   LoginFormPage({super.key});
+  final LoginController controllerLogin = Get.find<LoginController>();
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _usserController = TextEditingController();
+  final ClientsScheduledController clientContro =
+      Get.find<ClientsScheduledController>();
 
   @override
   Widget build(BuildContext context) {
+    //todo IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Se ejecutará después de que se haya construido el widget
+      print('que tipo de saludo dar dependiendo de la hora');
+      clientContro.setValueClockDinamic(
+          clientContro.calcularH(controllerLogin.androidInfoHeight!));
+      // print(
+      //     'clientes asistiendo ENTRE A DESTRUIR LAS VARIABLES DEL TIEMPO ASIGNADO activeModifyTime SOY = ${controllerclient.activeModifyTime}');
+    });
+    //AQUI OBTENIENDO PROPIEDADES DEL TELEFONO PARA AJUSTAR LOS TAMAÑOS DE LOS COMPONENTES
+    controllerLogin.getScreenResolution(context);
     return FadeIn(
       duration: const Duration(seconds: 2),
       child: Scaffold(
@@ -38,7 +53,7 @@ class LoginFormPage extends StatelessWidget {
                   ],
                 )),
             Expanded(
-                flex: 7,
+                flex: 8,
                 child: Container(
                   decoration: const BoxDecoration(
                       color: Colors.white, //todo
@@ -77,7 +92,7 @@ class LoginFormPage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            height: 30,
+                            height: 20,
                           ),
                           TextField(
                             obscureText: _.obscureText,

@@ -423,6 +423,12 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                           index]
                                                                       .client_name)
                                                                   .toString());
+                                                      controllerClient.returnImageName(
+                                                          (controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .client_image)
+                                                              .toString());
 
                                                       controllerClient
                                                           .searchForCustomerServices(
@@ -436,6 +442,11 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                 .clientsScheduledList[
                                                                     index]
                                                                 .client_name;
+                                                        String urlImage =
+                                                            controllerClient
+                                                                .clientsScheduledList[
+                                                                    index]
+                                                                .client_image;
                                                         int reservationId =
                                                             controllerClient
                                                                 .clientsScheduledList[
@@ -451,7 +462,8 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                             context,
                                                             clientName,
                                                             reservationId,
-                                                            carId);
+                                                            carId,
+                                                            urlImage);
                                                       });
                                                     }
                                                   },

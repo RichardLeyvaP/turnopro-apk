@@ -17,7 +17,7 @@ final LoginController loginController = Get.find<LoginController>();
 
 class ModalHelper {
   static showModal(PageController pageController, BuildContext context,
-      String cliente, int reservationId, int carId) async {
+      String cliente, int reservationId, int carId, String urlImage) async {
     Completer<void> closedCompleter = Completer<void>();
     List<double> sizeExpandedService = [];
     if (loginController.androidInfoDisplay! >= 6.6) {
@@ -32,6 +32,7 @@ class ModalHelper {
         '${Env.apiEndpoint}/images/professional/ejemplo1.jpg';
 
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
@@ -96,7 +97,9 @@ class ModalHelper {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               CircleAvatar(
-                                backgroundImage: NetworkImage(imageDirection),
+                                //  backgroundImage: NetworkImage(imageDirection),**
+                                backgroundImage: NetworkImage(
+                                    '${Env.apiEndpoint}/images/$urlImage'),
                                 radius: 28, // Ajusta el tamaño del círculo aquí
                               ),
                               const SizedBox(
@@ -209,43 +212,47 @@ class ModalHelper {
                   ? ButtonBar(
                       alignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            padding:
-                                MaterialStateProperty.all<EdgeInsetsGeometry>(
-                              const EdgeInsets.symmetric(
-                                  vertical: 4.0, horizontal: 10.0),
+                        //aqui veo si la brabch esta trabajando con el técnico  o no
+                        if (loginController.branchTecnicLoggedIn == 1) ...[
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              padding:
+                                  MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                const EdgeInsets.symmetric(
+                                    vertical: 4.0, horizontal: 10.0),
+                              ),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Color(0xFF2B3141)),
                             ),
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Color(0xFF2B3141)),
-                          ),
-                          onPressed: () async {
-                            //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
-                            await controllClient.acceptOrRejectClient(
-                                reservationId, 4);
-                            Navigator.pop(context); // Cierra el modal
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                MdiIcons.send,
-                                color: Colors.white,
-                                //size: 25,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              const Text(
-                                'ENVIAR AL TÉCNICO',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w800),
-                              ),
-                            ],
-                          ),
-                        ),
-                        //
-                        //
+                            onPressed: () async {
+                              //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
+                              await controllClient.acceptOrRejectClient(
+                                  reservationId, 4);
+                              Navigator.pop(context); // Cierra el modal
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  MdiIcons.send,
+                                  color: Colors.white,
+                                  //size: 25,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                const Text(
+                                  'ENVIAR AL TÉCNICO',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                              ],
+                            ),
+                          )
+                          //
+                          //
+                        ],
+
                         //
                         //
                         //

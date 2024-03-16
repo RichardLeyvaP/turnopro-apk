@@ -1,6 +1,11 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:convert';
+import 'dart:ui';
+
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/animation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/get_connect/repository/user.repository.dart';
@@ -25,8 +30,11 @@ class LoginController extends GetxController {
   int idUserLoggedIn = -2023991991;
   String emailUserLoggedIn = '';
   String chargeUserLoggedIn = '';
+  String imageUrlLoggedIn = '';
   int? idProfessionalLoggedIn;
   int? branchIdLoggedIn;
+  int branchTecnicLoggedIn = 0;
+  int? usserPermissionQr;
   //*************************/
   bool isLoading = true;
   String pagina = 'nothing';
@@ -38,6 +46,8 @@ class LoginController extends GetxController {
   //******************* */
   //propiedades de telefone
   double? androidInfoDisplay;
+  double? androidInfoWidth;
+  double? androidInfoHeight;
   int? androidInfoVersion;
 
   void setMaintainClockStatus() {
@@ -74,20 +84,83 @@ class LoginController extends GetxController {
     // Obtener información sobre el dispositivo
     AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
     print("Android SDK Version222: ${androidInfo.version.release}");
-    print("Android SDK Version222: ${androidInfo.displayMetrics.sizeInches}");
+    print(
+        "Android SDK androidInfo.displayMetrics.sizeInches: ${androidInfo.displayMetrics.sizeInches}");
     androidInfoDisplay = androidInfo.displayMetrics.sizeInches;
     androidInfoVersion = int.parse(androidInfo.version.release);
+    // getScreenResolution();
     update();
   }
 
-  void qrReading(String? qr) {
+  void getScreenResolution(BuildContext context) {
+    final ClientsScheduledController clientContro =
+        Get.find<ClientsScheduledController>();
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final Size screenSize = mediaQuery.size;
+
+    //Aqui obtengo el ancho y alto de los telefonos
+    //dependiendo de este tamaño doy tamaño a los card y demas componentes
+    androidInfoWidth = screenSize.width;
+    androidInfoHeight = screenSize.height;
+
+    //**********AJUSTAR TAMÑO DE LOS RELOJES********** */
+    double valueClock = clientContro.calcularH(androidInfoHeight!);
+    //clientContro.setValueClockDinamic(valueClock);
+
+    print('Ancho de pantalla: ${screenSize.width}');
+    print('Alto de pantalla: ${screenSize.height}');
+  }
+
+  Future<void> qrReading(String? qr) async {
+    //todo falta poner un cargando
     print('entre aqui a el controlador de lectura del QR${qr.toString()}');
-    // Map<String, dynamic> jsonMap = json.decode(qr.toString());
-    // print('......................Objeto JSON: $jsonMap');
-    // String nombre = jsonMap['nombre']; // Accede al valor del campo "nombre"
-    // int edad = jsonMap['edad']; // Accede al valor del campo "edad"
-    // print(nombre);
-    // print(edad);
+    Map<String, dynamic> jsonMap = json.decode(qr.toString());
+    print('......................Objeto JSON: $jsonMap');
+    String userName = jsonMap['userName'];
+    String email = jsonMap['email'];
+    String hora = jsonMap['hora'];
+    int id = jsonMap['id'];
+    int branch_id = jsonMap['branch_id'];
+    //
+    //
+    //
+    print(userName);
+    print(email);
+    print(hora);
+    print(id);
+    print(branch_id);
+
+    bool resp = //(int idBranch, int professionalId)
+        await saveDataQr(branchIdLoggedIn!, id);
+    if (resp == true) {
+      usserPermissionQr = 1; //SE CREO CORRECTAMENTE EL QR
+      update();
+      //muestro mensaje que ya puede brindar servicios
+      //todo falta mandar mensaje
+      //mando notificacion a Cordinador, Responsable de que el profesional "Nombre" está en el salón
+      Get.snackbar(
+        '',
+        'Hola, $userName puede prestar servicios,hora de entrada: $hora',
+        colorText: const Color.fromARGB(255, 43, 44, 49),
+        titleText: const Text('Mensaje'),
+        duration: const Duration(seconds: 3),
+        showProgressIndicator: true,
+        progressIndicatorBackgroundColor:
+            const Color.fromARGB(255, 81, 93, 117),
+        progressIndicatorValueColor:
+            const AlwaysStoppedAnimation(Color.fromARGB(255, 241, 130, 84)),
+        overlayBlur: 3,
+      );
+      await Future.delayed(Duration(
+          seconds:
+              3)); //aqui espero 3 segundos que se visualize el mensaje del snabar y luego redirecciono al home
+      Get.offAllNamed('/Professional');
+    }
+  }
+
+  Future<bool> saveDataQr(int idBranch, int professionalId) async {
+    bool resultList = await usuarioLg.generateQr(idBranch, professionalId);
+    return resultList;
   }
 
   Future<void> loginGetIn(String u, String p) async {
@@ -109,7 +182,11 @@ class LoginController extends GetxController {
         chargeUserLoggedIn = result['charge'];
         idProfessionalLoggedIn = result['professional_id'];
         branchIdLoggedIn = result['branch_id'];
-
+        imageUrlLoggedIn = result['image'];
+        branchTecnicLoggedIn = result['useTechnical'];
+        print('ssssssssssss ${result['useTechnical'].runtimeType}');
+        print('ssssssssssss ${result['useTechnical']}');
+        print('ssssssssssss branchIdLoggedIn${result['branchIdLoggedIn']}');
         //*******Asignando Valores*****/
         print('branchIdLoggedIn***************************: $branchIdLoggedIn');
         print('TOKEN***************************: $tokenUserLoggedIn');
@@ -127,6 +204,7 @@ class LoginController extends GetxController {
             clientsScheduledController.setCloseIesperado(true);
             await clientsScheduledController.fetchClientsScheduled(
                 idProfessionalLoggedIn, branchIdLoggedIn);
+
             print(' ya no llegue aqui voy a cargar la pagina del profesional');
 
             print('***************SOY BARBERO*************');

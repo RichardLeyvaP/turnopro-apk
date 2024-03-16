@@ -308,6 +308,7 @@ class _StadisticaCordiState extends State<StadisticaCordi> {
         Get.find<StatisticController>();
 
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(

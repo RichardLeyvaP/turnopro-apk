@@ -11,6 +11,7 @@ import 'package:turnopro_apk/Views/professional/clientsScheduled/clientsSchedule
 import 'package:turnopro_apk/Views/tecnico/clientsScheduled/homePageViewTechnical.dart';
 import 'package:turnopro_apk/Views/tecnico/coexistencePageTecnhical.dart';
 import 'package:turnopro_apk/Views/tecnico/homeTecnico/homePageTecnicoBody.dart';
+import 'package:turnopro_apk/env.dart';
 
 import '../Views/coordinator/assign/assignProfessional.dart';
 import '../Views/coordinator/attending/attendingClient.dart';
@@ -139,6 +140,15 @@ class PagesConfigController extends GetxController {
       isLoading = false;
       update();
     });
+  }
+
+  bool isImageUrl(String imageUrl) {
+    final uri = Uri.parse(imageUrl);
+    final extension = uri.path.split('.').last.toLowerCase();
+    return extension == 'jpg' ||
+        extension == 'jpeg' ||
+        extension == 'png' ||
+        extension == 'gif';
   }
 
 //todo nueva probando

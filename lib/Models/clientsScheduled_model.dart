@@ -9,6 +9,7 @@ class ClientsScheduledModel {
   String final_hour;
   String total_time;
   String client_name;
+  String client_image;
   int client_id;
   int attended;
   String? updated_at;
@@ -26,6 +27,7 @@ class ClientsScheduledModel {
     required this.final_hour,
     required this.total_time,
     required this.client_name,
+    required this.client_image,
     required this.client_id,
     required this.attended,
     this.updated_at,
@@ -45,6 +47,7 @@ class ClientsScheduledModel {
       'final_hour': final_hour,
       'total_time': total_time,
       'client_name': client_name,
+      'client_image': client_image,
       'client_id': client_id,
       'attended': attended,
       'updated_at': updated_at,
@@ -64,6 +67,7 @@ class ClientsScheduledModel {
       final_hour: map['final_hour'],
       total_time: map['total_time'],
       client_name: map['client_name'],
+      client_image: map['client_image'],
       client_id: map['client_id'],
       attended: map['attended'] ?? 0,
       updated_at: map['updated_at'],

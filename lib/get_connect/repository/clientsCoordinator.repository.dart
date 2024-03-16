@@ -102,30 +102,33 @@ class ClientsCoordinatorRepository extends GetConnect {
   //
   Future getClientsScheduledListBranch(idBranch) async {
     List<ClientsScheduledModel> clientList = [];
+    try {
+      var url = '${Env.apiEndpoint}/cola_branch_data?branch_id=$idBranch';
 
-    var url = '${Env.apiEndpoint}/cola_branch_data?branch_id=$idBranch';
-
-    final response = await get(url);
-    //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
-    if (response.statusCode == null) {
-      print('response.statusCode:${response.statusCode}');
-      return {
-        "ConnectionIssues": true,
-      };
-    } else
-      print('hay coneccion getClientsScheduledListBranch');
-    if (response.statusCode == 200) {
-      print('ya tengo la cola de la api getClientsScheduledListBranch');
-      final customers = response.body['tail'];
-      for (Map service in customers) {
-        ClientsScheduledModel client =
-            ClientsScheduledModel.fromJson(jsonEncode(service));
-        clientList.add(client);
-        //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
+      final response = await get(url);
+      //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
+      if (response.statusCode == null) {
+        print('response.statusCode:${response.statusCode}');
+        return {
+          "ConnectionIssues": true,
+        };
+      } else
+        print('hay coneccion getClientsScheduledListBranch');
+      if (response.statusCode == 200) {
+        print('ya tengo la cola de la api getClientsScheduledListBranch');
+        final customers = response.body['tail'];
+        for (Map service in customers) {
+          ClientsScheduledModel client =
+              ClientsScheduledModel.fromJson(jsonEncode(service));
+          clientList.add(client);
+          //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
+        }
       }
-    }
 
-    return {"clientList": clientList};
+      return {"clientList": clientList};
+    } catch (e) {
+      print(e);
+    }
   } //
 
   //
@@ -201,9 +204,10 @@ class ClientsCoordinatorRepository extends GetConnect {
           'llamando _fetchCoexistenceList(); 111--111--1111jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
       //aqui cogemos las variables
       String clientName = responseBody['clientName'];
-      print(
-          'llamando _fetchCoexistenceList(); 111--222jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
-      String imageLook = responseBody['imageLook'] ?? 'default_profile.jpg';
+      String professionalName = responseBody['professionalName'];
+      String image_url = responseBody['image_url'];
+
+      String imageLook = responseBody['imageLook'];
       print(
           'llamando _fetchCoexistenceList(); 111--333jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
       int cantVisit = responseBody['cantVisit'];
@@ -256,6 +260,8 @@ class ClientsCoordinatorRepository extends GetConnect {
 
       return {
         "clientName": clientName,
+        "professionalName": professionalName,
+        "image_url": image_url,
         "imageLook": imageLook,
         "cantVisit": cantVisit,
         "endLook": endLook,

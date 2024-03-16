@@ -4,6 +4,29 @@ import 'package:get/get.dart';
 import 'package:turnopro_apk/env.dart';
 
 class UserRepository extends GetConnect {
+  Future generateQr(branchId, professionalId) async {
+    try {
+      var url = '${Env.apiEndpoint}/record';
+      final Map<String, dynamic> body = {
+        'branch_id': branchId,
+        'professional_id': professionalId,
+      };
+
+      final response = await post(url, body);
+      print(url);
+      print(response.statusCode);
+      if ((response.statusCode == 200)) {
+        print('RETORNE-- TRUE A LA CREACION DEL Qr');
+        return true;
+      } else {
+        print('RETORNE-- FALSE A LA CREACION DEL Qr');
+        return false;
+      }
+    } catch (e) {
+      print('RETORNE-- ERROR DE SERVIDOR A LA CREACION DEL Qr:$e');
+    }
+  }
+
   Future getUserLoggedIn(String email, String password) async {
     try {
       var url = '${Env.apiEndpoint}/login';
