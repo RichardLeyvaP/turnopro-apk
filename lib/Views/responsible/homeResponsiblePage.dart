@@ -198,13 +198,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  logUser.greeting,
-                  style: const TextStyle(
-                    color: const Color.fromARGB(255, 43, 44, 49),
-                    fontSize: 14,
-                    height: 1.0,
-                  ),
+                SizedBox(
+                  height: 5,
                 ),
                 Text(
                   logUser.nameUserLoggedIn,
@@ -230,53 +225,311 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       }),
       actions: [
         GetBuilder<LoginController>(builder: (_) {
-          return InkWell(
-            onTap: () {
-              //_.exit();
-              _.exit(_.tokenUserLoggedIn);
-            },
-            child: Row(
-              children: [
-                InkWell(
-                  onTap: () {
+          return Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  //verifico si esta atendiendo a alguien no puede leer un nuevo codigo
+                  if (_.usserPermissionQr == 1) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return GetBuilder<LoginController>(builder: (_) {
+                          return Dialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ), //this right here
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Container(
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xFF2B3141),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(8),
+                                      topRight: Radius.circular(8),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      const Padding(
+                                        padding: EdgeInsets.only(left: 12),
+                                        child: Text(
+                                          'Mensaje',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.close,
+                                            color: Colors.white),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 166,
+                                  child: Column(
+                                    children: [
+                                      const Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 20,
+                                              left: 16,
+                                              right: 16,
+                                              bottom: 10),
+                                          child: Text(
+                                              'No puede leer un nuevo código de entrada, debe salir de la aplicación primero')),
+                                      //
+
+                                      ButtonBar(
+                                        alignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          ElevatedButton(
+                                            style: ButtonStyle(
+                                              padding: MaterialStateProperty
+                                                  .all<EdgeInsetsGeometry>(
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 0,
+                                                    horizontal: 26.0),
+                                              ),
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                          Color>(
+                                                      const Color(0xFF2B3141)),
+                                            ),
+                                            onPressed: () async {
+                                              // Lógica para enviar el comentario
+
+                                              // Cerrar el primer modal
+                                              Navigator.pop(context);
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  MdiIcons.check,
+                                                  color: Colors.white,
+                                                ),
+                                                SizedBox(
+                                                  width: 6,
+                                                ),
+                                                const Text(
+                                                  'Aceptar',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w800),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        });
+                      },
+                    );
+                  } else {
                     Get.toNamed(
                       '/QRViewExample',
                     );
-                  },
-                  child: CircleAvatar(
-                    radius: 22, // Tamaño del CircleAvatar
-                    backgroundColor: const Color(
-                        0xFF2B3141), // Color de fondo del CircleAvatar
-                    child: Icon(
-                      MdiIcons.qrcodeScan,
-                      size: MediaQuery.of(context).size.width * 0.06,
-                      color: const Color.fromARGB(255, 231, 233, 233),
-                    ),
+                  }
+                },
+                child: CircleAvatar(
+                  radius: 22, // Tamaño del CircleAvatar
+                  backgroundColor: const Color(
+                      0xFF2B3141), // Color de fondo del CircleAvatar
+                  child: Icon(
+                    MdiIcons.qrcodeScan,
+                    size: MediaQuery.of(context).size.width * 0.06,
+                    color: const Color.fromARGB(255, 231, 233, 233),
                   ),
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
-                InkWell(
-                  onTap: () {
-                    _.exit(_.tokenUserLoggedIn);
-                  },
-                  child: CircleAvatar(
-                    radius: 22, // Tamaño del CircleAvatar
-                    backgroundColor: const Color(
-                        0xFF2B3141), // Color de fondo del CircleAvatar
-                    child: Icon(
-                      MdiIcons.exitToApp,
-                      size: MediaQuery.of(context).size.width * 0.06,
-                      color: const Color.fromARGB(255, 231, 233, 233),
-                    ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              InkWell(
+                onTap: () {
+                  //ESTE ES PQARA CUANDO VA A SALIR SABER SI PUEDE O NO
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return GetBuilder<LoginController>(builder: (_) {
+                        return Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ), //this right here
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Container(
+                                decoration: const BoxDecoration(
+                                  color: const Color(0xFF2B3141),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(8),
+                                    topRight: Radius.circular(8),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    const Padding(
+                                      padding: EdgeInsets.only(left: 12),
+                                      child: Text(
+                                        'Mensaje',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.close,
+                                          color: Colors.white),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 150,
+                                child: Column(
+                                  children: [
+                                    const Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 30,
+                                            left: 16,
+                                            right: 16,
+                                            bottom: 10),
+                                        child: Text(
+                                            'Deseas salir de la aplicación?                         ')),
+                                    //
+
+                                    ButtonBar(
+                                      alignment: MainAxisAlignment.spaceEvenly,
+                                      children: <Widget>[
+                                        ElevatedButton(
+                                          style: ButtonStyle(
+                                            padding: MaterialStateProperty.all<
+                                                EdgeInsetsGeometry>(
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 0,
+                                                  horizontal: 26.0),
+                                            ),
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                        Color>(
+                                                    const Color(0xFF2B3141)),
+                                          ),
+                                          onPressed: () async {
+                                            // Lógica para enviar el comentario
+
+                                            // Cerrar el primer modal
+                                            Navigator.pop(context);
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                MdiIcons.cancel,
+                                                color: Colors.white,
+                                              ),
+                                              SizedBox(
+                                                width: 6,
+                                              ),
+                                              const Text(
+                                                'Cancelar',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.w800),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        ElevatedButton(
+                                          style: ButtonStyle(
+                                            padding: MaterialStateProperty.all<
+                                                EdgeInsetsGeometry>(
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 0,
+                                                  horizontal: 26.0),
+                                            ),
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                        Color>(
+                                                    const Color(0xFF2B3141)),
+                                          ),
+                                          onPressed: () async {
+                                            //todo falta llamar un metodo aqui
+                                            //SACAR DEL PUESTO DE TRABAJO AL BARBERO
+
+                                            _.exit(_.tokenUserLoggedIn);
+
+                                            // Cerrar el primer modal
+                                            Navigator.pop(context);
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                MdiIcons.exitToApp,
+                                                color: Colors.white,
+                                              ),
+                                              SizedBox(
+                                                width: 6,
+                                              ),
+                                              const Text(
+                                                '  Salir  ',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.w800),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      });
+                    },
+                  );
+                },
+                child: CircleAvatar(
+                  radius: 22, // Tamaño del CircleAvatar
+                  backgroundColor: const Color(
+                      0xFF2B3141), // Color de fondo del CircleAvatar
+                  child: Icon(
+                    MdiIcons.exitToApp,
+                    size: MediaQuery.of(context).size.width * 0.06,
+                    color: const Color.fromARGB(255, 231, 233, 233),
                   ),
                 ),
-                const SizedBox(
-                  width: 18,
-                )
-              ],
-            ),
+              ),
+              const SizedBox(
+                width: 18,
+              )
+            ],
           );
         }),
       ],

@@ -67,11 +67,12 @@ class ClientsScheduledModel {
       final_hour: map['final_hour'],
       total_time: map['total_time'],
       client_name: map['client_name'],
-      client_image: map['client_image'],
+      client_image: map['client_image'] ?? '',
       client_id: map['client_id'],
       attended: map['attended'] ?? 0,
       updated_at: map['updated_at'],
-      professional_name: map['professional_name'],
+      professional_name:
+          map['professional_name'] ?? '', // Manejar nulo con cadena vacía
       professional_id: map['professional_id'] ?? 0,
       total_services: map['total_services'] ?? 0,
       clock: map['clock'] ?? 0,

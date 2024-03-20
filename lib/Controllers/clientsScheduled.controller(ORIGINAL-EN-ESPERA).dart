@@ -77,7 +77,7 @@ class ClientsScheduledController extends GetxController {
   //ESTA VARIABLE HAY QUE LLENARLA DIRECTAMENTE DE LA DB
   Map<String, int> noncomplianceProfessional = {
     /* //el tiempo para escoger los clientes inicial (3min)
-    'initialTime': 3,
+    'Tiempo': 3,
     'teamQuota': 3, //Cuidado de equipo
     'punctuality': 3, //Puntualidad
     'clearCommunication': 3, //Comunicacion clara

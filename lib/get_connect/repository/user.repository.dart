@@ -32,6 +32,7 @@ class UserRepository extends GetConnect {
       var url = '${Env.apiEndpoint}/login';
 
       final Map<String, dynamic> body = {
+        'branch_id': 1, //todo este valor esta estatico
         'email': email,
         'password': password,
       };
@@ -87,6 +88,55 @@ class UserRepository extends GetConnect {
     } catch (e) {
       print('Error:$e');
       return e;
+    }
+  }
+
+  Future<bool> exitPostworking(int id, String type) async {
+    try {
+      var url = '';
+      if (type == "Professional") {
+        url = '${Env.apiEndpoint}/update-state-prof-workplace?id=$id&busy=0';
+      } else if (type == "Tecnico") {
+        url = '${Env.apiEndpoint}/update-state-tec-workplace?id=$id&select=0';
+      }
+      print('este es el id del puesto url:$url');
+
+      final response = await get(url);
+      print('este es el id del puesto url:$response');
+
+      //print(response.body);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print('Error:$e');
+      return false;
+    }
+  }
+
+  Future getIdPuesto(int idProfessional) async {
+    try {
+      print('este es el id del puesto222-idProfessional:$idProfessional');
+      var url =
+          '${Env.apiEndpoint}/workplace-show-professional?professional_id=$idProfessional';
+
+      final response = await get(url);
+      print('este es el id del puesto333-response:$response');
+      print(
+          'este es el id del puesto333-response.statusCode:${response.statusCode}');
+      //print(response.body);
+      if (response.statusCode == 200) {
+        final intValue = int.parse(response.body);
+        print('este es el id del puesto333-return response:$intValue');
+        return intValue;
+      } else {
+        return -99;
+      }
+    } catch (e) {
+      print('Error:$e');
+      return -999;
     }
   }
 }

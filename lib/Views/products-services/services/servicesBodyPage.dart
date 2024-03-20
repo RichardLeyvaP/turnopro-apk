@@ -62,11 +62,6 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                       child: ListView.builder(
                           itemCount: _.serviceListLength,
                           itemBuilder: (context, index) {
-                            print(
-                                '11111111 **** *** ESTE ES car ${controllerShoppingCart.idServiceCart[0]}');
-                            print(
-                                '11111111 **** *** ESTE ES serv ${_.services[index].name}');
-
                             return Padding(
                               padding: EdgeInsets.fromLTRB(
                                   (MediaQuery.of(context).size.height * 0.013),
@@ -129,27 +124,49 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(12)),
                                         ),
-                                        onTap: () {
-                                          if (!_.selectService.contains(
-                                                  _.services[index]) ||
-                                              !(controllerShoppingCart
-                                                  .idServiceCart
-                                                  .contains(_
-                                                      .services[index].name))) {
-                                            _.getSelectService(
-                                                index); //guarda en la lista de los seleccionados
-                                            controllerShoppingCart
-                                                .updateShoppingCartValue(
-                                                    0, //aqui 0 porque este campo solo lo utilizo si fuera un producto
-                                                    index,
-                                                    controllerShoppingCart
-                                                        .carIdClienteSelect,
-                                                    'service',
-                                                    _.services[index].id);
-                                            //AQUI ESTOY MANDANDO EN SEGUNDO EL TIEMPO QUE HAY QUE AGREGARLE AL TIMER
-                                            clientsController.modifingTime((_
-                                                .services[index]
-                                                .duration_service));
+                                        onTap: () async {
+                                          if (controllerLogin.codigoQrValid() ==
+                                              true) {
+                                            if (!_.selectService.contains(
+                                                    _.services[index]) ||
+                                                !(controllerShoppingCart
+                                                    .idServiceCart
+                                                    .contains(_.services[index]
+                                                        .name))) {
+                                              _.getSelectService(
+                                                  index); //guarda en la lista de los seleccionados
+                                              controllerShoppingCart
+                                                  .updateShoppingCartValue(
+                                                      0, //aqui 0 porque este campo solo lo utilizo si fuera un producto
+                                                      index,
+                                                      controllerShoppingCart
+                                                          .carIdClienteSelect,
+                                                      'service',
+                                                      _.services[index].id);
+                                              //AQUI ESTOY MANDANDO EN SEGUNDO EL TIEMPO QUE HAY QUE AGREGARLE AL TIMER
+                                              //todo este codigo aqui esta sumando y sumando el tiempo al agregar servicio
+                                              clientsController.modifingTime((_
+                                                  .services[index]
+                                                  .duration_service));
+                                            }
+                                          } else {
+                                            Get.snackbar(
+                                              'Mensaje',
+                                              'Debe de escanear el código Qr de entrada',
+                                              duration: const Duration(
+                                                  milliseconds: 2500),
+                                              backgroundColor:
+                                                  const Color.fromARGB(
+                                                      118, 255, 255, 255),
+                                              showProgressIndicator: true,
+                                              progressIndicatorBackgroundColor:
+                                                  const Color.fromARGB(
+                                                      255, 203, 205, 209),
+                                              progressIndicatorValueColor:
+                                                  const AlwaysStoppedAnimation(
+                                                      Color(0xFFF18254)),
+                                              overlayBlur: 3,
+                                            );
                                           }
                                         },
                                         title: Row(
@@ -309,13 +326,35 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                     borderRadiusValue))),
                                         child: IconButton(
                                           onPressed: () {
-                                            Get.snackbar(
-                                              'Mensaje',
-                                              'Fue notificado al responsable,espere confirmación.',
-                                              duration: const Duration(
-                                                  milliseconds: 1500),
-                                            );
-                                            _.sentServiceDelet(index);
+                                            if (controllerLogin
+                                                    .codigoQrValid() ==
+                                                true) {
+                                              Get.snackbar(
+                                                'Mensaje',
+                                                'Fue notificado al responsable,espere confirmación.',
+                                                duration: const Duration(
+                                                    milliseconds: 1500),
+                                              );
+                                              _.sentServiceDelet(index);
+                                            } else {
+                                              Get.snackbar(
+                                                'Mensaje',
+                                                'Debe de escanear el código Qr de entrada',
+                                                duration: const Duration(
+                                                    milliseconds: 2500),
+                                                backgroundColor:
+                                                    const Color.fromARGB(
+                                                        118, 255, 255, 255),
+                                                showProgressIndicator: true,
+                                                progressIndicatorBackgroundColor:
+                                                    const Color.fromARGB(
+                                                        255, 203, 205, 209),
+                                                progressIndicatorValueColor:
+                                                    const AlwaysStoppedAnimation(
+                                                        Color(0xFFF18254)),
+                                                overlayBlur: 3,
+                                              );
+                                            }
                                           },
                                           icon: Icon(
                                             Icons.delete,

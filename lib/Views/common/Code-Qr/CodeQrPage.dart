@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:get/get.dart';
 
@@ -23,6 +24,8 @@ class _QRViewPageState extends State<QRViewPage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   final LoginController loginController = Get.find<LoginController>();
+  final ClientsScheduledController clientsScheduledController =
+      Get.find<ClientsScheduledController>();
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
@@ -37,6 +40,16 @@ class _QRViewPageState extends State<QRViewPage> {
 
   @override
   Widget build(BuildContext context) {
+//todo SIMULANDO QUE LEA EL CODIGO QR DE ENTRADA
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Se ejecutará después de que se haya construido el widget
+      loginController.setCodigoQrValid(1);
+      // La animación ha llegado al final, reiniciar
+      clientsScheduledController.animationControllerInitial!.reset();
+      clientsScheduledController.animationControllerInitial!.forward();
+      // print(
+      //     'clientes asistiendo ENTRE A DESTRUIR LAS VARIABLES DEL TIEMPO ASIGNADO activeModifyTime SOY = ${controllerclient.activeModifyTime}');
+    });
     return Scaffold(
       appBar: AppBar(
         backgroundColor: loginController.pagina == 'nothing' ||
@@ -199,79 +212,6 @@ class _QRViewPageState extends State<QRViewPage> {
                                 : Colors.white,
                           )),
                     ),
-                  // Row(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  //crossAxisAlignment: CrossAxisAlignment.center,
-                  //children: <Widget>[
-                  // Container(
-                  //   margin: const EdgeInsets.all(8),
-                  //   child: ElevatedButton(
-                  //       onPressed: () async {
-                  //         await controller?.toggleFlash();
-                  //         setState(() {});
-                  //       },
-                  //       child: FutureBuilder(
-                  //         future: controller?.getFlashStatus(),
-                  //         builder: (context, snapshot) {
-                  //           return Text('Flash: ${snapshot.data}');
-                  //         },
-                  //       )),
-                  // ),
-                  // Container(
-                  //   margin: const EdgeInsets.all(3),
-                  //   child: ElevatedButton(
-                  //       onPressed: () async {
-                  //         await controller?.flipCamera();
-                  //         setState(() {});
-                  //       },
-                  //       child: FutureBuilder(
-                  //         future: controller?.getCameraInfo(),
-                  //         builder: (context, snapshot) {
-                  //           if (snapshot.data != null) {
-                  //             return Text(
-                  //                 'Cámara ${describeEnum(snapshot.data!)}');
-                  //           } else {
-                  //             return const Text('loading');
-                  //           }
-                  //         },
-                  //       )),
-                  // )
-                  // ],
-                  //),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   crossAxisAlignment: CrossAxisAlignment.center,
-                  //   children: <Widget>[
-                  //     Container(
-                  //       margin: const EdgeInsets.all(3),
-                  //       child: ElevatedButton(
-                  //         onPressed: () async {
-                  //           await controller?.pauseCamera();
-                  //         },
-                  //         child: const Text('Pause',
-                  //             style: TextStyle(fontSize: 15)),
-                  //       ),
-                  //     ),
-                  //     Container(
-                  //       margin: const EdgeInsets.all(3),
-                  //       child: ElevatedButton(
-                  //         onPressed: () async {
-                  //           await controller?.resumeCamera();
-                  //         },
-                  //         child: const Text('Reanudar',
-                  //             style: TextStyle(fontSize: 15)),
-                  //       ),
-                  //     )
-                  //   ],
-                  // ),
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     Get.offNamedUntil('/Professional', (route) => route.isFirst);
-                  //   },
-                  //   child: const Text('Atras'),
-                  // ),
-                  // const Icon(Icons.arrow_back),
-                  // const Text('Atrás'),
                 ],
               ),
             ),

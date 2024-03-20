@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/professional_model.dart';
@@ -15,6 +16,7 @@ class ClientsScheduledController extends GetxController {
   //DECLARACION DE VARIABLES
   ClientsScheduledRepository repository = ClientsScheduledRepository();
   UserRepository repositoryUser = UserRepository();
+  final LoginController controllerLogin = Get.find<LoginController>();
 
   List<ClientsScheduledModel> clientsScheduledList = []; // Lista de clientes
   // Lista de clientes
@@ -98,6 +100,7 @@ class ClientsScheduledController extends GetxController {
   };
   bool clockchanges = false;
   bool closeIesperado = false;
+  bool closeIesperadoLogin = false;
   String? imagePath;
   XFile? pickedFile;
 
@@ -156,6 +159,20 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
+  bool segundoPlano = true; //es que regreso..esta bien
+  void getSegundoPlano(bool value) {
+    //si segundo plano es true es que regreso del segundo plano
+    segundoPlano = value;
+    print('llegando del segundo plano segundoPlano:$segundoPlano');
+
+    update();
+  }
+
+  void setCloseIesperadoLogin(bool value) {
+    closeIesperadoLogin = value;
+    update();
+  }
+
   //Fin Variables del reloj
 
   //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
@@ -187,7 +204,70 @@ class ClientsScheduledController extends GetxController {
     }
   }
 
+  final clock1 = {'clock': 1, 'timeClock': 30};
+  final clock2 = {'clock': 2, 'timeClock': 120};
+  final clock3 = {'clock': 3, 'timeClock': 0};
+  final clock4 = {'clock': 4, 'timeClock': 0};
+
+  Future<void> saveData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final newClock1 = {
+      'clock': 23,
+      'timeClock': 124,
+    };
+    prefs.setInt('clock1', newClock1['clock']!);
+    prefs.setInt('timeClock1', newClock1['timeClock']!);
+    final newClock2 = {
+      'clock': 36,
+      'timeClock': 567,
+    };
+    prefs.setInt('clock2', newClock2['clock']!);
+    prefs.setInt('timeClock2', newClock2['timeClock']!);
+  }
+
+  Future<void> loadData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final clock1 = {
+      'clock': prefs.getInt('clock1') ?? 0,
+      'timeClock': prefs.getInt('timeClock1') ?? 0,
+    };
+    final clock2 = {
+      'clock': prefs.getInt('clock2') ?? 0,
+      'timeClock': prefs.getInt('timeClock2') ?? 0,
+    };
+    // Puedes utilizar los datos recuperados como desees.
+    print('Reloj 1: $clock1');
+    print('Reloj 2: $clock2');
+  }
+
+  upadateVariablesValueTimersSPlano() async {
+    saveData();
+    bool hasClient1 = clientsAttended1 != null;
+    bool hasClient2 = clientsAttended2 != null;
+    bool hasClient3 = clientsAttended3 != null;
+    bool hasClient4 = clientsAttended4 != null;
+    //
+    if (hasClient1) {
+      await setTimeClock(
+          clientsAttended1!.reservation_id, timeClientsActAttended1, 1, 1);
+    }
+    if (hasClient2) {
+      await setTimeClock(
+          clientsAttended2!.reservation_id, timeClientsActAttended2, 1, 2);
+    }
+    if (hasClient3) {
+      await setTimeClock(
+          clientsAttended3!.reservation_id, timeClientsActAttended3, 1, 3);
+    }
+    if (hasClient4) {
+      await setTimeClock(
+          clientsAttended4!.reservation_id, timeClientsActAttended4, 1, 4);
+    }
+  }
+
   upadateVariablesValueTimers() async {
+    print('entre de nuevo aqui -----');
+    saveData();
     bool hasClient1 = clientsAttended1 != null;
     bool hasClient2 = clientsAttended2 != null;
     bool hasClient3 = clientsAttended3 != null;
@@ -490,15 +570,23 @@ class ClientsScheduledController extends GetxController {
     modifyTime[modifyTimeSpecific] = time;
     print(
         '-*-*-*-------------------deSPUES------------------------${modifyTime[modifyTimeSpecific]}');
+    print(
+        'clientes asistiendo -*-*-*-------------------deSPUES---------------${modifyTime[modifyTimeSpecific]}');
 
     //al darle true le estoy diciendo que verifique que en algun timer hay cambio de tiempo
     activeModifyTime = true;
     update();
   }
 
-  void modifingTimeClose() {
+  bool modifingTimeClose() {
     modifyTime.addAll([-1]);
     activeModifyTime = false;
+    update();
+    return true;
+  }
+
+  void setActiveModifyTime(bool value) {
+    activeModifyTime = value;
     update();
   }
 
@@ -510,7 +598,7 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<void> acceptClientTechnical(reservationId, attended) async {
-    final LoginController controllerLogin = Get.find<LoginController>();
+    // final LoginController controllerLogin = Get.find<LoginController>();
     quantityClientAttendedTechnical = 1;
     boolFilterShowNextTecnhical = false;
     update();
@@ -561,7 +649,7 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<void> acceptOrRejectClient(reservationId, attended) async {
-    final LoginController controllerLogin = Get.find<LoginController>();
+    // final LoginController controllerLogin = Get.find<LoginController>();
 
     bool value = await repository.acceptOrRejectClient(reservationId, attended);
     //si lo que devuelve es true actualizo la cola
@@ -675,7 +763,8 @@ class ClientsScheduledController extends GetxController {
         }
       }
       update();
-
+      //AQUI INSERTO EN LA DB SI HUBIERAS RELOJES ACTIVOS
+      await upadateVariablesValueTimers();
       filterShowCardTimer();
       filterShowNext();
 
@@ -690,7 +779,7 @@ class ClientsScheduledController extends GetxController {
 
   Future<void> filterShowNext() async {
     try {
-      final LoginController controllerLogin = Get.find<LoginController>();
+      // final LoginController controllerLogin = Get.find<LoginController>();
       int? idBranch = controllerLogin.branchIdLoggedIn;
       int? idProfessional = controllerLogin.idProfessionalLoggedIn;
       print('mostrando idProfessiona:$idProfessional y IdBranch:$idBranch');
@@ -715,14 +804,13 @@ class ClientsScheduledController extends GetxController {
       bool result = await repository.setTimeClock(
           reservationId, timeClock, detached, clock);
       if (result) {
-        print('************** true');
         print(
-            '************** true $reservationId - $timeClock - $detached - $clock');
+            'EL TIEMPO ACTUAL DEL RELOJ ************** true $reservationId - $timeClock - $detached - $clock');
       } else {
-        print('************** false');
+        print('EL TIEMPO ACTUAL DEL RELOJ ************** false');
       }
     } catch (e) {
-      print('set_timeClock:$e');
+      print('EL TIEMPO ACTUAL DEL RELOJ set_timeClock:$e');
     }
   }
 
@@ -856,11 +944,21 @@ class ClientsScheduledController extends GetxController {
         clientsScheduledListLength = clientsScheduledList.length;
         //
         //
-        if (closeIesperado == true) //es que cerró inesperadamente
+        //  if (closeIesperado == true) //es que cerró inesperadamente
         {
           if (resultList.containsKey('attendingClient')) {
             List<Map>? attendingClientList = resultList['attendingClient'];
-            logicaInesperada(attendingClientList);
+            //aqui es donde tiene que entrar solamente si se loguea
+            if (controllerLogin.isLoggingIn == true) {
+              print(
+                  'clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn}) { entre poque vine del login ');
+
+              logicaInesperada(attendingClientList);
+              controllerLogin.setIsLoggingIn(false);
+            } else {
+              print(
+                  'clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn})  NOOO ');
+            }
           } else {
             // La clave 'attendingClient' no está presente en el mapa
             print(
@@ -951,6 +1049,7 @@ class ClientsScheduledController extends GetxController {
           // Calcular la diferencia en segundos entre hora1 y la hora actual
           int diferenciaSegundos = horaActual.difference(hora1).inSeconds;
 
+          print('clientes asistiendo clock:$clock');
           print('clientes asistiendo hora1:$hora1');
           print('clientes asistiendo horaActual:$horaActual');
           print(
@@ -960,6 +1059,7 @@ class ClientsScheduledController extends GetxController {
               'clientes asistiendo hora timeClock:${(timeClock! - diferenciaSegundos)}');
           // Lógica adicional si es necesario con las variables asignadas
           if (clock == 1) {
+            print('clientes asistiendo entre a :$clock');
             // Asignar a variables específicas para clock 1
             clientsAttended1 = client;
             timeClientsAttended1 = (timeClock! - diferenciaSegundos) <= 0
@@ -969,8 +1069,9 @@ class ClientsScheduledController extends GetxController {
             //  await set_timeClock(reservation_id,timeClock,detached,clock);
             // await setTimeClock(client!.reservation_id, 0, 0, 1);//todo comente a ver si ya lo hace bien
             // ... otras asignaciones para clock 1
-            setTimeClock(client!.reservation_id, 0, 0, 0);
+            //  setTimeClock(client!.reservation_id, timeClientsAttended1, 1, 1);
           } else if (clock == 2) {
+            print('clientes asistiendo entre a :$clock');
             // Asignar a variables específicas para clock 2
             clientsAttended2 = client;
             timeClientsAttended2 = (timeClock! - diferenciaSegundos) <= 0
@@ -980,8 +1081,9 @@ class ClientsScheduledController extends GetxController {
             //  await set_timeClock(reservation_id,timeClock,detached,clock);
             // await setTimeClock(client!.reservation_id, 0, 0, 2);//todo comente a ver si ya lo hace bien
             // ... otras asignaciones para clock 2
-            setTimeClock(client!.reservation_id, 0, 0, 0);
+            //  setTimeClock(client!.reservation_id, timeClientsAttended2, 1, 2);
           } else if (clock == 3) {
+            print('clientes asistiendo entre a :$clock');
             // Asignar a variables específicas para clock 3
             clientsAttended3 = client;
             timeClientsAttended3 = (timeClock! - diferenciaSegundos) <= 0
@@ -992,8 +1094,9 @@ class ClientsScheduledController extends GetxController {
             // await setTimeClock(client!.reservation_id, 0, 0, 3);//todo comente a ver si ya lo hace bien
 
             // ... otras asignaciones para clock 3
-            setTimeClock(client!.reservation_id, 0, 0, 0);
+            // setTimeClock(client!.reservation_id, timeClientsAttended3, 1, 3);
           } else if (clock == 4) {
+            print('clientes asistiendo entre a :$clock');
             // Asignar a variables específicas para clock 3
             clientsAttended4 = client;
             timeClientsAttended4 = (timeClock! - diferenciaSegundos) <= 0
@@ -1004,7 +1107,7 @@ class ClientsScheduledController extends GetxController {
             // await setTimeClock(client!.reservation_id, 0, 0, 4);//todo comente a ver si ya lo hace bien
 
             // ... otras asignaciones para clock 3
-            setTimeClock(client!.reservation_id, 0, 0, 0);
+            //  setTimeClock(client!.reservation_id, timeClientsAttended4, 1, 4);
           }
           // Puedes agregar más condiciones según sea necesario para otros valores de clock
         } //cierre for (var map in attendingClientList)

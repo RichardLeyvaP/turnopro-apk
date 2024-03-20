@@ -2,6 +2,7 @@
 //import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
+import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,7 @@ class ShoppingCartPage extends StatelessWidget {
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
   final ClientsScheduledController clientsController =
       Get.find<ClientsScheduledController>();
+  final LoginController controllerLogin = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -183,20 +185,47 @@ class ShoppingCartPage extends StatelessWidget {
                                                   builder: (_) {
                                                 return InkWell(
                                                   onTap: () {
-                                                    //todooo
-                                                    // Get.snackbar(
-                                                    //   'Mensaje',
-                                                    //   'Enviada solicitud de eliminación.',
-                                                    //   duration: const Duration(
-                                                    //       milliseconds: 2000),
-                                                    // );
-                                                    controllerShoppingCart
-                                                        .requestDelete(
-                                                            controllerShoppingCart
-                                                                .selectserviceCart[
-                                                                    index]
-                                                                .id,
-                                                            1);
+                                                    if (controllerLogin
+                                                            .codigoQrValid() ==
+                                                        true) {
+                                                      controllerShoppingCart
+                                                          .requestDelete(
+                                                              controllerShoppingCart
+                                                                  .selectserviceCart[
+                                                                      index]
+                                                                  .id,
+                                                              1);
+                                                    } else {
+                                                      Get.snackbar(
+                                                        'Mensaje',
+                                                        'Debe de escanear el código Qr de entrada',
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    2500),
+                                                        backgroundColor:
+                                                            const Color
+                                                                    .fromARGB(
+                                                                118,
+                                                                255,
+                                                                255,
+                                                                255),
+                                                        showProgressIndicator:
+                                                            true,
+                                                        progressIndicatorBackgroundColor:
+                                                            const Color
+                                                                    .fromARGB(
+                                                                255,
+                                                                203,
+                                                                205,
+                                                                209),
+                                                        progressIndicatorValueColor:
+                                                            const AlwaysStoppedAnimation(
+                                                                Color(
+                                                                    0xFFF18254)),
+                                                        overlayBlur: 3,
+                                                      );
+                                                    }
                                                   },
                                                   child: _.requestDeleteOrder.contains(
                                                           controllerShoppingCart
@@ -361,22 +390,47 @@ class ShoppingCartPage extends StatelessWidget {
                                                       builder: (_) {
                                                     return InkWell(
                                                       onTap: () {
-                                                        // Get.snackbar(
-                                                        //   'Mensaje',
-                                                        //   'Enviada solicitud de eliminación.',
-                                                        //   duration:
-                                                        //       const Duration(
-                                                        //           milliseconds:
-                                                        //               2000),
-                                                        // );
-                                                        //todooo
-                                                        controllerShoppingCart
-                                                            .requestDelete(
-                                                                controllerShoppingCart
-                                                                    .selectproduct[
-                                                                        index]
-                                                                    .id,
-                                                                1);
+                                                        if (controllerLogin
+                                                                .codigoQrValid() ==
+                                                            true) {
+                                                          controllerShoppingCart
+                                                              .requestDelete(
+                                                                  controllerShoppingCart
+                                                                      .selectproduct[
+                                                                          index]
+                                                                      .id,
+                                                                  1);
+                                                        } else {
+                                                          Get.snackbar(
+                                                            'Mensaje',
+                                                            'Debe de escanear el código Qr de entrada',
+                                                            duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        2500),
+                                                            backgroundColor:
+                                                                const Color
+                                                                        .fromARGB(
+                                                                    118,
+                                                                    255,
+                                                                    255,
+                                                                    255),
+                                                            showProgressIndicator:
+                                                                true,
+                                                            progressIndicatorBackgroundColor:
+                                                                const Color
+                                                                        .fromARGB(
+                                                                    255,
+                                                                    203,
+                                                                    205,
+                                                                    209),
+                                                            progressIndicatorValueColor:
+                                                                const AlwaysStoppedAnimation(
+                                                                    Color(
+                                                                        0xFFF18254)),
+                                                            overlayBlur: 3,
+                                                          );
+                                                        }
                                                       },
                                                       child: _.requestDeleteOrder
                                                               .contains(

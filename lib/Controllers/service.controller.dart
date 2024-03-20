@@ -39,6 +39,14 @@ class ServiceController extends GetxController {
     update();
   }
 
+  void clearSelectService() {
+    print('LISTA2 _fetchServiceList Limpiando seleccion de servicios.');
+    selectService.clear();
+    print(
+        'LISTA2 _fetchServiceList Limpiando seleccion de servicios.${selectService.length}');
+    update();
+  }
+
   sentServiceDelet(index) {
     (sentServiceDelete.contains(services[index]))
         ? null

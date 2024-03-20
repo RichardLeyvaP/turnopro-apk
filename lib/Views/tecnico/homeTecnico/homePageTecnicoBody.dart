@@ -49,16 +49,14 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
       vsync: this,
       duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
     );
-    _animationControllerInitial!.forward();
 
 // Inicia la animación
     _animationControllerInitial!.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        if (clientsScheduledController
-                .noncomplianceProfessional['initialTime'] !=
+        if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
             0) {
           //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
-          String type = 'initialTime';
+          String type = 'Tiempo';
           int branchId = loginController.branchIdLoggedIn!;
           int professionalId = loginController.idProfessionalLoggedIn!;
           int estado = 0; //es que incumplió
@@ -229,12 +227,42 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                 ] else if (controllerclient
                                         .quantityClientAttendedTechnical ==
                                     0) ...[
-                                  cardTimer(
-                                    UniqueKey(),
-                                    'Esperando...',
-                                    controllerclient,
-                                    _animationControllerInitial!,
-                                  ),
+                                  GetBuilder<LoginController>(
+                                      builder: (logCont) {
+                                    if (logCont.codigoQrValid() == true) {
+                                      return cardTimer(
+                                        UniqueKey(),
+                                        'Esperando...',
+                                        controllerclient,
+                                        _animationControllerInitial!,
+                                      );
+                                    } else {
+                                      return const Center(
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 50,
+                                            ),
+                                            Text(
+                                              'Debe de escanear el código Qr ',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            Text(
+                                              'para atender clientes',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            SizedBox(
+                                              height: 50,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                  }),
                                 ] else if (controllerclient
                                         .clientsNextTechnical ==
                                     null) ...[
@@ -298,27 +326,42 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                               ),
                                               child: IconButton(
                                                 onPressed: () {
-                                                  // Get.snackbar(
-                                                  //   'Mensaje',
-                                                  //   'Cancelar',
-                                                  //   duration: const Duration(
-                                                  //       milliseconds: 2000),
-                                                  // );
-                                                  // atender este cliente
-                                                  //el valor 3 es que es que lo rechazo, por alguna razon no lo va a tender
-
-                                                  /* controllerclient
-                                                      .acceptOrRejectClient(
-                                                          controllerclient
-                                                              .clientsNextTechnical!
-                                                              .reservation_id,
-                                                          3);*/
-                                                  controllerclient
-                                                      .acceptClientTechnical(
-                                                          controllerclient
-                                                              .clientsNextTechnical!
-                                                              .reservation_id,
-                                                          3);
+                                                  if (loginController
+                                                          .codigoQrValid() ==
+                                                      true) {
+                                                    controllerclient
+                                                        .acceptClientTechnical(
+                                                            controllerclient
+                                                                .clientsNextTechnical!
+                                                                .reservation_id,
+                                                            3);
+                                                  } else {
+                                                    Get.snackbar(
+                                                      'Mensaje',
+                                                      'Debe de escanear el código Qr de entrada',
+                                                      duration: const Duration(
+                                                          milliseconds: 2500),
+                                                      backgroundColor:
+                                                          const Color.fromARGB(
+                                                              118,
+                                                              255,
+                                                              255,
+                                                              255),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              203,
+                                                              205,
+                                                              209),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFF18254)),
+                                                      overlayBlur: 3,
+                                                    );
+                                                  }
                                                 },
                                                 icon: Icon(
                                                   MdiIcons.thumbDown,
@@ -437,48 +480,70 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                           Radius.circular(12))),
                                               child: IconButton(
                                                 onPressed: () async {
-                                                  // Get.snackbar(
-                                                  //   'Mensaje',
-                                                  //   'Aceptar',
-                                                  //   duration: const Duration(
-                                                  //       milliseconds: 2000),
-                                                  // );
-                                                  //aqui manda aceptar, es decir atender este cliente
+                                                  if (loginController
+                                                          .codigoQrValid() ==
+                                                      true) {
+                                                    // detengo todos los timers que deben detenerse
+                                                    _animationControllerInitial!
+                                                        .stop();
+                                                    _animationControllerInitial!
+                                                        .reset();
 
-                                                  // detengo todos los timers que deben detenerse
-                                                  _animationControllerInitial!
-                                                      .stop();
-                                                  _animationControllerInitial!
-                                                      .reset();
-
-                                                  _animationTechnicalController1!
-                                                      .stop();
-                                                  _animationTechnicalController1!
-                                                      .reset();
-                                                  //
-                                                  //todo FALTA QUE SE MUESTRE EL RELOJ
-                                                  //
-                                                  _animationTechnicalController1!
-                                                          .duration =
-                                                      const Duration(
-                                                          seconds:
-                                                              300); //por ahora 5min
-                                                  /* Duration(
+                                                    _animationTechnicalController1!
+                                                        .stop();
+                                                    _animationTechnicalController1!
+                                                        .reset();
+                                                    //
+                                                    //todo FALTA QUE SE MUESTRE EL RELOJ
+                                                    //
+                                                    _animationTechnicalController1!
+                                                            .duration =
+                                                        const Duration(
+                                                            seconds:
+                                                                300); //por ahora 5min
+                                                    /* Duration(
                                                           seconds: controllerclient
                                                               .convertDateSecons(
                                                                   controllerclient
                                                                       .clientsAttendedTechnical!
                                                                       .total_time));*/
-                                                  _animationTechnicalController1!
-                                                      .forward();
+                                                    _animationTechnicalController1!
+                                                        .forward();
 
-                                                  //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
-                                                  controllerclient
-                                                      .acceptClientTechnical(
-                                                          controllerclient
-                                                              .clientsNextTechnical!
-                                                              .reservation_id,
-                                                          5);
+                                                    //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
+                                                    controllerclient
+                                                        .acceptClientTechnical(
+                                                            controllerclient
+                                                                .clientsNextTechnical!
+                                                                .reservation_id,
+                                                            5);
+                                                  } else {
+                                                    Get.snackbar(
+                                                      'Mensaje',
+                                                      'Debe de escanear el código Qr de entrada',
+                                                      duration: const Duration(
+                                                          milliseconds: 2500),
+                                                      backgroundColor:
+                                                          const Color.fromARGB(
+                                                              118,
+                                                              255,
+                                                              255,
+                                                              255),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              203,
+                                                              205,
+                                                              209),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFF18254)),
+                                                      overlayBlur: 3,
+                                                    );
+                                                  }
                                                 },
                                                 icon: Icon(
                                                   MdiIcons.thumbUp,

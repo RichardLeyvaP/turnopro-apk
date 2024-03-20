@@ -43,19 +43,18 @@ class _HomePageBodyState extends State<HomePageBody>
       vsync: this,
       duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
     );
-    clientsScheduledController.animationControllerInitial!.forward();
+    //clientsScheduledController.animationControllerInitial!.forward();
 
 // Inicia la animación
     clientsScheduledController.animationControllerInitial!
         .addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        if (clientsScheduledController
-                .noncomplianceProfessional['initialTime'] !=
+        if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
             0) {
           print(
               'inserto correctamente ********** .noncomplianceProfessional[]');
           //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
-          String type = 'initialTime';
+          String type = 'Tiempo';
           int branchId = loginController.branchIdLoggedIn!;
           int professionalId = loginController.idProfessionalLoggedIn!;
           int estado = 0; //es que incumplió
@@ -132,36 +131,37 @@ class _HomePageBodyState extends State<HomePageBody>
             if (clientsScheduledController.notificationClients1 == null ||
                 (clientsScheduledController.notificationClients1 != idClient &&
                     clientsScheduledController.notificationClients1 != null)) {
-              if (clientsScheduledController.animationController1 != null) {}
-              double progress =
-                  clientsScheduledController.animationController1!.value;
-              int totalTimeInSeconds = clientsScheduledController
-                  .timeClientsAttended1!; // Duración total del AnimationController en segundos
-              int elapsedTimeInSeconds =
-                  (progress * totalTimeInSeconds).round();
-              int remainingTimeInSeconds =
-                  totalTimeInSeconds - elapsedTimeInSeconds;
-              int standbyTimeSeconds = endingTime * 60;
-              // Verificar si faltan menos de 180 segundos (3 minutos) para terminar
+              if (clientsScheduledController.animationController1 != null) {
+                double progress =
+                    clientsScheduledController.animationController1!.value;
+                int totalTimeInSeconds = clientsScheduledController
+                    .timeClientsAttended1!; // Duración total del AnimationController en segundos
+                int elapsedTimeInSeconds =
+                    (progress * totalTimeInSeconds).round();
+                int remainingTimeInSeconds =
+                    totalTimeInSeconds - elapsedTimeInSeconds;
+                int standbyTimeSeconds = endingTime * 60;
+                // Verificar si faltan menos de 180 segundos (3 minutos) para terminar
 
-              if (remainingTimeInSeconds <= standbyTimeSeconds) {
-                // Realizar alguna acción
-                print(
-                    'object-Enviar mensaje que el tiempo de servicio esta por culminar, que solo le faltan 3 minutos');
+                if (remainingTimeInSeconds <= standbyTimeSeconds) {
+                  // Realizar alguna acción
+                  print(
+                      'object-Enviar mensaje que el tiempo de servicio esta por culminar, que solo le faltan 3 minutos');
 
-                int professionalId = loginController.idProfessionalLoggedIn!;
-                int branchId = loginController.branchIdLoggedIn!;
+                  int professionalId = loginController.idProfessionalLoggedIn!;
+                  int branchId = loginController.branchIdLoggedIn!;
 
-                if ((idClient ==
-                    clientsScheduledController.clientsAttended1?.client_id)) {
-                  notiController.storeNotification(
-                      '!Alerta',
-                      branchId,
-                      professionalId,
-                      'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos');
-                  //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
-                  clientsScheduledController.setNotificationClients1(1,
-                      clientsScheduledController.clientsAttended1!.client_id);
+                  if ((idClient ==
+                      clientsScheduledController.clientsAttended1?.client_id)) {
+                    notiController.storeNotification(
+                        '!Alerta',
+                        branchId,
+                        professionalId,
+                        'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos');
+                    //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
+                    clientsScheduledController.setNotificationClients1(1,
+                        clientsScheduledController.clientsAttended1!.client_id);
+                  }
                 }
               }
             }
@@ -187,36 +187,37 @@ class _HomePageBodyState extends State<HomePageBody>
             if (clientsScheduledController.notificationClients2 == null ||
                 (clientsScheduledController.notificationClients2 != idClient &&
                     clientsScheduledController.notificationClients2 != null)) {
-              if (clientsScheduledController.animationController2 != null) {}
-              double progress =
-                  clientsScheduledController.animationController2!.value;
-              int totalTimeInSeconds = clientsScheduledController
-                  .timeClientsAttended2!; // Duración total del AnimationController en segundos
-              int elapsedTimeInSeconds =
-                  (progress * totalTimeInSeconds).round();
-              int remainingTimeInSeconds =
-                  totalTimeInSeconds - elapsedTimeInSeconds;
-              int standbyTimeSeconds = endingTime * 60;
-              // Verificar si faltan menos de 180 segundos (3 minutos) para terminar
+              if (clientsScheduledController.animationController2 != null) {
+                double progress =
+                    clientsScheduledController.animationController2!.value;
+                int totalTimeInSeconds = clientsScheduledController
+                    .timeClientsAttended2!; // Duración total del AnimationController en segundos
+                int elapsedTimeInSeconds =
+                    (progress * totalTimeInSeconds).round();
+                int remainingTimeInSeconds =
+                    totalTimeInSeconds - elapsedTimeInSeconds;
+                int standbyTimeSeconds = endingTime * 60;
+                // Verificar si faltan menos de 180 segundos (3 minutos) para terminar
 
-              if (remainingTimeInSeconds <= standbyTimeSeconds) {
-                // Realizar alguna acción
-                print(
-                    'object-Enviar mensaje que el tiempo de servicio esta por culminar, que solo le faltan 3 minutos');
+                if (remainingTimeInSeconds <= standbyTimeSeconds) {
+                  // Realizar alguna acción
+                  print(
+                      'object-Enviar mensaje que el tiempo de servicio esta por culminar, que solo le faltan 3 minutos');
 
-                int professionalId = loginController.idProfessionalLoggedIn!;
-                int branchId = loginController.branchIdLoggedIn!;
+                  int professionalId = loginController.idProfessionalLoggedIn!;
+                  int branchId = loginController.branchIdLoggedIn!;
 
-                if ((idClient ==
-                    clientsScheduledController.clientsAttended2?.client_id)) {
-                  notiController.storeNotification(
-                      '!Alerta',
-                      branchId,
-                      professionalId,
-                      'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos');
-                  //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
-                  clientsScheduledController.setNotificationClients1(2,
-                      clientsScheduledController.clientsAttended2!.client_id);
+                  if ((idClient ==
+                      clientsScheduledController.clientsAttended2?.client_id)) {
+                    notiController.storeNotification(
+                        '!Alerta',
+                        branchId,
+                        professionalId,
+                        'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos');
+                    //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
+                    clientsScheduledController.setNotificationClients1(2,
+                        clientsScheduledController.clientsAttended2!.client_id);
+                  }
                 }
               }
             }
@@ -242,36 +243,37 @@ class _HomePageBodyState extends State<HomePageBody>
             if (clientsScheduledController.notificationClients3 == null ||
                 (clientsScheduledController.notificationClients3 != idClient &&
                     clientsScheduledController.notificationClients3 != null)) {
-              if (clientsScheduledController.animationController3 != null) {}
-              double progress =
-                  clientsScheduledController.animationController3!.value;
-              int totalTimeInSeconds = clientsScheduledController
-                  .timeClientsAttended3!; // Duración total del AnimationController en segundos
-              int elapsedTimeInSeconds =
-                  (progress * totalTimeInSeconds).round();
-              int remainingTimeInSeconds =
-                  totalTimeInSeconds - elapsedTimeInSeconds;
-              int standbyTimeSeconds = endingTime * 60;
-              // Verificar si faltan menos de 180 segundos (3 minutos) para terminar
+              if (clientsScheduledController.animationController3 != null) {
+                double progress =
+                    clientsScheduledController.animationController3!.value;
+                int totalTimeInSeconds = clientsScheduledController
+                    .timeClientsAttended3!; // Duración total del AnimationController en segundos
+                int elapsedTimeInSeconds =
+                    (progress * totalTimeInSeconds).round();
+                int remainingTimeInSeconds =
+                    totalTimeInSeconds - elapsedTimeInSeconds;
+                int standbyTimeSeconds = endingTime * 60;
+                // Verificar si faltan menos de 180 segundos (3 minutos) para terminar
 
-              if (remainingTimeInSeconds <= standbyTimeSeconds) {
-                // Realizar alguna acción
-                print(
-                    'object-Enviar mensaje que el tiempo de servicio esta por culminar, que solo le faltan 3 minutos');
+                if (remainingTimeInSeconds <= standbyTimeSeconds) {
+                  // Realizar alguna acción
+                  print(
+                      'object-Enviar mensaje que el tiempo de servicio esta por culminar, que solo le faltan 3 minutos');
 
-                int professionalId = loginController.idProfessionalLoggedIn!;
-                int branchId = loginController.branchIdLoggedIn!;
+                  int professionalId = loginController.idProfessionalLoggedIn!;
+                  int branchId = loginController.branchIdLoggedIn!;
 
-                if ((idClient ==
-                    clientsScheduledController.clientsAttended3?.client_id)) {
-                  notiController.storeNotification(
-                      '!Alerta',
-                      branchId,
-                      professionalId,
-                      'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos');
-                  //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
-                  clientsScheduledController.setNotificationClients1(3,
-                      clientsScheduledController.clientsAttended3!.client_id);
+                  if ((idClient ==
+                      clientsScheduledController.clientsAttended3?.client_id)) {
+                    notiController.storeNotification(
+                        '!Alerta',
+                        branchId,
+                        professionalId,
+                        'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos');
+                    //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
+                    clientsScheduledController.setNotificationClients1(3,
+                        clientsScheduledController.clientsAttended3!.client_id);
+                  }
                 }
               }
             }
@@ -298,36 +300,37 @@ class _HomePageBodyState extends State<HomePageBody>
             if (clientsScheduledController.notificationClients4 == null ||
                 (clientsScheduledController.notificationClients4 != idClient &&
                     clientsScheduledController.notificationClients4 != null)) {
-              if (clientsScheduledController.animationController4 != null) {}
-              double progress =
-                  clientsScheduledController.animationController4!.value;
-              int totalTimeInSeconds = clientsScheduledController
-                  .timeClientsAttended4!; // Duración total del AnimationController en segundos
-              int elapsedTimeInSeconds =
-                  (progress * totalTimeInSeconds).round();
-              int remainingTimeInSeconds =
-                  totalTimeInSeconds - elapsedTimeInSeconds;
-              int standbyTimeSeconds = endingTime * 60;
-              // Verificar si faltan menos de 180 segundos (3 minutos) para terminar
+              if (clientsScheduledController.animationController4 != null) {
+                double progress =
+                    clientsScheduledController.animationController4!.value;
+                int totalTimeInSeconds = clientsScheduledController
+                    .timeClientsAttended4!; // Duración total del AnimationController en segundos
+                int elapsedTimeInSeconds =
+                    (progress * totalTimeInSeconds).round();
+                int remainingTimeInSeconds =
+                    totalTimeInSeconds - elapsedTimeInSeconds;
+                int standbyTimeSeconds = endingTime * 60;
+                // Verificar si faltan menos de 180 segundos (3 minutos) para terminar
 
-              if (remainingTimeInSeconds <= standbyTimeSeconds) {
-                // Realizar alguna acción
-                print(
-                    'object-Enviar mensaje que el tiempo de servicio esta por culminar, que solo le faltan 3 minutos');
+                if (remainingTimeInSeconds <= standbyTimeSeconds) {
+                  // Realizar alguna acción
+                  print(
+                      'object-Enviar mensaje que el tiempo de servicio esta por culminar, que solo le faltan 3 minutos');
 
-                int professionalId = loginController.idProfessionalLoggedIn!;
-                int branchId = loginController.branchIdLoggedIn!;
+                  int professionalId = loginController.idProfessionalLoggedIn!;
+                  int branchId = loginController.branchIdLoggedIn!;
 
-                if ((idClient ==
-                    clientsScheduledController.clientsAttended4?.client_id)) {
-                  notiController.storeNotification(
-                      '!Alerta',
-                      branchId,
-                      professionalId,
-                      'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos');
-                  //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
-                  clientsScheduledController.setNotificationClients1(4,
-                      clientsScheduledController.clientsAttended4!.client_id);
+                  if ((idClient ==
+                      clientsScheduledController.clientsAttended4?.client_id)) {
+                    notiController.storeNotification(
+                        '!Alerta',
+                        branchId,
+                        professionalId,
+                        'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos');
+                    //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
+                    clientsScheduledController.setNotificationClients1(4,
+                        clientsScheduledController.clientsAttended4!.client_id);
+                  }
                 }
               }
             }
@@ -364,6 +367,7 @@ class _HomePageBodyState extends State<HomePageBody>
         //en este caso son 3 minutos que esta definido en el controlador
         if (endingtime == 30) //verificar en 30 segundos
         {
+          //aqui verifico si se esta acabando algun servico para mandar una notificacion
           verifyingClockTime(clientsScheduledController,
               clientsScheduledController.endingTime);
           endingtime = 1;
@@ -372,40 +376,69 @@ class _HomePageBodyState extends State<HomePageBody>
 
         cont += 2;
         if (clientsScheduledController.varClientsWaiting == true) {
-          print('varClientsWaiting es true');
+          if (clientsScheduledController
+              .animationControllerInitial!.isAnimating) {
+            // La animación está activa (en progreso)
+            print(
+                'varClientsWaiting es contClientsWaiting La animación está activa');
+            if (clientsScheduledController.contClientsWaiting == 10) {
+              print('varClientsWaiting Mande la notificacion ya');
+              //aqui llamar e insertar en las notificaciones
+              notiController.storeNotification(
+                  'Clientes en cola',
+                  loginController.branchIdLoggedIn,
+                  loginController.idProfessionalLoggedIn,
+                  'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!');
+              //para controlar que con este cliente solo le avise una vez
+              clientsScheduledController.setContClientsWaiting(20);
+            }
+            if (clientsScheduledController.contClientsWaiting == 10) {
+              print(
+                  'entando en 10 segundos aqui para insertar el tiempo si hubiera reloj activo');
+            } else if (clientsScheduledController.contClientsWaiting ==
+                100) //si llega a 100 mando que sea 20 de nuevo para q no pase de los valores del entero y tener un control mejor de el
+            {
+              clientsScheduledController.setContClientsWaiting(20);
+            } else {
+              clientsScheduledController.setContClientsWaiting(-91119); //sumo 1
+            }
+          } else {
+            clientsScheduledController
+                .setContClientsWaiting(-90009); //inicializo nuevamente a 0
+            // La animación está detenida
+            print(
+                'varClientsWaiting es contClientsWaiting La animación está detenida');
+          }
           print(
               'varClientsWaiting es contClientsWaiting = ${clientsScheduledController.contClientsWaiting}');
-          if (clientsScheduledController.contClientsWaiting == 10) {
-            print('varClientsWaiting Mande la notificacion ya');
-            //aqui llamar e insertar en las notificaciones
-            notiController.storeNotification(
-                'Clientes en cola',
-                loginController.branchIdLoggedIn,
-                loginController.idProfessionalLoggedIn,
-                'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!');
-            //para controlar que con este cliente solo le avise una vez
-            clientsScheduledController.setContClientsWaiting(20);
-          } else if (clientsScheduledController.contClientsWaiting ==
-              100) //si llega a 100 mando que sea 20 de nuevo para q no pase de los valores del entero y tener un control mejor de el
-          {
-            clientsScheduledController.setContClientsWaiting(20);
-          } else {
-            clientsScheduledController.setContClientsWaiting(-91119); //sumo 1
-          }
         } else {
           clientsScheduledController
               .setContClientsWaiting(-90009); //inicializo nuevamente a 0
           print('varClientsWaiting es false');
         }
 
+        //
+        //
+        //
+        //
         // actualizo la cola
-        if (cont == 4 || cont == 10 || cont == 20 || cont == 30) {
+        if (cont == 4 ||
+            cont == 10 ||
+            cont == 20 ||
+            cont == 30 ||
+            cont == 40 ||
+            cont == 60 ||
+            cont == 70 ||
+            cont == 80) {
+          //AQUI INSERTO EN LA DB SI HUBIERAS RELOJES ACTIVOS
+          // await clientsScheduledController.upadateVariablesValueTimersSPlano();
+
           print('ENTRO A BUSCAR NOTIFICACIONES');
+          print('ENTRO A BUSCAR NOTIFICACIONES - cont: $cont');
           notiController.fetchNotificationList(loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn);
         }
-        if (cont == 60) {
-          print('con contador en 8 llamo la funcion1 111');
+        if (cont == 6 || cont == 8) {
           notiController.fetchNotificationList(loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn);
 
@@ -414,7 +447,12 @@ class _HomePageBodyState extends State<HomePageBody>
               loginController.branchIdLoggedIn);
           print('con contador en 8 llamo la funcion1 222');
         }
-        if (cont == 20 || cont == 40 || cont == 60) {
+        if (cont == 4 || cont == 40 || cont == 80) {
+          await clientsScheduledController.upadateVariablesValueTimers();
+          print(
+              'clientes asistiendo  inserto cada cierto tiempo en la db los nuevos valores del timer-2 upadateVariablesValueTimers()->$cont');
+        }
+        if (cont == 20 || cont == 40 || cont == 60 || cont == 80) {
           print(
               'con contador en 8 llamo la funcion1 con contador en 10 entro para activar reloges si fuera necesario');
           for (var i = 0;
@@ -457,7 +495,7 @@ class _HomePageBodyState extends State<HomePageBody>
               }
             } //fin del if
           }
-          if (cont == 60) {
+          if (cont == 80) {
             print('vuelvo a poner en 2 a cont');
             cont = 2;
           }
@@ -517,6 +555,46 @@ class _HomePageBodyState extends State<HomePageBody>
         print('Hubo un cierre inesperado y se estan activando los relojes');
         activeClock();
       }
+      if (controllerclient.activeModifyTime == true) {
+        print('EL TIEMPO ACTUAL DEL RELOJ estoy entrando aqui');
+        //aqui verifico qsi hay que agregarle el tiempo algun reloj
+        print(
+            'activeModifyTime SOY = ${controllerclient.activeModifyTime} Y MANDE ESTE TIEMPO ${controllerclient.modifyTime[controllerclient.modifyTimeSpecific]}');
+        int i = controllerclient.modifyTimeSpecific;
+        int value =
+            controllerclient.modifyTime[controllerclient.modifyTimeSpecific];
+        // Obtén la duración total del AnimationController
+        Duration? duracionTotal = animationCont[i]!.duration;
+
+// Obtén el tiempo transcurrido hasta ahora en minutos
+        double tiempoTranscurrido =
+            animationCont[i]!.value * duracionTotal!.inMinutes;
+
+// Calcula el tiempo restante en minutos
+        double tiempoRestante = duracionTotal.inMinutes - tiempoTranscurrido;
+
+        print(
+            'EL TIEMPO ACTUAL DEL RELOJ Tiempo duracionTotal: $duracionTotal');
+        print(
+            'EL TIEMPO ACTUAL DEL RELOJ Tiempo tiempoTranscurrido: ${tiempoTranscurrido.truncate()}');
+        print('EL TIEMPO ACTUAL DEL RELOJ Tiempo restante: $tiempoRestante');
+
+        Duration duracionSendAct = Duration(
+          minutes: tiempoRestante.truncate() + value,
+        );
+
+// Aumenta la duración actual en 30 segundos
+        Duration nuevaDuracion = duracionSendAct;
+
+        animationCont[i]!.duration = nuevaDuracion;
+        print('EL TIEMPO ACTUAL DEL RELOJ duracionSend YA:$duracionSendAct');
+
+        animationCont[i]!.reset();
+        animationCont[i]!.forward();
+        print('EL TIEMPO ACTUAL DEL RELOJ RESETEADO YA');
+
+        //preguntar que no venga del login
+      }
 
       //AQUI ESCUCHANDO PARA SABER SI TENGO QUE DETENER O REAUNUDAR LOS TIMER
       if (controllerclient.clockchanges == true) {
@@ -560,51 +638,43 @@ class _HomePageBodyState extends State<HomePageBody>
         // String secondName = partsName.length > 1 ? partsName[1] : "";
       }
 
-      clientsScheduledController.animationControllerInitial!.forward();
+      //clientsScheduledController.animationControllerInitial!.forward();
 
-      if (controllerclient.activeModifyTime == true) {
-        print(
-            'activeModifyTime SOY = ${controllerclient.activeModifyTime} Y MANDE ESTE TIEMPO ${controllerclient.modifyTime[controllerclient.modifyTimeSpecific]}');
-        int i = controllerclient.modifyTimeSpecific;
-        int value =
-            controllerclient.modifyTime[controllerclient.modifyTimeSpecific];
-        // Obtén la duración total del AnimationController
-        Duration? duracionTotal = animationCont[i]!.duration;
-
-// Obtén el tiempo transcurrido hasta ahora en minutos
-        double tiempoTranscurrido =
-            animationCont[i]!.value * duracionTotal!.inMinutes;
-
-// Calcula el tiempo restante en minutos
-        double tiempoRestante = duracionTotal.inMinutes - tiempoTranscurrido;
-
-        print('Tiempo duracionTotal: $duracionTotal');
-        print('Tiempo tiempoTranscurrido: ${tiempoTranscurrido.truncate()}');
-        print('Tiempo restante: $tiempoRestante');
-
-        Duration duracionSendAct = Duration(
-          minutes: tiempoRestante.truncate() + value,
-        );
-
-// Aumenta la duración actual en 30 segundos
-        Duration nuevaDuracion = duracionSendAct;
-
-        animationCont[i]!.duration = nuevaDuracion;
-        print('duracionSend YA:$duracionSendAct');
-
-        animationCont[i]!.reset();
-        animationCont[i]!.forward();
-        print('RESETEADO YA');
-      }
       // print('clientes asistiendo Antes de addPostFrameCallback');
       //todo IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        // Se ejecutará después de que se haya construido el widget
-        //define que tipo de saludo dar dependiendo de la hora
-        controllerclient.setCloseIesperado(false);
-        controllerclient.clockChanges(false);
-        loginController.getGreeting();
-        controllerclient.modifingTimeClose();
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        //aqui solo debe entrar cuando o se agregan servicios o cuando se eliminan
+        if (controllerclient.activeModifyTime == true) {
+          controllerclient.setActiveModifyTime(false);
+          await clientsScheduledController.upadateVariablesValueTimers();
+          print(
+              'clientes asistiendo  inserto cada cierto tiempo en la db los nuevos valores y puso a FALSE a activeModifyTime');
+        }
+        print(
+            'valor de variable controllerclient.segundoPlano = ${controllerclient.segundoPlano}');
+
+        if (loginController.ejecutadoEvent == false) {
+          // Se ejecutará después de que se haya construido el widget
+          //define que tipo de saludo dar dependiendo de la hora
+
+          if (controllerclient.closeIesperado == true) {
+            print('-*-*-*-**>>>> si fui un sierre inesperado');
+            if (clientsScheduledController.item.isNotEmpty) {
+              loginController.setCodigoQrValid(1);
+            } else {
+              loginController.setCodigoQrValid(null);
+            }
+          } else {
+            print('-*-*-*-**>>>> NOOO fui un sierre inesperado');
+          }
+
+          controllerclient.setCloseIesperado(false);
+          controllerclient.clockChanges(false);
+          loginController.ejecutado_(true);
+          controllerclient.modifingTimeClose();
+        }
+        controllerclient.setCloseIesperadoLogin(false);
+
         // print(
         //     'clientes asistiendo ENTRE A DESTRUIR LAS VARIABLES DEL TIEMPO ASIGNADO activeModifyTime SOY = ${controllerclient.activeModifyTime}');
       });
@@ -674,16 +744,46 @@ class _HomePageBodyState extends State<HomePageBody>
                                 else if (controllerclient
                                         .clientsScheduledNext !=
                                     null) ...[
-                                  cardTimer(
-                                    UniqueKey(),
-                                    'Esperando',
-                                    controllerclient,
-                                    clientsScheduledController
-                                        .animationControllerInitial!,
-                                  ),
+                                  //AQUI VERIFICO SI YA ESCANEO EL CODIGO QR
+                                  if (loginController.codigoQrValid() == true &&
+                                      clientsScheduledController
+                                          .item.isEmpty) ...[
+                                    cardTimer(
+                                      UniqueKey(),
+                                      'Esperando',
+                                      controllerclient,
+                                      clientsScheduledController
+                                          .animationControllerInitial!,
+                                    ),
+                                  ] else ...[
+                                    const Center(
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 50,
+                                          ),
+                                          Text(
+                                            'Debe de escanear el código Qr ',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          Text(
+                                            'para atender clientes',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ]
                                 ] else ...[
                                   const SizedBox(
-                                    height: 70,
+                                    height: 50,
                                   ),
                                 ]
                               ]),
@@ -695,25 +795,36 @@ class _HomePageBodyState extends State<HomePageBody>
                       controllerclient.boolFilterShowNext
                           ? cardClientTails(controllerclient, context,
                               firstName, animationCont)
-                          : const Column(
-                              children: [
-                                SizedBox(
-                                  height: 16,
-                                ),
-                                Text(
-                                  'Cliente atendiéndose.',
+                          :
+
+                          //si hubiera algien en cola
+                          clientsScheduledController
+                                      .clientsScheduledListLength >
+                                  0
+                              ? const Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 16,
+                                    ),
+                                    Text(
+                                      'Cliente atendiéndose.',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Text(
+                                      'Esperando para mostrar el siguiente',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                )
+                              : const Text('No hay clientes en cola',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                                Text(
-                                  'Esperando para mostrar el siguiente',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12,
+                                      color: Colors.white)),
                       //FIN CLIENTES QUE ESTAN EN COLA
                     ],
                   ),
@@ -855,17 +966,27 @@ class _HomePageBodyState extends State<HomePageBody>
                       ),
                       child: IconButton(
                         onPressed: () {
-                          // Get.snackbar(
-                          //   'Mensaje',
-                          //   'Cancelar',
-                          //   duration: const Duration(milliseconds: 2000),
-                          // );
-                          // atender este cliente
-                          //el valor 3 es que es que lo rechazo, por alguna razon no lo va a tender
-                          controllerclient.acceptOrRejectClient(
-                              controllerclient
-                                  .clientsScheduledNext!.reservation_id,
-                              3);
+                          if (loginController.codigoQrValid() == true) {
+                            controllerclient.acceptOrRejectClient(
+                                controllerclient
+                                    .clientsScheduledNext!.reservation_id,
+                                3);
+                          } else {
+                            Get.snackbar(
+                              'Mensaje',
+                              'Debe de escanear el código Qr de entrada',
+                              duration: const Duration(milliseconds: 2500),
+                              backgroundColor:
+                                  const Color.fromARGB(118, 255, 255, 255),
+                              showProgressIndicator: true,
+                              progressIndicatorBackgroundColor:
+                                  const Color.fromARGB(255, 203, 205, 209),
+                              progressIndicatorValueColor:
+                                  const AlwaysStoppedAnimation(
+                                      Color(0xFFF18254)),
+                              overlayBlur: 3,
+                            );
+                          }
                         },
                         icon: Icon(
                           MdiIcons.thumbDown,
@@ -983,60 +1104,77 @@ class _HomePageBodyState extends State<HomePageBody>
                               const BorderRadius.all(Radius.circular(12))),
                       child: IconButton(
                         onPressed: () async {
-                          // Get.snackbar(
-                          //   'Mensaje',
-                          //   'Aceptar',
-                          //   duration: const Duration(milliseconds: 2000),
-                          // );
-                          //aqui manda aceptar, es decir atender este cliente
-                          clientsScheduledController.clientsWaiting(false);
-                          // detengo el timer de 2 minutos
-                          clientsScheduledController.animationControllerInitial!
-                              .stop();
-                          clientsScheduledController.animationControllerInitial!
-                              .reset();
-                          // detengo todos los timers que deben detenerse
-                          for (int j = 0;
-                              j < controllerclient.itemDel.length;
-                              j++) {
-                            animationCont[controllerclient.itemDel[j]]!.stop();
-                            animationCont[controllerclient.itemDel[j]]!.reset();
-                          }
-                          await controllerclient.newClientAttended(
-                              controllerclient.clientsScheduledNext!,
-                              controllerclient.availability);
+                          //AQUI VEO SI YA ESCANEO EL CODIGO QR Y ESTA EN EL LOCAL
+                          if (loginController.codigoQrValid() == true) {
+                            //aqui manda aceptar, es decir atender este cliente
+                            clientsScheduledController.clientsWaiting(false);
+                            // detengo el timer de 2 minutos
+                            clientsScheduledController
+                                .animationControllerInitial!
+                                .stop();
+                            clientsScheduledController
+                                .animationControllerInitial!
+                                .reset();
+                            // detengo todos los timers que deben detenerse
+                            for (int j = 0;
+                                j < controllerclient.itemDel.length;
+                                j++) {
+                              animationCont[controllerclient.itemDel[j]]!
+                                  .stop();
+                              animationCont[controllerclient.itemDel[j]]!
+                                  .reset();
+                            }
+                            await controllerclient.newClientAttended(
+                                controllerclient.clientsScheduledNext!,
+                                controllerclient.availability);
 
-                          //
-                          //
-                          //
-                          //HACE LAS VERIFICACIONES NECESARIAS PARA ACTIVAR LOS RELOJES QUE NECESITEN SER ACTIVADOS
-                          if (controllerclient.busyClock == 0) {
-                            animationCont[0]!.duration = Duration(
-                                seconds:
-                                    controllerclient.timeClientsAttended1!);
-                            animationCont[0]!.forward();
-                          } else if (controllerclient.busyClock == 1) {
-                            animationCont[1]!.duration = Duration(
-                                seconds:
-                                    controllerclient.timeClientsAttended2!);
-                            animationCont[1]!.forward();
-                          } else if (controllerclient.busyClock == 2) {
-                            animationCont[2]!.duration = Duration(
-                                seconds:
-                                    controllerclient.timeClientsAttended3!);
-                            animationCont[2]!.forward();
-                          } else if (controllerclient.busyClock == 3) {
-                            animationCont[3]!.duration = Duration(
-                                seconds:
-                                    controllerclient.timeClientsAttended4!);
-                            animationCont[3]!.forward();
-                          }
+                            //
+                            //
+                            //
+                            //HACE LAS VERIFICACIONES NECESARIAS PARA ACTIVAR LOS RELOJES QUE NECESITEN SER ACTIVADOS
+                            if (controllerclient.busyClock == 0) {
+                              animationCont[0]!.duration = Duration(
+                                  seconds:
+                                      controllerclient.timeClientsAttended1!);
+                              animationCont[0]!.forward();
+                            } else if (controllerclient.busyClock == 1) {
+                              animationCont[1]!.duration = Duration(
+                                  seconds:
+                                      controllerclient.timeClientsAttended2!);
+                              animationCont[1]!.forward();
+                            } else if (controllerclient.busyClock == 2) {
+                              animationCont[2]!.duration = Duration(
+                                  seconds:
+                                      controllerclient.timeClientsAttended3!);
+                              animationCont[2]!.forward();
+                            } else if (controllerclient.busyClock == 3) {
+                              animationCont[3]!.duration = Duration(
+                                  seconds:
+                                      controllerclient.timeClientsAttended4!);
+                              animationCont[3]!.forward();
+                            }
 
-                          //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
-                          await controllerclient.acceptOrRejectClient(
-                              controllerclient
-                                  .clientsScheduledNext!.reservation_id,
-                              1);
+                            //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
+                            await controllerclient.acceptOrRejectClient(
+                                controllerclient
+                                    .clientsScheduledNext!.reservation_id,
+                                1);
+                          } else {
+                            Get.snackbar(
+                              'Mensaje',
+                              'Debe de escanear el código Qr de entrada',
+                              duration: const Duration(milliseconds: 2500),
+                              backgroundColor:
+                                  const Color.fromARGB(118, 255, 255, 255),
+                              showProgressIndicator: true,
+                              progressIndicatorBackgroundColor:
+                                  const Color.fromARGB(255, 203, 205, 209),
+                              progressIndicatorValueColor:
+                                  const AlwaysStoppedAnimation(
+                                      Color(0xFFF18254)),
+                              overlayBlur: 3,
+                            );
+                          }
                         },
                         icon: Icon(
                           MdiIcons.thumbUp,

@@ -23,6 +23,7 @@ class ProductRepository extends GetConnect {
       int carId = shoppingCartController.carIdClienteSelect!;
       var url =
           '${Env.apiEndpoint}/car_orders?id=$carId'; //todo REVISAR aqui enviar el id del carro correspondiente al cliente-profesional
+      print('estoy cargando el carro de id car :$url');
       final response = await get(url);
       if (response.statusCode == 200) {
         // print('codigo 200000000000000000');
@@ -46,6 +47,8 @@ class ProductRepository extends GetConnect {
           }
         }
         //retornando dos listas
+        print(
+            'estoy cargando el carro de id car services leght :${serviceListCar.length}');
         return {
           'products': productListCar,
           'services': serviceListCar,

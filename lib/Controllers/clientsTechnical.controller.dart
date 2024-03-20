@@ -54,7 +54,7 @@ class ClientsTechnicalController extends GetxController {
   //ESTA VARIABLE HAY QUE LLENARLA DIRECTAMENTE DE LA DB
   Map<String, int> noncomplianceProfessional = {
     /* //el tiempo para escoger los clientes inicial (3min)
-    'initialTime': 3,
+    'Tiempo': 3,
     'teamQuota': 3, //Cuidado de equipo
     'punctuality': 3, //Puntualidad
     'clearCommunication': 3, //Comunicacion clara
@@ -64,6 +64,15 @@ class ClientsTechnicalController extends GetxController {
     'respectTreatment': 3, //Respeto y Trato Cordial
     /******************AGREGAR AQUI TODS LOS QUE DESEN*********************/*/
   };
+
+  bool verificateValueTimersTec() {
+    bool hasClient1 = clientsAttendedTechnical != null;
+    if (hasClient1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   Future<void> acceptClientTechnical(reservationId, attended) async {
     final LoginController controllerLogin = Get.find<LoginController>();

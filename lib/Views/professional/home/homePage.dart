@@ -31,6 +31,7 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
     super.initState();
     // Agregar el observador del ciclo de vida
     WidgetsBinding.instance.addObserver(this);
+    clientController.loadData();
   }
 
   @override
@@ -42,16 +43,19 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    //await clientController.upadateVariablesValueTimers();
     super.didChangeAppLifecycleState(state);
-
+    print('La aplicación se está pausando (yendo a segundo plano111)');
     if (state == AppLifecycleState.paused) {
+      clientController.setCloseIesperado(true);
       // La aplicación se está pausando (puede ir a segundo plano)
+      clientController.getSegundoPlano(false);
       print('La aplicación se está pausando (yendo a segundo plano)');
-      await clientController.upadateVariablesValueTimers();
     } else if (state == AppLifecycleState.resumed) {
       // La aplicación se cierra completamente
       print('La aplicación se está Reaunudandose nuevamente');
       clientController.setCloseIesperado(false);
+      clientController.getSegundoPlano(true);
       // Agrega tu lógica para guardar en la base de datos aquí.
     } else if (state == AppLifecycleState.detached) {
       // La aplicación se cierra completamente
@@ -69,11 +73,7 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
         return Scaffold(
           backgroundColor: const Color.fromARGB(255, 231, 232, 234),
           appBar: pagesConfigController.selectedIndex == 0
-              ? CustomAppBar(
-                  id: loginController.idProfessionalLoggedIn ==
-                          3 //todo falta ponerlo dinamico
-                      ? 3
-                      : -99) //aqui paso el id del profesional que es el nombre de la imagen
+              ? CustomAppBar() //aqui paso el id del profesional que es el nombre de la imagen
               : null,
           body: PageView(
             controller: pagesConfigController.pageHomeController,
@@ -174,8 +174,7 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
 //DEFINIENDO EL AppBar
 // ignore: must_be_immutable
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final int? id;
-  CustomAppBar({Key? key, required this.id}) : super(key: key);
+  CustomAppBar({Key? key}) : super(key: key);
 
   @override
   //Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -183,16 +182,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       const Size.fromHeight(70); // Ajusta el tamaño del AppBar aquí
   final ClientsScheduledController clientCon =
       Get.find<ClientsScheduledController>();
-/*
-  // Utilizar una función o getter para obtener imageDirection
-  String get imageDirection {
-    if (id != null && id != -99) {
-      return '${Env.apiEndpoint}/images/professional/$id.jpg';
-    } else {
-      // Si id es null o igual a -99, devuelve la ruta para la foto de perfil incógnito
-      return '${Env.apiEndpoint}/images/professional/default_profile.jpg';
-    }
-  }*/
 
   @override //todo AppBar
   Widget build(BuildContext context) {
@@ -229,13 +218,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  logUser.greeting,
-                  style: const TextStyle(
-                    color: const Color.fromARGB(255, 43, 44, 49),
-                    fontSize: 14,
-                    height: 1.0,
-                  ),
+                SizedBox(
+                  height: 5,
                 ),
                 Text(
                   logUser.nameUserLoggedIn,
@@ -266,7 +250,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               InkWell(
                 onTap: () {
                   //verifico si esta atendiendo a alguien no puede leer un nuevo codigo
-                  if (clientCon.verificateValueTimers() == true) {
+                  if (clientCon.verificateValueTimers() == true ||
+                      _.usserPermissionQr == 1) {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -462,7 +447,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                       .verificateValueTimers() ==
                                                   true
                                               ? Text(
-                                                  'No puedes salir del sistema,tienes clientes atendiendo!')
+                                                  'No puedes salir del sistema, tienes clientes atendiendo!')
                                               : Text(
                                                   'Deseas salir de la aplicación?                         ')),
                                       //
@@ -547,9 +532,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                             0xFF2B3141)),
                                               ),
                                               onPressed: () async {
+                                                //todo falta llamar un metodo aqui
+                                                //SACAR DEL PUESTO DE TRABAJO AL BARBERO
+                                                //
                                                 // Lógica para enviar el comentario
-                                                await clCont
-                                                    .upadateVariablesValueTimers();
+
+                                                //LLAMAR AL ENPOINT PARA SACAR DEL PUESTO DE TRABAJO
+                                                _.exitPostworking(
+                                                    "Professional");
+
                                                 _.exit(_.tokenUserLoggedIn);
 
                                                 // Cerrar el primer modal

@@ -212,7 +212,8 @@ class _CoexistencePageCoordinatorState
                                 fit: BoxFit.contain,
                                 child: InkWell(
                                   onTap: () {
-                                    {
+                                    if (controllerLogin.codigoQrValid() ==
+                                        true) {
                                       showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
@@ -435,168 +436,23 @@ class _CoexistencePageCoordinatorState
                                           });
                                         },
                                       );
-
-                                      // Mostrar el modal al hacer clic en el botón
-                                      // showDialog(
-                                      //   context: context,
-                                      //   builder: (BuildContext context) {
-                                      //     return AlertDialog(
-                                      //       title: Text(
-                                      //           controll.coexistence[index].name
-                                      //               .toString(),
-                                      //           style: const TextStyle(
-                                      //             fontSize: 16,
-                                      //             fontWeight: FontWeight.w800,
-                                      //           )),
-                                      //       content: SizedBox(
-                                      //         width: 150,
-                                      //         height: 150,
-                                      //         child: Column(
-                                      //           children: [
-                                      //             // Opción 1
-                                      //             SimpleDialogOption(
-                                      //               onPressed: () {
-                                      //                 controllerClient
-                                      //                     .changeNoncomplianceP(
-                                      //                         controll
-                                      //                             .coexistence[
-                                      //                                 index]
-                                      //                             .type,
-                                      //                         controllerLogin
-                                      //                             .branchIdLoggedIn,
-                                      //                         controll
-                                      //                             .selectedProfessional!
-                                      //                             .id,
-                                      //                         0);
-                                      //                 // Lógica para la opción 1
-                                      //                 Navigator.pop(context,
-                                      //                     'Opción 1 seleccionada');
-                                      //               },
-                                      //               child: Container(
-                                      //                 decoration:
-                                      //                     const BoxDecoration(
-                                      //                   color: Color.fromARGB(
-                                      //                       99, 244, 67, 54),
-                                      //                   borderRadius:
-                                      //                       BorderRadius.all(
-                                      //                           Radius.circular(
-                                      //                               4)),
-                                      //                 ),
-                                      //                 child: const Padding(
-                                      //                   padding: EdgeInsets.all(
-                                      //                       10.0),
-                                      //                   child: Row(
-                                      //                     mainAxisAlignment:
-                                      //                         MainAxisAlignment
-                                      //                             .spaceBetween,
-                                      //                     children: [
-                                      //                       Text('Incumplió'),
-                                      //                       Icon(
-                                      //                         Icons.star,
-                                      //                         size: 30,
-                                      //                         color: Colors.red,
-                                      //                       ),
-                                      //                     ],
-                                      //                   ),
-                                      //                 ),
-                                      //               ),
-                                      //             ),
-                                      //             // Opción 2
-                                      //             SimpleDialogOption(
-                                      //               onPressed: () {
-                                      //                 controllerClient
-                                      //                     .changeNoncomplianceP(
-                                      //                         controll
-                                      //                             .coexistence[
-                                      //                                 index]
-                                      //                             .type,
-                                      //                         controllerLogin
-                                      //                             .branchIdLoggedIn,
-                                      //                         controll
-                                      //                             .selectedProfessional!
-                                      //                             .id,
-                                      //                         1);
-                                      //                 // Lógica para la opción 2
-                                      //                 Navigator.pop(
-                                      //                     context, 'Cumplió');
-                                      //               },
-                                      //               child: Container(
-                                      //                 decoration:
-                                      //                     const BoxDecoration(
-                                      //                   color: Color.fromARGB(
-                                      //                       108, 76, 175, 79),
-                                      //                   borderRadius:
-                                      //                       BorderRadius.all(
-                                      //                           Radius.circular(
-                                      //                               4)),
-                                      //                 ),
-                                      //                 child: const Padding(
-                                      //                   padding: EdgeInsets.all(
-                                      //                       10.0),
-                                      //                   child: Row(
-                                      //                     mainAxisAlignment:
-                                      //                         MainAxisAlignment
-                                      //                             .spaceBetween,
-                                      //                     children: [
-                                      //                       Text('Cumplió'),
-                                      //                       Icon(
-                                      //                         Icons.star,
-                                      //                         size: 30,
-                                      //                         color: Color
-                                      //                             .fromARGB(
-                                      //                                 255,
-                                      //                                 10,
-                                      //                                 116,
-                                      //                                 13),
-                                      //                       ),
-                                      //                     ],
-                                      //                   ),
-                                      //                 ),
-                                      //               ),
-                                      //             ),
-                                      //           ],
-                                      //         ),
-                                      //       ),
-                                      //       // Botón de aceptar
-                                      //       actions: [
-                                      //         Center(
-                                      //           child: Container(
-                                      //             width: 100,
-                                      //             child: ElevatedButton(
-                                      //               style: ButtonStyle(
-                                      //                 padding:
-                                      //                     MaterialStateProperty.all<
-                                      //                         EdgeInsetsGeometry>(
-                                      //                   const EdgeInsets
-                                      //                           .symmetric(
-                                      //                       vertical: 4.0,
-                                      //                       horizontal: 10.0),
-                                      //                 ),
-                                      //                 backgroundColor:
-                                      //                     MaterialStateProperty
-                                      //                         .all<Color>(
-                                      //                             const Color.fromARGB(255, 43, 44, 49)),
-                                      //               ),
-                                      //               onPressed: () {
-                                      //                 // Lógica para el botón de aceptar
-                                      //                 Navigator.pop(
-                                      //                     context, 'Cerrar');
-                                      //               },
-                                      //               child: const Center(
-                                      //                 child: Text(
-                                      //                   'Cerrar',
-                                      //                   style: TextStyle(
-                                      //                       color:
-                                      //                           Colors.white),
-                                      //                 ),
-                                      //               ),
-                                      //             ),
-                                      //           ),
-                                      //         ),
-                                      //       ],
-                                      //     );
-                                      //   },
-                                      // );
+                                    } else {
+                                      Get.snackbar(
+                                        'Mensaje',
+                                        'Debe de escanear el código Qr de entrada',
+                                        duration:
+                                            const Duration(milliseconds: 2500),
+                                        backgroundColor: const Color.fromARGB(
+                                            118, 255, 255, 255),
+                                        showProgressIndicator: true,
+                                        progressIndicatorBackgroundColor:
+                                            const Color.fromARGB(
+                                                255, 203, 205, 209),
+                                        progressIndicatorValueColor:
+                                            const AlwaysStoppedAnimation(
+                                                Color(0xFFF18254)),
+                                        overlayBlur: 3,
+                                      );
                                     }
                                   },
                                   child: GetBuilder<ClientsScheduledController>(

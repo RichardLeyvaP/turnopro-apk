@@ -149,8 +149,10 @@ class YourPageViewScreenState extends State<HomePageView> {
                           ))
                         :
                         //AQUI VERIFICO QUE SE ESTE CONECTANDO AL SERVIDOR
-                        controllerClient.correctConnection == true
-                            ? Column(
+                        // controllerClient.correctConnection == true
+                        //     ?
+                            
+                             Column(
                                 children: [
                                   Container(
                                     color: const Color(0xFFF18254),
@@ -740,18 +742,19 @@ class YourPageViewScreenState extends State<HomePageView> {
                                         ),
                                 ],
                               )
-                            : const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image(
-                                    image: AssetImage(
-                                      'assets/images/icons/error-connection.png',
-                                    ),
-                                  ),
-                                  Text(
-                                      'Lo sentimos, hay problemas de conexión...'),
-                                ],
-                              ),
+                            // : 
+                            // const Column(
+                            //     mainAxisAlignment: MainAxisAlignment.center,
+                            //     children: [
+                            //       Image(
+                            //         image: AssetImage(
+                            //           'assets/images/icons/error-connection.png',
+                            //         ),
+                            //       ),
+                            //       Text(
+                            //           'Lo sentimos, hay problemas de conexión...'),
+                            //     ],
+                            //   ),
                   ),
                 ),
                 //

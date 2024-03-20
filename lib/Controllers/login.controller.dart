@@ -21,6 +21,14 @@ class LoginController extends GetxController {
     androidInfo();
   }
 
+  bool codigoQrvalid = false;
+  bool setIsLoading = false;
+
+  void setIsLoadingFor(value) {
+    setIsLoading = value;
+    update();
+  }
+
   bool maintainClockStatus = false;
   UserRepository usuarioLg = UserRepository();
   //*************************/
@@ -42,6 +50,7 @@ class LoginController extends GetxController {
   String qrRead = '';
   bool incorrectFields = false;
   String greeting = 'Buenos días ';
+  bool isLoggingIn = false;
 
   //******************* */
   //propiedades de telefone
@@ -55,28 +64,37 @@ class LoginController extends GetxController {
     update();
   }
 
+  void setIsLoggingIn(bool value) {
+    isLoggingIn = value;
+    update();
+  }
+
+  void setCodigoQrValid(value) {
+    usserPermissionQr = value;
+    update();
+  }
+
+  bool codigoQrValid() {
+    if (usserPermissionQr == 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<void> loadingValue(bool value) async {
     isLoading = value;
     update();
   }
 
   void getGreeting() {
-    // Obtener la hora actual
-    /* DateTime now = DateTime.now();
-
-    // Obtener la hora del día
-    int hour = now.hour;
-
-    // Determinar el saludo según la hora
-
-    if (hour < 12) {
-      greeting = 'Buenos días ';
-    } else if (hour < 18) {
-      greeting = 'Buenas tardes ';
-    } else {
-      greeting = 'Buenas noches ';
-    }*/
     greeting = 'Hola ';
+    update();
+  }
+
+  bool ejecutadoEvent = false;
+  void ejecutado_(value) {
+    ejecutadoEvent = value;
     update();
   }
 
@@ -156,6 +174,7 @@ class LoginController extends GetxController {
               3)); //aqui espero 3 segundos que se visualize el mensaje del snabar y luego redirecciono al home
       Get.offAllNamed('/Professional');
     }
+    //AQUI AUTORIZAR PRESTAR SERVICIOS
   }
 
   Future<bool> saveDataQr(int idBranch, int professionalId) async {
@@ -198,10 +217,21 @@ class LoginController extends GetxController {
           //Define el tipo de saludo
           getGreeting();
 
+          int idPuesto = await getIdPuesto(idProfessionalLoggedIn!);
+          if (idPuesto != -99 && idPuesto != -999) {
+            print('id de mi puesto de trabajo = $idPuesto');
+            setCodigoQrValid(1);
+          } else {
+            print('id de mi puesto de trabajo = $idPuesto');
+            setCodigoQrValid(null);
+          }
+
           if (chargeUserLoggedIn == "Barbero") {
             //aqui cargo la cola del barbero para poder tener en el home al siguiente de la cola inicialmente
             print('estoy aqui al cargar datos del controlador de client');
+            setIsLoggingIn(true);
             clientsScheduledController.setCloseIesperado(true);
+            clientsScheduledController.setCloseIesperadoLogin(true);
             await clientsScheduledController.fetchClientsScheduled(
                 idProfessionalLoggedIn, branchIdLoggedIn);
 
@@ -230,6 +260,12 @@ class LoginController extends GetxController {
             loadingValue(false);
             update();
             Get.offAllNamed('/HomeCordinador');
+          } else {
+            incorrectFields = true;
+            await loadingValue(false);
+            update();
+            print(
+                ' NO ENTRO PORQUE NO TIENE UN ROL PARA LA APP, COINCIDE QUE ES TRABAJADOR PERO NO DEL APK');
           }
         }
 
@@ -255,12 +291,57 @@ class LoginController extends GetxController {
           await clearSessionData();
           Get.offAllNamed('/LoginFormPage');
         } else {
-          print('NO CERRO SECION');
+          print(
+              'NO CERRO SECION CORRECTAMENTE ELIMINANDO LOS DATOS DE SECCION');
+          Get.offAllNamed('/LoginFormPage');
         }
       } else
         print('ERROR: -----> Revisar que el token esta llegando aqui vacio');
     } catch (e) {
       print('Erroor:$e');
+    }
+  }
+
+  Future<void> exitPostworking(String type) async {
+    try {
+      bool result; //INICIALIZANDO A NULL
+      print('este es el id del puesto id que mando:$idProfessionalLoggedIn');
+      int idPuesto = await getIdPuesto(idProfessionalLoggedIn!);
+      print('este es el id del puesto :$idPuesto');
+
+      if (idPuesto != -99 && idPuesto != -999) {
+        result = await usuarioLg.exitPostworking(idPuesto, type);
+        if (result == true) {
+          print(
+              'este es el id del puesto EL PROFESIONAL SALIO DEL PUESTO CORRECTAMENTE');
+        } else {
+          print('este es el id del puesto NO SALIO DEL PUESTO EL PROFESIONAL');
+        }
+      }
+    } catch (e) {
+      print('Erroor:$e');
+    }
+  }
+
+  Future<int> getIdPuesto(int idProfes) async {
+    try {
+      //INICIALIZANDO A NULL
+      int idPuesto = -99;
+      print('este es el id del puesto idProfes:$idProfes');
+      idPuesto = await usuarioLg.getIdPuesto(idProfes);
+      print(
+          'este es el id del puesto idProfes despue sde llamar al puesto:$idPuesto');
+
+      if (idPuesto != -99) {
+        print('EL PROFESIONAL SALIO DEL PUESTO CORRECTAMENTE');
+        return idPuesto;
+      } else {
+        print('NO ESTA EN NINGUN PUESTO EL PROFESIONAL');
+        return idPuesto;
+      }
+    } catch (e) {
+      print('Erroor:$e');
+      return -999;
     }
   }
 

@@ -189,7 +189,7 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
                                                 : (MediaQuery.of(context)
                                                         .size
                                                         .height *
-                                                    0.12),
+                                                    0.14),
                                             width: (MediaQuery.of(context)
                                                     .size
                                                     .width *

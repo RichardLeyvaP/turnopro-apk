@@ -10,10 +10,11 @@ import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:turnopro_apk/Controllers/login.controller.dart';
-import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
+import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/env.dart';
 
 final LoginController loginController = Get.find<LoginController>();
+final ServiceController servControll = Get.find<ServiceController>();
 
 class ModalHelper {
   static showModal(PageController pageController, BuildContext context,
@@ -25,11 +26,9 @@ class ModalHelper {
     } else {
       sizeExpandedService = [224, 280, 336, 392, 448];
     }
-
+    loginController.setIsLoadingFor(false);
     // Declarar un controlador fuera del método
     TextEditingController commentController = TextEditingController();
-    String imageDirection =
-        '${Env.apiEndpoint}/images/professional/ejemplo1.jpg';
 
     showModalBottomSheet(
       isScrollControlled: true,
@@ -147,56 +146,110 @@ class ModalHelper {
                             children: [
                               // Agrega un contenedor para alinear el icono al centro verticalmente
 
-                              ElevatedButton(
-                                  style: ButtonStyle(
-                                    shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            10.0), // Ajusta el valor según sea necesario
+                              //va a salir solo si estan atendiendolo
+                              controllClient.statusClientTemporary == 11 ||
+                                      controllClient.statusClientTemporary ==
+                                          1 ||
+                                      controllClient.statusClientTemporary ==
+                                          111
+                                  ? ElevatedButton(
+                                      style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                10.0), // Ajusta el valor según sea necesario
+                                          ),
+                                        ),
+                                        padding: MaterialStateProperty.all<
+                                            EdgeInsetsGeometry>(
+                                          const EdgeInsets.symmetric(
+                                              vertical: 0.0,
+                                              horizontal:
+                                                  10.0), // Ajusta el padding
+                                        ),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Colors.white),
+                                        side: MaterialStateProperty.all<
+                                            BorderSide>(
+                                          const BorderSide(
+                                              color: Color.fromARGB(
+                                                  167, 241, 131, 84),
+                                              width:
+                                                  2.0), // Ajusta el grosor del borde según sea necesario
+                                        ),
+                                        // Añadir más propiedades de estilo aquí
                                       ),
-                                    ),
-                                    padding: MaterialStateProperty.all<
-                                        EdgeInsetsGeometry>(
-                                      const EdgeInsets.symmetric(
-                                          vertical: 0.0,
-                                          horizontal:
-                                              10.0), // Ajusta el padding
-                                    ),
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            Colors.white),
-                                    side: MaterialStateProperty.all<BorderSide>(
-                                      const BorderSide(
-                                          color:
-                                              Color.fromARGB(167, 241, 131, 84),
-                                          width:
-                                              2.0), // Ajusta el grosor del borde según sea necesario
-                                    ),
-                                    // Añadir más propiedades de estilo aquí
-                                  ),
-                                  onPressed: () async {
-                                    await controllClient
-                                        .watchModifyTime(reservationId);
-                                    // Cierra el modal primero
-                                    Navigator.pop(context);
-                                    //luego llamo a la pagina de servicios y productos
-                                    /*Get.toNamed(
+                                      onPressed: () async {
+                                        //esto para saber que reloj hay que aumentarle el tiempo si escoje mas servicios
+                                        await controllClient
+                                            .watchModifyTime(reservationId);
+                                        servControll.clearSelectService();
+                                        // Cierra el modal primero
+                                        Navigator.pop(context);
+                                        //luego llamo a la pagina de servicios y productos
+                                        /*Get.toNamed(
                             '/servicesProductsPage',
                           );*/
-                                    pageController.nextPage(
-                                      duration: Duration(milliseconds: 300),
-                                      curve: Curves.ease,
-                                    );
-                                  },
-                                  child: const Text(
-                                    'VER CARRITO',
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        color:
-                                            Color.fromARGB(167, 241, 131, 84),
-                                        fontWeight: FontWeight.w800),
-                                  )),
+                                        pageController.nextPage(
+                                          duration: Duration(milliseconds: 300),
+                                          curve: Curves.ease,
+                                        );
+                                      },
+                                      child: const Text(
+                                        'VER CARRITO',
+                                        style: TextStyle(
+                                            fontSize: 10,
+                                            color: Color.fromARGB(
+                                                167, 241, 131, 84),
+                                            fontWeight: FontWeight.w800),
+                                      ))
+                                  : ElevatedButton(
+                                      style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                10.0), // Ajusta el valor según sea necesario
+                                          ),
+                                        ),
+                                        padding: MaterialStateProperty.all<
+                                            EdgeInsetsGeometry>(
+                                          const EdgeInsets.symmetric(
+                                              vertical: 0.0,
+                                              horizontal:
+                                                  10.0), // Ajusta el padding
+                                        ),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Colors.white),
+                                        side: MaterialStateProperty.all<
+                                            BorderSide>(
+                                          const BorderSide(
+                                              color: Color.fromARGB(
+                                                  167, 241, 131, 84),
+                                              width:
+                                                  2.0), // Ajusta el grosor del borde según sea necesario
+                                        ),
+                                        // Añadir más propiedades de estilo aquí
+                                      ),
+                                      onPressed: () async {
+                                        Get.snackbar(
+                                          'Mensaje',
+                                          'Debe estar atendiendo al cliente para ver más detalles',
+                                          duration: const Duration(
+                                              milliseconds: 2000),
+                                        );
+                                      },
+                                      child: const Text(
+                                        'VER CARRITO',
+                                        style: TextStyle(
+                                            fontSize: 10,
+                                            color: Color.fromARGB(
+                                                167, 241, 131, 84),
+                                            fontWeight: FontWeight.w800),
+                                      )),
                             ],
                           ),
                         ],
@@ -555,6 +608,7 @@ class ModalHelper {
                             ).whenComplete(() async {
                               final ClientsScheduledController cliCont =
                                   Get.find<ClientsScheduledController>();
+                              loginController.setCodigoQrValid(1);
                               cliCont.setImagePath(null);
                               closedCompleter.complete();
                             });

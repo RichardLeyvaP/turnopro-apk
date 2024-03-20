@@ -13,13 +13,16 @@ class LoginFormPage extends StatelessWidget {
   final TextEditingController _usserController = TextEditingController();
   final ClientsScheduledController clientContro =
       Get.find<ClientsScheduledController>();
+  final LoginController loginController = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
     //todo IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Se ejecutará después de que se haya construido el widget
       print('que tipo de saludo dar dependiendo de la hora');
+      loginController.setCodigoQrValid(null);
       clientContro.setValueClockDinamic(
           clientContro.calcularH(controllerLogin.androidInfoHeight!));
       // print(
@@ -163,7 +166,8 @@ class LoginFormPage extends StatelessWidget {
                                       overlayBlur: 3,
                                     );
                                   },
-                                  child: const Text('Recuperar Contraseña'))),
+                                  child: const Text(''))),
+                          //const Text('Recuperar Contraseña'))),
                           const SizedBox(
                             height: 20,
                           ),

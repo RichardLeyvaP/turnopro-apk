@@ -393,6 +393,13 @@ class _ProfileClientState extends State<ProfileClient> {
                                                       },
                                                       child: Row(
                                                         children: [
+                                                          Icon(
+                                                            MdiIcons.send,
+                                                            color: Colors.white,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 6,
+                                                          ),
                                                           const Text(
                                                             'ENVIAR y ELIMINAR',
                                                             style: TextStyle(
@@ -401,13 +408,6 @@ class _ProfileClientState extends State<ProfileClient> {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w800),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 6,
-                                                          ),
-                                                          Icon(
-                                                            MdiIcons.send,
-                                                            color: Colors.white,
                                                           ),
                                                         ],
                                                       ),

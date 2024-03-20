@@ -58,6 +58,7 @@ class CoexistenceRepository extends GetConnect {
   }
 
   Future<List<ProfessionalModel>> getBranchProfessionals(idBranch) async {
+    // todo esta es la que carga a los profesionales y a los tecnicos
     List<ProfessionalModel> professionalList = [];
     print('estoy en getBranchProfessionals');
     try {
@@ -66,13 +67,23 @@ class CoexistenceRepository extends GetConnect {
       final response = await get(url);
       if (response.statusCode == 200) {
         final professionals = response.body['professionals'];
+        for (int i = 0; i < professionals.length; i++) {
+          print(
+              'ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
+          professionals[i].forEach((key, value) {
+            print(
+                'ya tengo la cola de la api es estaa $key: ${value.runtimeType}');
+            print('********************i:$i');
+          });
+        }
         print(professionals);
         for (Map professional in professionals) {
           ProfessionalModel u =
               ProfessionalModel.fromJson(jsonEncode(professional));
           //AQUI SOLO COJO QUE NO SEAN RESPONSABLES
-          if (u.charge_id != 3 && u.charge_id != 8) {
-            //charge_id=3 es un responsable
+          if (u.charge_id == 1 || u.charge_id == 7) {
+            //charge_id=1 es un BARBERO
+            //charge_id=7 es un TECNICO
             professionalList.add(u);
           }
         }

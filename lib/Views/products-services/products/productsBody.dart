@@ -299,14 +299,35 @@ class _ProductsBodyState extends State<ProductsBody>
                           children: [
                             InkWell(
                               onTap: () {
-                                toggleFontSize(itemIndex);
-                                controllerProduct.buyProduct(itemIndex);
-                                controllerShoppingCart.updateShoppingCartValue(
-                                    priceProduct,
-                                    itemIndex,
-                                    controllerShoppingCart.carIdClienteSelect,
-                                    'product',
-                                    id); //todo
+                                if (controllerLogin.codigoQrValid() == true) {
+                                  toggleFontSize(itemIndex);
+                                  controllerProduct.buyProduct(itemIndex);
+                                  controllerShoppingCart
+                                      .updateShoppingCartValue(
+                                          priceProduct,
+                                          itemIndex,
+                                          controllerShoppingCart
+                                              .carIdClienteSelect,
+                                          'product',
+                                          id);
+                                } else {
+                                  Get.snackbar(
+                                    'Mensaje',
+                                    'Debe de escanear el código Qr de entrada',
+                                    duration:
+                                        const Duration(milliseconds: 2500),
+                                    backgroundColor: const Color.fromARGB(
+                                        118, 255, 255, 255),
+                                    showProgressIndicator: true,
+                                    progressIndicatorBackgroundColor:
+                                        const Color.fromARGB(
+                                            255, 203, 205, 209),
+                                    progressIndicatorValueColor:
+                                        const AlwaysStoppedAnimation(
+                                            Color(0xFFF18254)),
+                                    overlayBlur: 3,
+                                  );
+                                }
                               },
                               child: Container(
                                 height: (MediaQuery.of(context).size.height *

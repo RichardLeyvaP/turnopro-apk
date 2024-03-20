@@ -390,6 +390,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                       ),
                       child: IconButton(
                         onPressed: () async {
+                          /*
                           //rechazar la eliminacion
                           controllerShoppingCart.setLoading(true);
                           int result = await contShopp.requestDelete(
@@ -417,13 +418,54 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 controllerLogin.branchIdLoggedIn!);
                             controllerShoppingCart.setLoading(false);
                           }
+*/
 
-                          // Get.snackbar(
-                          //   'Mensaje',
+                          if (controllerLogin.codigoQrValid() == true) {
+                            //rechazar la eliminacion
+                            controllerShoppingCart.setLoading(true);
+                            int result = await contShopp.requestDelete(
+                                contShopp.orderDeleteCar[i].id, 0);
+                            //aqui mandar notificacion
+                            if (result == 1) {
+                              String serviceProduct = 'Servicio';
+                              String? nameServiceProduct =
+                                  contShopp.orderDeleteCar[i].nameService;
+                              if (contShopp.orderDeleteCar[i].nameService ==
+                                  null) {
+                                serviceProduct = 'Producto';
+                                nameServiceProduct =
+                                    contShopp.orderDeleteCar[i].nameProduct;
+                              }
+
+                              notiController.storeNotification(
+                                  'Solicitud de Eliminacion Rechazada',
+                                  controllerLogin.branchIdLoggedIn,
+                                  contShopp.orderDeleteCar[i].profesional_id,
+                                  '!Atención..El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} no fue aprobado para su eliminación.');
+                            }
+                            if (controllerLogin.branchIdLoggedIn != null) {
+                              await contShopp.loadOrderDeleteCar(
+                                  controllerLogin.branchIdLoggedIn!);
+                              controllerShoppingCart.setLoading(false);
+                            }
+                          } else {
+                            Get.snackbar(
+                              'Mensaje',
+                              'Debe de escanear el código Qr de entrada',
+                              duration: const Duration(milliseconds: 2500),
+                              backgroundColor:
+                                  const Color.fromARGB(118, 255, 255, 255),
+                              showProgressIndicator: true,
+                              progressIndicatorBackgroundColor:
+                                  const Color.fromARGB(255, 203, 205, 209),
+                              progressIndicatorValueColor:
+                                  const AlwaysStoppedAnimation(
+                                      Color(0xFFF18254)),
+                              overlayBlur: 3,
+                            );
+                          }
+
                           //   'Rechazada la solicitud',
-                          //   duration: const Duration(milliseconds: 500),
-                          // );
-                          //_.deletenotification(index);
                         },
                         icon: Icon(
                           MdiIcons.thumbDown,
@@ -545,6 +587,62 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                               const BorderRadius.all(Radius.circular(12))),
                       child: IconButton(
                         onPressed: () async {
+                          if (controllerLogin.codigoQrValid() == true) {
+                            controllerShoppingCart.setLoading(true);
+                            int result = await contShopp
+                                .orderDelete(contShopp.orderDeleteCar[i].id);
+                            //aqui mandar notificacion
+                            print('return resul: IconButton $result');
+                            print(
+                                'return resul: orderDeleteCar[i].id ${contShopp.orderDeleteCar[i].id}');
+                            if (result == 1) {
+                              String serviceProduct = 'servicio';
+                              String? nameServiceProduct =
+                                  contShopp.orderDeleteCar[i].nameService;
+                              if (contShopp.orderDeleteCar[i].nameService ==
+                                  '') {
+                                serviceProduct = 'producto';
+                                nameServiceProduct =
+                                    contShopp.orderDeleteCar[i].nameProduct;
+                              }
+                              print(
+                                  'return resul: estoy nameProduct:${contShopp.orderDeleteCar[i].nameProduct} ');
+                              print(
+                                  'return resul: estoy nameService:${contShopp.orderDeleteCar[i].nameService} ');
+                              print('return resul: estoy adentro ');
+                              print(
+                                  'return resul: branchIdLoggedIn ${controllerLogin.branchIdLoggedIn}');
+                              print(
+                                  'return resul: profesional_id ${contShopp.orderDeleteCar[i].profesional_id}');
+
+                              notiController.storeNotification(
+                                  'Aceptada su Solicitud de Eliminacion ',
+                                  controllerLogin.branchIdLoggedIn,
+                                  contShopp.orderDeleteCar[i].profesional_id,
+                                  'El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} fue aprobado y eliminado satisfactoriamente.');
+                            }
+                            if (controllerLogin.branchIdLoggedIn != null) {
+                              await contShopp.loadOrderDeleteCar(
+                                  controllerLogin.branchIdLoggedIn!);
+                              controllerShoppingCart.setLoading(false);
+                            }
+                          } else {
+                            Get.snackbar(
+                              'Mensaje',
+                              'Debe de escanear el código Qr de entrada',
+                              duration: const Duration(milliseconds: 2500),
+                              backgroundColor:
+                                  const Color.fromARGB(118, 255, 255, 255),
+                              showProgressIndicator: true,
+                              progressIndicatorBackgroundColor:
+                                  const Color.fromARGB(255, 203, 205, 209),
+                              progressIndicatorValueColor:
+                                  const AlwaysStoppedAnimation(
+                                      Color(0xFFF18254)),
+                              overlayBlur: 3,
+                            );
+                          }
+                          /*
                           controllerShoppingCart.setLoading(true);
                           int result = await contShopp
                               .orderDelete(contShopp.orderDeleteCar[i].id);
@@ -582,12 +680,9 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 controllerLogin.branchIdLoggedIn!);
                             controllerShoppingCart.setLoading(false);
                           }
-                          // Get.snackbar(
-                          //   'Mensaje',
+                          */
+
                           //   'Solicitud Eliminada',
-                          //   duration: const Duration(milliseconds: 500),
-                          // );
-                          // _.deletenotification(index);
                         },
                         icon: Icon(
                           MdiIcons.thumbUp,

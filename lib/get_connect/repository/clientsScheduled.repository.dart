@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/professional_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
@@ -10,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:dio/dio.dart' as dio;
 
 class ClientsScheduledRepository extends GetConnect {
+  final LoginController controllerLogin = Get.find<LoginController>();
   Future getClientsTechnicalList(idBranch) async {
     List<ClientsScheduledModel> clientList = [];
     ClientsScheduledModel? nextClient;
@@ -108,16 +110,26 @@ class ClientsScheduledRepository extends GetConnect {
         // print(
         //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
         //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
-        if (client.detached == 1) {
-          Map newValue = {
-            "reservation_id": client.reservation_id,
-            //"updated_at": convertDateTimeToMinutes(client.updated_at!),
-            "updated_at": client.updated_at!,
-            "clock": client.clock!,
-            "timeClock": client.timeClock! * 60, //convirtiendolo en minutos
-            "client": client,
-          };
-          attendingClientList.add(newValue);
+        if (controllerLogin.isLoggingIn == true) {
+          if (client.detached == 1) {
+            //creo nuevo cliente
+            print(
+                'clientes asistiendo entre a if (client.detached == 1) {//creo nuevo cliente');
+            Map newValue = {
+              "reservation_id": client.reservation_id,
+              //"updated_at": convertDateTimeToMinutes(client.updated_at!),
+              "updated_at": client.updated_at!,
+              "clock": client.clock!,
+              "timeClock": client.timeClock! * 60, //convirtiendolo en minutos
+              "client": client,
+            };
+            attendingClientList.add(newValue);
+            print(
+                'clientes asistiendo client.reservation_id:${client.reservation_id}');
+            print('clientes asistiendo client.clock!:${client.clock!}');
+            print('clientes asistiendo timeClock:${client.timeClock! * 60}');
+            print('clientes asistiendo client:${client}');
+          }
         }
 
         clientList.add(client);
@@ -131,6 +143,7 @@ class ClientsScheduledRepository extends GetConnect {
         }
         //AQUI PARA SABER CUANTOS ESTA ATENDIENDO
         if (client.attended == 1) {
+          print('clientes asistiendo entre a if (client.attended == 1) {');
           quantityClientAttended++;
         }
         //Saber si no esta atendiendo a nadie

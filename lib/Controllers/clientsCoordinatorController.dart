@@ -280,7 +280,7 @@ class ClientsCoordinatorController extends GetxController {
       await setTimeClock(
           reservationId, timeClientsActAttended2, detached, clock);
       print(
-          'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended2 reservation_id : $reservationId -  clock : $clock - detached :$detached');
+          'EL TIEMPO ACTUAL DEL RELOJ 2 ES Tiempo restante: $timeClientsActAttended2 reservation_id : $reservationId -  clock : $clock - detached :$detached');
     }
     if (hasClient3) {
       double currentTimeDouble = animationController3!.value *
@@ -299,7 +299,7 @@ class ClientsCoordinatorController extends GetxController {
       await setTimeClock(
           reservationId, timeClientsActAttended3, detached, clock);
       print(
-          'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended3 reservation_id : $reservationId -  clock : $clock - detached :$detached');
+          'EL TIEMPO ACTUAL DEL RELOJ 3 ES Tiempo restante: $timeClientsActAttended3 reservation_id : $reservationId -  clock : $clock - detached :$detached');
     }
     if (hasClient4) {
       double currentTimeDouble = animationController4!.value *
@@ -318,7 +318,7 @@ class ClientsCoordinatorController extends GetxController {
       await setTimeClock(
           reservationId, timeClientsActAttended4, detached, clock);
       print(
-          'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended4 reservation_id : $reservationId -  clock : $clock - detached :$detached');
+          'EL TIEMPO ACTUAL DEL RELOJ 4 ES Tiempo restante: $timeClientsActAttended4 reservation_id : $reservationId -  clock : $clock - detached :$detached');
     } else {
       print('EL TIEMPO ACTUAL DEL RELOJ 1 ES Nulo:$timeClientsActAttended1 ');
     }

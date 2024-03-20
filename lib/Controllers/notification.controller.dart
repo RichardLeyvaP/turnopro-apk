@@ -89,7 +89,9 @@ class NotificationController extends GetxController {
         notificationListNew = result['notificationListNew'];
         notificationListNewLength = notificationListNew.length;
         print(
-            'estoy aqui en getNotificationList-   notificationListLength:$notificationListLength');
+            'ENTRO A BUSCAR NOTIFICACIONES estoy aqui en getNotificationList-   notificationListLength:$notificationListLength');
+        print(
+            'ENTRO A BUSCAR NOTIFICACIONES estoy aqui en getNotificationList-   notificationListNew:${notificationListNew.length}');
         update();
       }
     } catch (e) {
