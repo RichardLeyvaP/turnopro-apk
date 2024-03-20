@@ -3,6 +3,7 @@
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
+import 'package:turnopro_apk/Models/branch_model.dart';
 import 'package:turnopro_apk/Models/coexistence_model.dart';
 import 'package:turnopro_apk/Models/professional_model.dart';
 import 'package:turnopro_apk/get_connect/repository/coexistence.repository.dart';
@@ -15,8 +16,11 @@ class CoexistenceController extends GetxController {
   int coexistenceListLength = 0;
   List<CoexistenceModel> coexistence = [];
   int professionalListLength = 0;
+  int branchProfessionalListLength = 0;
   List<ProfessionalModel> professional = []; // Lista de Notificaciones
+  List<BranchModel> branchProfessional = []; // Lista de Notificaciones
   ProfessionalModel? selectedProfessional; // Lista de Notificaciones
+  BranchModel? selectedBranch; // Lista de Notificaciones
   List<CoexistenceModel> selectCoexistence = [];
   bool isLoading = true;
   //LLAMANDO AL CONTROLADOR
@@ -96,6 +100,28 @@ class CoexistenceController extends GetxController {
 //todo agregue esto nuevo
     print(
         'actualizando las convivencias iniciales.RLP- getCoexistenceList222222222 %%%%%%%%%%%%%%%%% Profesionales por branch %%%%%%%%%%%%%%%%%%%%');
+    update();
+  }
+
+  Future<void> getBranchProfessionals(String email, String password) async {
+    final LoginController controllerLogin = Get.find<LoginController>();
+    controllerLogin.uss = email;
+    controllerLogin.pass = password;
+
+    branchProfessional =
+        await repository.getBranchProfessionals2(email, password);
+    print('aqui estoy devFuture<void> getBranchProfessionals');
+    print(branchProfessional.length);
+    branchProfessionalListLength = branchProfessional.length;
+    if (branchProfessionalListLength > 0) {
+      controllerLogin.loadingValue(false);
+      Get.offAllNamed('/LoginFormPage2');
+    } else {
+      print(
+          'ya tengo la cola de la api es estaa Tipos de dato No hay sucursales');
+    }
+    print(
+        'aqui estoy devFuture<void> branchProfessionalListLength:$branchProfessionalListLength');
     update();
   }
 }

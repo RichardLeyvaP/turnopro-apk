@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
+import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -14,6 +15,7 @@ class LoginFormPage extends StatelessWidget {
   final ClientsScheduledController clientContro =
       Get.find<ClientsScheduledController>();
   final LoginController loginController = Get.find<LoginController>();
+  final CoexistenceController cControll = Get.find<CoexistenceController>();
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class LoginFormPage extends StatelessWidget {
                   ],
                 )),
             Expanded(
-                flex: 8,
+                flex: 10,
                 child: Container(
                   decoration: const BoxDecoration(
                       color: Colors.white, //todo
@@ -213,10 +215,18 @@ class LoginFormPage extends StatelessWidget {
                                         );
                                       } else {
                                         await _.loadingValue(true);
-                                        await _.loginGetIn(
+                                        // await _.loginGetIn(
+                                        //     _usserController.text,
+                                        //     _passController.text);
+
+                                        await cControll.getBranchProfessionals(
                                             _usserController.text,
                                             _passController.text);
-                                        if (_.incorrectFields == true) {
+                                        if (cControll
+                                                .branchProfessionalListLength ==
+                                            0) {
+                                          _passController.text = '';
+                                          _usserController.text = '';
                                           Get.snackbar(
                                             '',
                                             'Usuario o Contraseña Incorrectos.',
@@ -235,6 +245,7 @@ class LoginFormPage extends StatelessWidget {
                                                         255, 241, 130, 84)),
                                             overlayBlur: 3,
                                           );
+                                          await _.loadingValue(false);
                                         }
                                       }
                                     },

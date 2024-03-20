@@ -45,8 +45,9 @@ class _QRViewPageState extends State<QRViewPage> {
       // Se ejecutará después de que se haya construido el widget
       loginController.setCodigoQrValid(1);
       // La animación ha llegado al final, reiniciar
-      clientsScheduledController.animationControllerInitial!.reset();
-      clientsScheduledController.animationControllerInitial!.forward();
+      //todo solo si es barbero
+      //  clientsScheduledController.animationControllerInitial!.reset();
+      // clientsScheduledController.animationControllerInitial!.forward();
       // print(
       //     'clientes asistiendo ENTRE A DESTRUIR LAS VARIABLES DEL TIEMPO ASIGNADO activeModifyTime SOY = ${controllerclient.activeModifyTime}');
     });

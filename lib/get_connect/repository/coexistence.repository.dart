@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';
+import 'package:turnopro_apk/Models/branch_model.dart';
 import 'package:turnopro_apk/Models/coexistence_model.dart';
 import 'package:turnopro_apk/Models/professional_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
@@ -66,7 +67,7 @@ class CoexistenceRepository extends GetConnect {
 
       final response = await get(url);
       if (response.statusCode == 200) {
-        final professionals = response.body['professionals'];
+        final professionals = response.body['branches'];
         for (int i = 0; i < professionals.length; i++) {
           print(
               'ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
@@ -98,4 +99,46 @@ class CoexistenceRepository extends GetConnect {
       return professionalList;
     }
   }
+
+//
+//
+  Future<List<BranchModel>> getBranchProfessionals2(email, password) async {
+    // todo esta es la que carga a los profesionales y a los tecnicos
+    List<BranchModel> branchProf = [];
+    print('estoy en getBranchProfessionals');
+    try {
+      var url =
+          '${Env.apiEndpoint}/login-phone-get-branch?email=$email&password=$password';
+
+      final response = await get(url);
+      if (response.statusCode == 200) {
+        final barnchP = response.body['branches'];
+        for (int i = 0; i < barnchP.length; i++) {
+          print(
+              'ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
+          barnchP[i].forEach((key, value) {
+            print(
+                'ya tengo la cola de la api es estaa $key: ${value.runtimeType}');
+            print('********************i:$i');
+          });
+        }
+        print(barnchP);
+        for (Map branch in barnchP) {
+          BranchModel u = BranchModel.fromJson(jsonEncode(branch));
+
+          branchProf.add(u);
+        }
+        print('*************coexistenceList.length*************');
+        print(branchProf.length);
+        return branchProf;
+      } else {
+        return branchProf;
+      }
+    } catch (e) {
+      print('Error:$e');
+      return branchProf;
+    }
+  }
+//
+//
 }

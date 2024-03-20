@@ -1,6 +1,7 @@
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/Views/common/loginFormPage.dart';
 import 'package:turnopro_apk/Views/professional/shoppingCartPage.dart';
 import 'package:turnopro_apk/Views/responsible/homeResponsiblePage.dart';
 
@@ -34,6 +35,11 @@ class RoutesConfig {
       GetPage(
         name: '/LoginFormPage',
         page: () => LoginFormPage(),
+        binding: BindingsBuilder.put(() => LoginController()),
+      ),
+      GetPage(
+        name: '/LoginFormPage2',
+        page: () => LoginFormPage2(),
         binding: BindingsBuilder.put(() => LoginController()),
       ),
 

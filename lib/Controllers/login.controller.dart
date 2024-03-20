@@ -32,6 +32,9 @@ class LoginController extends GetxController {
   bool maintainClockStatus = false;
   UserRepository usuarioLg = UserRepository();
   //*************************/
+  String uss = '';
+  String pass = '';
+  //
   String nameUserLoggedIn = '';
   String userLoggedIn = '';
   String tokenUserLoggedIn = '';
@@ -41,6 +44,7 @@ class LoginController extends GetxController {
   String imageUrlLoggedIn = '';
   int? idProfessionalLoggedIn;
   int? branchIdLoggedIn;
+  int? branchNameLoggedIn;
   int branchTecnicLoggedIn = 0;
   int? usserPermissionQr;
   //*************************/
@@ -182,14 +186,42 @@ class LoginController extends GetxController {
     return resultList;
   }
 
-  Future<void> loginGetIn(String u, String p) async {
+  Future<void> getUserLoggedBranch(String u, String p) async {
+    String email = u.toString(), pass = p.toString();
+    incorrectFields = false;
+    try {
+      print('aqui estoy dev branch u=$u --- p=$p');
+      Map<String, dynamic>? result; //INICIALIZANDO A NULL
+      result = await usuarioLg.getUserLoggedBranch(email, pass);
+
+      if (result != null) {
+        //aqui cargo la cola del barbero para poder tener en el home al siguiente de la cola inicialmente
+        print('aqui estoy dev branch sii');
+
+        update();
+        Get.offAllNamed('/LoginFormPage2');
+      } //cierre if (result != null) {
+      else {
+        print('aqui estoy dev branch nooo');
+      }
+    } catch (e) {
+      print('aqui estoy dev branch nooo eroor :$e');
+    }
+  }
+
+//
+//
+//
+//
+//
+  Future<void> loginGetIn(String u, String p, int idBranch) async {
     final ClientsScheduledController clientsScheduledController =
         Get.find<ClientsScheduledController>();
     String email = u.toString(), pass = p.toString();
     incorrectFields = false;
     try {
       Map<String, dynamic>? result; //INICIALIZANDO A NULL
-      result = await usuarioLg.getUserLoggedIn(email, pass);
+      result = await usuarioLg.getUserLoggedIn(email, pass, idBranch);
 
       if (result != null) {
         //*******Asignando Valores*****/

@@ -7,6 +7,7 @@ import 'package:turnopro_apk/Routes/index.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:turnopro_apk/Views/common/loginFormPage.dart';
 import 'package:turnopro_apk/Views/coordinator/homeCoordinator/homeCoordinatorPage.dart';
 import 'package:turnopro_apk/Views/coordinator/profile/profileClient.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/clientsScheduled(NO%20UTILIZADA).dart';
@@ -102,6 +103,11 @@ class Myapp extends StatelessWidget {
       GetPage(
         name: '/LoginFormPage',
         page: () => LoginFormPage(),
+        binding: BindingsBuilder.put(() => LoginController()),
+      ),
+      GetPage(
+        name: '/LoginFormPage2',
+        page: () => LoginFormPage2(),
         binding: BindingsBuilder.put(() => LoginController()),
       ),
 

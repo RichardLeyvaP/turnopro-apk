@@ -14,6 +14,7 @@ class DependencyInjection {
     Get.put(ClientsCoordinatorController());
     Get.put(ClientsTechnicalController());
     Get.put(ServiceController());
+    Get.put(CoexistenceController());
 
     Get.put(PagesConfigController());
     Get.put(PagesConfigResponController());

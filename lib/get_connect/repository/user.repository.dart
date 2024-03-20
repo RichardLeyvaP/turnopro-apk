@@ -27,12 +27,37 @@ class UserRepository extends GetConnect {
     }
   }
 
-  Future getUserLoggedIn(String email, String password) async {
+  Future getUserLoggedBranch(String email, String password) async {
+    try {
+      var url =
+          '${Env.apiEndpoint}/login-phone-get-branch?email=$email&password=$password';
+
+      final response = await get(url);
+      print('devolviendo de url:$url');
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        //print('addOrderCartList response:$response');
+        final branchesLog = response.body['branches'];
+        print(
+            'devolviendo de getBranchLoggedIn(String email, String password) sii');
+        print(branchesLog);
+        return branchesLog;
+      } else {
+        print(
+            'devolviendo de getBranchLoggedIn(String email, String password) NOO- ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('5Error estoy en el catch (e) y este es el error:$e');
+    }
+  }
+
+  Future getUserLoggedIn(String email, String password, int idBranch) async {
     try {
       var url = '${Env.apiEndpoint}/login';
 
       final Map<String, dynamic> body = {
-        'branch_id': 1, //todo este valor esta estatico
+        'branch_id': idBranch, //todo este valor esta estatico
         'email': email,
         'password': password,
       };

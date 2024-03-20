@@ -7,7 +7,7 @@ export 'package:turnopro_apk/Views/notificationsPage.dart';
 export 'package:turnopro_apk/Views/common/splash/splash.dart';
 export 'package:turnopro_apk/Views/common/Code-Qr/CodeQrPage.dart';
 //export 'package:turnopro_apk/Views/homeResponsiblePage.dart';
-export 'package:turnopro_apk/Views/common/loginFormPage.dart';
+export 'package:turnopro_apk/Views/common/loginFormPage2.dart';
 export 'package:turnopro_apk/Views/common/loginNewPage.dart';
 export 'package:turnopro_apk/Views/common/auth_check.dart';
 export 'package:turnopro_apk/Views/professional/notificationsPage.dart';
