@@ -275,14 +275,14 @@ class _QRViewPageState extends State<QRViewPage> {
       // Procesar el código QR
       bool qrProcessed = await loginController.qrReading(result!.code);
 
-      if (qrProcessed) {
+      if (qrProcessed == true) {
         subscription?.cancel();
-        print('probando codQ:$qrProcessed');
+        print('probando codQ SI TODO COINCIDIO:$qrProcessed');
         Get.offAllNamed('/LoadingPage');
 
         // Aquí puedes realizar cualquier acción adicional después de procesar el código QR
       } else {
-        print('probando codQ:$qrProcessed');
+        print('probando codQ NO COINCIDE:$qrProcessed');
         Get.offAllNamed('/LoadingPage');
       }
     });

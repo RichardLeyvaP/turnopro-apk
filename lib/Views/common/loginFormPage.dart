@@ -252,15 +252,10 @@ class LoginFormPage extends StatelessWidget {
                                       }
                                     },
                                     child: _.isLoading
-                                        ? Container(
-                                            width: 22,
-                                            height: 22,
-                                            child:
-                                                const CircularProgressIndicator(
-                                              color: Color.fromARGB(
-                                                  255, 241, 130, 84),
-                                              strokeWidth: 4,
-                                            ),
+                                        ? const CircularProgressIndicator(
+                                            color: Color.fromARGB(
+                                                255, 241, 130, 84),
+                                            strokeWidth: 4,
                                           )
                                         : Text(
                                             'ENTRAR',

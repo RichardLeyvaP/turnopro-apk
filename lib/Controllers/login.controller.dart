@@ -57,6 +57,8 @@ class LoginController extends GetxController {
   int? branchNameLoggedIn;
   int branchTecnicLoggedIn = 0;
   int? usserPermissionQr;
+  int usserMssQr = -99;
+
   //*************************/
   bool isLoading = true;
   String pagina = 'nothing';
@@ -152,31 +154,36 @@ class LoginController extends GetxController {
   int workplaceidQR = -99;
   List<int> placesQR = [];
 
+  setUsserMssQr(value) {
+    usserMssQr = value;
+    update();
+  }
+
   Future<bool> qrReading(String? qr) async {
     //todo falta poner un cargando
     print(
         'esto es lo que entre aqui a el controlador de lectura del QR${qr.toString()}');
     Map<String, dynamic> jsonMap = json.decode(qr.toString());
-    print('esto es lo que ......................Objeto JSON: $jsonMap');
+    // print('esto es lo que ......................Objeto JSON: $jsonMap');
 
     userNameQR = jsonMap['userName'];
-    print('esto es lo que-1');
+    // print('esto es lo que-1');
     emailQR = jsonMap['email'];
-    print('esto es lo que-2');
+    // print('esto es lo que-2');
     horaQR = jsonMap['hora'];
-    print('esto es lo que-3');
-    print('esto es lo que-jsonMap[id]-${jsonMap['id']}');
+    // print('esto es lo que-3');
+    // print('esto es lo que-jsonMap[id]-${jsonMap['id']}');
     idQR = jsonMap['id'];
-    print('esto es lo que-4');
+    //  print('esto es lo que-4');
     branchIdQR = jsonMap['branch_id'];
-    print('esto es lo que-5');
+    //  print('esto es lo que-5');
     professionalsQR = int.parse(jsonMap['professional_id']);
-    print('esto es lo que-6');
+    // print('esto es lo que-6');
     workplaceidQR = int.parse(jsonMap['workplace_id']);
-    print('esto es lo que-7');
+    //  print('esto es lo que-7');
     List<dynamic> listaDynamic = jsonMap['places'];
     placesQR = listaDynamic.map((elemento) => int.parse(elemento)).toList();
-    print('esto es lo que-8');
+    // print('esto es lo que-8');
 
     //
     //
@@ -185,40 +192,13 @@ class LoginController extends GetxController {
 
     if (branchIdQR == branchIdLoggedIn && idQR == idUserLoggedIn) {
       usserPermissionQr = 1; //SE CREO CORRECTAMENTE EL QR
+      usserMssQr = 1; //SE CREO CORRECTAMENTE EL QR
       update();
-      // Get.snackbar(
-      //   '',
-      //   'Hola, $userName puede prestar servicios,hora de entrada: $hora',
-      //   colorText: const Color.fromARGB(255, 43, 44, 49),
-      //   titleText: const Text('Mensaje'),
-      //   duration: const Duration(seconds: 3),
-      //   showProgressIndicator: true,
-      //   progressIndicatorBackgroundColor:
-      //       const Color.fromARGB(255, 81, 93, 117),
-      //   progressIndicatorValueColor:
-      //       const AlwaysStoppedAnimation(Color.fromARGB(255, 241, 130, 84)),
-      //   overlayBlur: 3,
-      // );
-      // await Future.delayed(Duration(
-      //     seconds:
-      //         3)); //aqui espero 3 segundos que se visualize el mensaje del snabar y luego redirecciono al home
       //  Get.offAllNamed('/Professional');
       return true;
     } else {
-      /* Get.snackbar(
-        'Error',
-        '$userName la sucursal no coincide con la de la aplicación.',
-        colorText: const Color.fromARGB(255, 43, 44, 49),
-        titleText: const Text('Error'),
-        duration: const Duration(seconds: 3),
-        showProgressIndicator: true,
-        progressIndicatorBackgroundColor:
-            const Color.fromARGB(255, 81, 93, 117),
-        progressIndicatorValueColor:
-            const AlwaysStoppedAnimation(Color.fromARGB(255, 241, 130, 84)),
-        overlayBlur: 3,
-      );*/
-      usserPermissionQr = null; //SE CREO CORRECTAMENTE EL QR
+      usserPermissionQr = null; //NO SE CREO CORRECTAMENTE EL QR
+      usserMssQr = 0; //NO SE CREO CORRECTAMENTE EL QR
       update();
       // await Future.delayed(Duration(
       //     seconds:
@@ -402,6 +382,7 @@ class LoginController extends GetxController {
           print('reiniciar app mandando');
           Get.offAllNamed('/LoginFormPage');
         } else {
+          await clearSessionData();
           print('reiniciar app:$result');
           print(
               'NO CERRO SECION CORRECTAMENTE ELIMINANDO LOS DATOS DE SECCION');
