@@ -19,7 +19,7 @@ class HomePageTecnicoBody extends StatefulWidget {
 
 class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
-  AnimationController? _animationControllerInitial;
+  AnimationController? _animationControllerInitialT;
 
   AnimationController? _animationTechnicalController1;
 
@@ -45,13 +45,13 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     iniciarLlamadaCada10Segundos();
 
     //INICIALIZANDO CONTROLES DE LOS RELOJES
-    _animationControllerInitial = AnimationController(
+    _animationControllerInitialT = AnimationController(
       vsync: this,
       duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
     );
 
 // Inicia la animación
-    _animationControllerInitial!.addStatusListener((status) {
+    _animationControllerInitialT!.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
             0) {
@@ -71,8 +71,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
         }
 
         // La animación ha llegado al final, reiniciar
-        _animationControllerInitial!.reset();
-        _animationControllerInitial!.forward();
+        _animationControllerInitialT!.reset();
+        _animationControllerInitialT!.forward();
       }
     });
 
@@ -84,7 +84,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
 
   @override
   void dispose() {
-    _animationControllerInitial!.dispose();
+    _animationControllerInitialT!.dispose();
     _animationTechnicalController1!.dispose();
     // Asegúrate de cancelar el temporizador al eliminar el widget
     _timer?.cancel();
@@ -158,7 +158,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
         // String secondName = partsName.length > 1 ? partsName[1] : "";
       }
 
-      _animationControllerInitial!.forward();
+      _animationControllerInitialT!.forward();
 
       return Column(
         //Cart anaranjado grande inicial que tiene el cronometro
@@ -234,7 +234,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                         UniqueKey(),
                                         'Esperando...',
                                         controllerclient,
-                                        _animationControllerInitial!,
+                                        _animationControllerInitialT!,
                                       );
                                     } else {
                                       return const Center(
@@ -484,9 +484,9 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                           .codigoQrValid() ==
                                                       true) {
                                                     // detengo todos los timers que deben detenerse
-                                                    _animationControllerInitial!
+                                                    _animationControllerInitialT!
                                                         .stop();
-                                                    _animationControllerInitial!
+                                                    _animationControllerInitialT!
                                                         .reset();
 
                                                     _animationTechnicalController1!

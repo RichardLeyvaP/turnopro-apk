@@ -104,9 +104,15 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                             onChanged: (BranchModel? newValue) {
                               setState(() {
                                 controll.selectedBranch = newValue;
+                                print('result-newValue:${newValue}');
+
                                 if (newValue != null) {
-                                  print('${newValue.nameBranch}');
-                                  print('${newValue.branch_id}');
+                                  print(
+                                      'result-newValue-nameBranch:${newValue.nameBranch}');
+                                  print(
+                                      'result-newValue-branch_id:${newValue.branch_id}');
+                                  //  print('${newValue.nameBranch}');
+                                  //print('${newValue.branch_id}');
 
                                   //AQUI LLAMAR AL CONTROLADOR DEL LOGIN Y MANDARLE LA
                                   //Y MANDARLE EL USUSARIO Y
@@ -144,7 +150,7 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                               padding: const EdgeInsets.only(
                                   top: 2, left: 14, right: 14, bottom: 2),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
+                                borderRadius: BorderRadius.circular(4),
                                 border: Border.all(
                                   color: Color.fromARGB(255, 75, 24, 2),
                                 ),
@@ -186,48 +192,95 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                           height: 100,
                         ),
                         GetBuilder<LoginController>(builder: (contLog) {
-                          return ElevatedButton(
-                              style: ButtonStyle(
-                                padding: MaterialStateProperty.all<
-                                    EdgeInsetsGeometry>(
-                                  EdgeInsets.symmetric(
-                                      vertical: 20.0,
-                                      horizontal:
-                                          (MediaQuery.of(context).size.width *
-                                              0.38)), // Ajusta el padding
-                                ),
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        const Color.fromARGB(255, 43, 44, 49)),
-                                // Añadir más propiedades de estilo aquí
-                              ),
-                              onPressed: () async {
-                                if (branchIdLoggedIn != -99) {
-                                  await controllerLogin.loadingValue(true);
-                                  String email = controllerLogin.uss;
-                                  String password = controllerLogin.pass;
-
-                                  controllerLogin.loginGetIn(
-                                      email, password, branchIdLoggedIn);
-                                }
-                              },
-                              child: contLog.isLoading
-                                  ? Container(
-                                      width: 22,
-                                      height: 22,
-                                      child: const CircularProgressIndicator(
-                                        color:
-                                            Color.fromARGB(255, 241, 130, 84),
-                                        strokeWidth: 4,
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              //CANCELAR
+                              Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: ElevatedButton(
+                                    style: ButtonStyle(
+                                      padding: MaterialStateProperty.all<
+                                          EdgeInsetsGeometry>(
+                                        EdgeInsets.symmetric(
+                                            vertical: 12.0,
+                                            horizontal: (MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.12)), // Ajusta el padding
                                       ),
-                                    )
-                                  : const Text(
-                                      'ENTRAR',
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              const Color.fromARGB(
+                                                  255, 43, 44, 49)),
+                                      // Añadir más propiedades de estilo aquí
+                                    ),
+                                    onPressed: () async {
+                                      controll.branchProfessional.clear();
+                                      controll.selectedBranch = null;
+                                      Get.offAllNamed('/LoginFormPage');
+                                    },
+                                    child: const Text(
+                                      'CANCELAR',
                                       style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.white,
                                           fontWeight: FontWeight.w800),
-                                    ));
+                                    )),
+                              ),
+                              //ACEPTAR
+                              Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: ElevatedButton(
+                                    style: ButtonStyle(
+                                      padding: MaterialStateProperty.all<
+                                          EdgeInsetsGeometry>(
+                                        EdgeInsets.symmetric(
+                                            vertical: 12.0,
+                                            horizontal: (MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.12)), // Ajusta el padding
+                                      ),
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              const Color.fromARGB(
+                                                  255, 43, 44, 49)),
+                                      // Añadir más propiedades de estilo aquí
+                                    ),
+                                    onPressed: () async {
+                                      if (branchIdLoggedIn != -99) {
+                                        await controllerLogin
+                                            .loadingValue(true);
+                                        String email = controllerLogin.uss;
+                                        String password = controllerLogin.pass;
+                                        controll.branchProfessional = [];
+                                        controll.selectedBranch = null;
+                                        controllerLogin.loginGetIn(
+                                            email, password, branchIdLoggedIn);
+                                      }
+                                    },
+                                    child: contLog.isLoading
+                                        ? Container(
+                                            width: 22,
+                                            height: 26,
+                                            child:
+                                                const CircularProgressIndicator(
+                                              color: Color.fromARGB(
+                                                  255, 241, 130, 84),
+                                              strokeWidth: 4,
+                                            ),
+                                          )
+                                        : Text(
+                                            ' ENTRAR',
+                                            style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w800),
+                                          )),
+                              ),
+                            ],
+                          );
                         }),
                       ],
                     ),

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
+import 'package:turnopro_apk/Views/common/Code-Qr/loadingPage.dart';
 import 'package:turnopro_apk/Views/common/auth_check.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 // ignore: depend_on_referenced_packages
@@ -75,6 +76,10 @@ class Myapp extends StatelessWidget {
         name: '/HomeTecnico',
         page: () => const HomePagesTecnico(),
         binding: BindingsBuilder.put(() => LoginController()),
+      ),
+      GetPage(
+        name: '/LoadingPage',
+        page: () => LoadingPage(),
       ),
       GetPage(
         name: '/HomeCordinador', //todo cordinador

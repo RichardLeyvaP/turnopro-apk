@@ -24,7 +24,6 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
   final ClientsScheduledController clientController =
       Get.find<ClientsScheduledController>();
   final NotificationController notiCont = Get.find<NotificationController>();
-  int carr = 199;
 
   @override
   void initState() {
@@ -49,13 +48,16 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
     if (state == AppLifecycleState.paused) {
       clientController.setCloseIesperado(true);
       // La aplicación se está pausando (puede ir a segundo plano)
-      clientController.getSegundoPlano(false);
+      loginController.getSegundoPlano(0);
+      print('..segundoPlano....${clientController.timeClientsActAttended1}');
       print('La aplicación se está pausando (yendo a segundo plano)');
     } else if (state == AppLifecycleState.resumed) {
       // La aplicación se cierra completamente
       print('La aplicación se está Reaunudandose nuevamente');
+      print(
+          '..segundoPlano llegando....${clientController.timeClientsActAttended1}');
       clientController.setCloseIesperado(false);
-      clientController.getSegundoPlano(true);
+      loginController.getSegundoPlano(3); //es que regresó
       // Agrega tu lógica para guardar en la base de datos aquí.
     } else if (state == AppLifecycleState.detached) {
       // La aplicación se cierra completamente

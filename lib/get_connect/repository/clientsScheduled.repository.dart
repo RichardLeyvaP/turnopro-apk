@@ -76,8 +76,11 @@ class ClientsScheduledRepository extends GetConnect {
 
     var url =
         '${Env.apiEndpoint}/cola_branch_professional?professional_id=$idProfessional&branch_id=$idBranch';
+    print('a.......... getClientsScheduledList:url:$url');
 
-    final response = await get(url);
+    final response = await get(url).timeout(
+        Duration(seconds: 15)); // Aumenta el tiempo de espera a 30 segundos
+
     //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
     if (response.statusCode == null) {
       print('response.statusCode:${response.statusCode}');
@@ -131,6 +134,33 @@ class ClientsScheduledRepository extends GetConnect {
             print('clientes asistiendo client:${client}');
           }
         }
+
+        /* if( (addProduct == true && segundoPlano == true))
+        {
+          if(carrosAdd)//solo los carros que se le adicionaron servicios
+          {
+            if (client.detached == 1) && (carrosAdd == client.clock)) {
+            //creo nuevo cliente
+            print(
+                'clientes asistiendo entre a if (client.detached == 1) {//creo nuevo cliente');
+            Map newValue = {
+              "reservation_id": client.reservation_id,
+              //"updated_at": convertDateTimeToMinutes(client.updated_at!),
+              "updated_at": client.updated_at!,
+              "clock": client.clock!,
+              "timeClock": client.timeClock! * 60, //convirtiendolo en minutos
+              "client": client,
+            };
+            attendingClientList.add(newValue);
+            print(
+                'clientes asistiendo client.reservation_id:${client.reservation_id}');
+            print('clientes asistiendo client.clock!:${client.clock!}');
+            print('clientes asistiendo timeClock:${client.timeClock! * 60}');
+            print('clientes asistiendo client:${client}');
+          }
+
+          }
+        }*/
 
         clientList.add(client);
         //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
@@ -289,6 +319,10 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   Future<bool> setTimeClock(reservationId, timeClock, detached, clock) async {
+    print('EL TIEMPO ACTUAL reservationId->$reservationId');
+    print('EL TIEMPO ACTUAL timeClock->$timeClock');
+    print('EL TIEMPO ACTUAL detached->$detached');
+    print('EL TIEMPO ACTUAL clock->$clock');
     var url =
         '${Env.apiEndpoint}/set_timeClock?reservation_id=$reservationId&timeClock=$timeClock&detached=$detached&clock=$clock';
 

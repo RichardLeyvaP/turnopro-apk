@@ -65,7 +65,7 @@ class CoexistenceRepository extends GetConnect {
     try {
       var url = '${Env.apiEndpoint}/branch_professionals?branch_id=$idBranch';
 
-      final response = await get(url);
+      final response = await get(url).timeout(Duration(seconds: 10));
       if (response.statusCode == 200) {
         final professionals = response.body['branches'];
         for (int i = 0; i < professionals.length; i++) {
@@ -110,7 +110,7 @@ class CoexistenceRepository extends GetConnect {
       var url =
           '${Env.apiEndpoint}/login-phone-get-branch?email=$email&password=$password';
 
-      final response = await get(url);
+      final response = await get(url).timeout(Duration(seconds: 10));
       if (response.statusCode == 200) {
         final barnchP = response.body['branches'];
         for (int i = 0; i < barnchP.length; i++) {

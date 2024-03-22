@@ -22,6 +22,8 @@ class LoginFormPage extends StatelessWidget {
     //todo IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // _passController.text = '';
+      // _usserController.text = '';
       // Se ejecutará después de que se haya construido el widget
       print('que tipo de saludo dar dependiendo de la hora');
       loginController.setCodigoQrValid(null);
@@ -260,7 +262,7 @@ class LoginFormPage extends StatelessWidget {
                                               strokeWidth: 4,
                                             ),
                                           )
-                                        : const Text(
+                                        : Text(
                                             'ENTRAR',
                                             style: TextStyle(
                                                 fontSize: 12,

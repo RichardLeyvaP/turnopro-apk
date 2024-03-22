@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, non_constant_identifier_names, curly_braces_in_flow_control_structures
 
 import 'dart:convert';
 import 'dart:ui';
@@ -8,6 +8,7 @@ import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/env.dart';
 import 'package:turnopro_apk/get_connect/repository/user.repository.dart';
 
 class LoginController extends GetxController {
@@ -26,6 +27,15 @@ class LoginController extends GetxController {
 
   void setIsLoadingFor(value) {
     setIsLoading = value;
+    update();
+  }
+
+  int segundoPlano = 1; //es que regreso..esta bien
+  void getSegundoPlano(int value) {
+    //si segundo plano es true es que regreso del segundo plano
+    segundoPlano = value;
+    print('llegando del segundo plano segundoPlano:$segundoPlano');
+
     update();
   }
 
@@ -133,26 +143,91 @@ class LoginController extends GetxController {
     print('Alto de pantalla: ${screenSize.height}');
   }
 
-  Future<void> qrReading(String? qr) async {
-    //todo falta poner un cargando
-    print('entre aqui a el controlador de lectura del QR${qr.toString()}');
-    Map<String, dynamic> jsonMap = json.decode(qr.toString());
-    print('......................Objeto JSON: $jsonMap');
-    String userName = jsonMap['userName'];
-    String email = jsonMap['email'];
-    String hora = jsonMap['hora'];
-    int id = jsonMap['id'];
-    int branch_id = jsonMap['branch_id'];
-    //
-    //
-    //
-    print(userName);
-    print(email);
-    print(hora);
-    print(id);
-    print(branch_id);
+  String userNameQR = '';
+  String emailQR = '';
+  String horaQR = '';
+  int idQR = -99;
+  int branchIdQR = -99;
+  int professionalsQR = -99;
+  int workplaceidQR = -99;
+  List<int> placesQR = [];
 
-    bool resp = //(int idBranch, int professionalId)
+  Future<bool> qrReading(String? qr) async {
+    //todo falta poner un cargando
+    print(
+        'esto es lo que entre aqui a el controlador de lectura del QR${qr.toString()}');
+    Map<String, dynamic> jsonMap = json.decode(qr.toString());
+    print('esto es lo que ......................Objeto JSON: $jsonMap');
+
+    userNameQR = jsonMap['userName'];
+    print('esto es lo que-1');
+    emailQR = jsonMap['email'];
+    print('esto es lo que-2');
+    horaQR = jsonMap['hora'];
+    print('esto es lo que-3');
+    print('esto es lo que-jsonMap[id]-${jsonMap['id']}');
+    idQR = jsonMap['id'];
+    print('esto es lo que-4');
+    branchIdQR = jsonMap['branch_id'];
+    print('esto es lo que-5');
+    professionalsQR = int.parse(jsonMap['professional_id']);
+    print('esto es lo que-6');
+    workplaceidQR = int.parse(jsonMap['workplace_id']);
+    print('esto es lo que-7');
+    List<dynamic> listaDynamic = jsonMap['places'];
+    placesQR = listaDynamic.map((elemento) => int.parse(elemento)).toList();
+    print('esto es lo que-8');
+
+    //
+    //
+
+    //
+
+    if (branchIdQR == branchIdLoggedIn && idQR == idUserLoggedIn) {
+      usserPermissionQr = 1; //SE CREO CORRECTAMENTE EL QR
+      update();
+      // Get.snackbar(
+      //   '',
+      //   'Hola, $userName puede prestar servicios,hora de entrada: $hora',
+      //   colorText: const Color.fromARGB(255, 43, 44, 49),
+      //   titleText: const Text('Mensaje'),
+      //   duration: const Duration(seconds: 3),
+      //   showProgressIndicator: true,
+      //   progressIndicatorBackgroundColor:
+      //       const Color.fromARGB(255, 81, 93, 117),
+      //   progressIndicatorValueColor:
+      //       const AlwaysStoppedAnimation(Color.fromARGB(255, 241, 130, 84)),
+      //   overlayBlur: 3,
+      // );
+      // await Future.delayed(Duration(
+      //     seconds:
+      //         3)); //aqui espero 3 segundos que se visualize el mensaje del snabar y luego redirecciono al home
+      //  Get.offAllNamed('/Professional');
+      return true;
+    } else {
+      /* Get.snackbar(
+        'Error',
+        '$userName la sucursal no coincide con la de la aplicación.',
+        colorText: const Color.fromARGB(255, 43, 44, 49),
+        titleText: const Text('Error'),
+        duration: const Duration(seconds: 3),
+        showProgressIndicator: true,
+        progressIndicatorBackgroundColor:
+            const Color.fromARGB(255, 81, 93, 117),
+        progressIndicatorValueColor:
+            const AlwaysStoppedAnimation(Color.fromARGB(255, 241, 130, 84)),
+        overlayBlur: 3,
+      );*/
+      usserPermissionQr = null; //SE CREO CORRECTAMENTE EL QR
+      update();
+      // await Future.delayed(Duration(
+      //     seconds:
+      //         3)); //aqui espero 3 segundos que se visualize el mensaje del snabar y luego redirecciono al home
+      // Get.offAllNamed('/Professional');
+      return false;
+    }
+
+    /*  bool resp = //(int idBranch, int professionalId)
         await saveDataQr(branchIdLoggedIn!, id);
     if (resp == true) {
       usserPermissionQr = 1; //SE CREO CORRECTAMENTE EL QR
@@ -177,7 +252,7 @@ class LoginController extends GetxController {
           seconds:
               3)); //aqui espero 3 segundos que se visualize el mensaje del snabar y luego redirecciono al home
       Get.offAllNamed('/Professional');
-    }
+    }*/
     //AQUI AUTORIZAR PRESTAR SERVICIOS
   }
 
@@ -239,7 +314,8 @@ class LoginController extends GetxController {
         print('ssssssssssss ${result['useTechnical']}');
         print('ssssssssssss branchIdLoggedIn${result['branchIdLoggedIn']}');
         //*******Asignando Valores*****/
-        print('branchIdLoggedIn***************************: $branchIdLoggedIn');
+        print(
+            'a.......... branchIdLoggedIn***************************: $branchIdLoggedIn');
         print('TOKEN***************************: $tokenUserLoggedIn');
         print('ID-Profess***************************: $idProfessionalLoggedIn');
 
@@ -320,9 +396,13 @@ class LoginController extends GetxController {
         Map<String, dynamic>? result; //INICIALIZANDO A NULL
         result = await usuarioLg.userLogout(token);
         if (result != null) {
+          print(
+              'SI CERRO SECION CORRECTAMENTE ELIMINANDO LOS DATOS DE SECCION');
           await clearSessionData();
+          print('reiniciar app mandando');
           Get.offAllNamed('/LoginFormPage');
         } else {
+          print('reiniciar app:$result');
           print(
               'NO CERRO SECION CORRECTAMENTE ELIMINANDO LOS DATOS DE SECCION');
           Get.offAllNamed('/LoginFormPage');
@@ -331,6 +411,20 @@ class LoginController extends GetxController {
         print('ERROR: -----> Revisar que el token esta llegando aqui vacio');
     } catch (e) {
       print('Erroor:$e');
+    }
+  }
+
+  Future<void> insertPuesto(professional_id, workplace_id, places) async {
+    try {
+      var result =
+          await usuarioLg.insertPuesto(professional_id, workplace_id, places);
+      if (result == 1) {
+        print('esto es lo que INSERTO EN EL PUESTO DE TRABAJO');
+      } else {
+        print('esto es lo que NOO INSERTO EN EL PUESTO DE TRABAJO');
+      }
+    } catch (e) {
+      print('esto es lo que Erroor:$e');
     }
   }
 

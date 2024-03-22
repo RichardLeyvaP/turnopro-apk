@@ -7,6 +7,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/Views/coordinator/coexistencePageCoordinator.dart';
 
 class HomePageBody extends StatefulWidget {
   const HomePageBody({super.key});
@@ -44,7 +45,7 @@ class _HomePageBodyState extends State<HomePageBody>
       duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
     );
     //clientsScheduledController.animationControllerInitial!.forward();
-
+    clientsScheduledController.animationControllerInitial!.forward();
 // Inicia la animación
     clientsScheduledController.animationControllerInitial!
         .addStatusListener((status) {
@@ -530,26 +531,43 @@ class _HomePageBodyState extends State<HomePageBody>
       ];
 
       activeClock() {
+        print('La aplicación se activeClock() {--');
         for (var i = 0; i < clientsScheduledController.item.length; i++) {
           if (clientsScheduledController.item[i] == 0) {
             animationCont[0]!.duration =
                 Duration(seconds: controllerclient.timeClientsAttended1!);
             animationCont[0]!.forward();
+            print(
+                'La aplicación se activeClock() {-- ${controllerclient.timeClientsAttended1!}');
           } else if (clientsScheduledController.item[i] == 1) {
             animationCont[1]!.duration =
                 Duration(seconds: controllerclient.timeClientsAttended2!);
             animationCont[1]!.forward();
+            print(
+                'La aplicación se activeClock() {-- ${controllerclient.timeClientsAttended2!}');
           } else if (clientsScheduledController.item[i] == 2) {
             animationCont[2]!.duration =
                 Duration(seconds: controllerclient.timeClientsAttended3!);
             animationCont[2]!.forward();
+            print(
+                'La aplicación se activeClock() {-- ${controllerclient.timeClientsAttended3!}');
           } else if (clientsScheduledController.item[i] == 3) {
             animationCont[3]!.duration =
                 Duration(seconds: controllerclient.timeClientsAttended4!);
             animationCont[3]!.forward();
+            print(
+                'La aplicación se activeClock() {-- ${controllerclient.timeClientsAttended4!}');
           }
         }
       }
+
+      /*   if (loginController.segundoPlano == 3) {
+        print(
+            '..segundoPlano siii activando los relojes animationCont[0]!.duration : ${animationCont[0]!.duration}');
+        print('..segundoPlano siii activando los relojes');
+        animationCont[0]!.duration =
+            Duration(seconds: controllerclient.timeClientsAttended1!);
+      }*/
 
       if (controllerclient.closeIesperado == true) {
         print('Hubo un cierre inesperado y se estan activando los relojes');
@@ -644,6 +662,11 @@ class _HomePageBodyState extends State<HomePageBody>
       //todo IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         //aqui solo debe entrar cuando o se agregan servicios o cuando se eliminan
+
+        if (loginController.segundoPlano == 3) {
+          print('..segundoPlano siii APAGANDO LLAMADA');
+          loginController.getSegundoPlano(1);
+        }
         if (controllerclient.activeModifyTime == true) {
           controllerclient.setActiveModifyTime(false);
           await clientsScheduledController.upadateVariablesValueTimers();
@@ -651,7 +674,7 @@ class _HomePageBodyState extends State<HomePageBody>
               'clientes asistiendo  inserto cada cierto tiempo en la db los nuevos valores y puso a FALSE a activeModifyTime');
         }
         print(
-            'valor de variable controllerclient.segundoPlano = ${controllerclient.segundoPlano}');
+            'valor de variable controllerclient.segundoPlano = ${loginController.segundoPlano}');
 
         if (loginController.ejecutadoEvent == false) {
           // Se ejecutará después de que se haya construido el widget
@@ -838,15 +861,27 @@ class _HomePageBodyState extends State<HomePageBody>
                   color: const Color.fromARGB(255, 231, 232, 234),
                   child: Column(
                     children: [
-                      const Row(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             'Dashboard',
                             style: TextStyle(
-                                color: const Color.fromARGB(255, 43, 44, 49),
+                                color: Color.fromARGB(255, 43, 44, 49),
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700),
                           ),
+                          controllerLogin.setIsLoading == true
+                              ? const SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    color: Color.fromARGB(255, 241, 130, 84),
+                                    strokeWidth: 3,
+                                  ),
+                                )
+                              : Text(''),
+                          Text('                        '),
                         ],
                       ),
                       Column(
@@ -907,7 +942,10 @@ class _HomePageBodyState extends State<HomePageBody>
                                     Icons.bar_chart),
                               ),
                               InkWell(
-                                onTap: () {
+                                onTap: () async {
+                                  controllerLogin.setIsLoadingFor(true);
+                                  await coexistenceController
+                                      .fetchCoexistenceList();
                                   pagesConfigC.onTabTapped(
                                       4); //index = 4 -> /CoexistencePage
                                 },

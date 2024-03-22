@@ -128,7 +128,7 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                           if (controllerLogin.codigoQrValid() ==
                                               true) {
                                             if (!_.selectService.contains(
-                                                    _.services[index]) ||
+                                                    _.services[index]) &&
                                                 !(controllerShoppingCart
                                                     .idServiceCart
                                                     .contains(_.services[index]

@@ -54,13 +54,16 @@ class UserRepository extends GetConnect {
 
   Future getUserLoggedIn(String email, String password, int idBranch) async {
     try {
-      var url = '${Env.apiEndpoint}/login';
+      var url = '${Env.apiEndpoint}/login-phone';
 
       final Map<String, dynamic> body = {
-        'branch_id': idBranch, //todo este valor esta estatico
+        'branch_id': idBranch,
         'email': email,
         'password': password,
       };
+
+      print('a..........$url');
+      print('a..........$body');
       final response = await post(url, body);
       print(url);
       print(response.statusCode);
@@ -113,6 +116,30 @@ class UserRepository extends GetConnect {
     } catch (e) {
       print('Error:$e');
       return e;
+    }
+  }
+
+  // ignore: non_constant_identifier_names
+  Future<int> insertPuesto(professional_id, workplace_id, places) async {
+    try {
+      var url = '${Env.apiEndpoint}/professionalworkplace';
+
+      // Parámetros que deseas enviar en la solicitud POST
+      final Map<String, dynamic> body = {
+        'professional_id': professional_id,
+        'workplace_id': workplace_id,
+        'places': places,
+      };
+
+      // Realizar la solicitud POST
+      final response = await post(url, body);
+      if (response.statusCode == 200) {
+        return 1;
+      } else {
+        return -99;
+      }
+    } catch (e) {
+      return -999;
     }
   }
 

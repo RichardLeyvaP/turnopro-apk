@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
 
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -43,7 +44,7 @@ class _QRViewPageState extends State<QRViewPage> {
 //todo SIMULANDO QUE LEA EL CODIGO QR DE ENTRADA
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Se ejecutará después de que se haya construido el widget
-      loginController.setCodigoQrValid(1);
+      // loginController.setCodigoQrValid(1);
       // La animación ha llegado al final, reiniciar
       //todo solo si es barbero
       //  clientsScheduledController.animationControllerInitial!.reset();
@@ -243,7 +244,7 @@ class _QRViewPageState extends State<QRViewPage> {
     );
   }
 
-  void _onQRViewCreated(QRViewController controller) {
+  /* void _onQRViewCreated(QRViewController controller) {
     setState(() {
       this.controller = controller;
     });
@@ -254,6 +255,36 @@ class _QRViewPageState extends State<QRViewPage> {
             .code); //todo aqui mando al controlador la lectura del codigo
         // print('************ RESULTADO  ********** CodeQr qr:${result!.code}');
       });
+
+      
+    });
+  }*/
+
+  void _onQRViewCreated(QRViewController controller) {
+    setState(() {
+      this.controller = controller;
+    });
+
+    StreamSubscription? subscription;
+
+    subscription = controller.scannedDataStream.listen((scanData) async {
+      setState(() {
+        result = scanData;
+      });
+
+      // Procesar el código QR
+      bool qrProcessed = await loginController.qrReading(result!.code);
+
+      if (qrProcessed) {
+        subscription?.cancel();
+        print('probando codQ:$qrProcessed');
+        Get.offAllNamed('/LoadingPage');
+
+        // Aquí puedes realizar cualquier acción adicional después de procesar el código QR
+      } else {
+        print('probando codQ:$qrProcessed');
+        Get.offAllNamed('/LoadingPage');
+      }
     });
   }
 

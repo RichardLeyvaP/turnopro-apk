@@ -159,15 +159,6 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
-  bool segundoPlano = true; //es que regreso..esta bien
-  void getSegundoPlano(bool value) {
-    //si segundo plano es true es que regreso del segundo plano
-    segundoPlano = value;
-    print('llegando del segundo plano segundoPlano:$segundoPlano');
-
-    update();
-  }
-
   void setCloseIesperadoLogin(bool value) {
     closeIesperadoLogin = value;
     update();
@@ -934,7 +925,7 @@ class ClientsScheduledController extends GetxController {
           resultList['ConnectionIssues'] == true) {
         correctConnection = false;
         print(
-            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
+            'qwerc NOO mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor->${clientsScheduledList.length}');
       } else {
         print('con contador en 8 llamo la funcion3');
         correctConnection = true;
@@ -942,6 +933,9 @@ class ClientsScheduledController extends GetxController {
         clientsScheduledList =
             (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
         clientsScheduledListLength = clientsScheduledList.length;
+        print(
+            'qwerc SII mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor->${clientsScheduledList.length}');
+
         //
         //
         //  if (closeIesperado == true) //es que cerró inesperadamente
@@ -951,7 +945,7 @@ class ClientsScheduledController extends GetxController {
             //aqui es donde tiene que entrar solamente si se loguea
             if (controllerLogin.isLoggingIn == true) {
               print(
-                  'clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn}) { entre poque vine del login ');
+                  'EL TIEMPO clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn}) { entre poque vine del login ');
 
               logicaInesperada(attendingClientList);
               controllerLogin.setIsLoggingIn(false);
@@ -1070,6 +1064,12 @@ class ClientsScheduledController extends GetxController {
             // await setTimeClock(client!.reservation_id, 0, 0, 1);//todo comente a ver si ya lo hace bien
             // ... otras asignaciones para clock 1
             //  setTimeClock(client!.reservation_id, timeClientsAttended1, 1, 1);
+            print(
+                'clientes asistiendo hora timeClock***********timeClock*****:$timeClock');
+            print(
+                'clientes asistiendo hora timeClock*********diferenciaSegundos*******:$diferenciaSegundos');
+            print(
+                'clientes asistiendo hora timeClock*********timeClientsAttended1*******:$timeClientsAttended1');
           } else if (clock == 2) {
             print('clientes asistiendo entre a :$clock');
             // Asignar a variables específicas para clock 2
@@ -1082,6 +1082,8 @@ class ClientsScheduledController extends GetxController {
             // await setTimeClock(client!.reservation_id, 0, 0, 2);//todo comente a ver si ya lo hace bien
             // ... otras asignaciones para clock 2
             //  setTimeClock(client!.reservation_id, timeClientsAttended2, 1, 2);
+            print(
+                'clientes asistiendo hora timeClock*******************:$timeClientsAttended2');
           } else if (clock == 3) {
             print('clientes asistiendo entre a :$clock');
             // Asignar a variables específicas para clock 3
@@ -1095,6 +1097,8 @@ class ClientsScheduledController extends GetxController {
 
             // ... otras asignaciones para clock 3
             // setTimeClock(client!.reservation_id, timeClientsAttended3, 1, 3);
+            print(
+                'clientes asistiendo hora timeClock****************:$timeClientsAttended3');
           } else if (clock == 4) {
             print('clientes asistiendo entre a :$clock');
             // Asignar a variables específicas para clock 3
@@ -1108,6 +1112,8 @@ class ClientsScheduledController extends GetxController {
 
             // ... otras asignaciones para clock 3
             //  setTimeClock(client!.reservation_id, timeClientsAttended4, 1, 4);
+            print(
+                'clientes asistiendo hora timeClock*****************:$timeClientsAttended4');
           }
           // Puedes agregar más condiciones según sea necesario para otros valores de clock
         } //cierre for (var map in attendingClientList)

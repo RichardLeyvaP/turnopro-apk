@@ -29,22 +29,22 @@ class CoexistenceController extends GetxController {
     final StatisticController controllerStad = Get.find<StatisticController>();
     final LoginController controllerLogin = Get.find<LoginController>();
     if (controllerLogin.chargeUserLoggedIn == "Barbero") {
-      print('llamando _fetchCoexistenceList(); porque soy Barbero');
-      _fetchCoexistenceList();
+      print('llamando fetchCoexistenceList(); porque soy Barbero');
+      fetchCoexistenceList();
     }
     if (controllerLogin.chargeUserLoggedIn == "Tecnico") {
-      print('llamando _fetchCoexistenceList(); porque soy Tecnico');
-      _fetchCoexistenceList();
+      print('llamando fetchCoexistenceList(); porque soy Tecnico');
+      fetchCoexistenceList();
     }
 
     //todo esto solo cargarlo cuando sea un Responsable
     if (controllerLogin.chargeUserLoggedIn == "Encargado") {
-      print('llamando _fetchCoexistenceList(); porque soy Encargado');
+      print('llamando fetchCoexistenceList(); porque soy Encargado');
       fetchBranchProfessionals();
     }
 
     if (controllerLogin.chargeUserLoggedIn == "Cordinador") {
-      print('llamando _fetchCoexistenceList(); porque soy Cordinador');
+      print('llamando fetchCoexistenceList(); porque soy Cordinador');
       fetchBranchProfessionals();
     }
     //esto CARGAR este metodo si es RESPONSABLE
@@ -69,7 +69,7 @@ class CoexistenceController extends GetxController {
     return coexistence;
   }
 
-  Future<void> _fetchCoexistenceList() async {
+  Future<void> fetchCoexistenceList() async {
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
     int? idBranch = controllerLogin.branchIdLoggedIn;
@@ -77,7 +77,9 @@ class CoexistenceController extends GetxController {
     print(coexistence.length);
     coexistenceListLength = coexistence.length;
     print('a15627 coexistenceListLength:${coexistenceListLength}');
+
     update();
+    controllerLogin.setIsLoadingFor(false);
   }
 
   Future<void> specificCoexistenceList(idProfessional) async {
@@ -115,7 +117,7 @@ class CoexistenceController extends GetxController {
     branchProfessionalListLength = branchProfessional.length;
     if (branchProfessionalListLength > 0) {
       controllerLogin.loadingValue(false);
-      Get.offAllNamed('/LoginFormPage2');
+      Get.toNamed('/LoginFormPage2');
     } else {
       print(
           'ya tengo la cola de la api es estaa Tipos de dato No hay sucursales');

@@ -26,7 +26,12 @@ class ModalHelper {
     } else {
       sizeExpandedService = [224, 280, 336, 392, 448];
     }
+    //loginController.setIsLoadingFor(false);
+    print('espernado 2 segundos-1');
+    await Future.delayed(Duration(seconds: 2));
+    print('espernado 2 segundos-2');
     loginController.setIsLoadingFor(false);
+
     // Declarar un controlador fuera del método
     TextEditingController commentController = TextEditingController();
 
