@@ -31,6 +31,7 @@ class ModalHelper {
     await Future.delayed(Duration(seconds: 2));
     print('espernado 2 segundos-2');
     loginController.setIsLoadingFor(false);
+    loginController.setHandleButtonClickModal();
 
     // Declarar un controlador fuera del método
     TextEditingController commentController = TextEditingController();
@@ -188,15 +189,14 @@ class ModalHelper {
                                       ),
                                       onPressed: () async {
                                         //esto para saber que reloj hay que aumentarle el tiempo si escoje mas servicios
-                                        await controllClient
-                                            .watchModifyTime(reservationId);
-                                        servControll.clearSelectService();
+
                                         // Cierra el modal primero
                                         Navigator.pop(context);
                                         //luego llamo a la pagina de servicios y productos
                                         /*Get.toNamed(
                             '/servicesProductsPage',
                           );*/
+                                        //todo aqui quite las llamadas
                                         pageController.nextPage(
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.ease,

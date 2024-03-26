@@ -85,7 +85,7 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
           await controllerLogin.insertPuesto(controllerLogin.professionalsQR,
               controllerLogin.workplaceidQR, controllerLogin.placesQR);
           Get.offAllNamed('/HomeTecnico');
-        } else if (controllerLogin.chargeUserLoggedIn == "Cordinador") {
+        } else if (controllerLogin.chargeUserLoggedIn == "Coordinador") {
           Get.offAllNamed('/HomeCordinador');
         } else {
           Get.offAllNamed('/LoginFormPage');

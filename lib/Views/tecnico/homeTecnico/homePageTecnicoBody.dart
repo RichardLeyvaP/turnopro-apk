@@ -329,12 +329,20 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                   if (loginController
                                                           .codigoQrValid() ==
                                                       true) {
-                                                    controllerclient
-                                                        .acceptClientTechnical(
+                                                    int resulButton = 0;
+                                                    resulButton = loginController
+                                                        .handleButtonClickTec(
                                                             controllerclient
                                                                 .clientsNextTechnical!
-                                                                .reservation_id,
-                                                            3);
+                                                                .reservation_id);
+                                                    if (resulButton == 1) {
+                                                      controllerclient
+                                                          .acceptClientTechnical(
+                                                              controllerclient
+                                                                  .clientsNextTechnical!
+                                                                  .reservation_id,
+                                                              3);
+                                                    }
                                                   } else {
                                                     Get.snackbar(
                                                       'Mensaje',
@@ -483,40 +491,48 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                   if (loginController
                                                           .codigoQrValid() ==
                                                       true) {
-                                                    // detengo todos los timers que deben detenerse
-                                                    _animationControllerInitialT!
-                                                        .stop();
-                                                    _animationControllerInitialT!
-                                                        .reset();
+                                                    int resulButton = 0;
+                                                    resulButton = loginController
+                                                        .handleButtonClickTec(
+                                                            controllerclient
+                                                                .clientsNextTechnical!
+                                                                .reservation_id);
+                                                    if (resulButton == 1) {
+                                                      // detengo todos los timers que deben detenerse
+                                                      _animationControllerInitialT!
+                                                          .stop();
+                                                      _animationControllerInitialT!
+                                                          .reset();
 
-                                                    _animationTechnicalController1!
-                                                        .stop();
-                                                    _animationTechnicalController1!
-                                                        .reset();
-                                                    //
-                                                    //todo FALTA QUE SE MUESTRE EL RELOJ
-                                                    //
-                                                    _animationTechnicalController1!
-                                                            .duration =
-                                                        const Duration(
-                                                            seconds:
-                                                                300); //por ahora 5min
-                                                    /* Duration(
+                                                      _animationTechnicalController1!
+                                                          .stop();
+                                                      _animationTechnicalController1!
+                                                          .reset();
+                                                      //
+                                                      //todo FALTA QUE SE MUESTRE EL RELOJ
+                                                      //
+                                                      _animationTechnicalController1!
+                                                              .duration =
+                                                          const Duration(
+                                                              seconds:
+                                                                  300); //por ahora 5min
+                                                      /* Duration(
                                                           seconds: controllerclient
                                                               .convertDateSecons(
                                                                   controllerclient
                                                                       .clientsAttendedTechnical!
                                                                       .total_time));*/
-                                                    _animationTechnicalController1!
-                                                        .forward();
+                                                      _animationTechnicalController1!
+                                                          .forward();
 
-                                                    //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
-                                                    controllerclient
-                                                        .acceptClientTechnical(
-                                                            controllerclient
-                                                                .clientsNextTechnical!
-                                                                .reservation_id,
-                                                            5);
+                                                      //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
+                                                      controllerclient
+                                                          .acceptClientTechnical(
+                                                              controllerclient
+                                                                  .clientsNextTechnical!
+                                                                  .reservation_id,
+                                                              5);
+                                                    }
                                                   } else {
                                                     Get.snackbar(
                                                       'Mensaje',

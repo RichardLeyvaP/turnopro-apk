@@ -182,7 +182,13 @@ class UserRepository extends GetConnect {
       if (response.statusCode == 200) {
         final intValue = int.parse(response.body);
         print('este es el id del puesto333-return response:$intValue');
-        return intValue;
+        if (intValue == 0) {
+          print('este es el id del puesto333-return intValue11:$intValue');
+          return -99;
+        } else {
+          print('este es el id del puesto333-return intValue22:$intValue');
+          return intValue;
+        }
       } else {
         return -99;
       }

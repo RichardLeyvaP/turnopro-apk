@@ -51,7 +51,9 @@ class _HomePageBodyState extends State<HomePageBody>
         .addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
-            0) {
+                0 &&
+            loginController.usserPermissionQr == 1 &&
+            clientsScheduledController.clientsScheduledListLength > 0) {
           print(
               'inserto correctamente ********** .noncomplianceProfessional[]');
           //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
@@ -72,6 +74,9 @@ class _HomePageBodyState extends State<HomePageBody>
         // La animación ha llegado al final, reiniciar
         clientsScheduledController.animationControllerInitial!.reset();
         clientsScheduledController.animationControllerInitial!.forward();
+      } else {
+        print(
+            'inserto correctamente NO ENTRO ********** .noncomplianceProfessional[]');
       }
     });
 
@@ -376,14 +381,18 @@ class _HomePageBodyState extends State<HomePageBody>
         endingtime++;
 
         cont += 2;
-        if (clientsScheduledController.varClientsWaiting == true) {
+        if ((clientsScheduledController.varClientsWaiting == true) &&
+            (loginController.usserPermissionQr == 1)) {
+          print('esteeeeee se cumplio que puede atender ..aqui entrandoya');
           if (clientsScheduledController
-              .animationControllerInitial!.isAnimating) {
+                  .animationControllerInitial!.isAnimating &&
+              clientsScheduledController.cantClientWait !=
+                  clientsScheduledController.clientsScheduledListLength) {
             // La animación está activa (en progreso)
             print(
                 'varClientsWaiting es contClientsWaiting La animación está activa');
             if (clientsScheduledController.contClientsWaiting == 10) {
-              print('varClientsWaiting Mande la notificacion ya');
+              print('esteeeeee varClientsWaiting Mande la notificacion ya');
               //aqui llamar e insertar en las notificaciones
               notiController.storeNotification(
                   'Clientes en cola',
@@ -392,6 +401,8 @@ class _HomePageBodyState extends State<HomePageBody>
                   'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!');
               //para controlar que con este cliente solo le avise una vez
               clientsScheduledController.setContClientsWaiting(20);
+              clientsScheduledController.setcantClientWait(
+                  clientsScheduledController.clientsScheduledListLength);
             }
             if (clientsScheduledController.contClientsWaiting == 10) {
               print(
@@ -439,7 +450,7 @@ class _HomePageBodyState extends State<HomePageBody>
           notiController.fetchNotificationList(loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn);
         }
-        if (cont == 6 || cont == 8) {
+        if (cont == 6 || cont == 40) {
           notiController.fetchNotificationList(loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn);
 
@@ -668,10 +679,10 @@ class _HomePageBodyState extends State<HomePageBody>
           loginController.getSegundoPlano(1);
         }
         if (controllerclient.activeModifyTime == true) {
-          controllerclient.setActiveModifyTime(false);
           await clientsScheduledController.upadateVariablesValueTimers();
           print(
-              'clientes asistiendo  inserto cada cierto tiempo en la db los nuevos valores y puso a FALSE a activeModifyTime');
+              'esteeeeee clientes asistiendo  inserto cada cierto tiempo en la db los nuevos valores y puso a FALSE a activeModifyTime');
+          controllerclient.setActiveModifyTime(false);
         }
         print(
             'valor de variable controllerclient.segundoPlano = ${loginController.segundoPlano}');
@@ -1005,10 +1016,16 @@ class _HomePageBodyState extends State<HomePageBody>
                       child: IconButton(
                         onPressed: () {
                           if (loginController.codigoQrValid() == true) {
-                            controllerclient.acceptOrRejectClient(
+                            int resulButton = 0;
+                            resulButton = loginController.handleButtonClick(
                                 controllerclient
-                                    .clientsScheduledNext!.reservation_id,
-                                3);
+                                    .clientsScheduledNext!.reservation_id);
+                            if (resulButton == 1) {
+                              controllerclient.acceptOrRejectClient(
+                                  controllerclient
+                                      .clientsScheduledNext!.reservation_id,
+                                  3);
+                            }
                           } else {
                             Get.snackbar(
                               'Mensaje',
@@ -1144,59 +1161,65 @@ class _HomePageBodyState extends State<HomePageBody>
                         onPressed: () async {
                           //AQUI VEO SI YA ESCANEO EL CODIGO QR Y ESTA EN EL LOCAL
                           if (loginController.codigoQrValid() == true) {
-                            //aqui manda aceptar, es decir atender este cliente
-                            clientsScheduledController.clientsWaiting(false);
-                            // detengo el timer de 2 minutos
-                            clientsScheduledController
-                                .animationControllerInitial!
-                                .stop();
-                            clientsScheduledController
-                                .animationControllerInitial!
-                                .reset();
-                            // detengo todos los timers que deben detenerse
-                            for (int j = 0;
-                                j < controllerclient.itemDel.length;
-                                j++) {
-                              animationCont[controllerclient.itemDel[j]]!
-                                  .stop();
-                              animationCont[controllerclient.itemDel[j]]!
-                                  .reset();
-                            }
-                            await controllerclient.newClientAttended(
-                                controllerclient.clientsScheduledNext!,
-                                controllerclient.availability);
-
-                            //
-                            //
-                            //
-                            //HACE LAS VERIFICACIONES NECESARIAS PARA ACTIVAR LOS RELOJES QUE NECESITEN SER ACTIVADOS
-                            if (controllerclient.busyClock == 0) {
-                              animationCont[0]!.duration = Duration(
-                                  seconds:
-                                      controllerclient.timeClientsAttended1!);
-                              animationCont[0]!.forward();
-                            } else if (controllerclient.busyClock == 1) {
-                              animationCont[1]!.duration = Duration(
-                                  seconds:
-                                      controllerclient.timeClientsAttended2!);
-                              animationCont[1]!.forward();
-                            } else if (controllerclient.busyClock == 2) {
-                              animationCont[2]!.duration = Duration(
-                                  seconds:
-                                      controllerclient.timeClientsAttended3!);
-                              animationCont[2]!.forward();
-                            } else if (controllerclient.busyClock == 3) {
-                              animationCont[3]!.duration = Duration(
-                                  seconds:
-                                      controllerclient.timeClientsAttended4!);
-                              animationCont[3]!.forward();
-                            }
-
-                            //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
-                            await controllerclient.acceptOrRejectClient(
+                            int resulButton = 0;
+                            resulButton = loginController.handleButtonClick(
                                 controllerclient
-                                    .clientsScheduledNext!.reservation_id,
-                                1);
+                                    .clientsScheduledNext!.reservation_id);
+                            if (resulButton == 1) {
+                              //aqui manda aceptar, es decir atender este cliente
+                              clientsScheduledController.clientsWaiting(false);
+                              // detengo el timer de 2 minutos
+                              clientsScheduledController
+                                  .animationControllerInitial!
+                                  .stop();
+                              clientsScheduledController
+                                  .animationControllerInitial!
+                                  .reset();
+                              // detengo todos los timers que deben detenerse
+                              for (int j = 0;
+                                  j < controllerclient.itemDel.length;
+                                  j++) {
+                                animationCont[controllerclient.itemDel[j]]!
+                                    .stop();
+                                animationCont[controllerclient.itemDel[j]]!
+                                    .reset();
+                              }
+                              await controllerclient.newClientAttended(
+                                  controllerclient.clientsScheduledNext!,
+                                  controllerclient.availability);
+
+                              //
+                              //
+                              //
+                              //HACE LAS VERIFICACIONES NECESARIAS PARA ACTIVAR LOS RELOJES QUE NECESITEN SER ACTIVADOS
+                              if (controllerclient.busyClock == 0) {
+                                animationCont[0]!.duration = Duration(
+                                    seconds:
+                                        controllerclient.timeClientsAttended1!);
+                                animationCont[0]!.forward();
+                              } else if (controllerclient.busyClock == 1) {
+                                animationCont[1]!.duration = Duration(
+                                    seconds:
+                                        controllerclient.timeClientsAttended2!);
+                                animationCont[1]!.forward();
+                              } else if (controllerclient.busyClock == 2) {
+                                animationCont[2]!.duration = Duration(
+                                    seconds:
+                                        controllerclient.timeClientsAttended3!);
+                                animationCont[2]!.forward();
+                              } else if (controllerclient.busyClock == 3) {
+                                animationCont[3]!.duration = Duration(
+                                    seconds:
+                                        controllerclient.timeClientsAttended4!);
+                                animationCont[3]!.forward();
+                              }
+
+                              //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
+                              await controllerclient.acceptOrRejectClient(
+                                  controllerclient
+                                      .clientsScheduledNext!.reservation_id,
+                                  1);
+                            }
                           } else {
                             Get.snackbar(
                               'Mensaje',

@@ -43,8 +43,8 @@ class CoexistenceController extends GetxController {
       fetchBranchProfessionals();
     }
 
-    if (controllerLogin.chargeUserLoggedIn == "Cordinador") {
-      print('llamando fetchCoexistenceList(); porque soy Cordinador');
+    if (controllerLogin.chargeUserLoggedIn == "Coordinador") {
+      print('llamando fetchCoexistenceList(); porque soy Coordinador');
       fetchBranchProfessionals();
     }
     //esto CARGAR este metodo si es RESPONSABLE

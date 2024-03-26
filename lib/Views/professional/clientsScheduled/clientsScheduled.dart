@@ -275,100 +275,118 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                 ),
                                                 onTap: () async {
                                                   //VA A EJECUTARSE SI NO ESTA CON EL TECNICO
-
-                                                  loginController
-                                                      .setIsLoadingFor(true);
-
-                                                  if (controllerClient
-                                                          .clientsScheduledList[
-                                                              index]
-                                                          .attended !=
-                                                      4) {
-                                                    // aqui selecciono el cliente
-                                                    controllerClient
-                                                        .getselectCustomer(
-                                                            index,
-                                                            controllerClient
-                                                                .clientsScheduledList[
-                                                                    index]
-                                                                .car_id);
-                                                    //AQUI MANDO ID DE CARRO PAR ACARGAR EL CARRITO PARA LOS SERVICIO Y PRODUCTOS
-                                                    //Y SE ACTUALIZA LA VARIABLE GLOBAL carIdClienteSelect
-                                                    controllerClient
-                                                        .selectCarClient(
-                                                            controllerClient
-                                                                .clientsScheduledList[
-                                                                    index]
-                                                                .car_id);
-                                                    //AQUI MANDO EL ID DE RESERVACION Y ME DEVUELVE EL ESTADO DEL CLIENTE,
-                                                    //SI SE ESTA ATENDINEDO O NO , PARA ASI SABER CUANDO MOSTRAR LOS BOTONES DE ATENDIDO Y
-                                                    //SELECCIONAR SERVICIO Y PRODUCTOS
-                                                    controllerClient
-                                                        .returnClientStatus(
-                                                            controllerClient
-                                                                .clientsScheduledList[
-                                                                    index]
-                                                                .reservation_id);
-                                                    //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
-                                                    controllerClient
-                                                        .returnClientName(
-                                                            (controllerClient
-                                                                    .clientsScheduledList[
-                                                                        index]
-                                                                    .client_name)
-                                                                .toString());
-                                                    controllerClient.returnImageName(
-                                                        (controllerClient
-                                                                .clientsScheduledList[
-                                                                    index]
-                                                                .client_image)
-                                                            .toString());
-
-                                                    await controllerClient
-                                                        .searchForCustomerServices(
-                                                            controllerClient
-                                                                .clientsScheduledList[
-                                                                    index]
-                                                                .car_id)
-                                                        .then((_) {
-                                                      chopCont
-                                                          .loadDataInitiallyNecessary();
-                                                      String clientName =
+                                                  int resulButton = 0;
+                                                  resulButton = loginController
+                                                      .handleButtonClickModal(
                                                           controllerClient
                                                               .clientsScheduledList[
                                                                   index]
-                                                              .client_name;
-                                                      String urlImage =
-                                                          controllerClient
-                                                              .clientsScheduledList[
-                                                                  index]
-                                                              .client_image;
-                                                      int reservationId =
-                                                          controllerClient
-                                                              .clientsScheduledList[
-                                                                  index]
-                                                              .reservation_id;
-                                                      int carId = controllerClient
-                                                          .clientsScheduledList[
-                                                              index]
-                                                          .car_id;
-                                                      //   _mostrarBottomSheet(          context);
-                                                      //  showMyDialog(context);
+                                                              .reservation_id);
+                                                  if (resulButton == 1) {
+                                                    loginController
+                                                        .setIsLoadingFor(true);
 
-                                                      ModalHelper.showModal(
-                                                          pagesConfigC
-                                                              .pageController,
-                                                          context,
-                                                          clientName,
-                                                          reservationId,
-                                                          carId,
-                                                          urlImage);
-                                                      // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
+                                                    if (controllerClient
+                                                            .clientsScheduledList[
+                                                                index]
+                                                            .attended !=
+                                                        4) {
+                                                      // aqui selecciono el cliente
                                                       controllerClient
-                                                          .showingServiceClient(
-                                                              true);
-                                                    });
-                                                  }
+                                                          .getselectCustomer(
+                                                              index,
+                                                              controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .car_id);
+                                                      //AQUI MANDO ID DE CARRO PAR ACARGAR EL CARRITO PARA LOS SERVICIO Y PRODUCTOS
+                                                      //Y SE ACTUALIZA LA VARIABLE GLOBAL carIdClienteSelect
+                                                      controllerClient
+                                                          .selectCarClient(
+                                                              controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .car_id);
+                                                      //AQUI MANDO EL ID DE RESERVACION Y ME DEVUELVE EL ESTADO DEL CLIENTE,
+                                                      //SI SE ESTA ATENDINEDO O NO , PARA ASI SABER CUANDO MOSTRAR LOS BOTONES DE ATENDIDO Y
+                                                      //SELECCIONAR SERVICIO Y PRODUCTOS
+                                                      controllerClient
+                                                          .returnClientStatus(
+                                                              controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .reservation_id);
+                                                      //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
+                                                      controllerClient
+                                                          .returnClientName(
+                                                              (controllerClient
+                                                                      .clientsScheduledList[
+                                                                          index]
+                                                                      .client_name)
+                                                                  .toString());
+                                                      controllerClient.returnImageName(
+                                                          (controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .client_image)
+                                                              .toString());
+                                                      //todo  INICIO esto estaba en la pagina del modal al dar en Ver carrito
+                                                      await controllerClient
+                                                          .watchModifyTime(
+                                                              controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .reservation_id);
+                                                      servControll
+                                                          .clearSelectService();
+                                                      //todo FIN esto estaba en la pagina del modal al dar en Ver carrito
+
+                                                      await controllerClient
+                                                          .searchForCustomerServices(
+                                                              controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .car_id)
+                                                          .then((_) {
+                                                        chopCont
+                                                            .loadDataInitiallyNecessary();
+                                                        String clientName =
+                                                            controllerClient
+                                                                .clientsScheduledList[
+                                                                    index]
+                                                                .client_name;
+                                                        String urlImage =
+                                                            controllerClient
+                                                                .clientsScheduledList[
+                                                                    index]
+                                                                .client_image;
+                                                        int reservationId =
+                                                            controllerClient
+                                                                .clientsScheduledList[
+                                                                    index]
+                                                                .reservation_id;
+                                                        int carId = controllerClient
+                                                            .clientsScheduledList[
+                                                                index]
+                                                            .car_id;
+                                                        //   _mostrarBottomSheet(          context);
+                                                        //  showMyDialog(context);
+
+                                                        ModalHelper.showModal(
+                                                            pagesConfigC
+                                                                .pageController,
+                                                            context,
+                                                            clientName,
+                                                            reservationId,
+                                                            carId,
+                                                            urlImage);
+                                                        // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
+                                                        controllerClient
+                                                            .showingServiceClient(
+                                                                true);
+                                                      });
+                                                    }
+                                                  } //cierre del if de comprobacion que no lo llame vairas veces
                                                 },
                                                 title: Row(
                                                   mainAxisAlignment:
@@ -534,25 +552,57 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                   ),
                                                                 ],
                                                               )
-                                                            : const Row(
-                                                                //todo 999
-                                                                children: [
-                                                                  Opacity(
-                                                                    opacity: 1,
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .play_circle,
-                                                                      size: 60,
-                                                                      color: Color
-                                                                          .fromARGB(
+                                                            : controllerClient
+                                                                        .clientsScheduledList[
+                                                                            index]
+                                                                        .attended ==
+                                                                    3
+                                                                ? const Column(
+                                                                    children: [
+                                                                      Text(
+                                                                        'Esperando',
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                11,
+                                                                            fontWeight:
+                                                                                FontWeight.w600,
+                                                                            color: Colors.red),
+                                                                      ),
+                                                                      Text(
+                                                                          'confirmación de',
+                                                                          style: TextStyle(
+                                                                              fontSize: 11,
+                                                                              fontWeight: FontWeight.w600,
+                                                                              color: Colors.red)),
+                                                                      Text(
+                                                                          'Eliminación',
+                                                                          style: TextStyle(
+                                                                              fontSize: 11,
+                                                                              fontWeight: FontWeight.w600,
+                                                                              color: Colors.red)),
+                                                                    ],
+                                                                  )
+                                                                : const Row(
+                                                                    //todo 999
+                                                                    children: [
+                                                                      Opacity(
+                                                                        opacity:
+                                                                            1,
+                                                                        child:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .play_circle,
+                                                                          size:
+                                                                              60,
+                                                                          color: Color.fromARGB(
                                                                               85,
                                                                               83,
                                                                               82,
                                                                               82),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              )
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  )
                                                   ],
                                                 ),
                                                 //subtitle: Text(controllerClient.users[index].username.toString()),

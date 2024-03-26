@@ -104,6 +104,13 @@ class ClientsScheduledController extends GetxController {
   String? imagePath;
   XFile? pickedFile;
 
+  int cantClientWait = 0;
+
+  void setcantClientWait(value) {
+    cantClientWait = value;
+    update();
+  }
+
   void setImagePath(value) {
     imagePath = value;
 
@@ -232,7 +239,7 @@ class ClientsScheduledController extends GetxController {
   }
 
   upadateVariablesValueTimersSPlano() async {
-    saveData();
+//saveData();
     bool hasClient1 = clientsAttended1 != null;
     bool hasClient2 = clientsAttended2 != null;
     bool hasClient3 = clientsAttended3 != null;
@@ -258,7 +265,7 @@ class ClientsScheduledController extends GetxController {
 
   upadateVariablesValueTimers() async {
     print('entre de nuevo aqui -----');
-    saveData();
+    // saveData();
     bool hasClient1 = clientsAttended1 != null;
     bool hasClient2 = clientsAttended2 != null;
     bool hasClient3 = clientsAttended3 != null;
@@ -566,6 +573,8 @@ class ClientsScheduledController extends GetxController {
 
     //al darle true le estoy diciendo que verifique que en algun timer hay cambio de tiempo
     activeModifyTime = true;
+    print(
+        'aqui toma valor -void modifingTime(time)- activeModifyTime:$activeModifyTime');
     update();
   }
 
@@ -578,6 +587,8 @@ class ClientsScheduledController extends GetxController {
 
   void setActiveModifyTime(bool value) {
     activeModifyTime = value;
+    print(
+        'aqui toma valor -void setActiveModifyTime(bool value)- activeModifyTime:$activeModifyTime');
     update();
   }
 

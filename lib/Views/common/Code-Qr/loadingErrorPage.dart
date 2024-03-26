@@ -32,7 +32,7 @@ class _MyLoadingErrorPageState extends State<MyLoadingErrorPage> {
         Get.offAllNamed('/HomeResponsible');
       } else if (controllerLogin.chargeUserLoggedIn == "Tecnico") {
         Get.offAllNamed('/HomeTecnico');
-      } else if (controllerLogin.chargeUserLoggedIn == "Cordinador") {
+      } else if (controllerLogin.chargeUserLoggedIn == "Coordinador") {
         Get.offAllNamed('/HomeCordinador');
       } else {
         Get.offAllNamed('/LoginFormPage');

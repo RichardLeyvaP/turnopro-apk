@@ -298,6 +298,7 @@ class ClientsScheduledController extends GetxController {
 
     //al darle true le estoy diciendo que verifique que en algun timer hay cambio de tiempo
     activeModifyTime = true;
+
     update();
   }
 

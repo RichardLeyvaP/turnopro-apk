@@ -159,7 +159,7 @@ class PagesConfigController extends GetxController {
     print('index:$index');
 
     if (selectedIndex != index) {
-      /*  if (index == 1 && logController.chargeUserLoggedIn == 'Cordinador') {
+      /*  if (index == 1 && logController.chargeUserLoggedIn == 'Coordinador') {
         await showAppBar(false);
         await clientsScheduledController
             .clientsAttendBranch(logController.branchIdLoggedIn);

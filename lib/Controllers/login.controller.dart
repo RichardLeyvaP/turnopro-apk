@@ -74,6 +74,63 @@ class LoginController extends GetxController {
   double? androidInfoWidth;
   double? androidInfoHeight;
   int? androidInfoVersion;
+  List<int> pressedButtonIds = [];
+
+  int handleButtonClick(int buttonId) {
+    // Verificar si el ID del botón ya ha sido presionado
+    if (pressedButtonIds.contains(buttonId)) {
+      print('Botón $buttonId presionado return 0');
+      // Si el ID ya ha sido presionado, no hacer nada
+      return 0;
+    } else {
+      // Agregar el ID del botón a la lista de IDs presionados
+      pressedButtonIds.add(buttonId);
+      update();
+      // Aquí puedes poner el código que deseas ejecutar solo una vez
+      print('Botón $buttonId presionado return 1');
+      return 1;
+    }
+  }
+
+  List<int> pressedButtonIdsTec = [];
+  int handleButtonClickTec(int buttonId) {
+    // Verificar si el ID del botón ya ha sido presionado
+    if (pressedButtonIdsTec.contains(buttonId)) {
+      print('Botón $buttonId presionado return 0');
+      // Si el ID ya ha sido presionado, no hacer nada
+      return 0;
+    } else {
+      // Agregar el ID del botón a la lista de IDs presionados
+      pressedButtonIdsTec.add(buttonId);
+      update();
+      // Aquí puedes poner el código que deseas ejecutar solo una vez
+      print('Botón $buttonId presionado return 1');
+      return 1;
+    }
+  }
+
+  List<int> pressedButtonModal = [];
+  int handleButtonClickModal(int buttonId) {
+    // Verificar si el ID del botón ya ha sido presionado
+    if (pressedButtonModal.contains(buttonId)) {
+      print('Botón $buttonId presionado return 0');
+      // Si el ID ya ha sido presionado, no hacer nada
+      return 0;
+    } else {
+      // Agregar el ID del botón a la lista de IDs presionados
+      pressedButtonModal.add(buttonId);
+      update();
+      // Aquí puedes poner el código que deseas ejecutar solo una vez
+      print('Botón $buttonId presionado return 1');
+      return 1;
+    }
+  }
+
+  //esta la llamo en el modal para limpiar nuevamente la variable
+  void setHandleButtonClickModal() {
+    pressedButtonModal.clear();
+    update();
+  }
 
   void setMaintainClockStatus() {
     maintainClockStatus = true;
@@ -164,26 +221,28 @@ class LoginController extends GetxController {
     print(
         'esto es lo que entre aqui a el controlador de lectura del QR${qr.toString()}');
     Map<String, dynamic> jsonMap = json.decode(qr.toString());
-    // print('esto es lo que ......................Objeto JSON: $jsonMap');
+    print('esto es lo que ......................Objeto JSON: $jsonMap');
 
     userNameQR = jsonMap['userName'];
-    // print('esto es lo que-1');
+    print('esto es lo que-1');
     emailQR = jsonMap['email'];
-    // print('esto es lo que-2');
+    print('esto es lo que-2');
     horaQR = jsonMap['hora'];
-    // print('esto es lo que-3');
-    // print('esto es lo que-jsonMap[id]-${jsonMap['id']}');
+    print('esto es lo que-3');
+    print('esto es lo que-jsonMap[id]-${jsonMap['id']}');
     idQR = jsonMap['id'];
-    //  print('esto es lo que-4');
+    print('esto es lo que-4');
     branchIdQR = jsonMap['branch_id'];
-    //  print('esto es lo que-5');
+    print('esto es lo que-5');
     professionalsQR = int.parse(jsonMap['professional_id']);
-    // print('esto es lo que-6');
+    print('esto es lo que-6');
     workplaceidQR = int.parse(jsonMap['workplace_id']);
-    //  print('esto es lo que-7');
+    print('esto es lo que-7');
+    print('esto es lo : ${jsonMap['places']}');
+    print('esto es lo que-777');
     List<dynamic> listaDynamic = jsonMap['places'];
     placesQR = listaDynamic.map((elemento) => int.parse(elemento)).toList();
-    // print('esto es lo que-8');
+    print('esto es lo que-8');
 
     //
     //
@@ -342,8 +401,8 @@ class LoginController extends GetxController {
             loadingValue(false);
             update();
             Get.offAllNamed('/HomeTecnico');
-          } else if (chargeUserLoggedIn == "Cordinador") {
-            print('***************SOY Cordinador del local*************');
+          } else if (chargeUserLoggedIn == "Coordinador") {
+            print('***************SOY Coordinador del local*************');
             pagina = '/HomeCordinador';
             loadingValue(false);
             update();
@@ -439,7 +498,7 @@ class LoginController extends GetxController {
       print(
           'este es el id del puesto idProfes despue sde llamar al puesto:$idPuesto');
 
-      if (idPuesto != -99) {
+      if (idPuesto != -99 && idPuesto != 0) {
         print('EL PROFESIONAL SALIO DEL PUESTO CORRECTAMENTE');
         return idPuesto;
       } else {
@@ -463,6 +522,8 @@ class LoginController extends GetxController {
     branchIdLoggedIn = null;
     pagina = 'nothing';
     incorrectFields = false;
+    pressedButtonIds.clear();
+    pressedButtonIdsTec.clear();
     update();
   }
 

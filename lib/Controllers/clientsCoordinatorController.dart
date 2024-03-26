@@ -537,6 +537,8 @@ class ClientsCoordinatorController extends GetxController {
 
     //al darle true le estoy diciendo que verifique que en algun timer hay cambio de tiempo
     activeModifyTime = true;
+    print(
+        'aqui toma valor -void modifingTime(time)CORDINATOR- activeModifyTime:$activeModifyTime');
     update();
   }
 

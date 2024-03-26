@@ -61,7 +61,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     _timer = Timer.periodic(const Duration(seconds: 2), (Timer timer) async {
       print('hola entrando en 10 min;;');
       if (loginController.branchIdLoggedIn != null &&
-          loginController.chargeUserLoggedIn == "Cordinador") {
+          loginController.chargeUserLoggedIn == "Coordinador") {
         cont += 1;
         if (cont == 0) {
           //SOLO ESTRA UNA SOLA VEZ AL INICIO
