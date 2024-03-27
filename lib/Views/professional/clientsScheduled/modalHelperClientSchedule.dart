@@ -133,7 +133,7 @@ class ModalHelper {
                                     ),
                                     child: const Center(
                                       child: Text(
-                                        'FRECUENTE',
+                                        'CLIENTE',
                                         style: TextStyle(
                                           fontSize: 9,
                                           fontWeight: FontWeight.w600,

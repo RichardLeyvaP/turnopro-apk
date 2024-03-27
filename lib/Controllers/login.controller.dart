@@ -67,6 +67,7 @@ class LoginController extends GetxController {
   bool incorrectFields = false;
   String greeting = 'Buenos días ';
   bool isLoggingIn = false;
+  bool isLoggingInCharge = false;
 
   //******************* */
   //propiedades de telefone
@@ -139,6 +140,11 @@ class LoginController extends GetxController {
 
   void setIsLoggingIn(bool value) {
     isLoggingIn = value;
+    update();
+  }
+
+  void setLoggingInCharge(bool value) {
+    isLoggingInCharge = value;
     update();
   }
 
@@ -216,6 +222,16 @@ class LoginController extends GetxController {
     update();
   }
 
+  int parseWorkplaceId(dynamic value) {
+    if (value is String) {
+      return int.parse(value);
+    } else if (value is int) {
+      return value;
+    } else {
+      return -99;
+    }
+  }
+
   Future<bool> qrReading(String? qr) async {
     //todo falta poner un cargando
     print(
@@ -236,7 +252,7 @@ class LoginController extends GetxController {
     print('esto es lo que-5');
     professionalsQR = int.parse(jsonMap['professional_id']);
     print('esto es lo que-6');
-    workplaceidQR = int.parse(jsonMap['workplace_id']);
+    workplaceidQR = parseWorkplaceId(jsonMap['workplace_id']);
     print('esto es lo que-7');
     print('esto es lo : ${jsonMap['places']}');
     print('esto es lo que-777');
@@ -377,6 +393,7 @@ class LoginController extends GetxController {
             //aqui cargo la cola del barbero para poder tener en el home al siguiente de la cola inicialmente
             print('estoy aqui al cargar datos del controlador de client');
             setIsLoggingIn(true);
+            setLoggingInCharge(true);
             clientsScheduledController.setCloseIesperado(true);
             clientsScheduledController.setCloseIesperadoLogin(true);
             await clientsScheduledController.fetchClientsScheduled(

@@ -546,6 +546,37 @@ class _HomePageBodyState extends State<HomePageBody>
         for (var i = 0; i < clientsScheduledController.item.length; i++) {
           if (clientsScheduledController.item[i] == 0) {
             animationCont[0]!.duration =
+                Duration(seconds: animationCont[0]!.duration!.inSeconds);
+            animationCont[0]!.forward();
+            print(
+                'La aplicación se activeClock() {-- ${animationCont[0]!.duration!.inSeconds}');
+          } else if (clientsScheduledController.item[i] == 1) {
+            animationCont[1]!.duration =
+                Duration(seconds: animationCont[1]!.duration!.inSeconds);
+            animationCont[1]!.forward();
+            print(
+                'La aplicación se activeClock() {-- ${animationCont[1]!.duration!.inSeconds}');
+          } else if (clientsScheduledController.item[i] == 2) {
+            animationCont[2]!.duration =
+                Duration(seconds: animationCont[2]!.duration!.inSeconds);
+            animationCont[2]!.forward();
+            print(
+                'La aplicación se activeClock() {-- ${animationCont[2]!.duration!.inSeconds}');
+          } else if (clientsScheduledController.item[i] == 3) {
+            animationCont[3]!.duration =
+                Duration(seconds: animationCont[3]!.duration!.inSeconds);
+            animationCont[3]!.forward();
+            print(
+                'La aplicación se activeClock() {-- ${animationCont[3]!.duration!.inSeconds}');
+          }
+        }
+      }
+
+      activeClockLogin() {
+        print('La aplicación se activeClock() {--');
+        for (var i = 0; i < clientsScheduledController.item.length; i++) {
+          if (clientsScheduledController.item[i] == 0) {
+            animationCont[0]!.duration =
                 Duration(seconds: controllerclient.timeClientsAttended1!);
             animationCont[0]!.forward();
             print(
@@ -580,7 +611,13 @@ class _HomePageBodyState extends State<HomePageBody>
             Duration(seconds: controllerclient.timeClientsAttended1!);
       }*/
 
-      if (controllerclient.closeIesperado == true) {
+      if (loginController.isLoggingInCharge == true) {
+        //solo va a entar si viene del login
+        print('Hubo un cierre inesperado y se estan activando los relojes');
+        activeClockLogin();
+      }
+      if (controllerclient.closeIesperado == true &&
+          loginController.isLoggingInCharge == false) {
         print('Hubo un cierre inesperado y se estan activando los relojes');
         activeClock();
       }
@@ -700,6 +737,9 @@ class _HomePageBodyState extends State<HomePageBody>
             }
           } else {
             print('-*-*-*-**>>>> NOOO fui un sierre inesperado');
+          }
+          if (loginController.isLoggingInCharge == true) {
+            loginController.setLoggingInCharge(false);
           }
 
           controllerclient.setCloseIesperado(false);
