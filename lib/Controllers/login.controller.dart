@@ -246,11 +246,12 @@ class LoginController extends GetxController {
     horaQR = jsonMap['hora'];
     print('esto es lo que-3');
     print('esto es lo que-jsonMap[id]-${jsonMap['id']}');
-    idQR = jsonMap['id'];
+    idQR = parseWorkplaceId(jsonMap['id']);
     print('esto es lo que-4');
-    branchIdQR = jsonMap['branch_id'];
+    branchIdQR = parseWorkplaceId(jsonMap['branch_id']);
+    ;
     print('esto es lo que-5');
-    professionalsQR = int.parse(jsonMap['professional_id']);
+    professionalsQR = parseWorkplaceId(jsonMap['professional_id']);
     print('esto es lo que-6');
     workplaceidQR = parseWorkplaceId(jsonMap['workplace_id']);
     print('esto es lo que-7');

@@ -282,6 +282,7 @@ class _QRViewPageState extends State<QRViewPage> {
 
         // Aquí puedes realizar cualquier acción adicional después de procesar el código QR
       } else {
+        subscription?.cancel();
         print('probando codQ NO COINCIDE:$qrProcessed');
         Get.offAllNamed('/LoadingPage');
       }

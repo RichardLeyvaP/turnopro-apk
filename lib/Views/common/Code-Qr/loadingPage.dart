@@ -51,7 +51,7 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
             'Hola, ${controllerLogin.userNameQR} No coincide el código Qr con la Sucursal que entraste en la aplicación',
             colorText: const Color.fromARGB(255, 43, 44, 49),
             titleText: const Text('Error'),
-            duration: const Duration(seconds: 3),
+            duration: const Duration(seconds: 4),
             showProgressIndicator: true,
             progressIndicatorBackgroundColor:
                 const Color.fromARGB(255, 81, 93, 117),
@@ -66,30 +66,48 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
       Timer(Duration(seconds: 2), () async {
 //VERIFICAR QUE ESTE TODO BIEN
 
-        print(
-            'esto es lo que object-professionalsQR:${controllerLogin.professionalsQR}');
-        print('esto es lo que object-placesQR:${controllerLogin.placesQR}');
-        print(
-            'esto es lo que object-workplaceidQR:${controllerLogin.workplaceidQR}');
-
+        // print(
+        //     'esto es lo que object-professionalsQR:${controllerLogin.professionalsQR}');
+        // print('esto es lo que object-placesQR:${controllerLogin.placesQR}');
+        // print(
+        //     'esto es lo que object-workplaceidQR:${controllerLogin.workplaceidQR}');
+        // if (controllerLogin.usserMssQr == 1) {
         if (controllerLogin.chargeUserLoggedIn == "Barbero") {
           // Navegar a la nueva página
           //LLAMAR AL CONTROLADOR PARA INSERTARLO EN EL PUESTO DE TRABAJO
-          await controllerLogin.insertPuesto(controllerLogin.professionalsQR,
-              controllerLogin.workplaceidQR, 0);
+          if (controllerLogin.usserMssQr == 1) {
+            await controllerLogin.insertPuesto(controllerLogin.professionalsQR,
+                controllerLogin.workplaceidQR, 0);
+          }
           Get.offAllNamed('/Professional');
         } else if (controllerLogin.chargeUserLoggedIn == "Encargado") {
           Get.offAllNamed('/HomeResponsible');
         } else if (controllerLogin.chargeUserLoggedIn == "Tecnico") {
           //LLAMAR AL CONTROLADOR PARA INSERTARLO EN EL PUESTO DE TRABAJO
-          await controllerLogin.insertPuesto(controllerLogin.professionalsQR,
-              controllerLogin.workplaceidQR, controllerLogin.placesQR);
+          if (controllerLogin.usserMssQr == 1) {
+            await controllerLogin.insertPuesto(controllerLogin.professionalsQR,
+                controllerLogin.workplaceidQR, controllerLogin.placesQR);
+          }
           Get.offAllNamed('/HomeTecnico');
         } else if (controllerLogin.chargeUserLoggedIn == "Coordinador") {
           Get.offAllNamed('/HomeCordinador');
         } else {
           Get.offAllNamed('/LoginFormPage');
         }
+        // } else {
+        //   Get.offAllNamed('/LoginFormPage');
+        // }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
       });
     });
     //
