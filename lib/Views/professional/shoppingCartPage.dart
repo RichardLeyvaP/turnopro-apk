@@ -269,109 +269,96 @@ class ShoppingCartPage extends StatelessWidget {
                         fontWeight: FontWeight.w900),
                   )
                 : const Text(''),
-            controllerShoppingCart.productListLength != -99
-                ? controllerShoppingCart.productListLength > 0
-                    ? Expanded(
-                        flex:
-                            heightFlexBody, // 85% del espacio disponible para esta parte
+            controllerShoppingCart.productListLength > 0
+                ? Expanded(
+                    flex:
+                        heightFlexBody, // 85% del espacio disponible para esta parte
 
-                        child: ListView.builder(
-                            //todo builder
-                            itemCount: controllerShoppingCart.productListLength,
-                            itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.fromLTRB(
-                                      (MediaQuery.of(context).size.height *
-                                          0.013),
-                                      (MediaQuery.of(context).size.height *
-                                          0.006),
-                                      (MediaQuery.of(context).size.height *
-                                          0.013),
-                                      (MediaQuery.of(context).size.height *
-                                          0.006)),
-                                  child: FittedBox(
-                                    fit: BoxFit.contain,
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          height: (MediaQuery.of(context)
-                                                  .size
-                                                  .height *
+                    child: ListView.builder(
+                        //todo builder
+                        itemCount: controllerShoppingCart.productListLength,
+                        itemBuilder: (context, index) => Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                  (MediaQuery.of(context).size.height * 0.013),
+                                  (MediaQuery.of(context).size.height * 0.006),
+                                  (MediaQuery.of(context).size.height * 0.013),
+                                  (MediaQuery.of(context).size.height * 0.006)),
+                              child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height:
+                                          (MediaQuery.of(context).size.height *
                                               0.08),
-                                          width: (MediaQuery.of(context)
-                                                  .size
-                                                  .width *
+                                      width:
+                                          (MediaQuery.of(context).size.width *
                                               1),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(0.7),
-                                                spreadRadius: 1,
-                                                blurRadius: 5,
-                                                offset: const Offset(-5,
-                                                    5), // Ajusta los valores para personalizar la sombra
-                                              ),
-                                            ],
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(
-                                                        borderRadiusValue)),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.7),
+                                            spreadRadius: 1,
+                                            blurRadius: 5,
+                                            offset: const Offset(-5,
+                                                5), // Ajusta los valores para personalizar la sombra
                                           ),
-                                          child: ListTile(
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(12)),
-                                              ),
-                                              title: Row(
+                                        ],
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(borderRadiusValue)),
+                                      ),
+                                      child: ListTile(
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(12)),
+                                          ),
+                                          title: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
+                                                    CrossAxisAlignment.start,
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                    MainAxisAlignment.start,
                                                 children: [
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      const SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      SizedBox(
-                                                        width: MediaQuery.of(
-                                                                    context)
+                                                  const SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
                                                                 .size
                                                                 .width *
                                                             0.77,
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              controllerShoppingCart
-                                                                  .selectproduct[
-                                                                      index]
-                                                                  .name
-                                                                  .toString(),
-                                                              style:
-                                                                  const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w800,
-                                                              ),
-                                                            ),
-                                                            Text(
-                                                              controllerShoppingCart
-                                                                  .selectproduct[
-                                                                      index]
-                                                                  .sale_price
-                                                                  .toString(),
-                                                              style: const TextStyle(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          controllerShoppingCart
+                                                              .selectproduct[
+                                                                  index]
+                                                              .name
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w800,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          controllerShoppingCart
+                                                              .selectproduct[
+                                                                  index]
+                                                              .sale_price
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
                                                                   fontSize: 13,
                                                                   color: Color
                                                                       .fromARGB(
@@ -379,170 +366,153 @@ class ShoppingCartPage extends StatelessWidget {
                                                                           0,
                                                                           0,
                                                                           0)),
-                                                            ),
-                                                          ],
                                                         ),
-                                                      ),
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
-                                                  GetBuilder<
-                                                          ShoppingCartController>(
-                                                      builder: (_) {
-                                                    return InkWell(
-                                                      onTap: () {
-                                                        if (controllerLogin
-                                                                .codigoQrValid() ==
-                                                            true) {
-                                                          controllerShoppingCart
-                                                              .requestDelete(
-                                                                  controllerShoppingCart
-                                                                      .selectproduct[
-                                                                          index]
-                                                                      .id,
-                                                                  1);
-                                                        } else {
-                                                          Get.snackbar(
-                                                            'Mensaje',
-                                                            'Debe de escanear el código Qr de entrada',
-                                                            duration:
-                                                                const Duration(
-                                                                    milliseconds:
-                                                                        2500),
-                                                            backgroundColor:
-                                                                const Color
-                                                                        .fromARGB(
-                                                                    118,
-                                                                    255,
-                                                                    255,
-                                                                    255),
-                                                            showProgressIndicator:
-                                                                true,
-                                                            progressIndicatorBackgroundColor:
-                                                                const Color
-                                                                        .fromARGB(
-                                                                    255,
-                                                                    203,
-                                                                    205,
-                                                                    209),
-                                                            progressIndicatorValueColor:
-                                                                const AlwaysStoppedAnimation(
-                                                                    Color(
-                                                                        0xFFF18254)),
-                                                            overlayBlur: 3,
-                                                          );
-                                                        }
-                                                      },
-                                                      child: _.requestDeleteOrder
-                                                              .contains(
-                                                                  controllerShoppingCart
-                                                                      .selectproduct[
-                                                                          index]
-                                                                      .id)
-                                                          ? const Icon(
-                                                              Icons.delete,
-                                                              size: 35,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      105,
-                                                                      241,
-                                                                      130,
-                                                                      84),
-                                                            )
-                                                          : const Icon(
-                                                              Icons.delete,
-                                                              size: 35,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      241,
-                                                                      130,
-                                                                      84),
-                                                            ),
-                                                    );
-                                                  })
                                                 ],
-                                              )),
-                                        ),
-                                      ],
+                                              ),
+                                              GetBuilder<
+                                                      ShoppingCartController>(
+                                                  builder: (_) {
+                                                return InkWell(
+                                                  onTap: () {
+                                                    if (controllerLogin
+                                                            .codigoQrValid() ==
+                                                        true) {
+                                                      controllerShoppingCart
+                                                          .requestDelete(
+                                                              controllerShoppingCart
+                                                                  .selectproduct[
+                                                                      index]
+                                                                  .id,
+                                                              1);
+                                                    } else {
+                                                      Get.snackbar(
+                                                        'Mensaje',
+                                                        'Debe de escanear el código Qr de entrada',
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    2500),
+                                                        backgroundColor:
+                                                            const Color
+                                                                    .fromARGB(
+                                                                118,
+                                                                255,
+                                                                255,
+                                                                255),
+                                                        showProgressIndicator:
+                                                            true,
+                                                        progressIndicatorBackgroundColor:
+                                                            const Color
+                                                                    .fromARGB(
+                                                                255,
+                                                                203,
+                                                                205,
+                                                                209),
+                                                        progressIndicatorValueColor:
+                                                            const AlwaysStoppedAnimation(
+                                                                Color(
+                                                                    0xFFF18254)),
+                                                        overlayBlur: 3,
+                                                      );
+                                                    }
+                                                  },
+                                                  child: _.requestDeleteOrder
+                                                          .contains(
+                                                              controllerShoppingCart
+                                                                  .selectproduct[
+                                                                      index]
+                                                                  .id)
+                                                      ? const Icon(
+                                                          Icons.delete,
+                                                          size: 35,
+                                                          color: Color.fromARGB(
+                                                              105,
+                                                              241,
+                                                              130,
+                                                              84),
+                                                        )
+                                                      : const Icon(
+                                                          Icons.delete,
+                                                          size: 35,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              241,
+                                                              130,
+                                                              84),
+                                                        ),
+                                                );
+                                              })
+                                            ],
+                                          )),
                                     ),
-                                  ),
-                                )),
-                      )
-                    : const Text('')
-                : const Text(
-                    'Fallo su conexion a Internet,por favor revise su conexión.'),
+                                  ],
+                                ),
+                              ),
+                            )),
+                  )
+                : const Text(''),
             Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        '       ',
-                        style: TextStyle(
-                            fontSize:
-                                (MediaQuery.of(context).size.height * 0.02),
-                            fontWeight: FontWeight.w900),
+              padding: const EdgeInsets.only(
+                  left: 10.0, right: 10.0, top: 3.0, bottom: 3),
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Row(
+                  children: [
+                    Container(
+                      height: (MediaQuery.of(context).size.height * 0.065),
+                      width: (MediaQuery.of(context).size.width * 1),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.7),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: const Offset(-5,
+                                5), // Ajusta los valores para personalizar la sombra
+                          ),
+                        ],
+                        borderRadius: const BorderRadius.all(
+                            Radius.circular(borderRadiusValue)),
                       ),
-                      Text(
-                        '  ',
-                        /*esto garantiza 2 lugares despues de la coma */
-                        style: TextStyle(
-                            fontSize:
-                                (MediaQuery.of(context).size.height * 0.02),
-                            fontWeight: FontWeight.w900),
+                      child: ListTile(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                        ),
+                        title: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.87,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Total a pagar: ',
+                                style: TextStyle(
+                                    fontSize:
+                                        (MediaQuery.of(context).size.height *
+                                            0.025),
+                                    fontWeight: FontWeight.w200),
+                              ),
+                              Text(
+                                controllerShoppingCart.totalPrice
+                                    .toStringAsFixed(2),
+                                /*esto garantiza 2 lugares despues de la coma */
+                                style: TextStyle(
+                                    fontSize:
+                                        (MediaQuery.of(context).size.height *
+                                            0.035),
+                                    fontWeight: FontWeight.w900),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        const EdgeInsets.symmetric(
-                            vertical: 2.0, horizontal: 4.0),
-                      ),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(255, 43, 44, 49)),
                     ),
-                    onPressed: () async {
-                      /* showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialogPago(
-                            totalPrice: controllerShoppingCart.totalPrice,
-                          ); // Muestra el AlertDialog
-                        },
-                      );*/
-                    },
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              '${Env.apiEndpoint}/images/${clientsController.urlImageTemporary}'),
-                          radius: 30, // Ajusta el tamaño del círculo aquí
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Text(
-                          'Total a pagar: ',
-                          style: TextStyle(
-                              fontSize:
-                                  (MediaQuery.of(context).size.height * 0.02),
-                              fontWeight: FontWeight.w200),
-                        ),
-                        Text(
-                          controllerShoppingCart.totalPrice.toStringAsFixed(2),
-                          /*esto garantiza 2 lugares despues de la coma */
-                          style: TextStyle(
-                              fontSize:
-                                  (MediaQuery.of(context).size.height * 0.02),
-                              fontWeight: FontWeight.w900),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             )
           ],
@@ -550,46 +520,48 @@ class ShoppingCartPage extends StatelessWidget {
   }
 }
 
-class AlertDialogPago extends StatelessWidget {
-  final double totalPrice;
 
-  const AlertDialogPago({Key? key, required this.totalPrice}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Confirmación'),
-      content: SizedBox(
-        height: 50.0, // Ajusta la altura según tu necesidad
-        child: Column(
-          mainAxisSize: MainAxisSize.min, // Establece el tamaño mínimo
-          children: [
-            const Text('¿Desea Confirmar el pago?'),
-            Text(
-              'Total: \$${totalPrice.toStringAsFixed(2)}',
-              style: TextStyle(
-                  fontSize: (MediaQuery.of(context).size.height * 0.02),
-                  fontWeight: FontWeight.w900),
-            ),
-          ],
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            // Cerrar el AlertDialog
-            Navigator.of(context).pop();
-          },
-          child: const Text('Aceptar'),
-        ),
-        TextButton(
-          onPressed: () {
-            // Cerrar el AlertDialog
-            Navigator.of(context).pop();
-          },
-          child: const Text('Cerrar'),
-        ),
-      ],
-    );
-  }
-}
+// class AlertDialogPago extends StatelessWidget {
+//   final double totalPrice;
+
+//   const AlertDialogPago({Key? key, required this.totalPrice}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return AlertDialog(
+//       title: const Text('Confirmación'),
+//       content: SizedBox(
+//         height: 50.0, // Ajusta la altura según tu necesidad
+//         child: Column(
+//           mainAxisSize: MainAxisSize.min, // Establece el tamaño mínimo
+//           children: [
+//             const Text('¿Desea Confirmar el pago?'),
+//             Text(
+//               'Total: \$${totalPrice.toStringAsFixed(2)}',
+//               style: TextStyle(
+//                   fontSize: (MediaQuery.of(context).size.height * 0.02),
+//                   fontWeight: FontWeight.w900),
+//             ),
+//           ],
+//         ),
+//       ),
+//       actions: [
+//         TextButton(
+//           onPressed: () {
+//             // Cerrar el AlertDialog
+//             Navigator.of(context).pop();
+//           },
+//           child: const Text('Aceptar'),
+//         ),
+//         TextButton(
+//           onPressed: () {
+//             // Cerrar el AlertDialog
+//             Navigator.of(context).pop();
+//           },
+//           child: const Text('Cerrar'),
+//         ),
+//       ],
+//     );
+//   }
+// }

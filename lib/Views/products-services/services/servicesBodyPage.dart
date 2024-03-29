@@ -73,19 +73,8 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                 child: Row(
                                   children: [
                                     Container(
-                                      height: ((_.selectService.contains(
-                                                  _.services[index])) ||
-                                              (controllerShoppingCart
-                                                  .idServiceCart
-                                                  .contains(
-                                                      _.services[index].name)))
-                                          ? (MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.153)
-                                          : (MediaQuery.of(context)
-                                                  .size
-                                                  .height *
+                                      height:
+                                          (MediaQuery.of(context).size.height *
                                               0.132),
                                       width:
                                           (MediaQuery.of(context).size.width *
@@ -103,9 +92,9 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                               gradient: LinearGradient(
                                                 colors: [
                                                   Color.fromARGB(
-                                                      255, 231, 232, 234),
+                                                      210, 216, 216, 218),
                                                   Color.fromARGB(
-                                                      255, 243, 182, 138),
+                                                      255, 243, 176, 128),
                                                 ],
                                                 stops: [0.0, 0.8],
                                                 begin: FractionalOffset
@@ -301,69 +290,6 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                               ],
                                             ),
                                           ],
-                                        ),
-                                      ),
-                                    ),
-                                    Visibility(
-                                      visible: ((_.selectService
-                                              .contains(_.services[index])) ||
-                                          (controllerShoppingCart.idServiceCart
-                                              .contains(
-                                                  _.services[index].name))),
-                                      child: Container(
-                                        height: (MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.14),
-                                        width:
-                                            (MediaQuery.of(context).size.width *
-                                                0.16),
-                                        decoration: const BoxDecoration(
-                                            color: Color.fromARGB(
-                                                255, 241, 130, 84),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(
-                                                    borderRadiusValue))),
-                                        child: IconButton(
-                                          onPressed: () {
-                                            if (controllerLogin
-                                                    .codigoQrValid() ==
-                                                true) {
-                                              Get.snackbar(
-                                                'Mensaje',
-                                                'Fue notificado al responsable,espere confirmación.',
-                                                duration: const Duration(
-                                                    milliseconds: 1500),
-                                              );
-                                              _.sentServiceDelet(index);
-                                            } else {
-                                              Get.snackbar(
-                                                'Mensaje',
-                                                'Debe de escanear el código Qr de entrada',
-                                                duration: const Duration(
-                                                    milliseconds: 2500),
-                                                backgroundColor:
-                                                    const Color.fromARGB(
-                                                        118, 255, 255, 255),
-                                                showProgressIndicator: true,
-                                                progressIndicatorBackgroundColor:
-                                                    const Color.fromARGB(
-                                                        255, 203, 205, 209),
-                                                progressIndicatorValueColor:
-                                                    const AlwaysStoppedAnimation(
-                                                        Color(0xFFF18254)),
-                                                overlayBlur: 3,
-                                              );
-                                            }
-                                          },
-                                          icon: Icon(
-                                            Icons.delete,
-                                            color: Colors.white,
-                                            size: (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.04),
-                                          ),
                                         ),
                                       ),
                                     ),

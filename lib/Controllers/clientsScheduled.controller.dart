@@ -990,6 +990,7 @@ class ClientsScheduledController extends GetxController {
         }
       }
       update();
+      controllerLogin.setIsLoadingFor(false);
     } catch (e) {
       print(
           'Dio error en Future<void> fetchClientsScheduled que se encuentra en el controlador del Login:$e');

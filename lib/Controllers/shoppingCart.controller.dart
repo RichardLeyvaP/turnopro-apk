@@ -75,9 +75,8 @@ class ShoppingCartController extends GetxController {
   }
 
   Future<void> loadOrderDeleteCar(int branchId) async {
-    print('estoy aqui en loadOrderDeleteCar');
+    print('1111111 estoy aqui en loadOrderDeleteCar');
     try {
-      print('1111111');
       orderDeleteCar =
           await productRepository.serviceRequestProductDelete(branchId); //todo
       print(orderDeleteCar);

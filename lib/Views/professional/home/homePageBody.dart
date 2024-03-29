@@ -389,8 +389,6 @@ class _HomePageBodyState extends State<HomePageBody>
               clientsScheduledController.cantClientWait !=
                   clientsScheduledController.clientsScheduledListLength) {
             // La animación está activa (en progreso)
-            print(
-                'varClientsWaiting es contClientsWaiting La animación está activa');
             if (clientsScheduledController.contClientsWaiting == 10) {
               print('esteeeeee varClientsWaiting Mande la notificacion ya');
               //aqui llamar e insertar en las notificaciones
@@ -418,15 +416,10 @@ class _HomePageBodyState extends State<HomePageBody>
             clientsScheduledController
                 .setContClientsWaiting(-90009); //inicializo nuevamente a 0
             // La animación está detenida
-            print(
-                'varClientsWaiting es contClientsWaiting La animación está detenida');
           }
-          print(
-              'varClientsWaiting es contClientsWaiting = ${clientsScheduledController.contClientsWaiting}');
         } else {
           clientsScheduledController
               .setContClientsWaiting(-90009); //inicializo nuevamente a 0
-          print('varClientsWaiting es false');
         }
 
         //
@@ -439,27 +432,27 @@ class _HomePageBodyState extends State<HomePageBody>
             cont == 20 ||
             cont == 30 ||
             cont == 40 ||
+            cont == 50 ||
             cont == 60 ||
             cont == 70 ||
             cont == 80) {
           //AQUI INSERTO EN LA DB SI HUBIERAS RELOJES ACTIVOS
           // await clientsScheduledController.upadateVariablesValueTimersSPlano();
 
-          print('ENTRO A BUSCAR NOTIFICACIONES');
           print('ENTRO A BUSCAR NOTIFICACIONES - cont: $cont');
           notiController.fetchNotificationList(loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn);
         }
-        if (cont == 6 || cont == 40) {
-          notiController.fetchNotificationList(loginController.branchIdLoggedIn,
-              loginController.idProfessionalLoggedIn);
-
+        if (cont == 40) {
+          //llamadas aproximadamente 1min
           clientsScheduledController.fetchClientsScheduled(
               loginController.idProfessionalLoggedIn,
               loginController.branchIdLoggedIn);
-          print('con contador en 8 llamo la funcion1 222');
+          print('llamadas clientsScheduledController.fetchClientsScheduled(');
         }
         if (cont == 4 || cont == 40 || cont == 80) {
+          print(
+              'llamadas clientsScheduledController.upadateVariablesValueTimers()');
           await clientsScheduledController.upadateVariablesValueTimers();
           print(
               'clientes asistiendo  inserto cada cierto tiempo en la db los nuevos valores del timer-2 upadateVariablesValueTimers()->$cont');
@@ -721,8 +714,6 @@ class _HomePageBodyState extends State<HomePageBody>
               'esteeeeee clientes asistiendo  inserto cada cierto tiempo en la db los nuevos valores y puso a FALSE a activeModifyTime');
           controllerclient.setActiveModifyTime(false);
         }
-        print(
-            'valor de variable controllerclient.segundoPlano = ${loginController.segundoPlano}');
 
         if (loginController.ejecutadoEvent == false) {
           // Se ejecutará después de que se haya construido el widget
@@ -941,7 +932,13 @@ class _HomePageBodyState extends State<HomePageBody>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               GestureDetector(
-                                onTap: () {
+                                onTap: () async {
+                                  controllerLogin.setIsLoadingFor(true);
+                                  await clientsScheduledController
+                                      .fetchClientsScheduled(
+                                          controllerLogin
+                                              .idProfessionalLoggedIn,
+                                          controllerLogin.branchIdLoggedIn);
                                   pagesConfigC
                                       .onTabTapped(1); //index = 1 -> /Clients
                                 },
@@ -956,8 +953,10 @@ class _HomePageBodyState extends State<HomePageBody>
                               ),
                               InkWell(
                                 onTap: () async {
+                                  controllerLogin.setIsLoadingFor(true);
                                   await notiController.fetchNotificationList(
-                                      1, 11);
+                                      controllerLogin.branchIdLoggedIn,
+                                      controllerLogin.idProfessionalLoggedIn);
                                   pagesConfigC.onTabTapped(
                                       2); //index = 2 -> /NotificationsPageProf
                                 },

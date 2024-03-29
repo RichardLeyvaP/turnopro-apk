@@ -461,10 +461,8 @@ class ClientsCoordinatorRepository extends GetConnect {
 
     final response = await get(url);
     if (response.statusCode == 200) {
-      print('repositorio set_timeClock devolviendo true');
       return true;
     } else {
-      print('repositorio set_timeClock devolviendo false');
       return false;
     }
   }

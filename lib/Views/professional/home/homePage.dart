@@ -24,6 +24,8 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
   final ClientsScheduledController clientController =
       Get.find<ClientsScheduledController>();
   final NotificationController notiCont = Get.find<NotificationController>();
+  final CoexistenceController coexistenceController =
+      Get.find<CoexistenceController>();
 
   @override
   void initState() {
@@ -102,8 +104,25 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                       fixedColor: const Color(0xFFF18254),
                       currentIndex: pagesConfigController.selectedIndex,
                       type: BottomNavigationBarType.fixed,
-                      onTap: (index) =>
-                          pagesConfigController.onTabTapped(index),
+                      onTap: (index) async {
+                        print('mostrando el tap # :$index');
+                        if (index == 4) //cargame las convivencias
+                        {
+                          loginController.setIsLoadingFor(true);
+                          await coexistenceController.fetchCoexistenceList();
+                        } else if (index == 1) {
+                          loginController.setIsLoadingFor(true);
+                          await clientController.fetchClientsScheduled(
+                              loginController.idProfessionalLoggedIn,
+                              loginController.branchIdLoggedIn);
+                        } else if (index == 2) {
+                          loginController.setIsLoadingFor(true);
+                          await notiCont.fetchNotificationList(
+                              loginController.branchIdLoggedIn,
+                              loginController.idProfessionalLoggedIn);
+                        }
+                        pagesConfigController.onTabTapped(index);
+                      },
                       items: [
                         BottomNavigationBarItem(
                             icon: Icon(

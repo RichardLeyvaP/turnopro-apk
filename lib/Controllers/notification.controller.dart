@@ -6,11 +6,14 @@ import 'package:soundpool/soundpool.dart';
 import 'package:turnopro_apk/Models/notification_model.dart';
 import 'package:turnopro_apk/get_connect/repository/notification.repository.dart';
 
+import 'login.controller.dart';
+
 class NotificationController extends GetxController {
   //LLAMANDO AL CONTROLADOR
   NotificationController();
 //DECLARACION DE VARIABLES
   NotificationRepository repository = NotificationRepository();
+  final LoginController controllerLogin = Get.find<LoginController>();
   int notificationListLength = 0;
   int notificationListNewLength = 0;
   int notificationListBack = 0;
@@ -88,13 +91,12 @@ class NotificationController extends GetxController {
 
         notificationListNew = result['notificationListNew'];
         notificationListNewLength = notificationListNew.length;
-        print(
-            'ENTRO A BUSCAR NOTIFICACIONES estoy aqui en getNotificationList-   notificationListLength:$notificationListLength');
-        print(
-            'ENTRO A BUSCAR NOTIFICACIONES estoy aqui en getNotificationList-   notificationListNew:${notificationListNew.length}');
+
         update();
       }
+      controllerLogin.setIsLoadingFor(false);
     } catch (e) {
+      controllerLogin.setIsLoadingFor(false);
       // Manejo de errores
       print('Error al obtener la lista de notificaciones: $e');
     }
