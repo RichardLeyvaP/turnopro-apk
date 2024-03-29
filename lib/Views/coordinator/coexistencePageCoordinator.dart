@@ -33,6 +33,7 @@ class _CoexistencePageCoordinatorState
 //
   @override
   Widget build(BuildContext context) {
+    print('ESTOY ENTRANDO AQUI A CONVIVENCIAS');
     return Scaffold(
       appBar: AppBar(
         leading: Row(

@@ -92,8 +92,13 @@ class CoexistenceController extends GetxController {
   }
 
   Future<void> fetchBranchProfessionals() async {
+    selectedProfessional = null;
+    print(
+        'ESTOY ENTRANDO AQUI A CONVIVENCIAS aqui en fetchBranchProfessionals()');
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idBranch = controllerLogin.branchIdLoggedIn;
+    print(
+        'ESTOY ENTRANDO AQUI A CONVIVENCIAS aqui en controllerLogin.branchIdLoggedIn=${controllerLogin.branchIdLoggedIn}');
     professional = await repository.getBranchProfessionals(idBranch);
     print(
         'actualizando las convivencias iniciales.RLP- getCoexistenceList111111 %%%%%%%%%%%%%%%%% Profesionales por branch %%%%%%%%%%%%%%%%%%%%');
@@ -101,7 +106,7 @@ class CoexistenceController extends GetxController {
     professionalListLength = professional.length;
 //todo agregue esto nuevo
     print(
-        'actualizando las convivencias iniciales.RLP- getCoexistenceList222222222 %%%%%%%%%%%%%%%%% Profesionales por branch %%%%%%%%%%%%%%%%%%%%');
+        'ESTOY ENTRANDO AQUI A CONVIVENCIAS aqui en fetchBranchProfessionals()----professionalListLength-$professionalListLength');
     update();
   }
 

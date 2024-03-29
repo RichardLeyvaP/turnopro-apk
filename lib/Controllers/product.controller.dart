@@ -115,6 +115,8 @@ class ProductController extends GetxController {
   }
 
   Future<void> fetchproductList(index) async {
+    print(
+        'LISTA2 _fetchServiceList Limpiando ENTRE ACTUALIZAR LOS PRODUCTOS:$index');
     final LoginController controllerLogin = Get.find<LoginController>();
     try {
       isLoadingCategory = true;

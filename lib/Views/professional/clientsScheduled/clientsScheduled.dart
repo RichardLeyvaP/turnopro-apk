@@ -27,6 +27,7 @@ class YourPageViewScreenState extends State<HomePageView> {
   final LoginController controllerLogin = Get.find<LoginController>();
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
   final ShoppingCartController chopCont = Get.find<ShoppingCartController>();
+  final ServiceController serviceControll = Get.find<ServiceController>();
 
   @override
   void initState() {
@@ -130,12 +131,12 @@ class YourPageViewScreenState extends State<HomePageView> {
                                     ],
                                   ),
                                 ),
-                                loginController.setIsLoading == true
+                                loginController.setIsLoading2 == true
                                     ? Container(
                                         width:
-                                            50, // Ancho del indicador de carga
+                                            30, // Ancho del indicador de carga
                                         height:
-                                            50, // Altura del indicador de carga
+                                            30, // Altura del indicador de carga
                                         alignment: Alignment.center,
                                         child: CircularProgressIndicator(
                                           valueColor: AlwaysStoppedAnimation<
@@ -283,8 +284,14 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                   index]
                                                               .reservation_id);
                                                   if (resulButton == 1) {
+                                                    //limpio la lista que controla que se de un solo click al seleccionar los servicios
+
                                                     loginController
-                                                        .setIsLoadingFor(true);
+                                                        .handleButtonClickServiceClear();
+                                                    loginController
+                                                        .setIsLoadingFor2(true);
+                                                    serviceControll
+                                                        .clearSelectService();
 
                                                     if (controllerClient
                                                             .clientsScheduledList[
@@ -337,53 +344,61 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                   .clientsScheduledList[
                                                                       index]
                                                                   .reservation_id);
-                                                      servControll
-                                                          .clearSelectService();
+                                                      // servControll
+                                                      //     .clearSelectService();
                                                       //todo FIN esto estaba en la pagina del modal al dar en Ver carrito
-
-                                                      await controllerClient
-                                                          .searchForCustomerServices(
+                                                      await chopCont
+                                                          .loadDataInitiallyNecessary()
+                                                          .then((_) async {
+                                                        await controllerClient
+                                                            .searchForCustomerServices(
+                                                                controllerClient
+                                                                    .clientsScheduledList[
+                                                                        index]
+                                                                    .car_id)
+                                                            .then((_) {
+                                                          loginController
+                                                              .setHandleButtonClickModal();
+                                                          String clientName =
                                                               controllerClient
                                                                   .clientsScheduledList[
                                                                       index]
-                                                                  .car_id)
-                                                          .then((_) {
-                                                        chopCont
-                                                            .loadDataInitiallyNecessary();
-                                                        String clientName =
-                                                            controllerClient
-                                                                .clientsScheduledList[
-                                                                    index]
-                                                                .client_name;
-                                                        String urlImage =
-                                                            controllerClient
-                                                                .clientsScheduledList[
-                                                                    index]
-                                                                .client_image;
-                                                        int reservationId =
-                                                            controllerClient
-                                                                .clientsScheduledList[
-                                                                    index]
-                                                                .reservation_id;
-                                                        int carId = controllerClient
-                                                            .clientsScheduledList[
-                                                                index]
-                                                            .car_id;
-                                                        //   _mostrarBottomSheet(          context);
-                                                        //  showMyDialog(context);
-
-                                                        ModalHelper.showModal(
-                                                            pagesConfigC
-                                                                .pageController,
-                                                            context,
-                                                            clientName,
-                                                            reservationId,
-                                                            carId,
-                                                            urlImage);
-                                                        // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
-                                                        controllerClient
-                                                            .showingServiceClient(
-                                                                true);
+                                                                  .client_name;
+                                                          String urlImage =
+                                                              controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .client_image;
+                                                          int reservationId =
+                                                              controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .reservation_id;
+                                                          int carId =
+                                                              controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .car_id;
+                                                          //   _mostrarBottomSheet(          context);
+                                                          //  showMyDialog(context);
+                                                          print(
+                                                              'LISTA2 _fetchServiceList Limpiando clientName:$clientName...reservationId:$reservationId....carId:$carId....urlImage:$urlImage');
+                                                          loginController
+                                                              .setIsLoadingFor2(
+                                                                  false);
+                                                          ModalHelper.showModal(
+                                                              pagesConfigC
+                                                                  .pageController,
+                                                              context,
+                                                              clientName,
+                                                              reservationId,
+                                                              carId,
+                                                              urlImage);
+                                                          // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
+                                                          controllerClient
+                                                              .showingServiceClient(
+                                                                  true);
+                                                        });
                                                       });
                                                     }
                                                   } //cierre del if de comprobacion que no lo llame vairas veces

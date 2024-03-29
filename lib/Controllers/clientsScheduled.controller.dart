@@ -264,7 +264,7 @@ class ClientsScheduledController extends GetxController {
   }
 
   upadateVariablesValueTimers() async {
-    print('entre de nuevo aqui -----');
+    print('tiempo a sumar =  33 upadateVariablesValueTimers() -----');
     // saveData();
     bool hasClient1 = clientsAttended1 != null;
     bool hasClient2 = clientsAttended2 != null;
@@ -564,7 +564,7 @@ class ClientsScheduledController extends GetxController {
 
   void modifingTime(time) {
     print(
-        '-*-*-*-------------------inicio-------------------------${modifyTime[modifyTimeSpecific]}');
+        'tiempo a sumar =  1-*-*-*-------------------inicio-------------------------${modifyTime[modifyTimeSpecific]}');
     modifyTime[modifyTimeSpecific] = time;
     print(
         '-*-*-*-------------------deSPUES------------------------${modifyTime[modifyTimeSpecific]}');

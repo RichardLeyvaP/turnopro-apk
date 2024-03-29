@@ -24,9 +24,15 @@ class LoginController extends GetxController {
 
   bool codigoQrvalid = false;
   bool setIsLoading = false;
+  bool setIsLoading2 = false;
 
   void setIsLoadingFor(value) {
     setIsLoading = value;
+    update();
+  }
+
+  void setIsLoadingFor2(value) {
+    setIsLoading2 = value;
     update();
   }
 
@@ -76,6 +82,13 @@ class LoginController extends GetxController {
   double? androidInfoHeight;
   int? androidInfoVersion;
   List<int> pressedButtonIds = [];
+  List<int> pressedButtonServ = [];
+
+  int serviceTime = 0;
+  setServiceTime(value) {
+    serviceTime = value;
+    update();
+  }
 
   int handleButtonClick(int buttonId) {
     // Verificar si el ID del botón ya ha sido presionado
@@ -91,6 +104,28 @@ class LoginController extends GetxController {
       print('Botón $buttonId presionado return 1');
       return 1;
     }
+  }
+
+  int handleButtonClickService(int buttonId) {
+    // Verificar si el ID del botón ya ha sido presionado
+    if (pressedButtonServ.contains(buttonId)) {
+      print('Botón $buttonId presionado return 0');
+      // Si el ID ya ha sido presionado, no hacer nada
+      return 0;
+    } else {
+      // Agregar el ID del botón a la lista de IDs presionados
+      pressedButtonServ.add(buttonId);
+      update();
+      // Aquí puedes poner el código que deseas ejecutar solo una vez
+      print('Botón $buttonId presionado return 1');
+      return 1;
+    }
+  }
+
+  //esta la llamo en el modal para limpiar nuevamente la variable
+  void handleButtonClickServiceClear() {
+    pressedButtonServ.clear();
+    update();
   }
 
   List<int> pressedButtonIdsTec = [];

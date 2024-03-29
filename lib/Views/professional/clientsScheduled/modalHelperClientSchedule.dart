@@ -26,12 +26,11 @@ class ModalHelper {
     } else {
       sizeExpandedService = [224, 280, 336, 392, 448];
     }
-    //loginController.setIsLoadingFor(false);
-    print('espernado 2 segundos-1');
-    await Future.delayed(Duration(seconds: 2));
-    print('espernado 2 segundos-2');
-    loginController.setIsLoadingFor(false);
-    loginController.setHandleButtonClickModal();
+    // //loginController.setIsLoadingFor(false);
+    // print('espernado 2 segundos-1');
+    // await Future.delayed(Duration(seconds: 2));
+    // print('espernado 2 segundos-2');
+    // loginController.setIsLoadingFor(false);
 
     // Declarar un controlador fuera del método
     TextEditingController commentController = TextEditingController();
@@ -188,14 +187,8 @@ class ModalHelper {
                                         // Añadir más propiedades de estilo aquí
                                       ),
                                       onPressed: () async {
-                                        //esto para saber que reloj hay que aumentarle el tiempo si escoje mas servicios
-
                                         // Cierra el modal primero
                                         Navigator.pop(context);
-                                        //luego llamo a la pagina de servicios y productos
-                                        /*Get.toNamed(
-                            '/servicesProductsPage',
-                          );*/
                                         //todo aqui quite las llamadas
                                         pageController.nextPage(
                                           duration: Duration(milliseconds: 300),

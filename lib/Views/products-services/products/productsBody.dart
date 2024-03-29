@@ -31,20 +31,6 @@ class _ProductsBodyState extends State<ProductsBody>
       Get.find<ShoppingCartController>();
   final LoginController controllerLogin = Get.find<LoginController>();
 
-  List<double> _fontSize = []; // Tamaño de fuente inicial
-  void toggleFontSize(int index) {
-    setState(() {
-      // Cambia entre dos tamaños de fuente diferentes
-      _fontSize[index] = _fontSize[index] == 15.0 ? 20.00 : 15.00;
-      // Después de 2 segundos, vuelve al tamaño original
-      Timer(Duration(milliseconds: 500), () {
-        setState(() {
-          _fontSize[index] = 15.00;
-        });
-      });
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -134,10 +120,6 @@ class _ProductsBodyState extends State<ProductsBody>
                                                   .product[itemIndex]
                                                   .product_exit;
                                         }
-                                        if (_fontSize.length <
-                                            (itemIndex + 1)) {
-                                          _fontSize.add(15.00);
-                                        }
 
                                         return Column(
                                           children: [
@@ -167,7 +149,6 @@ class _ProductsBodyState extends State<ProductsBody>
                                                     controllerShoppingCart,
                                                     controllerLogin,
                                                     controllerProduct,
-                                                    _fontSize[itemIndex],
                                                     itemIndex,
                                                   )
                                                 : controllerProduct
@@ -207,7 +188,6 @@ class _ProductsBodyState extends State<ProductsBody>
       ShoppingCartController controllerShoppingCart,
       LoginController controllerLogin,
       ProductController controllerProduct,
-      double _fontSize,
       itemIndex) {
     //VARIABLES DE PROPIEDADES DEL WIDGET
     const double borderRadiusValue = 12; //container que carga la imagen
@@ -263,19 +243,17 @@ class _ProductsBodyState extends State<ProductsBody>
                           ),
                           Row(
                             children: [
-                              Text(
+                              const Text(
                                 'Cantidad Disponible: ',
                                 style: TextStyle(
                                     fontSize: 15,
-                                    color: const Color.fromARGB(148, 0, 0, 0)),
+                                    color: Color.fromARGB(148, 0, 0, 0)),
                               ),
                               Text(
                                 '$productExit',
-                                style: TextStyle(
-                                    fontSize: _fontSize,
-                                    color: _fontSize == 20.00
-                                        ? Color.fromARGB(147, 196, 12, 12)
-                                        : const Color.fromARGB(148, 0, 0, 0)),
+                                style: const TextStyle(
+                                    fontSize: 15,
+                                    color: Color.fromARGB(148, 0, 0, 0)),
                               ),
                             ],
                           ),
@@ -300,12 +278,12 @@ class _ProductsBodyState extends State<ProductsBody>
                             InkWell(
                               onTap: () {
                                 if (controllerLogin.codigoQrValid() == true) {
-                                  toggleFontSize(itemIndex);
                                   controllerProduct.buyProduct(itemIndex);
                                   controllerShoppingCart
                                       .updateShoppingCartValue(
                                           priceProduct,
-                                          itemIndex,
+                                          tabsID[_tabController
+                                              .index], //le paso el id d ela categoria
                                           controllerShoppingCart
                                               .carIdClienteSelect,
                                           'product',

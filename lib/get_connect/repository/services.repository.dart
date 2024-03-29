@@ -2,12 +2,15 @@
 
 import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/env.dart';
 
 class ServiceRepository extends GetConnect {
+  final LoginController loginCont = Get.find<LoginController>();
   Future<List<ServiceModel>> getServiceList(idProfessional, idBranch) async {
     List<ServiceModel> serviceList = [];
+    int serviceTimeAux = 0;
 
     try {
       if (idProfessional != null) {
@@ -23,7 +26,14 @@ class ServiceRepository extends GetConnect {
             //print(jsonEncode(service));
             ServiceModel u = ServiceModel.fromJson(jsonEncode(service));
             serviceList.add(u);
+            if (serviceTimeAux < u.duration_service) {
+              serviceTimeAux = u
+                  .duration_service; //aqui guardo el mayor tiempo de servicio para utilizarlo en la barra cuando muetra los servicios
+            }
+            loginCont.setServiceTime(serviceTimeAux);
           }
+          print(
+              'LISTA2 _fetchServiceList Limpiando MAYOR:${loginCont.serviceTime}');
           print(
               'ServiceRepository1 RETORNANDO LA LISTA DE SERVICIOS:${serviceList.length}');
           return serviceList;

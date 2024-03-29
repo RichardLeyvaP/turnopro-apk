@@ -39,6 +39,11 @@ class ServiceController extends GetxController {
     update();
   }
 
+  asigSelectService(arryService) {
+    selectService = arryService;
+    update();
+  }
+
   void clearSelectService() {
     print('LISTA2 _fetchServiceList Limpiando seleccion de servicios.');
     selectService.clear();
@@ -64,7 +69,9 @@ class ServiceController extends GetxController {
         controllerLogin.branchIdLoggedIn);
     serviceListLength = services.length;
     loadedFirstTime = true;
+
     update();
-    print('LISTA2 _fetchServiceList:$serviceListLength');
+    print(
+        'LISTA2 _fetchServiceList Limpiando en _fetchServiceList():$serviceListLength');
   }
 }

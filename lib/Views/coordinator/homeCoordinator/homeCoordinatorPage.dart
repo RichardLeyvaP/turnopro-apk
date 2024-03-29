@@ -21,6 +21,8 @@ class HomeCoordinatorPages extends StatefulWidget {
 class _HomeCoordinatorPagesState extends State<HomeCoordinatorPages>
     with WidgetsBindingObserver {
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
+  final CoexistenceController coexistenceController =
+      Get.find<CoexistenceController>();
   final LoginController loginController = Get.find<LoginController>();
   final ClientsCoordinatorController clientController =
       Get.find<ClientsCoordinatorController>();
@@ -97,11 +99,15 @@ class _HomeCoordinatorPagesState extends State<HomeCoordinatorPages>
                       fixedColor: const Color(0xFFF18254),
                       currentIndex: pagesConfigController.selectedIndex,
                       type: BottomNavigationBarType.fixed,
-                      onTap: (index) {
+                      onTap: (index) async {
                         if (index == 0) {
                           pagesConfigC.pageController2
                               .jumpToPage(0); //AQUI VA  AL HOME
                           pagesConfigController.showAppBar(true);
+                        }
+                        if (index == 4) {
+                          await coexistenceController
+                              .fetchBranchProfessionals();
                         }
 
                         print('mostrando aqui el valor de index : $index');
@@ -283,7 +289,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                               children: <Widget>[
                                 Container(
                                   decoration: const BoxDecoration(
-                                    color: Color(0xFFF18254),
+                                    color: Color.fromARGB(255, 26, 50, 82),
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(8),
                                       topRight: Radius.circular(8),
@@ -416,7 +422,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                             children: <Widget>[
                               Container(
                                 decoration: const BoxDecoration(
-                                  color: Color(0xFFF18254),
+                                  color: Color.fromARGB(255, 26, 50, 82),
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(8),
                                     topRight: Radius.circular(8),

@@ -615,7 +615,8 @@ class _HomePageBodyState extends State<HomePageBody>
         activeClock();
       }
       if (controllerclient.activeModifyTime == true) {
-        print('EL TIEMPO ACTUAL DEL RELOJ estoy entrando aqui');
+        print(
+            'tiempo a sumar =  2 EL TIEMPO ACTUAL DEL RELOJ estoy entrando aqui');
         //aqui verifico qsi hay que agregarle el tiempo algun reloj
         print(
             'activeModifyTime SOY = ${controllerclient.activeModifyTime} Y MANDE ESTE TIEMPO ${controllerclient.modifyTime[controllerclient.modifyTimeSpecific]}');
@@ -709,9 +710,7 @@ class _HomePageBodyState extends State<HomePageBody>
           loginController.getSegundoPlano(1);
         }
         if (controllerclient.activeModifyTime == true) {
-          await clientsScheduledController.upadateVariablesValueTimers();
-          print(
-              'esteeeeee clientes asistiendo  inserto cada cierto tiempo en la db los nuevos valores y puso a FALSE a activeModifyTime');
+          //AQUI GARANTIZO QUE AUMENTE EL VALOR DEL RELOJ UNA SOLA VEZ Y QUE INSERTE EN LA DB 1 SOLA VEZ
           controllerclient.setActiveModifyTime(false);
         }
 

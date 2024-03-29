@@ -2,6 +2,7 @@
 
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:turnopro_apk/Controllers/product.controller.dart';
 import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/Models/orderDelete_model.dart';
 import 'package:turnopro_apk/Models/product_model.dart';
@@ -40,6 +41,7 @@ class ShoppingCartController extends GetxController {
   }
 
   Future<void> loadCart() async {
+    final ServiceController serviceControll = Get.find<ServiceController>();
     idServiceCart.clear();
     print('estoy cargando el carro de id car :$carIdClienteSelect');
 
@@ -62,6 +64,12 @@ class ShoppingCartController extends GetxController {
           '**** 11111111 **** *** ESTE ES EL getTotalServices ACTUALMENTE:$getTotalServices');
       productListLength = selectproduct.length;
       serviceListLength = selectserviceCart.length;
+      //aqui asigno los servicios que ya tiene sekeccionados
+      serviceControll.asigSelectService(selectserviceCart);
+      print(
+          'LISTA2 _fetchServiceList Limpiando**** *** ESTE ES EL getTotalServices ACTUALMENTE:${selectserviceCart.length}');
+      print(
+          'LISTA2 _fetchServiceList Limpiando**** *** ESTE ES EL getTotalServices ACTUALMENTE:${selectserviceCart}');
 
       for (int i = 0; i < selectserviceCart.length; i++) {
         idServiceCart.add(selectserviceCart[i].nameService!);
@@ -141,18 +149,12 @@ class ShoppingCartController extends GetxController {
     //TODO REVISAR ESTA FUNCION BIEN CONEXION INTERNET
     try {
       final ServiceController controllerService = Get.find<ServiceController>();
+      final LoginController controllerLogin = Get.find<LoginController>();
 
-      if (controllerService.loadedFirstTime == false) {
-        await controllerService.loadListService();
-      }
-      await _fetchServiceList(); //todo revisar para que yo queria saber si tenia servicio y productos el profesional
-      // await _fetchProductList();
-
+      await controllerService.loadListService();
       print('************* onReady:****serviceCart:${serviceCart.length}');
-      // _fetchProductList();
-      loadCart();
+      await loadCart();
 
-      //******************************************************************************** */
       internetError = 0;
     } catch (e) {
       internetError = -99;
@@ -209,7 +211,26 @@ class ShoppingCartController extends GetxController {
     }
   }
 
+  void updateShoppingCartValueSer(
+      priceService, id, car_id, type, servicioName) async {
+    // print('*************serviceCart:${serviceCart.length}');
+
+    if (!idServiceCart.contains(servicioName)) {
+      // selectserviceCart.add(servicio);
+      idServiceCart.add(servicioName);
+      _addOrderCartList(car_id, 0, id, type); //todo REVISAR TIENE PROBLEMA
+      //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
+      getTotalServicesProduct_Sum(type, priceService);
+      shoppingCart += 1;
+      serviceListLength = selectserviceCart.length;
+      print(
+          'LISTA2 _fetchServiceList Limpiando long de idServiceCart.length:${idServiceCart.length}');
+    }
+    update();
+  }
+
   void updateShoppingCartValue(priceProduct, index, car_id, type, id) async {
+    final ProductController productCont = Get.find<ProductController>();
     if (type == 'service') {
       // print('22');
       if (internetError != -99) {
@@ -233,7 +254,8 @@ class ShoppingCartController extends GetxController {
         print('else if (type == product):$index');
         //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
         getTotalServicesProduct_Sum(type, priceProduct);
-
+        //actualizar los productos pasando el id de la categoria
+        productCont.fetchproductList(index);
         shoppingCart += 1;
         update();
       }

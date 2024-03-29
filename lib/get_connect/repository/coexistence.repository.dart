@@ -67,18 +67,20 @@ class CoexistenceRepository extends GetConnect {
 
       final response = await get(url).timeout(Duration(seconds: 10));
       if (response.statusCode == 200) {
-        final professionals = response.body['branches'];
+        final professionals = response.body['professionals'];
+        print(
+            'ESTOY ENTRANDO AQUI A CONVIVENCIAS estoy en professionals:$professionals');
         for (int i = 0; i < professionals.length; i++) {
-          print(
-              'ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
+          print('ESTOY ENTRANDO AQUI A CONVIVENCIAS  para el objeto ${i + 1}:');
           professionals[i].forEach((key, value) {
             print(
-                'ya tengo la cola de la api es estaa $key: ${value.runtimeType}');
+                'ESTOY ENTRANDO AQUI A CONVIVENCIAS  es estaa $key: ${value.runtimeType}');
             print('********************i:$i');
           });
         }
         print(professionals);
         for (Map professional in professionals) {
+          print('ESTOY ENTRANDO AQUI A CONVIVENCIAS MAP()');
           ProfessionalModel u =
               ProfessionalModel.fromJson(jsonEncode(professional));
           //AQUI SOLO COJO QUE NO SEAN RESPONSABLES

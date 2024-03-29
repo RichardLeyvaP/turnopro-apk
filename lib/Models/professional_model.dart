@@ -45,9 +45,9 @@ class ProfessionalModel {
   factory ProfessionalModel.fromMap(Map<String, dynamic> map) {
     return ProfessionalModel(
       id: map['id'] ?? 0,
-      charge_id: map['charge_id'] ?? 0,
-      user_id: map['user_id'] ?? 0,
-      state: map['state'] ?? 0,
+      charge_id: _toInt(map['charge_id']) ?? 0, // Asigna 0 si el valor es null
+      user_id: _toInt(map['user_id']),
+      state: _toInt(map['state']),
       name: map['name'] ?? '',
       surname: map['surname'] ?? '',
       second_surname: map['second_surname'] ?? '',
@@ -55,6 +55,15 @@ class ProfessionalModel {
       phone: map['phone'].toString(),
       image_url: map['image_url'].toString(),
     );
+  }
+
+  static int? _toInt(dynamic value) {
+    if (value is int) {
+      return value;
+    } else if (value is String) {
+      return int.tryParse(value);
+    }
+    return null;
   }
 
   String toJson() => json.encode(toMap());

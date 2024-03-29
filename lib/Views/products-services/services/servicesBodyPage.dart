@@ -26,12 +26,6 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
   final ClientsScheduledController clientsController =
       Get.find<ClientsScheduledController>();
 
-  @override
-  void initState() {
-    super.initState();
-    controllerShoppingCart.loadDataInitiallyNecessary();
-  }
-
   //bool visibleButonEliminar = false;
   @override
   Widget build(BuildContext context) {
@@ -116,27 +110,38 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                         onTap: () async {
                                           if (controllerLogin.codigoQrValid() ==
                                               true) {
-                                            if (!_.selectService.contains(
-                                                    _.services[index]) &&
-                                                !(controllerShoppingCart
-                                                    .idServiceCart
-                                                    .contains(_.services[index]
-                                                        .name))) {
-                                              _.getSelectService(
-                                                  index); //guarda en la lista de los seleccionados
-                                              controllerShoppingCart
-                                                  .updateShoppingCartValue(
-                                                      0, //aqui 0 porque este campo solo lo utilizo si fuera un producto
-                                                      index,
-                                                      controllerShoppingCart
-                                                          .carIdClienteSelect,
-                                                      'service',
-                                                      _.services[index].id);
-                                              //AQUI ESTOY MANDANDO EN SEGUNDO EL TIEMPO QUE HAY QUE AGREGARLE AL TIMER
-                                              //todo este codigo aqui esta sumando y sumando el tiempo al agregar servicio
-                                              clientsController.modifingTime((_
-                                                  .services[index]
-                                                  .duration_service));
+                                            int resulButton = 0;
+                                            //verificar que solo le de una sola vez
+                                            resulButton = controllerLogin
+                                                .handleButtonClickService(
+                                                    _.services[index].id);
+                                            if (resulButton == 1) {
+                                              if (!_.selectService.contains(
+                                                      _.services[index]) &&
+                                                  !(controllerShoppingCart
+                                                      .idServiceCart
+                                                      .contains(_
+                                                          .services[index]
+                                                          .name))) {
+                                                _.getSelectService(
+                                                    index); //guarda en la lista de los seleccionados
+                                                controllerShoppingCart
+                                                    .updateShoppingCartValueSer(
+                                                        _.services[index]
+                                                            .price_service, //aqui 0 porque este campo solo lo utilizo si fuera un producto
+                                                        _.services[index].id,
+                                                        controllerShoppingCart
+                                                            .carIdClienteSelect,
+                                                        'service',
+                                                        _.services[index].name);
+                                                //AQUI ESTOY MANDANDO EN SEGUNDO EL TIEMPO QUE HAY QUE AGREGARLE AL TIMER
+                                                //todo este codigo aqui esta sumando y sumando el tiempo al agregar servicio
+                                                print(
+                                                    'tiempo a sumar = :${_.services[index].duration_service}');
+                                                clientsController.modifingTime(
+                                                    (_.services[index]
+                                                        .duration_service));
+                                              }
                                             }
                                           } else {
                                             Get.snackbar(
@@ -224,8 +229,8 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                                   .maxWidth *
                                                               (_.services[index]
                                                                       .duration_service /
-                                                                  6) /
-                                                              10, //TODO AQUI CALCULA PARA QUE PINTE EL CONTAINER-RESPECTO-TIEMPO
+                                                                  controllerLogin
+                                                                      .serviceTime), //TODO AQUI CALCULA PARA QUE PINTE EL CONTAINER-RESPECTO-TIEMPO
                                                           decoration:
                                                               const BoxDecoration(
                                                                   borderRadius:

@@ -410,7 +410,9 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                           Icons.bar_chart),
                                     ),
                                     InkWell(
-                                      onTap: () {
+                                      onTap: () async {
+                                        await coexistenceController
+                                            .fetchBranchProfessionals();
                                         pagesConfigC.onTabTapped(
                                             4); //index = 4 -> /CoexistencePage
                                       },
