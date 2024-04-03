@@ -1,12 +1,13 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
 //import 'package:animate_do/animate_do.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:get/get.dart';
-import 'package:turnopro_apk/env.dart';
 
 class ShoppingCartPage extends StatelessWidget {
   ShoppingCartPage({super.key});
@@ -19,9 +20,20 @@ class ShoppingCartPage extends StatelessWidget {
   final ClientsScheduledController clientsController =
       Get.find<ClientsScheduledController>();
   final LoginController controllerLogin = Get.find<LoginController>();
+  final ShoppingCartController shoppingCar = Get.find<ShoppingCartController>();
+  void ejecutarCadaQuinceSegundos() {
+    Timer.periodic(Duration(seconds: 10), (timer) {
+      // Lógica que quieres ejecutar cada 15 segundos
+      print('Método ejecutado cada 15 segundos  shoppingCar.loadCart()');
+      shoppingCar.loadCart();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    /* WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ejecutarCadaQuinceSegundos();
+    });*/
     final double heightScreen = MediaQuery.of(context).size.height;
     int heightFlexBody = 18;
     if (heightScreen <= 534.0) {
@@ -228,10 +240,20 @@ class ShoppingCartPage extends StatelessWidget {
                                                     }
                                                   },
                                                   child: _.requestDeleteOrder.contains(
-                                                          controllerShoppingCart
-                                                              .selectserviceCart[
-                                                                  index]
-                                                              .id)
+                                                              controllerShoppingCart
+                                                                  .selectserviceCart[
+                                                                      index]
+                                                                  .id) ||
+                                                          (_.idServiceCart.contains(
+                                                                  controllerShoppingCart
+                                                                      .selectserviceCart[
+                                                                          index]
+                                                                      .nameService) &&
+                                                              controllerShoppingCart
+                                                                      .selectserviceCart[
+                                                                          index]
+                                                                      .request_delete ==
+                                                                  1)
                                                       ? const Icon(
                                                           Icons.delete,
                                                           size: 35,
@@ -519,49 +541,3 @@ class ShoppingCartPage extends StatelessWidget {
         ));
   }
 }
-
-
-
-// class AlertDialogPago extends StatelessWidget {
-//   final double totalPrice;
-
-//   const AlertDialogPago({Key? key, required this.totalPrice}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return AlertDialog(
-//       title: const Text('Confirmación'),
-//       content: SizedBox(
-//         height: 50.0, // Ajusta la altura según tu necesidad
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min, // Establece el tamaño mínimo
-//           children: [
-//             const Text('¿Desea Confirmar el pago?'),
-//             Text(
-//               'Total: \$${totalPrice.toStringAsFixed(2)}',
-//               style: TextStyle(
-//                   fontSize: (MediaQuery.of(context).size.height * 0.02),
-//                   fontWeight: FontWeight.w900),
-//             ),
-//           ],
-//         ),
-//       ),
-//       actions: [
-//         TextButton(
-//           onPressed: () {
-//             // Cerrar el AlertDialog
-//             Navigator.of(context).pop();
-//           },
-//           child: const Text('Aceptar'),
-//         ),
-//         TextButton(
-//           onPressed: () {
-//             // Cerrar el AlertDialog
-//             Navigator.of(context).pop();
-//           },
-//           child: const Text('Cerrar'),
-//         ),
-//       ],
-//     );
-//   }
-// }

@@ -9,8 +9,8 @@ class DependencyInjection {
   static void registerDependencies() {
     Get.put(LoginController());
     Get.put(StatisticController());
-    Get.put(NotificationController());
     Get.put(ClientsScheduledController());
+    Get.put(NotificationController());
     Get.put(ClientsCoordinatorController());
     Get.put(ClientsTechnicalController());
     Get.put(ServiceController());

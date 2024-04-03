@@ -48,8 +48,23 @@ class ClientsScheduledController extends GetxController {
   List<int> item = [];
   List<int> itemDel = [];
   bool activeModifyTime = false;
+  bool activeModifyTimeRest = false;
   int modifyTimeSpecific = -99;
+  int modifyTimeSpecificRest = -99;
+  int modifyTimeSpecificRest1 = -99;
+  int modifyTimeSpecificRest2 = -99;
+  int modifyTimeSpecificRest3 = -99;
+  int modifyTimeSpecificRestTIME = 0;
+  int modifyTimeSpecificRestTIME1 = 0;
+  int modifyTimeSpecificRestTIME2 = 0;
+  int modifyTimeSpecificRestTIME3 = 0;
   List<int> modifyTime = [
+    -1, //este es de _animationController1
+    -1, //este es de _animationController2
+    -1, //este es de _animationController3
+    -1 //este es de _animationController4
+  ]; //cuando alguno sea -1 modificar ese tiempo
+  List<int> modifyTimeRest = [
     -1, //este es de _animationController1
     -1, //este es de _animationController2
     -1, //este es de _animationController3
@@ -129,6 +144,22 @@ class ClientsScheduledController extends GetxController {
     }
     if (value == 4) {
       notificationClients4 = idClient;
+    }
+    update();
+  }
+
+  void clearNotificationClients1(int value) {
+    if (value == 1) {
+      notificationClients1 = null;
+    }
+    if (value == 2) {
+      notificationClients2 = null;
+    }
+    if (value == 3) {
+      notificationClients3 = null;
+    }
+    if (value == 4) {
+      notificationClients4 = null;
     }
     update();
   }
@@ -527,6 +558,62 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
+  Future<void> watchModifyTimeRest(reservationId, descripcion) async {
+    print(
+        'modificar time de mm estoy entrando ahora mismo watchModifyTimeRest');
+    int timeRest = obtenerDuracionServicio(descripcion);
+    if (clientsAttended1 != null) {
+      if (reservationId == clientsAttended1!.reservation_id) {
+        print('modificar time de mm 1');
+
+        modifyTimeSpecificRest = 0;
+        modifyTimeSpecificRestTIME += timeRest;
+        print(
+            'modificar time de mm modifyTimeSpecificRestTIME = $modifyTimeSpecificRestTIME');
+        print('modificar time de mm timeRest = $timeRest');
+      }
+    }
+    if (clientsAttended2 != null) {
+      //si es 2 es que ya termino de atender al cliente2
+      if (reservationId == clientsAttended2!.reservation_id) {
+        print('modificar time de mm 2');
+        modifyTimeSpecificRest1 = 1;
+        modifyTimeSpecificRestTIME1 += timeRest;
+      }
+    }
+    if (clientsAttended3 != null) {
+      //si es 2 es que ya termino de atender al cliente3
+      if (reservationId == clientsAttended3!.reservation_id) {
+        print('modificar time de mm 3');
+        modifyTimeSpecificRest2 = 2;
+        modifyTimeSpecificRestTIME2 += timeRest;
+        modifyTimeRest.addAll([-1]);
+      }
+    }
+    if (clientsAttended4 != null) {
+      //si es 2 es que ya termino de atender al cliente4
+      if (reservationId == clientsAttended4!.reservation_id) {
+        print('modificar time de mm 4');
+        modifyTimeSpecificRest3 = 3;
+        modifyTimeSpecificRestTIME3 += timeRest;
+      }
+    }
+    update();
+  }
+
+  clearModifyTimeSpecificRest() {
+    modifyTimeSpecificRest = -99;
+    modifyTimeSpecificRest1 = -99;
+    modifyTimeSpecificRest2 = -99;
+    modifyTimeSpecificRest3 = -99;
+    //
+    modifyTimeSpecificRestTIME = 0;
+    modifyTimeSpecificRestTIME1 = 0;
+    modifyTimeSpecificRestTIME2 = 0;
+    modifyTimeSpecificRestTIME3 = 0;
+    update();
+  }
+
   Future<void> watchModifyTime(reservationId) async {
     if (clientsAttended1 != null) {
       if (reservationId == clientsAttended1!.reservation_id) {
@@ -562,6 +649,39 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
+  void modifingTimeRest(String descripcion) {
+    int timeRest = obtenerDuracionServicio(descripcion);
+    print('tiempo a restar es :$timeRest');
+
+    modifyTimeRest[modifyTimeSpecificRest] = timeRest;
+
+    //al darle true le estoy diciendo que verifique que en algun timer hay cambio de tiempo
+    activeModifyTimeRest = true;
+    print(
+        'aqui toma valor -void modifingTime(time)- activeModifyTime:$activeModifyTime');
+    update();
+  }
+
+  int obtenerDuracionServicio(String cadena) {
+    // Definimos la expresión regular para encontrar el número de minutos
+    RegExp regExp = RegExp(r'\b\d+\b');
+
+    // Buscamos todas las coincidencias de la expresión regular en el texto
+    Iterable<Match> matches = regExp.allMatches(cadena);
+
+    // Iteramos sobre todas las coincidencias
+    for (Match match in matches) {
+      // Obtenemos el texto que coincide con la expresión regular
+      String duracionTexto = match.group(0)!;
+
+      // Convertimos el texto a un entero y lo devolvemos
+      return int.parse(duracionTexto);
+    }
+
+    // Si no se encuentra ningún número en la cadena, devolvemos 0 o algún otro valor predeterminado según sea necesario
+    return 0;
+  }
+
   void modifingTime(time) {
     print(
         'tiempo a sumar =  1-*-*-*-------------------inicio-------------------------${modifyTime[modifyTimeSpecific]}');
@@ -590,6 +710,19 @@ class ClientsScheduledController extends GetxController {
     print(
         'aqui toma valor -void setActiveModifyTime(bool value)- activeModifyTime:$activeModifyTime');
     update();
+  }
+
+  void setActiveModifyTimeRest(bool value) {
+    activeModifyTimeRest = value;
+    print(
+        'aqui toma valor -void setActiveModifyTime(bool value)- activeModifyTime:$activeModifyTime');
+    update();
+  }
+
+  Future<bool> setActiveModifyTimeRestVer() async {
+    await Future.delayed(
+        Duration(milliseconds: 500)); // Simula una operación asíncrona
+    return activeModifyTime;
   }
 
   Future getProfessionalState(idBranch) async {
@@ -994,6 +1127,78 @@ class ClientsScheduledController extends GetxController {
     } catch (e) {
       print(
           'Dio error en Future<void> fetchClientsScheduled que se encuentra en el controlador del Login:$e');
+    }
+  }
+
+  Future<void> logicaInesperadaQuitarTiempo(
+      List<Map>? attendingClientList) async {
+    try {
+      if (attendingClientList != null && attendingClientList.isNotEmpty) {
+        for (var map in attendingClientList) {
+          int? clock;
+          int? timeClock;
+          int? detached;
+
+          map.forEach((key, value) {
+            // print('clientes asistiendo key :$key');
+            // print('clientes asistiendo value :$value');
+            // Asignar valores a las variables según la clave
+            switch (key) {
+              case "detached":
+                detached = value;
+                break;
+              case "clock":
+                clock = value;
+                break;
+              case "timeClock":
+                timeClock = value;
+                break;
+
+              default:
+                // Manejar otras claves si es necesario
+                break;
+            }
+          });
+
+          // Lógica adicional si es necesario con las variables asignadas
+          if (clock == 1 && detached == 99) {
+            print('clientes asistiendo entre a :$clock');
+            // Asignar a variables específicas para clock 1
+            timeClientsAttended1 = timeClock!;
+
+            print(
+                'clientes asistiendo hora timeClock***********timeClock*****:$timeClock');
+          } else if (clock == 2 && detached == 99) {
+            print('clientes asistiendo entre a :$clock');
+            // Asignar a variables específicas para clock 2
+            timeClientsAttended2 = timeClock!;
+            print(
+                'clientes asistiendo hora timeClock*******************:$timeClientsAttended2');
+          } else if (clock == 3 && detached == 99) {
+            print('clientes asistiendo entre a :$clock');
+            // Asignar a variables específicas para clock 3
+            timeClientsAttended3 = timeClock!;
+            print(
+                'clientes asistiendo hora timeClock****************:$timeClientsAttended3');
+          } else if (clock == 4 && detached == 99) {
+            print('clientes asistiendo entre a :$clock');
+            // Asignar a variables específicas para clock 3
+            timeClientsAttended4 = timeClock!;
+            print(
+                'clientes asistiendo hora timeClock*****************:$timeClientsAttended4');
+          }
+          // Puedes agregar más condiciones según sea necesario para otros valores de clock
+        } //cierre for (var map in attendingClientList)
+
+        update();
+        //
+      } else {
+        // La lista es nula o está vacía
+        print(
+            '!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo es nula o está vacía.');
+      }
+    } catch (e) {
+      print('ERROR en Future<void> logicaInesperada:$e');
     }
   }
 

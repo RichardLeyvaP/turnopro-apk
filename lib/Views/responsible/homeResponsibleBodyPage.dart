@@ -596,30 +596,33 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                             print(
                                 'return resul: orderDeleteCar[i].id ${contShopp.orderDeleteCar[i].id}');
                             if (result == 1) {
-                              String serviceProduct = 'servicio';
+                              String typeDelete =
+                                  'Aceptada Eliminación de Servicio';
+                              String serviceProduct = 'Servicio';
                               String? nameServiceProduct =
                                   contShopp.orderDeleteCar[i].nameService;
                               if (contShopp.orderDeleteCar[i].nameService ==
                                   '') {
-                                serviceProduct = 'producto';
+                                typeDelete = 'Aceptada Eliminación de Producto';
+                                serviceProduct = 'Producto';
                                 nameServiceProduct =
                                     contShopp.orderDeleteCar[i].nameProduct;
                               }
-                              print(
-                                  'return resul: estoy nameProduct:${contShopp.orderDeleteCar[i].nameProduct} ');
-                              print(
-                                  'return resul: estoy nameService:${contShopp.orderDeleteCar[i].nameService} ');
-                              print('return resul: estoy adentro ');
-                              print(
-                                  'return resul: branchIdLoggedIn ${controllerLogin.branchIdLoggedIn}');
-                              print(
-                                  'return resul: profesional_id ${contShopp.orderDeleteCar[i].profesional_id}');
 
-                              notiController.storeNotification(
-                                  'Aceptada su Solicitud de Eliminacion ',
-                                  controllerLogin.branchIdLoggedIn,
-                                  contShopp.orderDeleteCar[i].profesional_id,
-                                  'El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} fue aprobado y eliminado satisfactoriamente.');
+                              if (typeDelete ==
+                                  'Aceptada Eliminación de Servicio') {
+                                notiController.storeNotification2(
+                                    typeDelete,
+                                    controllerLogin.branchIdLoggedIn,
+                                    contShopp.orderDeleteCar[i].profesional_id,
+                                    '$serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado con tiempo de ${contShopp.orderDeleteCar[i].duration_service} min.${contShopp.orderDeleteCar[i].reservation_id}');
+                              } else {
+                                notiController.storeNotification(
+                                    typeDelete,
+                                    controllerLogin.branchIdLoggedIn,
+                                    contShopp.orderDeleteCar[i].profesional_id,
+                                    'El $serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado satisfactoriamente.');
+                              }
                             }
                             if (controllerLogin.branchIdLoggedIn != null) {
                               await contShopp.loadOrderDeleteCar(

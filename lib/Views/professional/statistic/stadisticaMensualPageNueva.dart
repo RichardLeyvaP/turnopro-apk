@@ -141,7 +141,7 @@ class _StadisticaMensualPageNuevaState
             const SizedBox(
               height: 10,
             ),
-            controllerStat.statisticsGeneral.isEmpty
+            controllerStat.statisticsGeneralMen.isEmpty
                 ? Center(
                     child: Column(
                       children: [
@@ -184,7 +184,7 @@ class _StadisticaMensualPageNuevaState
                         padding: const EdgeInsets.all(6.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: controllerStat.statisticsGeneral.entries
+                          children: controllerStat.statisticsGeneralMen.entries
                               .map((entry) {
                             i++;
 

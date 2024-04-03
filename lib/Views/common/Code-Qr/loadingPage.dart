@@ -78,18 +78,30 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
           if (controllerLogin.usserMssQr == 1) {
             await controllerLogin.insertPuesto(controllerLogin.professionalsQR,
                 controllerLogin.workplaceidQR, 0);
+            await controllerLogin.insertHoraEntrada(
+                controllerLogin.professionalsQR,
+                controllerLogin.branchIdLoggedIn);
           }
           Get.offAllNamed('/Professional');
         } else if (controllerLogin.chargeUserLoggedIn == "Encargado") {
+          await controllerLogin.insertHoraEntrada(
+              controllerLogin.professionalsQR,
+              controllerLogin.branchIdLoggedIn);
           Get.offAllNamed('/HomeResponsible');
         } else if (controllerLogin.chargeUserLoggedIn == "Tecnico") {
           //LLAMAR AL CONTROLADOR PARA INSERTARLO EN EL PUESTO DE TRABAJO
           if (controllerLogin.usserMssQr == 1) {
             await controllerLogin.insertPuesto(controllerLogin.professionalsQR,
                 controllerLogin.workplaceidQR, controllerLogin.placesQR);
+            await controllerLogin.insertHoraEntrada(
+                controllerLogin.professionalsQR,
+                controllerLogin.branchIdLoggedIn);
           }
           Get.offAllNamed('/HomeTecnico');
         } else if (controllerLogin.chargeUserLoggedIn == "Coordinador") {
+          await controllerLogin.insertHoraEntrada(
+              controllerLogin.professionalsQR,
+              controllerLogin.branchIdLoggedIn);
           Get.offAllNamed('/HomeCordinador');
         } else {
           Get.offAllNamed('/LoginFormPage');

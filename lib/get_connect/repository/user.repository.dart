@@ -143,6 +143,29 @@ class UserRepository extends GetConnect {
     }
   }
 
+  // ignore: non_constant_identifier_names
+  Future<int> insertHoraEntrada(professional_id, branch_id) async {
+    try {
+      var url = '${Env.apiEndpoint}/record';
+
+      // Parámetros que deseas enviar en la solicitud POST
+      final Map<String, dynamic> body = {
+        'professional_id': professional_id,
+        'branch_id': branch_id,
+      };
+
+      // Realizar la solicitud POST
+      final response = await post(url, body);
+      if (response.statusCode == 200) {
+        return 1;
+      } else {
+        return -99;
+      }
+    } catch (e) {
+      return -999;
+    }
+  }
+
   Future<bool> exitPostworking(int id, String type) async {
     try {
       var url = '';

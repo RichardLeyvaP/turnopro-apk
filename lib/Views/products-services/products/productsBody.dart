@@ -276,76 +276,84 @@ class _ProductsBodyState extends State<ProductsBody>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             InkWell(
-                              onTap: () {
-                                if (controllerLogin.codigoQrValid() == true) {
-                                  controllerProduct.buyProduct(itemIndex);
-                                  controllerShoppingCart
-                                      .updateShoppingCartValue(
-                                          priceProduct,
-                                          tabsID[_tabController
-                                              .index], //le paso el id d ela categoria
-                                          controllerShoppingCart
-                                              .carIdClienteSelect,
-                                          'product',
-                                          id);
-                                } else {
-                                  Get.snackbar(
-                                    'Mensaje',
-                                    'Debe de escanear el código Qr de entrada',
-                                    duration:
-                                        const Duration(milliseconds: 2500),
-                                    backgroundColor: const Color.fromARGB(
-                                        118, 255, 255, 255),
-                                    showProgressIndicator: true,
-                                    progressIndicatorBackgroundColor:
-                                        const Color.fromARGB(
-                                            255, 203, 205, 209),
-                                    progressIndicatorValueColor:
-                                        const AlwaysStoppedAnimation(
-                                            Color(0xFFF18254)),
-                                    overlayBlur: 3,
-                                  );
-                                }
-                              },
-                              child: Container(
-                                height: (MediaQuery.of(context).size.height *
-                                    0.035),
-                                width:
-                                    (MediaQuery.of(context).size.width * 0.2),
-                                decoration: const BoxDecoration(
-                                  color: Color.fromARGB(95, 46, 20, 20),
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(borderRadiusValue)),
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Color.fromARGB(255, 238, 234, 234),
-                                      Color.fromARGB(255, 134, 134, 136),
-                                    ],
-                                    stops: [0.0, 0.8],
-                                    begin: FractionalOffset.centerRight,
-                                    end: FractionalOffset.centerLeft,
+                              onTap: () {},
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  padding: MaterialStateProperty.all<
+                                      EdgeInsetsGeometry>(
+                                    const EdgeInsets.symmetric(
+                                        //vertical: 16.0,
+                                        horizontal: 18.0), // Ajusta el padding
                                   ),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color.fromARGB(200, 43, 44, 49)),
+                                  // Añadir más propiedades de estilo aquí
                                 ),
-                                child: Center(
-                                    child: Text(
-                                  'Agregar',
-                                  style: TextStyle(
-                                      fontSize:
-                                          (MediaQuery.of(context).size.width *
-                                              0.03),
-                                      fontWeight: FontWeight.w600),
-                                )),
-                              ),
-                            ),
-                            CircleAvatar(
-                              radius: (MediaQuery.of(context).size.width *
-                                  0.04), // Ajusta este valor según tu preferencia
-                              backgroundColor: const Color(0xFFF18254),
-                              child: Icon(
-                                Icons.check,
-                                color: Colors.white,
-                                size:
-                                    (MediaQuery.of(context).size.height * 0.03),
+                                onPressed: () {
+                                  if (controllerLogin.codigoQrValid() == true) {
+                                    controllerProduct.buyProduct(itemIndex);
+                                    controllerShoppingCart
+                                        .updateShoppingCartValue(
+                                            priceProduct,
+                                            tabsID[_tabController
+                                                .index], //le paso el id d ela categoria
+                                            controllerShoppingCart
+                                                .carIdClienteSelect,
+                                            'product',
+                                            id);
+                                  } else {
+                                    Get.snackbar(
+                                      'Mensaje',
+                                      'Debe de escanear el código Qr de entrada',
+                                      duration:
+                                          const Duration(milliseconds: 2500),
+                                      backgroundColor: const Color.fromARGB(
+                                          118, 255, 255, 255),
+                                      showProgressIndicator: true,
+                                      progressIndicatorBackgroundColor:
+                                          const Color.fromARGB(
+                                              255, 203, 205, 209),
+                                      progressIndicatorValueColor:
+                                          const AlwaysStoppedAnimation(
+                                              Color(0xFFF18254)),
+                                      overlayBlur: 3,
+                                    );
+                                  }
+                                },
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: (MediaQuery.of(context)
+                                              .size
+                                              .width *
+                                          0.04), // Ajusta este valor según tu preferencia
+                                      backgroundColor: const Color(0xFFF18254),
+                                      child: Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                        size: (MediaQuery.of(context)
+                                                .size
+                                                .height *
+                                            0.03),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 12,
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        'AGREGAR',
+                                        style: TextStyle(
+                                            fontSize: (MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.03),
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],

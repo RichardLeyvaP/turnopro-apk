@@ -96,10 +96,10 @@ class ProductController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    Future.delayed(const Duration(seconds: 2), () {
-      isLoading = false;
-      update();
-    });
+    // Future.delayed(const Duration(seconds: 2), () {
+    isLoading = false;
+    update();
+    // });
   }
 
   void updateAppBarValue(int newValue) {

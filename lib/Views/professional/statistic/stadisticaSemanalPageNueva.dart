@@ -84,11 +84,11 @@ class _StadisticaSemanalPageNuevaState
                             color: const Color.fromARGB(130, 0, 0, 0),
                           ),
                           Text(
-                            controllerStat.dateRange == ''
+                            controllerStat.dateRangeSem == ''
                                 ? '  seleccione una fecha'
-                                : dateActual == controllerStat.dateRange
+                                : dateActual == controllerStat.dateRangeSem
                                     ? '   Seleccione una semana'
-                                    : controllerStat.dateRange,
+                                    : controllerStat.dateRangeSem,
                             style: const TextStyle(
                                 color: Color.fromARGB(130, 0, 0, 0)),
                           ),
@@ -107,7 +107,7 @@ class _StadisticaSemanalPageNuevaState
             const SizedBox(
               height: 10,
             ),
-            controllerStat.statisticsGeneral.isEmpty
+            controllerStat.statisticsGeneralSem.isEmpty
                 ? Center(
                     child: Column(
                       children: [
@@ -150,7 +150,7 @@ class _StadisticaSemanalPageNuevaState
                         padding: const EdgeInsets.all(6.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: controllerStat.statisticsGeneral.entries
+                          children: controllerStat.statisticsGeneralSem.entries
                               .map((entry) {
                             i++;
 
@@ -496,7 +496,7 @@ class _StadisticaSemanalPageNuevaState
                             startDate1 = formatterDate.format(firstDayOfWeek);
                             endDate1 = formatterDate.format(lastDayOfWeek);
 
-                            await controllerStatistic.getDataStatisticDay(
+                            await controllerStatistic.getDataStatisticSem(
                                 startDate1, endDate1, firstDayOfWeek.day, 7);
                             Navigator.pop(context);
 

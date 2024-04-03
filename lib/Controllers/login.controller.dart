@@ -521,6 +521,20 @@ class LoginController extends GetxController {
     }
   }
 
+  Future<void> insertHoraEntrada(professional_id, branch_id) async {
+    try {
+      var result =
+          await usuarioLg.insertHoraEntrada(professional_id, branch_id);
+      if (result == 1) {
+        print('esto es lo que INSERTO LA HORA D EENTRADA');
+      } else {
+        print('esto es lo que NOO INSERTO LA HORA D EENTRADA');
+      }
+    } catch (e) {
+      print('esto es lo que Erroor:$e');
+    }
+  }
+
   Future<void> exitPostworking(String type) async {
     try {
       bool result; //INICIALIZANDO A NULL

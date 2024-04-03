@@ -3,6 +3,7 @@
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:soundpool/soundpool.dart';
+import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Models/notification_model.dart';
 import 'package:turnopro_apk/get_connect/repository/notification.repository.dart';
 
@@ -14,6 +15,8 @@ class NotificationController extends GetxController {
 //DECLARACION DE VARIABLES
   NotificationRepository repository = NotificationRepository();
   final LoginController controllerLogin = Get.find<LoginController>();
+  final ClientsScheduledController controllerclient =
+      Get.find<ClientsScheduledController>();
   int notificationListLength = 0;
   int notificationListNewLength = 0;
   int notificationListBack = 0;
@@ -21,6 +24,7 @@ class NotificationController extends GetxController {
   List<NotificationModel> notificationListNew = []; // Lista de Notificaciones
   List<NotificationModel> selectNotification = [];
   bool isLoading = true;
+  List<String> created_atTime = [];
 
   @override
   void onReady() {
@@ -33,6 +37,21 @@ class NotificationController extends GetxController {
 
   getList() {
     return notification;
+  }
+
+  Future<bool> storeNotification2(
+      //todo1
+      tittle,
+      branchId,
+      professionalId,
+      description) async {
+    //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
+    bool result = await repository.storeNotification2(
+        tittle, branchId, professionalId, description);
+    if (result) {
+      print('CORRECTO inserto una nueva notificacion ');
+    }
+    return result;
   }
 
   Future<bool> storeNotification(
@@ -80,6 +99,7 @@ class NotificationController extends GetxController {
     try {
       Map<String, dynamic> result =
           await repository.getNotificationList(idBranch, idProfe);
+      bool siHayEliminarService = false;
 
       if (result.containsKey('Erroor') && result['Erroor'] == true) {
         print(
@@ -91,6 +111,36 @@ class NotificationController extends GetxController {
 
         notificationListNew = result['notificationListNew'];
         notificationListNewLength = notificationListNew.length;
+
+        notificationListNew.forEach((element) async {
+          if (element.state == 3 &&
+              element.tittle == 'Aceptada Eliminación de Servicio') {
+            print('modificar time de mm 1 estoy aqui en el forEach');
+            String textoCompleto = element.description;
+            // String descripcion =
+            //     textoCompleto.split('.')[0]; // Obtener la descripción
+            // Obtener el segundo número (999)
+            String numeroOcultoString = textoCompleto
+                .split('.')[1]
+                .trim(); // Obtener la parte después del punto y eliminar espacios en blanco
+            int idReservation =
+                int.parse(numeroOcultoString); // Convertir a entero
+            controllerclient.watchModifyTimeRest(idReservation,
+                textoCompleto); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
+            updateNotifications2(idBranch, idProfe,
+                element.id); //aqui es para no repetir esto y lo pongo en 0
+
+            //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
+            //DESCONTAR EL TIEMPO AL RELOJ
+            //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
+            siHayEliminarService = true;
+          }
+        });
+        if (siHayEliminarService ==
+            true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+        {
+          controllerclient.setActiveModifyTimeRest(true);
+        }
 
         update();
       }
@@ -109,6 +159,19 @@ class NotificationController extends GetxController {
         print('Las notificaciones fueron vistas');
       } else {
         print('No modifico las notificaciones como vistas');
+      }
+    } catch (e) {
+      print('error de notification:$e');
+    }
+  }
+
+  Future<void> updateNotifications2(idBranch, idProf, id) async {
+    try {
+      int result = await repository.updateNotifications2(idBranch, idProf, id);
+      if (result == 1) {
+        print('Las notificaciones fueron cambiada a 3 estas de id:$id');
+      } else {
+        print('Las notificaciones fueron cambiada a 3 NOOOOOOOOOOOOO');
       }
     } catch (e) {
       print('error de notification:$e');

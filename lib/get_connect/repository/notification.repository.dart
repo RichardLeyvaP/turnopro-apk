@@ -8,6 +8,33 @@ import 'package:turnopro_apk/env.dart';
 
 class NotificationRepository extends GetConnect {
 //insertar notificaciones
+  Future<bool> storeNotification2(
+      tittle, branchId, professionalId, description) async {
+    var url = '${Env.apiEndpoint}/notification2';
+    print('inserto correctamente ********** la notificacio:$tittle');
+    final Map<String, dynamic> body = {
+      'tittle': tittle,
+      'branch_id': branchId,
+      'professional_id': professionalId,
+      'description': description,
+    };
+
+    final response = await post(url, body);
+    print(tittle);
+    print(branchId);
+    print(professionalId);
+    print(description);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      print('inserto correctamente la notificacio:$tittle');
+      return true;
+    } else {
+      print('inserto correctamente ********** ERRORRR');
+      print('ERROR no inserto la notificacio');
+      return false;
+    }
+  }
+
   Future<bool> storeNotification(
       tittle, branchId, professionalId, description) async {
     var url = '${Env.apiEndpoint}/notification';
@@ -50,7 +77,9 @@ class NotificationRepository extends GetConnect {
           NotificationModel u =
               NotificationModel.fromJson(jsonEncode(notification));
           notificationList.add(u);
-          if (u.state == 0) {
+          if (u.state == 0 || u.state == 3) {
+            //si esta en estos estados es que no se ha visto
+            //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
             notificationListNew.add(u);
           }
         }
@@ -79,6 +108,29 @@ class NotificationRepository extends GetConnect {
       final Map<String, dynamic> body = {
         'branch_id': idBranch,
         'professional_id': idProf,
+      };
+
+      final response = await put(url, body);
+      //print('MANDE A ELIMINAR:$body');
+      if (response.statusCode == 200) {
+        return 1;
+      } else {
+        return -990099;
+      }
+    } catch (e) {
+      return -990099;
+    }
+  }
+
+  Future<int> updateNotifications2(idBranch, idProf, id) async {
+    try {
+      var url = '${Env.apiEndpoint}/notification2';
+
+      // Parámetros que deseas enviar en la solicitud POST
+      final Map<String, dynamic> body = {
+        'branch_id': idBranch,
+        'professional_id': idProf,
+        'id': id,
       };
 
       final response = await put(url, body);

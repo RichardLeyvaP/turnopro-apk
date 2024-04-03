@@ -117,9 +117,9 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                               loginController.branchIdLoggedIn);
                         } else if (index == 2) {
                           loginController.setIsLoadingFor(true);
-                          await notiCont.fetchNotificationList(
+                          /* await notiCont.fetchNotificationList(
                               loginController.branchIdLoggedIn,
-                              loginController.idProfessionalLoggedIn);
+                              loginController.idProfessionalLoggedIn);*/
                         }
                         pagesConfigController.onTabTapped(index);
                       },
@@ -158,7 +158,7 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                                 if (_notiCont.notificationListNewLength !=
                                         _notiCont.notificationListBack &&
                                     _notiCont.notificationListNewLength != 0) {
-                                  _notiCont.reproducirSound();
+                                  //  _notiCont.reproducirSound();
                                 }
                                 return Text(
                                     (_notiCont.notificationListNewLength)

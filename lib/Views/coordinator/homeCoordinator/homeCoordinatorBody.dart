@@ -135,192 +135,194 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
-                        color: Color.fromARGB(255, 26, 50, 82),
-                      ),
-                      child: controllerclient.isLoading
-                          ? const Center(
-                              child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                CircularProgressIndicator(
-                                  color: Color.fromARGB(255, 241, 130, 84),
-                                ),
-                                Text(
-                                  'Cargando ...',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 12),
-                                )
-                              ],
-                            ))
-                          : controllerclient.clientsScheduledListBranchLength >
-                                  0
-                              ? Stack(
-                                  children: [
-                                    Positioned.fill(
-                                      child: TabBarView(
-                                        controller: _tabController,
-                                        children: [
-                                          // Contenido de las pestañas
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                          color: Color.fromARGB(255, 26, 50, 82),
+                        ),
+                        child: controllerclient.isLoading
+                            ? const Center(
+                                child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CircularProgressIndicator(
+                                    color: Color.fromARGB(255, 241, 130, 84),
+                                  ),
+                                  Text(
+                                    'Cargando ...',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 12),
+                                  )
+                                ],
+                              ))
+                            : Stack(
+                                children: [
+                                  Positioned.fill(
+                                    child: TabBarView(
+                                      controller: _tabController,
+                                      children: [
+                                        // Contenido de las pestañas
 
-                                          SingleChildScrollView(
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8,
-                                                  top: 4,
-                                                  right: 8,
-                                                  bottom: 6),
-                                              child: FadeIn(
-                                                duration:
-                                                    const Duration(seconds: 2),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    GetBuilder<
-                                                            ShoppingCartController>(
-                                                        builder: (contShopp) {
-                                                      if (controllerShoppingCart
-                                                              .isLoading ==
-                                                          true) {
-                                                        return const Center(
-                                                            child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            SizedBox(
-                                                              height: 45,
-                                                            ),
-                                                            CircularProgressIndicator(
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      241,
-                                                                      130,
-                                                                      84),
-                                                            ),
-                                                            Text(
-                                                              'Cargando lista de solicitudes...',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 12),
-                                                            )
-                                                          ],
-                                                        ));
-                                                      } else {
-                                                        return Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  top: 33),
-                                                          child: showRequestsDelete(
-                                                              context,
-                                                              contShopp,
-                                                              loginController),
-                                                        );
-                                                      }
-                                                    }),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-
-                                          //AQUI ESTA LA LISTA DE COLAS
-                                          Padding(
+                                        SingleChildScrollView(
+                                          child: Padding(
                                             padding: const EdgeInsets.only(
-                                                top: 36,
-                                                left: 12,
-                                                right: 12,
-                                                bottom: 12),
-                                            child: ListView.builder(
-                                              itemCount: controllerclient
-                                                  .clientsScheduledListBranchLength,
-                                              itemBuilder: (context, index) =>
-                                                  cardClientTails(
-                                                      controllerclient,
-                                                      context,
-                                                      index,
-                                                      pagesConfigC
-                                                          .pageController2,
-                                                      pagesConfigC),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Positioned(
-                                      top: 0, // Posición arriba
-                                      left: 0,
-                                      right: 0,
-                                      child: Container(
-                                        height: 32,
-                                        color: Colors.transparent,
-                                        child: PreferredSize(
-                                          preferredSize: Size.fromHeight(36),
-                                          child: DefaultTabController(
-                                            length: 2,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 6, right: 6, top: 6),
-                                              child: TabBar(
-                                                controller: _tabController,
-                                                onTap: (index) {
-                                                  print(
-                                                      'SI ESTOY LLEGANDO AL OnTap');
-                                                  _tabController
-                                                      .animateTo(index);
-                                                },
-                                                labelColor: Color.fromARGB(
-                                                    255,
-                                                    26,
-                                                    50,
-                                                    82), // Color del texto
-                                                unselectedLabelColor: Colors
-                                                    .grey, // Color del texto cuando no está seleccionado
-
-                                                indicator: BoxDecoration(
-                                                  color: Colors
-                                                      .white, // Color de fondo cuando está seleccionado
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8), // Bordes redondeados, si lo deseas
-                                                ),
-                                                tabs: const [
-                                                  Tab(
-                                                    text: 'Solicitudes',
-                                                  ),
-                                                  Tab(
-                                                    text: '    Cola    ',
-                                                  ),
+                                                left: 8,
+                                                top: 4,
+                                                right: 8,
+                                                bottom: 6),
+                                            child: FadeIn(
+                                              duration:
+                                                  const Duration(seconds: 2),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  GetBuilder<
+                                                          ShoppingCartController>(
+                                                      builder: (contShopp) {
+                                                    if (controllerShoppingCart
+                                                            .isLoading ==
+                                                        true) {
+                                                      return const Center(
+                                                          child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          SizedBox(
+                                                            height: 45,
+                                                          ),
+                                                          CircularProgressIndicator(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    241,
+                                                                    130,
+                                                                    84),
+                                                          ),
+                                                          Text(
+                                                            'Cargando lista de solicitudes...',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 12),
+                                                          )
+                                                        ],
+                                                      ));
+                                                    } else {
+                                                      return Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(top: 33),
+                                                        child:
+                                                            showRequestsDelete(
+                                                                context,
+                                                                contShopp,
+                                                                loginController),
+                                                      );
+                                                    }
+                                                  }),
                                                 ],
                                               ),
                                             ),
                                           ),
                                         ),
+                                        controllerclient
+                                                    .clientsScheduledListBranchLength >
+                                                0
+                                            ?
+
+                                            //AQUI ESTA LA LISTA DE COLAS
+                                            Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 36,
+                                                    left: 12,
+                                                    right: 12,
+                                                    bottom: 12),
+                                                child: ListView.builder(
+                                                  itemCount: controllerclient
+                                                      .clientsScheduledListBranchLength,
+                                                  itemBuilder: (context,
+                                                          index) =>
+                                                      cardClientTails(
+                                                          controllerclient,
+                                                          context,
+                                                          index,
+                                                          pagesConfigC
+                                                              .pageController2,
+                                                          pagesConfigC),
+                                                ),
+                                              )
+                                            : const Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'No hay clientes en cola',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontSize: 16),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                      ],
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 0, // Posición arriba
+                                    left: 0,
+                                    right: 0,
+                                    child: Container(
+                                      height: 32,
+                                      color: Colors.transparent,
+                                      child: PreferredSize(
+                                        preferredSize: Size.fromHeight(36),
+                                        child: DefaultTabController(
+                                          length: 2,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 6, right: 6, top: 6),
+                                            child: TabBar(
+                                              controller: _tabController,
+                                              onTap: (index) {
+                                                print(
+                                                    'SI ESTOY LLEGANDO AL OnTap');
+                                                _tabController.animateTo(index);
+                                              },
+                                              labelColor: Color.fromARGB(
+                                                  255,
+                                                  26,
+                                                  50,
+                                                  82), // Color del texto
+                                              unselectedLabelColor: Colors
+                                                  .grey, // Color del texto cuando no está seleccionado
+
+                                              indicator: BoxDecoration(
+                                                color: Colors
+                                                    .white, // Color de fondo cuando está seleccionado
+                                                borderRadius: BorderRadius.circular(
+                                                    8), // Bordes redondeados, si lo deseas
+                                              ),
+                                              tabs: const [
+                                                Tab(
+                                                  text: 'Solicitudes',
+                                                ),
+                                                Tab(
+                                                  text: '    Cola    ',
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ],
-                                )
-                              : const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'No hay clientes en cola',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 16),
-                                      ),
-                                    ],
                                   ),
-                                ),
-                    ),
+                                ],
+                              )),
                   ),
                 ),
                 Expanded(
@@ -969,30 +971,33 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                             print(
                                 'return resul: orderDeleteCar[i].id ${contShopp.orderDeleteCar[i].id}');
                             if (result == 1) {
-                              String serviceProduct = 'servicio';
+                              String typeDelete =
+                                  'Aceptada Eliminación de Servicio';
+                              String serviceProduct = 'Servicio';
                               String? nameServiceProduct =
                                   contShopp.orderDeleteCar[i].nameService;
                               if (contShopp.orderDeleteCar[i].nameService ==
                                   '') {
-                                serviceProduct = 'producto';
+                                typeDelete = 'Aceptada Eliminación de Producto';
+                                serviceProduct = 'Producto';
                                 nameServiceProduct =
                                     contShopp.orderDeleteCar[i].nameProduct;
                               }
-                              print(
-                                  'return resul: estoy nameProduct:${contShopp.orderDeleteCar[i].nameProduct} ');
-                              print(
-                                  'return resul: estoy nameService:${contShopp.orderDeleteCar[i].nameService} ');
-                              print('return resul: estoy adentro ');
-                              print(
-                                  'return resul: branchIdLoggedIn ${controllerLogin.branchIdLoggedIn}');
-                              print(
-                                  'return resul: profesional_id ${contShopp.orderDeleteCar[i].profesional_id}');
 
-                              notiController.storeNotification(
-                                  'Aceptada su Solicitud de Eliminacion ',
-                                  controllerLogin.branchIdLoggedIn,
-                                  contShopp.orderDeleteCar[i].profesional_id,
-                                  'El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} fue aprobado y eliminado satisfactoriamente.');
+                              if (typeDelete ==
+                                  'Aceptada Eliminación de Servicio') {
+                                notiController.storeNotification2(
+                                    typeDelete,
+                                    controllerLogin.branchIdLoggedIn,
+                                    contShopp.orderDeleteCar[i].profesional_id,
+                                    '$serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado con tiempo de ${contShopp.orderDeleteCar[i].duration_service} min.${contShopp.orderDeleteCar[i].reservation_id}');
+                              } else {
+                                notiController.storeNotification(
+                                    typeDelete,
+                                    controllerLogin.branchIdLoggedIn,
+                                    contShopp.orderDeleteCar[i].profesional_id,
+                                    'El $serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado satisfactoriamente.');
+                              }
                             }
                             if (controllerLogin.branchIdLoggedIn != null) {
                               await contShopp.loadOrderDeleteCar(

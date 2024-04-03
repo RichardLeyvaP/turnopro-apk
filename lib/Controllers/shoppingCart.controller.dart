@@ -43,6 +43,7 @@ class ShoppingCartController extends GetxController {
   Future<void> loadCart() async {
     final ServiceController serviceControll = Get.find<ServiceController>();
     idServiceCart.clear();
+    requestDeleteOrder.clear();
     print('estoy cargando el carro de id car :$carIdClienteSelect');
 
     try {

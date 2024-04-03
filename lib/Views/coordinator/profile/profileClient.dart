@@ -29,8 +29,6 @@ class _ProfileClientState extends State<ProfileClient> {
   final LoginController loginControl = Get.find<LoginController>();
 
   int cantVisitas = 3;
-  String imageDirection =
-      '${Env.apiEndpoint}/images/professional/default_profile.jpg';
 
   String title = 'Servicios';
   Icon icon = Icon(
