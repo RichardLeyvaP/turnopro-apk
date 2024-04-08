@@ -57,7 +57,7 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                       showUnselectedLabels: false,
                       unselectedItemColor: Colors.white,
                       backgroundColor: const Color.fromARGB(255, 43, 44, 49),
-                      fixedColor: const Color(0xFFF18254),
+                      fixedColor: const Color(0xFFFDAE2A),
                       currentIndex: pagesConfigController.selectedIndex,
                       type: BottomNavigationBarType.fixed,
                       onTap: (index) =>
@@ -243,7 +243,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                               children: <Widget>[
                                 Container(
                                   decoration: const BoxDecoration(
-                                    color: Color(0xFFF18254),
+                                    color: Color(0xFFFDAE2A),
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(8),
                                       topRight: Radius.circular(8),
@@ -302,7 +302,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                           Color>(
-                                                      const Color(0xFF2B3141)),
+                                                      const Color(0xFF19CF9E)),
                                             ),
                                             onPressed: () async {
                                               // Lógica para enviar el comentario
@@ -376,7 +376,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                               children: <Widget>[
                                 Container(
                                   decoration: const BoxDecoration(
-                                    color: Color(0xFFF18254),
+                                    color: Color(0xFFFDAE2A),
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(8),
                                       topRight: Radius.circular(8),
@@ -440,7 +440,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                           Color>(
-                                                      const Color(0xFF2B3141)),
+                                                      const Color(0xFF19CF9E)),
                                             ),
                                             onPressed: () async {
                                               // Lógica para enviar el comentario

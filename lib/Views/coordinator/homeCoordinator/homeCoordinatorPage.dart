@@ -96,7 +96,7 @@ class _HomeCoordinatorPagesState extends State<HomeCoordinatorPages>
                       showUnselectedLabels: false,
                       unselectedItemColor: Colors.white,
                       backgroundColor: const Color.fromARGB(255, 43, 44, 49),
-                      fixedColor: const Color(0xFFF18254),
+                      fixedColor: const Color(0xFFFDAE2A),
                       currentIndex: pagesConfigController.selectedIndex,
                       type: BottomNavigationBarType.fixed,
                       onTap: (index) async {
@@ -348,7 +348,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                           Color>(
-                                                      const Color(0xFF2B3141)),
+                                                      const Color(0xFF19CF9E)),
                                             ),
                                             onPressed: () async {
                                               // Lógica para enviar el comentario
@@ -480,7 +480,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                             backgroundColor:
                                                 MaterialStateProperty.all<
                                                         Color>(
-                                                    const Color(0xFF2B3141)),
+                                                    const Color(0xFF19CF9E)),
                                           ),
                                           onPressed: () async {
                                             // Lógica para enviar el comentario
@@ -518,7 +518,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                             backgroundColor:
                                                 MaterialStateProperty.all<
                                                         Color>(
-                                                    const Color(0xFF2B3141)),
+                                                    const Color(0xFF19CF9E)),
                                           ),
                                           onPressed: () async {
                                             //todo falta llamar un metodo aqui

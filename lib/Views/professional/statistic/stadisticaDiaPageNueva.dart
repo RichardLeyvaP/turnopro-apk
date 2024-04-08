@@ -110,13 +110,23 @@ class _LineChartSample2State extends State<LineChartSample2> {
                         ),
                         if (startDate1 != null && endDate1 != null) ...[
                           Text(
-                            'No tiene Estadísticas en ($startDate1 - $endDate1)',
+                            'No tiene Estadísticas en:',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 16),
+                          ),
+                          Text(
+                            '($startDate1 - $endDate1)',
                             style: const TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 16),
                           ),
                         ] else ...[
                           Text(
-                            'No tiene Estadísticas en $dateAct',
+                            'No tiene Estadísticas en:',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 16),
+                          ),
+                          Text(
+                            ' $dateAct',
                             style: const TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 16),
                           )
@@ -135,21 +145,21 @@ class _LineChartSample2State extends State<LineChartSample2> {
                             color: Colors.white,
                             borderRadius: BorderRadius.all(Radius.circular(12)),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: controllerStat
-                                .statisticsGeneralDia.entries
-                                .map((entry) {
-                              i++;
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                right: 12, top: 4, left: 12, bottom: 4),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: controllerStat
+                                  .statisticsGeneralDia.entries
+                                  .map((entry) {
+                                i++;
 
-                              print(i);
+                                print(i);
 
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 1, bottom: 1),
-                                child: Container(
+                                return SizedBox(
                                   height: (MediaQuery.of(context).size.height *
-                                      0.04),
+                                      0.039),
                                   width: (MediaQuery.of(context).size.width *
                                       0.95),
                                   child: Row(
@@ -166,17 +176,16 @@ class _LineChartSample2State extends State<LineChartSample2> {
                                                 direcc[
                                                     i < 13 ? i : (i = 1) - 1],
                                               ),
-                                              color: const Color.fromARGB(
-                                                  255, 228, 86, 26),
-                                              width: 30,
-                                              height: 30,
+                                              color: const Color(0xFFFDAE2A),
+                                              width: 20,
+                                              height: 20,
                                             ),
                                           ),
                                           Text(
                                             entry.key,
                                             style: const TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.w600,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                         ],
@@ -184,91 +193,15 @@ class _LineChartSample2State extends State<LineChartSample2> {
                                       Text(
                                         '${entry.value}',
                                         style: TextStyle(
-                                          fontSize: (MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.0279),
+                                          fontSize: 18,
                                           fontWeight: FontWeight.w800,
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                              );
-
-                              /*
-                               Column(
-                                children: [
-                                  //todo1 estructura de los cart
-                                  Container(
-                                    height: (MediaQuery.of(context).size.height *
-                                        0.09),
-                                    width: (MediaQuery.of(context).size.width *
-                                        0.95),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(12)),
-                                    ),
-                                    child: ListTile(
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(12)),
-                                      ),
-                                      title: Padding(
-                                        padding: const EdgeInsets.only(top: 15),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            // Agrega un contenedor para alinear el icono al centro verticalmente
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                  right: 10),
-                                              child: Image(
-                                                image: AssetImage(
-                                                  direcc[
-                                                      i < 13 ? i : (i = 1) - 1],
-                                                ),
-                                                color: const Color.fromARGB(
-                                                    255, 228, 86, 26),
-                                                width: 35,
-                                                height: 35,
-                                              ),
-                                            ),
-                                            Text(
-                                              entry.key,
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      subtitle: null,
-                                      trailing: Padding(
-                                        padding: const EdgeInsets.only(top: 15),
-                                        child: Text(
-                                          '${entry.value}',
-                                          style: TextStyle(
-                                            fontSize: (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.0279),
-                                            fontWeight: FontWeight.w800,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                ],
-                              );
-                            */
-                            }).toList(),
+                                );
+                              }).toList(),
+                            ),
                           ),
                         ),
                       ),

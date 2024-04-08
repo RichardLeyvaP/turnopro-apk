@@ -81,7 +81,7 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
         return _.isLoading
             ? const Center(
                 child: CircularProgressIndicator(
-                color: Color.fromARGB(255, 241, 130, 84),
+                color: Color(0xFFFDAE2A),
               ))
             : _.notificationListLength > 0
                 ? Column(
@@ -149,8 +149,7 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
                                                     .width *
                                                 0.20),
                                             decoration: BoxDecoration(
-                                              color: const Color.fromARGB(
-                                                  255, 241, 130, 84),
+                                              color: const Color(0xFFFDAE2A),
                                               borderRadius:
                                                   const BorderRadius.all(
                                                       Radius.circular(

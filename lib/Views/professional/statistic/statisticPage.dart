@@ -6,12 +6,10 @@ import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaDiaPageNueva.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaMensualPageNueva.dart';
-import 'package:turnopro_apk/Views/professional/statistic/stadisticaMesPageNueva.dart';
 //import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
 //import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
-import 'package:turnopro_apk/Views/professional/statistic/stadisticaPageNueva.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaSemanalPageNueva.dart';
 
 class StatisticPage extends StatefulWidget {
@@ -56,7 +54,7 @@ class _StatisticPageState extends State<StatisticPage>
     const pilateColor = Colors.white;
     List<String> description = ['Ganancia Total', 'Promedio Diario'];
     // const cyclingColor = Color.fromARGB(255, 68, 135, 211);
-    // const quickWorkoutColor = Color(0xFFF18254);
+    // const quickWorkoutColor = Color(0xFFFDAE2A);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -65,7 +63,7 @@ class _StatisticPageState extends State<StatisticPage>
         //
         //
         appBar: AppBar(
-          backgroundColor: const Color(0xFFF18254), // Color de fondo del AppBar
+          backgroundColor: const Color(0xFFFDAE2A), // Color de fondo del AppBar
           elevation: 0, // Sombra del AppBar
           toolbarHeight: 120, // Altura del AppBar
           // actions: [
@@ -116,7 +114,7 @@ class _StatisticPageState extends State<StatisticPage>
                 child: TabBar(
                   // isScrollable: true,//rlp si son muchos tab para que tenga scroll entre los tab
                   indicator: clickServicesDecoration,
-                  labelColor: const Color(0xFFF18254),
+                  labelColor: const Color(0xFFFDAE2A),
                   unselectedLabelColor: Colors.white,
                   automaticIndicatorColorAdjustment: false,
                   controller: _tabController,
@@ -215,7 +213,7 @@ class CartOption extends StatelessWidget {
                 Text(
                   averageEarnings!.toStringAsFixed(2),
                   style: const TextStyle(
-                      color: Color(0xFFF18254),
+                      color: Color(0xFFFDAE2A),
                       fontSize: 24,
                       fontWeight: FontWeight.w900),
                 ),

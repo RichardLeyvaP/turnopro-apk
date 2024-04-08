@@ -148,39 +148,35 @@ class _StadisticaSemanalPageNuevaState
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(6.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: controllerStat.statisticsGeneralSem.entries
-                              .map((entry) {
-                            i++;
+                        child: Container(
+                          width: (MediaQuery.of(context).size.width * 0.95),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: controllerStat
+                                .statisticsGeneralSem.entries
+                                .map((entry) {
+                              i++;
 
-                            print(i);
+                              print(i);
 
-                            return Column(
-                              children: [
-                                //todo1 estructura de los cart
-                                Container(
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 1, bottom: 1),
+                                child: Container(
                                   height: (MediaQuery.of(context).size.height *
-                                      0.09),
+                                      0.042),
                                   width: (MediaQuery.of(context).size.width *
                                       0.95),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(12)),
-                                  ),
-                                  child: ListTile(
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(12)),
-                                    ),
-                                    title: Padding(
-                                      padding: const EdgeInsets.only(top: 15),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
                                         children: [
-                                          // Agrega un contenedor para alinear el icono al centro verticalmente
                                           Container(
                                             margin: const EdgeInsets.only(
                                                 right: 10),
@@ -191,24 +187,20 @@ class _StadisticaSemanalPageNuevaState
                                               ),
                                               color: const Color.fromARGB(
                                                   255, 228, 86, 26),
-                                              width: 35,
-                                              height: 35,
+                                              width: 30,
+                                              height: 30,
                                             ),
                                           ),
                                           Text(
                                             entry.key,
                                             style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                    subtitle: null,
-                                    trailing: Padding(
-                                      padding: const EdgeInsets.only(top: 15),
-                                      child: Text(
+                                      Text(
                                         '${entry.value}',
                                         style: TextStyle(
                                           fontSize: (MediaQuery.of(context)
@@ -218,19 +210,105 @@ class _StadisticaSemanalPageNuevaState
                                           fontWeight: FontWeight.w800,
                                         ),
                                       ),
-                                    ),
+                                    ],
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            );
-                          }).toList(),
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ),
                     ],
                   ),
+
+            // Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       Padding(
+            //         padding: const EdgeInsets.all(6.0),
+            //         child: Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: controllerStat.statisticsGeneralSem.entries
+            //               .map((entry) {
+            //             i++;
+
+            //             print(i);
+
+            //             return Column(
+            //               children: [
+            //                 //todo1 estructura de los cart
+            //                 Container(
+            //                   height: (MediaQuery.of(context).size.height *
+            //                       0.09),
+            //                   width: (MediaQuery.of(context).size.width *
+            //                       0.95),
+            //                   decoration: const BoxDecoration(
+            //                     color: Colors.white,
+            //                     borderRadius:
+            //                         BorderRadius.all(Radius.circular(12)),
+            //                   ),
+            //                   child: ListTile(
+            //                     shape: const RoundedRectangleBorder(
+            //                       borderRadius:
+            //                           BorderRadius.all(Radius.circular(12)),
+            //                     ),
+            //                     title: Padding(
+            //                       padding: const EdgeInsets.only(top: 15),
+            //                       child: Row(
+            //                         crossAxisAlignment:
+            //                             CrossAxisAlignment.center,
+            //                         children: [
+            //                           // Agrega un contenedor para alinear el icono al centro verticalmente
+            //                           Container(
+            //                             margin: const EdgeInsets.only(
+            //                                 right: 10),
+            //                             child: Image(
+            //                               image: AssetImage(
+            //                                 direcc[
+            //                                     i < 13 ? i : (i = 1) - 1],
+            //                               ),
+            //                               color: const Color.fromARGB(
+            //                                   255, 228, 86, 26),
+            //                               width: 35,
+            //                               height: 35,
+            //                             ),
+            //                           ),
+            //                           Text(
+            //                             entry.key,
+            //                             style: const TextStyle(
+            //                               fontSize: 16,
+            //                               fontWeight: FontWeight.w600,
+            //                             ),
+            //                           ),
+            //                         ],
+            //                       ),
+            //                     ),
+            //                     subtitle: null,
+            //                     trailing: Padding(
+            //                       padding: const EdgeInsets.only(top: 15),
+            //                       child: Text(
+            //                         '${entry.value}',
+            //                         style: TextStyle(
+            //                           fontSize: (MediaQuery.of(context)
+            //                                   .size
+            //                                   .height *
+            //                               0.0279),
+            //                           fontWeight: FontWeight.w800,
+            //                         ),
+            //                       ),
+            //                     ),
+            //                   ),
+            //                 ),
+            //                 const SizedBox(
+            //                   height: 10,
+            //                 ),
+            //               ],
+            //             );
+            //           }).toList(),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
           ],
         ),
       );

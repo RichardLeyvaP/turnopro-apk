@@ -60,7 +60,7 @@ class _SplashPageState extends State<SplashPage> {
                 delay: const Duration(seconds: 2),
                 child: const Center(
                     child: CircularProgressIndicator(
-                  color: Color.fromARGB(255, 241, 130, 84),
+                  color: Color(0xFFFDAE2A),
                 )),
               ),
             ],

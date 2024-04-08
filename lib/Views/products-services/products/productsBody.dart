@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/product.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
@@ -68,111 +69,125 @@ class _ProductsBodyState extends State<ProductsBody>
       return controllerProduct.isLoading
           ? const Center(
               child: CircularProgressIndicator(
-              color: Color(0xFFF18254),
+              color: Color(0xFFFDAE2A),
             ))
-          : Column(
-              children: [
-                SizedBox(
-                  width: (MediaQuery.of(context).size.width),
-                  height: (MediaQuery.of(context).size.width) * 0.09,
-                  child: TabBar(
-                    isScrollable: true,
-                    labelColor: const Color.fromARGB(255, 43, 44, 49),
-                    indicatorColor: const Color(0xFFF18254),
-                    controller: _tabController,
-                    tabs: tabs2,
-                  ),
+          : Padding(
+              padding: const EdgeInsets.only(right: 14, left: 14),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(14),
+                      bottomRight: Radius.circular(14)),
+                  color: Colors.white,
                 ),
-                controllerProduct.productListLength != -99
-                    ? controllerProduct.isLoadingCategory == true
-                        ? const Padding(
-                            padding: EdgeInsets.only(top: 240),
-                            child: CircularProgressIndicator(
-                              color: Color(0xFFF18254),
-                            ),
-                          )
-                        : controllerProduct.productListLength == 0
-                            ? const Center(
-                                child: Text(
-                                'No hay Productos',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w700),
-                              ))
-                            : Expanded(
-                                child: TabBarView(
-                                controller: _tabController,
-                                children: List<Widget>.generate(
-                                  tabs2.length,
-                                  (index) {
-                                    return ListView.builder(
-                                      itemCount:
-                                          controllerProduct.productListLength,
-                                      itemBuilder: (context, itemIndex) {
-                                        if (controllerProduct
-                                                    .productListLength !=
-                                                0 &&
-                                            controllerProduct
-                                                    .productListLength >
-                                                0) {
-                                          controllerProduct
-                                                  .cantProduct[itemIndex] =
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: (MediaQuery.of(context).size.width),
+                      height: (MediaQuery.of(context).size.width) * 0.09,
+                      child: TabBar(
+                        isScrollable: true,
+                        labelColor: const Color.fromARGB(255, 43, 44, 49),
+                        indicatorColor: const Color(0xFFFDAE2A),
+                        controller: _tabController,
+                        tabs: tabs2,
+                      ),
+                    ),
+                    controllerProduct.productListLength != -99
+                        ? controllerProduct.isLoadingCategory == true
+                            ? const Padding(
+                                padding: EdgeInsets.only(top: 240),
+                                child: CircularProgressIndicator(
+                                  color: Color(0xFFFDAE2A),
+                                ),
+                              )
+                            : controllerProduct.productListLength == 0
+                                ? const Center(
+                                    child: Text(
+                                    'No hay Productos',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),
+                                  ))
+                                : Expanded(
+                                    child: TabBarView(
+                                    controller: _tabController,
+                                    children: List<Widget>.generate(
+                                      tabs2.length,
+                                      (index) {
+                                        return ListView.builder(
+                                          itemCount: controllerProduct
+                                              .productListLength,
+                                          itemBuilder: (context, itemIndex) {
+                                            if (controllerProduct
+                                                        .productListLength !=
+                                                    0 &&
+                                                controllerProduct
+                                                        .productListLength >
+                                                    0) {
                                               controllerProduct
-                                                  .product[itemIndex]
-                                                  .product_exit;
-                                        }
+                                                      .cantProduct[itemIndex] =
+                                                  controllerProduct
+                                                      .product[itemIndex]
+                                                      .product_exit;
+                                            }
 
-                                        return Column(
-                                          children: [
-                                            controllerProduct
-                                                            .productListLength !=
-                                                        0 &&
-                                                    controllerProduct
-                                                            .productListLength >
-                                                        0
-                                                ? cartProduct(
-                                                    'assets/images/pngegg.png',
-                                                    controllerProduct
-                                                        .product[itemIndex].id,
-                                                    controllerProduct
-                                                        .product[itemIndex]
-                                                        .name,
-                                                    controllerProduct
-                                                            .cantProduct[
-                                                        itemIndex], //este es una variable en el controlador
-                                                    controllerProduct
-                                                        .product[itemIndex]
-                                                        .description,
-                                                    controllerProduct
-                                                        .product[itemIndex]
-                                                        .sale_price,
-                                                    context,
-                                                    controllerShoppingCart,
-                                                    controllerLogin,
-                                                    controllerProduct,
-                                                    itemIndex,
-                                                  )
-                                                : controllerProduct
-                                                            .productListLength ==
-                                                        0
-                                                    ? const Text('')
-                                                    : const Text(
-                                                        'Fallo la carga de los datos, revise su coneccion a internet'),
-                                            SizedBox(
-                                              height: (MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.02),
-                                            ),
-                                          ],
+                                            return Column(
+                                              children: [
+                                                controllerProduct
+                                                                .productListLength !=
+                                                            0 &&
+                                                        controllerProduct
+                                                                .productListLength >
+                                                            0
+                                                    ? cartProduct(
+                                                        'assets/images/pngegg.png',
+                                                        controllerProduct
+                                                            .product[itemIndex]
+                                                            .id,
+                                                        controllerProduct
+                                                            .product[itemIndex]
+                                                            .name,
+                                                        controllerProduct
+                                                                .cantProduct[
+                                                            itemIndex], //este es una variable en el controlador
+                                                        controllerProduct
+                                                            .product[itemIndex]
+                                                            .description,
+                                                        controllerProduct
+                                                            .product[itemIndex]
+                                                            .sale_price,
+                                                        context,
+                                                        controllerShoppingCart,
+                                                        controllerLogin,
+                                                        controllerProduct,
+                                                        itemIndex,
+                                                      )
+                                                    : controllerProduct
+                                                                .productListLength ==
+                                                            0
+                                                        ? const Text('')
+                                                        : const Text(
+                                                            'Fallo la carga de los datos, revise su coneccion a internet'),
+                                                SizedBox(
+                                                  height:
+                                                      (MediaQuery.of(context)
+                                                              .size
+                                                              .width *
+                                                          0.02),
+                                                ),
+                                              ],
+                                            );
+                                          },
                                         );
                                       },
-                                    );
-                                  },
-                                ),
-                              ))
-                    : const Text(
-                        'Falló la conexion,revise su coneccion de Internet.'),
-              ],
+                                    ),
+                                  ))
+                        : const Text(
+                            'Falló la conexion,revise su coneccion de Internet.'),
+                  ],
+                ),
+              ),
             );
     });
   }
@@ -203,11 +218,11 @@ class _ProductsBodyState extends State<ProductsBody>
             children: [
               Container(
                 height: (MediaQuery.of(context).size.height * 0.26),
-                width: (MediaQuery.of(context).size.width * 0.4),
+                width: (MediaQuery.of(context).size.width * 0.36),
                 decoration: const BoxDecoration(
                     borderRadius:
                         BorderRadius.all(Radius.circular(borderRadiusValue)),
-                    color: Color(0xFFF18254)),
+                    color: Color(0xFFFDAE2A)),
                 child: FractionallySizedBox(
                   widthFactor: 0.6, // 50% del ancho del contenedor padre
                   heightFactor: 0.65, // 50% del alto del contenedor padre
@@ -218,7 +233,7 @@ class _ProductsBodyState extends State<ProductsBody>
               ),
               SizedBox(
                 height: (MediaQuery.of(context).size.height * 0.26),
-                width: (MediaQuery.of(context).size.width * 0.52),
+                width: (MediaQuery.of(context).size.width * 0.40),
                 child: Column(
                   //AQUI ES LA PARTE DERECHA DE LOS DATOS DEL PRODUCTO
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -238,21 +253,22 @@ class _ProductsBodyState extends State<ProductsBody>
                           Text(
                             propertiesName,
                             style: const TextStyle(
-                                fontSize: 15,
+                                fontSize: 13,
                                 color: Color.fromARGB(148, 0, 0, 0)),
                           ),
                           Row(
                             children: [
                               const Text(
-                                'Cantidad Disponible: ',
+                                'Cant. Disponible: ',
                                 style: TextStyle(
-                                    fontSize: 15,
+                                    fontSize: 13,
                                     color: Color.fromARGB(148, 0, 0, 0)),
                               ),
                               Text(
                                 '$productExit',
                                 style: const TextStyle(
                                     fontSize: 15,
+                                    fontWeight: FontWeight.w800,
                                     color: Color.fromARGB(148, 0, 0, 0)),
                               ),
                             ],
@@ -266,12 +282,12 @@ class _ProductsBodyState extends State<ProductsBody>
                           priceProduct.toString(),
                           style: TextStyle(
                               fontSize:
-                                  (MediaQuery.of(context).size.height * 0.03),
+                                  (MediaQuery.of(context).size.height * 0.024),
                               fontWeight: FontWeight.w800),
                         ),
                       ),
                       subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 10, left: 25),
+                        padding: const EdgeInsets.only(top: 10, left: 15),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -283,25 +299,219 @@ class _ProductsBodyState extends State<ProductsBody>
                                       EdgeInsetsGeometry>(
                                     const EdgeInsets.symmetric(
                                         //vertical: 16.0,
-                                        horizontal: 18.0), // Ajusta el padding
+                                        horizontal: 10.0), // Ajusta el padding
                                   ),
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(
-                                          Color.fromARGB(200, 43, 44, 49)),
+                                          Color(0xFF19CF9E)),
                                   // Añadir más propiedades de estilo aquí
                                 ),
                                 onPressed: () {
                                   if (controllerLogin.codigoQrValid() == true) {
-                                    controllerProduct.buyProduct(itemIndex);
-                                    controllerShoppingCart
-                                        .updateShoppingCartValue(
-                                            priceProduct,
-                                            tabsID[_tabController
-                                                .index], //le paso el id d ela categoria
-                                            controllerShoppingCart
-                                                .carIdClienteSelect,
-                                            'product',
-                                            id);
+                                    //todo mensaje de verificación si desea agregar un producto
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return GetBuilder<LoginController>(
+                                            builder: (_) {
+                                          return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                            ), //this right here
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                Container(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    color: Color(0xFFFDAE2A),
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(8),
+                                                      topRight:
+                                                          Radius.circular(8),
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: <Widget>[
+                                                      const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 12),
+                                                        child: Text(
+                                                          'Confirmación',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                      ),
+                                                      IconButton(
+                                                        icon: Icon(Icons.close,
+                                                            color:
+                                                                Colors.white),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                  height: 150,
+                                                  child: Column(
+                                                    children: [
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  top: 10,
+                                                                  left: 16,
+                                                                  right: 16,
+                                                                  bottom: 10),
+                                                          child: Text(
+                                                              'Deseas agregar este producto?')),
+                                                      //
+
+                                                      ButtonBar(
+                                                        alignment:
+                                                            MainAxisAlignment
+                                                                .spaceEvenly,
+                                                        children: <Widget>[
+                                                          ElevatedButton(
+                                                            style: ButtonStyle(
+                                                              padding:
+                                                                  MaterialStateProperty
+                                                                      .all<
+                                                                          EdgeInsetsGeometry>(
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical: 0,
+                                                                    horizontal:
+                                                                        26.0),
+                                                              ),
+                                                              backgroundColor:
+                                                                  MaterialStateProperty.all<
+                                                                          Color>(
+                                                                      const Color(
+                                                                          0xFFFF6750)),
+                                                            ),
+                                                            onPressed:
+                                                                () async {
+                                                              // Lógica para enviar el comentario
+
+                                                              // Cerrar el primer modal
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Icon(
+                                                                  MdiIcons
+                                                                      .cancel,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 6,
+                                                                ),
+                                                                const Text(
+                                                                  'Cancelar',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w800),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          ElevatedButton(
+                                                            style: ButtonStyle(
+                                                              padding:
+                                                                  MaterialStateProperty
+                                                                      .all<
+                                                                          EdgeInsetsGeometry>(
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical: 0,
+                                                                    horizontal:
+                                                                        26.0),
+                                                              ),
+                                                              backgroundColor:
+                                                                  MaterialStateProperty.all<
+                                                                          Color>(
+                                                                      const Color(
+                                                                          0xFF19CF9E)),
+                                                            ),
+                                                            onPressed:
+                                                                () async {
+                                                              controllerProduct
+                                                                  .buyProduct(
+                                                                      itemIndex);
+                                                              controllerShoppingCart
+                                                                  .updateShoppingCartValue(
+                                                                      priceProduct,
+                                                                      tabsID[_tabController
+                                                                          .index], //le paso el id d ela categoria
+                                                                      controllerShoppingCart
+                                                                          .carIdClienteSelect,
+                                                                      'product',
+                                                                      id);
+
+                                                              // Cerrar el primer modal
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Icon(
+                                                                  MdiIcons
+                                                                      .checkCircleOutline,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 6,
+                                                                ),
+                                                                const Text(
+                                                                  '  Aceptar  ',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w800),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        });
+                                      },
+                                    );
                                   } else {
                                     Get.snackbar(
                                       'Mensaje',
@@ -316,34 +526,16 @@ class _ProductsBodyState extends State<ProductsBody>
                                               255, 203, 205, 209),
                                       progressIndicatorValueColor:
                                           const AlwaysStoppedAnimation(
-                                              Color(0xFFF18254)),
+                                              Color(0xFFFDAE2A)),
                                       overlayBlur: 3,
                                     );
                                   }
                                 },
                                 child: Row(
                                   children: [
-                                    CircleAvatar(
-                                      radius: (MediaQuery.of(context)
-                                              .size
-                                              .width *
-                                          0.04), // Ajusta este valor según tu preferencia
-                                      backgroundColor: const Color(0xFFF18254),
-                                      child: Icon(
-                                        Icons.add,
-                                        color: Colors.white,
-                                        size: (MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.03),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 12,
-                                    ),
                                     Center(
                                       child: Text(
-                                        'AGREGAR',
+                                        '  AGREGAR',
                                         style: TextStyle(
                                             fontSize: (MediaQuery.of(context)
                                                     .size
@@ -351,6 +543,13 @@ class _ProductsBodyState extends State<ProductsBody>
                                                 0.03),
                                             fontWeight: FontWeight.w600),
                                       ),
+                                    ),
+                                    Icon(
+                                      Icons.add,
+                                      color: Colors.white,
+                                      size:
+                                          (MediaQuery.of(context).size.height *
+                                              0.03),
                                     ),
                                   ],
                                 ),

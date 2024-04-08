@@ -48,14 +48,14 @@ class _MyLoadingErrorPageState extends State<MyLoadingErrorPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFF18254)),
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFDAE2A)),
             ),
             SizedBox(height: 16),
             Text(
               'Cargando...',
               style: TextStyle(
                 fontSize: 18,
-                color: Color(0xFFF18254),
+                color: Color(0xFFFDAE2A),
                 fontWeight: FontWeight.bold,
               ),
             ),

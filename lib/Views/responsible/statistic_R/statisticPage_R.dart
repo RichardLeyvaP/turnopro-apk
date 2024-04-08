@@ -206,7 +206,7 @@ class CartOption extends StatelessWidget {
                 Text(
                   averageEarnings!.toStringAsFixed(2),
                   style: const TextStyle(
-                      color: Color(0xFFF18254),
+                      color: Color(0xFFFDAE2A),
                       fontSize: 24,
                       fontWeight: FontWeight.w900),
                 ),
@@ -309,9 +309,9 @@ class _BuildCalendarState extends State<BuildCalendar> {
           //       initialDisplayDate: initialDate,
           //       minDate: selectDate == 0 ? null : _minDate,
           //       maxDate: selectDate == 0 ? null : _maxDate,
-          //       selectionColor: const Color(0xFFF18254),
-          //       startRangeSelectionColor: const Color(0xFFF18254),
-          //       endRangeSelectionColor: const Color(0xFFF18254),
+          //       selectionColor: const Color(0xFFFDAE2A),
+          //       startRangeSelectionColor: const Color(0xFFFDAE2A),
+          //       endRangeSelectionColor: const Color(0xFFFDAE2A),
           //       selectionMode: DateRangePickerSelectionMode.range,
           //       showActionButtons: _endDate != null ? true : false,
           //       onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {

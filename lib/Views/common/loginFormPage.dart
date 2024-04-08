@@ -26,7 +26,7 @@ class LoginFormPage extends StatelessWidget {
       // _usserController.text = '';
       // Se ejecutará después de que se haya construido el widget
       print('que tipo de saludo dar dependiendo de la hora');
-      loginController.setCodigoQrValid(null);
+
       clientContro.setValueClockDinamic(
           clientContro.calcularH(controllerLogin.androidInfoHeight!));
       // print(
@@ -37,7 +37,7 @@ class LoginFormPage extends StatelessWidget {
     return FadeIn(
       duration: const Duration(seconds: 2),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF18254),
+        backgroundColor: const Color(0xFFFDAE2A),
         appBar: AppBar(
           toolbarHeight: 30.0,
           backgroundColor: Colors.transparent,
@@ -65,8 +65,8 @@ class LoginFormPage extends StatelessWidget {
                   decoration: const BoxDecoration(
                       color: Colors.white, //todo
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(35),
-                        topRight: Radius.circular(35),
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
                       )),
                   child: Padding(
                     padding:
@@ -88,12 +88,12 @@ class LoginFormPage extends StatelessWidget {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
-                                    color: Colors.orange, width: 2.0),
+                                    color: const Color(0xFFFDAE2A), width: 1.0),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
-                                    color: Colors.orange, width: 2.0),
+                                    color: const Color(0xFFFDAE2A), width: 1.0),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
@@ -119,12 +119,12 @@ class LoginFormPage extends StatelessWidget {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
-                                    color: Colors.orange, width: 2.0),
+                                    color: const Color(0xFFFDAE2A), width: 1.0),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
-                                    color: Colors.orange, width: 2.0),
+                                    color: const Color(0xFFFDAE2A), width: 1.0),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               suffixIcon: IconButton(
@@ -165,8 +165,7 @@ class LoginFormPage extends StatelessWidget {
                                               255, 81, 93, 117),
                                       progressIndicatorValueColor:
                                           const AlwaysStoppedAnimation(
-                                              Color.fromARGB(
-                                                  255, 241, 130, 84)),
+                                              const Color(0xFFFDAE2A)),
                                       overlayBlur: 3,
                                     );
                                   },
@@ -182,16 +181,12 @@ class LoginFormPage extends StatelessWidget {
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all<
                                           EdgeInsetsGeometry>(
-                                        const EdgeInsets.symmetric(
-                                            vertical: 20.0,
-                                            horizontal:
-                                                60.0), // Ajusta el padding
+                                        EdgeInsets.symmetric(
+                                            vertical: 20, horizontal: 60),
                                       ),
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                              const Color.fromARGB(
-                                                  255, 43, 44, 49)),
-                                      // Añadir más propiedades de estilo aquí
+                                              const Color(0xFF4470F3)),
                                     ),
                                     onPressed: () async {
                                       if (_usserController.text.isEmpty ||
@@ -211,8 +206,7 @@ class LoginFormPage extends StatelessWidget {
                                                   255, 81, 93, 117),
                                           progressIndicatorValueColor:
                                               const AlwaysStoppedAnimation(
-                                                  Color.fromARGB(
-                                                      255, 241, 130, 84)),
+                                                  const Color(0xFFFDAE2A)),
                                           overlayBlur: 3,
                                         );
                                       } else {
@@ -243,8 +237,7 @@ class LoginFormPage extends StatelessWidget {
                                                     255, 81, 93, 117),
                                             progressIndicatorValueColor:
                                                 const AlwaysStoppedAnimation(
-                                                    Color.fromARGB(
-                                                        255, 241, 130, 84)),
+                                                    const Color(0xFFFDAE2A)),
                                             overlayBlur: 3,
                                           );
                                           await _.loadingValue(false);
@@ -252,10 +245,14 @@ class LoginFormPage extends StatelessWidget {
                                       }
                                     },
                                     child: _.isLoading
-                                        ? const CircularProgressIndicator(
-                                            color: Color.fromARGB(
-                                                255, 241, 130, 84),
-                                            strokeWidth: 4,
+                                        ? Container(
+                                            width: 26,
+                                            height: 26,
+                                            child:
+                                                const CircularProgressIndicator(
+                                              color: const Color(0xFFFDAE2A),
+                                              strokeWidth: 3,
+                                            ),
                                           )
                                         : Text(
                                             'ENTRAR',
@@ -294,10 +291,10 @@ class LoginFormPage extends StatelessWidget {
                                     duration: const Duration(seconds: 4),
                                     showProgressIndicator: true,
                                     progressIndicatorBackgroundColor:
-                                        const Color.fromARGB(255, 81, 93, 117),
+                                        const Color(0xFF4470F3),
                                     progressIndicatorValueColor:
                                         const AlwaysStoppedAnimation(
-                                            Color.fromARGB(255, 241, 130, 84)),
+                                            Color(0xFFFDAE2A)),
                                     overlayBlur: 3,
                                   );
                                 }

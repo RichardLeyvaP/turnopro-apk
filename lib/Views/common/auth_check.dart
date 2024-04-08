@@ -62,7 +62,7 @@ class _AuthCheckState extends State<AuthCheck> {
                 children: [
                   CircularProgressIndicator(
                     color: Colors.white,
-                    backgroundColor: Color.fromARGB(255, 241, 130, 84),
+                    backgroundColor: Color(0xFFFDAE2A),
                   ),
                   Text(
                     'Cargando...',

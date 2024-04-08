@@ -56,7 +56,7 @@ class _QRViewPageState extends State<QRViewPage> {
       appBar: AppBar(
         backgroundColor: loginController.pagina == 'nothing' ||
                 loginController.pagina == '/Professional'
-            ? const Color.fromARGB(255, 241, 130, 84)
+            ? const Color(0xFFFDAE2A)
             : const Color.fromARGB(255, 26, 50, 82),
 
         leading: Row(
@@ -107,7 +107,7 @@ class _QRViewPageState extends State<QRViewPage> {
                 showUnselectedLabels: false,
                 unselectedItemColor: Colors.white,
                 backgroundColor: const Color.fromARGB(255, 43, 44, 49),
-                fixedColor: const Color.fromARGB(255, 241, 130, 84),
+                fixedColor: const Color(0xFFFDAE2A),
                 type: BottomNavigationBarType.fixed,
                 items: [
                   BottomNavigationBarItem(
@@ -122,8 +122,7 @@ class _QRViewPageState extends State<QRViewPage> {
                             return snapshot.data == true
                                 ? Icon(
                                     Icons.flashlight_on,
-                                    color:
-                                        const Color.fromARGB(255, 241, 130, 84),
+                                    color: const Color(0xFFFDAE2A),
                                     size:
                                         MediaQuery.of(context).size.width * 0.1,
                                   )
@@ -179,7 +178,7 @@ class _QRViewPageState extends State<QRViewPage> {
       ),
       backgroundColor: loginController.pagina == 'nothing' ||
               loginController.pagina == '/Professional'
-          ? const Color.fromARGB(255, 241, 130, 84)
+          ? const Color(0xFFFDAE2A)
           : const Color.fromARGB(255, 26, 50, 82),
       body: Column(
         children: <Widget>[

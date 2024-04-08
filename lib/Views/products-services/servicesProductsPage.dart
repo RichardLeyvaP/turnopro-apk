@@ -1,7 +1,9 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
+import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/product.controller.dart';
 import 'package:turnopro_apk/Controllers/service.controller.dart';
@@ -10,7 +12,12 @@ import 'package:turnopro_apk/Views/products-services/products/productsBody.dart'
 import 'package:turnopro_apk/Views/products-services/services/servicesBodyPage.dart';
 //import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/env.dart';
+//
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart' as dio;
 
 class ServicesProductsPage extends StatefulWidget {
   const ServicesProductsPage({super.key});
@@ -32,6 +39,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
   final ShoppingCartController controllerShoppingCart =
       Get.find<ShoppingCartController>();
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
+  final LoginController controllerLog = Get.put(LoginController());
 
   @override
   void initState() {
@@ -46,164 +54,698 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
     super.dispose();
   }
 
+  TextEditingController commentController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      loginController.setIsLoadingFor(false);
+      //loginController.inTheClock(false);
+    });
+
     //VARIABLE A UTILIZAR
     BoxDecoration clickServicesDecoration = const BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.all(Radius.circular(20)),
+      color: Color(0xFFFDAE2A),
+      borderRadius: BorderRadius.all(Radius.circular(10)),
     );
     BoxDecoration decorationBackground = const BoxDecoration(
-      color: Color.fromARGB(155, 231, 232, 234),
-      borderRadius: BorderRadius.all(Radius.circular(20)),
+      color: Color.fromARGB(100, 231, 232, 234),
+      borderRadius: BorderRadius.all(Radius.circular(10)),
     );
     const backgroundColor = Color.fromARGB(255, 231, 232, 234);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: backgroundColor,
+          backgroundColor: backgroundColor,
+          appBar: AppBar(
+            backgroundColor:
+                Color.fromARGB(255, 231, 232, 234), // Color de fondo del AppBar
+            elevation: 0, // Sombra del AppBar
+            toolbarHeight: 170, // Altura del AppBar
+            // actions: [
+            //   IconButton(onPressed: () {}, icon: const Icon(Icons.shopping_cart))
+            // ],
 
-        appBar: AppBar(
-          backgroundColor: const Color(0xFFF18254), // Color de fondo del AppBar
-          elevation: 0, // Sombra del AppBar
-          toolbarHeight: 120, // Altura del AppBar
-          // actions: [
-          //   IconButton(onPressed: () {}, icon: const Icon(Icons.shopping_cart))
-          // ],
-
-          title: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_back), // Icono que deseas mostrar
-                onPressed: () {
-                  pagesConfigC.previousPage();
-                  //Get.back();
-                }, // Evento onPress
+            title: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                color: Colors.white,
               ),
-              Column(
+              child: Column(
                 children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        '${Env.apiEndpoint}/images/${clientsController.urlImageTemporary}'),
-                    radius: 40, // Ajusta el tamaño del círculo aquí
-                  ),
-                  Text(clientsController.nameClientTemporary,
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold)),
-                ],
-              ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 10, left: 0, bottom: 8),
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.arrow_back,
+                                    color: Color.fromARGB(255, 49, 48, 48),
+                                  ), // Icono que deseas mostrar
+                                  onPressed: () {
+                                    // if (controllerLog.varInTheClock == true) //ir al home
+                                    // {
+                                    loginController.inTheClock(false);
+                                    pagesConfigC.back();
+                                    // } else {
+                                    //   pagesConfigC.previousPage();
+                                    // }
 
-              GetBuilder<ShoppingCartController>(builder: (_) {
-                return Badge(
-                    label: Text(_.shoppingCart.toString()),
-                    child: _.shoppingCart == 0
-                        ? IconButton(
-                            icon: const Icon(
-                              Icons.shopping_cart_outlined,
-                              size: 30,
-                            ), // Icono que deseas mostrar
-                            onPressed: () {
-                              Get.snackbar(
-                                'Mensaje del Carrito de Compra',
-                                'Su carrito esta vacio',
-                                duration: const Duration(milliseconds: 2500),
-                                showProgressIndicator: true,
-                                progressIndicatorBackgroundColor:
-                                    const Color.fromARGB(255, 81, 93, 117),
-                                progressIndicatorValueColor:
-                                    const AlwaysStoppedAnimation(
-                                        Color(0xFFF18254)),
-                                overlayBlur: 3,
-                              );
-                            }, // Evento onPress
-                          )
-                        : IconButton(
-                            icon: const Icon(
-                              Icons.shopping_cart,
-                              size: 30,
-                            ), // Icono que deseas mostrar
-                            onPressed: () async {
-                              // Muestra el indicador de carga
-                              Get.dialog(
-                                const Center(
-                                  child: CircularProgressIndicator(
-                                    color: Color(0xFFF18254),
+                                    //Get.back();
+                                  }, // Evento onPress
+                                ),
+                                CircleAvatar(
+                                  backgroundColor:
+                                      const Color.fromARGB(120, 190, 190, 189),
+                                  backgroundImage: NetworkImage(
+                                      '${Env.apiEndpoint}/images/${clientsController.urlImageTemporary}'),
+                                  radius:
+                                      25, // Ajusta el tamaño del círculo aquí
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(clientsController.nameClientTemporary,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      color: const Color(0xFF2B3141),
+                                      fontWeight: FontWeight.bold)),
+                              Text('CLIENTE',
+                                  style: const TextStyle(
+                                      color: const Color(0xFF2B3141),
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ],
+                      ),
+
+                      GetBuilder<ShoppingCartController>(builder: (_) {
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Badge(
+                                  label: Text(_.shoppingCart.toString()),
+                                  child: _.shoppingCart == 0
+                                      ? CircleAvatar(
+                                          radius: 22, // Tamaño del CircleAvatar
+                                          backgroundColor: const Color(
+                                              0xFF2B3141), // Color de fondo del CircleAvatar
+                                          child: IconButton(
+                                            icon: const Icon(
+                                              Icons.shopping_cart_outlined,
+                                              size: 30,
+                                              color: Color.fromARGB(
+                                                  255, 49, 48, 48),
+                                            ), // Icono que deseas mostrar
+                                            onPressed: () {
+                                              Get.snackbar(
+                                                'Mensaje del Carrito de Compra',
+                                                'Su carrito esta vacio',
+                                                duration: const Duration(
+                                                    milliseconds: 2500),
+                                                showProgressIndicator: true,
+                                                progressIndicatorBackgroundColor:
+                                                    const Color(0xFF4470F3),
+                                                progressIndicatorValueColor:
+                                                    const AlwaysStoppedAnimation(
+                                                        Color(0xFFFDAE2A)),
+                                                overlayBlur: 3,
+                                              );
+                                            }, // Evento onPress
+                                          ))
+                                      : CircleAvatar(
+                                          radius: 22, // Tamaño del CircleAvatar
+                                          backgroundColor: const Color(
+                                              0xFF2B3141), // Color de fondo del CircleAvatar
+                                          child: IconButton(
+                                            icon: const Icon(
+                                              Icons.shopping_cart,
+                                              size: 30,
+                                              color: Colors.white,
+                                            ), // Icono que deseas mostrar
+                                            onPressed: () async {
+                                              // Muestra el indicador de carga
+                                              Get.dialog(
+                                                const Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    color: Color(0xFFFDAE2A),
+                                                  ),
+                                                ),
+                                                barrierDismissible: false,
+                                              );
+
+                                              try {
+                                                await _.loadCart();
+
+                                                Get.back(); // Cierra el diálogo
+
+                                                pagesConfigC.nextPage();
+                                              } catch (e) {
+                                                // En caso de error, oculta el indicador de carga y muestra un mensaje de error
+                                                Get.back();
+                                                Get.snackbar('Error',
+                                                    'Hubo un error al cargar el carrito: $e');
+                                              }
+                                            }, // Evento onPress
+                                          ))),
+                            ),
+                          ],
+                        );
+                      }),
+
+                      // const Text("          "),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        width: 2000,
+                        height: 1.5,
+                        color: const Color.fromARGB(40, 128, 127, 127),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          //todo cambiar esto que esta puesto para poder ver el boton
+                          if (loginController.branchTecnicLoggedIn == 1) ...[
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                padding: MaterialStateProperty.all<
+                                    EdgeInsetsGeometry>(
+                                  const EdgeInsets.symmetric(
+                                      vertical: 0, horizontal: 8.0),
+                                ),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  const Color(0xFF4470F3),
+                                ),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        10.0), // Radio de los bordes
                                   ),
                                 ),
-                                barrierDismissible: false,
+                              ),
+                              onPressed: () async {
+                                Get.dialog(
+                                  const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Color(0xFFFDAE2A),
+                                    ),
+                                  ),
+                                  barrierDismissible: false,
+                                );
+                                //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
+                                await clientsController.acceptOrRejectClient(
+                                    clientsController.idClientTemporary,
+                                    4); // Cierra el modal
+                                pagesConfigC.back();
+                              },
+                              child: const Text(
+                                ' ENVIAR AL TÉCNICO ',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              padding:
+                                  MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                const EdgeInsets.symmetric(
+                                    vertical: 0, horizontal: 8.0),
+                              ),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                const Color(0xFFFF6750),
+                              ),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      10.0), // Radio de los bordes
+                                ),
+                              ),
+                            ),
+                            onPressed: () async {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return GetBuilder<ClientsScheduledController>(
+                                      builder: (_) {
+                                    return Dialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ), //this right here
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          Container(
+                                            decoration: const BoxDecoration(
+                                              color: Color(0xFFFDAE2A),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(8),
+                                                topRight: Radius.circular(8),
+                                              ),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                const Padding(
+                                                  padding:
+                                                      EdgeInsets.only(left: 12),
+                                                  child: Text(
+                                                    'Comentario',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(Icons.close,
+                                                      color: Colors.white),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: (_.imagePath == null)
+                                                ? 240
+                                                : 300,
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    left: 16,
+                                                    right: 16,
+                                                  ),
+                                                  child: TextFormField(
+                                                    controller:
+                                                        commentController,
+                                                    maxLines: 5,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      border: InputBorder.none,
+                                                      hintText:
+                                                          'Escribe tu comentario aquí...',
+                                                      hintStyle: TextStyle(
+                                                        color: Color.fromARGB(
+                                                            120, 241, 131, 84),
+                                                      ), // Cambiar el color del hintText
+                                                    ),
+                                                  ),
+                                                ),
+                                                //
+                                                //
+                                                //
+
+                                                (_.imagePath == null)
+                                                    ? const Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Icon(Icons
+                                                              .image_outlined),
+                                                          Text(
+                                                            'Cargar foto del cliente',
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    : Container(
+                                                        width:
+                                                            70, // Establece el ancho deseado
+                                                        height:
+                                                            70, // Establece la altura deseada
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  10), // Establece el radio de borde deseado
+                                                        ),
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  10), // Asegúrate de que este radio sea igual al radio del borde del BoxDecoration
+                                                          child: Image.file(
+                                                            File(_.imagePath!),
+                                                            fit: BoxFit
+                                                                .cover, // Puedes ajustar el modo de ajuste según tus necesidades
+                                                          ),
+                                                        ),
+                                                      ),
+
+                                                //
+                                                //
+                                                //
+                                                //
+                                                ButtonBar(
+                                                  alignment: MainAxisAlignment
+                                                      .spaceEvenly,
+                                                  children: <Widget>[
+                                                    ElevatedButton(
+                                                      style: ButtonStyle(
+                                                        padding:
+                                                            MaterialStateProperty
+                                                                .all<
+                                                                    EdgeInsetsGeometry>(
+                                                          const EdgeInsets
+                                                                  .symmetric(
+                                                              vertical: 0,
+                                                              horizontal: 26.0),
+                                                        ),
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all<Color>(Color(
+                                                                    0xFF4470F3)),
+                                                      ),
+                                                      onPressed: () async {
+                                                        final ImagePicker
+                                                            _picker =
+                                                            ImagePicker();
+                                                        _.setPickedFile(
+                                                            await _picker
+                                                                .pickImage(
+                                                          source: ImageSource
+                                                              .camera,
+                                                        ));
+
+                                                        // Verifica si pickedFile no es nulo antes de acceder a su propiedad path
+                                                        if (_.pickedFile !=
+                                                            null) {
+                                                          _.setImagePath(_
+                                                              .pickedFile!
+                                                              .path);
+                                                        }
+                                                        print(
+                                                            'DIRECCIONDELAIMAGEN : ${_.imagePath}');
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            MdiIcons.camera,
+                                                            color: Colors.white,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 6,
+                                                          ),
+                                                          const Text(
+                                                            'FOTO',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w800),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    ElevatedButton(
+                                                      style: ButtonStyle(
+                                                        padding:
+                                                            MaterialStateProperty
+                                                                .all<
+                                                                    EdgeInsetsGeometry>(
+                                                          const EdgeInsets
+                                                                  .symmetric(
+                                                              vertical: 0,
+                                                              horizontal: 26.0),
+                                                        ),
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all<Color>(Color(
+                                                                    0xFF19CF9E)),
+                                                      ),
+                                                      onPressed: () async {
+                                                        // Lógica para enviar el comentario
+                                                        // Obtener el valor del campo de texto
+                                                        String commentText =
+                                                            commentController
+                                                                .text;
+                                                        // Eliminar espacios en blanco al principio y al final
+                                                        String
+                                                            textWithoutSpaces =
+                                                            commentText.trim();
+
+                                                        // Verificar que el campo no esté vacío
+                                                        if (textWithoutSpaces
+                                                            .isNotEmpty) {
+                                                          // Cerrar el primer modal
+                                                          Navigator.pop(
+                                                              context);
+                                                          Get.dialog(
+                                                            const Center(
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                                color: Color(
+                                                                    0xFFFDAE2A),
+                                                              ),
+                                                            ),
+                                                            barrierDismissible:
+                                                                false,
+                                                          );
+
+                                                          if (_.pickedFile !=
+                                                              null) {
+                                                            dio.Dio dioClient =
+                                                                dio.Dio();
+                                                            String imag = _
+                                                                .pickedFile!
+                                                                .path;
+
+                                                            clientsController
+                                                                .storeByReservationId(
+                                                                    imag,
+                                                                    clientsController
+                                                                        .idClientTemporary,
+                                                                    commentText,
+                                                                    dioClient);
+                                                          }
+
+                                                          // Lógica para enviar el comentario
+                                                          await clientsController
+                                                              .acceptOrRejectClient(
+                                                                  clientsController
+                                                                      .idClientTemporary,
+                                                                  2);
+                                                          clientsController
+                                                              .fetchClientsScheduled(
+                                                                  loginController
+                                                                      .idProfessionalLoggedIn,
+                                                                  loginController
+                                                                      .branchIdLoggedIn);
+                                                          Get.back(); //aqui cierro el cargando
+                                                          Get.snackbar(
+                                                            'Mensaje',
+                                                            'Finalizando servicio',
+                                                            duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        2500),
+                                                            backgroundColor:
+                                                                const Color
+                                                                        .fromARGB(
+                                                                    118,
+                                                                    255,
+                                                                    255,
+                                                                    255),
+                                                            showProgressIndicator:
+                                                                true,
+                                                            progressIndicatorBackgroundColor:
+                                                                const Color
+                                                                        .fromARGB(
+                                                                    255,
+                                                                    203,
+                                                                    205,
+                                                                    209),
+                                                            progressIndicatorValueColor:
+                                                                const AlwaysStoppedAnimation(
+                                                                    Color(
+                                                                        0xFFFDAE2A)),
+                                                            overlayBlur: 3,
+                                                          );
+                                                          final ClientsScheduledController
+                                                              cliCont =
+                                                              Get.find<
+                                                                  ClientsScheduledController>();
+                                                          loginController
+                                                              .setCodigoQrValid(
+                                                                  1);
+                                                          cliCont.setImagePath(
+                                                              null);
+                                                          Future.delayed(
+                                                              const Duration(
+                                                                  seconds: 2),
+                                                              () {
+                                                            // Aquí dentro puedes poner la acción que deseas realizar después de esperar 2 segundos
+                                                            loginController
+                                                                .inTheClock(
+                                                                    false);
+                                                            pagesConfigC.back();
+                                                            // Llama a cualquier función o realiza alguna tarea aquí
+                                                          });
+
+                                                          print(
+                                                              'Comentario enviado - $commentText ');
+                                                        } else {
+                                                          // El campo de texto está vacío, puedes mostrar un mensaje o realizar alguna acción
+                                                          print(
+                                                              'El comentario no puede estar vacío');
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            MdiIcons.send,
+                                                            color: Colors.white,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 6,
+                                                          ),
+                                                          const Text(
+                                                            'ENVIAR',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w800),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  });
+                                },
                               );
-
-                              try {
-                                await _.loadCart();
-                                // await Future.delayed(
-                                //     Duration(seconds: 3)); //todo esperar 3 segundos
-                                // Oculta el indicador de carga y navega a la página del carrito
-                                Get.back(); // Cierra el diálogo
-
-                                // Get.toNamed('/ShoppingCartPage');
-                                pagesConfigC.nextPage();
-                              } catch (e) {
-                                // En caso de error, oculta el indicador de carga y muestra un mensaje de error
-                                Get.back();
-                                Get.snackbar('Error',
-                                    'Hubo un error al cargar el carrito: $e');
-                              }
-                            }, // Evento onPress
-                          ));
-              }),
-              // const Text("          "),
-            ],
-          ),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(50), // Altura del TabBar
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 15),
+                            },
+                            child: const Text(
+                              ' FINALIZAR SERVICO ',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 3,
+                  ),
+                ],
+              ),
+            ),
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(30), // Altura del TabBar
               child: Container(
-                width: (MediaQuery.of(context).size.width * 0.8),
-                height: (MediaQuery.of(context).size.width * 0.07),
-                decoration: decorationBackground,
-                child: TabBar(
-                  // isScrollable: true,//rlp si son muchos tab para que tenga scroll entre los tab
-                  indicator: clickServicesDecoration,
-                  labelColor: const Color(0xFFF18254),
-                  unselectedLabelColor: Colors.white,
-                  automaticIndicatorColorAdjustment: false,
-                  controller: _tabController,
-                  tabs: const [
-                    Tab(text: 'Servicios'),
-                    Tab(text: 'Productos'),
+                width: (MediaQuery.of(context).size.width * 0.935),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                  color: Colors.white,
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      width: (MediaQuery.of(context).size.width * 0.88),
+                      height: (MediaQuery.of(context).size.width * 0.09),
+                      decoration: decorationBackground,
+                      child: TabBar(
+                        // isScrollable: true,//rlp si son muchos tab para que tenga scroll entre los tab
+                        indicator: clickServicesDecoration,
+                        labelColor: Colors.white,
+                        unselectedLabelColor:
+                            const Color.fromARGB(155, 136, 135, 135),
+                        automaticIndicatorColorAdjustment: false,
+                        controller: _tabController,
+                        tabs: const [
+                          Tab(text: 'Servicios'),
+                          Tab(text: 'Productos'),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    )
                   ],
                 ),
               ),
             ),
           ),
-        ),
-        body: controllerShoppingCart.internetError != -99
-            ? TabBarView(
-                controller: _tabController,
-                children: [
-                  Container(
-                    color: backgroundColor,
-                    child:
-                        ServicesBodyPage(), //RLP AQUI SE CARGA LA PAGINA DE LOS SERVICIOS
-                  ),
-                  Container(
-                    color: backgroundColor,
-                    child: const ProductsBody(),
-                  ),
-                ],
-              )
-            : AlertDialogPago(
-                controllerShoppingCart: controllerShoppingCart,
-                pagesConfigC: pagesConfigC), // Muestra el AlertDialog
-      ),
+          body:
+              //  controllerShoppingCart.internetError != -99
+              //     ?
+              TabBarView(
+            controller: _tabController,
+            children: [
+              Container(
+                color: backgroundColor,
+                child:
+                    ServicesBodyPage(), //RLP AQUI SE CARGA LA PAGINA DE LOS SERVICIOS
+              ),
+              Container(
+                color: backgroundColor,
+                child: const ProductsBody(),
+              ),
+            ],
+          )
+          // : AlertDialogPago(
+          //     controllerShoppingCart: controllerShoppingCart,
+          //     pagesConfigC: pagesConfigC), // Muestra el AlertDialog
+          ),
     );
   }
 }
 
+/*
 class AlertDialogPago extends StatelessWidget {
   final ShoppingCartController controllerShoppingCart;
   final PagesConfigController pagesConfigC;
@@ -260,3 +802,4 @@ class AlertDialogPago extends StatelessWidget {
     );
   }
 }
+*/

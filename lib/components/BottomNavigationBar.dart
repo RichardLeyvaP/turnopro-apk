@@ -73,7 +73,7 @@ class _BottomNavigationBarNewState extends State<BottomNavigationBarNew> {
             showUnselectedLabels: false,
             unselectedItemColor: Colors.white,
             backgroundColor: const Color.fromARGB(255, 43, 44, 49),
-            fixedColor: const Color.fromARGB(255, 241, 130, 84),
+            fixedColor: const Color(0xFFFDAE2A),
             currentIndex: _selectedIndex,
             type: BottomNavigationBarType.fixed,
             onTap: _navigateBottomBar,

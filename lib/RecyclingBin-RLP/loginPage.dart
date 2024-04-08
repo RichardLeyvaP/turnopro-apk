@@ -485,10 +485,10 @@
 //                                   duration: const Duration(seconds: 4),
 //                                   showProgressIndicator: true,
 //                                   progressIndicatorBackgroundColor:
-//                                       const Color.fromARGB(255, 81, 93, 117),
+//                                       const Color(0xFF4470F3),
 //                                   progressIndicatorValueColor:
 //                                       const AlwaysStoppedAnimation(
-//                                           Color.fromARGB(255, 241, 130, 84)),
+//                                           Color(0xFFFDAE2A)),
 //                                   overlayBlur: 3,
 //                                 );
 //                               }

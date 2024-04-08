@@ -138,7 +138,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
             return 1 == 4 //aqui si no ha cargado aun mostrar el  indicador
                 ? const Center(
                     child: CircularProgressIndicator(
-                      color: Color.fromARGB(255, 241, 130, 84),
+                      color: Color(0xFFFDAE2A),
                     ),
                   )
                 : _.professionalDisponLength > 0 //todo si hay cargarlos aqui
@@ -292,7 +292,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                             progressIndicatorBackgroundColor:
                                 const Color.fromARGB(255, 203, 205, 209),
                             progressIndicatorValueColor:
-                                const AlwaysStoppedAnimation(Color(0xFFF18254)),
+                                const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                             overlayBlur: 3,
                           );
                           //aqui actualizo la cola que se muestra en el home

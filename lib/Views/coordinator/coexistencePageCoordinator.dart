@@ -232,7 +232,7 @@ class _CoexistencePageCoordinatorState
                                                   Container(
                                                     decoration:
                                                         const BoxDecoration(
-                                                      color: Color(0xFF2B3141),
+                                                      color: Color(0xFF19CF9E),
                                                       borderRadius:
                                                           BorderRadius.only(
                                                         topLeft:
@@ -451,7 +451,7 @@ class _CoexistencePageCoordinatorState
                                                 255, 203, 205, 209),
                                         progressIndicatorValueColor:
                                             const AlwaysStoppedAnimation(
-                                                Color(0xFFF18254)),
+                                                Color(0xFFFDAE2A)),
                                         overlayBlur: 3,
                                       );
                                     }

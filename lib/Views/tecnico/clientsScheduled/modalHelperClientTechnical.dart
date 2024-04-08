@@ -30,7 +30,7 @@ class ModalHelperTecnical {
             children: <Widget>[
               Container(
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 241, 130, 84),
+                  color: Color(0xFFFDAE2A),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0),
@@ -155,7 +155,7 @@ class ModalHelperTecnical {
                                   vertical: 4.0, horizontal: 10.0),
                             ),
                             backgroundColor: MaterialStateProperty.all<Color>(
-                                Color(0xFF2B3141)),
+                                Color(0xFF19CF9E)),
                           ),
                           onPressed: () async {
                             //llamo al ocntrolador y lo paso attended = 11 que significa que esta ya atendido y lo mando con el profesional

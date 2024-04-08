@@ -50,7 +50,7 @@ class LoginNewPage extends StatelessWidget {
                 delay: const Duration(milliseconds: 600),
                 child: Container(
                   decoration: const BoxDecoration(
-                      color: Color(0xFFF18254), //todo
+                      color: Color(0xFFFDAE2A), //todo
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(35),
                         topRight: Radius.circular(35),

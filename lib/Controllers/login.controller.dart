@@ -46,6 +46,7 @@ class LoginController extends GetxController {
   }
 
   bool maintainClockStatus = false;
+  bool varInTheClock = false;
   UserRepository usuarioLg = UserRepository();
   //*************************/
   String uss = '';
@@ -165,6 +166,12 @@ class LoginController extends GetxController {
   //esta la llamo en el modal para limpiar nuevamente la variable
   void setHandleButtonClickModal() {
     pressedButtonModal.clear();
+    update();
+  }
+
+  //esta la llamo en el modal para limpiar nuevamente la variable
+  void inTheClock(bool value) {
+    varInTheClock = value;
     update();
   }
 
@@ -334,9 +341,9 @@ class LoginController extends GetxController {
         duration: const Duration(seconds: 3),
         showProgressIndicator: true,
         progressIndicatorBackgroundColor:
-            const Color.fromARGB(255, 81, 93, 117),
+            const Color(0xFF4470F3),
         progressIndicatorValueColor:
-            const AlwaysStoppedAnimation(Color.fromARGB(255, 241, 130, 84)),
+            const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
         overlayBlur: 3,
       );
       await Future.delayed(Duration(
@@ -423,6 +430,8 @@ class LoginController extends GetxController {
           } else {
             print('id de mi puesto de trabajo = $idPuesto');
             setCodigoQrValid(null);
+            print(
+                'id de mi puesto de trabajo estoy entrando a poner el codigo1 en :null');
           }
 
           if (chargeUserLoggedIn == "Barbero") {
@@ -591,6 +600,19 @@ class LoginController extends GetxController {
     incorrectFields = false;
     pressedButtonIds.clear();
     pressedButtonIdsTec.clear();
+    //
+    branchNameLoggedIn = null;
+    branchTecnicLoggedIn = 0;
+    usserPermissionQr = null;
+    usserMssQr = -99;
+
+    //*************************/
+    obscureText = true;
+    qrRead = '';
+    greeting = 'Buenos días ';
+    isLoggingIn = false;
+    isLoggingInCharge = false;
+
     update();
   }
 

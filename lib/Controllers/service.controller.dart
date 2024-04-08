@@ -11,6 +11,7 @@ class ServiceController extends GetxController {
   int serviceListLength = 0;
   List<ServiceModel> services = []; // Lista de servicios
   List<ServiceModel> selectService = []; //ervicios seleccionados vacia
+  List<ServiceModel> selectServiceNew = []; //ervicios seleccionados vacia
   List<ServiceModel> sentServiceDelete = [];
   bool isLoading = true;
   bool loadedFirstTime = false;
@@ -36,6 +37,23 @@ class ServiceController extends GetxController {
     (selectService.contains(services[index]))
         ? null
         : selectService.add(services[index]);
+    update();
+  }
+
+  void getSelectServiceNew(service) {
+    final selectedServicen = service;
+
+    if (selectServiceNew.contains(selectedServicen)) {
+      selectServiceNew.remove(selectedServicen);
+    } else {
+      selectServiceNew.add(selectedServicen);
+    }
+
+    update(); // Actualizar la interfaz de usuario si es necesario
+  }
+
+  void clearSelectServiceNew() {
+    selectServiceNew.clear();
     update();
   }
 

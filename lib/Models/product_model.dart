@@ -10,6 +10,7 @@ class ProductModel {
   String description;
   int product_exit;
   String status_product;
+  String image_product;
   double purchase_price;
   double sale_price;
   String created_at;
@@ -25,6 +26,7 @@ class ProductModel {
     required this.description,
     required this.product_exit,
     required this.status_product,
+    required this.image_product,
     required this.purchase_price,
     required this.sale_price,
     required this.created_at,
@@ -42,6 +44,7 @@ class ProductModel {
       'description': description,
       'product_exit': product_exit,
       'status_product': status_product,
+      'image_product': image_product,
       'purchase_price': purchase_price,
       'sale_price': sale_price,
       'created_at': created_at,
@@ -60,6 +63,7 @@ class ProductModel {
       description: map['description'] ?? '',
       product_exit: map['product_exit'] ?? 0,
       status_product: map['status_product'] ?? '',
+      image_product: map['image_product'] ?? '',
       purchase_price: (map['purchase_price'] ?? 0.0).toDouble(),
       sale_price: (map['sale_price'] ?? 0.0).toDouble(),
       created_at: map['created_at'] ?? '',

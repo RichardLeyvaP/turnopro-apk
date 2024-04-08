@@ -106,7 +106,7 @@ class _ProfileClientState extends State<ProfileClient> {
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
-                                color: const Color(0xFFF18254)
+                                color: const Color(0xFFFDAE2A)
                                 // Puedes agregar otras propiedades de estilo aquí si es necesario
                                 ),
                             width: 80,
@@ -251,7 +251,7 @@ class _ProfileClientState extends State<ProfileClient> {
                                         children: <Widget>[
                                           Container(
                                             decoration: const BoxDecoration(
-                                              color: Color(0xFF2B3141),
+                                              color: Color(0xFF19CF9E),
                                               borderRadius: BorderRadius.only(
                                                 topLeft: Radius.circular(8),
                                                 topRight: Radius.circular(8),

@@ -83,7 +83,7 @@ class _NotificationsPageNewState extends State<NotificationsPageNew> {
         return _.isLoading
             ? const Center(
                 child: CircularProgressIndicator(
-                color: Color.fromARGB(255, 241, 130, 84),
+                color: Color(0xFFFDAE2A),
               ))
             : _.notificationListLength > 0
                 ? Column(

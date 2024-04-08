@@ -52,7 +52,7 @@ class _CoexistencePageState extends State<CoexistencePage> {
               children: [
                 Icon(
                   Icons.stars,
-                  size: 50,
+                  size: 45,
                 ),
                 Text(
                   'Convivencias',
@@ -74,7 +74,7 @@ class _CoexistencePageState extends State<CoexistencePage> {
         return _.isLoading
             ? const Center(
                 child: CircularProgressIndicator(
-                color: Color.fromARGB(255, 241, 130, 84),
+                color: Color(0xFFFDAE2A),
               ))
             : _.coexistenceListLength > 0
                 ? Column(
@@ -219,7 +219,7 @@ class _CoexistencePageState extends State<CoexistencePage> {
                                                                     170,
                                                                     169,
                                                                     169),
-                                                            size: 50,
+                                                            size: 45,
                                                           )
                                                         : controllerClient.noncomplianceProfessional[_
                                                                     .coexistence[
@@ -228,19 +228,15 @@ class _CoexistencePageState extends State<CoexistencePage> {
                                                                 0
                                                             ? const Icon(
                                                                 Icons.star,
-                                                                color:
-                                                                    Colors.red,
-                                                                size: 50,
+                                                                color: Color(
+                                                                    0xFFFF6750),
+                                                                size: 45,
                                                               )
                                                             : const Icon(
                                                                 Icons.star,
-                                                                color: Color
-                                                                    .fromRGBO(
-                                                                        26,
-                                                                        177,
-                                                                        71,
-                                                                        1),
-                                                                size: 50,
+                                                                color: Color(
+                                                                    0xFF19CF9E),
+                                                                size: 45,
                                                               )
                                                   ],
                                                 ));

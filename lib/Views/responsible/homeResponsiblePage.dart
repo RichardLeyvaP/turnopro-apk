@@ -78,7 +78,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                       showUnselectedLabels: false,
                       unselectedItemColor: Colors.white,
                       backgroundColor: const Color.fromARGB(255, 43, 44, 49),
-                      fixedColor: const Color(0xFFF18254),
+                      fixedColor: const Color(0xFFFDAE2A),
                       currentIndex: pagesConfigRespC.selectedIndexResp,
                       type: BottomNavigationBarType.fixed,
                       onTap: (index) => pagesConfigRespC.onTabTapped(index),
@@ -244,7 +244,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                               children: <Widget>[
                                 Container(
                                   decoration: const BoxDecoration(
-                                    color: Color(0xFF2B3141),
+                                    color: Color(0xFF19CF9E),
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(8),
                                       topRight: Radius.circular(8),
@@ -303,7 +303,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                           Color>(
-                                                      const Color(0xFF2B3141)),
+                                                      const Color(0xFF19CF9E)),
                                             ),
                                             onPressed: () async {
                                               // Lógica para enviar el comentario
@@ -377,7 +377,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                             children: <Widget>[
                               Container(
                                 decoration: const BoxDecoration(
-                                  color: const Color(0xFF2B3141),
+                                  color: const Color(0xFF19CF9E),
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(8),
                                     topRight: Radius.circular(8),
@@ -435,7 +435,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                             backgroundColor:
                                                 MaterialStateProperty.all<
                                                         Color>(
-                                                    const Color(0xFF2B3141)),
+                                                    const Color(0xFF19CF9E)),
                                           ),
                                           onPressed: () async {
                                             // Lógica para enviar el comentario
@@ -473,7 +473,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                             backgroundColor:
                                                 MaterialStateProperty.all<
                                                         Color>(
-                                                    const Color(0xFF2B3141)),
+                                                    const Color(0xFF19CF9E)),
                                           ),
                                           onPressed: () async {
                                             //todo falta llamar un metodo aqui

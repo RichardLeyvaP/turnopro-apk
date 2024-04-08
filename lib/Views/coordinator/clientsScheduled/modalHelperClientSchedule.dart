@@ -311,7 +311,7 @@ class ModalHelper {
                             'Descripción de Reserva',
                             style: TextStyle(
                                 fontWeight: FontWeight.w800,
-                                color: Color(0xFFF18254),
+                                color: Color(0xFFFDAE2A),
                                 fontSize: 18),
                           ),
                     InkWell(
@@ -389,7 +389,7 @@ class ModalHelper {
                                 vertical: 10.0, horizontal: 30.0),
                           ),
                           backgroundColor: MaterialStateProperty.all<Color>(
-                              const Color(0xFFF18254)),
+                              const Color(0xFFFDAE2A)),
                         ),
                         onPressed: () async {
                           await controllClient.watchModifyTime(reservationId);
@@ -420,7 +420,7 @@ class ModalHelper {
                                 vertical: 10.0, horizontal: 30.0),
                           ),
                           backgroundColor: MaterialStateProperty.all<Color>(
-                              const Color(0xFFF18254)),
+                              const Color(0xFFFDAE2A)),
                         ),
                         onPressed: () async {
                           await controllClient.watchModifyTime(reservationId);

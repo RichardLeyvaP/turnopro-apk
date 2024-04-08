@@ -65,7 +65,7 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                         clientsScheduledController.isLoading
                             ? const Center(
                                 child: CircularProgressIndicator(
-                                color: Color.fromARGB(255, 241, 130, 84),
+                                color: Color(0xFFFDAE2A),
                               ))
                             :
                             //AQUI VERIFICO QUE SE ESTE CONECTANDO AL SERVIDOR
@@ -73,7 +73,7 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                 ? Column(
                                     children: [
                                       Container(
-                                        color: const Color(0xFFF18254),
+                                        color: const Color(0xFFFDAE2A),
                                         padding: EdgeInsets.only(
                                             top: MediaQuery.of(context)
                                                 .padding

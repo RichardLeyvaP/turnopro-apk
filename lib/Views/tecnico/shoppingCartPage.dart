@@ -446,7 +446,7 @@ class ShoppingCartPage extends StatelessWidget {
                             gradient: LinearGradient(
                               colors: [
                                 Color.fromARGB(255, 140, 141, 143),
-                                Color.fromARGB(255, 241, 130, 84),
+                                Color(0xFFFDAE2A),
                               ],
                               stops: [0.0, 0.8],
                               begin: FractionalOffset.centerLeft,

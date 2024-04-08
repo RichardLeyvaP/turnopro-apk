@@ -106,7 +106,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(12)),
-                  color: const Color(0xFF2B3141), //CARAGANDO COLOR HEXADECIMAL,
+                  color: const Color(0xFF19CF9E), //CARAGANDO COLOR HEXADECIMAL,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -149,8 +149,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                           height: 45,
                                         ),
                                         CircularProgressIndicator(
-                                          color:
-                                              Color.fromARGB(255, 241, 130, 84),
+                                          color: Color(0xFFFDAE2A),
                                         ),
                                         Text(
                                           'Cargando lista de solicitudes...',
@@ -211,7 +210,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 },
                                 child: cartsHome(
                                     context,
-                                    const Color(0xFF2B3141),
+                                    const Color(0xFF19CF9E),
                                     'Clientes',
                                     'Clientes del día',
                                     Icons.notifications),
@@ -225,7 +224,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 },
                                 child: cartsHome(
                                     context,
-                                    const Color.fromARGB(255, 81, 93, 117),
+                                    const Color(0xFF4470F3),
                                     'Notificaciones',
                                     'Tus Notificaciones',
                                     Icons.notifications),
@@ -251,16 +250,16 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                   //       const Duration(milliseconds: 1500),
                                   //   showProgressIndicator: true,
                                   //   progressIndicatorBackgroundColor:
-                                  //       const Color.fromARGB(255, 81, 93, 117),
+                                  //       const Color(0xFF4470F3),
                                   //   progressIndicatorValueColor:
                                   //       const AlwaysStoppedAnimation(
-                                  //           Color.fromARGB(255, 241, 130, 84)),
+                                  //           Color(0xFFFDAE2A)),
                                   //   overlayBlur: 3,
                                   // );
                                 },
                                 child: cartsHome(
                                     context,
-                                    const Color.fromARGB(255, 177, 174, 174),
+                                    const Color(0xFFFF6750),
                                     'Estadísticas',
                                     'Revisa Tus Ingresos',
                                     Icons.bar_chart),
@@ -274,7 +273,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 },
                                 child: cartsHome(
                                     context,
-                                    const Color.fromARGB(255, 241, 130, 84),
+                                    const Color(0xFFFDAE2A),
                                     'Convivencia',
                                     'Cumplimiento de Reglas',
                                     Icons.star),
@@ -384,7 +383,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                           width:
                               1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                         ),
-                        color: const Color.fromARGB(255, 241, 130, 84),
+                        color: const Color(0xFFFDAE2A),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(12)),
                       ),
@@ -460,7 +459,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                   const Color.fromARGB(255, 203, 205, 209),
                               progressIndicatorValueColor:
                                   const AlwaysStoppedAnimation(
-                                      Color(0xFFF18254)),
+                                      Color(0xFFFDAE2A)),
                               overlayBlur: 3,
                             );
                           }
@@ -641,7 +640,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                   const Color.fromARGB(255, 203, 205, 209),
                               progressIndicatorValueColor:
                                   const AlwaysStoppedAnimation(
-                                      Color(0xFFF18254)),
+                                      Color(0xFFFDAE2A)),
                               overlayBlur: 3,
                             );
                           }

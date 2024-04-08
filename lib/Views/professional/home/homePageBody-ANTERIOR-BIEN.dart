@@ -965,11 +965,8 @@ class _HomePageBodyState extends State<HomePageBody>
             print('-*-*-*-**>>>> si fui un sierre inesperado');
             if (clientsScheduledController.item.isNotEmpty) {
               loginController.setCodigoQrValid(1);
-            } else if (loginController.usserPermissionQr == -99 &&
-                loginController.usserPermissionQr == 0) {
+            } else {
               loginController.setCodigoQrValid(null);
-              print(
-                  'id de mi puesto de trabajo 1 no esta en ningun puesto:null');
             }
           } else {
             print('-*-*-*-**>>>> NOOO fui un sierre inesperado');
@@ -997,175 +994,150 @@ class _HomePageBodyState extends State<HomePageBody>
                       6.6 //propiedades de telefone
                   ? 12
                   : 13,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: (clientsScheduledController
-                                .clientsScheduledListLength >
-                            0)
-                        ? Container(
-                            decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
-                              color: Colors.white,
-                              //color: Color(0xFFFDAE2A),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                /*todo texto arriba */ Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, top: 5),
-                                  child: Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      clientsScheduledController.item.isEmpty
-                                          ? 'Cliente en espera'
-                                          : 'Atendiendo ${clientsScheduledController.item.length} cliente(s)',
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
-                                        color: Color.fromARGB(255, 82, 81, 81),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-
-                                /*CRONOMETRO*/ Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  //todo AQUI LA LOGICA AL MOSTRAR LOS TIMER
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          //AQUI MUESTRA LOS TIMER DE LOS CLIENTES QUE ESTE ATENDIENDO
-                                          if (clientsScheduledController
-                                              .item.isNotEmpty) ...[
-                                            for (int i = 0;
-                                                i <
-                                                    clientsScheduledController
-                                                        .item.length;
-                                                i++) ...[
-                                              cardTimer(
-                                                clientsList[
-                                                    clientsScheduledController
-                                                        .item[i]]!,
-                                                i,
-                                                UniqueKey(),
-                                                clientsList[
-                                                        clientsScheduledController
-                                                            .item[i]]!
-                                                    .client_name,
-                                                clientsScheduledController,
-                                                animationCont[
-                                                    clientsScheduledController
-                                                        .item[i]]!,
-                                              ),
-                                            ],
-                                          ]
-                                          //SI NO ESTA ATENDIENDOA NADIE Y HAY GENTE EN LA COLA ESPERANDO CARGA EL TIMER INICIAL
-                                          else if (clientsScheduledController
-                                                  .clientsScheduledNext !=
-                                              null) ...[
-                                            //AQUI VERIFICO SI YA ESCANEO EL CODIGO QR
-                                            if (loginController
-                                                        .codigoQrValid() ==
-                                                    true &&
-                                                clientsScheduledController
-                                                    .item.isEmpty) ...[
-                                              cardTimer2(
-                                                UniqueKey(),
-                                                'Esperando',
-                                                clientsScheduledController,
-                                                clientsScheduledController
-                                                    .animationControllerInitial!,
-                                              ),
-                                            ] else ...[
-                                              const Center(
-                                                child: Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 50,
-                                                    ),
-                                                    Text(
-                                                      'Debe de escanear el código Qr ',
-                                                      style: TextStyle(
-                                                          // color: Colors.white,
-                                                          color: Color.fromARGB(
-                                                              255, 39, 39, 39),
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                    Text(
-                                                      'para atender clientes',
-                                                      style: TextStyle(
-                                                          //color: Colors.white,
-                                                          color: Color.fromARGB(
-                                                              255, 39, 39, 39),
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 60,
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ]
-                                          ] else ...[
-                                            const SizedBox(
-                                              height: 50,
-                                            ),
-                                          ]
-                                        ]),
-                                  ),
-                                  //FIN CLIENTES QUE ESTAN EN COLA
-                                ),
-                                //todo CLIENTES QUE ESTAN EN COLA
-
-                                //FIN CLIENTES QUE ESTAN EN COLA
-                              ],
-                            ),
-                          )
-                        : SizedBox(
-                            height: 100,
-                          ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    color: Color(0xFFFDAE2A),
                   ),
-                  clientsScheduledController.boolFilterShowNext
-                      ? cardClientTails(clientsScheduledController, context,
-                          firstName, animationCont)
-                      :
-
-                      //si hubiera algien en cola
-                      (clientsScheduledController
-                                  .clientsScheduledListLengthTail >
-                              0)
-                          ? const Column(
-                              children: [
-                                Text(
-                                  'Cliente atendiéndose.',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 81, 81),
-                                      fontWeight: FontWeight.w700),
-                                ),
-                                Text(
-                                  'Esperando para mostrar el siguiente',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 81, 81),
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            )
-                          : const Text('No hay clientes en cola',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      /*todo texto arriba */ Padding(
+                        padding: const EdgeInsets.only(left: 8, top: 5),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            clientsScheduledController.item.isEmpty
+                                ? 'Cliente en espera'
+                                : 'Atendiendo ${clientsScheduledController.item.length} cliente(s)',
+                            style: const TextStyle(
                                 fontSize: 16,
-                                color: Color.fromARGB(255, 82, 81, 81),
-                              )),
-                ],
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+
+                      /*CRONOMETRO*/ Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        //todo AQUI LA LOGICA AL MOSTRAR LOS TIMER
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                //AQUI MUESTRA LOS TIMER DE LOS CLIENTES QUE ESTE ATENDIENDO
+                                if (clientsScheduledController
+                                    .item.isNotEmpty) ...[
+                                  for (int i = 0;
+                                      i <
+                                          clientsScheduledController
+                                              .item.length;
+                                      i++) ...[
+                                    cardTimer(
+                                      i,
+                                      UniqueKey(),
+                                      clientsList[clientsScheduledController
+                                              .item[i]]!
+                                          .client_name,
+                                      clientsScheduledController,
+                                      animationCont[
+                                          clientsScheduledController.item[i]]!,
+                                    ),
+                                  ],
+                                ]
+                                //SI NO ESTA ATENDIENDOA NADIE Y HAY GENTE EN LA COLA ESPERANDO CARGA EL TIMER INICIAL
+                                else if (clientsScheduledController
+                                        .clientsScheduledNext !=
+                                    null) ...[
+                                  //AQUI VERIFICO SI YA ESCANEO EL CODIGO QR
+                                  if (loginController.codigoQrValid() == true &&
+                                      clientsScheduledController
+                                          .item.isEmpty) ...[
+                                    cardTimer(
+                                      1,
+                                      UniqueKey(),
+                                      'Esperando',
+                                      clientsScheduledController,
+                                      clientsScheduledController
+                                          .animationControllerInitial!,
+                                    ),
+                                  ] else ...[
+                                    const Center(
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 50,
+                                          ),
+                                          Text(
+                                            'Debe de escanear el código Qr ',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          Text(
+                                            'para atender clientes',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ]
+                                ] else ...[
+                                  const SizedBox(
+                                    height: 50,
+                                  ),
+                                ]
+                              ]),
+                        ),
+                        //FIN CLIENTES QUE ESTAN EN COLA
+                      ),
+                      //todo CLIENTES QUE ESTAN EN COLA
+
+                      clientsScheduledController.boolFilterShowNext
+                          ? cardClientTails(clientsScheduledController, context,
+                              firstName, animationCont)
+                          :
+
+                          //si hubiera algien en cola
+                          clientsScheduledController
+                                      .clientsScheduledListLength >
+                                  0
+                              ? const Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 16,
+                                    ),
+                                    Text(
+                                      'Cliente atendiéndose.',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Text(
+                                      'Esperando para mostrar el siguiente',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                )
+                              : const Text('No hay clientes en cola',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12,
+                                      color: Colors.white)),
+                      //FIN CLIENTES QUE ESTAN EN COLA
+                    ],
+                  ),
+                ),
               )),
           Expanded(
               flex: 15, // 85% del espacio disponible para esta parte
@@ -1181,7 +1153,7 @@ class _HomePageBodyState extends State<HomePageBody>
                           const Text(
                             'Dashboard',
                             style: TextStyle(
-                                color: Color.fromARGB(255, 82, 81, 81),
+                                color: Color.fromARGB(255, 43, 44, 49),
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700),
                           ),
@@ -1300,17 +1272,14 @@ class _HomePageBodyState extends State<HomePageBody>
       String firstName,
       List<AnimationController?> animationCont) {
     return Padding(
-      padding: const EdgeInsets.only(
-        left: 8,
-        right: 8,
-      ),
+      padding: const EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 6),
       child: FittedBox(
         fit: BoxFit.contain,
         child: clientsScheduledController.clientsScheduledNext != null
             ? Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(18)),
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
                 ),
                 child: Row(
                   children: [
@@ -1323,9 +1292,9 @@ class _HomePageBodyState extends State<HomePageBody>
                           width:
                               1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                         ),
-                        color: Color(0xFFFF6750),
+                        color: const Color(0xFFFDAE2A),
                         borderRadius:
-                            const BorderRadius.all(Radius.circular(18)),
+                            const BorderRadius.all(Radius.circular(12)),
                       ),
                       child: IconButton(
                         onPressed: () {
@@ -1358,7 +1327,7 @@ class _HomePageBodyState extends State<HomePageBody>
                           }
                         },
                         icon: Icon(
-                          MdiIcons.thumbDownOutline,
+                          MdiIcons.thumbDown,
                           color: Colors.white,
                           size: (MediaQuery.of(context).size.height * 0.04),
                         ),
@@ -1468,9 +1437,9 @@ class _HomePageBodyState extends State<HomePageBody>
                             width:
                                 1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                           ),
-                          color: const Color(0xFF19CF9E),
+                          color: const Color.fromARGB(255, 43, 44, 49),
                           borderRadius:
-                              const BorderRadius.all(Radius.circular(18))),
+                              const BorderRadius.all(Radius.circular(12))),
                       child: IconButton(
                         onPressed: () async {
                           //AQUI VEO SI YA ESCANEO EL CODIGO QR Y ESTA EN EL LOCAL
@@ -1560,7 +1529,7 @@ class _HomePageBodyState extends State<HomePageBody>
                           }
                         },
                         icon: Icon(
-                          MdiIcons.thumbUpOutline,
+                          MdiIcons.thumbUp,
                           color: Colors.white,
                           size: (MediaQuery.of(context).size.height * 0.04),
                         ),
@@ -1576,10 +1545,9 @@ class _HomePageBodyState extends State<HomePageBody>
                     children: [
                       Text('No hay clientes en cola',
                           style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                            color: Color.fromARGB(255, 82, 81, 81),
-                          )),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 12,
+                              color: Colors.white)),
                     ],
                   );
                 }),
@@ -1590,7 +1558,6 @@ class _HomePageBodyState extends State<HomePageBody>
 
   //todo9
   cardTimer(
-    clientsL,
     int index,
     Key uniqueKey,
     String name,
@@ -1598,7 +1565,6 @@ class _HomePageBodyState extends State<HomePageBody>
     AnimationController _animationController,
   ) {
     String segundos = "";
-    // Color colorInicial = Colors.white;
     Color colorInicial = Colors.white;
     Color colorInicialCirculo = const Color(0xFFFDAE2A);
     double fontSizeText = (MediaQuery.of(context).size.width * 0.030);
@@ -1614,8 +1580,9 @@ class _HomePageBodyState extends State<HomePageBody>
         {
           //VA A EJECUTARSE SI NO ESTA CON EL TECNICO
           int resulButton = 0;
-          resulButton =
-              loginController.handleButtonClickModal(clientsL.reservation_id);
+          resulButton = loginController.handleButtonClickModal(
+              clientsScheduledController
+                  .clientsScheduledList[index].reservation_id);
           if (resulButton == 1) {
             //limpio la lista que controla que se de un solo click al seleccionar los servicios
             loginController.inTheClock(true);
@@ -1623,38 +1590,55 @@ class _HomePageBodyState extends State<HomePageBody>
             loginController.setIsLoadingFor(true);
             serviceControll.clearSelectService();
 
-            if (clientsL.attended != 4) {
+            if (clientsScheduledController
+                    .clientsScheduledList[index].attended !=
+                4) {
               // aqui selecciono el cliente
               clientsScheduledController.getselectCustomer(
-                  index, clientsL.car_id);
+                  index,
+                  clientsScheduledController
+                      .clientsScheduledList[index].car_id);
               //AQUI MANDO ID DE CARRO PAR ACARGAR EL CARRITO PARA LOS SERVICIO Y PRODUCTOS
               //Y SE ACTUALIZA LA VARIABLE GLOBAL carIdClienteSelect
-              clientsScheduledController.selectCarClient(clientsL.car_id);
+              clientsScheduledController.selectCarClient(
+                  clientsScheduledController
+                      .clientsScheduledList[index].car_id);
               //AQUI MANDO EL ID DE RESERVACION Y ME DEVUELVE EL ESTADO DEL CLIENTE,
               //SI SE ESTA ATENDINEDO O NO , PARA ASI SABER CUANDO MOSTRAR LOS BOTONES DE ATENDIDO Y
               //SELECCIONAR SERVICIO Y PRODUCTOS
-              clientsScheduledController
-                  .returnClientStatus(clientsL.reservation_id);
+              clientsScheduledController.returnClientStatus(
+                  clientsScheduledController
+                      .clientsScheduledList[index].reservation_id);
               //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
-              clientsScheduledController
-                  .returnClientName((clientsL.client_name).toString());
-              clientsScheduledController
-                  .returnImageName((clientsL.client_image).toString());
+              clientsScheduledController.returnClientName(
+                  (clientsScheduledController
+                          .clientsScheduledList[index].client_name)
+                      .toString());
+              clientsScheduledController.returnImageName(
+                  (clientsScheduledController
+                          .clientsScheduledList[index].client_image)
+                      .toString());
               //todo  INICIO esto estaba en la pagina del modal al dar en Ver carrito
-              await clientsScheduledController
-                  .watchModifyTime(clientsL.reservation_id);
+              await clientsScheduledController.watchModifyTime(
+                  clientsScheduledController
+                      .clientsScheduledList[index].reservation_id);
               // servControll
               //     .clearSelectService();
               //todo FIN esto estaba en la pagina del modal al dar en Ver carrito
               await chopCont.loadDataInitiallyNecessary().then((_) async {
                 await clientsScheduledController
-                    .searchForCustomerServices(clientsL.car_id)
+                    .searchForCustomerServices(clientsScheduledController
+                        .clientsScheduledList[index].car_id)
                     .then((_) {
                   loginController.setHandleButtonClickModal();
-                  String clientName = clientsL.client_name;
-                  String urlImage = clientsL.client_image;
-                  int reservationId = clientsL.reservation_id;
-                  int carId = clientsL.car_id;
+                  String clientName = clientsScheduledController
+                      .clientsScheduledList[index].client_name;
+                  String urlImage = clientsScheduledController
+                      .clientsScheduledList[index].client_image;
+                  int reservationId = clientsScheduledController
+                      .clientsScheduledList[index].reservation_id;
+                  int carId = clientsScheduledController
+                      .clientsScheduledList[index].car_id;
                   //   _mostrarBottomSheet(          context);
                   //  showMyDialog(context);
                   print(
@@ -1669,345 +1653,122 @@ class _HomePageBodyState extends State<HomePageBody>
         }
       },
       child: Padding(
-        padding: const EdgeInsets.only(left: 6, right: 6),
-        child: Column(
-          children: [
-            Container(
-              width: (clientsScheduledController.boolFilterShowNext == false &&
-                          clientsScheduledController
-                                  .clientsScheduledListLengthTail >
-                              0) ||
-                      (clientsScheduledController
-                              .clientsScheduledListLengthTail ==
-                          0)
-                  ? 130
-                  : 110,
-              height: (clientsScheduledController.boolFilterShowNext == false &&
-                          clientsScheduledController
-                                  .clientsScheduledListLengthTail >
-                              0) ||
-                      (clientsScheduledController
-                              .clientsScheduledListLengthTail ==
-                          0)
-                  ? 130
-                  : 110,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                // border: Border.all(
-                //   color: Color.fromARGB(255, 75, 24, 2),
-                // ),
-                color: const Color(0xFFFDAE2A),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8, right: 8),
-                child: Center(
-                  child: AnimatedBuilder(
-                    key: uniqueKey,
-                    animation: _animationController,
-                    builder: (context, child) {
-                      final value = _animationController.value;
-                      final remainingSeconds =
-                          (_animationController.duration!.inSeconds -
-                                  (_animationController.duration!.inSeconds *
-                                      value))
-                              .ceil();
-                      int minutes = remainingSeconds ~/
-                          60; // Calcula los minutos restantes
-                      int seconds = remainingSeconds %
-                          60; // Calcula los segundos restantes
+        padding: const EdgeInsets.only(left: 8, right: 8),
+        child: Center(
+          child: AnimatedBuilder(
+            key: uniqueKey,
+            animation: _animationController,
+            builder: (context, child) {
+              final value = _animationController.value;
+              final remainingSeconds =
+                  (_animationController.duration!.inSeconds -
+                          (_animationController.duration!.inSeconds * value))
+                      .ceil();
+              int minutes =
+                  remainingSeconds ~/ 60; // Calcula los minutos restantes
+              int seconds =
+                  remainingSeconds % 60; // Calcula los segundos restantes
 
-                      if (seconds < 10) {
-                        segundos = "0";
-                      } else {
-                        segundos = "";
-                      }
+              if (seconds < 10) {
+                segundos = "0";
+              } else {
+                segundos = "";
+              }
 
-                      if (minutes == 0 && seconds == 0) {
-                        firstName = 'Terminó';
-                        colorInicial = Colors.red;
-                        colorInicialCirculo = Colors.white;
-                        fontSizeText = 10;
-                      }
+              if (minutes == 0 && seconds == 0) {
+                firstName = 'Terminó';
+                colorInicial = Colors.red;
+                colorInicialCirculo = Colors.white;
+                fontSizeText = 10;
+              }
 
-                      return SizedBox(
+              return SizedBox(
+                width: clientsScheduledController.sizeClock,
+                height: clientsScheduledController.sizeClock,
+                child: Stack(
+                  children: [
+                    ShaderMask(
+                      shaderCallback: (rect) {
+                        return SweepGradient(
+                            startAngle: 0.0,
+                            endAngle: 3.14 * 2, //twoPi
+                            stops: [value, value],
+                            // 0.0 , 0.5 , 0.5 , 1.0
+                            center: Alignment.center,
+                            colors: [
+                              Colors.white,
+                              Color.fromARGB(255, 92, 91, 91).withAlpha(100)
+                            ]).createShader(rect);
+                      },
+                      child: Container(
                         width: clientsScheduledController.sizeClock,
                         height: clientsScheduledController.sizeClock,
-                        child: Stack(
-                          children: [
-                            ShaderMask(
-                              shaderCallback: (rect) {
-                                return SweepGradient(
-                                    startAngle: 0.0,
-                                    endAngle: 3.14 * 2, //twoPi
-                                    stops: [value, value],
-                                    // 0.0 , 0.5 , 0.5 , 1.0
-                                    center: Alignment.center,
-                                    colors: [
-                                      Colors.white,
-                                      Color.fromARGB(255, 92, 91, 91)
-                                          .withAlpha(100)
-                                    ]).createShader(rect);
-                              },
-                              child: Container(
-                                width: clientsScheduledController.sizeClock,
-                                height: clientsScheduledController.sizeClock,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        image: Image.asset(
-                                                "assets/images/radial_scale.png")
-                                            .image)),
-                              ),
-                            ),
-                            Center(
-                              child: Container(
-                                width:
-                                    (clientsScheduledController.sizeClock) - 40,
-                                height:
-                                    (clientsScheduledController.sizeClock) - 40,
-                                decoration: BoxDecoration(
-                                    color: colorInicialCirculo,
-                                    shape: BoxShape.circle),
-                                child: Center(
-                                    child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          '$minutes :',
-                                          style: TextStyle(
-                                              fontSize: (MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.04), //todo2
-                                              fontFamily: GoogleFonts.orbitron()
-                                                  .fontFamily,
-                                              color: colorInicial,
-                                              fontWeight: FontWeight.w900),
-                                        ),
-                                        Text(
-                                          "$segundos$seconds",
-                                          style: TextStyle(
-                                              fontSize: (MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.04),
-                                              color: colorInicial,
-                                              fontFamily: GoogleFonts.orbitron()
-                                                  .fontFamily,
-                                              fontWeight: FontWeight.w900),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                )),
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                firstName,
-                style: TextStyle(
-                    fontSize: 18,
-                    height: 1.3,
-                    color: Color(0xFFFDAE2A),
-                    fontWeight: FontWeight.w900),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  //todo9
-  cardTimer2(
-    Key uniqueKey,
-    String name,
-    ClientsScheduledController clientsScheduledController,
-    AnimationController _animationController,
-  ) {
-    String segundos = "";
-    // Color colorInicial = Colors.white;
-    Color colorInicial = Colors.white;
-    Color colorInicialCirculo = const Color(0xFFFDAE2A);
-    double fontSizeText = (MediaQuery.of(context).size.width * 0.030);
-    // Dividir el nombre completo por espacios
-
-    List<String> partsName =
-        name.split(" "); // Tomar los primeros dos nombres (si existen)
-    String firstName = partsName.isNotEmpty ? partsName[0] : "";
-    // String secondName = partsName.length > 1 ? partsName[1] : "";
-
-    return Padding(
-      padding: const EdgeInsets.only(left: 6, right: 6),
-      child: Column(
-        children: [
-          Container(
-            width: (clientsScheduledController.boolFilterShowNext == false &&
-                        clientsScheduledController
-                                .clientsScheduledListLengthTail >
-                            0) ||
-                    (clientsScheduledController
-                            .clientsScheduledListLengthTail ==
-                        0)
-                ? 130
-                : 110,
-            height: (clientsScheduledController.boolFilterShowNext == false &&
-                        clientsScheduledController
-                                .clientsScheduledListLengthTail >
-                            0) ||
-                    (clientsScheduledController
-                            .clientsScheduledListLengthTail ==
-                        0)
-                ? 130
-                : 110,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              // border: Border.all(
-              //   color: Color.fromARGB(255, 75, 24, 2),
-              // ),
-              color: const Color(0xFFFDAE2A),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8, right: 8),
-              child: Center(
-                child: AnimatedBuilder(
-                  key: uniqueKey,
-                  animation: _animationController,
-                  builder: (context, child) {
-                    final value = _animationController.value;
-                    final remainingSeconds = (_animationController
-                                .duration!.inSeconds -
-                            (_animationController.duration!.inSeconds * value))
-                        .ceil();
-                    int minutes =
-                        remainingSeconds ~/ 60; // Calcula los minutos restantes
-                    int seconds =
-                        remainingSeconds % 60; // Calcula los segundos restantes
-
-                    if (seconds < 10) {
-                      segundos = "0";
-                    } else {
-                      segundos = "";
-                    }
-
-                    if (minutes == 0 && seconds == 0) {
-                      firstName = 'Terminó';
-                      colorInicial = Colors.red;
-                      colorInicialCirculo = Colors.white;
-                      fontSizeText = 10;
-                    }
-
-                    return SizedBox(
-                      width: clientsScheduledController.sizeClock,
-                      height: clientsScheduledController.sizeClock,
-                      child: Stack(
-                        children: [
-                          ShaderMask(
-                            shaderCallback: (rect) {
-                              return SweepGradient(
-                                  startAngle: 0.0,
-                                  endAngle: 3.14 * 2, //twoPi
-                                  stops: [value, value],
-                                  // 0.0 , 0.5 , 0.5 , 1.0
-                                  center: Alignment.center,
-                                  colors: [
-                                    Colors.white,
-                                    Color.fromARGB(255, 92, 91, 91)
-                                        .withAlpha(100)
-                                  ]).createShader(rect);
-                            },
-                            child: Container(
-                              width: clientsScheduledController.sizeClock,
-                              height: clientsScheduledController.sizeClock,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: Image.asset(
-                                              "assets/images/radial_scale.png")
-                                          .image)),
-                            ),
-                          ),
-                          Center(
-                            child: Container(
-                              width:
-                                  (clientsScheduledController.sizeClock) - 40,
-                              height:
-                                  (clientsScheduledController.sizeClock) - 40,
-                              decoration: BoxDecoration(
-                                  color: colorInicialCirculo,
-                                  shape: BoxShape.circle),
-                              child: Center(
-                                  child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        '$minutes :',
-                                        style: TextStyle(
-                                            fontSize: (MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.04), //todo2
-                                            fontFamily: GoogleFonts.orbitron()
-                                                .fontFamily,
-                                            color: colorInicial,
-                                            fontWeight: FontWeight.w900),
-                                      ),
-                                      Text(
-                                        "$segundos$seconds",
-                                        style: TextStyle(
-                                            fontSize: (MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.04),
-                                            color: colorInicial,
-                                            fontFamily: GoogleFonts.orbitron()
-                                                .fontFamily,
-                                            fontWeight: FontWeight.w900),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              )),
-                            ),
-                          )
-                        ],
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image: Image.asset(
+                                        "assets/images/radial_scale.png")
+                                    .image)),
                       ),
-                    );
-                  },
+                    ),
+                    Center(
+                      child: Container(
+                        width: (clientsScheduledController.sizeClock) - 40,
+                        height: (clientsScheduledController.sizeClock) - 40,
+                        decoration: BoxDecoration(
+                            color: colorInicialCirculo, shape: BoxShape.circle),
+                        child: Center(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '$minutes :',
+                                  style: TextStyle(
+                                      fontSize:
+                                          (MediaQuery.of(context).size.width *
+                                              0.04), //todo2
+                                      fontFamily:
+                                          GoogleFonts.orbitron().fontFamily,
+                                      color: colorInicial,
+                                      fontWeight: FontWeight.w900),
+                                ),
+                                Text(
+                                  "$segundos$seconds",
+                                  style: TextStyle(
+                                      fontSize:
+                                          (MediaQuery.of(context).size.width *
+                                              0.04),
+                                      color: colorInicial,
+                                      fontFamily:
+                                          GoogleFonts.orbitron().fontFamily,
+                                      fontWeight: FontWeight.w900),
+                                ),
+                              ],
+                            ),
+                            Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                firstName,
+                                style: TextStyle(
+                                    fontSize: fontSizeText,
+                                    color: colorInicial,
+                                    fontWeight: FontWeight.w900),
+                              ),
+                            ),
+                          ],
+                        )),
+                      ),
+                    )
+                  ],
                 ),
-              ),
-            ),
+              );
+            },
           ),
-          Align(
-            alignment: Alignment.center,
-            child: Text(
-              firstName,
-              style: TextStyle(
-                  fontSize: 18,
-                  height: 1.3,
-                  color: Color(0xFFFDAE2A),
-                  fontWeight: FontWeight.w900),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -2044,7 +1805,8 @@ class _HomePageBodyState extends State<HomePageBody>
                 child: Icon(
                   iconCart, // Icono que deseas mostrar
                   size: 30, // Tamaño del icono
-                  color: colorVariable, // Color del icono
+                  color:
+                      const Color.fromARGB(255, 26, 50, 82), // Color del icono
                 ),
               ),
             ),

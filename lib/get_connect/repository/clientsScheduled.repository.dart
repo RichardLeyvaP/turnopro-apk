@@ -68,6 +68,7 @@ class ClientsScheduledRepository extends GetConnect {
 
   Future getClientsScheduledList(idProfessional, idBranch) async {
     List<ClientsScheduledModel> clientList = [];
+    List<ClientsScheduledModel> clientListSig = [];
     List<Map> attendingClientList = [];
     ClientsScheduledModel? nextClient;
     bool hasNextClient = false;
@@ -163,6 +164,9 @@ class ClientsScheduledRepository extends GetConnect {
         }*/
 
         clientList.add(client);
+        if (client.attended == 0) {
+          clientListSig.add(client);
+        }
         //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
 
         if (hasNextClient == false) {
@@ -188,6 +192,7 @@ class ClientsScheduledRepository extends GetConnect {
 
     return {
       "clientList": clientList,
+      "clientListSig": clientListSig,
       "nextClient": nextClient,
       "quantityClientAttended": quantityClientAttended,
       "attendingClient": attendingClientList, //puede ser null
@@ -383,6 +388,10 @@ class ClientsScheduledRepository extends GetConnect {
     var url = '${Env.apiEndpoint}/professional-state?branch_id=$idBranch';
 
     final response = await get(url);
+    print(
+        'getProfessionalState(idBranch) async getProfessionalState(idBranch) url:$url');
+    print(
+        'getProfessionalState(idBranch) async getProfessionalState(idBranch) response.statusCode:${response.statusCode}');
     if (response.statusCode == 200) {
       final professionals = response.body['professionals'];
       for (Map professional in professionals) {
@@ -394,10 +403,11 @@ class ClientsScheduledRepository extends GetConnect {
           professionalList.add(u);
         }
       }
-      print('getProfessionalState(idBranch) async');
+      print(
+          'getProfessionalState(idBranch) async getProfessionalState(idBranch) async');
       print(professionalList.length);
       print(
-          'getProfessionalState(idBranch) async professionalList.length:${professionalList.length}');
+          'getProfessionalState(idBranch) async getProfessionalState(idBranch) async professionalList.length:${professionalList.length}');
       return professionalList;
     }
 

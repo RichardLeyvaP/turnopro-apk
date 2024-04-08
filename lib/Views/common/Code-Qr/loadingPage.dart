@@ -36,10 +36,9 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
             titleText: const Text('Mensaje'),
             duration: const Duration(seconds: 4),
             showProgressIndicator: true,
-            progressIndicatorBackgroundColor:
-                const Color.fromARGB(255, 81, 93, 117),
+            progressIndicatorBackgroundColor: const Color(0xFF4470F3),
             progressIndicatorValueColor:
-                const AlwaysStoppedAnimation(Color.fromARGB(255, 241, 130, 84)),
+                const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
             overlayBlur: 3,
           );
           controllerLogin.setUsserMssQr(-99);
@@ -53,8 +52,7 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
             titleText: const Text('Error'),
             duration: const Duration(seconds: 4),
             showProgressIndicator: true,
-            progressIndicatorBackgroundColor:
-                const Color.fromARGB(255, 81, 93, 117),
+            progressIndicatorBackgroundColor: const Color(0xFF4470F3),
             progressIndicatorValueColor:
                 const AlwaysStoppedAnimation(Color.fromARGB(255, 241, 11, 3)),
             overlayBlur: 3,
@@ -145,14 +143,14 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFF18254)),
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFDAE2A)),
             ),
             SizedBox(height: 16),
             Text(
               'Cargando...',
               style: TextStyle(
                 fontSize: 18,
-                color: Color(0xFFF18254),
+                color: Color(0xFFFDAE2A),
                 fontWeight: FontWeight.bold,
               ),
             ),

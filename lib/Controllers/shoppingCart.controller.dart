@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, unused_element, non_constant_identifier_names
 
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/product.controller.dart';
 import 'package:turnopro_apk/Controllers/service.controller.dart';
@@ -228,6 +229,42 @@ class ShoppingCartController extends GetxController {
           'LISTA2 _fetchServiceList Limpiando long de idServiceCart.length:${idServiceCart.length}');
     }
     update();
+  }
+
+// updateShoppingCartValueSer(
+  //                       _.services[index].price_service, //aqui 0 porque este campo solo lo utilizo si fuera un producto
+  //                     _.services[index].id,
+  //                       controllerShoppingCart.carIdClienteSelect,
+  //                    'service',
+  //                 _.services[index].name);
+  //(priceService, id, car_id, type, servicioName)
+  Future<int> updateShoppingCartValueSerNew(selectServiceNew) async {
+    try {
+      int durationService = 0;
+      final ClientsScheduledController clientsController =
+          Get.find<ClientsScheduledController>();
+      for (ServiceModel service in selectServiceNew) {
+        // Llama al método _addOrderCartList con los parámetros necesarios
+        idServiceCart.add(service.name);
+        _addOrderCartList(carIdClienteSelect, 0, service.id,
+            'service'); //todo REVISAR TIENE PROBLEMA
+        //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
+        getTotalServicesProduct_Sum('service', service.price_service);
+        shoppingCart += 1;
+        serviceListLength = selectserviceCart.length;
+        print('memsj Servicio guardado exitosamente: ${service.id}');
+        durationService += service.duration_service;
+        update();
+      }
+      print('memsj durationService: $durationService');
+      clientsController.modifingTime((durationService));
+
+      return 1;
+    } catch (e) {
+      print('memsj Error al guardar el servicio: $e');
+      return 0;
+      // Manejar el error según sea necesario
+    }
   }
 
   void updateShoppingCartValue(priceProduct, index, car_id, type, id) async {

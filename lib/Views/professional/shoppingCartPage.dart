@@ -8,6 +8,8 @@ import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/env.dart';
+import 'package:http/http.dart' as http;
 
 class ShoppingCartPage extends StatelessWidget {
   ShoppingCartPage({super.key});
@@ -97,37 +99,39 @@ class ShoppingCartPage extends StatelessWidget {
                         heightFlexBody, // 85% del espacio disponible para esta parte
                     child: ListView.builder(
                         itemCount: controllerShoppingCart.serviceListLength,
-                        itemBuilder: (context, index) => Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                  (MediaQuery.of(context).size.height * 0.013),
-                                  (MediaQuery.of(context).size.height * 0.006),
-                                  (MediaQuery.of(context).size.height * 0.013),
-                                  (MediaQuery.of(context).size.height * 0.006)),
-                              child: FittedBox(
-                                fit: BoxFit.contain,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height:
-                                          (MediaQuery.of(context).size.height *
-                                              0.08),
-                                      width:
-                                          (MediaQuery.of(context).size.width *
-                                              1),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.7),
-                                            spreadRadius: 1,
-                                            blurRadius: 5,
-                                            offset: const Offset(-5,
-                                                5), // Ajusta los valores para personalizar la sombra
-                                          ),
-                                        ],
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(borderRadiusValue)),
-                                      ),
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.fromLTRB(
+                                (MediaQuery.of(context).size.height * 0.013),
+                                (MediaQuery.of(context).size.height * 0.006),
+                                (MediaQuery.of(context).size.height * 0.013),
+                                (MediaQuery.of(context).size.height * 0.006)),
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height:
+                                        (MediaQuery.of(context).size.height *
+                                            0.08),
+                                    width:
+                                        (MediaQuery.of(context).size.width * 1),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.7),
+                                          spreadRadius: 1,
+                                          blurRadius: 5,
+                                          offset: const Offset(-5,
+                                              5), // Ajusta los valores para personalizar la sombra
+                                        ),
+                                      ],
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(borderRadiusValue)),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(bottom: 7),
                                       child: ListTile(
                                           shape: const RoundedRectangleBorder(
                                             borderRadius: BorderRadius.all(
@@ -141,146 +145,151 @@ class ShoppingCartPage extends StatelessWidget {
                                             children: [
                                               Row(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                    CrossAxisAlignment.center,
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
                                                 children: [
-                                                  const SizedBox(
-                                                    width: 5,
+                                                  CircleAvatar(
+                                                    backgroundImage: NetworkImage(
+                                                        '${Env.apiEndpoint}/images/${controllerShoppingCart.selectserviceCart[index].image_service}'),
+                                                    radius:
+                                                        30, // Ajusta el tamaño del círculo aquí
                                                   ),
                                                   SizedBox(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.77,
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          controllerShoppingCart
-                                                              .selectserviceCart[
-                                                                  index]
-                                                              .nameService
-                                                              .toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w800,
-                                                          ),
+                                                    width: 4,
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        controllerShoppingCart
+                                                            .selectserviceCart[
+                                                                index]
+                                                            .nameService
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w800,
                                                         ),
-                                                        Text(
-                                                          controllerShoppingCart
-                                                              .selectserviceCart[
-                                                                  index]
-                                                              .price_service
-                                                              .toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize: 13,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          148,
-                                                                          0,
-                                                                          0,
-                                                                          0)),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                      ),
+                                                      Text(
+                                                        controllerShoppingCart
+                                                            .selectserviceCart[
+                                                                index]
+                                                            .price_service
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                            fontSize: 13,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    148,
+                                                                    0,
+                                                                    0,
+                                                                    0)),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
-                                              GetBuilder<
-                                                      ShoppingCartController>(
-                                                  builder: (_) {
-                                                return InkWell(
-                                                  onTap: () {
-                                                    if (controllerLogin
-                                                            .codigoQrValid() ==
-                                                        true) {
-                                                      controllerShoppingCart
-                                                          .requestDelete(
-                                                              controllerShoppingCart
-                                                                  .selectserviceCart[
-                                                                      index]
-                                                                  .id,
-                                                              1);
-                                                    } else {
-                                                      Get.snackbar(
-                                                        'Mensaje',
-                                                        'Debe de escanear el código Qr de entrada',
-                                                        duration:
-                                                            const Duration(
-                                                                milliseconds:
-                                                                    2500),
-                                                        backgroundColor:
-                                                            const Color
-                                                                    .fromARGB(
-                                                                118,
-                                                                255,
-                                                                255,
-                                                                255),
-                                                        showProgressIndicator:
-                                                            true,
-                                                        progressIndicatorBackgroundColor:
-                                                            const Color
-                                                                    .fromARGB(
-                                                                255,
-                                                                203,
-                                                                205,
-                                                                209),
-                                                        progressIndicatorValueColor:
-                                                            const AlwaysStoppedAnimation(
-                                                                Color(
-                                                                    0xFFF18254)),
-                                                        overlayBlur: 3,
-                                                      );
-                                                    }
-                                                  },
-                                                  child: _.requestDeleteOrder.contains(
-                                                              controllerShoppingCart
-                                                                  .selectserviceCart[
-                                                                      index]
-                                                                  .id) ||
-                                                          (_.idServiceCart.contains(
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  GetBuilder<
+                                                          ShoppingCartController>(
+                                                      builder: (_) {
+                                                    return InkWell(
+                                                      onTap: () {
+                                                        if (controllerLogin
+                                                                .codigoQrValid() ==
+                                                            true) {
+                                                          controllerShoppingCart
+                                                              .requestDelete(
                                                                   controllerShoppingCart
                                                                       .selectserviceCart[
                                                                           index]
-                                                                      .nameService) &&
-                                                              controllerShoppingCart
+                                                                      .id,
+                                                                  1);
+                                                        } else {
+                                                          Get.snackbar(
+                                                            'Mensaje',
+                                                            'Debe de escanear el código Qr de entrada',
+                                                            duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        2500),
+                                                            backgroundColor:
+                                                                const Color
+                                                                        .fromARGB(
+                                                                    118,
+                                                                    255,
+                                                                    255,
+                                                                    255),
+                                                            showProgressIndicator:
+                                                                true,
+                                                            progressIndicatorBackgroundColor:
+                                                                const Color
+                                                                        .fromARGB(
+                                                                    255,
+                                                                    203,
+                                                                    205,
+                                                                    209),
+                                                            progressIndicatorValueColor:
+                                                                const AlwaysStoppedAnimation(
+                                                                    Color(
+                                                                        0xFFF18254)),
+                                                            overlayBlur: 3,
+                                                          );
+                                                        }
+                                                      },
+                                                      child: _.requestDeleteOrder.contains(
+                                                                  controllerShoppingCart
                                                                       .selectserviceCart[
                                                                           index]
-                                                                      .request_delete ==
-                                                                  1)
-                                                      ? const Icon(
-                                                          Icons.delete,
-                                                          size: 35,
-                                                          color: Color.fromARGB(
-                                                              105,
-                                                              241,
-                                                              130,
-                                                              84),
-                                                        )
-                                                      : const Icon(
-                                                          Icons.delete,
-                                                          size: 35,
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              241,
-                                                              130,
-                                                              84),
-                                                        ),
-                                                );
-                                              })
+                                                                      .id) ||
+                                                              (_.idServiceCart.contains(controllerShoppingCart
+                                                                      .selectserviceCart[
+                                                                          index]
+                                                                      .nameService) &&
+                                                                  controllerShoppingCart
+                                                                          .selectserviceCart[
+                                                                              index]
+                                                                          .request_delete ==
+                                                                      1)
+                                                          ? const Icon(
+                                                              Icons.delete,
+                                                              size: 35,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      105,
+                                                                      139,
+                                                                      137,
+                                                                      136),
+                                                            )
+                                                          : const Icon(
+                                                              Icons.delete,
+                                                              size: 35,
+                                                              color: Color(
+                                                                  0xFFFDAE2A),
+                                                            ),
+                                                    );
+                                                  }),
+                                                ],
+                                              )
                                             ],
                                           )),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            )),
+                            ),
+                          );
+                        }),
                   )
                 : const Text(''),
             controllerShoppingCart.productListLength > 0
@@ -299,37 +308,39 @@ class ShoppingCartPage extends StatelessWidget {
                     child: ListView.builder(
                         //todo builder
                         itemCount: controllerShoppingCart.productListLength,
-                        itemBuilder: (context, index) => Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                  (MediaQuery.of(context).size.height * 0.013),
-                                  (MediaQuery.of(context).size.height * 0.006),
-                                  (MediaQuery.of(context).size.height * 0.013),
-                                  (MediaQuery.of(context).size.height * 0.006)),
-                              child: FittedBox(
-                                fit: BoxFit.contain,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height:
-                                          (MediaQuery.of(context).size.height *
-                                              0.08),
-                                      width:
-                                          (MediaQuery.of(context).size.width *
-                                              1),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.7),
-                                            spreadRadius: 1,
-                                            blurRadius: 5,
-                                            offset: const Offset(-5,
-                                                5), // Ajusta los valores para personalizar la sombra
-                                          ),
-                                        ],
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(borderRadiusValue)),
-                                      ),
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.fromLTRB(
+                                (MediaQuery.of(context).size.height * 0.013),
+                                (MediaQuery.of(context).size.height * 0.006),
+                                (MediaQuery.of(context).size.height * 0.013),
+                                (MediaQuery.of(context).size.height * 0.006)),
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height:
+                                        (MediaQuery.of(context).size.height *
+                                            0.08),
+                                    width:
+                                        (MediaQuery.of(context).size.width * 1),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.7),
+                                          spreadRadius: 1,
+                                          blurRadius: 5,
+                                          offset: const Offset(-5,
+                                              5), // Ajusta los valores para personalizar la sombra
+                                        ),
+                                      ],
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(borderRadiusValue)),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(bottom: 7),
                                       child: ListTile(
                                           shape: const RoundedRectangleBorder(
                                             borderRadius: BorderRadius.all(
@@ -343,54 +354,54 @@ class ShoppingCartPage extends StatelessWidget {
                                             children: [
                                               Row(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                    CrossAxisAlignment.center,
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
                                                 children: [
-                                                  const SizedBox(
-                                                    width: 5,
+                                                  CircleAvatar(
+                                                    backgroundImage: NetworkImage(
+                                                        '${Env.apiEndpoint}/images/${controllerShoppingCart.selectproduct[index].image_product}'),
+                                                    radius:
+                                                        30, // Ajusta el tamaño del círculo aquí
                                                   ),
                                                   SizedBox(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.77,
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          controllerShoppingCart
-                                                              .selectproduct[
-                                                                  index]
-                                                              .name
-                                                              .toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w800,
-                                                          ),
+                                                    width: 4,
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        controllerShoppingCart
+                                                            .selectproduct[
+                                                                index]
+                                                            .name
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w800,
                                                         ),
-                                                        Text(
-                                                          controllerShoppingCart
-                                                              .selectproduct[
-                                                                  index]
-                                                              .sale_price
-                                                              .toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize: 13,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          148,
-                                                                          0,
-                                                                          0,
-                                                                          0)),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                      ),
+                                                      Text(
+                                                        controllerShoppingCart
+                                                            .selectproduct[
+                                                                index]
+                                                            .sale_price
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                            fontSize: 13,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    148,
+                                                                    0,
+                                                                    0,
+                                                                    0)),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
@@ -436,7 +447,7 @@ class ShoppingCartPage extends StatelessWidget {
                                                         progressIndicatorValueColor:
                                                             const AlwaysStoppedAnimation(
                                                                 Color(
-                                                                    0xFFF18254)),
+                                                                    0xFFFDAE2A)),
                                                         overlayBlur: 3,
                                                       );
                                                     }
@@ -452,28 +463,27 @@ class ShoppingCartPage extends StatelessWidget {
                                                           size: 35,
                                                           color: Color.fromARGB(
                                                               105,
-                                                              241,
-                                                              130,
-                                                              84),
+                                                              139,
+                                                              137,
+                                                              136),
                                                         )
                                                       : const Icon(
                                                           Icons.delete,
                                                           size: 35,
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              241,
-                                                              130,
-                                                              84),
+                                                          color:
+                                                              Color(0xFFFDAE2A),
                                                         ),
                                                 );
                                               })
                                             ],
                                           )),
                                     ),
-                                  ],
-                                ),
+                                  )
+                                ],
                               ),
-                            )),
+                            ),
+                          );
+                        }),
                   )
                 : const Text(''),
             Padding(

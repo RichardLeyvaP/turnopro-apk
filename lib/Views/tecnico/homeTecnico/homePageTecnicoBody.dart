@@ -170,7 +170,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                 child: Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(12)),
-                    color: Color(0xFFF18254),
+                    color: Color(0xFFFDAE2A),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -319,7 +319,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                   width:
                                                       1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                                                 ),
-                                                color: const Color(0xFFF18254),
+                                                color: const Color(0xFFFDAE2A),
                                                 borderRadius:
                                                     const BorderRadius.all(
                                                         Radius.circular(12)),
@@ -648,7 +648,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                 child: cartsHome(
                                     context,
                                     12,
-                                    const Color(0xFF2B3141),
+                                    const Color(0xFF19CF9E),
                                     const Color.fromARGB(255, 231, 233, 233),
                                     'Agenda',
                                     'Clientes Agendados',
@@ -662,7 +662,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                 child: cartsHome(
                                     context,
                                     12,
-                                    const Color.fromARGB(255, 81, 93, 117),
+                                    const Color(0xFF4470F3),
                                     Color.fromARGB(255, 231, 233, 233),
                                     'Notificaciones',
                                     'Tus Notificaciones',
@@ -684,7 +684,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                 child: cartsHome(
                                     context,
                                     12,
-                                    const Color.fromARGB(255, 177, 174, 174),
+                                    const Color(0xFFFF6750),
                                     Color.fromARGB(255, 231, 233, 233),
                                     'Estadísticas',
                                     'Revisa Tus Ingresos',
@@ -698,7 +698,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                 child: cartsHome(
                                     context,
                                     12,
-                                    const Color(0xFFF18254),
+                                    const Color(0xFFFDAE2A),
                                     Color.fromARGB(255, 231, 233, 233),
                                     'Convivencia',
                                     'Cumplimiento de Reglas',
@@ -727,7 +727,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
   ) {
     String segundos = "";
     Color colorInicial = Colors.white;
-    Color colorInicialCirculo = const Color(0xFFF18254);
+    Color colorInicialCirculo = const Color(0xFFFDAE2A);
     double fontSizeText = (MediaQuery.of(context).size.width * 0.035);
     // Dividir el nombre completo por espacios
 

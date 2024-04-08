@@ -145,7 +145,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   CircularProgressIndicator(
-                                    color: Color.fromARGB(255, 241, 130, 84),
+                                    color: Color(0xFFFDAE2A),
                                   ),
                                   Text(
                                     'Cargando ...',
@@ -364,7 +364,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       child: cartsHome(
                                           context,
                                           12,
-                                          const Color(0xFF2B3141),
+                                          const Color(0xFF19CF9E),
                                           const Color.fromARGB(
                                               255, 231, 233, 233),
                                           'Atendiéndose',
@@ -421,7 +421,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       child: cartsHome(
                                           context,
                                           12,
-                                          const Color(0xFFF18254),
+                                          const Color(0xFFFDAE2A),
                                           Color.fromARGB(255, 231, 233, 233),
                                           'Convivencia',
                                           'Cumplimiento de Reglas',
@@ -648,7 +648,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                                     255, 203, 205, 209),
                                             progressIndicatorValueColor:
                                                 const AlwaysStoppedAnimation(
-                                                    Color(0xFFF18254)),
+                                                    Color(0xFFFDAE2A)),
                                             overlayBlur: 3,
                                           );
                                         }
@@ -791,7 +791,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                           width:
                               1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                         ),
-                        color: const Color.fromARGB(255, 241, 130, 84),
+                        color: const Color(0xFFFDAE2A),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(12)),
                       ),
@@ -837,7 +837,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   const Color.fromARGB(255, 203, 205, 209),
                               progressIndicatorValueColor:
                                   const AlwaysStoppedAnimation(
-                                      Color(0xFFF18254)),
+                                      Color(0xFFFDAE2A)),
                               overlayBlur: 3,
                             );
                           }
@@ -1016,7 +1016,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   const Color.fromARGB(255, 203, 205, 209),
                               progressIndicatorValueColor:
                                   const AlwaysStoppedAnimation(
-                                      Color(0xFFF18254)),
+                                      Color(0xFFFDAE2A)),
                               overlayBlur: 3,
                             );
                           }

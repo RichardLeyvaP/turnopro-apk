@@ -79,7 +79,7 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
             builder: (controllerClient) => controllerClient.isLoading
                 ? const Center(
                     child: CircularProgressIndicator(
-                    color: Color.fromARGB(255, 241, 130, 84),
+                    color: Color(0xFFFDAE2A),
                   ))
                 :
                 //AQUI VERIFICO QUE SE ESTE CONECTANDO AL SERVIDOR
@@ -151,7 +151,7 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                                                 ? Border.all(
                                                     width: 2,
                                                     color:
-                                                        const Color(0xFFF18254))
+                                                        const Color(0xFFFDAE2A))
                                                 : Border.all(width: 0.01),
                                             color: Colors.white,
                                             boxShadow: [

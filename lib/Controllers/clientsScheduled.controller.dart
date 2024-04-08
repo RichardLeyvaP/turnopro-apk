@@ -80,6 +80,7 @@ class ClientsScheduledController extends GetxController {
   int professionalDisponLength = 0;
 
   int clientsScheduledListLength = 0;
+  int clientsScheduledListLengthTail = 0;
   int clientsTechnicalLength = 0;
   int? carIdClientsScheduled;
   int quantityClientAttended = 0;
@@ -101,6 +102,7 @@ class ClientsScheduledController extends GetxController {
   int filterShowTimer = 0; //si esta en false es que es la primera vez
   int statusClientTemporary = -99;
   String nameClientTemporary = 'Cliente';
+  int idClientTemporary = -99;
   String urlImageTemporary = 'comments/default_profile.jpg';
   bool varClientsWaiting = false;
   int contClientsWaiting = 0;
@@ -726,9 +728,12 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future getProfessionalState(idBranch) async {
+    print('getProfessionalState(idBranch) async 11');
     //todo nuevo
     professionalDispon = await repository.getProfessionalState(idBranch);
     professionalDisponLength = professionalDispon.length;
+    print(
+        'getProfessionalState(idBranch) async 22 professionalDisponLength:$professionalDisponLength');
     update();
   }
 
@@ -951,6 +956,7 @@ class ClientsScheduledController extends GetxController {
 
   Future<void> returnClientStatus(int reservationId) async {
     try {
+      idClientTemporary = reservationId;
       int result = await repository.returnClientStatus(reservationId);
       statusClientTemporary = result;
       update();
@@ -1060,6 +1066,7 @@ class ClientsScheduledController extends GetxController {
 
   Future<void> fetchClientsScheduled(idProfessional, idBranch) async {
     try {
+      List<ClientsScheduledModel> clientsAux = [];
       print('con contador en 8 llamo la funcion2');
       Map<String, dynamic> resultList =
           await repository.getClientsScheduledList(idProfessional, idBranch);
@@ -1074,9 +1081,13 @@ class ClientsScheduledController extends GetxController {
         print('con contador en 8 llamo la funcion3');
         correctConnection = true;
         //aqui estoy guardando la cola del dia de hoy del profesional
-        clientsScheduledList =
-            (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
+        clientsScheduledList = (resultList['clientList'] ?? []).cast<
+            ClientsScheduledModel>(); //aqui estoy guardando la cola del dia de hoy del profesional
+
         clientsScheduledListLength = clientsScheduledList.length;
+        clientsAux =
+            (resultList['clientListSig'] ?? []).cast<ClientsScheduledModel>();
+        clientsScheduledListLengthTail = clientsAux.length;
         print(
             'qwerc SII mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor->${clientsScheduledList.length}');
 

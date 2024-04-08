@@ -34,7 +34,7 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
     return FadeIn(
       duration: const Duration(seconds: 2),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF18254),
+        backgroundColor: const Color(0xFFFDAE2A),
         appBar: AppBar(
           toolbarHeight: 30.0,
           backgroundColor: Colors.transparent,
@@ -64,8 +64,8 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                   decoration: const BoxDecoration(
                       color: Colors.white, //todo
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(35),
-                        topRight: Radius.circular(35),
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
                       )),
                   child: Padding(
                     padding:
@@ -78,7 +78,7 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                             hint: Row(
                               children: [
                                 Icon(
-                                  MdiIcons.homeCircleOutline,
+                                  MdiIcons.store,
                                   color: Colors.white,
                                   size: (MediaQuery.of(context).size.height *
                                       0.04),
@@ -129,14 +129,26 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                                     value: branchProf,
                                     child: Row(
                                       children: [
-                                        Text(
-                                          '  ${branchProf.nameBranch}',
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              MdiIcons.store,
+                                              color: Colors.white,
+                                              size: (MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.03),
+                                            ),
+                                            Text(
+                                              '  ${branchProf.nameBranch}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
@@ -151,10 +163,7 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                                   top: 2, left: 14, right: 14, bottom: 2),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(4),
-                                border: Border.all(
-                                  color: Color.fromARGB(255, 75, 24, 2),
-                                ),
-                                color: const Color(0xFFF18254),
+                                color: const Color(0xFFFDAE2A),
                               ),
                               elevation: 2,
                             ),
@@ -168,10 +177,11 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                             ),
                             dropdownStyleData: DropdownStyleData(
                               maxHeight: 340,
-                              width: (MediaQuery.of(context).size.width * 0.80),
+                              width:
+                                  (MediaQuery.of(context).size.width * 0.825),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                color: Color.fromARGB(200, 241, 131, 84),
+                                borderRadius: BorderRadius.circular(8),
+                                color: const Color(0xFFFDAE2A),
                               ),
                               offset: const Offset(40, 0),
                               scrollbarTheme: ScrollbarThemeData(
@@ -203,17 +213,16 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                                       padding: MaterialStateProperty.all<
                                           EdgeInsetsGeometry>(
                                         EdgeInsets.symmetric(
-                                            vertical: 12.0,
+                                            vertical: 12,
                                             horizontal: (MediaQuery.of(context)
                                                     .size
                                                     .width *
-                                                0.12)), // Ajusta el padding
+                                                0.12)),
                                       ),
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                              const Color.fromARGB(
-                                                  255, 43, 44, 49)),
-                                      // Añadir más propiedades de estilo aquí
+                                              Color.fromARGB(
+                                                  255, 192, 191, 191)),
                                     ),
                                     onPressed: () async {
                                       controll.branchProfessional.clear();
@@ -236,17 +245,15 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                                       padding: MaterialStateProperty.all<
                                           EdgeInsetsGeometry>(
                                         EdgeInsets.symmetric(
-                                            vertical: 12.0,
+                                            vertical: 12,
                                             horizontal: (MediaQuery.of(context)
                                                     .size
                                                     .width *
-                                                0.12)), // Ajusta el padding
+                                                0.12)),
                                       ),
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                              const Color.fromARGB(
-                                                  255, 43, 44, 49)),
-                                      // Añadir más propiedades de estilo aquí
+                                              const Color(0xFF4470F3)),
                                     ),
                                     onPressed: () async {
                                       if (branchIdLoggedIn != -99) {
@@ -266,8 +273,7 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                                             height: 26,
                                             child:
                                                 const CircularProgressIndicator(
-                                              color: Color.fromARGB(
-                                                  255, 241, 130, 84),
+                                              color: const Color(0xFFFDAE2A),
                                               strokeWidth: 4,
                                             ),
                                           )

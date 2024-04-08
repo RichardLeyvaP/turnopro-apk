@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ThemeConfig {
   // Colores para el tema de profesionales
-  static const Color colorPrimario = const Color(0xFFF18254);
+  static const Color colorPrimario = const Color(0xFFFDAE2A);
   static const Color colorSecundario = const Color.fromARGB(155, 231, 232, 234);
 
   // Colores para el tema de responsables
