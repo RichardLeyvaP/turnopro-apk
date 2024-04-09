@@ -74,10 +74,19 @@ class ProductRepository extends GetConnect {
         final orders = response.body['carOrderDelete'];
         print(orders);
         if (orders != null) {
+          for (int i = 0; i < orders.length; i++) {
+            print(
+                'ordya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
+            orders[i].forEach((key, value) {
+              print(
+                  'ordya tengo la cola de la api es estaa $key: ${value.runtimeType}');
+            });
+          }
           for (Map order in orders) {
-            print('aqui mapeandooooo');
+            print('DIO ERROR loadOrderDeleteCarv aqui mapeandooooo');
             OrderDeleteModel u = OrderDeleteModel.fromJson(jsonEncode(order));
             orderDEL.add(u);
+            print('DIO ERROR loadOrderDeleteCarv aqui mapeandooooo2222');
           }
         }
         //retornando dos listas
@@ -85,7 +94,7 @@ class ProductRepository extends GetConnect {
         return orderDEL;
       }
     } catch (e) {
-      // print('eroor:$e,NO RETORNO LAS DOS LISTAS ');
+      print('DIO ERROR loadOrderDeleteCar eroor:$e,NO RETORNO LAS DOS LISTAS ');
     }
   }
 

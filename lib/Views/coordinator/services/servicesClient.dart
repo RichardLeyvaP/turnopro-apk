@@ -255,7 +255,7 @@ class _ServicesClientState extends State<ServicesClient> {
                                 gradient: LinearGradient(
                                   colors: [
                                     Color.fromARGB(255, 231, 232, 234),
-                                    Color.fromARGB(255, 26, 50, 82),
+                                    Color(0xFF4470F3),
                                   ],
                                   stops: [0.0, 0.8],
                                   begin: FractionalOffset.centerLeft,

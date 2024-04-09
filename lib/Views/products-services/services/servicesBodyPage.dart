@@ -570,7 +570,10 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                       ),
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                        const Color(0xFF4470F3),
+                                        _.selectServiceNew.isNotEmpty
+                                            ? const Color(0xFF4470F3)
+                                            : const Color.fromARGB(
+                                                118, 255, 255, 255),
                                       ),
                                       shape: MaterialStateProperty.all<
                                           RoundedRectangleBorder>(
@@ -581,14 +584,15 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                       ),
                                     ),
                                     onPressed: () async {
-                                      int resp = await shpCont
-                                          .updateShoppingCartValueSerNew(
-                                              _.selectServiceNew);
-                                      if (resp == 1) {
-                                        String s = '';
-                                        if (_.selectServiceNew.length > 1) {
+                                      String s = '';
+                                      if (_.selectServiceNew.isNotEmpty) {
+                                        int resp = await shpCont
+                                            .updateShoppingCartValueSerNew(
+                                                _.selectServiceNew);
+                                        if (resp == 1) {
                                           s = 's';
                                         }
+
                                         print(
                                             'memsj perfecto agregado los servicios');
                                         Get.snackbar(

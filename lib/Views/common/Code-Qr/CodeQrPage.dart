@@ -57,7 +57,7 @@ class _QRViewPageState extends State<QRViewPage> {
         backgroundColor: loginController.pagina == 'nothing' ||
                 loginController.pagina == '/Professional'
             ? const Color(0xFFFDAE2A)
-            : const Color.fromARGB(255, 26, 50, 82),
+            : const Color(0xFF4470F3),
 
         leading: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,7 +179,7 @@ class _QRViewPageState extends State<QRViewPage> {
       backgroundColor: loginController.pagina == 'nothing' ||
               loginController.pagina == '/Professional'
           ? const Color(0xFFFDAE2A)
-          : const Color.fromARGB(255, 26, 50, 82),
+          : const Color(0xFF4470F3),
       body: Column(
         children: <Widget>[
           Expanded(flex: 8, child: _buildQrView(context)),

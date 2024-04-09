@@ -137,7 +137,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                     child: Container(
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(12)),
-                          color: Color.fromARGB(255, 26, 50, 82),
+                          color: Color(0xFF4470F3),
                         ),
                         child: controllerclient.isLoading
                             ? const Center(
@@ -379,8 +379,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       child: cartsHome(
                                           context,
                                           12,
-                                          const Color.fromARGB(
-                                              255, 81, 93, 117),
+                                          const Color(0xFF4470F3),
                                           Color.fromARGB(255, 231, 233, 233),
                                           'Notificaciones',
                                           'Tus Notificaciones',
@@ -404,8 +403,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       child: cartsHome(
                                           context,
                                           12,
-                                          const Color.fromARGB(
-                                              255, 177, 174, 174),
+                                          const Color(0xFFFF6750),
                                           Color.fromARGB(255, 231, 233, 233),
                                           'Estadísticas',
                                           'Revisa Tus Ingresos',
@@ -723,8 +721,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                 child: Icon(
                   iconCart, // Icono que deseas mostrar
                   size: 30, // Tamaño del icono
-                  color:
-                      const Color.fromARGB(255, 26, 50, 82), // Color del icono
+                  color: colorVariable, // Color del icono
                 ),
               ),
             ),
@@ -791,7 +788,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                           width:
                               1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                         ),
-                        color: const Color(0xFFFDAE2A),
+                        color: const Color(0xFFFF6750),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(12)),
                       ),
@@ -843,7 +840,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                           }
                         },
                         icon: Icon(
-                          MdiIcons.thumbDown,
+                          MdiIcons.thumbDownOutline,
                           color: Colors.white,
                           size: (MediaQuery.of(context).size.height * 0.04),
                         ),
@@ -957,7 +954,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                             width:
                                 1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                           ),
-                          color: const Color.fromARGB(255, 43, 44, 49),
+                          color: const Color(0xFF19CF9E),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(12))),
                       child: IconButton(
@@ -1022,7 +1019,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                           }
                         },
                         icon: Icon(
-                          MdiIcons.thumbUp,
+                          MdiIcons.thumbUpOutline,
                           color: Colors.white,
                           size: (MediaQuery.of(context).size.height * 0.04),
                         ),

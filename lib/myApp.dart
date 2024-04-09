@@ -26,10 +26,8 @@ class Myapp extends StatelessWidget {
   final Color colorPrimario = const Color(0xFFFDAE2A); // Color primario appBar
   final Color colorSecundario =
       const Color.fromARGB(155, 231, 232, 234); // Color secundario
-  final Color colorPrimario2 =
-      const Color.fromARGB(255, 26, 50, 82); // Color primario appBar
-  final Color colorSecundario2 =
-      const Color.fromARGB(155, 36, 86, 185); // Color secundario
+  final Color colorPrimario2 = const Color(0xFF4470F3); // Color primario appBar
+  final Color colorSecundario2 = const Color(0xFF4470F3); // Color secundario
 
   //todo colores
   //este color es el casi blanco-gris  de fondo Color.fromARGB(255, 231, 232, 234)
@@ -37,6 +35,7 @@ class Myapp extends StatelessWidget {
   // Color 4470F3: Color(0xFF4470F3)-->Notificaciones --azul
   // Color 19CF9E: Color(0xFF19CF9E)-->Agenda --verde
   // Color FF6750: Color(0xFFFF6750)-->Estadística --rojo
+  //  Color.fromARGB( 255, 192, 191, 191)-->Cancelar --gris
 
   //todo colores
 

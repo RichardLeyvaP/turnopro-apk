@@ -54,9 +54,9 @@ class OrderDeleteModel {
       nameClient: map['nameClient'] ?? '',
       nameProfesional: map['nameProfesional'] ?? '',
       hora: map['hora'] ?? '',
-      nameProduct: map['nameProduct'] ?? '',
+      nameProduct: map['nameProduct'],
       nameService: map['nameService'] ?? '',
-      duration_service: map['duration_service'] ?? '',
+      duration_service: map['duration_service'] ?? 0,
       updated_at: map['updated_at'] ?? '',
       is_product: map['is_product'] ?? 0,
     );

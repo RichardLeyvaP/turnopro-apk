@@ -776,9 +776,13 @@ class _HomePageBodyState extends State<HomePageBody>
 
 // Calcula el tiempo restante en minutos
           double tiempoRestante = duracionTotal.inMinutes - tiempoTranscurrido;
+          int valueMin = tiempoRestante.truncate() - value;
+          if (valueMin <= 0) {
+            valueMin = 1;
+          }
 
           Duration duracionSendAct = Duration(
-            minutes: tiempoRestante.truncate() - value,
+            minutes: valueMin,
           );
 
 // Aumenta la duración actual en 30 segundos

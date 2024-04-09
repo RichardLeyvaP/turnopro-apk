@@ -7,7 +7,7 @@ class ThemeConfig {
   static const Color colorSecundario = const Color.fromARGB(155, 231, 232, 234);
 
   // Colores para el tema de responsables
-  static const Color colorPrimario2 = const Color.fromARGB(255, 26, 50, 82);
+  static const Color colorPrimario2 = const Color(0xFF4470F3);
   static const Color colorSecundario2 = const Color.fromARGB(155, 36, 86, 185);
 
   static ThemeData getProfessionalTheme() {

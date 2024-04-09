@@ -109,7 +109,7 @@ class _StatisticPageResponState extends State<StatisticPageRespon>
                 child: TabBar(
                   // isScrollable: true,//rlp si son muchos tab para que tenga scroll entre los tab
                   indicator: clickServicesDecoration,
-                  labelColor: const Color.fromARGB(255, 26, 50, 82),
+                  labelColor: const Color(0xFF4470F3),
                   unselectedLabelColor: Colors.white,
                   automaticIndicatorColorAdjustment: false,
                   controller: _tabController,

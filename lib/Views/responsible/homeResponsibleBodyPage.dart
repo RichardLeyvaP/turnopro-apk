@@ -315,8 +315,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                 child: Icon(
                   iconCart, // Icono que deseas mostrar
                   size: 30, // Tamaño del icono
-                  color:
-                      const Color.fromARGB(255, 26, 50, 82), // Color del icono
+                  color: const Color(0xFF4470F3), // Color del icono
                 ),
               ),
             ),

@@ -158,7 +158,7 @@ class _CoexistencePageResponsibleState
                             border: Border.all(
                               color: const Color.fromARGB(255, 43, 44, 49),
                             ),
-                            color: Color.fromARGB(255, 26, 50, 82),
+                            color: Color(0xFF4470F3),
                           ),
                           elevation: 2,
                         ),

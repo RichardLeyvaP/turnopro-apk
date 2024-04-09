@@ -369,7 +369,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                           Color>(
-                                                      const Color(0xFF19CF9E)),
+                                                      const Color(0xFF4470F3)),
                                             ),
                                             onPressed: () async {
                                               // Lógica para enviar el comentario
@@ -511,9 +511,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                               ),
                                               backgroundColor:
                                                   MaterialStateProperty.all<
-                                                          Color>(
-                                                      Color.fromARGB(
-                                                          255, 192, 191, 191)),
+                                                      Color>(Color(0xFF4470F3)),
                                             ),
                                             onPressed: () async {
                                               // Lógica para enviar el comentario

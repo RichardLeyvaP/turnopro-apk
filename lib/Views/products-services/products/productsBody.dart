@@ -308,7 +308,23 @@ class _ProductsBodyState extends State<ProductsBody>
                                 ),
                                 onPressed: () {
                                   if (controllerLogin.codigoQrValid() == true) {
-                                    //todo mensaje de verificación si desea agregar un producto
+                                    controllerProduct.buyProduct(itemIndex);
+                                    controllerShoppingCart
+                                        .updateShoppingCartValue(
+                                            priceProduct,
+                                            tabsID[_tabController
+                                                .index], //le paso el id d ela categoria
+                                            controllerShoppingCart
+                                                .carIdClienteSelect,
+                                            'product',
+                                            id);
+
+                                    //
+                                    //
+                                    //
+
+                                    //mensaje de verificación si desea agregar un producto
+                                    /*
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -512,6 +528,7 @@ class _ProductsBodyState extends State<ProductsBody>
                                         });
                                       },
                                     );
+                                 */
                                   } else {
                                     Get.snackbar(
                                       'Mensaje',

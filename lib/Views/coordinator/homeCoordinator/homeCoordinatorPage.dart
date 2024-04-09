@@ -94,8 +94,8 @@ class _HomeCoordinatorPagesState extends State<HomeCoordinatorPages>
                   return BottomNavigationBar(
                       showSelectedLabels: false,
                       showUnselectedLabels: false,
-                      unselectedItemColor: Colors.white,
-                      backgroundColor: const Color.fromARGB(255, 43, 44, 49),
+                      unselectedItemColor: Color.fromARGB(155, 177, 173, 173),
+                      backgroundColor: Colors.white,
                       fixedColor: const Color(0xFFFDAE2A),
                       currentIndex: pagesConfigController.selectedIndex,
                       type: BottomNavigationBarType.fixed,
@@ -198,14 +198,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       const Size.fromHeight(70); // Ajusta el tamaño del AppBar aquí
 
   // Utilizar una función o getter para obtener imageDirection
-  String get imageDirection {
-    if (id != null && id != -99) {
-      return '${Env.apiEndpoint}/images/coordinator/$id.jpg';
-    } else {
-      // Si id es null o igual a -99, devuelve la ruta para la foto de perfil incógnito
-      return '${Env.apiEndpoint}/images/coordinator/default_profile.jpg';
-    }
-  }
 
   @override //todo AppBar
   Widget build(BuildContext context) {
@@ -289,7 +281,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                               children: <Widget>[
                                 Container(
                                   decoration: const BoxDecoration(
-                                    color: Color.fromARGB(255, 26, 50, 82),
+                                    color: Color(0xFF4470F3),
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(8),
                                       topRight: Radius.circular(8),
@@ -348,7 +340,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                           Color>(
-                                                      const Color(0xFF19CF9E)),
+                                                      const Color(0xFF4470F3)),
                                             ),
                                             onPressed: () async {
                                               // Lógica para enviar el comentario
@@ -422,7 +414,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                             children: <Widget>[
                               Container(
                                 decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 26, 50, 82),
+                                  color: Color(0xFF4470F3),
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(8),
                                     topRight: Radius.circular(8),
@@ -480,7 +472,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                             backgroundColor:
                                                 MaterialStateProperty.all<
                                                         Color>(
-                                                    const Color(0xFF19CF9E)),
+                                                    const Color.fromARGB(
+                                                        255, 192, 191, 191)),
                                           ),
                                           onPressed: () async {
                                             // Lógica para enviar el comentario
@@ -518,7 +511,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                             backgroundColor:
                                                 MaterialStateProperty.all<
                                                         Color>(
-                                                    const Color(0xFF19CF9E)),
+                                                    const Color(0xFF4470F3)),
                                           ),
                                           onPressed: () async {
                                             //todo falta llamar un metodo aqui
