@@ -597,26 +597,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                                 color: Color(0xFFFF6750))),
                                                                       ],
                                                                     )
-                                                                  : const Row(
-                                                                      //todo 999
-                                                                      children: [
-                                                                        Opacity(
-                                                                          opacity:
-                                                                              1,
-                                                                          child:
-                                                                              Icon(
-                                                                            Icons.play_circle,
-                                                                            size:
-                                                                                60,
-                                                                            color: Color.fromARGB(
-                                                                                85,
-                                                                                83,
-                                                                                82,
-                                                                                82),
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    )
+                                                                  : Text('')
                                                     ],
                                                   ),
                                                   //subtitle: Text(controllerClient.users[index].username.toString()),
@@ -634,12 +615,8 @@ class YourPageViewScreenState extends State<HomePageView> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Icon(Icons.assignment_ind_sharp),
                                               Text(
                                                 'No hay ningún cliente para hoy',
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w700),
                                               ),
                                             ],
                                           ),
@@ -1236,9 +1213,6 @@ class YourPageViewScreenState extends State<HomePageView> {
                                               Icon(Icons.assignment_ind_sharp),
                                               Text(
                                                 'No hay ningún cliente para hoy',
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w700),
                                               ),
                                             ],
                                           ),

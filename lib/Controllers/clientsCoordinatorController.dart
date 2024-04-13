@@ -19,6 +19,7 @@ class ClientsCoordinatorController extends GetxController {
   List<ClientsScheduledModel> clientsScheduledListTechnical =
       []; // Lista de clientes
   List<ClientsScheduledModel> clientsScheduledListBranch = [];
+  List<ClientsScheduledModel> clientsScheduledListBranchClient = [];
   List<ClientsScheduledModel> clientAttendBranch = [];
   List<ClientsScheduledModel> selectClientsScheduledList = [];
   List<ClientsScheduledModel> selectclientsScheduledListTechnical = [];
@@ -60,6 +61,7 @@ class ClientsCoordinatorController extends GetxController {
 
   int clientsScheduledListLength = 0;
   int clientsScheduledListBranchLength = 0;
+  int clientsScheduledListBranchClientLength = 0;
   int clientAttendBranchLength = 0;
   int clientsTechnicalLength = 0;
   int? carIdClientsScheduled;
@@ -161,6 +163,37 @@ class ClientsCoordinatorController extends GetxController {
         clientsScheduledListBranchLength = clientsScheduledListBranch.length;
         print(
             'cargando valores -******-*********-*-****-* lenght: $clientsScheduledListBranchLength -****-************-* ');
+        //
+      }
+      update();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  //
+  //
+  //
+  Future<void> fetchClientsRechazBranch(idBranch) async {
+    try {
+      Map<String, dynamic> resultList =
+          await repository.getClientsRechazBranch(idBranch);
+      print(resultList);
+      //verificando , si entra al if es problemas de coneccion
+      if (resultList.containsKey('ConnectionIssues') &&
+          resultList['ConnectionIssues'] == true) {
+        correctConnection = false;
+        print(
+            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
+      } else {
+        correctConnection = true;
+        //aqui estoy guardando la cola del dia de hoy del profesional
+        clientsScheduledListBranchClient =
+            (resultList['clientListDel'] ?? []).cast<ClientsScheduledModel>();
+        clientsScheduledListBranchClientLength =
+            clientsScheduledListBranchClient.length;
+        print(
+            'ddcargando valores -******-*********-*-****-* lenght: $clientsScheduledListBranchClientLength -****-************-* ');
         //
       }
       update();
@@ -580,6 +613,11 @@ class ClientsCoordinatorController extends GetxController {
     pausResumeClock[clock] = value;
     clockchanges = true;
     update();
+  }
+
+  Future<bool> acceptOrRejectClientCoord(reservationId, attended) async {
+    bool value = await repository.acceptOrRejectClient(reservationId, attended);
+    return value;
   }
 
   Future<void> acceptOrRejectClient(reservationId, attended) async {

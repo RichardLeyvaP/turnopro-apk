@@ -57,8 +57,7 @@ class _StatisticPageResponState extends State<StatisticPageRespon>
       home: Scaffold(
         backgroundColor: backgroundColor,
         appBar: AppBar(
-          backgroundColor: const Color.fromARGB(
-              255, 26, 50, 82), // Color de fondo del AppBar
+          backgroundColor: const Color(0xFF4470F3), // Color de fondo del AppBar
           elevation: 0, // Sombra del AppBar
           toolbarHeight: 120, // Altura del AppBar
           // actions: [
@@ -277,12 +276,15 @@ class _BuildCalendarState extends State<BuildCalendar> {
         TextButton(
           style: const ButtonStyle(
               backgroundColor: MaterialStatePropertyAll(
-            Color.fromARGB(20, 0, 0, 0),
+            Color.fromARGB(255, 192, 191, 191),
           )),
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Cancelar'),
+          child: const Text(
+            'Cancelar',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         TextButton(
           style: const ButtonStyle(

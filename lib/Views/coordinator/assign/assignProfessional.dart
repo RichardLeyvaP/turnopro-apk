@@ -41,7 +41,6 @@ class _AssignProfessionalState extends State<AssignProfessional> {
     'assets/images/icons/aleatorio.png',
   ];
 
-  String title = 'Modulo 1';
   Icon icon = Icon(
     MdiIcons.tag,
   );
@@ -155,7 +154,8 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                                     context,
                                     // Pasa aquí los datos necesarios para cardOptions
                                     icon,
-                                    title,
+                                    _.professionalDispon[index]
+                                        .position, //todo aqui que me devuelva
                                     '${_.professionalDispon[index].name}  ${_.professionalDispon[index].surname}',
                                     _.professionalDispon[index].id,
                                     _.professionalDispon[index].image_url);

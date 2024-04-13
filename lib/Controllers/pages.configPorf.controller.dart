@@ -176,8 +176,9 @@ class PagesConfigController extends GetxController {
         print('llamar a notificACIONES-1');
         int idBranch = logController.branchIdLoggedIn!;
         int idProfess = logController.idProfessionalLoggedIn!;
+        String idCharge = logController.chargeUserLoggedIn;
         await notiController.fetchNotificationList(
-            idBranch, idProfess); //3 es deyler
+            idBranch, idProfess, idCharge); //3 es deyler
         print('llamar a notificACIONES-2 listo');
       }
 

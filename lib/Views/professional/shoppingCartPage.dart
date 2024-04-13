@@ -452,12 +452,16 @@ class ShoppingCartPage extends StatelessWidget {
                                                       );
                                                     }
                                                   },
-                                                  child: _.requestDeleteOrder
-                                                          .contains(
+                                                  child: (_.requestDeleteOrder.contains(
                                                               controllerShoppingCart
                                                                   .selectproduct[
                                                                       index]
-                                                                  .id)
+                                                                  .id)) ||
+                                                          (controllerShoppingCart
+                                                                  .selectproduct[
+                                                                      index]
+                                                                  .request_delete ==
+                                                              1)
                                                       ? const Icon(
                                                           Icons.delete,
                                                           size: 35,

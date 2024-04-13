@@ -105,9 +105,6 @@ class _ProductsBodyState extends State<ProductsBody>
                                 ? const Center(
                                     child: Text(
                                     'No hay Productos',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700),
                                   ))
                                 : Expanded(
                                     child: TabBarView(

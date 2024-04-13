@@ -3,6 +3,8 @@
 import 'dart:convert';
 //todo REVISAR -Revisado y arreglado
 
+// "product_id": 21,
+// "reference": "Bebidas",
 class ProductModel {
   int id;
   String name;
@@ -13,8 +15,8 @@ class ProductModel {
   String image_product;
   double purchase_price;
   double sale_price;
-  String created_at;
-  String updated_at;
+  // String created_at;
+  // String updated_at;
   int? request_delete;
   int? is_product;
   int? cant;
@@ -29,8 +31,8 @@ class ProductModel {
     required this.image_product,
     required this.purchase_price,
     required this.sale_price,
-    required this.created_at,
-    required this.updated_at,
+    // required this.created_at,
+    // required this.updated_at,
     this.request_delete,
     this.is_product,
     this.cant,
@@ -47,8 +49,8 @@ class ProductModel {
       'image_product': image_product,
       'purchase_price': purchase_price,
       'sale_price': sale_price,
-      'created_at': created_at,
-      'updated_at': updated_at,
+      // 'created_at': created_at,
+      // 'updated_at': updated_at,
       'request_delete': request_delete,
       'is_product': is_product,
       'cant': cant,
@@ -66,8 +68,8 @@ class ProductModel {
       image_product: map['image_product'] ?? '',
       purchase_price: (map['purchase_price'] ?? 0.0).toDouble(),
       sale_price: (map['sale_price'] ?? 0.0).toDouble(),
-      created_at: map['created_at'] ?? '',
-      updated_at: map['updated_at'] ?? '',
+      // created_at: map['created_at'] ?? '',
+      // updated_at: map['updated_at'] ?? '',
       request_delete: map['request_delete'] ?? 0,
       is_product: map['is_product'] ?? 0,
       cant: map['cant'] ?? 0,

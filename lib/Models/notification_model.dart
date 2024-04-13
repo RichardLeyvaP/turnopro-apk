@@ -11,6 +11,7 @@ class NotificationModel {
   String tittle;
   String created_at;
   String updated_at;
+  String? type;
 
   NotificationModel({
     required this.id,
@@ -21,6 +22,7 @@ class NotificationModel {
     required this.tittle,
     required this.created_at,
     required this.updated_at,
+    this.type,
   });
 
   Map<String, dynamic> toMap() {
@@ -33,6 +35,7 @@ class NotificationModel {
       'tittle': tittle,
       'created_at': created_at,
       'updated_at': updated_at,
+      'type': type,
     };
   }
 
@@ -46,6 +49,7 @@ class NotificationModel {
       tittle: map['tittle'] ?? '',
       created_at: map['created_at'] ?? '',
       updated_at: map['updated_at'] ?? '',
+      type: map['type'] ?? '',
     );
   }
 

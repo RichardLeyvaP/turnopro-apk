@@ -156,9 +156,6 @@ class _CoexistencePageCoordinatorState
                               top: 2, left: 14, right: 14, bottom: 2),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                              color: const Color.fromARGB(255, 43, 44, 49),
-                            ),
                             color: Color(0xFF4470F3),
                           ),
                           elevation: 2,
@@ -176,7 +173,7 @@ class _CoexistencePageCoordinatorState
                           width: (MediaQuery.of(context).size.width * 0.85),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14),
-                            color: const Color.fromARGB(155, 26, 50, 82),
+                            color: const Color(0xFF4470F3),
                           ),
                           offset: const Offset(40, 0),
                           scrollbarTheme: ScrollbarThemeData(
@@ -625,7 +622,6 @@ class _CoexistencePageCoordinatorState
                         : Center(
                             child: Text(
                             'No tiene reglas de convivencia definidas aún',
-                            style: TextStyle(fontWeight: FontWeight.w700),
                           )),
                   )
                 : Text(' '),

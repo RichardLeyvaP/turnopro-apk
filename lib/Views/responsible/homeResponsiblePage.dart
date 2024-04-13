@@ -26,6 +26,8 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
   final ShoppingCartController controllerShoppingCart =
       Get.find<ShoppingCartController>();
   final LoginController controllerLogin = Get.find<LoginController>();
+  final NotificationController controllerNotif =
+      Get.find<NotificationController>();
 
   final PagesConfigResponController pagesConfigReC =
       Get.find<PagesConfigResponController>();
@@ -76,12 +78,27 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                   return BottomNavigationBar(
                       showSelectedLabels: false,
                       showUnselectedLabels: false,
-                      unselectedItemColor: Colors.white,
-                      backgroundColor: const Color.fromARGB(255, 43, 44, 49),
+                      unselectedItemColor: Color.fromARGB(155, 177, 173, 173),
+                      backgroundColor: Colors.white,
                       fixedColor: const Color(0xFFFDAE2A),
                       currentIndex: pagesConfigRespC.selectedIndexResp,
                       type: BottomNavigationBarType.fixed,
-                      onTap: (index) => pagesConfigRespC.onTabTapped(index),
+                      onTap: (index) async {
+                        if (index == 4) {
+                          Get.dialog(
+                            const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFFFDAE2A),
+                              ),
+                            ),
+                            barrierDismissible: false,
+                          ); //Get.back();
+                          await coexistenceController
+                              .fetchBranchProfessionals();
+                          Get.back();
+                        }
+                        pagesConfigRespC.onTabTapped(index);
+                      },
                       items: [
                         BottomNavigationBarItem(
                             icon: Icon(
@@ -89,46 +106,76 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                               size: MediaQuery.of(context).size.width * 0.08,
                             ),
                             label: 'Home'),
-                        BottomNavigationBarItem(
-                            icon: Badge(
-                              label: Text(
-                                  '${controClient.clientsScheduledListBranchLength}'),
-                              child: Icon(
-                                Icons.perm_contact_calendar,
-                                size: MediaQuery.of(context).size.width * 0.08,
-                              ),
-                            ),
-                            label: 'Agenda'),
-                        BottomNavigationBarItem(
-                            icon: Badge(
-                              label: GetBuilder<NotificationController>(
-                                  builder: (_notiCont) {
-                                WidgetsBinding.instance
-                                    .addPostFrameCallback((_) {
-                                  // Se ejecutará después de que se haya construido el widget
-                                  //define que tipo de saludo dar dependiendo de la hora
-                                  if (_notiCont.notificationListNewLength !=
-                                      _notiCont.notificationListBack) {
-                                    _notiCont.updateNotificationListBack(
-                                        _notiCont.notificationListNewLength);
-                                  }
-                                });
+                        controClient.clientsScheduledListBranchLength > 0
+                            ? BottomNavigationBarItem(
+                                icon: Badge(
+                                  label: Text(
+                                      '${controClient.clientsScheduledListBranchLength}'),
+                                  child: Icon(
+                                    Icons.perm_contact_calendar,
+                                    size: MediaQuery.of(context).size.width *
+                                        0.08,
+                                  ),
+                                ),
+                                label: 'Agenda')
+                            : BottomNavigationBarItem(
+                                icon: Icon(
+                                  Icons.perm_contact_calendar,
+                                  size:
+                                      MediaQuery.of(context).size.width * 0.08,
+                                ),
+                                label: 'Agenda'),
+                        //
+                        //
+                        //
+                        //
+                        controllerNotif.notificationListNewLengthEncarg > 0
+                            ? BottomNavigationBarItem(
+                                icon: Badge(
+                                  label: GetBuilder<NotificationController>(
+                                      builder: (_notiCont) {
+                                    WidgetsBinding.instance
+                                        .addPostFrameCallback((_) {
+                                      // Se ejecutará después de que se haya construido el widget
+                                      //define que tipo de saludo dar dependiendo de la hora
+                                      if (_notiCont
+                                              .notificationListNewLengthEncarg !=
+                                          _notiCont
+                                              .notificationListBackEncarg) {
+                                        _notiCont.updateNotificationListBackEncarg(
+                                            _notiCont
+                                                .notificationListNewLengthEncarg);
+                                      }
+                                    });
 
-                                if (_notiCont.notificationListNewLength !=
-                                        _notiCont.notificationListBack &&
-                                    _notiCont.notificationListNewLength != 0) {
-                                  _notiCont.reproducirSound();
-                                }
-                                return Text(
-                                    (_notiCont.notificationListNewLength)
+                                    if (_notiCont
+                                                .notificationListNewLengthEncarg !=
+                                            _notiCont
+                                                .notificationListBackEncarg &&
+                                        _notiCont
+                                                .notificationListNewLengthEncarg !=
+                                            0) {
+                                      _notiCont.reproducirSound();
+                                    }
+                                    return Text((_notiCont
+                                            .notificationListNewLengthEncarg)
                                         .toString());
-                              }),
-                              child: Icon(
-                                Icons.notifications,
-                                size: MediaQuery.of(context).size.width * 0.08,
-                              ),
-                            ),
-                            label: 'Notificaciones'),
+                                  }),
+                                  child: Icon(
+                                    Icons.notifications,
+                                    size: MediaQuery.of(context).size.width *
+                                        0.08,
+                                  ),
+                                ),
+                                label: 'Notificaciones')
+                            : BottomNavigationBarItem(
+                                icon: Icon(
+                                  Icons.notifications,
+                                  size:
+                                      MediaQuery.of(context).size.width * 0.08,
+                                ),
+                                label: 'Notificaciones'),
+
                         BottomNavigationBarItem(
                             icon: Icon(
                               Icons.bar_chart,
@@ -227,6 +274,79 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         GetBuilder<LoginController>(builder: (_) {
           return Row(
             children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Switch(
+                    value: _.switchValue,
+                    onChanged: (value) async {
+                      Get.dialog(
+                        const Center(
+                          child: CircularProgressIndicator(
+                            color: Color(0xFFFDAE2A),
+                          ),
+                        ),
+                        barrierDismissible: false,
+                      ); //Get.back();
+                      await Future.delayed(Duration(seconds: 3));
+                      await _.setswitchValue();
+                      Get.back();
+                      // _.switchValue = value;
+                    },
+                    activeColor: Colors.blue, // Color cuando está activado
+                    activeTrackColor: Colors
+                        .lightBlue, // Color de la pista cuando está activado
+                    inactiveThumbColor: const Color(
+                        0xFFFDAE2A), // Color del pulgar cuando está desactivado
+                    inactiveTrackColor: Colors.grey
+                        .shade300, // Color de la pista cuando está desactivado
+                  ),
+                  Stack(
+                    children: [
+                      GetBuilder<NotificationController>(builder: (_notiCont) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          // Se ejecutará después de que se haya construido el widget
+                          //define que tipo de saludo dar dependiendo de la hora
+                          if (_notiCont.notificationListNewLength !=
+                              _notiCont.notificationListBack) {
+                            _notiCont.updateNotificationListBack(
+                                _notiCont.notificationListNewLength);
+                          }
+                        });
+
+                        if (_notiCont.notificationListNewLength !=
+                                _notiCont.notificationListBack &&
+                            _notiCont.notificationListNewLength != 0) {
+                          //  _notiCont.reproducirSound();
+                        }
+                        return Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              _.switchValue ? 'Barbero' : 'Encargado',
+                              style: const TextStyle(
+                                  fontSize: 8,
+                                  color: Color(0xFFFDAE2A),
+                                  height: 0.1),
+                            ),
+                            // Ajusta el espacio entre el texto y el Badge
+                            Badge(
+                              label: Text(
+                                (_notiCont.notificationListNewLength)
+                                    .toString(),
+                                style: TextStyle(color: Colors.white),
+                              ), // Opcional: usa un ícono en lugar de texto
+                            ),
+                          ],
+                        );
+                      }),
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(
+                width: 12,
+              ),
               InkWell(
                 onTap: () {
                   //verifico si esta atendiendo a alguien no puede leer un nuevo codigo
@@ -244,7 +364,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                               children: <Widget>[
                                 Container(
                                   decoration: const BoxDecoration(
-                                    color: Color(0xFF19CF9E),
+                                    color: Color(0xFF4470F3),
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(8),
                                       topRight: Radius.circular(8),
@@ -302,8 +422,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                               ),
                                               backgroundColor:
                                                   MaterialStateProperty.all<
-                                                          Color>(
-                                                      const Color(0xFF19CF9E)),
+                                                      Color>(Color(0xFF4470F3)),
                                             ),
                                             onPressed: () async {
                                               // Lógica para enviar el comentario
@@ -377,7 +496,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                             children: <Widget>[
                               Container(
                                 decoration: const BoxDecoration(
-                                  color: const Color(0xFF19CF9E),
+                                  color: const Color(0xFF4470F3),
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(8),
                                     topRight: Radius.circular(8),
@@ -433,9 +552,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                   horizontal: 26.0),
                                             ),
                                             backgroundColor:
-                                                MaterialStateProperty.all<
-                                                        Color>(
-                                                    const Color(0xFF19CF9E)),
+                                                MaterialStateProperty
+                                                    .all<Color>(Color.fromARGB(
+                                                        255, 192, 191, 191)),
                                           ),
                                           onPressed: () async {
                                             // Lógica para enviar el comentario
@@ -473,7 +592,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                             backgroundColor:
                                                 MaterialStateProperty.all<
                                                         Color>(
-                                                    const Color(0xFF19CF9E)),
+                                                    const Color(0xFF4470F3)),
                                           ),
                                           onPressed: () async {
                                             //todo falta llamar un metodo aqui

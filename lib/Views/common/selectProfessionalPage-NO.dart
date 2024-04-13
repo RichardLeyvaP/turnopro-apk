@@ -10,17 +10,17 @@ import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:turnopro_apk/Models/branch_model.dart';
 
-class LoginFormPage2 extends StatefulWidget {
-  LoginFormPage2({super.key});
+class SelectProfessionalPage extends StatefulWidget {
+  SelectProfessionalPage({super.key});
 
   @override
-  State<LoginFormPage2> createState() => _LoginFormPage2State();
+  State<SelectProfessionalPage> createState() => _SelectProfessionalPageState();
 }
 
 final ClientsScheduledController controllerClient =
     Get.find<ClientsScheduledController>();
 
-class _LoginFormPage2State extends State<LoginFormPage2> {
+class _SelectProfessionalPageState extends State<SelectProfessionalPage> {
   final LoginController controllerLogin = Get.find<LoginController>();
 
   final ClientsScheduledController clientContro =
@@ -28,7 +28,7 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
 
   final LoginController loginController = Get.find<LoginController>();
   int branchIdLoggedIn = -99;
-
+  String? selectedOption; // Variable para almacenar la opción seleccionada
   @override
   Widget build(BuildContext context) {
     return FadeIn(
@@ -62,7 +62,7 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                 flex: 4,
                 child: Container(
                   decoration: const BoxDecoration(
-                      color: Colors.white, //todo
+                      color: Color.fromARGB(255, 204, 89, 89), //todo
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
@@ -73,129 +73,83 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                     child: Column(
                       children: [
                         DropdownButtonHideUnderline(
-                          child: DropdownButton2<BranchModel>(
+                          child: DropdownButton<String>(
                             isExpanded: true,
                             hint: Row(
                               children: [
                                 Icon(
-                                  MdiIcons.store,
+                                  Icons.store,
                                   color: Colors.white,
-                                  size: (MediaQuery.of(context).size.height *
-                                      0.04),
+                                  size:
+                                      MediaQuery.of(context).size.height * 0.04,
                                 ),
-                                const SizedBox(
-                                  width: 4,
-                                ),
+                                const SizedBox(width: 4),
                                 const Expanded(
                                   child: Text(
-                                    'Seleccione la Sucursal',
+                                    'Seleccione cómo va a entrar',
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors
-                                          .white, // Cambia el color del texto a blanco
+                                      color: Colors.white,
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ],
                             ),
-                            value: controll.selectedBranch,
-                            onChanged: (BranchModel? newValue) {
+                            value: selectedOption,
+                            onChanged: (String? newValue) {
                               setState(() {
-                                controll.selectedBranch = newValue;
-                                print('result-newValue:${newValue}');
-
-                                if (newValue != null) {
-                                  print(
-                                      'result-newValue-nameBranch:${newValue.nameBranch}');
-                                  print(
-                                      'result-newValue-branch_id:${newValue.branch_id}');
-                                  //  print('${newValue.nameBranch}');
-                                  //print('${newValue.branch_id}');
-
-                                  //AQUI LLAMAR AL CONTROLADOR DEL LOGIN Y MANDARLE LA
-                                  //Y MANDARLE EL USUSARIO Y
-                                  setState(() {
-                                    branchIdLoggedIn = newValue.branch_id;
-                                  });
-                                }
+                                selectedOption =
+                                    newValue; // Actualiza la opción seleccionada
                               });
                             },
                             items: [
-                              ...getBranch.map<DropdownMenuItem<BranchModel>>(
-                                (BranchModel branchProf) {
-                                  return DropdownMenuItem<BranchModel>(
-                                    value: branchProf,
-                                    child: Row(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              MdiIcons.store,
-                                              color: Colors.white,
-                                              size: (MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.03),
-                                            ),
-                                            Text(
-                                              '  ${branchProf.nameBranch}',
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                              DropdownMenuItem<String>(
+                                value: 'Barbero',
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.store,
+                                      color: Colors.white,
+                                      size: MediaQuery.of(context).size.height *
+                                          0.03,
                                     ),
-                                  );
-                                },
+                                    Text(
+                                      '  Barbero',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ].toList(),
-                            buttonStyleData: ButtonStyleData(
-                              height: 60,
-                              width: (MediaQuery.of(context).size.width * 0.95),
-                              padding: const EdgeInsets.only(
-                                  top: 2, left: 14, right: 14, bottom: 2),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                color: const Color(0xFFFDAE2A),
+                              DropdownMenuItem<String>(
+                                value: 'Encargado',
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.store,
+                                      color: Colors.white,
+                                      size: MediaQuery.of(context).size.height *
+                                          0.03,
+                                    ),
+                                    Text(
+                                      '  Encargado',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
                               ),
-                              elevation: 2,
-                            ),
-                            iconStyleData: const IconStyleData(
-                              icon: Icon(
-                                Icons.arrow_forward_ios_outlined,
-                              ),
-                              iconSize: 14,
-                              iconEnabledColor: Colors.white,
-                              iconDisabledColor: Colors.grey,
-                            ),
-                            dropdownStyleData: DropdownStyleData(
-                              maxHeight: 340,
-                              width:
-                                  (MediaQuery.of(context).size.width * 0.825),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: const Color(0xFFFDAE2A),
-                              ),
-                              offset: const Offset(40, 0),
-                              scrollbarTheme: ScrollbarThemeData(
-                                radius: const Radius.circular(40),
-                                thickness: MaterialStateProperty.all(6),
-                                thumbVisibility:
-                                    MaterialStateProperty.all(true),
-                              ),
-                            ),
-                            menuItemStyleData: const MenuItemStyleData(
-                              height: 50,
-                              padding: EdgeInsets.only(
-                                  left: 14, right: 14, bottom: 5),
-                            ),
+                            ],
                           ),
                         ),
                         SizedBox(

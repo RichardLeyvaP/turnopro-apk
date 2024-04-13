@@ -10,7 +10,8 @@ import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/Views/coordinator/coexistencePageCoordinator.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:uuid/uuid.dart';
-// clientsAttended = 'nobody';
+//import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:intl/intl.dart';
 
 class HomePageBody extends StatefulWidget {
   const HomePageBody({super.key});
@@ -33,6 +34,7 @@ class _HomePageBodyState extends State<HomePageBody>
   NotificationController notiController = Get.find<NotificationController>();
   ServiceController serviceControll = Get.find<ServiceController>();
   ShoppingCartController chopCont = Get.find<ShoppingCartController>();
+  CoexistenceController coexCont = Get.find<CoexistenceController>();
 
   @override
   bool get wantKeepAlive => true;
@@ -185,7 +187,9 @@ class _HomePageBodyState extends State<HomePageBody>
         clientsScheduledController.animationControllerInitial!.forward();
       }
     } else {
-      clientsScheduledController.animationControllerInitial!.stop();
+      if (clientsScheduledController.animationControllerInitial != null) {
+        clientsScheduledController.animationControllerInitial!.stop();
+      }
     }
   }
 
@@ -460,7 +464,8 @@ class _HomePageBodyState extends State<HomePageBody>
     _timer = Timer.periodic(const Duration(seconds: 2), (Timer timer) async {
       if (loginController.idProfessionalLoggedIn != null &&
           loginController.branchIdLoggedIn != null &&
-          loginController.chargeUserLoggedIn == "Barbero") {
+          (loginController.chargeUserLoggedIn == "Barbero" ||
+              loginController.chargeUserLoggedIn == "Barbero y Encargado")) {
         // verifyingClockTimeActive();
         print('.........estoy entrando cada : $cont segundos........');
         //Este metodo es para verificar si hay relojes activos
@@ -538,7 +543,7 @@ class _HomePageBodyState extends State<HomePageBody>
 
           print('ENTRO A BUSCAR NOTIFICACIONES - cont: $cont');
           notiController.fetchNotificationList(loginController.branchIdLoggedIn,
-              loginController.idProfessionalLoggedIn);
+              loginController.idProfessionalLoggedIn, 'Barbero');
         }
         if (cont == 40) {
           //llamadas aproximadamente 1min
@@ -612,6 +617,9 @@ class _HomePageBodyState extends State<HomePageBody>
   //
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final formatter = DateFormat('yyyy-MM-dd');
+    final dateAct = formatter.format(now);
     //AQUI REVISO SI HAY ALGUNO POR ACTIVAR LO ACTIVO
     iniciarLlamadaCada10Segundos();
 
@@ -708,6 +716,7 @@ class _HomePageBodyState extends State<HomePageBody>
         //solo va a entar si viene del login
         print(
             'Hubo un cierre inesperado y se estan activando los relojessiiiiii');
+
         activeClockLogin();
       }
       if (clientsScheduledController.closeIesperado == true &&
@@ -979,7 +988,7 @@ class _HomePageBodyState extends State<HomePageBody>
             print('-*-*-*-**>>>> NOOO fui un sierre inesperado');
           }
           if (loginController.isLoggingInCharge == true) {
-            loginController.setLoggingInCharge(false);
+            await loginController.setLoggingInCharge(false);
           }
 
           clientsScheduledController.setCloseIesperado(false);
@@ -988,7 +997,10 @@ class _HomePageBodyState extends State<HomePageBody>
           clientsScheduledController.modifingTimeClose();
         }
         clientsScheduledController.setCloseIesperadoLogin(false);
-
+        if (loginController.isLoggingInCharge == true) {
+          await loginController.setLoggingInCharge(false);
+        }
+        clientsScheduledController.setCloseIesperado(false);
         // print(
         //     'clientes asistiendo ENTRE A DESTRUIR LAS VARIABLES DEL TIEMPO ASIGNADO activeModifyTime SOY = ${clientsScheduledController.activeModifyTime}');
       });
@@ -1037,7 +1049,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                 ),
 
                                 /*CRONOMETRO*/ Padding(
-                                  padding: const EdgeInsets.all(4.0),
+                                  padding: const EdgeInsets.all(2.0),
                                   //todo AQUI LA LOGICA AL MOSTRAR LOS TIMER
                                   child: SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
@@ -1092,7 +1104,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                                 child: Column(
                                                   children: [
                                                     SizedBox(
-                                                      height: 50,
+                                                      height: 45,
                                                     ),
                                                     Text(
                                                       'Debe de escanear el código Qr ',
@@ -1113,7 +1125,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                                               FontWeight.w600),
                                                     ),
                                                     SizedBox(
-                                                      height: 60,
+                                                      height: 55,
                                                     ),
                                                   ],
                                                 ),
@@ -1135,7 +1147,7 @@ class _HomePageBodyState extends State<HomePageBody>
                             ),
                           )
                         : SizedBox(
-                            height: 100,
+                            height: 90,
                           ),
                   ),
                   clientsScheduledController.boolFilterShowNext
@@ -1209,12 +1221,21 @@ class _HomePageBodyState extends State<HomePageBody>
                             children: [
                               GestureDetector(
                                 onTap: () async {
-                                  controllerLogin.setIsLoadingFor(true);
+                                  // controllerLogin.setIsLoadingFor(true);
+                                  Get.dialog(
+                                    const Center(
+                                      child: CircularProgressIndicator(
+                                        color: Color(0xFFFDAE2A),
+                                      ),
+                                    ),
+                                    barrierDismissible: false,
+                                  ); //Get.back();
                                   await clientsScheduledController
                                       .fetchClientsScheduled(
                                           controllerLogin
                                               .idProfessionalLoggedIn,
                                           controllerLogin.branchIdLoggedIn);
+                                  Get.back();
                                   pagesConfigC
                                       .onTabTapped(1); //index = 1 -> /Clients
                                 },
@@ -1233,8 +1254,17 @@ class _HomePageBodyState extends State<HomePageBody>
                                   await notiController.fetchNotificationList(
                                       controllerLogin.branchIdLoggedIn,
                                       controllerLogin.idProfessionalLoggedIn);*/
+                                  Get.dialog(
+                                    const Center(
+                                      child: CircularProgressIndicator(
+                                        color: Color(0xFFFDAE2A),
+                                      ),
+                                    ),
+                                    barrierDismissible: false,
+                                  ); //Get.back();
                                   pagesConfigC.onTabTapped(
                                       2); //index = 2 -> /NotificationsPageProf
+                                  Get.back();
                                 },
                                 child: cartsHome(
                                     context,
@@ -1254,7 +1284,16 @@ class _HomePageBodyState extends State<HomePageBody>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               InkWell(
-                                onTap: () {
+                                onTap: () async {
+                                  Get.dialog(
+                                    const Center(
+                                      child: CircularProgressIndicator(
+                                        color: Color(0xFFFDAE2A),
+                                      ),
+                                    ),
+                                    barrierDismissible: false,
+                                  ); //Get.back();
+                                  await coexCont.fetchEstadist0();
                                   pagesConfigC.onTabTapped(
                                       3); //index = 3 -> /StatisticPage
                                 },
@@ -1269,11 +1308,20 @@ class _HomePageBodyState extends State<HomePageBody>
                               ),
                               InkWell(
                                 onTap: () async {
-                                  controllerLogin.setIsLoadingFor(true);
+                                  Get.dialog(
+                                    const Center(
+                                      child: CircularProgressIndicator(
+                                        color: Color(0xFFFDAE2A),
+                                      ),
+                                    ),
+                                    barrierDismissible: false,
+                                  ); //Get.back();
+                                  // controllerLogin.setIsLoadingFor(true);
                                   await coexistenceController
                                       .fetchCoexistenceList();
                                   pagesConfigC.onTabTapped(
                                       4); //index = 4 -> /CoexistencePage
+                                  Get.back();
                                 },
                                 child: cartsHome(
                                     context,
@@ -1334,16 +1382,16 @@ class _HomePageBodyState extends State<HomePageBody>
                       child: IconButton(
                         onPressed: () {
                           if (loginController.codigoQrValid() == true) {
-                            int resulButton = 0;
-                            resulButton = loginController.handleButtonClick(
+                            // int resulButton = 0;
+                            // resulButton = loginController.handleButtonClick(
+                            //     clientsScheduledController
+                            //         .clientsScheduledNext!.reservation_id);
+                            // if (resulButton == 1) {
+                            clientsScheduledController.acceptOrRejectClient(
                                 clientsScheduledController
-                                    .clientsScheduledNext!.reservation_id);
-                            if (resulButton == 1) {
-                              clientsScheduledController.acceptOrRejectClient(
-                                  clientsScheduledController
-                                      .clientsScheduledNext!.reservation_id,
-                                  3);
-                            }
+                                    .clientsScheduledNext!.reservation_id,
+                                3);
+                            //}
                           } else {
                             Get.snackbar(
                               'Mensaje',
@@ -1418,9 +1466,8 @@ class _HomePageBodyState extends State<HomePageBody>
                                       children: [
                                         Row(
                                           children: [
-                                            const Icon(
-                                              Icons.api_sharp,
-                                              size: 12,
+                                            Icon(
+                                              MdiIcons.menu,
                                             ),
                                             const SizedBox(
                                               width: 5,
@@ -1621,34 +1668,47 @@ class _HomePageBodyState extends State<HomePageBody>
           resulButton =
               loginController.handleButtonClickModal(clientsL.reservation_id);
           if (resulButton == 1) {
+            Get.dialog(
+              const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFDAE2A),
+                ),
+              ),
+              barrierDismissible: false,
+            );
             //limpio la lista que controla que se de un solo click al seleccionar los servicios
             loginController.inTheClock(true);
             loginController.handleButtonClickServiceClear();
-            loginController.setIsLoadingFor(true);
             serviceControll.clearSelectService();
 
             if (clientsL.attended != 4) {
               // aqui selecciono el cliente
-              clientsScheduledController.getselectCustomer(
-                  index, clientsL.car_id);
+              await clientsScheduledController.metodsClients(
+                  index,
+                  clientsL.car_id,
+                  clientsL.reservation_id,
+                  clientsL.client_name,
+                  clientsL.client_image);
+              // clientsScheduledController.getselectCustomer(
+              //     index, clientsL.car_id);
               //AQUI MANDO ID DE CARRO PAR ACARGAR EL CARRITO PARA LOS SERVICIO Y PRODUCTOS
               //Y SE ACTUALIZA LA VARIABLE GLOBAL carIdClienteSelect
-              clientsScheduledController.selectCarClient(clientsL.car_id);
-              //AQUI MANDO EL ID DE RESERVACION Y ME DEVUELVE EL ESTADO DEL CLIENTE,
-              //SI SE ESTA ATENDINEDO O NO , PARA ASI SABER CUANDO MOSTRAR LOS BOTONES DE ATENDIDO Y
-              //SELECCIONAR SERVICIO Y PRODUCTOS
-              clientsScheduledController
-                  .returnClientStatus(clientsL.reservation_id);
-              //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
-              clientsScheduledController
-                  .returnClientName((clientsL.client_name).toString());
-              clientsScheduledController
-                  .returnImageName((clientsL.client_image).toString());
-              //todo  INICIO esto estaba en la pagina del modal al dar en Ver carrito
-              await clientsScheduledController
-                  .watchModifyTime(clientsL.reservation_id);
-              // servControll
-              //     .clearSelectService();
+              // clientsScheduledController.selectCarClient(clientsL.car_id);
+              // //AQUI MANDO EL ID DE RESERVACION Y ME DEVUELVE EL ESTADO DEL CLIENTE,
+              // //SI SE ESTA ATENDINEDO O NO , PARA ASI SABER CUANDO MOSTRAR LOS BOTONES DE ATENDIDO Y
+              // //SELECCIONAR SERVICIO Y PRODUCTOS
+              // clientsScheduledController
+              //     .returnClientStatus(clientsL.reservation_id);
+              // //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
+              // clientsScheduledController
+              //     .returnClientName((clientsL.client_name).toString());
+              // clientsScheduledController
+              //     .returnImageName((clientsL.client_image).toString());
+              // //todo  INICIO esto estaba en la pagina del modal al dar en Ver carrito
+              // await clientsScheduledController
+              //     .watchModifyTime(clientsL.reservation_id);
+              // // servControll
+              // //     .clearSelectService();
               //todo FIN esto estaba en la pagina del modal al dar en Ver carrito
               await chopCont.loadDataInitiallyNecessary().then((_) async {
                 await clientsScheduledController
@@ -1663,7 +1723,7 @@ class _HomePageBodyState extends State<HomePageBody>
                   //  showMyDialog(context);
                   print(
                       'LISTA2 _fetchServiceList Limpiando clientName:$clientName...reservationId:$reservationId....carId:$carId....urlImage:$urlImage');
-
+                  Get.back();
                   //Get.toNamed('/servicesProductsPage');
                   pagesConfigC.onTabTapped(1); //index = 1 -> /Clients
                 });
@@ -2001,16 +2061,30 @@ class _HomePageBodyState extends State<HomePageBody>
             ),
           ),
           Align(
-            alignment: Alignment.center,
-            child: Text(
-              firstName,
-              style: TextStyle(
-                  fontSize: 18,
-                  height: 1.3,
-                  color: Color(0xFFFDAE2A),
-                  fontWeight: FontWeight.w900),
-            ),
-          ),
+              alignment: Alignment.center,
+              child: firstName == 'Esperando'
+                  ? Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Text(
+                        '$firstName...',
+                        style: TextStyle(
+                            fontSize: 12,
+                            height: 1.3,
+                            color: Color(0xFFFDAE2A),
+                            fontWeight: FontWeight.w900),
+                      ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        firstName,
+                        style: TextStyle(
+                            fontSize: 18,
+                            height: 1.3,
+                            color: Color(0xFFFDAE2A),
+                            fontWeight: FontWeight.w600),
+                      ),
+                    )),
         ],
       ),
     );
@@ -2060,7 +2134,8 @@ class _HomePageBodyState extends State<HomePageBody>
                   style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,
-                      fontWeight: FontWeight.w600),
+                      fontWeight: FontWeight.w600,
+                      height: 0.4),
                 ),
                 Text(
                   descriptionTitleCart,

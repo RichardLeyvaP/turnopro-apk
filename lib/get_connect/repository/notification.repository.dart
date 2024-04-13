@@ -62,7 +62,7 @@ class NotificationRepository extends GetConnect {
     }
   }
 
-  Future getNotificationList(idBranch, idProf) async {
+  Future getNotificationList(idBranch, idProf, type) async {
     try {
       print('estoy aqui en getNotificationList');
       List<NotificationModel> notificationList = [];
@@ -76,18 +76,37 @@ class NotificationRepository extends GetConnect {
         for (Map notification in notifications) {
           NotificationModel u =
               NotificationModel.fromJson(jsonEncode(notification));
-          notificationList.add(u);
+          print('ENTRO A BUSCAR NOTIFICACIONES - cont: - object000${u.type}');
+          print('ENTRO A BUSCAR NOTIFICACIONES - cont: - type:$type');
+          if (u.type == type || u.type == 'Barbero y Encargado') {
+            print('ENTRO A BUSCAR NOTIFICACIONES - cont: - sii entre aqui-11');
+            notificationList.add(u);
+          }
           if (u.state == 0 || u.state == 3) {
             //si esta en estos estados es que no se ha visto
             //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
-            notificationListNew.add(u);
+            if (u.type == type || u.type == 'Barbero y Encargado') {
+              print(
+                  'ENTRO A BUSCAR NOTIFICACIONES - cont: - sii entre aqui-22');
+              notificationListNew.add(u); //barbero
+            }
           }
         }
-
-        return {
-          "notificationList": notificationList,
-          "notificationListNew": notificationListNew,
-        };
+        if (type == 'Encargado') {
+          print(
+              'ENTRO A BUSCAR NOTIFICACIONES - cont: - notificationList-Encargado:${notificationList.length}');
+          return {
+            "notificationListEncarg": notificationList,
+            "notificationListNewEncarg": notificationListNew,
+          };
+        } else {
+          print(
+              'ENTRO A BUSCAR NOTIFICACIONES - cont: - notificationList-Otros${notificationList.length}');
+          return {
+            "notificationList": notificationList,
+            "notificationListNew": notificationListNew,
+          };
+        }
       } else {
         return notificationList;
       }
@@ -100,7 +119,7 @@ class NotificationRepository extends GetConnect {
     }
   }
 
-  Future<int> updateNotifications(idBranch, idProf) async {
+  Future<int> updateNotifications(idBranch, idProf, type) async {
     try {
       var url = '${Env.apiEndpoint}/notification';
 
@@ -108,6 +127,7 @@ class NotificationRepository extends GetConnect {
       final Map<String, dynamic> body = {
         'branch_id': idBranch,
         'professional_id': idProf,
+        'type': type,
       };
 
       final response = await put(url, body);

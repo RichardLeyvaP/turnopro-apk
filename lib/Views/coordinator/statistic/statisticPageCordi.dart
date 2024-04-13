@@ -58,8 +58,7 @@ class _StatisticPageCordinState extends State<StatisticPageCordin>
       home: Scaffold(
         backgroundColor: backgroundColor,
         appBar: AppBar(
-          backgroundColor: const Color.fromARGB(
-              255, 26, 50, 82), // Color de fondo del AppBar
+          backgroundColor: const Color(0xFF4470F3), // Color de fondo del AppBar
           elevation: 0, // Sombra del AppBar
           toolbarHeight: 120, // Altura del AppBar
           // actions: [
@@ -81,7 +80,7 @@ class _StatisticPageCordinState extends State<StatisticPageCordin>
                 children: [
                   Icon(
                     MdiIcons.chartBarStacked,
-                    size: (MediaQuery.of(context).size.width * 0.22),
+                    size: 66,
                   ),
                   const Text('ESTADÍSTICAS',
                       style:

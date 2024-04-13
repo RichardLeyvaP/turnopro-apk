@@ -79,31 +79,10 @@ class _AttendingClientState extends State<AttendingClient> {
           children: [
             Column(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 43, 44, 49),
-                      width:
-                          2, // Ajusta el ancho del borde según tus preferencias
-                    ),
-                  ),
-                  child: Container(
-                    width: 100.0,
-                    height: 100.0,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white, // Color del borde blanco
-                        width: 2.0, // Ancho del borde
-                      ),
-                    ),
-                    child: Icon(
-                      MdiIcons.account,
-                      size: 50.0,
-                      color: Colors.white, // Color del ícono
-                    ),
-                  ),
+                Icon(
+                  MdiIcons.account,
+                  size: 62.0,
+                  color: Colors.white, // Color del ícono
                 ),
                 const Text(
                   'Clientes Atendiéndose',

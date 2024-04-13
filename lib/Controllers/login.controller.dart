@@ -26,6 +26,21 @@ class LoginController extends GetxController {
   bool setIsLoading = false;
   bool setIsLoading2 = false;
 
+  bool switchValue = false; //false es barbero y true Encargado
+
+  Future<void> setswitchValue() async {
+    if (switchValue == false) {
+      switchValue = true;
+      print('soy un switchValue:true');
+      Get.offAllNamed('/HomeResponsible');
+    } else {
+      switchValue = false;
+      print('soy un switchValue:false');
+      Get.offAllNamed('/Professional');
+    }
+    update();
+  }
+
   void setIsLoadingFor(value) {
     setIsLoading = value;
     update();
@@ -65,6 +80,12 @@ class LoginController extends GetxController {
   int branchTecnicLoggedIn = 0;
   int? usserPermissionQr;
   int usserMssQr = -99;
+
+  //variables para el encargado
+
+  String tokenUserLoggedIn2 = '';
+  int? usserPermissionQr2;
+  int usserMssQr2 = -99;
 
   //*************************/
   bool isLoading = true;
@@ -185,8 +206,10 @@ class LoginController extends GetxController {
     update();
   }
 
-  void setLoggingInCharge(bool value) {
+  Future<void> setLoggingInCharge(bool value) async {
+    print('cerrandososos11');
     isLoggingInCharge = value;
+
     update();
   }
 
@@ -384,6 +407,100 @@ class LoginController extends GetxController {
 
 //
 //
+  Future<void> loginGetInEncargadoBarbero(
+      String u, String p, int idBranch) async {
+    final ClientsScheduledController clientsScheduledController =
+        Get.find<ClientsScheduledController>();
+    String email = u.toString(), pass = p.toString();
+    incorrectFields = false;
+    try {
+      Map<String, dynamic>? result; //INICIALIZANDO A NULL
+      result = await usuarioLg.getUserLoggedIn(email, pass, idBranch);
+
+      if (result != null) {
+        //*******Asignando Valores*****/
+        nameUserLoggedIn = result['name'];
+        userLoggedIn = result['userName'];
+        tokenUserLoggedIn = result['token'];
+        idUserLoggedIn = result['id'];
+        emailUserLoggedIn = result['email'];
+        chargeUserLoggedIn = result['charge'];
+        idProfessionalLoggedIn = result['professional_id'];
+        branchIdLoggedIn = result['branch_id'];
+        imageUrlLoggedIn = result['image'];
+        branchTecnicLoggedIn = result['useTechnical'];
+        print('ssssssssssss ${result['useTechnical'].runtimeType}');
+        print('ssssssssssss ${result['useTechnical']}');
+        print('ssssssssssss branchIdLoggedIn${result['branchIdLoggedIn']}');
+        //*******Asignando Valores*****/
+        print(
+            'a.......... branchIdLoggedIn***************************: $branchIdLoggedIn');
+        print('TOKEN***************************: $tokenUserLoggedIn');
+        print('ID-Profess***************************: $idProfessionalLoggedIn');
+
+        if (tokenUserLoggedIn != '' &&
+            nameUserLoggedIn != '' &&
+            emailUserLoggedIn != '') {
+          //Define el tipo de saludo
+          getGreeting();
+
+          int idPuesto = await getIdPuesto(idProfessionalLoggedIn!);
+          if (idPuesto != -99 && idPuesto != -999) {
+            print('id de mi puesto de trabajo = $idPuesto');
+            setCodigoQrValid(1);
+          } else {
+            print('id de mi puesto de trabajo = $idPuesto');
+            setCodigoQrValid(null);
+            print(
+                'id de mi puesto de trabajo estoy entrando a poner el codigo1 en :null');
+          }
+
+          if (chargeUserLoggedIn == "Barbero") {
+            //aqui cargo la cola del barbero para poder tener en el home al siguiente de la cola inicialmente
+            print('estoy aqui al cargar datos del controlador de client');
+            setIsLoggingIn(true);
+            setLoggingInCharge(true);
+            clientsScheduledController.setCloseIesperado(true);
+            clientsScheduledController.setCloseIesperadoLogin(true);
+            await clientsScheduledController.fetchClientsScheduled(
+                idProfessionalLoggedIn, branchIdLoggedIn);
+
+            print(' ya no llegue aqui voy a cargar la pagina del profesional');
+
+            print('***************SOY BARBERO*************');
+            pagina = '/Professional';
+            loadingValue(false);
+            update();
+            Get.offAllNamed('/Professional');
+          } else if (chargeUserLoggedIn == "Encargado") {
+            print('***************SOY ENCARGADO*************');
+            pagina = '/HomeResponsible';
+            loadingValue(false);
+            update();
+            Get.offAllNamed('/HomeResponsible');
+          } else {
+            incorrectFields = true;
+            await loadingValue(false);
+            update();
+            print(
+                ' NO ENTRO PORQUE NO TIENE UN ROL PARA LA APP, COINCIDE QUE ES TRABAJADOR PERO NO DEL APK');
+          }
+        }
+
+        update();
+      } //cierre if (result != null) {
+      else {
+        incorrectFields = true;
+        await loadingValue(false);
+        update();
+        print(' result == null por eso no entro');
+      }
+    } catch (e) {
+      print('errorrrrrr:$e');
+    }
+  }
+
+//
 //
 //
 //
@@ -434,7 +551,8 @@ class LoginController extends GetxController {
                 'id de mi puesto de trabajo estoy entrando a poner el codigo1 en :null');
           }
 
-          if (chargeUserLoggedIn == "Barbero") {
+          if (chargeUserLoggedIn == "Barbero" ||
+              chargeUserLoggedIn == "Barbero y Encargado") {
             //aqui cargo la cola del barbero para poder tener en el home al siguiente de la cola inicialmente
             print('estoy aqui al cargar datos del controlador de client');
             setIsLoggingIn(true);

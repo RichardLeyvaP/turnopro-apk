@@ -768,6 +768,18 @@ class ClientsScheduledController extends GetxController {
     }
   }
 
+  Future<bool> deleteReservationClientCoor(reservationId, cause) async {
+    bool value = false;
+    try {
+      value = await repository.deleteReservationClient(reservationId, cause);
+      //si lo que devuelve es true actualizo la cola
+      return value;
+    } catch (e) {
+      return value;
+      print('deleteReservationClient value e:$e');
+    }
+  }
+
   Future<void> storeByReservationId(
       imag, reservationId, commentText, dioClient) async {
     bool value = await repository.storeByReservationId(
@@ -965,7 +977,7 @@ class ClientsScheduledController extends GetxController {
     }
   }
 
-  void returnClientName(String name) async {
+  Future<void> returnClientName(String name) async {
     try {
       nameClientTemporary = name;
       update();
@@ -974,7 +986,7 @@ class ClientsScheduledController extends GetxController {
     }
   }
 
-  void returnImageName(String url) async {
+  Future<void> returnImageName(String url) async {
     try {
       urlImageTemporary = url;
       print('cambiando image:$url');
@@ -1030,7 +1042,17 @@ class ClientsScheduledController extends GetxController {
     return clientsScheduledList;
   }
 
-  getselectCustomer(index, idCar) async {
+  Future<void> metodsClients(
+      index, idCar, reservationId, clientName, imageName) async {
+    await getselectCustomer(index, idCar);
+    await selectCarClient(idCar);
+    await returnClientStatus(reservationId);
+    await returnClientName(clientName);
+    await returnImageName(imageName);
+    await watchModifyTime(reservationId);
+  }
+
+  Future<void> getselectCustomer(index, idCar) async {
     print('IdCar:$idCar');
     // await searchForCustomerServices(idCar);
     (selectClientsScheduledList.contains(clientsScheduledList[index]))
@@ -1040,7 +1062,7 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
-  showingServiceClient(bool value) {
+  Future<void> showingServiceClient(bool value) async {
     print(
         'No actualizar la cola, tengo desplegado los servicios ahora mandando:$value');
     showingServiceClients = value;

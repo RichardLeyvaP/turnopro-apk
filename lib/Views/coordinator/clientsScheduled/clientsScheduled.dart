@@ -727,11 +727,8 @@ class YourPageViewScreenState extends State<HomePageView> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Icon(Icons.assignment_ind_sharp),
                                             Text(
                                               'No hay ningún cliente para hoy',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w700),
                                             ),
                                           ],
                                         ),

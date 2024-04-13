@@ -18,10 +18,16 @@ class NotificationController extends GetxController {
   final ClientsScheduledController controllerclient =
       Get.find<ClientsScheduledController>();
   int notificationListLength = 0;
+  int notificationListLengthEncarg = 0;
   int notificationListNewLength = 0;
+  int notificationListNewLengthEncarg = 0;
   int notificationListBack = 0;
+  int notificationListBackEncarg = 0;
   List<NotificationModel> notification = []; // Lista de Notificaciones
+  List<NotificationModel> notificationEncarg = []; // Lista de Notificaciones
   List<NotificationModel> notificationListNew = []; // Lista de Notificaciones
+  List<NotificationModel> notificationListNewEncarg =
+      []; // Lista de Notificaciones
   List<NotificationModel> selectNotification = [];
   bool isLoading = true;
   List<String> created_atTime = [];
@@ -87,6 +93,11 @@ class NotificationController extends GetxController {
     update();
   }
 
+  updateNotificationListBackEncarg(int value) {
+    notificationListBackEncarg = value;
+    update();
+  }
+
   getSelectNotification(index) {
     (selectNotification.contains(notification[index]))
         ? selectNotification.remove(notification[index])
@@ -94,11 +105,11 @@ class NotificationController extends GetxController {
     update();
   }
 
-  Future<void> fetchNotificationList(idBranch, idProfe) async {
+  Future<void> fetchNotificationList(idBranch, idProfe, type) async {
     print('este es nuevo y estoy llamando a la db a cargar las notificaciones');
     try {
       Map<String, dynamic> result =
-          await repository.getNotificationList(idBranch, idProfe);
+          await repository.getNotificationList(idBranch, idProfe, type);
       bool siHayEliminarService = false;
 
       if (result.containsKey('Erroor') && result['Erroor'] == true) {
@@ -107,12 +118,56 @@ class NotificationController extends GetxController {
       } else if (result.containsKey('notificationList') &&
           result.containsKey('notificationListNew')) {
         notification = result['notificationList'];
+
         notificationListLength = notification.length;
 
         notificationListNew = result['notificationListNew'];
         notificationListNewLength = notificationListNew.length;
 
         notificationListNew.forEach((element) async {
+          if (element.state == 3 &&
+              element.tittle == 'Aceptada Eliminación de Servicio') {
+            print('modificar time de mm 1 estoy aqui en el forEach');
+            String textoCompleto = element.description;
+            // String descripcion =
+            //     textoCompleto.split('.')[0]; // Obtener la descripción
+            // Obtener el segundo número (999)
+            String numeroOcultoString = textoCompleto
+                .split('.')[1]
+                .trim(); // Obtener la parte después del punto y eliminar espacios en blanco
+            int idReservation =
+                int.parse(numeroOcultoString); // Convertir a entero
+            controllerclient.watchModifyTimeRest(idReservation,
+                textoCompleto); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
+            updateNotifications2(idBranch, idProfe,
+                element.id); //aqui es para no repetir esto y lo pongo en 0
+
+            //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
+            //DESCONTAR EL TIEMPO AL RELOJ
+            //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
+            siHayEliminarService = true;
+          }
+        });
+        if (siHayEliminarService ==
+            true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+        {
+          controllerclient.setActiveModifyTimeRest(true);
+        }
+
+        update();
+      } else if (result.containsKey('notificationListEncarg') &&
+          result.containsKey('notificationListNewEncarg')) {
+        print('ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador');
+        notificationEncarg = result['notificationListEncarg'];
+
+        notificationListLengthEncarg = notificationEncarg.length;
+
+        notificationListNewEncarg = result['notificationListNewEncarg'];
+        notificationListNewLengthEncarg = notificationListNewEncarg.length;
+        print(
+            'ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador - notificationListNewLengthEncarg:${notificationEncarg.length}');
+
+        notificationListNewEncarg.forEach((element) async {
           if (element.state == 3 &&
               element.tittle == 'Aceptada Eliminación de Servicio') {
             print('modificar time de mm 1 estoy aqui en el forEach');
@@ -152,9 +207,9 @@ class NotificationController extends GetxController {
     }
   }
 
-  Future<void> updateNotifications(idBranch, idProf) async {
+  Future<void> updateNotifications(idBranch, idProf, type) async {
     try {
-      int result = await repository.updateNotifications(idBranch, idProf);
+      int result = await repository.updateNotifications(idBranch, idProf, type);
       if (result == 1) {
         print('Las notificaciones fueron vistas');
       } else {

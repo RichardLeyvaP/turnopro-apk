@@ -469,7 +469,6 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.no_backpack_outlined),
                           Text('No hay Notificaciones'),
                         ],
                       ),

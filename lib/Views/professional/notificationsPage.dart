@@ -20,11 +20,24 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
       Get.find<PagesConfigController>();
   final NotificationController notifCont = Get.find<NotificationController>();
   final LoginController logCont = Get.find<LoginController>();
+
+  String typeEnv = '';
   @override
   void initState() {
     super.initState();
+    // Get.back();
+    if (logCont.chargeUserLoggedIn == 'Barbero y Encargado') {
+      if (logCont.switchValue == false) //'Barbero'
+      {
+        typeEnv = 'Barbero';
+      } else {
+        typeEnv = 'Encargado';
+      }
+    } else {
+      typeEnv = logCont.chargeUserLoggedIn;
+    }
     notifCont.updateNotifications(
-        logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn);
+        logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn, typeEnv);
   }
 
   @override
@@ -402,7 +415,6 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.no_backpack_outlined),
                           Text('No hay Notificaciones'),
                         ],
                       ),

@@ -4,7 +4,7 @@ import 'dart:convert';
 
 class ProfessionalModel {
   int id;
-  int charge_id;
+  String charge_id;
   int? user_id;
   int? state;
   String name;
@@ -13,6 +13,7 @@ class ProfessionalModel {
   String? email;
   String? phone;
   String? image_url;
+  String? position;
 
   ProfessionalModel({
     required this.id,
@@ -25,6 +26,7 @@ class ProfessionalModel {
     this.email,
     this.phone,
     this.image_url,
+    this.position,
   });
 
   Map<String, dynamic> toMap() {
@@ -39,13 +41,14 @@ class ProfessionalModel {
       'email': email,
       'phone': phone,
       'image_url': image_url,
+      'position': position,
     };
   }
 
   factory ProfessionalModel.fromMap(Map<String, dynamic> map) {
     return ProfessionalModel(
       id: map['id'] ?? 0,
-      charge_id: _toInt(map['charge_id']) ?? 0, // Asigna 0 si el valor es null
+      charge_id: map['charge_id'] ?? '', // Asigna 0 si el valor es null
       user_id: _toInt(map['user_id']),
       state: _toInt(map['state']),
       name: map['name'] ?? '',
@@ -54,6 +57,7 @@ class ProfessionalModel {
       email: map['email'] ?? '',
       phone: map['phone'].toString(),
       image_url: map['image_url'].toString(),
+      position: map['position'].toString(),
     );
   }
 

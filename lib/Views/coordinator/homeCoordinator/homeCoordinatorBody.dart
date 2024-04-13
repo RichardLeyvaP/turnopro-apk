@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
+import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
@@ -28,6 +29,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
 
   final LoginController loginController = Get.find<LoginController>();
+  final ClientsScheduledController clientsScheduleCont =
+      Get.find<ClientsScheduledController>();
 
   final CoexistenceController coexistenceController =
       Get.put(CoexistenceController());
@@ -74,23 +77,34 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
         if (cont == 1) {
           print('Aqui entro solo la primera vez (cont == 0)');
           notiController.fetchNotificationList(loginController.branchIdLoggedIn,
-              loginController.idProfessionalLoggedIn);
+              loginController.idProfessionalLoggedIn, 'Coordinador');
 
           await clientsScheduledController
               .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
+          await clientsScheduledController
+              .fetchClientsRechazBranch(loginController.branchIdLoggedIn);
           clientsScheduledController.setLoading(false);
         }
         if (cont == 10) {
-          // actualizo la cola
-          notiController.fetchNotificationList(loginController.branchIdLoggedIn,
-              loginController.idProfessionalLoggedIn);
-          print('con contador en 8 llamo la funcion');
-          await clientsScheduledController
-              .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
-          clientsScheduledController.setLoading(false);
-          await controllerShoppingCart
-              .loadOrderDeleteCar(loginController.branchIdLoggedIn!);
-          controllerShoppingCart.setLoading(false);
+          if (loginController.branchIdLoggedIn != null) {
+            // actualizo la cola
+            notiController.fetchNotificationList(
+                loginController.branchIdLoggedIn,
+                loginController.idProfessionalLoggedIn,
+                'Coordinador');
+            print('con contador en 8 llamo la funcion');
+            await clientsScheduledController
+                .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
+            await clientsScheduledController
+                .fetchClientsRechazBranch(loginController.branchIdLoggedIn);
+            clientsScheduledController.setLoading(false);
+            if (loginController.branchIdLoggedIn != null) {
+              await controllerShoppingCart
+                  .loadOrderDeleteCar(loginController.branchIdLoggedIn);
+            }
+            controllerShoppingCart.setLoading(false);
+          }
+
           //fin del for
           cont = 1;
         }
@@ -213,11 +227,15 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                                         padding:
                                                             const EdgeInsets
                                                                 .only(top: 33),
-                                                        child:
+                                                        child: Column(
+                                                          children: [
                                                             showRequestsDelete(
                                                                 context,
                                                                 contShopp,
-                                                                loginController),
+                                                                loginController,
+                                                                controllerclient),
+                                                          ],
+                                                        ),
                                                       );
                                                     }
                                                   }),
@@ -260,11 +278,6 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                                   children: [
                                                     Text(
                                                       'No hay clientes en cola',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          fontSize: 16),
                                                     ),
                                                   ],
                                                 ),
@@ -353,11 +366,20 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   children: [
                                     GestureDetector(
                                       onTap: () async {
-                                        await pagesConfigC.showAppBar(false);
+                                        // await pagesConfigC.showAppBar(false);
+                                        Get.dialog(
+                                          const Center(
+                                            child: CircularProgressIndicator(
+                                              color: Color(0xFFFDAE2A),
+                                            ),
+                                          ),
+                                          barrierDismissible: false,
+                                        ); //Get.back();
                                         await clientsScheduledController
                                             .clientsAttendBranch(loginController
                                                 .branchIdLoggedIn);
                                         pagesConfigC.onTabTapped(1);
+                                        Get.back();
                                         /* pagesConfigC.goToPage(
                                             4, pagesConfigC.pageController2);*/
                                       },
@@ -373,8 +395,17 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                     ),
                                     InkWell(
                                       onTap: () {
+                                        Get.dialog(
+                                          const Center(
+                                            child: CircularProgressIndicator(
+                                              color: Color(0xFFFDAE2A),
+                                            ),
+                                          ),
+                                          barrierDismissible: false,
+                                        ); //Get.back();
                                         pagesConfigC.onTabTapped(
                                             2); //index = 2 -> /NotificationsPageProf
+                                        Get.back();
                                       },
                                       child: cartsHome(
                                           context,
@@ -397,8 +428,17 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   children: [
                                     InkWell(
                                       onTap: () {
+                                        Get.dialog(
+                                          const Center(
+                                            child: CircularProgressIndicator(
+                                              color: Color(0xFFFDAE2A),
+                                            ),
+                                          ),
+                                          barrierDismissible: false,
+                                        ); //Get.back();
                                         pagesConfigC.onTabTapped(
                                             3); //index = 3 -> /StatisticPage
+                                        Get.back();
                                       },
                                       child: cartsHome(
                                           context,
@@ -411,10 +451,19 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                     ),
                                     InkWell(
                                       onTap: () async {
+                                        Get.dialog(
+                                          const Center(
+                                            child: CircularProgressIndicator(
+                                              color: Color(0xFFFDAE2A),
+                                            ),
+                                          ),
+                                          barrierDismissible: false,
+                                        ); //Get.back();
                                         await coexistenceController
                                             .fetchBranchProfessionals();
                                         pagesConfigC.onTabTapped(
                                             4); //index = 4 -> /CoexistencePage
+                                        Get.back();
                                       },
                                       child: cartsHome(
                                           context,
@@ -567,112 +616,98 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                           ),
                         ),
                       ),
-                      InkWell(
-                        onTap: () async {
-                          await pagesConfigC.showAppBar(false);
-                          pageController2.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.ease,
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 4, bottom: 4, right: 6.0),
-                          child: Container(
-                            height:
-                                (MediaQuery.of(context).size.height * 0.115),
-                            width: (MediaQuery.of(context).size.width * 0.20),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors
-                                      .white, // Color blanco para el borde
-                                  width:
-                                      1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                                ),
-                                color: const Color.fromARGB(255, 43, 44, 49),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(12))),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () async {
-                                        if (loginController.codigoQrValid() ==
-                                            true) {
-                                          int idClient = controllerclient
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 4, bottom: 4, right: 6.0),
+                        child: Container(
+                          height: (MediaQuery.of(context).size.height * 0.115),
+                          width: (MediaQuery.of(context).size.width * 0.20),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color:
+                                    Colors.white, // Color blanco para el borde
+                                width:
+                                    1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                              ),
+                              color: const Color.fromARGB(255, 43, 44, 49),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(12))),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  IconButton(
+                                    onPressed: () async {
+                                      if (loginController.codigoQrValid() ==
+                                          true) {
+                                        int idClient = controllerclient
+                                            .clientsScheduledListBranch[index]
+                                            .client_id;
+                                        int idReserv = controllerclient
+                                            .clientsScheduledListBranch[index]
+                                            .reservation_id;
+                                        int idBranch =
+                                            loginController.branchIdLoggedIn!;
+                                        // aqui llamar a la db y pedir todos los datos del cliente
+                                        /*   clientsScheduledController
+                                          .saveIdProfessional(controllerclient
                                               .clientsScheduledListBranch[index]
-                                              .client_id;
-                                          int idReserv = controllerclient
-                                              .clientsScheduledListBranch[index]
-                                              .reservation_id;
-                                          int idBranch =
-                                              loginController.branchIdLoggedIn!;
-                                          // aqui llamar a la db y pedir todos los datos del cliente
-                                          /*   clientsScheduledController
-                                            .saveIdProfessional(controllerclient
-                                                .clientsScheduledListBranch[index]
-                                                .professional_id!);*/
-                                          controllerclient.setActualNameCORD(
-                                              controllerclient
-                                                  .clientsScheduledListBranch[
-                                                      index]
-                                                  .professional_name);
-                                          await controllerclient
-                                              .getClientHistory(
-                                                  idClient, idBranch, idReserv);
-                                          // pagesConfigC.updateSelectedIndex();
-                                          await pagesConfigC.showAppBar(false);
-                                          pageController2.nextPage(
-                                            duration:
-                                                Duration(milliseconds: 300),
-                                            curve: Curves.ease,
-                                          );
-                                        } else {
-                                          Get.snackbar(
-                                            'Mensaje',
-                                            'Debe de escanear el código Qr de entrada',
-                                            duration: const Duration(
-                                                milliseconds: 2500),
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    118, 255, 255, 255),
-                                            showProgressIndicator: true,
-                                            progressIndicatorBackgroundColor:
-                                                const Color.fromARGB(
-                                                    255, 203, 205, 209),
-                                            progressIndicatorValueColor:
-                                                const AlwaysStoppedAnimation(
-                                                    Color(0xFFFDAE2A)),
-                                            overlayBlur: 3,
-                                          );
-                                        }
-                                      },
-                                      icon: Icon(
-                                        MdiIcons.eye,
-                                        color: Colors.white,
-                                        size: (MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.05),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    )
-                                  ],
-                                ),
-                                const Text(
-                                  'VER MÁS',
-                                  style: TextStyle(
+                                              .professional_id!);*/
+                                        controllerclient.setActualNameCORD(
+                                            controllerclient
+                                                .clientsScheduledListBranch[
+                                                    index]
+                                                .professional_name);
+                                        await controllerclient.getClientHistory(
+                                            idClient, idBranch, idReserv);
+                                        // pagesConfigC.updateSelectedIndex();
+                                        await pagesConfigC.showAppBar(false);
+                                        pageController2.nextPage(
+                                          duration: Duration(milliseconds: 300),
+                                          curve: Curves.ease,
+                                        );
+                                      } else {
+                                        Get.snackbar(
+                                          'Mensaje',
+                                          'Debe de escanear el código Qr de entrada',
+                                          duration: const Duration(
+                                              milliseconds: 2500),
+                                          backgroundColor: const Color.fromARGB(
+                                              118, 255, 255, 255),
+                                          showProgressIndicator: true,
+                                          progressIndicatorBackgroundColor:
+                                              const Color.fromARGB(
+                                                  255, 203, 205, 209),
+                                          progressIndicatorValueColor:
+                                              const AlwaysStoppedAnimation(
+                                                  Color(0xFFFDAE2A)),
+                                          overlayBlur: 3,
+                                        );
+                                      }
+                                    },
+                                    icon: Icon(
+                                      MdiIcons.eye,
                                       color: Colors.white,
-                                      fontWeight: FontWeight.w800),
-                                ),
-                              ],
-                            ),
+                                      size:
+                                          (MediaQuery.of(context).size.height *
+                                              0.05),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  )
+                                ],
+                              ),
+                              const Text(
+                                'VER MÁS',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -750,8 +785,11 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     );
   }
 
-  Column showRequestsDelete(context, ShoppingCartController contShopp,
-      LoginController controllerLogin) {
+  Column showRequestsDelete(
+      context,
+      ShoppingCartController contShopp,
+      LoginController controllerLogin,
+      ClientsCoordinatorController controllerclient) {
     List<Widget> widgets = [];
     String titulo = "";
     bool service = false;
@@ -759,6 +797,279 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     fin = 2;
   }*/
 
+    //todo aqui le muestra a los clientes solicitados como rechazados
+    for (int i = 0;
+        i < controllerclient.clientsScheduledListBranchClientLength;
+        i++) {
+      titulo = 'Rechazando Cliente';
+
+      widgets.add(
+        FittedBox(
+          fit: BoxFit.contain,
+          child: Column(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      height: (MediaQuery.of(context).size.height * 0.120),
+                      width: (MediaQuery.of(context).size.width * 0.20),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white, // Color blanco para el borde
+                          width:
+                              1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                        ),
+                        color: const Color(0xFFFF6750),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(12)),
+                      ),
+                      child: IconButton(
+                        onPressed: () async {
+                          if (controllerLogin.codigoQrValid() == true) {
+                            //rechazar la eliminacion
+                            controllerShoppingCart.setLoading(true);
+                            //aqui mandar a poner en 0 de nuevo en la cola al cliente
+
+                            bool result = await clientsScheduledController
+                                .acceptOrRejectClientCoord(
+                                    controllerclient
+                                        .clientsScheduledListBranchClient[i]
+                                        .reservation_id,
+                                    0);
+                            //aqui mandar notificacion
+                            print('return resul: IconButton $result');
+                            if (result == true) {
+                              notiController.storeNotification(
+                                  'Solicitud de Eliminacion Rechazada',
+                                  controllerLogin.branchIdLoggedIn,
+                                  controllerclient
+                                      .clientsScheduledListBranchClient[i]
+                                      .professional_id,
+                                  '!Atención..El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} no fue rechazado.');
+                            }
+                            if (controllerLogin.branchIdLoggedIn != null) {
+                              await controllerclient.fetchClientsRechazBranch(
+                                  controllerLogin.branchIdLoggedIn!);
+                              await contShopp.loadOrderDeleteCar(
+                                  controllerLogin.branchIdLoggedIn!);
+                              controllerShoppingCart.setLoading(false);
+                            }
+                          } else {
+                            Get.snackbar(
+                              'Mensaje',
+                              'Debe de escanear el código Qr de entrada',
+                              duration: const Duration(milliseconds: 2500),
+                              backgroundColor:
+                                  const Color.fromARGB(118, 255, 255, 255),
+                              showProgressIndicator: true,
+                              progressIndicatorBackgroundColor:
+                                  const Color.fromARGB(255, 203, 205, 209),
+                              progressIndicatorValueColor:
+                                  const AlwaysStoppedAnimation(
+                                      Color(0xFFFDAE2A)),
+                              overlayBlur: 3,
+                            );
+                          }
+                        },
+                        icon: Icon(
+                          MdiIcons.thumbDownOutline,
+                          color: Colors.white,
+                          size: (MediaQuery.of(context).size.height * 0.04),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: (MediaQuery.of(context).size.height * 0.120),
+                      width: (MediaQuery.of(context).size.width * 0.8),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 30, top: 10),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    ' $titulo',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: AutofillHints.familyName,
+                                        fontSize: 22),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 0, right: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Icon(
+                                          Icons.person,
+                                          color: Color.fromARGB(180, 0, 0, 0),
+                                        ),
+                                        Text(
+                                          controllerclient
+                                              .clientsScheduledListBranchClient[
+                                                  i]
+                                              .client_name,
+                                          style: TextStyle(
+                                              fontSize: (MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.018),
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                        controllerclient
+                                            .clientsScheduledListBranchClient[i]
+                                            .time
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: (MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.018),
+                                            fontWeight: FontWeight.w800)),
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    MdiIcons.accountTie,
+                                  ),
+                                  Text(
+                                    controllerclient
+                                        .clientsScheduledListBranchClient[i]
+                                        .professional_name
+                                        .toString(),
+                                    style: TextStyle(
+                                        fontSize: (MediaQuery.of(context)
+                                                .size
+                                                .height *
+                                            0.018),
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: (MediaQuery.of(context).size.height * 0.120),
+                      width: (MediaQuery.of(context).size.width * 0.20),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.white, // Color blanco para el borde
+                            width:
+                                1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                          ),
+                          color: const Color(0xFF19CF9E),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(12))),
+                      child: IconButton(
+                        onPressed: () async {
+                          if (controllerLogin.codigoQrValid() == true) {
+                            controllerShoppingCart.setLoading(true);
+
+                            bool result = await clientsScheduleCont
+                                .deleteReservationClientCoor(
+                                    controllerclient
+                                        .clientsScheduledListBranchClient[i]
+                                        .reservation_id,
+                                    'Fue rechazado por ${controllerclient.clientsScheduledListBranchClient[i].professional_name}');
+                            //aqui mandar notificacion
+                            print('return resul: IconButton $result');
+                            if (result == true) {
+                              String typeDelete =
+                                  'Aceptada Eliminación de Cliente';
+
+                              notiController.storeNotification(
+                                  typeDelete,
+                                  controllerLogin.branchIdLoggedIn,
+                                  controllerclient
+                                      .clientsScheduledListBranchClient[i]
+                                      .professional_id,
+                                  'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue eliminado de su cola');
+                            }
+                            if (controllerLogin.branchIdLoggedIn != null) {
+                              await controllerclient.fetchClientsRechazBranch(
+                                  controllerLogin.branchIdLoggedIn!);
+                              await contShopp.loadOrderDeleteCar(
+                                  controllerLogin.branchIdLoggedIn!);
+                              controllerShoppingCart.setLoading(false);
+                            }
+                          } else {
+                            Get.snackbar(
+                              'Mensaje',
+                              'Debe de escanear el código Qr de entrada',
+                              duration: const Duration(milliseconds: 2500),
+                              backgroundColor:
+                                  const Color.fromARGB(118, 255, 255, 255),
+                              showProgressIndicator: true,
+                              progressIndicatorBackgroundColor:
+                                  const Color.fromARGB(255, 203, 205, 209),
+                              progressIndicatorValueColor:
+                                  const AlwaysStoppedAnimation(
+                                      Color(0xFFFDAE2A)),
+                              overlayBlur: 3,
+                            );
+                          }
+                        },
+                        icon: Icon(
+                          MdiIcons.thumbUpOutline,
+                          color: Colors.white,
+                          size: (MediaQuery.of(context).size.height * 0.04),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              )
+            ],
+          ),
+        ),
+      );
+    }
+    //
+    //
+    //todo aqui le muestra a los clientes solicitados como rechazados
+    //
+    //
+    //
+    //
+    //
+    //
+//todo aqui le muestra las solicitudes de eliminacion de Servicios y Productos
     for (int i = 0; i < contShopp.orderDeleteCar.length; i++) {
       if (contShopp.orderDeleteCar[i].nameService == '') {
         titulo = 'Eliminación de Producto';
@@ -1036,13 +1347,22 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
         ),
       );
     }
-    if (contShopp.orderDeleteCar.isEmpty) {
+    //
+    //todo aqui le muestra las solicitudes de eliminacion de Servicios y Productos
+    //
+    //
+    //
+    //
+
+    //
+    if ((contShopp.orderDeleteCar.isEmpty) &&
+        (controllerclient.clientsScheduledListBranchClient.isEmpty)) {
       widgets.add(const Center(
         child: Padding(
           padding: EdgeInsets.only(top: 100),
           child: Text(
             'No hay solicitudes a eliminar.',
-            style: TextStyle(color: Colors.white, fontSize: 20),
+            style: TextStyle(color: Colors.white),
           ),
         ),
       ));

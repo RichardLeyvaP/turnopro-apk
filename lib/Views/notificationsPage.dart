@@ -22,11 +22,22 @@ class _NotificationsPageNewState extends State<NotificationsPageNew> {
       Get.find<PagesConfigResponController>();
   final NotificationController notifCont = Get.find<NotificationController>();
   final LoginController logCont = Get.find<LoginController>();
+  String typeEnv = '';
   @override
   void initState() {
     super.initState();
+    if (logCont.chargeUserLoggedIn == 'Barbero y Encargado') {
+      if (logCont.switchValue == false) //'Barbero'
+      {
+        typeEnv = 'Barbero';
+      } else {
+        typeEnv = 'Encargado';
+      }
+    } else {
+      typeEnv = logCont.chargeUserLoggedIn;
+    }
     notifCont.updateNotifications(
-        logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn);
+        logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn, typeEnv);
   }
 
   @override
@@ -64,7 +75,7 @@ class _NotificationsPageNewState extends State<NotificationsPageNew> {
                   size: 50,
                 ),
                 Text(
-                  'Notificaciones',
+                  'NotificacionesRESP',
                   style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
                 ),
               ],
@@ -85,7 +96,7 @@ class _NotificationsPageNewState extends State<NotificationsPageNew> {
                 child: CircularProgressIndicator(
                 color: Color(0xFFFDAE2A),
               ))
-            : _.notificationListLength > 0
+            : _.notificationListLengthEncarg > 0
                 ? Column(
                     children: [
                       const SizedBox(
@@ -95,7 +106,7 @@ class _NotificationsPageNewState extends State<NotificationsPageNew> {
                         flex:
                             heightFlexBody, // 85% del espacio disponible para esta parte
                         child: ListView.builder(
-                            itemCount: _.notificationListLength,
+                            itemCount: _.notificationListLengthEncarg,
                             itemBuilder: (context, index) => Padding(
                                   padding: EdgeInsets.fromLTRB(
                                       (MediaQuery.of(context).size.height *
@@ -139,8 +150,8 @@ class _NotificationsPageNewState extends State<NotificationsPageNew> {
                                         children: [
                                           Visibility(
                                             visible: _.selectNotification
-                                                .contains(
-                                                    _.notification[index]),
+                                                .contains(_
+                                                    .notificationEncarg[index]),
                                             child: Container(
                                               height: (MediaQuery.of(context)
                                                       .size
@@ -192,7 +203,8 @@ class _NotificationsPageNewState extends State<NotificationsPageNew> {
                                           Container(
                                             height: _.selectNotification
                                                     .contains(
-                                                        _.notification[index])
+                                                        _.notificationEncarg[
+                                                            index])
                                                 ? (MediaQuery.of(context)
                                                         .size
                                                         .height *
@@ -206,7 +218,8 @@ class _NotificationsPageNewState extends State<NotificationsPageNew> {
                                                     .width *
                                                 1),
                                             decoration: _.selectNotification
-                                                    .contains(_.notification[
+                                                    .contains(_
+                                                            .notificationEncarg[
                                                         index]) /*_.selectnotification
                                                     .contains(_.notifications[index])*/
                                                 ? null
@@ -259,14 +272,14 @@ class _NotificationsPageNewState extends State<NotificationsPageNew> {
                                                           children: [
                                                             Text(
                                                               _
-                                                                  .notification[
+                                                                  .notificationEncarg[
                                                                       index]
                                                                   .tittle,
                                                               style: TextStyle(
                                                                 fontSize: _
                                                                         .selectNotification
                                                                         .contains(
-                                                                            _.notification[index])
+                                                                            _.notificationEncarg[index])
                                                                     ? 23
                                                                     : 16,
                                                                 fontWeight:
@@ -278,7 +291,7 @@ class _NotificationsPageNewState extends State<NotificationsPageNew> {
                                                           ],
                                                         ),
                                                       ),
-                                                      _.notification[index]
+                                                      _.notificationEncarg[index]
                                                                   .state ==
                                                               0
                                                           ? const Icon(
@@ -304,13 +317,15 @@ class _NotificationsPageNewState extends State<NotificationsPageNew> {
                                                             const EdgeInsets
                                                                 .only(left: 2),
                                                         child: Text(
-                                                          _.notification[index]
+                                                          _
+                                                              .notificationEncarg[
+                                                                  index]
                                                               .description,
                                                           style: TextStyle(
                                                             fontSize: _
                                                                     .selectNotification
                                                                     .contains(
-                                                                        _.notification[
+                                                                        _.notificationEncarg[
                                                                             index])
                                                                 ? 20
                                                                 : 14,
@@ -332,13 +347,15 @@ class _NotificationsPageNewState extends State<NotificationsPageNew> {
                                                     alignment:
                                                         Alignment.bottomRight,
                                                     child: Text(
-                                                      _.notification[index]
+                                                      _
+                                                          .notificationEncarg[
+                                                              index]
                                                           .created_at,
                                                       style: TextStyle(
                                                           fontSize: _
                                                                   .selectNotification
                                                                   .contains(
-                                                                      _.notification[
+                                                                      _.notificationEncarg[
                                                                           index])
                                                               ? 12
                                                               : 12,
@@ -352,8 +369,8 @@ class _NotificationsPageNewState extends State<NotificationsPageNew> {
                                           ),
                                           /*todo*/ Visibility(
                                             visible: _.selectNotification
-                                                .contains(
-                                                    _.notification[index]),
+                                                .contains(_
+                                                    .notificationEncarg[index]),
                                             child: Container(
                                               height: (MediaQuery.of(context)
                                                       .size
@@ -406,7 +423,6 @@ class _NotificationsPageNewState extends State<NotificationsPageNew> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.no_backpack_outlined),
                           Text('No hay Notificaciones'),
                         ],
                       ),

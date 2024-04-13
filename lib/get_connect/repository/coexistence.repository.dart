@@ -3,6 +3,9 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';
+import 'package:turnopro_apk/Models/Estadist0_model.dart';
+import 'package:turnopro_apk/Models/Estadist1_model.dart';
+import 'package:turnopro_apk/Models/Payment_model.dart';
 import 'package:turnopro_apk/Models/branch_model.dart';
 import 'package:turnopro_apk/Models/coexistence_model.dart';
 import 'package:turnopro_apk/Models/professional_model.dart';
@@ -60,6 +63,7 @@ class CoexistenceRepository extends GetConnect {
 
   Future<List<ProfessionalModel>> getBranchProfessionals(idBranch) async {
     // todo esta es la que carga a los profesionales y a los tecnicos
+    final LoginController controllerLogin = Get.find<LoginController>();
     List<ProfessionalModel> professionalList = [];
     print('estoy en getBranchProfessionals');
     try {
@@ -84,7 +88,11 @@ class CoexistenceRepository extends GetConnect {
           ProfessionalModel u =
               ProfessionalModel.fromJson(jsonEncode(professional));
           //AQUI SOLO COJO QUE NO SEAN RESPONSABLES
-          if (u.charge_id == 1 || u.charge_id == 7) {
+          //todo cambiar por el nombre del cargo YASMANY TIENE QUE MANDARLO
+          if ((u.charge_id == 'Barbero' ||
+                  u.charge_id == 'Tecnico' ||
+                  u.charge_id == 'Barbero y Encargado') &&
+              (u.id != controllerLogin.idProfessionalLoggedIn)) {
             //charge_id=1 es un BARBERO
             //charge_id=7 es un TECNICO
             professionalList.add(u);
@@ -99,6 +107,245 @@ class CoexistenceRepository extends GetConnect {
     } catch (e) {
       print('Error:$e');
       return professionalList;
+    }
+  }
+
+//
+//
+  Future<List<Estadist1Model>> fetchEstadist1(
+      professional_id, branch_id, data) async {
+    // todo esta es la que carga a los profesionales y a los tecnicos
+    List<Estadist1Model> branchProf = [];
+    print('werya tengo repositorio11 estoy en getBranchProfessionals');
+    try {
+      var url =
+          '${Env.apiEndpoint}/professional-car-date?branch_id=$branch_id&professional_id=$professional_id&data=$data';
+
+      final response = await get(url).timeout(Duration(seconds: 10));
+      print('werya tengo repositorio22 estoy en getBranchProfessionals');
+      if (response.statusCode == 200) {
+        print(
+            'werya tengo repositorio33 response.statusCode == 200 estoy en getBranchProfessionals');
+        // Parsear el body como una cadena JSON
+        final jsonResponse = response.body['car'];
+        print(
+            'werya tengo repositorio----------------33 response.statusCode == 200 estoy en getBranchProfessionals');
+
+        final List<dynamic> branchP = jsonResponse;
+
+        for (int i = 0; i < branchP.length; i++) {
+          final Map<String, dynamic> branch = branchP[i];
+
+          // Crear una instancia de Estadist1Model
+          Estadist1Model u = Estadist1Model.fromJson(branch);
+
+          // Agregar la instancia a la lista branchProf
+          branchProf.add(u);
+        }
+
+        print(
+            'werya tengo repositorio44 response.statusCode == 200 estoy en branchProf:${branchProf.length}');
+        return branchProf;
+      } else {
+        return branchProf;
+        // Si ocurre algún error con la solicitud HTTP
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('werya tengo Error1 :$e');
+      return branchProf;
+    }
+  }
+
+//
+  ///
+//
+//
+  Future<List<PaymentModel>> fetchEstadistPagos(
+      professional_id, branch_id) async {
+    // todo esta es la que carga a los profesionales y a los tecnicos
+    List<PaymentModel> branchProf = [];
+    /* String jsonExample = '''
+    [
+      {
+        "id": 2,
+        "branch_id": 15,
+        "professional_id": 67,
+        "date": "2024-04-10 05:03:37",
+        "type": "Quincena",
+        "amount": "50634.09"
+      },
+      {
+        "id": 3,
+        "branch_id": 15,
+        "professional_id": 68,
+        "date": "2024-04-11 09:15:22",
+        "type": "Quincena",
+        "amount": "60000.0"
+      },
+      {
+        "id": 4,
+        "branch_id": 16,
+        "professional_id": 70,
+        "date": "2024-04-12 14:30:45",
+        "type": "Mensual",
+        "amount": "75000.0"
+      },
+      {
+        "id": 5,
+        "branch_id": 17,
+        "professional_id": 71,
+        "date": "2024-04-13 11:20:10",
+        "type": "Quincena",
+        "amount": "45000.0"
+      },
+      {
+        "id": 6,
+        "branch_id": 18,
+        "professional_id": 72,
+        "date": "2024-04-14 16:45:55",
+        "type": "Mensual",
+        "amount": "80000.0"
+      },
+      {
+        "id": 7,
+        "branch_id": 19,
+        "professional_id": 73,
+        "date": "2024-04-15 08:00:30",
+        "type": "Quincena",
+        "amount": "55000.0"
+      },
+      {
+        "id": 8,
+        "branch_id": 20,
+        "professional_id": 75,
+        "date": "2024-04-16 10:10:15",
+        "type": "Mensual",
+        "amount": "70000.0"
+      },
+      {
+        "id": 9,
+        "branch_id": 21,
+        "professional_id": 77,
+        "date": "2024-04-17 13:55:20",
+        "type": "Quincena",
+        "amount": "48000.0"
+      },
+      {
+        "id": 10,
+        "branch_id": 22,
+        "professional_id": 78,
+        "date": "2024-04-18 17:25:40",
+        "type": "Mensual",
+        "amount": "85000.0"
+      },
+      {
+        "id": 11,
+        "branch_id": 23,
+        "professional_id": 80,
+        "date": "2024-04-19 12:40:18",
+        "type": "Quincena",
+        "amount": "60000.0"
+      },
+      {
+        "id": 12,
+        "branch_id": 24,
+        "professional_id": 81,
+        "date": "2024-04-20 09:30:55",
+        "type": "Mensual",
+        "amount": "72000.0"
+      }
+    ]
+  ''';
+
+    List<PaymentModel> branchProfTest = PaymentModel.listFromJson(jsonExample);
+    print('werya tengo repositorio11 estoy en getBranchProfessionals');
+    return branchProfTest;*/
+    try {
+      var url =
+          '${Env.apiEndpoint}/professional-payment-show?branch_id=$branch_id&professional_id=$professional_id';
+
+      final response = await get(url).timeout(Duration(seconds: 10));
+      print('werya tengo repositorio22 estoy en getBranchProfessionals');
+      if (response.statusCode == 200) {
+        print(
+            'werya tengo repositorio33 response.statusCode == 200 estoy en getBranchProfessionals');
+        // Parsear el body como una cadena JSON
+        final jsonResponse = response.body;
+        print(
+            'werya tengo repositorio----------------33 response.statusCode == 200 estoy en getBranchProfessionals');
+
+        final List<dynamic> branchP = jsonResponse;
+
+        for (int i = 0; i < branchP.length; i++) {
+          final Map<String, dynamic> branch = branchP[i];
+
+          // Crear una instancia de Estadist1Model
+          PaymentModel u = PaymentModel.fromJson(branch);
+
+          // Agregar la instancia a la lista branchProf
+          branchProf.add(u);
+        }
+
+        print(
+            'werya tengo repositorio44 response.statusCode == 200 estoy en branchProf:${branchProf.length}');
+        return branchProf;
+      } else {
+        return branchProf;
+        // Si ocurre algún error con la solicitud HTTP
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('werya tengo Error2 :$e');
+      return branchProf;
+    }
+  }
+
+//
+////
+//
+  Future<List<Estadist0Model>> fetchEstadist0(
+      professional_id, branch_id) async {
+    // todo esta es la que carga a los profesionales y a los tecnicos
+    List<Estadist0Model> branchProf = [];
+    print('werya tengo repositorio11 estoy en getBranchProfessionals');
+    try {
+      var url =
+          '${Env.apiEndpoint}/professional-car?branch_id=$branch_id&professional_id=$professional_id';
+
+      final response = await get(url).timeout(Duration(seconds: 10));
+      print('werya tengo repositorio22 estoy en getBranchProfessionals');
+      if (response.statusCode == 200) {
+        print(
+            'werya tengo repositorio33 response.statusCode == 200 estoy en getBranchProfessionals');
+        // Parsear el body como una cadena JSON
+        final jsonResponse = response.body['car'];
+        print(
+            'werya tengo repositorio----------------33 response.statusCode == 200 estoy en getBranchProfessionals');
+
+        final List<dynamic> branchP = jsonResponse;
+
+        for (int i = 0; i < branchP.length; i++) {
+          final Map<String, dynamic> branch = branchP[i];
+
+          // Crear una instancia de Estadist1Model
+          Estadist0Model u = Estadist0Model.fromJson(branch);
+
+          // Agregar la instancia a la lista branchProf
+          branchProf.add(u);
+        }
+
+        print(
+            'werya tengo repositorio44 response.statusCode == 200 estoy en branchProf:${branchProf.length}');
+        return branchProf;
+      } else {
+        return branchProf;
+        // Si ocurre algún error con la solicitud HTTP
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('werya tengo Error3 :$e');
+      return branchProf;
     }
   }
 

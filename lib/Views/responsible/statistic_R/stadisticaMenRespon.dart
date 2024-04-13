@@ -119,7 +119,7 @@ class _StadisticaMenResponState extends State<StadisticaMenRespon> {
                         child: ElevatedButton(
                           style: const ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
-                            const Color.fromARGB(255, 43, 44, 49),
+                            const Color(0xFF4470F3),
                           )),
                           onPressed: () async {
                             await controllerStatistic.getDataStatisticRespon(

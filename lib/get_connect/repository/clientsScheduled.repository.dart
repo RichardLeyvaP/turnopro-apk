@@ -398,7 +398,7 @@ class ClientsScheduledRepository extends GetConnect {
         ProfessionalModel u =
             ProfessionalModel.fromJson(jsonEncode(professional));
         //AQUI SOLO COJO QUE NO SEAN RESPONSABLES
-        if (u.charge_id != 3 && u.charge_id != 8) {
+        if (u.name != 'Encargado' && u.name != 'Coordinador') {
           //charge_id=3 es un responsable
           professionalList.add(u);
         }

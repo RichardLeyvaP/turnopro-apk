@@ -490,7 +490,7 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
                         ElevatedButton(
                           style: const ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
-                            const Color.fromARGB(255, 43, 44, 49),
+                            Color.fromARGB(255, 192, 191, 191),
                           )),
                           onPressed: () {
                             setState(() {
@@ -505,7 +505,7 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
                         ElevatedButton(
                           style: const ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
-                            const Color.fromARGB(255, 43, 44, 49),
+                            Color(0xFF4470F3),
                           )),
                           onPressed: () async {
                             // Obtener el primer día de la semana

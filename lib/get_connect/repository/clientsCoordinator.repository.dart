@@ -100,6 +100,8 @@ class ClientsCoordinatorRepository extends GetConnect {
   //
   //
   //
+  //
+  //
   Future getClientsScheduledListBranch(idBranch) async {
     List<ClientsScheduledModel> clientList = [];
     try {
@@ -133,6 +135,45 @@ class ClientsCoordinatorRepository extends GetConnect {
 
   //
   //
+  Future getClientsRechazBranch(idBranch) async {
+    List<ClientsScheduledModel> clientListDel = [];
+    try {
+      //esta me muestra los que estan rechazados
+      var url = '${Env.apiEndpoint}/cola_branch_data2?branch_id=$idBranch';
+
+      final response = await get(url);
+      //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
+      if (response.statusCode == null) {
+        print('response.statusCode:${response.statusCode}');
+        return {
+          "ConnectionIssues": true,
+        };
+      } else
+        print('hay coneccion getClientsRechazBranch');
+      if (response.statusCode == 200) {
+        print('ya tengo la cola de la api getClientsRechazBranch');
+        final customers = response.body['tail'];
+        print('ya tengo la cola de la api getClientsRechazBranch:${customers}');
+        for (Map service in customers) {
+          print('ya tengo la cola de la api getClientsRechazBranch222222222');
+          ClientsScheduledModel client =
+              ClientsScheduledModel.fromJson(jsonEncode(service));
+          clientListDel.add(client);
+          print('ya tengo la cola de la api getClientsRechazBranch333333333');
+          //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
+        }
+        print(
+            'ya tengo la cola de la api getClientsRechazBranch clientListDel:${clientListDel.length}');
+      }
+
+      return {"clientListDel": clientListDel};
+    } catch (e) {
+      print(e);
+    }
+  } //
+
+  //
+  //
   //
   Future clientsAttendBranch(idBranch) async {
     //clientes que se estan atendiendo de una branch
@@ -157,6 +198,8 @@ class ClientsCoordinatorRepository extends GetConnect {
             ClientsScheduledModel.fromJson(jsonEncode(service));
 
         clientList.add(client);
+        print(
+            'yccca tengo la cola de la api getClientsScheduledListBranch:${clientList.length}');
       }
     }
 

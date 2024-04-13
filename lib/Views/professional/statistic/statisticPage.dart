@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
+import 'package:turnopro_apk/Views/professional/statistic/estadistc0Page.dart';
+import 'package:turnopro_apk/Views/professional/statistic/estadistc1Page.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaDiaPageNueva.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaMensualPageNueva.dart';
 //import 'package:animate_do/animate_do.dart';
@@ -30,7 +32,8 @@ class _StatisticPageState extends State<StatisticPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    Get.back();
+    _tabController = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -119,9 +122,10 @@ class _StatisticPageState extends State<StatisticPage>
                   automaticIndicatorColorAdjustment: false,
                   controller: _tabController,
                   tabs: const [
+                    Tab(text: 'Día'),
                     Tab(text: 'Rango'),
-                    Tab(text: 'Semananal'),
-                    Tab(text: 'Mensual'),
+                    Tab(text: 'Sem.'),
+                    Tab(text: 'Mens.'),
                   ],
                 ),
               ),
@@ -132,8 +136,8 @@ class _StatisticPageState extends State<StatisticPage>
           return TabBarView(
             controller: _tabController,
             children: [
+              const Estadistc0Page(),
               const LineChartSample2(),
-
               StadisticaSemanalPageNueva(),
               //const LineChartSample5(),
               StadisticaMensualPageNueva(),

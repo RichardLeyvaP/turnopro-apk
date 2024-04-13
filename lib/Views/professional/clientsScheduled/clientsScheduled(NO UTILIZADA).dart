@@ -407,8 +407,6 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                                   Icon(Icons.assignment_ind_sharp),
                                   Text(
                                     'No hay ningún cliente para hoy',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w700),
                                   ),
                                 ],
                               ),

@@ -1,9 +1,11 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 import 'package:turnopro_apk/Models/professional_model.dart';
 // ignore: depend_on_referenced_packages
@@ -33,6 +35,7 @@ class _CoexistencePageResponsibleState
 //
   @override
   Widget build(BuildContext context) {
+    print('ESTOY ENTRANDO AQUI A CONVIVENCIAS');
     return Scaffold(
       appBar: AppBar(
         leading: Row(
@@ -129,7 +132,7 @@ class _CoexistencePageResponsibleState
                                   children: [
                                     CircleAvatar(
                                       backgroundImage: NetworkImage(
-                                          '${Env.apiEndpoint}/images/${profesional.image_url}'),
+                                          '${Env.apiEndpoint}/images/${profesional.image_url}'), //todo Modo de cargar la foto),
                                       radius:
                                           25, // Ajusta el tamaño del círculo aquí
                                     ),
@@ -155,9 +158,6 @@ class _CoexistencePageResponsibleState
                               top: 2, left: 14, right: 14, bottom: 2),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                              color: const Color.fromARGB(255, 43, 44, 49),
-                            ),
                             color: Color(0xFF4470F3),
                           ),
                           elevation: 2,
@@ -175,7 +175,7 @@ class _CoexistencePageResponsibleState
                           width: (MediaQuery.of(context).size.width * 0.85),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14),
-                            color: const Color.fromARGB(155, 26, 50, 82),
+                            color: const Color(0xFF4470F3),
                           ),
                           offset: const Offset(40, 0),
                           scrollbarTheme: ScrollbarThemeData(
@@ -624,7 +624,6 @@ class _CoexistencePageResponsibleState
                         : Center(
                             child: Text(
                             'No tiene reglas de convivencia definidas aún',
-                            style: TextStyle(fontWeight: FontWeight.w700),
                           )),
                   )
                 : Text(' '),

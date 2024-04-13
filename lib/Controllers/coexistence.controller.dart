@@ -3,6 +3,9 @@
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
+import 'package:turnopro_apk/Models/Estadist0_model.dart';
+import 'package:turnopro_apk/Models/Estadist1_model.dart';
+import 'package:turnopro_apk/Models/Payment_model.dart';
 import 'package:turnopro_apk/Models/branch_model.dart';
 import 'package:turnopro_apk/Models/coexistence_model.dart';
 import 'package:turnopro_apk/Models/professional_model.dart';
@@ -14,7 +17,13 @@ class CoexistenceController extends GetxController {
   CoexistenceRepository repository = CoexistenceRepository();
   double getTotal = 20.0;
   int coexistenceListLength = 0;
+  int estadist1Length = 0;
+  int estadistPagosLength = 0;
+  int estadist0Length = 0;
   List<CoexistenceModel> coexistence = [];
+  List<Estadist1Model> estadist1 = [];
+  List<Estadist0Model> estadist0 = [];
+  List<PaymentModel> estadistPagos = [];
   int professionalListLength = 0;
   int branchProfessionalListLength = 0;
   List<ProfessionalModel> professional = []; // Lista de Notificaciones
@@ -77,6 +86,49 @@ class CoexistenceController extends GetxController {
     print(coexistence.length);
     coexistenceListLength = coexistence.length;
     print('a15627 coexistenceListLength:${coexistenceListLength}');
+
+    update();
+    controllerLogin.setIsLoadingFor(false);
+  }
+
+  Future<void> fetchEstadist1(data) async {
+    print('werya tengo1');
+    final LoginController controllerLogin = Get.find<LoginController>();
+    int? idProfessional = controllerLogin.idProfessionalLoggedIn;
+    int? idBranch = controllerLogin.branchIdLoggedIn;
+    estadist1 = await repository.fetchEstadist1(idProfessional, idBranch, data);
+    print(estadist1.length);
+    estadist1Length = estadist1.length;
+    print('werya tengo-result coexistenceListLength:${estadist1Length}');
+
+    update();
+    controllerLogin.setIsLoadingFor(false);
+  }
+
+  Future<void> fetchEstadistPagos() async {
+    print('werya tengo1');
+    final LoginController controllerLogin = Get.find<LoginController>();
+    int? idProfessional = controllerLogin.idProfessionalLoggedIn;
+    int? idBranch = controllerLogin.branchIdLoggedIn;
+    estadistPagos =
+        await repository.fetchEstadistPagos(idProfessional, idBranch);
+    print(estadistPagos.length);
+    estadistPagosLength = estadistPagos.length;
+    print('werya tengo-result coexistenceListLength:${estadistPagosLength}');
+
+    update();
+    controllerLogin.setIsLoadingFor(false);
+  }
+
+  Future<void> fetchEstadist0() async {
+    print('werya tengo1');
+    final LoginController controllerLogin = Get.find<LoginController>();
+    int? idProfessional = controllerLogin.idProfessionalLoggedIn;
+    int? idBranch = controllerLogin.branchIdLoggedIn;
+    estadist0 = await repository.fetchEstadist0(idProfessional, idBranch);
+    print(estadist0.length);
+    estadist0Length = estadist0.length;
+    print('werya tengo-result coexistenceListLength:${estadist0Length}');
 
     update();
     controllerLogin.setIsLoadingFor(false);

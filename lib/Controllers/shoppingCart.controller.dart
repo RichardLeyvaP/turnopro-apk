@@ -84,7 +84,7 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  Future<void> loadOrderDeleteCar(int branchId) async {
+  Future<void> loadOrderDeleteCar(branchId) async {
     print(' estoy loadOrderDeleteCar aqui en loadOrderDeleteCar');
     try {
       orderDeleteCar =

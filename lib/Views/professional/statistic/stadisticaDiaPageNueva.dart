@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 //import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +13,8 @@ class LineChartSample2 extends StatefulWidget {
   @override
   State<LineChartSample2> createState() => _LineChartSample2State();
 }
+
+final CoexistenceController coexCont = Get.find<CoexistenceController>();
 
 class _LineChartSample2State extends State<LineChartSample2> {
   List<String> direcc = [
@@ -181,22 +184,22 @@ class _LineChartSample2State extends State<LineChartSample2> {
                                               height: 20,
                                             ),
                                           ),
-                                          Text(
-                                            entry.key,
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
+                                          Text(entry.key,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                              )),
                                         ],
                                       ),
                                       Text(
-                                        '${entry.value}',
+                                        entry.value == null
+                                            ? '0'
+                                            : '${entry.value}',
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w800,
                                         ),
-                                      ),
+                                      )
                                     ],
                                   ),
                                 );

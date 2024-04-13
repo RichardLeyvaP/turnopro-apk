@@ -257,7 +257,6 @@ class _CoexistencePageState extends State<CoexistencePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.no_backpack_outlined),
                           Text('No hay Convivencias'),
                         ],
                       ),

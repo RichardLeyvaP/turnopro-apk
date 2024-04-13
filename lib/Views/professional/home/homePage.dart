@@ -10,6 +10,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/env.dart';
+import 'package:intl/intl.dart';
 
 class HomePages extends StatefulWidget {
   const HomePages({super.key});
@@ -70,6 +71,9 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final formatter = DateFormat('yyyy-MM-dd');
+    final dateAct = formatter.format(now);
     return FadeIn(
       duration: const Duration(seconds: 2),
       child:
@@ -109,18 +113,48 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                         print('mostrando el tap # :$index');
                         if (index == 4) //cargame las convivencias
                         {
-                          loginController.setIsLoadingFor(true);
+                          //loginController.setIsLoadingFor(true);
+                          Get.dialog(
+                            const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFFFDAE2A),
+                              ),
+                            ),
+                            barrierDismissible: false,
+                          ); //Get.back();
                           await coexistenceController.fetchCoexistenceList();
+                          Get.back();
                         } else if (index == 1) {
-                          loginController.setIsLoadingFor(true);
+                          //loginController.setIsLoadingFor(true);
+                          Get.dialog(
+                            const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFFFDAE2A),
+                              ),
+                            ),
+                            barrierDismissible: false,
+                          ); //Get.back();
+
                           await clientController.fetchClientsScheduled(
                               loginController.idProfessionalLoggedIn,
                               loginController.branchIdLoggedIn);
+                          Get.back();
                         } else if (index == 2) {
                           loginController.setIsLoadingFor(true);
                           /* await notiCont.fetchNotificationList(
                               loginController.branchIdLoggedIn,
                               loginController.idProfessionalLoggedIn);*/
+                        } else if (index == 3) {
+                          Get.dialog(
+                            const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFFFDAE2A),
+                              ),
+                            ),
+                            barrierDismissible: false,
+                          );
+                          await coexistenceController.fetchEstadist0();
+                          Get.back();
                         }
                         pagesConfigController.onTabTapped(index);
                       },
@@ -244,10 +278,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: const Color.fromARGB(255, 32, 32, 32),
-                  width: 2, // Ajusta el ancho del borde según tus preferencias
-                ),
+                // border: Border.all(
+                //   color: Colors.white,
+                //   width: 2, // Ajusta el ancho del borde según tus preferencias
+                // ),
               ),
               child: CircleAvatar(
                 backgroundImage: NetworkImage(
@@ -292,6 +326,79 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         GetBuilder<LoginController>(builder: (_) {
           return Row(
             children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Switch(
+                    value: _.switchValue,
+                    onChanged: (value) async {
+                      Get.dialog(
+                        const Center(
+                          child: CircularProgressIndicator(
+                            color: Color(0xFFFDAE2A),
+                          ),
+                        ),
+                        barrierDismissible: false,
+                      ); //Get.back();
+                      await Future.delayed(Duration(seconds: 3));
+                      await _.setswitchValue();
+                      Get.back();
+                      // _.switchValue = value;
+                    },
+                    activeColor: Colors.blue, // Color cuando está activado
+                    activeTrackColor: Colors
+                        .lightBlue, // Color de la pista cuando está activado
+                    inactiveThumbColor: const Color(
+                        0xFFFDAE2A), // Color del pulgar cuando está desactivado
+                    inactiveTrackColor: Colors.grey
+                        .shade300, // Color de la pista cuando está desactivado
+                  ),
+                  Stack(
+                    children: [
+                      GetBuilder<NotificationController>(builder: (_notiCont) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          // Se ejecutará después de que se haya construido el widget
+                          //define que tipo de saludo dar dependiendo de la hora
+                          if (_notiCont.notificationListNewLengthEncarg !=
+                              _notiCont.notificationListBackEncarg) {
+                            _notiCont.updateNotificationListBackEncarg(
+                                _notiCont.notificationListNewLengthEncarg);
+                          }
+                        });
+
+                        if (_notiCont.notificationListNewLengthEncarg !=
+                                _notiCont.notificationListBackEncarg &&
+                            _notiCont.notificationListNewLengthEncarg != 0) {
+                          //  _notiCont.reproducirSound();
+                        }
+                        return Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              _.switchValue ? 'Barbero' : 'Encargado',
+                              style: const TextStyle(
+                                  fontSize: 8,
+                                  color: Color(0xFFFDAE2A),
+                                  height: 0.1),
+                            ),
+                            // Ajusta el espacio entre el texto y el Badge
+                            Badge(
+                              label: Text(
+                                (_notiCont.notificationListNewLengthEncarg)
+                                    .toString(),
+                                style: TextStyle(color: Colors.white),
+                              ), // Opcional: usa un ícono en lugar de texto
+                            ),
+                          ],
+                        );
+                      }),
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(
+                width: 12,
+              ),
               InkWell(
                 onTap: () {
                   //verifico si esta atendiendo a alguien no puede leer un nuevo codigo
@@ -503,16 +610,22 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                         children: <Widget>[
                                           ElevatedButton(
                                             style: ButtonStyle(
-                                              padding: MaterialStateProperty
-                                                  .all<EdgeInsetsGeometry>(
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 0,
-                                                    horizontal: 26.0),
-                                              ),
-                                              backgroundColor:
-                                                  MaterialStateProperty.all<
-                                                      Color>(Color(0xFF4470F3)),
-                                            ),
+                                                padding: MaterialStateProperty
+                                                    .all<EdgeInsetsGeometry>(
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 0,
+                                                      horizontal: 26.0),
+                                                ),
+                                                backgroundColor: (clientCon
+                                                            .verificateValueTimers() ==
+                                                        true)
+                                                    ? MaterialStateProperty.all<
+                                                            Color>(
+                                                        Color(0xFF4470F3))
+                                                    : MaterialStateProperty.all<
+                                                            Color>(
+                                                        Color.fromARGB(255, 192,
+                                                            191, 191))),
                                             onPressed: () async {
                                               // Lógica para enviar el comentario
 
@@ -573,7 +686,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                 backgroundColor:
                                                     MaterialStateProperty
                                                         .all<Color>(const Color(
-                                                            0xFF19CF9E)),
+                                                            0xFF4470F3)),
                                               ),
                                               onPressed: () async {
                                                 //todo falta llamar un metodo aqui
