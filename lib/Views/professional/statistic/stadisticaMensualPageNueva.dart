@@ -160,8 +160,6 @@ class _StadisticaMensualPageNuevaState
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               'No tiene Estadísticas en el mes de  ($mesEscogido)',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w700, fontSize: 16),
                             ),
                           ),
                         ] else ...[
@@ -169,8 +167,6 @@ class _StadisticaMensualPageNuevaState
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               'No tiene Estadísticas hasta el momento',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w700, fontSize: 16),
                             ),
                           )
                         ]

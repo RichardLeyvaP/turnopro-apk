@@ -9,55 +9,69 @@ import 'package:turnopro_apk/env.dart';
 class NotificationRepository extends GetConnect {
 //insertar notificaciones
   Future<bool> storeNotification2(
-      tittle, branchId, professionalId, description) async {
-    var url = '${Env.apiEndpoint}/notification2';
-    print('inserto correctamente ********** la notificacio:$tittle');
-    final Map<String, dynamic> body = {
-      'tittle': tittle,
-      'branch_id': branchId,
-      'professional_id': professionalId,
-      'description': description,
-    };
+      tittle, branchId, professionalId, description, type) async {
+    try {
+      var url = '${Env.apiEndpoint}/notification2';
+      print('inserto correctamente ********** la notificacio:$tittle');
+      final Map<String, dynamic> body = {
+        'tittle': tittle,
+        'branch_id': branchId,
+        'professional_id': professionalId,
+        'description': description,
+        'type': type,
+      };
 
-    final response = await post(url, body);
-    print(tittle);
-    print(branchId);
-    print(professionalId);
-    print(description);
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      print('inserto correctamente la notificacio:$tittle');
-      return true;
-    } else {
-      print('inserto correctamente ********** ERRORRR');
-      print('ERROR no inserto la notificacio');
+      final response = await post(url, body);
+      print(tittle);
+      print(branchId);
+      print(professionalId);
+      print(description);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print('inserto correctamente la notificacio:$tittle');
+        return true;
+      } else {
+        print('inserto correctamente ********** ERRORRR');
+        print('ERROR no inserto la notificacio');
+        return false;
+      }
+    } catch (e) {
+      print('inserto correctamente ********** ERRORRR:$e');
       return false;
     }
   }
 
   Future<bool> storeNotification(
-      tittle, branchId, professionalId, description) async {
-    var url = '${Env.apiEndpoint}/notification';
-    print('inserto correctamente ********** la notificacio:$tittle');
-    final Map<String, dynamic> body = {
-      'tittle': tittle,
-      'branch_id': branchId,
-      'professional_id': professionalId,
-      'description': description,
-    };
+      tittle, branchId, professionalId, description, type) async {
+    try {
+      var url = '${Env.apiEndpoint}/notification';
+      print('inserto correctamente ********** la notificacio:$tittle');
+      final Map<String, dynamic> body = {
+        'tittle': tittle,
+        'branch_id': branchId,
+        'professional_id': professionalId,
+        'description': description,
+        'type': type,
+      };
 
-    final response = await post(url, body);
-    print(tittle);
-    print(branchId);
-    print(professionalId);
-    print(description);
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      print('inserto correctamente la notificacio:$tittle');
-      return true;
-    } else {
-      print('inserto correctamente ********** ERRORRR');
-      print('ERROR no inserto la notificacio');
+      final response = await post(url, body);
+      print(tittle);
+      print(branchId);
+      print(professionalId);
+      print(description);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print('inserto correctamente la notificacio:$tittle');
+        return true;
+      } else {
+        print('inserto correctamente ********** ERRORRR');
+        print(
+            'inserto correctamente ********** ERRORRR:${response.statusCode}');
+        print('ERROR no inserto la notificacio');
+        return false;
+      }
+    } catch (e) {
+      print('inserto correctamente ********** ERRORRR:$e');
       return false;
     }
   }
@@ -76,32 +90,24 @@ class NotificationRepository extends GetConnect {
         for (Map notification in notifications) {
           NotificationModel u =
               NotificationModel.fromJson(jsonEncode(notification));
-          print('ENTRO A BUSCAR NOTIFICACIONES - cont: - object000${u.type}');
-          print('ENTRO A BUSCAR NOTIFICACIONES - cont: - type:$type');
+
           if (u.type == type || u.type == 'Barbero y Encargado') {
-            print('ENTRO A BUSCAR NOTIFICACIONES - cont: - sii entre aqui-11');
             notificationList.add(u);
           }
           if (u.state == 0 || u.state == 3) {
             //si esta en estos estados es que no se ha visto
             //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
             if (u.type == type || u.type == 'Barbero y Encargado') {
-              print(
-                  'ENTRO A BUSCAR NOTIFICACIONES - cont: - sii entre aqui-22');
               notificationListNew.add(u); //barbero
             }
           }
         }
         if (type == 'Encargado') {
-          print(
-              'ENTRO A BUSCAR NOTIFICACIONES - cont: - notificationList-Encargado:${notificationList.length}');
           return {
             "notificationListEncarg": notificationList,
             "notificationListNewEncarg": notificationListNew,
           };
         } else {
-          print(
-              'ENTRO A BUSCAR NOTIFICACIONES - cont: - notificationList-Otros${notificationList.length}');
           return {
             "notificationList": notificationList,
             "notificationListNew": notificationListNew,

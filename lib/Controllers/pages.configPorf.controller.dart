@@ -173,13 +173,13 @@ class PagesConfigController extends GetxController {
         update();
       } else {*/
       if (index == 2) {
-        print('llamar a notificACIONES-1');
+        /*   print('llamar a notificACIONES-1');
         int idBranch = logController.branchIdLoggedIn!;
         int idProfess = logController.idProfessionalLoggedIn!;
         String idCharge = logController.chargeUserLoggedIn;
         await notiController.fetchNotificationList(
-            idBranch, idProfess, idCharge); //3 es deyler
-        print('llamar a notificACIONES-2 listo');
+            idBranch, idProfess, idCharge, 'No me acuerdo'); //3 es deyler
+        print('llamar a notificACIONES-2 listo');*/
       }
 
       selectedIndexBack = selectedIndex;

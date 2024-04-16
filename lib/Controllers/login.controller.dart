@@ -29,12 +29,21 @@ class LoginController extends GetxController {
   bool switchValue = false; //false es barbero y true Encargado
 
   Future<void> setswitchValue() async {
+    final ClientsScheduledController clientsScheduledController =
+        Get.find<ClientsScheduledController>();
+
     if (switchValue == false) {
       switchValue = true;
       print('soy un switchValue:true');
       Get.offAllNamed('/HomeResponsible');
     } else {
       switchValue = false;
+      setIsLoggingIn(true);
+      setLoggingInCharge(true);
+      clientsScheduledController.setCloseIesperado(true);
+      clientsScheduledController.setCloseIesperadoLogin(true);
+      await clientsScheduledController.fetchClientsScheduled(
+          idProfessionalLoggedIn, branchIdLoggedIn, 'setswitchValue');
       print('soy un switchValue:false');
       Get.offAllNamed('/Professional');
     }
@@ -463,7 +472,7 @@ class LoginController extends GetxController {
             clientsScheduledController.setCloseIesperado(true);
             clientsScheduledController.setCloseIesperadoLogin(true);
             await clientsScheduledController.fetchClientsScheduled(
-                idProfessionalLoggedIn, branchIdLoggedIn);
+                idProfessionalLoggedIn, branchIdLoggedIn, 'Barbero');
 
             print(' ya no llegue aqui voy a cargar la pagina del profesional');
 
@@ -560,7 +569,9 @@ class LoginController extends GetxController {
             clientsScheduledController.setCloseIesperado(true);
             clientsScheduledController.setCloseIesperadoLogin(true);
             await clientsScheduledController.fetchClientsScheduled(
-                idProfessionalLoggedIn, branchIdLoggedIn);
+                idProfessionalLoggedIn,
+                branchIdLoggedIn,
+                'Barbero y Encargado');
 
             print(' ya no llegue aqui voy a cargar la pagina del profesional');
 
@@ -614,6 +625,7 @@ class LoginController extends GetxController {
       if (token != '') {
         Map<String, dynamic>? result; //INICIALIZANDO A NULL
         result = await usuarioLg.userLogout(token);
+
         if (result != null) {
           print(
               'SI CERRO SECION CORRECTAMENTE ELIMINANDO LOS DATOS DE SECCION');
@@ -662,20 +674,36 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<void> exitPostworking(String type) async {
+  Future<void> exitPostworking(String tipe) async {
     try {
-      bool result; //INICIALIZANDO A NULL
-      print('este es el id del puesto id que mando:$idProfessionalLoggedIn');
-      int idPuesto = await getIdPuesto(idProfessionalLoggedIn!);
-      print('este es el id del puesto :$idPuesto');
+      if (tipe == 'Barbero' || tipe == 'Tecnico') {
+        bool result; //INICIALIZANDO A NULL
+        print('este es el id del puesto id que mando:$idProfessionalLoggedIn');
+        int idPuesto = await getIdPuesto(idProfessionalLoggedIn!);
+        print('este es el id del puesto :$idPuesto');
 
-      if (idPuesto != -99 && idPuesto != -999) {
-        result = await usuarioLg.exitPostworking(idPuesto, type);
-        if (result == true) {
-          print(
-              'este es el id del puesto EL PROFESIONAL SALIO DEL PUESTO CORRECTAMENTE');
+        if (idPuesto != -99 && idPuesto != -999) {
+          result = await usuarioLg.exitPostworking(idPuesto, tipe);
+          if (result == true) {
+            bool exit = await usuarioLg.exitHours(
+                branchIdLoggedIn, idProfessionalLoggedIn);
+            if (exit) {
+              print('YA registra la hora de salida del barbero o tecnico');
+            } else {
+              print('NO registró la hora de salida del barbero o tecnico');
+            }
+          } else {
+            print(
+                'este es el id del puesto NO SALIO DEL PUESTO EL PROFESIONAL');
+          }
+        }
+      } else if (tipe == 'Admin') {
+        bool exit =
+            await usuarioLg.exitHours(branchIdLoggedIn, idProfessionalLoggedIn);
+        if (exit) {
+          print('YA registra la hora de salida del encargado o coordinador');
         } else {
-          print('este es el id del puesto NO SALIO DEL PUESTO EL PROFESIONAL');
+          print('NO registró la hora de salida encargado o coordinador');
         }
       }
     } catch (e) {

@@ -70,7 +70,9 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
         // print(
         //     'esto es lo que object-workplaceidQR:${controllerLogin.workplaceidQR}');
         // if (controllerLogin.usserMssQr == 1) {
-        if (controllerLogin.chargeUserLoggedIn == "Barbero") {
+        if (controllerLogin.chargeUserLoggedIn == "Barbero" ||
+            (controllerLogin.chargeUserLoggedIn == "Barbero y Encargado" &&
+                controllerLogin.switchValue == false)) {
           // Navegar a la nueva página
           //LLAMAR AL CONTROLADOR PARA INSERTARLO EN EL PUESTO DE TRABAJO
           if (controllerLogin.usserMssQr == 1) {

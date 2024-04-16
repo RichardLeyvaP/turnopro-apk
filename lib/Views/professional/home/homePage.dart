@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages, no_leading_underscores_for_local_identifiers
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -137,10 +138,38 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
 
                           await clientController.fetchClientsScheduled(
                               loginController.idProfessionalLoggedIn,
-                              loginController.branchIdLoggedIn);
+                              loginController.branchIdLoggedIn,
+                              'if (index == 1)');
                           Get.back();
                         } else if (index == 2) {
-                          loginController.setIsLoadingFor(true);
+                          Get.dialog(
+                            const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFFFDAE2A),
+                              ),
+                            ),
+                            barrierDismissible: false,
+                          ); //Get.back();
+                          String typeEnv = '';
+
+                          if (loginController.chargeUserLoggedIn ==
+                              'Barbero y Encargado') {
+                            if (loginController.switchValue ==
+                                false) //'Barbero'
+                            {
+                              typeEnv = 'Barbero';
+                            } else {
+                              typeEnv = 'Encargado';
+                            }
+                          } else {
+                            typeEnv = loginController.chargeUserLoggedIn;
+                          }
+                          await notiCont.fetchNotificationList(
+                              loginController.branchIdLoggedIn,
+                              loginController.idProfessionalLoggedIn,
+                              typeEnv,
+                              'Barra de navegacion');
+                          Get.back();
                           /* await notiCont.fetchNotificationList(
                               loginController.branchIdLoggedIn,
                               loginController.idProfessionalLoggedIn);*/
@@ -284,10 +313,73 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 // ),
               ),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    '${Env.apiEndpoint}/images/${logUser.imageUrlLoggedIn}'), //todo Modo de cargar la foto
-                radius: 25, // Ajusta el tamaño del círculo aquí
+                radius: 25,
+                child: ClipOval(
+                  child: Image.network(
+                    '${Env.apiEndpoint}/images/${logUser.imageUrlLoggedIn}',
+                    fit: BoxFit
+                        .cover, // Ajusta la imagen para cubrir completamente el área
+                    width: 50, // Ancho deseado de la imagen dentro del círculo
+                    height: 50,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        // Si la imagen se carga correctamente, mostramos la imagen
+                        return child;
+                      } else {
+                        // Si la imagen aún se está cargando, mostramos un indicador de progreso
+                        return const CircularProgressIndicator(
+                          color: Color(0xFFFDAE2A),
+                        );
+                      }
+                    },
+                    errorBuilder: (BuildContext context, Object error,
+                        StackTrace? stackTrace) {
+                      // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
+                      if (kDebugMode) {
+                        return CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors
+                              .transparent, // Fondo transparente para que el borde sea visible
+                          child: ClipOval(
+                            child: Image.asset(
+                              'assets/images/default_profile.jpg',
+                              fit: BoxFit
+                                  .cover, // Ajusta la imagen para cubrir completamente el área
+                              width:
+                                  50, // Ancho deseado de la imagen dentro del círculo
+                              height:
+                                  50, // Alto deseado de la imagen dentro del círculo
+                            ),
+                          ),
+                        );
+                      } else {
+                        // Si no estamos en modo de depuración, mostramos un texto de error
+                        return CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors
+                              .transparent, // Fondo transparente para que el borde sea visible
+                          child: ClipOval(
+                            child: Image.asset(
+                              'assets/images/default_profile.jpg',
+                              fit: BoxFit
+                                  .cover, // Ajusta la imagen para cubrir completamente el área
+                              width:
+                                  50, // Ancho deseado de la imagen dentro del círculo
+                              height:
+                                  50, // Alto deseado de la imagen dentro del círculo
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
               ),
+
+              /*  NetworkImage(
+                    '${Env.apiEndpoint}/images23/${logUser.imageUrlLoggedIn}'),*/ //todo Modo de cargar la foto
+              // radius: 25, // Ajusta el tamaño del círculo aquí
             ),
             SizedBox(
               width: (MediaQuery.of(context).size.width *
@@ -326,78 +418,99 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         GetBuilder<LoginController>(builder: (_) {
           return Row(
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Switch(
-                    value: _.switchValue,
-                    onChanged: (value) async {
-                      Get.dialog(
-                        const Center(
-                          child: CircularProgressIndicator(
-                            color: Color(0xFFFDAE2A),
-                          ),
-                        ),
-                        barrierDismissible: false,
-                      ); //Get.back();
-                      await Future.delayed(Duration(seconds: 3));
-                      await _.setswitchValue();
-                      Get.back();
-                      // _.switchValue = value;
-                    },
-                    activeColor: Colors.blue, // Color cuando está activado
-                    activeTrackColor: Colors
-                        .lightBlue, // Color de la pista cuando está activado
-                    inactiveThumbColor: const Color(
-                        0xFFFDAE2A), // Color del pulgar cuando está desactivado
-                    inactiveTrackColor: Colors.grey
-                        .shade300, // Color de la pista cuando está desactivado
-                  ),
-                  Stack(
-                    children: [
-                      GetBuilder<NotificationController>(builder: (_notiCont) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          // Se ejecutará después de que se haya construido el widget
-                          //define que tipo de saludo dar dependiendo de la hora
-                          if (_notiCont.notificationListNewLengthEncarg !=
-                              _notiCont.notificationListBackEncarg) {
-                            _notiCont.updateNotificationListBackEncarg(
-                                _notiCont.notificationListNewLengthEncarg);
-                          }
-                        });
-
-                        if (_notiCont.notificationListNewLengthEncarg !=
-                                _notiCont.notificationListBackEncarg &&
-                            _notiCont.notificationListNewLengthEncarg != 0) {
-                          //  _notiCont.reproducirSound();
-                        }
-                        return Row(
-                          mainAxisSize: MainAxisSize.min,
+              _.chargeUserLoggedIn == 'Barbero y Encargado'
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Stack(
                           children: [
-                            Text(
-                              _.switchValue ? 'Barbero' : 'Encargado',
-                              style: const TextStyle(
-                                  fontSize: 8,
-                                  color: Color(0xFFFDAE2A),
-                                  height: 0.1),
+                            Switch(
+                              value: _.switchValue,
+                              onChanged: (value) async {
+                                Get.dialog(
+                                  const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Color(0xFFFDAE2A),
+                                    ),
+                                  ),
+                                  barrierDismissible: false,
+                                ); //Get.back();
+                                await Future.delayed(Duration(seconds: 1));
+                                await _.setswitchValue();
+                                Get.back();
+                                // _.switchValue = value;
+                              },
+                              activeColor:
+                                  Colors.blue, // Color cuando está activado
+                              activeTrackColor: const Color.fromARGB(
+                                  255,
+                                  129,
+                                  193,
+                                  223), // Color de la pista cuando está activado
+                              inactiveThumbColor: const Color(
+                                  0xFF2B3141), // Color del pulgar cuando está desactivado
+                              inactiveTrackColor: Color.fromARGB(255, 87, 90,
+                                  99), // Color de la pista cuando está desactivado
                             ),
-                            // Ajusta el espacio entre el texto y el Badge
-                            Badge(
-                              label: Text(
-                                (_notiCont.notificationListNewLengthEncarg)
-                                    .toString(),
-                                style: TextStyle(color: Colors.white),
-                              ), // Opcional: usa un ícono en lugar de texto
-                            ),
+                            GetBuilder<NotificationController>(
+                                builder: (_notiCont) {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                // Se ejecutará después de que se haya construido el widget
+                                //define que tipo de saludo dar dependiendo de la hora
+                                if (_notiCont.notificationListNewLengthEncarg !=
+                                    _notiCont.notificationListBackEncarg) {
+                                  _notiCont.updateNotificationListBackEncarg(
+                                      _notiCont
+                                          .notificationListNewLengthEncarg);
+                                }
+                              });
+
+                              if (_notiCont.notificationListNewLengthEncarg !=
+                                      _notiCont.notificationListBackEncarg &&
+                                  _notiCont.notificationListNewLengthEncarg !=
+                                      0) {
+                                //  _notiCont.reproducirSound();
+                              }
+                              return Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Badge(
+                                    backgroundColor: _notiCont
+                                                .notificationListNewLengthEncarg ==
+                                            0
+                                        ? Color.fromARGB(255, 231, 232, 234)
+                                        : null,
+                                    alignment: AlignmentDirectional(1.45, 0.85),
+                                    label: _notiCont
+                                                .notificationListNewLengthEncarg >
+                                            0
+                                        ? Text(
+                                            (_notiCont
+                                                    .notificationListNewLengthEncarg)
+                                                .toString(),
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )
+                                        : null,
+                                    child: Text(
+                                      _.switchValue ? '  Barbero' : 'Encargado',
+                                      style: const TextStyle(
+                                          fontSize: 10,
+                                          color: const Color(0xFF2B3141),
+                                          height: 1),
+                                    ),
+                                  )
+                                  // Ajusta el espacio entre el texto y el Badge
+                                ],
+                              );
+                            }),
                           ],
-                        );
-                      }),
-                    ],
-                  )
-                ],
-              ),
+                        )
+                      ],
+                    )
+                  : Container(),
               const SizedBox(
-                width: 12,
+                width: 14,
               ),
               InkWell(
                 onTap: () {
@@ -693,12 +806,25 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                 //SACAR DEL PUESTO DE TRABAJO AL BARBERO
                                                 //
                                                 // Lógica para enviar el comentario
+                                                Get.dialog(
+                                                  const Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color: Color(0xFFFDAE2A),
+                                                    ),
+                                                  ),
+                                                  barrierDismissible: false,
+                                                ); //Get.back();
 
                                                 //LLAMAR AL ENPOINT PARA SACAR DEL PUESTO DE TRABAJO
-                                                _.exitPostworking(
-                                                    "Professional");
-
-                                                _.exit(_.tokenUserLoggedIn);
+                                                if (_.usserPermissionQr == 1) {
+                                                  await _.exitPostworking(
+                                                      "Barbero");
+                                                  _.exit(_.tokenUserLoggedIn);
+                                                } else {
+                                                  _.exit(_.tokenUserLoggedIn);
+                                                }
+                                                Get.back();
 
                                                 // Cerrar el primer modal
                                                 Navigator.pop(context);

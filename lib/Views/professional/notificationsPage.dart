@@ -20,12 +20,10 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
       Get.find<PagesConfigController>();
   final NotificationController notifCont = Get.find<NotificationController>();
   final LoginController logCont = Get.find<LoginController>();
-
   String typeEnv = '';
   @override
   void initState() {
     super.initState();
-    // Get.back();
     if (logCont.chargeUserLoggedIn == 'Barbero y Encargado') {
       if (logCont.switchValue == false) //'Barbero'
       {
@@ -36,12 +34,21 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
     } else {
       typeEnv = logCont.chargeUserLoggedIn;
     }
-    notifCont.updateNotifications(
-        logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn, typeEnv);
+    Future.delayed(const Duration(seconds: 2), () {
+      notifCont.updateNotifications(
+          logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn, typeEnv);
+
+      // Llama a cualquier función o realiza alguna tarea aquí
+    });
+
+    // Get.back();
   }
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      Get.back();
+    });
     final double heightScreen = MediaQuery.of(context).size.height;
     int heightFlexBody = 18;
     if (heightScreen <= 534.0) {

@@ -42,61 +42,57 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
   @override
   void initState() {
     super.initState();
+    loadDataFirt();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      callTimer1();
+    });
   }
 
   @override
   void dispose() {
     // Asegúrate de cancelar el temporizador al eliminar el widget
-    _timer?.cancel();
+    _timerResp?.cancel();
     super.dispose();
   }
 
-  Timer? _timer;
+  Timer? _timerResp;
 
-  void iniciarLlamadaCada10Segundos() {
+  loadDataFirt() async {
+    print('llamada timer - loadDataFirt()');
+    if (controllerLogin.branchIdLoggedIn != null &&
+        controllerLogin.idProfessionalLoggedIn != null) {
+      notiController.fetchNotificationList(controllerLogin.branchIdLoggedIn,
+          controllerLogin.idProfessionalLoggedIn, 'Encargado', 'loadDataFirt');
+      await controllerShoppingCart
+          .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
+      controllerShoppingCart.setLoading(false);
+      clientCorControl
+          .fetchClientsScheduledBranch(controllerLogin.branchIdLoggedIn);
+      await clientCorControl
+          .fetchClientsRechazBranch(controllerLogin.branchIdLoggedIn);
+    }
+  }
+
+  void callTimer1() {
     // Cancela cualquier temporizador existente para evitar duplicaciones
-    _timer?.cancel();
-    int cont = -1;
-    // Establece un temporizador que llama a la función cada 20 segundos
-    _timer = Timer.periodic(const Duration(seconds: 2), (Timer timer) async {
-      cont += 1;
-      print('Aqui entro solo la primera vez 111');
-      print('Aqui entro solo la primera vez 111-cont:$cont');
-      if (cont == 0) {
-        print('Aqui entro solo la primera vez (cont == 0)');
 
-        if (controllerLogin.branchIdLoggedIn != null &&
-            controllerLogin.idProfessionalLoggedIn != null) {
-          notiController.fetchNotificationList(controllerLogin.branchIdLoggedIn,
-              controllerLogin.idProfessionalLoggedIn, 'Encargado');
-          await controllerShoppingCart
-              .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
-          controllerShoppingCart.setLoading(false);
-          clientCorControl
-              .fetchClientsScheduledBranch(controllerLogin.branchIdLoggedIn);
-          await clientCorControl
-              .fetchClientsRechazBranch(controllerLogin.branchIdLoggedIn);
-        }
-      }
-      if (cont == 4 || cont == 10 || cont == 20) {
-        if (cont == 20) {
-          print('Aqui entro solo ACTUALIZAR el contador a 1');
-          cont = 1;
-        }
-        //estoy entrando cada 8 segundos
-        print('Aqui entro solo ACTUALIZAR');
-        if (controllerLogin.branchIdLoggedIn != null &&
-            controllerLogin.idProfessionalLoggedIn != null) {
-          notiController.fetchNotificationList(controllerLogin.branchIdLoggedIn,
-              controllerLogin.idProfessionalLoggedIn, 'Encargado');
-          await controllerShoppingCart
-              .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
-          controllerShoppingCart.setLoading(false);
-          clientCorControl
-              .fetchClientsScheduledBranch(controllerLogin.branchIdLoggedIn);
-          await clientCorControl
-              .fetchClientsRechazBranch(controllerLogin.branchIdLoggedIn);
-        }
+    // Establece un temporizador que llama a la función cada 20 segundos
+    _timerResp =
+        Timer.periodic(const Duration(seconds: 9), (Timer timer) async {
+      //estoy entrando cada 8 segundos
+      print('llamada timer - l callTimer1 9segundos');
+      if (controllerLogin.branchIdLoggedIn != null &&
+          controllerLogin.idProfessionalLoggedIn != null) {
+        notiController.fetchNotificationList(controllerLogin.branchIdLoggedIn,
+            controllerLogin.idProfessionalLoggedIn, 'Encargado', 'callTimer1');
+        await controllerShoppingCart
+            .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
+        controllerShoppingCart.setLoading(false);
+        clientCorControl
+            .fetchClientsScheduledBranch(controllerLogin.branchIdLoggedIn);
+        await clientCorControl
+            .fetchClientsRechazBranch(controllerLogin.branchIdLoggedIn);
       }
     });
   }
@@ -104,7 +100,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    iniciarLlamadaCada10Segundos();
+
 //ESTRUCTURA DE LOS CARTS
     final twoPi = 3.14 * 2;
 
@@ -451,7 +447,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                   controllerclient
                                       .clientsScheduledListBranchClient[i]
                                       .professional_id,
-                                  '!Atención..El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} no fue rechazado.');
+                                  '!Atención..El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} no fue rechazado.',
+                                  'Barbero');
                             }
                             if (controllerLogin.branchIdLoggedIn != null) {
                               await controllerclient.fetchClientsRechazBranch(
@@ -617,7 +614,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                   controllerclient
                                       .clientsScheduledListBranchClient[i]
                                       .professional_id,
-                                  'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue eliminado de su cola');
+                                  'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue eliminado de su cola',
+                                  'Barbero');
                             }
                             if (controllerLogin.branchIdLoggedIn != null) {
                               await controllerclient.fetchClientsRechazBranch(
@@ -727,7 +725,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                   'Solicitud de Eliminacion Rechazada',
                                   controllerLogin.branchIdLoggedIn,
                                   contShopp.orderDeleteCar[i].profesional_id,
-                                  '!Atención..El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} no fue aprobado para su eliminación.');
+                                  '!Atención..El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} no fue aprobado para su eliminación.',
+                                  'Barbero');
                             }
                             if (controllerLogin.branchIdLoggedIn != null) {
                               await contShopp.loadOrderDeleteCar(
@@ -899,13 +898,15 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                     typeDelete,
                                     controllerLogin.branchIdLoggedIn,
                                     contShopp.orderDeleteCar[i].profesional_id,
-                                    '$serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado con tiempo de ${contShopp.orderDeleteCar[i].duration_service} min.${contShopp.orderDeleteCar[i].reservation_id}');
+                                    '$serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado con tiempo de ${contShopp.orderDeleteCar[i].duration_service} min.${contShopp.orderDeleteCar[i].reservation_id}',
+                                    'Barbero');
                               } else {
                                 notiController.storeNotification(
                                     typeDelete,
                                     controllerLogin.branchIdLoggedIn,
                                     contShopp.orderDeleteCar[i].profesional_id,
-                                    'El $serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado satisfactoriamente.');
+                                    'El $serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado satisfactoriamente.',
+                                    'Barbero');
                               }
                             }
                             if (controllerLogin.branchIdLoggedIn != null) {

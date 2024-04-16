@@ -36,8 +36,12 @@ class _NotificationsPageNewState extends State<NotificationsPageNew> {
     } else {
       typeEnv = logCont.chargeUserLoggedIn;
     }
-    notifCont.updateNotifications(
-        logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn, typeEnv);
+    Future.delayed(const Duration(seconds: 2), () {
+      notifCont.updateNotifications(
+          logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn, typeEnv);
+
+      // Llama a cualquier función o realiza alguna tarea aquí
+    });
   }
 
   @override

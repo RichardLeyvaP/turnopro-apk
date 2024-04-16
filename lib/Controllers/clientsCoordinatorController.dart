@@ -969,11 +969,13 @@ class ClientsCoordinatorController extends GetxController {
       }
 
       if (clientsScheduledNext != null) {
+        print('prueba 1 - != null');
         int idCar = clientsScheduledNext!.car_id;
         await searchForCustomerServices(idCar);
         await filterShowNext();
         setValueClock(true);
       } else {
+        print('prueba 2 - == null');
         setValueClock(false);
       }
     }

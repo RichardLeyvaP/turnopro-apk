@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, unused_local_variable, dead_code
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
@@ -373,19 +374,82 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                                       .start,
                                                               children: [
                                                                 CircleAvatar(
-                                                                  backgroundColor:
-                                                                      const Color
-                                                                              .fromARGB(
-                                                                          120,
-                                                                          190,
-                                                                          190,
-                                                                          189),
-                                                                  backgroundImage:
-                                                                      NetworkImage(
-                                                                          '${Env.apiEndpoint}/images/${_.services[index].image_service}'),
-                                                                  radius:
-                                                                      20, // Ajusta el tamaño del círculo aquí
+                                                                  radius: 20,
+                                                                  child:
+                                                                      ClipOval(
+                                                                    child: Image
+                                                                        .network(
+                                                                      '${Env.apiEndpoint}/images/${_.services[index].image_service}',
+                                                                      fit: BoxFit
+                                                                          .cover, // Ajusta la imagen para cubrir completamente el área
+                                                                      width:
+                                                                          50, // Ancho deseado de la imagen dentro del círculo
+                                                                      height:
+                                                                          50,
+                                                                      loadingBuilder: (BuildContext context,
+                                                                          Widget
+                                                                              child,
+                                                                          ImageChunkEvent?
+                                                                              loadingProgress) {
+                                                                        if (loadingProgress ==
+                                                                            null) {
+                                                                          // Si la imagen se carga correctamente, mostramos la imagen
+                                                                          return child;
+                                                                        } else {
+                                                                          // Si la imagen aún se está cargando, mostramos un indicador de progreso
+                                                                          return const CircularProgressIndicator(
+                                                                            color:
+                                                                                Color(0xFFFDAE2A),
+                                                                          );
+                                                                        }
+                                                                      },
+                                                                      errorBuilder: (BuildContext context,
+                                                                          Object
+                                                                              error,
+                                                                          StackTrace?
+                                                                              stackTrace) {
+                                                                        // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
+                                                                        if (kDebugMode) {
+                                                                          return CircleAvatar(
+                                                                            radius:
+                                                                                20,
+                                                                            backgroundColor:
+                                                                                Colors.transparent, // Fondo transparente para que el borde sea visible
+                                                                            child:
+                                                                                ClipOval(
+                                                                              child: Image.asset(
+                                                                                'assets/images/service-default.png',
+                                                                                fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                                                                width: 50, // Ancho deseado de la imagen dentro del círculo
+                                                                                height: 50, // Alto deseado de la imagen dentro del círculo
+                                                                              ),
+                                                                            ),
+                                                                          );
+                                                                        } else {
+                                                                          // Si no estamos en modo de depuración, mostramos un texto de error
+                                                                          return CircleAvatar(
+                                                                            radius:
+                                                                                20,
+                                                                            backgroundColor:
+                                                                                Colors.transparent, // Fondo transparente para que el borde sea visible
+                                                                            child:
+                                                                                ClipOval(
+                                                                              child: Image.asset(
+                                                                                'assets/images/service-default.png',
+                                                                                fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                                                                width: 50, // Ancho deseado de la imagen dentro del círculo
+                                                                                height: 50, // Alto deseado de la imagen dentro del círculo
+                                                                              ),
+                                                                            ),
+                                                                          );
+                                                                        }
+                                                                      },
+                                                                    ),
+                                                                  ),
                                                                 ),
+
+                                                                //
+
                                                                 SizedBox(
                                                                   width: 8,
                                                                 ),

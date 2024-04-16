@@ -1,17 +1,21 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:soundpool/soundpool.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Models/notification_model.dart';
 import 'package:turnopro_apk/get_connect/repository/notification.repository.dart';
+import 'package:uuid/uuid.dart';
 
 import 'login.controller.dart';
 
 class NotificationController extends GetxController {
   //LLAMANDO AL CONTROLADOR
-  NotificationController();
+  NotificationController() {
+    initializeNotifications();
+  }
 //DECLARACION DE VARIABLES
   NotificationRepository repository = NotificationRepository();
   final LoginController controllerLogin = Get.find<LoginController>();
@@ -26,6 +30,7 @@ class NotificationController extends GetxController {
   List<NotificationModel> notification = []; // Lista de Notificaciones
   List<NotificationModel> notificationEncarg = []; // Lista de Notificaciones
   List<NotificationModel> notificationListNew = []; // Lista de Notificaciones
+  List<int> notificationListNewSounded = []; // Lista de Notificaciones
   List<NotificationModel> notificationListNewEncarg =
       []; // Lista de Notificaciones
   List<NotificationModel> selectNotification = [];
@@ -50,10 +55,11 @@ class NotificationController extends GetxController {
       tittle,
       branchId,
       professionalId,
-      description) async {
+      description,
+      type) async {
     //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
     bool result = await repository.storeNotification2(
-        tittle, branchId, professionalId, description);
+        tittle, branchId, professionalId, description, type);
     if (result) {
       print('CORRECTO inserto una nueva notificacion ');
     }
@@ -65,10 +71,11 @@ class NotificationController extends GetxController {
       tittle,
       branchId,
       professionalId,
-      description) async {
+      description,
+      type) async {
     //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
     bool result = await repository.storeNotification(
-        tittle, branchId, professionalId, description);
+        tittle, branchId, professionalId, description, type);
     if (result) {
       print('CORRECTO inserto una nueva notificacion ');
     }
@@ -105,8 +112,48 @@ class NotificationController extends GetxController {
     update();
   }
 
-  Future<void> fetchNotificationList(idBranch, idProfe, type) async {
-    print('este es nuevo y estoy llamando a la db a cargar las notificaciones');
+  //todo/****AQUI LO DE LAS NOTIFICACIONES LOCALES****/
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  void initializeNotifications() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/launcher_icon');
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  void scheduleNotification(String title, String descripcion) async {
+    final Uuid uuid = Uuid(); // Crea una instancia de Uuid
+    final String channelId = uuid.v4(); // Genera un channelId único
+    AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      channelId, // ID del canal
+      'Nombre del Canal', // Nombre del Canal
+      channelDescription:
+          'Descripción del Canal', // Descripción del Canal (argumento nombrado)
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+      sound: RawResourceAndroidNotificationSound('livechat129007'),
+      // ^ Utiliza el nombre del archivo de sonido sin la extensión
+    );
+    NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      descripcion,
+      platformChannelSpecifics,
+    );
+  }
+  //todo/****AQUI LO DE LAS NOTIFICACIONES LOCALES****/
+
+  Future<void> fetchNotificationList(idBranch, idProfe, type, msj) async {
+    print('qwerc SII mandar ->NOTIFICACIONES-$msj');
+    print('12345llamada timer estoy en CAntidad de Notificaciones-$type');
+    print(
+        'llamada timer ...tipo:$type......idSucursal:$idBranch......iProf:$idProfe');
     try {
       Map<String, dynamic> result =
           await repository.getNotificationList(idBranch, idProfe, type);
@@ -119,12 +166,23 @@ class NotificationController extends GetxController {
           result.containsKey('notificationListNew')) {
         notification = result['notificationList'];
 
+        print(
+            'llamada timer estoy en CAntidad de Notificaciones :${notification.length}');
+
         notificationListLength = notification.length;
 
         notificationListNew = result['notificationListNew'];
         notificationListNewLength = notificationListNew.length;
 
         notificationListNew.forEach((element) async {
+          if (element.state == 0) {
+            if (!notificationListNewSounded.contains(element.id)) {
+              notificationListNewSounded.add(element.id);
+              scheduleNotification(element.tittle, element.description);
+            }
+          }
+
+          //SI HAY QUE ELIMINAR TIEMPO DEL RELOJ
           if (element.state == 3 &&
               element.tittle == 'Aceptada Eliminación de Servicio') {
             print('modificar time de mm 1 estoy aqui en el forEach');

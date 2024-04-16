@@ -809,7 +809,8 @@ class ClientsScheduledController extends GetxController {
       int? idBranch = controllerLogin.branchIdLoggedIn;
       int? idProfessional = controllerLogin.idProfessionalLoggedIn;
       //aqui actualizo la cola
-      await fetchClientsScheduled(idProfessional, idBranch);
+      await fetchClientsScheduled(
+          idProfessional, idBranch, 'acceptOrRejectClient');
       //verificar que reloj es el que hay que QUITAR
       if (attended == 2) {
         //si es 2 es que ya termino de atender al cliente1
@@ -930,6 +931,7 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<void> filterShowNext() async {
+    print('aqui estoy en filterShowNext');
     try {
       // final LoginController controllerLogin = Get.find<LoginController>();
       int? idBranch = controllerLogin.branchIdLoggedIn;
@@ -952,12 +954,14 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<void> setTimeClock(reservationId, timeClock, detached, clock) async {
+    print('llamada timer setTimeClock');
     try {
       bool result = await repository.setTimeClock(
           reservationId, timeClock, detached, clock);
       if (result) {
         print(
             'EL TIEMPO ACTUAL DEL RELOJ ************** true $reservationId - $timeClock - $detached - $clock');
+        print('llamada timer setTimeClock - result != null-(ESTA BIEN)');
       } else {
         print('EL TIEMPO ACTUAL DEL RELOJ ************** false');
       }
@@ -1086,10 +1090,10 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
-  Future<void> fetchClientsScheduled(idProfessional, idBranch) async {
+  Future<void> fetchClientsScheduled(idProfessional, idBranch, msj) async {
     try {
       List<ClientsScheduledModel> clientsAux = [];
-      print('con contador en 8 llamo la funcion2');
+
       Map<String, dynamic> resultList =
           await repository.getClientsScheduledList(idProfessional, idBranch);
       print(resultList);
@@ -1097,62 +1101,75 @@ class ClientsScheduledController extends GetxController {
       if (resultList.containsKey('ConnectionIssues') &&
           resultList['ConnectionIssues'] == true) {
         correctConnection = false;
-        print(
-            'qwerc NOO mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor->${clientsScheduledList.length}');
+        print('llamando a buscar clientes - ERROR2');
+        print('qwerc SII mandar ->MAL-${clientsScheduledList.length}');
       } else {
+        print('llamando a buscar clientes - BIEN3');
         print('con contador en 8 llamo la funcion3');
         correctConnection = true;
         //aqui estoy guardando la cola del dia de hoy del profesional
-        clientsScheduledList = (resultList['clientList'] ?? []).cast<
+        List<ClientsScheduledModel>? clientsScheduledListAUX = [];
+        List<ClientsScheduledModel>? clientsScheduledListAUX2 = [];
+
+        clientsScheduledListAUX = (resultList['clientList'] ?? []).cast<
             ClientsScheduledModel>(); //aqui estoy guardando la cola del dia de hoy del profesional
-
-        clientsScheduledListLength = clientsScheduledList.length;
-        clientsAux =
+        clientsScheduledListAUX2 =
             (resultList['clientListSig'] ?? []).cast<ClientsScheduledModel>();
-        clientsScheduledListLengthTail = clientsAux.length;
-        print(
-            'qwerc SII mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor->${clientsScheduledList.length}');
+        if (clientsScheduledListAUX != null &&
+            clientsScheduledListAUX2 != null) {
+          clientsScheduledList = clientsScheduledListAUX;
 
-        //
-        //
-        //  if (closeIesperado == true) //es que cerró inesperadamente
-        {
-          if (resultList.containsKey('attendingClient')) {
-            List<Map>? attendingClientList = resultList['attendingClient'];
-            //aqui es donde tiene que entrar solamente si se loguea
-            if (controllerLogin.isLoggingIn == true) {
-              print(
-                  'EL TIEMPO clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn}) { entre poque vine del login ');
+          clientsScheduledListLength = clientsScheduledList.length;
+          print(
+              'llamada timer Cantidad de Clientes :$clientsScheduledListLength');
+          clientsAux = clientsScheduledListAUX2;
+          clientsScheduledListLengthTail = clientsAux.length;
+          print(
+              'llamando a buscar clientes - BIEN4-clientsScheduledList.length:${clientsScheduledList.length}');
+          print(
+              'qwerc SII mandar ->BIEN-${clientsScheduledList.length}--entro de:$msj-idProfessional=$idProfessional--idBranche:$idBranch Objeto-${clientsScheduledList}');
 
-              logicaInesperada(attendingClientList);
-              controllerLogin.setIsLoggingIn(false);
+          //
+          //
+          //  if (closeIesperado == true) //es que cerró inesperadamente
+          {
+            if (resultList.containsKey('attendingClient')) {
+              List<Map>? attendingClientList = resultList['attendingClient'];
+              //aqui es donde tiene que entrar solamente si se loguea
+              if (controllerLogin.isLoggingIn == true) {
+                print(
+                    'EL TIEMPO clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn}) { entre poque vine del login ');
+
+                logicaInesperada(attendingClientList);
+                controllerLogin.setIsLoggingIn(false);
+              } else {
+                print(
+                    'clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn})  NOOO ');
+              }
             } else {
+              // La clave 'attendingClient' no está presente en el mapa
               print(
-                  'clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn})  NOOO ');
+                  '!!!!!!!!!!!!!!!!!!!!La clave "attendingClient" no está presente en el mapa.');
             }
-          } else {
-            // La clave 'attendingClient' no está presente en el mapa
-            print(
-                '!!!!!!!!!!!!!!!!!!!!La clave "attendingClient" no está presente en el mapa.');
           }
-        }
 
-        //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
-        clientsScheduledNext = resultList['nextClient'];
-        quantityClientAttended = resultList['quantityClientAttended'];
-        varClientsWaiting = resultList['varclientswaiting'];
-        if (quantityClientAttended == 0) {
-          clientsAttended = 'nobody';
-        }
+          //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+          clientsScheduledNext = resultList['nextClient'];
+          quantityClientAttended = resultList['quantityClientAttended'];
+          varClientsWaiting = resultList['varclientswaiting'];
+          if (quantityClientAttended == 0) {
+            clientsAttended = 'nobody';
+          }
 
-        if (clientsScheduledNext != null) {
-          int idCar = clientsScheduledNext!.car_id;
-          await searchForCustomerServices(idCar);
-          await filterShowNext();
-          //  setValueClock(true);
-        } else {
-          print('if (clientsScheduledNext != null) ESTOY DANDO null');
-          //  setValueClock(false);
+          if (clientsScheduledNext != null) {
+            int idCar = clientsScheduledNext!.car_id;
+            await searchForCustomerServices(idCar);
+            await filterShowNext();
+            //  setValueClock(true);
+          } else {
+            print('if (clientsScheduledNext != null) ESTOY DANDO null');
+            //  setValueClock(false);
+          }
         }
       }
       update();

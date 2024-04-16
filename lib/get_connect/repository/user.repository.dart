@@ -27,6 +27,29 @@ class UserRepository extends GetConnect {
     }
   }
 
+  Future exitHours(branchId, professionalId) async {
+    try {
+      var url = '${Env.apiEndpoint}/record';
+      final Map<String, dynamic> body = {
+        'branch_id': branchId,
+        'professional_id': professionalId,
+      };
+
+      final response = await put(url, body);
+      print(url);
+      print('NO sali - code :${response.statusCode}');
+      if ((response.statusCode == 200)) {
+        print('sali de la sucursal');
+        return true;
+      } else {
+        print('NO sali de la sucursal');
+        return false;
+      }
+    } catch (e) {
+      print('NO sali de la sucursal error:$e');
+    }
+  }
+
   Future getUserLoggedBranch(String email, String password) async {
     try {
       var url =
@@ -169,7 +192,7 @@ class UserRepository extends GetConnect {
   Future<bool> exitPostworking(int id, String type) async {
     try {
       var url = '';
-      if (type == "Professional") {
+      if (type == "Barbero") {
         url = '${Env.apiEndpoint}/update-state-prof-workplace?id=$id&busy=0';
       } else if (type == "Tecnico") {
         url = '${Env.apiEndpoint}/update-state-tec-workplace?id=$id&select=0';

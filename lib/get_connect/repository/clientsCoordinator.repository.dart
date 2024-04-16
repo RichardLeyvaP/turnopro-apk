@@ -398,6 +398,7 @@ class ClientsCoordinatorRepository extends GetConnect {
   }
 
   Future<List<ServiceModel>> getCustomerServicesList(idCar) async {
+    print('estoy en repositorio en - 3-getCustomerServicesList');
     List<ServiceModel> serviceCustomer = [];
     var url = '${Env.apiEndpoint}/car_services?car_id=$idCar';
 
@@ -485,6 +486,7 @@ class ClientsCoordinatorRepository extends GetConnect {
   }*/
 
   Future<bool> typeOfService(idProfessional, idBranch) async {
+    print('estoy en repositorio en - 6-2');
     var url =
         '${Env.apiEndpoint}/type_of_service?professional_id=$idProfessional&branch_id=$idBranch';
 

@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
@@ -131,11 +132,76 @@ class _CoexistencePageResponsibleState
                                 child: Row(
                                   children: [
                                     CircleAvatar(
-                                      backgroundImage: NetworkImage(
-                                          '${Env.apiEndpoint}/images/${profesional.image_url}'), //todo Modo de cargar la foto),
-                                      radius:
-                                          25, // Ajusta el tamaño del círculo aquí
+                                      radius: 25,
+                                      child: ClipOval(
+                                        child: Image.network(
+                                          '${Env.apiEndpoint}/images/${profesional.image_url}',
+                                          fit: BoxFit
+                                              .cover, // Ajusta la imagen para cubrir completamente el área
+                                          width:
+                                              50, // Ancho deseado de la imagen dentro del círculo
+                                          height: 50,
+                                          loadingBuilder: (BuildContext context,
+                                              Widget child,
+                                              ImageChunkEvent?
+                                                  loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              // Si la imagen se carga correctamente, mostramos la imagen
+                                              return child;
+                                            } else {
+                                              // Si la imagen aún se está cargando, mostramos un indicador de progreso
+                                              return const CircularProgressIndicator(
+                                                color: Color(0xFFFDAE2A),
+                                              );
+                                            }
+                                          },
+                                          errorBuilder: (BuildContext context,
+                                              Object error,
+                                              StackTrace? stackTrace) {
+                                            // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
+                                            if (kDebugMode) {
+                                              return CircleAvatar(
+                                                radius: 25,
+                                                backgroundColor: Colors
+                                                    .transparent, // Fondo transparente para que el borde sea visible
+                                                child: ClipOval(
+                                                  child: Image.asset(
+                                                    'assets/images/default_profile.jpg',
+                                                    fit: BoxFit
+                                                        .cover, // Ajusta la imagen para cubrir completamente el área
+                                                    width:
+                                                        50, // Ancho deseado de la imagen dentro del círculo
+                                                    height:
+                                                        50, // Alto deseado de la imagen dentro del círculo
+                                                  ),
+                                                ),
+                                              );
+                                            } else {
+                                              // Si no estamos en modo de depuración, mostramos un texto de error
+                                              return CircleAvatar(
+                                                radius: 25,
+                                                backgroundColor: Colors
+                                                    .transparent, // Fondo transparente para que el borde sea visible
+                                                child: ClipOval(
+                                                  child: Image.asset(
+                                                    'assets/images/default_profile.jpg',
+                                                    fit: BoxFit
+                                                        .cover, // Ajusta la imagen para cubrir completamente el área
+                                                    width:
+                                                        50, // Ancho deseado de la imagen dentro del círculo
+                                                    height:
+                                                        50, // Alto deseado de la imagen dentro del círculo
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      ),
                                     ),
+
+                                    //
+
                                     Text(
                                       '  ${profesional.name} ${profesional.surname}',
                                       style: const TextStyle(

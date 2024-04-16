@@ -40,9 +40,14 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
   @override
   void initState() {
     super.initState();
+
     clientsScheduledController
         .fetchClientsTechnical(loginController.branchIdLoggedIn);
-    iniciarLlamadaCada10Segundos();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      callTimerTec();
+      callTimerTec2();
+    });
 
     //INICIALIZANDO CONTROLES DE LOS RELOJES
     _animationControllerInitialT = AnimationController(
@@ -67,7 +72,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
               'Incumplimiento de convivencia',
               branchId,
               professionalId,
-              'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado.');
+              'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado.',
+              'Barbero');
         }
 
         // La animación ha llegado al final, reiniciar
@@ -88,56 +94,44 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     _animationTechnicalController1!.dispose();
     // Asegúrate de cancelar el temporizador al eliminar el widget
     _timer?.cancel();
+    _timer2?.cancel();
     super.dispose();
   }
 
   Timer? _timer;
-  int cont = 0;
-  int aux = 0;
+  Timer? _timer2;
 
-  void iniciarLlamadaCada10Segundos() {
+  void callTimerTec() {
     // Cancela cualquier temporizador existente para evitar duplicaciones
-    _timer?.cancel();
 
     // Establece un temporizador que llama a la función cada 20 segundos
     _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
-      cont += 1;
-      print('iniciarLlamadaCada10Segundos');
+      print('callTimerTec');
       if (clientsScheduledController.boolFilterShowNextTecnhical == true) {
-        print('iniciarLlamadaCada10Segundos true y aux = $aux');
-        aux += 1;
-        if (aux == 4) {
-          notiController.storeNotification(
-              'Clientes en cola',
-              loginController.branchIdLoggedIn,
-              loginController.idProfessionalLoggedIn,
-              'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!');
-        }
-      } else {
-        aux = 0;
+        notiController.storeNotification(
+            'Clientes en cola',
+            loginController.branchIdLoggedIn,
+            loginController.idProfessionalLoggedIn,
+            'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!',
+            'Barbero');
       }
+    });
+  }
 
-      if (cont == 1 ||
-          cont == 3 ||
-          cont == 6) //han pasado 15 segundos si aseptar al cliente
-      {
-        // actualizo la cola
-        if (clientsScheduledController.showingServiceClientsTechnical ==
-                false &&
-            loginController.branchIdLoggedIn != null &&
-            loginController.chargeUserLoggedIn == "Tecnico") {
-          //solo
-          print(
-              'ESTOY HomePageTecnicoBody ACTUALIZANDO LA COLA CADA 10 SEGUNDOS (TECNICO) showingServiceClients = false');
-          clientsScheduledController
-              .fetchClientsTechnical(loginController.branchIdLoggedIn);
-        }
-      }
-      if (cont == 6) {
-        cont = 1;
-      }
+  void callTimerTec2() {
+    // Cancela cualquier temporizador existente para evitar duplicaciones
 
-      //todo REVISAR valor fijo
+    // Establece un temporizador que llama a la función cada 20 segundos
+    _timer2 = Timer.periodic(const Duration(seconds: 19), (Timer timer) {
+      print('callTimerTec');
+      // actualizo la cola
+      if (clientsScheduledController.showingServiceClientsTechnical == false &&
+          loginController.branchIdLoggedIn != null &&
+          loginController.chargeUserLoggedIn == "Tecnico") {
+        //actualizo la cola del técnico
+        clientsScheduledController
+            .fetchClientsTechnical(loginController.branchIdLoggedIn);
+      }
     });
   }
 
@@ -728,7 +722,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     String segundos = "";
     Color colorInicial = Colors.white;
     Color colorInicialCirculo = const Color(0xFFFDAE2A);
-    double fontSizeText = (MediaQuery.of(context).size.width * 0.035);
+    double fontSizeText = (MediaQuery.of(context).size.width * 0.020);
     // Dividir el nombre completo por espacios
 
     List<String> partsName =
@@ -794,8 +788,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                   ),
                   Center(
                     child: Container(
-                      width: (controllerclient.sizeClockTechnical) - 40,
-                      height: (controllerclient.sizeClockTechnical) - 40,
+                      width: (controllerclient.sizeClockTechnical) - 65,
+                      height: (controllerclient.sizeClockTechnical) - 65,
                       decoration: BoxDecoration(
                           color: colorInicialCirculo, shape: BoxShape.circle),
                       child: Center(
@@ -811,7 +805,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                 style: TextStyle(
                                     fontSize:
                                         (MediaQuery.of(context).size.width *
-                                            0.05), //todo2
+                                            0.035), //todo2
                                     fontFamily:
                                         GoogleFonts.orbitron().fontFamily,
                                     color: colorInicial,
@@ -822,7 +816,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                 style: TextStyle(
                                     fontSize:
                                         (MediaQuery.of(context).size.width *
-                                            0.05),
+                                            0.035),
                                     color: colorInicial,
                                     fontFamily:
                                         GoogleFonts.orbitron().fontFamily,
@@ -863,7 +857,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
       iconCart) {
     return Container(
       width: (MediaQuery.of(context).size.width * 0.46), //Tamaño de los Cards
-      height: (MediaQuery.of(context).size.height * 0.20),
+      height: (MediaQuery.of(context).size.height * 0.19),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
         color: colorVariable,
@@ -894,7 +888,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                   style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,
-                      fontWeight: FontWeight.w600),
+                      fontWeight: FontWeight.w600,
+                      height: 0.2),
                 ),
                 Text(
                   descriptionTitleCart,

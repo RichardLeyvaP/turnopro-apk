@@ -119,15 +119,19 @@ class ProductController extends GetxController {
         'LISTA2 _fetchServiceList Limpiando ENTRE ACTUALIZAR LOS PRODUCTOS:$index');
     final LoginController controllerLogin = Get.find<LoginController>();
     try {
+      List<ProductModel>? tempProduct;
       isLoadingCategory = true;
       update();
       Future.delayed(const Duration(milliseconds: 1000), () async {
-        product = await repository.getProductCategoryList(
+        tempProduct = await repository.getProductCategoryList(
             index, controllerLogin.branchIdLoggedIn);
-        productListLength = product.length;
-        print('Cantidad de productos -- -- -- $productListLength');
-        isLoadingCategory = false;
-        update();
+        if (tempProduct != null) {
+          product = tempProduct!;
+          productListLength = product.length;
+          print('Cantidad de productos -- -- -- $productListLength');
+          isLoadingCategory = false;
+          update();
+        }
       });
     } catch (e) {
       productListLength = -99;

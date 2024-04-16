@@ -20,7 +20,6 @@ class _ServicesClientState extends State<ServicesClient> {
   final PagesConfigController pagesConfigCont =
       Get.find<PagesConfigController>();
   int cantVisitas = 3;
-  String imageProduct = '${Env.apiEndpoint}/images/product/cocacola.jpg';
 
   String description = 'Regular';
   String fecha = '10-01-2024';

@@ -113,8 +113,6 @@ class _StadisticaSemCordiState extends State<StadisticaSemCordi> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               'No tiene Estadísticas en la semana seleccionada de  ($startDate1 - $endDate1)',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w700, fontSize: 16),
                             ),
                           ),
                         ] else ...[
@@ -122,8 +120,6 @@ class _StadisticaSemCordiState extends State<StadisticaSemCordi> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               'No tiene Estadísticas en la semana seleccionada de $dateAct',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w700, fontSize: 16),
                             ),
                           )
                         ]

@@ -166,7 +166,8 @@ class ModalHelperTecnical {
                                 'Cliente Regresando',
                                 loginController.branchIdLoggedIn,
                                 idProf,
-                                ' El cliente $cliente ya está disponible para que continúes con el servicio');
+                                ' El cliente $cliente ya está disponible para que continúes con el servicio',
+                                'Barbero');
                             Navigator.pop(context); // Cierra el modal
                           },
                           child: Row(

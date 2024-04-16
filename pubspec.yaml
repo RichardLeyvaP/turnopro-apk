@@ -32,6 +32,7 @@ dependencies:
   shared_preferences: ^2.2.2
   flutter_local_notifications: ^17.0.0
   uuid: ^4.2.2
+  permission_handler: ^11.0.1
   
   
 flutter_native_splash:  
@@ -64,6 +65,9 @@ flutter:
   uses-material-design: true
 
   assets:
+     - assets/images/default_profile.jpg
+     - assets/images/product-default.png
+     - assets/images/service-default.png
      - assets/images/profile.png
      - assets/images/pngegg.png
      - assets/images/sprite.png

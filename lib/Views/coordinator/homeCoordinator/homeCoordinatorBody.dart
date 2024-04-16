@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -45,68 +46,72 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
     if (loginController.idProfessionalLoggedIn != null &&
         loginController.branchIdLoggedIn != null) {
-      iniciarLlamadaCada10Segundos();
+      callFirts();
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      //
+      if (loginController.idProfessionalLoggedIn != null &&
+          loginController.branchIdLoggedIn != null) {
+        callTimerCoord();
+      }
+    });
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    _timerCoord?.cancel();
     super.dispose();
   }
 
-  Timer? _timer;
-  iniciarLlamadaCada10Segundos() {
+  callFirts() async {
+    print('cargando aqui-1');
+    //SOLO ESTRA UNA SOLA VEZ AL INICIO
+    await clientsScheduledController
+        .clientsAttendBranch(loginController.branchIdLoggedIn);
+    await controllerShoppingCart
+        .loadOrderDeleteCar(loginController.branchIdLoggedIn!);
+    controllerShoppingCart.setLoading(false);
+    notiController.fetchNotificationList(loginController.branchIdLoggedIn,
+        loginController.idProfessionalLoggedIn, 'Coordinador', 'callFirts');
+
+    await clientsScheduledController
+        .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
+    await clientsScheduledController
+        .fetchClientsRechazBranch(loginController.branchIdLoggedIn);
+    clientsScheduledController.setLoading(false);
+  }
+
+  Timer? _timerCoord;
+  callTimerCoord() {
+    print('cargando aqui-2');
     // Cancela cualquier temporizador existente para evitar duplicaciones
-    _timer?.cancel();
-    int cont = -1;
+
     // Establece un temporizador que llama a la función cada 20 segundos
-    _timer = Timer.periodic(const Duration(seconds: 2), (Timer timer) async {
+    _timerCoord =
+        Timer.periodic(const Duration(seconds: 10), (Timer timer) async {
       print('hola entrando en 10 min;;');
       if (loginController.branchIdLoggedIn != null &&
           loginController.chargeUserLoggedIn == "Coordinador") {
-        cont += 1;
-        if (cont == 0) {
-          //SOLO ESTRA UNA SOLA VEZ AL INICIO
-          await clientsScheduledController
-              .clientsAttendBranch(loginController.branchIdLoggedIn);
-          await controllerShoppingCart
-              .loadOrderDeleteCar(loginController.branchIdLoggedIn!);
-          controllerShoppingCart.setLoading(false);
-        }
-        if (cont == 1) {
-          print('Aqui entro solo la primera vez (cont == 0)');
-          notiController.fetchNotificationList(loginController.branchIdLoggedIn,
-              loginController.idProfessionalLoggedIn, 'Coordinador');
+        if (loginController.branchIdLoggedIn != null) {
+          // actualizo la cola
+          notiController.fetchNotificationList(
+              loginController.branchIdLoggedIn,
+              loginController.idProfessionalLoggedIn,
+              'Coordinador',
+              'callTimerCoord');
 
           await clientsScheduledController
               .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
           await clientsScheduledController
               .fetchClientsRechazBranch(loginController.branchIdLoggedIn);
           clientsScheduledController.setLoading(false);
-        }
-        if (cont == 10) {
           if (loginController.branchIdLoggedIn != null) {
-            // actualizo la cola
-            notiController.fetchNotificationList(
-                loginController.branchIdLoggedIn,
-                loginController.idProfessionalLoggedIn,
-                'Coordinador');
-            print('con contador en 8 llamo la funcion');
-            await clientsScheduledController
-                .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
-            await clientsScheduledController
-                .fetchClientsRechazBranch(loginController.branchIdLoggedIn);
-            clientsScheduledController.setLoading(false);
-            if (loginController.branchIdLoggedIn != null) {
-              await controllerShoppingCart
-                  .loadOrderDeleteCar(loginController.branchIdLoggedIn);
-            }
-            controllerShoppingCart.setLoading(false);
+            await controllerShoppingCart
+                .loadOrderDeleteCar(loginController.branchIdLoggedIn);
           }
-
-          //fin del for
-          cont = 1;
+          controllerShoppingCart.setLoading(false);
         }
       }
     });
@@ -523,10 +528,72 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                       Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              '${Env.apiEndpoint}/images/${controllerclient.clientsScheduledListBranch[index].client_image}'),
-                          radius: 40, // Ajusta el tamaño del círculo aquí
+                          radius: 25,
+                          child: ClipOval(
+                            child: Image.network(
+                              '${Env.apiEndpoint}/images/${controllerclient.clientsScheduledListBranch[index].client_image}',
+                              fit: BoxFit
+                                  .cover, // Ajusta la imagen para cubrir completamente el área
+                              width:
+                                  50, // Ancho deseado de la imagen dentro del círculo
+                              height: 50,
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) {
+                                  // Si la imagen se carga correctamente, mostramos la imagen
+                                  return child;
+                                } else {
+                                  // Si la imagen aún se está cargando, mostramos un indicador de progreso
+                                  return const CircularProgressIndicator(
+                                    color: Color(0xFFFDAE2A),
+                                  );
+                                }
+                              },
+                              errorBuilder: (BuildContext context, Object error,
+                                  StackTrace? stackTrace) {
+                                // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
+                                if (kDebugMode) {
+                                  return CircleAvatar(
+                                    radius: 25,
+                                    backgroundColor: Colors
+                                        .transparent, // Fondo transparente para que el borde sea visible
+                                    child: ClipOval(
+                                      child: Image.asset(
+                                        'assets/images/default_profile.jpg',
+                                        fit: BoxFit
+                                            .cover, // Ajusta la imagen para cubrir completamente el área
+                                        width:
+                                            50, // Ancho deseado de la imagen dentro del círculo
+                                        height:
+                                            50, // Alto deseado de la imagen dentro del círculo
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  // Si no estamos en modo de depuración, mostramos un texto de error
+                                  return CircleAvatar(
+                                    radius: 25,
+                                    backgroundColor: Colors
+                                        .transparent, // Fondo transparente para que el borde sea visible
+                                    child: ClipOval(
+                                      child: Image.asset(
+                                        'assets/images/default_profile.jpg',
+                                        fit: BoxFit
+                                            .cover, // Ajusta la imagen para cubrir completamente el área
+                                        width:
+                                            50, // Ancho deseado de la imagen dentro del círculo
+                                        height:
+                                            50, // Alto deseado de la imagen dentro del círculo
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          ),
                         ),
+                        //
                       ),
                       Container(
                         height: (MediaQuery.of(context).size.height * 0.115),
@@ -850,7 +917,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   controllerclient
                                       .clientsScheduledListBranchClient[i]
                                       .professional_id,
-                                  '!Atención..El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} no fue rechazado.');
+                                  '!Atención..El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} no fue rechazado.',
+                                  'Barbero');
                             }
                             if (controllerLogin.branchIdLoggedIn != null) {
                               await controllerclient.fetchClientsRechazBranch(
@@ -1016,7 +1084,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   controllerclient
                                       .clientsScheduledListBranchClient[i]
                                       .professional_id,
-                                  'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue eliminado de su cola');
+                                  'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue eliminado de su cola',
+                                  'Barbero');
                             }
                             if (controllerLogin.branchIdLoggedIn != null) {
                               await controllerclient.fetchClientsRechazBranch(
@@ -1126,7 +1195,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   'Solicitud de Eliminacion Rechazada',
                                   controllerLogin.branchIdLoggedIn,
                                   contShopp.orderDeleteCar[i].profesional_id,
-                                  '!Atención..El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} no fue aprobado para su eliminación.');
+                                  '!Atención..El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} no fue aprobado para su eliminación.',
+                                  'Barbero');
                             }
                             if (controllerLogin.branchIdLoggedIn != null) {
                               await contShopp.loadOrderDeleteCar(
@@ -1298,13 +1368,15 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                     typeDelete,
                                     controllerLogin.branchIdLoggedIn,
                                     contShopp.orderDeleteCar[i].profesional_id,
-                                    '$serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado con tiempo de ${contShopp.orderDeleteCar[i].duration_service} min.${contShopp.orderDeleteCar[i].reservation_id}');
+                                    '$serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado con tiempo de ${contShopp.orderDeleteCar[i].duration_service} min.${contShopp.orderDeleteCar[i].reservation_id}',
+                                    'Barbero');
                               } else {
                                 notiController.storeNotification(
                                     typeDelete,
                                     controllerLogin.branchIdLoggedIn,
                                     contShopp.orderDeleteCar[i].profesional_id,
-                                    'El $serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado satisfactoriamente.');
+                                    'El $serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado satisfactoriamente.',
+                                    'Barbero');
                               }
                             }
                             if (controllerLogin.branchIdLoggedIn != null) {

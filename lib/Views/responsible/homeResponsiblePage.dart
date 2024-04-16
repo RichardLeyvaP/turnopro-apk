@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:animate_do/animate_do.dart';
@@ -233,10 +234,70 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    '${Env.apiEndpoint}/images/${logUser.imageUrlLoggedIn}'),
-                radius: 25, // Ajusta el tamaño del círculo aquí
+                radius: 25,
+                child: ClipOval(
+                  child: Image.network(
+                    '${Env.apiEndpoint}/images/${logUser.imageUrlLoggedIn}',
+                    fit: BoxFit
+                        .cover, // Ajusta la imagen para cubrir completamente el área
+                    width: 50, // Ancho deseado de la imagen dentro del círculo
+                    height: 50,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        // Si la imagen se carga correctamente, mostramos la imagen
+                        return child;
+                      } else {
+                        // Si la imagen aún se está cargando, mostramos un indicador de progreso
+                        return const CircularProgressIndicator(
+                          color: Color(0xFFFDAE2A),
+                        );
+                      }
+                    },
+                    errorBuilder: (BuildContext context, Object error,
+                        StackTrace? stackTrace) {
+                      // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
+                      if (kDebugMode) {
+                        return CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors
+                              .transparent, // Fondo transparente para que el borde sea visible
+                          child: ClipOval(
+                            child: Image.asset(
+                              'assets/images/default_profile.jpg',
+                              fit: BoxFit
+                                  .cover, // Ajusta la imagen para cubrir completamente el área
+                              width:
+                                  50, // Ancho deseado de la imagen dentro del círculo
+                              height:
+                                  50, // Alto deseado de la imagen dentro del círculo
+                            ),
+                          ),
+                        );
+                      } else {
+                        // Si no estamos en modo de depuración, mostramos un texto de error
+                        return CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors
+                              .transparent, // Fondo transparente para que el borde sea visible
+                          child: ClipOval(
+                            child: Image.asset(
+                              'assets/images/default_profile.jpg',
+                              fit: BoxFit
+                                  .cover, // Ajusta la imagen para cubrir completamente el área
+                              width:
+                                  50, // Ancho deseado de la imagen dentro del círculo
+                              height:
+                                  50, // Alto deseado de la imagen dentro del círculo
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
               ),
+              //
             ),
             SizedBox(
               width: (MediaQuery.of(context).size.width *
@@ -274,377 +335,425 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         GetBuilder<LoginController>(builder: (_) {
           return Row(
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Switch(
-                    value: _.switchValue,
-                    onChanged: (value) async {
-                      Get.dialog(
-                        const Center(
-                          child: CircularProgressIndicator(
-                            color: Color(0xFFFDAE2A),
-                          ),
-                        ),
-                        barrierDismissible: false,
-                      ); //Get.back();
-                      await Future.delayed(Duration(seconds: 3));
-                      await _.setswitchValue();
-                      Get.back();
-                      // _.switchValue = value;
-                    },
-                    activeColor: Colors.blue, // Color cuando está activado
-                    activeTrackColor: Colors
-                        .lightBlue, // Color de la pista cuando está activado
-                    inactiveThumbColor: const Color(
-                        0xFFFDAE2A), // Color del pulgar cuando está desactivado
-                    inactiveTrackColor: Colors.grey
-                        .shade300, // Color de la pista cuando está desactivado
-                  ),
-                  Stack(
-                    children: [
-                      GetBuilder<NotificationController>(builder: (_notiCont) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          // Se ejecutará después de que se haya construido el widget
-                          //define que tipo de saludo dar dependiendo de la hora
-                          if (_notiCont.notificationListNewLength !=
-                              _notiCont.notificationListBack) {
-                            _notiCont.updateNotificationListBack(
-                                _notiCont.notificationListNewLength);
-                          }
-                        });
-
-                        if (_notiCont.notificationListNewLength !=
-                                _notiCont.notificationListBack &&
-                            _notiCont.notificationListNewLength != 0) {
-                          //  _notiCont.reproducirSound();
-                        }
-                        return Row(
-                          mainAxisSize: MainAxisSize.min,
+              _.chargeUserLoggedIn == 'Barbero y Encargado'
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Stack(
                           children: [
-                            Text(
-                              _.switchValue ? 'Barbero' : 'Encargado',
-                              style: const TextStyle(
-                                  fontSize: 8,
-                                  color: Color(0xFFFDAE2A),
-                                  height: 0.1),
-                            ),
-                            // Ajusta el espacio entre el texto y el Badge
-                            Badge(
-                              label: Text(
-                                (_notiCont.notificationListNewLength)
-                                    .toString(),
-                                style: TextStyle(color: Colors.white),
-                              ), // Opcional: usa un ícono en lugar de texto
-                            ),
-                          ],
-                        );
-                      }),
-                    ],
-                  )
-                ],
-              ),
-              const SizedBox(
-                width: 12,
-              ),
-              InkWell(
-                onTap: () {
-                  //verifico si esta atendiendo a alguien no puede leer un nuevo codigo
-                  if (_.usserPermissionQr == 1) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return GetBuilder<LoginController>(builder: (_) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ), //this right here
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Container(
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xFF4470F3),
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(8),
-                                      topRight: Radius.circular(8),
+                            Switch(
+                              value: _.switchValue,
+                              onChanged: (value) async {
+                                Get.dialog(
+                                  const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Color(0xFFFDAE2A),
                                     ),
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  barrierDismissible: false,
+                                ); //Get.back();
+                                // await Future.delayed(Duration(seconds: 3));
+                                await _.setswitchValue();
+                                Get.back();
+                                // _.switchValue = value;
+                              },
+                              activeColor:
+                                  Colors.blue, // Color cuando está activado
+                              activeTrackColor: const Color.fromARGB(
+                                  255,
+                                  129,
+                                  193,
+                                  223), // Color de la pista cuando está activado
+                              inactiveThumbColor: const Color(
+                                  0xFF2B3141), // Color del pulgar cuando está desactivado
+                              inactiveTrackColor: Color.fromARGB(255, 87, 90,
+                                  99), // Color de la pista cuando está desactivado
+                            ),
+                            GetBuilder<NotificationController>(
+                                builder: (_notiCont) {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                // Se ejecutará después de que se haya construido el widget
+                                //define que tipo de saludo dar dependiendo de la hora
+                                if (_notiCont.notificationListNewLength !=
+                                    _notiCont.notificationListBack) {
+                                  _notiCont.updateNotificationListBack(
+                                      _notiCont.notificationListNewLength);
+                                }
+                              });
+
+                              if (_notiCont.notificationListNewLength !=
+                                      _notiCont.notificationListBack &&
+                                  _notiCont.notificationListNewLength != 0) {
+                                //  _notiCont.reproducirSound();
+                              }
+                              return Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Badge(
+                                    backgroundColor:
+                                        _notiCont.notificationListNewLength == 0
+                                            ? Color.fromARGB(255, 231, 232, 234)
+                                            : null,
+                                    alignment: AlignmentDirectional(1.45, 0.85),
+                                    label: _notiCont.notificationListNewLength >
+                                            0
+                                        ? Text(
+                                            (_notiCont
+                                                    .notificationListNewLength)
+                                                .toString(),
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )
+                                        : null,
+                                    child: Text(
+                                      _.switchValue ? '  Barbero' : 'Encargado',
+                                      style: const TextStyle(
+                                          fontSize: 10,
+                                          color: const Color(0xFF2B3141),
+                                          height: 1),
+                                    ),
+                                  ),
+                                  // Ajusta el espacio entre el texto y el Badge
+                                ],
+                              );
+                            }),
+                          ],
+                        )
+                      ],
+                    )
+                  : Container(),
+              const SizedBox(
+                width: 14,
+              ),
+              _.chargeUserLoggedIn != 'Barbero y Encargado'
+                  ? InkWell(
+                      onTap: () {
+                        //verifico si esta atendiendo a alguien no puede leer un nuevo codigo
+                        if (_.usserPermissionQr == 1) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return GetBuilder<LoginController>(builder: (_) {
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ), //this right here
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
-                                      const Padding(
-                                        padding: EdgeInsets.only(left: 12),
-                                        child: Text(
-                                          'Mensaje',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w700),
+                                      Container(
+                                        decoration: const BoxDecoration(
+                                          color: Color(0xFF4470F3),
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(8),
+                                            topRight: Radius.circular(8),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            const Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 12),
+                                              child: Text(
+                                                'Mensaje',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            ),
+                                            IconButton(
+                                              icon: Icon(Icons.close,
+                                                  color: Colors.white),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            )
+                                          ],
                                         ),
                                       ),
-                                      IconButton(
-                                        icon: Icon(Icons.close,
-                                            color: Colors.white),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  height: 166,
-                                  child: Column(
-                                    children: [
-                                      const Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 20,
-                                              left: 16,
-                                              right: 16,
-                                              bottom: 10),
-                                          child: Text(
-                                              'No puede leer un nuevo código de entrada, debe salir de la aplicación primero')),
-                                      //
+                                      Container(
+                                        height: 166,
+                                        child: Column(
+                                          children: [
+                                            const Padding(
+                                                padding: EdgeInsets.only(
+                                                    top: 20,
+                                                    left: 16,
+                                                    right: 16,
+                                                    bottom: 10),
+                                                child: Text(
+                                                    'No puede leer un nuevo código de entrada, debe salir de la aplicación primero')),
+                                            //
 
-                                      ButtonBar(
-                                        alignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: <Widget>[
-                                          ElevatedButton(
-                                            style: ButtonStyle(
-                                              padding: MaterialStateProperty
-                                                  .all<EdgeInsetsGeometry>(
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 0,
-                                                    horizontal: 26.0),
-                                              ),
-                                              backgroundColor:
-                                                  MaterialStateProperty.all<
-                                                      Color>(Color(0xFF4470F3)),
-                                            ),
-                                            onPressed: () async {
-                                              // Lógica para enviar el comentario
+                                            ButtonBar(
+                                              alignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: <Widget>[
+                                                ElevatedButton(
+                                                  style: ButtonStyle(
+                                                    padding:
+                                                        MaterialStateProperty.all<
+                                                            EdgeInsetsGeometry>(
+                                                      const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 0,
+                                                          horizontal: 26.0),
+                                                    ),
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all<Color>(Color(
+                                                                0xFF4470F3)),
+                                                  ),
+                                                  onPressed: () async {
+                                                    // Lógica para enviar el comentario
 
-                                              // Cerrar el primer modal
-                                              Navigator.pop(context);
-                                            },
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  MdiIcons.check,
-                                                  color: Colors.white,
-                                                ),
-                                                SizedBox(
-                                                  width: 6,
-                                                ),
-                                                const Text(
-                                                  'Aceptar',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w800),
+                                                    // Cerrar el primer modal
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        MdiIcons.check,
+                                                        color: Colors.white,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 6,
+                                                      ),
+                                                      const Text(
+                                                        'Aceptar',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w800),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ],
-                                            ),
-                                          ),
-                                        ],
+                                            )
+                                          ],
+                                        ),
                                       )
                                     ],
                                   ),
-                                )
-                              ],
-                            ),
+                                );
+                              });
+                            },
                           );
-                        });
+                        } else {
+                          Get.toNamed(
+                            '/QRViewExample',
+                          );
+                        }
                       },
-                    );
-                  } else {
-                    Get.toNamed(
-                      '/QRViewExample',
-                    );
-                  }
-                },
-                child: CircleAvatar(
-                  radius: 22, // Tamaño del CircleAvatar
-                  backgroundColor: const Color(
-                      0xFF2B3141), // Color de fondo del CircleAvatar
-                  child: Icon(
-                    MdiIcons.qrcodeScan,
-                    size: MediaQuery.of(context).size.width * 0.06,
-                    color: const Color.fromARGB(255, 231, 233, 233),
-                  ),
-                ),
-              ),
+                      child: CircleAvatar(
+                        radius: 22, // Tamaño del CircleAvatar
+                        backgroundColor: const Color(
+                            0xFF2B3141), // Color de fondo del CircleAvatar
+                        child: Icon(
+                          MdiIcons.qrcodeScan,
+                          size: MediaQuery.of(context).size.width * 0.06,
+                          color: const Color.fromARGB(255, 231, 233, 233),
+                        ),
+                      ),
+                    )
+                  : Container(),
               const SizedBox(
                 width: 10,
               ),
-              InkWell(
-                onTap: () {
-                  //ESTE ES PQARA CUANDO VA A SALIR SABER SI PUEDE O NO
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return GetBuilder<LoginController>(builder: (_) {
-                        return Dialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ), //this right here
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Container(
-                                decoration: const BoxDecoration(
-                                  color: const Color(0xFF4470F3),
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(8),
-                                    topRight: Radius.circular(8),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+              _.chargeUserLoggedIn != 'Barbero y Encargado'
+                  ? InkWell(
+                      onTap: () {
+                        //ESTE ES PQARA CUANDO VA A SALIR SABER SI PUEDE O NO
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return GetBuilder<LoginController>(builder: (_) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ), //this right here
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
-                                    const Padding(
-                                      padding: EdgeInsets.only(left: 12),
-                                      child: Text(
-                                        'Mensaje',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w700),
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                        color: const Color(0xFF4470F3),
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(8),
+                                          topRight: Radius.circular(8),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          const Padding(
+                                            padding: EdgeInsets.only(left: 12),
+                                            child: Text(
+                                              'Mensaje',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.close,
+                                                color: Colors.white),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          )
+                                        ],
                                       ),
                                     ),
-                                    IconButton(
-                                      icon: Icon(Icons.close,
-                                          color: Colors.white),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
+                                    Container(
+                                      height: 150,
+                                      child: Column(
+                                        children: [
+                                          const Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 30,
+                                                  left: 16,
+                                                  right: 16,
+                                                  bottom: 10),
+                                              child: Text(
+                                                  'Deseas salir de la aplicación?                         ')),
+                                          //
+
+                                          ButtonBar(
+                                            alignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: <Widget>[
+                                              ElevatedButton(
+                                                style: ButtonStyle(
+                                                  padding: MaterialStateProperty
+                                                      .all<EdgeInsetsGeometry>(
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 0,
+                                                        horizontal: 26.0),
+                                                  ),
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all<
+                                                              Color>(
+                                                          Color.fromARGB(255,
+                                                              192, 191, 191)),
+                                                ),
+                                                onPressed: () async {
+                                                  // Lógica para enviar el comentario
+
+                                                  // Cerrar el primer modal
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                      MdiIcons.cancel,
+                                                      color: Colors.white,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 6,
+                                                    ),
+                                                    const Text(
+                                                      'Cancelar',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w800),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              ElevatedButton(
+                                                style: ButtonStyle(
+                                                  padding: MaterialStateProperty
+                                                      .all<EdgeInsetsGeometry>(
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 0,
+                                                        horizontal: 26.0),
+                                                  ),
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all<
+                                                              Color>(
+                                                          const Color(
+                                                              0xFF4470F3)),
+                                                ),
+                                                onPressed: () async {
+                                                  //todo falta llamar un metodo aqui
+                                                  //SACAR DEL PUESTO DE TRABAJO AL BARBERO
+                                                  Get.dialog(
+                                                    const Center(
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        color:
+                                                            Color(0xFFFDAE2A),
+                                                      ),
+                                                    ),
+                                                    barrierDismissible: false,
+                                                  ); //Get.back();
+
+                                                  if (_.usserPermissionQr ==
+                                                      1) {
+                                                    await _.exitPostworking(
+                                                        "Admin");
+                                                    _.exit(_.tokenUserLoggedIn);
+                                                  } else {
+                                                    _.exit(_.tokenUserLoggedIn);
+                                                  }
+                                                  Get.back();
+
+                                                  // Cerrar el primer modal
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                      MdiIcons.exitToApp,
+                                                      color: Colors.white,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 6,
+                                                    ),
+                                                    const Text(
+                                                      '  Salir  ',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w800),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
                                     )
                                   ],
                                 ),
-                              ),
-                              Container(
-                                height: 150,
-                                child: Column(
-                                  children: [
-                                    const Padding(
-                                        padding: EdgeInsets.only(
-                                            top: 30,
-                                            left: 16,
-                                            right: 16,
-                                            bottom: 10),
-                                        child: Text(
-                                            'Deseas salir de la aplicación?                         ')),
-                                    //
-
-                                    ButtonBar(
-                                      alignment: MainAxisAlignment.spaceEvenly,
-                                      children: <Widget>[
-                                        ElevatedButton(
-                                          style: ButtonStyle(
-                                            padding: MaterialStateProperty.all<
-                                                EdgeInsetsGeometry>(
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 0,
-                                                  horizontal: 26.0),
-                                            ),
-                                            backgroundColor:
-                                                MaterialStateProperty
-                                                    .all<Color>(Color.fromARGB(
-                                                        255, 192, 191, 191)),
-                                          ),
-                                          onPressed: () async {
-                                            // Lógica para enviar el comentario
-
-                                            // Cerrar el primer modal
-                                            Navigator.pop(context);
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                MdiIcons.cancel,
-                                                color: Colors.white,
-                                              ),
-                                              SizedBox(
-                                                width: 6,
-                                              ),
-                                              const Text(
-                                                'Cancelar',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.w800),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          style: ButtonStyle(
-                                            padding: MaterialStateProperty.all<
-                                                EdgeInsetsGeometry>(
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 0,
-                                                  horizontal: 26.0),
-                                            ),
-                                            backgroundColor:
-                                                MaterialStateProperty.all<
-                                                        Color>(
-                                                    const Color(0xFF4470F3)),
-                                          ),
-                                          onPressed: () async {
-                                            //todo falta llamar un metodo aqui
-                                            //SACAR DEL PUESTO DE TRABAJO AL BARBERO
-
-                                            _.exit(_.tokenUserLoggedIn);
-
-                                            // Cerrar el primer modal
-                                            Navigator.pop(context);
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                MdiIcons.exitToApp,
-                                                color: Colors.white,
-                                              ),
-                                              SizedBox(
-                                                width: 6,
-                                              ),
-                                              const Text(
-                                                '  Salir  ',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.w800),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
+                              );
+                            });
+                          },
                         );
-                      });
-                    },
-                  );
-                },
-                child: CircleAvatar(
-                  radius: 22, // Tamaño del CircleAvatar
-                  backgroundColor: const Color(
-                      0xFF2B3141), // Color de fondo del CircleAvatar
-                  child: Icon(
-                    MdiIcons.exitToApp,
-                    size: MediaQuery.of(context).size.width * 0.06,
-                    color: const Color.fromARGB(255, 231, 233, 233),
-                  ),
-                ),
-              ),
+                      },
+                      child: CircleAvatar(
+                        radius: 22, // Tamaño del CircleAvatar
+                        backgroundColor: const Color(
+                            0xFF2B3141), // Color de fondo del CircleAvatar
+                        child: Icon(
+                          MdiIcons.exitToApp,
+                          size: MediaQuery.of(context).size.width * 0.06,
+                          color: const Color.fromARGB(255, 231, 233, 233),
+                        ),
+                      ),
+                    )
+                  : Container(),
               const SizedBox(
                 width: 18,
               )

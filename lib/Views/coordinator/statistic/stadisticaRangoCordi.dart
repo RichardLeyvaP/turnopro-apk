@@ -112,14 +112,10 @@ class _StadisticaCordiState extends State<StadisticaCordi> {
                         if (startDate1 != null && endDate1 != null) ...[
                           Text(
                             'No tiene Estadísticas en ($startDate1 - $endDate1)',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 16),
                           ),
                         ] else ...[
                           Text(
                             'No tiene Estadísticas en $dateAct',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 16),
                           )
                         ]
                       ],

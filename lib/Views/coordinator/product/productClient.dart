@@ -1,4 +1,5 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -20,7 +21,6 @@ class _ProductClientState extends State<ProductClient> {
   final PagesConfigController pagesConfigCont =
       Get.find<PagesConfigController>();
   int cantVisitas = 3;
-  String imageProduct = '${Env.apiEndpoint}/images/product/cocacola.jpg';
 
   String description = 'Coca Cola Classic 350 ml';
   String fecha = '10-01-2024';
@@ -136,6 +136,7 @@ class _ProductClientState extends State<ProductClient> {
                                 controllerCORD.productCORD[index].description,
                                 30),
                             controllerCORD.productCORD[index].cant,
+                            controllerCORD.productCORD[index].image_product,
                           );
                         },
                       ),
@@ -150,7 +151,8 @@ class _ProductClientState extends State<ProductClient> {
     );
   }
 
-  Padding cardOptions(BuildContext context, icon, name, description, cant) {
+  Padding cardOptions(
+      BuildContext context, icon, name, description, cant, imageProd) {
     return Padding(
       padding: const EdgeInsets.only(right: 10, top: 8, left: 10),
       child: Container(
@@ -182,11 +184,54 @@ class _ProductClientState extends State<ProductClient> {
                       height: 75,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Image.network(
-                          imageProduct, // URL de la imagen
-                          width: 10.0, // Ancho de la imagen
-                          height: 10.0, // Altura de la imagen
-                          //fit: BoxFit.cover, // Ajuste de la imagen
+                        child: CircleAvatar(
+                          radius: 25,
+                          child: Image.network(
+                            '${Env.apiEndpoint}/images/$imageProd}',
+                            fit: BoxFit
+                                .cover, // Ajusta la imagen para cubrir completamente el área
+                            width:
+                                10, // Ancho deseado de la imagen dentro del círculo
+                            height: 10,
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                // Si la imagen se carga correctamente, mostramos la imagen
+                                return child;
+                              } else {
+                                // Si la imagen aún se está cargando, mostramos un indicador de progreso
+                                return const CircularProgressIndicator(
+                                  color: Color(0xFFFDAE2A),
+                                );
+                              }
+                            },
+                            errorBuilder: (BuildContext context, Object error,
+                                StackTrace? stackTrace) {
+                              // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
+                              if (kDebugMode) {
+                                return Image.asset(
+                                  'assets/images/product-default.png', //todo cambiar imagen de producto
+                                  fit: BoxFit
+                                      .cover, // Ajusta la imagen para cubrir completamente el área
+                                  width:
+                                      10, // Ancho deseado de la imagen dentro del círculo
+                                  height:
+                                      10, // Alto deseado de la imagen dentro del círculo
+                                );
+                              } else {
+                                // Si no estamos en modo de depuración, mostramos un texto de error
+                                return Image.asset(
+                                  'assets/images/product-default.png',
+                                  fit: BoxFit
+                                      .cover, // Ajusta la imagen para cubrir completamente el área
+                                  width:
+                                      10, // Ancho deseado de la imagen dentro del círculo
+                                  height:
+                                      10, // Alto deseado de la imagen dentro del círculo
+                                );
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ),

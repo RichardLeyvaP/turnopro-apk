@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages, no_leading_underscores_for_local_identifiers
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:animate_do/animate_do.dart';
@@ -155,12 +156,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   // Utilizar una función o getter para obtener imageDirection
   String get imageDirection {
-    if (id != null && id != -99) {
-      return '${Env.apiEndpoint}/images/tecnico/$id.jpg';
-    } else {
-      // Si id es null o igual a -99, devuelve la ruta para la foto de perfil incógnito
-      return '${Env.apiEndpoint}/images/tecnico/default_profile.jpg';
-    }
+    return '${Env.apiEndpoint}/images/tecnico/$id.jpg';
   }
 
   @override //todo AppBar
@@ -185,9 +181,70 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(imageDirection),
-                radius: 25, // Ajusta el tamaño del círculo aquí
+                radius: 25,
+                child: ClipOval(
+                  child: Image.network(
+                    imageDirection,
+                    fit: BoxFit
+                        .cover, // Ajusta la imagen para cubrir completamente el área
+                    width: 50, // Ancho deseado de la imagen dentro del círculo
+                    height: 50,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        // Si la imagen se carga correctamente, mostramos la imagen
+                        return child;
+                      } else {
+                        // Si la imagen aún se está cargando, mostramos un indicador de progreso
+                        return const CircularProgressIndicator(
+                          color: Color(0xFFFDAE2A),
+                        );
+                      }
+                    },
+                    errorBuilder: (BuildContext context, Object error,
+                        StackTrace? stackTrace) {
+                      // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
+                      if (kDebugMode) {
+                        return CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors
+                              .transparent, // Fondo transparente para que el borde sea visible
+                          child: ClipOval(
+                            child: Image.asset(
+                              'assets/images/default_profile.jpg',
+                              fit: BoxFit
+                                  .cover, // Ajusta la imagen para cubrir completamente el área
+                              width:
+                                  50, // Ancho deseado de la imagen dentro del círculo
+                              height:
+                                  50, // Alto deseado de la imagen dentro del círculo
+                            ),
+                          ),
+                        );
+                      } else {
+                        // Si no estamos en modo de depuración, mostramos un texto de error
+                        return CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors
+                              .transparent, // Fondo transparente para que el borde sea visible
+                          child: ClipOval(
+                            child: Image.asset(
+                              'assets/images/default_profile.jpg',
+                              fit: BoxFit
+                                  .cover, // Ajusta la imagen para cubrir completamente el área
+                              width:
+                                  50, // Ancho deseado de la imagen dentro del círculo
+                              height:
+                                  50, // Alto deseado de la imagen dentro del círculo
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
               ),
+              //
             ),
             SizedBox(
               width: (MediaQuery.of(context).size.width *
@@ -515,9 +572,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                 // Lógica para enviar el comentario
 
                                                 //LLAMAR AL ENPOINT PARA SACAR DEL PUESTO DE TRABAJO
-                                                _.exitPostworking("Tecnico");
+                                                Get.dialog(
+                                                  const Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color: Color(0xFFFDAE2A),
+                                                    ),
+                                                  ),
+                                                  barrierDismissible: false,
+                                                ); //Get.back();
 
-                                                _.exit(_.tokenUserLoggedIn);
+                                                if (_.usserPermissionQr == 1) {
+                                                  await _.exitPostworking(
+                                                      "Tecnico");
+                                                  _.exit(_.tokenUserLoggedIn);
+                                                } else {
+                                                  _.exit(_.tokenUserLoggedIn);
+                                                }
+                                                Get.back();
 
                                                 // Cerrar el primer modal
                                                 Navigator.pop(context);
