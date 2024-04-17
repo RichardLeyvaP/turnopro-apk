@@ -2127,7 +2127,7 @@ class _HomePageBodyState extends State<HomePageBody>
                       child: Text(
                         '$firstName...',
                         style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 10,
                             height: 1.3,
                             color: Color(0xFFFDAE2A),
                             fontWeight: FontWeight.w900),

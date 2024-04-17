@@ -56,8 +56,8 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                   return BottomNavigationBar(
                       showSelectedLabels: false,
                       showUnselectedLabels: false,
-                      unselectedItemColor: Colors.white,
-                      backgroundColor: const Color.fromARGB(255, 43, 44, 49),
+                      unselectedItemColor: Color.fromARGB(155, 177, 173, 173),
+                      backgroundColor: Colors.white,
                       fixedColor: const Color(0xFFFDAE2A),
                       currentIndex: pagesConfigController.selectedIndex,
                       type: BottomNavigationBarType.fixed,
@@ -497,7 +497,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                           Color>(
-                                                      const Color(0xFF19CF9E)),
+                                                      Color.fromARGB(
+                                                          255, 192, 191, 191)),
                                             ),
                                             onPressed: () async {
                                               // Lógica para enviar el comentario
@@ -563,7 +564,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                 backgroundColor:
                                                     MaterialStateProperty
                                                         .all<Color>(const Color(
-                                                            0xFF2B3141)),
+                                                            0xFF4470F3)),
                                               ),
                                               onPressed: () async {
                                                 //todo falta llamar un metodo aqui
