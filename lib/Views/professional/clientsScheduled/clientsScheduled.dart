@@ -9,6 +9,7 @@ import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/Views/common/topPage.dart';
 import 'package:turnopro_apk/Views/products-services/servicesProductsPage.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:get/get.dart';
@@ -39,11 +40,23 @@ class YourPageViewScreenState extends State<HomePageView> {
     super.dispose();
   }
 
+/**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+  final IconnsBack = Icons.arrow_back;
+  final IconnsP = MdiIcons.accountGroup;
+  String title = 'Mis Clientes';
+  String subTitle = 'Clientes en cola';
+  final colorCont = Colors.white;
+  double panddCont = 8;
+  double borderCont = 12;
+  final colorIcon = Color(0xFF19CF9E);
+  /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+
   @override
   Widget build(BuildContext context) {
     print(
         '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\currentPageIndex:${pagesConfigC.currentPageIndex}');
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 231, 233, 233),
       body: Column(
         children: [
           Expanded(
@@ -80,61 +93,18 @@ class YourPageViewScreenState extends State<HomePageView> {
                             //     ?
                             Column(
                                 children: [
-                                  Container(
-                                    color: const Color(0xFFFDAE2A),
-                                    padding: EdgeInsets.only(
-                                        top:
-                                            MediaQuery.of(context).padding.top),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              IconButton(
-                                                icon: const Icon(
-                                                  Icons.arrow_back,
-                                                  color: Colors.white,
-                                                ),
-                                                onPressed: () {
-                                                  print(
-                                                      'estoy entrando aqui...');
-                                                  pagesConfigC.back();
-                                                  // Navigator.pop(context);
-                                                },
-                                              ),
-                                              // Ajusta el espacio según sea necesario
-                                              const Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(
-                                                    Icons.person,
-                                                    size: 70,
-                                                    color: Colors.white,
-                                                  ),
-                                                  Text(
-                                                    'Mis Clientes',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        fontSize: 20,
-                                                        color: Colors.white),
-                                                  ),
-                                                ],
-                                              ),
-                                              const Text('             '),
-
-                                              // Añade más widgets o ajusta según sea necesario
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                  Expanded(
+                                    flex: 4,
+                                    child: topPage(
+                                        panddCont: panddCont,
+                                        colorCont: colorCont,
+                                        borderCont: borderCont,
+                                        IconnsBack: IconnsBack,
+                                        pagesConfigC: pagesConfigC,
+                                        IconnsP: IconnsP,
+                                        title: title,
+                                        subTitle: subTitle,
+                                        colorIcon: colorIcon),
                                   ),
                                   loginController.setIsLoading2 == true
                                       ? Container(
@@ -154,34 +124,25 @@ class YourPageViewScreenState extends State<HomePageView> {
                                         )
                                       : SizedBox(),
                                   //AQUI CONTROLO SI HAY CLIENTES EN COLA LOS MUESTRO , SINO MUESTRO UN MENSAJE
-                                  controllerClient.clientsScheduledListLength >
-                                          0
-                                      ? Expanded(
-                                          flex: 18,
-                                          child: ListView.builder(
+                                  Expanded(
+                                    flex: 18,
+                                    child: controllerClient
+                                                .clientsScheduledListLength >
+                                            0
+                                        ? ListView.builder(
+                                            padding: EdgeInsets
+                                                .zero, // Elimina cualquier padding del ListView
                                             itemCount: controllerClient
                                                 .clientsScheduledListLength,
                                             itemBuilder: (context, index) =>
                                                 //AQUI CONTROLO DESDE LA **(API)** SI ATTEENDED=3 ES QUE FUE RECHAZADO Y NO LO MUESTRO
                                                 //IGUAL SI ES ATTEENDED=2 ES QUE YA FUE ATENDIDO Y TAMPOCO LO MUESTRO
                                                 Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  (MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.013),
-                                                  (MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.006),
-                                                  (MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.013),
-                                                  (MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.006)),
+                                              padding: EdgeInsets.only(
+                                                top: 10,
+                                                left: 10,
+                                                right: 10,
+                                              ),
                                               child: Container(
                                                 decoration: controllerClient
                                                                 .clientsScheduledList[
@@ -607,20 +568,20 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                 ),
                                               ),
                                             ),
+                                          )
+                                        : const Padding(
+                                            padding: EdgeInsets.all(12.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  'No hay ningún cliente para hoy',
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        )
-                                      : const Padding(
-                                          padding: EdgeInsets.all(12.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'No hay ningún cliente para hoy',
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                  )
                                 ],
                               )),
                   ),

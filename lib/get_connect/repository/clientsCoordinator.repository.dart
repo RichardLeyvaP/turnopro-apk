@@ -346,7 +346,7 @@ class ClientsCoordinatorRepository extends GetConnect {
         ClientsScheduledModel client =
             ClientsScheduledModel.fromJson(jsonEncode(service));
         //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
-        if (client.detached == 1) {
+        if (client.detached == 1 && client.attended != 33) {
           Map newValue = {
             "reservation_id": client.reservation_id,
             "updated_at": convertDateTimeToMinutes(client.updated_at!),

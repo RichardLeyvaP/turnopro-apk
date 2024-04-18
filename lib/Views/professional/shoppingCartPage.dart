@@ -25,7 +25,7 @@ class ShoppingCartPage extends StatelessWidget {
   final LoginController controllerLogin = Get.find<LoginController>();
   final ShoppingCartController shoppingCar = Get.find<ShoppingCartController>();
   void ejecutarCadaQuinceSegundos() {
-    Timer.periodic(Duration(seconds: 10), (timer) {
+    Timer.periodic(Duration(seconds: 13), (timer) {
       // Lógica que quieres ejecutar cada 15 segundos
       print('Método ejecutado cada 15 segundos  shoppingCar.loadCart()');
       shoppingCar.loadCart();

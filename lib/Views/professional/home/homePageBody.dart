@@ -6,12 +6,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
+
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/Views/coordinator/coexistencePageCoordinator.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:uuid/uuid.dart';
 //import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
+/*
+import 'package:turnopro_apk/Models/notification_model.dart';
+import 'package:turnopro_apk/env.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+import 'dart:convert'; // Importa el paquete 'dart:convert' para trabajar con JSON*/
 
 class HomePageBody extends StatefulWidget {
   const HomePageBody({super.key});
@@ -74,9 +82,34 @@ class _HomePageBodyState extends State<HomePageBody>
     );
   }
 
+/*
+  WebSocketChannel channel = IOWebSocketChannel.connect(
+      'wss://api2.simplifies.cl/api/notification-professional?branch_id=15&professional_id=76');*/
   @override
   void initState() {
     super.initState();
+    print('fff12 antes del channel.stream');
+    /* channel.stream.listen((message) {
+      // Parsear el mensaje JSON recibido
+      Map<String, dynamic> jsonMessage = jsonDecode(message);
+      List<dynamic> notificationsJson = jsonMessage['notifications'];
+      print('fff12 antes del map');
+      // Mapear la lista de notificaciones a objetos NotificationModel
+      List<NotificationModel> notifications =
+          notificationsJson.map((notificationJson) {
+        return NotificationModel.fromJson(notificationJson);
+      }).toList();
+      print('fff12 despues del map');
+      // Usar las notificaciones en tu aplicación (por ejemplo, mostrar en la interfaz de usuario)
+      notifications.forEach((notification) {
+        print('fff12 ID: ${notification.id}');
+        print('fff12 Título: ${notification.tittle}');
+        print('fff12 Descripción: ${notification.description}');
+        print('fff12 ID del profesional: ${notification.professional_id}');
+        print('fff12 ID de la sucursal: ${notification.branch_id}');
+        // Puedes actualizar el estado local de tu aplicación o mostrar las notificaciones en la interfaz de usuario
+      });
+    });*/
     print('cargando aqui-3');
     initializeNotifications();
     //AQUI ME DEVUELVE A Q CLIENTE LE SIGUE Y ACUAL MOSTRAR EN LA COLA
@@ -165,6 +198,7 @@ class _HomePageBodyState extends State<HomePageBody>
     clientsScheduledController.animationController2!.dispose();
     clientsScheduledController.animationController3!.dispose();
     clientsScheduledController.animationController4!.dispose();
+    // channel.sink.close();
     _timer?.cancel();
     _timer1?.cancel();
     _timer2?.cancel();
@@ -475,13 +509,13 @@ class _HomePageBodyState extends State<HomePageBody>
     print('llamada timer 1');
 
     _timer1 = //notificaciones
-        Timer.periodic(const Duration(seconds: 6), (Timer timer) async {
+        Timer.periodic(const Duration(seconds: 13), (Timer timer) async {
       print('llamada timer 1 - 5segundos');
       if (loginController.idProfessionalLoggedIn != null &&
           loginController.branchIdLoggedIn != null &&
           (loginController.chargeUserLoggedIn == "Barbero" ||
               (loginController.chargeUserLoggedIn == "Barbero y Encargado"))) {
-        await Future.delayed(Duration(seconds: 1));
+        //await Future.delayed(Duration(seconds: 1));
         //Buscar notificaciones
         notiController.fetchNotificationList(
             loginController.branchIdLoggedIn,
@@ -497,7 +531,7 @@ class _HomePageBodyState extends State<HomePageBody>
     print('llamada timer 2');
 
     _timer2 = //Clientes
-        Timer.periodic(const Duration(seconds: 11), (Timer timer) async {
+        Timer.periodic(const Duration(seconds: 19), (Timer timer) async {
       print('llamada timer 2 - 11segundos');
       if (loginController.idProfessionalLoggedIn != null &&
           loginController.branchIdLoggedIn != null &&
@@ -567,7 +601,7 @@ class _HomePageBodyState extends State<HomePageBody>
     int endingtime = 1;
 
     // Establece un temporizador que llama a la función cada 20 segundos
-    _timer = Timer.periodic(const Duration(seconds: 28), (Timer timer) async {
+    _timer = Timer.periodic(const Duration(seconds: 31), (Timer timer) async {
       print('llamando a buscar clientes - ENTRANDO A TIMER en 2segundos');
       if (loginController.idProfessionalLoggedIn != null &&
           loginController.branchIdLoggedIn != null &&
@@ -587,7 +621,7 @@ class _HomePageBodyState extends State<HomePageBody>
     // Cancela cualquier temporizador existente para evitar duplicaciones
 
     // Establece un temporizador que llama a la función cada 20 segundos
-    _timer = Timer.periodic(const Duration(seconds: 9), (Timer timer) async {
+    _timer3 = Timer.periodic(const Duration(seconds: 17), (Timer timer) async {
       print('llamando a buscar clientes - ENTRANDO A TIMER en 2segundos');
       if (loginController.idProfessionalLoggedIn != null &&
           loginController.branchIdLoggedIn != null &&
@@ -1328,9 +1362,9 @@ class _HomePageBodyState extends State<HomePageBody>
                                       12,
                                       const Color(0xFF4470F3),
                                       Color.fromARGB(255, 231, 233, 233),
-                                      'Notificaciones',
-                                      'Tus Notificaciones',
-                                      Icons.notifications),
+                                      'Estadísticas',
+                                      'Revisa Tus Ingresos',
+                                      Icons.bar_chart),
                                 ),
                               ],
                             ),
@@ -1360,9 +1394,9 @@ class _HomePageBodyState extends State<HomePageBody>
                                       12,
                                       const Color(0xFFFF6750),
                                       Color.fromARGB(255, 231, 233, 233),
-                                      'Estadísticas',
-                                      'Revisa Tus Ingresos',
-                                      Icons.bar_chart),
+                                      'Notificaciones',
+                                      'Tus Notificaciones',
+                                      Icons.notifications),
                                 ),
                                 InkWell(
                                   onTap: () async {

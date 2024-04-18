@@ -9,7 +9,6 @@ import 'package:turnopro_apk/Views/professional/statistic/stadisticaDiaPageNueva
 import 'package:get/get.dart';
 //import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
-import 'package:turnopro_apk/Views/professional/statistic/stadisticaPageNueva.dart';
 
 class StatisticPage extends StatefulWidget {
   const StatisticPage({super.key});
@@ -135,7 +134,9 @@ class _StatisticPageState extends State<StatisticPage>
               SingleChildScrollView(
                 child: Column(
                   children: [
-                    BarChartSample6(),
+                    Container(
+                      child: Text('Estadística'),
+                    ),
                     Container(
                       width: (MediaQuery.of(context).size.width * 0.8),
                       height: 40,

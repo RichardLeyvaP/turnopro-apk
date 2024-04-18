@@ -423,18 +423,14 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                               ),
                                             )
                                           : const Padding(
-                                              padding: EdgeInsets.all(12.0),
+                                              padding:
+                                                  EdgeInsets.only(top: 260),
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
-                                                  Icon(Icons
-                                                      .assignment_ind_sharp),
                                                   Text(
                                                     'No hay ningún cliente en espera',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w700),
                                                   ),
                                                 ],
                                               ),

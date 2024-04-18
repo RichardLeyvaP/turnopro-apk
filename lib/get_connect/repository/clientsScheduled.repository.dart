@@ -119,7 +119,8 @@ class ClientsScheduledRepository extends GetConnect {
           //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
           //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
           if (controllerLogin.isLoggingIn == true) {
-            if (client.detached == 1) {
+            if (client.detached == 1 && client.attended != 33) {
+              //33 es que lo rechazó el tecnico
               //creo nuevo cliente
               print(
                   'clientes asistiendo entre a if (client.detached == 1) {//creo nuevo cliente');

@@ -18,6 +18,7 @@ class ClientsTechnicalController extends GetxController {
   ClientsScheduledModel?
       clientsNextTechnical; // Cliente en espera // Cliente en espera
   ClientsScheduledModel? clientsAttendedTechnical; // Cliente en espera
+  List<int> idClientsEspera = [];
   bool activeModifyTime = false;
   int modifyTimeSpecific = -99;
   int availability = 1;
@@ -64,6 +65,11 @@ class ClientsTechnicalController extends GetxController {
     'respectTreatment': 3, //Respeto y Trato Cordial
     /******************AGREGAR AQUI TODS LOS QUE DESEN*********************/*/
   };
+
+  setNotificateClient(int idClient) {
+    idClientsEspera.add(idClient);
+    update();
+  }
 
   bool verificateValueTimersTec() {
     bool hasClient1 = clientsAttendedTechnical != null;
@@ -160,6 +166,7 @@ class ClientsTechnicalController extends GetxController {
   }
 
   Future<void> fetchClientsTechnical(idBranch) async {
+    List<int> clientsAux = [];
     Map<String, dynamic> resultList =
         await repository.getClientsTechnicalList(idBranch);
     print('111ya entre a buscar inicialmente los clientes del tecnico');
@@ -177,10 +184,12 @@ class ClientsTechnicalController extends GetxController {
           (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
       clientsTechnicalLength = clientsScheduledListTechnical.length;
       //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
-
       clientsNextTechnical = resultList['nextClient'];
+      print(
+          'callTimerTec-clientsScheduledListTechnical:${clientsScheduledListTechnical.length}');
       quantityClientAttendedTechnical = resultList['quantityClientAttended'];
-      if (quantityClientAttendedTechnical == 0) {
+      if (quantityClientAttendedTechnical == 0 &&
+          clientsScheduledListTechnical.isNotEmpty) {
         clientsAttendedTechnical = clientsNextTechnical;
         boolFilterShowNextTecnhical = true;
         technicalClientsAttended = 'nobody';

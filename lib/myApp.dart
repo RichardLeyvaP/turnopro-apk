@@ -39,7 +39,9 @@ class Myapp extends StatelessWidget {
   // Color 4470F3: Color(0xFF4470F3)-->Notificaciones --azul
   // Color 19CF9E: Color(0xFF19CF9E)-->Agenda --verde
   // Color FF6750: Color(0xFFFF6750)-->Estadística --rojo
-  //  Color.fromARGB( 255, 192, 191, 191)-->Cancelar --gris
+  //  Color.fromARGB( 255, 192, 191, 191)-->Cancelar --gris de botones
+  //
+  // const Color.fromARGB(255, 231, 233, 233) -- casi blanco pero no lo es
 
   //todo colores
 

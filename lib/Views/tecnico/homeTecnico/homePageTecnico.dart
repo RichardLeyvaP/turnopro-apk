@@ -22,6 +22,11 @@ class HomePagesTecnico extends StatefulWidget {
 class _HomePagesTecnicoState extends State<HomePagesTecnico> {
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
   final NotificationController notiCont = Get.find<NotificationController>();
+  final LoginController loginController = Get.find<LoginController>();
+  final ClientsTechnicalController clientsScheduledController =
+      Get.find<ClientsTechnicalController>();
+  final CoexistenceController coexistenceController =
+      Get.put(CoexistenceController());
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +66,62 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                       fixedColor: const Color(0xFFFDAE2A),
                       currentIndex: pagesConfigController.selectedIndex,
                       type: BottomNavigationBarType.fixed,
-                      onTap: (index) =>
-                          pagesConfigController.onTabTapped(index),
+                      onTap: (index) async {
+                        if (index == 1) //Agenda->clientes
+                        {
+                          Get.dialog(
+                            const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFFFDAE2A),
+                              ),
+                            ),
+                            barrierDismissible: false,
+                          ); //Get.back();
+                          await clientsScheduledController
+                              .fetchClientsTechnical(
+                                  loginController.branchIdLoggedIn);
+                          Get.back();
+                        }
+                        if (index == 2) //Notificaciones
+                        {
+                          Get.dialog(
+                            const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFFFDAE2A),
+                              ),
+                            ),
+                            barrierDismissible: false,
+                          ); //Get.back();
+                          if (loginController.idProfessionalLoggedIn != null &&
+                              loginController.branchIdLoggedIn != null &&
+                              (loginController.chargeUserLoggedIn ==
+                                  "Tecnico")) {
+                            //await Future.delayed(Duration(seconds: 1));
+                            //Buscar notificaciones
+                            await notiCont.fetchNotificationList(
+                                loginController.branchIdLoggedIn,
+                                loginController.idProfessionalLoggedIn,
+                                'Tecnico',
+                                'Navigator-abajo');
+                          }
+                          Get.back();
+                        }
+                        if (index == 4) //Notificaciones
+                        {
+                          Get.dialog(
+                            const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFFFDAE2A),
+                              ),
+                            ),
+                            barrierDismissible: false,
+                          ); //Get.back();
+                          // controllerLogin.setIsLoadingFor(true);
+                          await coexistenceController.fetchCoexistenceList();
+                          Get.back();
+                        }
+                        pagesConfigController.onTabTapped(index);
+                      },
                       items: [
                         BottomNavigationBarItem(
                             icon: Icon(
@@ -70,16 +129,25 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                               size: MediaQuery.of(context).size.width * 0.08,
                             ),
                             label: 'Home'),
-                        BottomNavigationBarItem(
-                            icon: Badge(
-                              label: Text(
-                                  '${controClient.clientsTechnicalLength}'),
-                              child: Icon(
-                                Icons.perm_contact_calendar,
-                                size: MediaQuery.of(context).size.width * 0.08,
-                              ),
-                            ),
-                            label: 'Agenda'),
+                        controClient.clientsTechnicalLength != 0
+                            ? BottomNavigationBarItem(
+                                icon: Badge(
+                                  label: Text(
+                                      '${controClient.clientsTechnicalLength}'),
+                                  child: Icon(
+                                    Icons.perm_contact_calendar,
+                                    size: MediaQuery.of(context).size.width *
+                                        0.08,
+                                  ),
+                                ),
+                                label: 'Agenda')
+                            : BottomNavigationBarItem(
+                                icon: Icon(
+                                  Icons.perm_contact_calendar,
+                                  size:
+                                      MediaQuery.of(context).size.width * 0.08,
+                                ),
+                                label: 'Agenda'),
                         notiCont.notificationListNewLength != 0
                             ? BottomNavigationBarItem(
                                 icon: Badge(
@@ -155,9 +223,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       const Size.fromHeight(70); // Ajusta el tamaño del AppBar aquí
 
   // Utilizar una función o getter para obtener imageDirection
-  String get imageDirection {
-    return '${Env.apiEndpoint}/images/tecnico/$id.jpg';
-  }
 
   @override //todo AppBar
   Widget build(BuildContext context) {
@@ -184,7 +249,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 radius: 25,
                 child: ClipOval(
                   child: Image.network(
-                    imageDirection,
+                    '${Env.apiEndpoint}/images/${logUser.imageUrlLoggedIn}',
                     fit: BoxFit
                         .cover, // Ajusta la imagen para cubrir completamente el área
                     width: 50, // Ancho deseado de la imagen dentro del círculo
@@ -359,7 +424,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                               backgroundColor:
                                                   MaterialStateProperty.all<
                                                           Color>(
-                                                      const Color(0xFF19CF9E)),
+                                                      const Color(0xFF4470F3)),
                                             ),
                                             onPressed: () async {
                                               // Lógica para enviar el comentario
@@ -468,14 +533,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                   child: Column(
                                     children: [
                                       Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 30,
-                                              left: 16,
-                                              right: 16,
-                                              bottom: 10),
+                                          padding:
+                                              const EdgeInsets
+                                                      .only(
+                                                  top: 30,
+                                                  left: 16,
+                                                  right: 16,
+                                                  bottom: 10),
                                           child: clCont
-                                                      .boolFilterShowNextTecnhical ==
-                                                  false
+                                                      .quantityClientAttendedTechnical ==
+                                                  1
                                               ? Text(
                                                   'No puedes salir del sistema, tienes clientes atendiendo!')
                                               : Text(
@@ -487,72 +554,47 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                             MainAxisAlignment.spaceEvenly,
                                         children: <Widget>[
                                           ElevatedButton(
-                                            style: ButtonStyle(
-                                              padding: MaterialStateProperty
-                                                  .all<EdgeInsetsGeometry>(
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 0,
-                                                    horizontal: 26.0),
+                                              style: ButtonStyle(
+                                                padding: MaterialStateProperty
+                                                    .all<EdgeInsetsGeometry>(
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 0,
+                                                      horizontal: 26.0),
+                                                ),
+                                                backgroundColor:
+                                                    MaterialStateProperty.all<
+                                                            Color>(
+                                                        Color.fromARGB(255, 192,
+                                                            191, 191)),
                                               ),
-                                              backgroundColor:
-                                                  MaterialStateProperty.all<
-                                                          Color>(
-                                                      Color.fromARGB(
-                                                          255, 192, 191, 191)),
-                                            ),
-                                            onPressed: () async {
-                                              // Lógica para enviar el comentario
+                                              onPressed: () async {
+                                                // Lógica para enviar el comentario
 
-                                              // Cerrar el primer modal
-                                              Navigator.pop(context);
-                                            },
-                                            child:
-                                                clCont.boolFilterShowNextTecnhical ==
-                                                        false
-                                                    ? Row(
-                                                        children: [
-                                                          Icon(
-                                                            MdiIcons.check,
-                                                            color: Colors.white,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 6,
-                                                          ),
-                                                          const Text(
-                                                            'Aceptar',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w800),
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : Row(
-                                                        children: [
-                                                          Icon(
-                                                            MdiIcons.cancel,
-                                                            color: Colors.white,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 6,
-                                                          ),
-                                                          const Text(
-                                                            'Cancelar',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w800),
-                                                          ),
-                                                        ],
-                                                      ),
-                                          ),
-                                          if (!clCont
-                                                  .boolFilterShowNextTecnhical ==
-                                              false)
+                                                // Cerrar el primer modal
+                                                Navigator.pop(context);
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    MdiIcons.cancel,
+                                                    color: Colors.white,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 6,
+                                                  ),
+                                                  const Text(
+                                                    'Cancelar',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w800),
+                                                  ),
+                                                ],
+                                              )),
+                                          if (!clCont.boolFilterShowNextTecnhical ==
+                                                  false ||
+                                              clCont.quantityClientAttendedTechnical ==
+                                                  0)
                                             ElevatedButton(
                                               style: ButtonStyle(
                                                 padding: MaterialStateProperty
@@ -605,7 +647,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                     width: 6,
                                                   ),
                                                   const Text(
-                                                    '  Salir  ',
+                                                    '   Salir   ',
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:

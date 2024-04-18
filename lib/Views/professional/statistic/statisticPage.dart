@@ -62,72 +62,125 @@ class _StatisticPageState extends State<StatisticPage>
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: backgroundColor,
-        //
-        //
-        //
         appBar: AppBar(
-          backgroundColor: const Color(0xFFFDAE2A), // Color de fondo del AppBar
+          backgroundColor:
+              Color.fromARGB(255, 231, 232, 234), // Color de fondo del AppBar
           elevation: 0, // Sombra del AppBar
-          toolbarHeight: 120, // Altura del AppBar
+          toolbarHeight: 100, // Altura del AppBar
           // actions: [
           //   IconButton(onPressed: () {}, icon: const Icon(Icons.shopping_cart))
           // ],
 
-          title: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_back), // Icono que deseas mostrar
-                onPressed: () {
-                  pagesConfigCont.back();
-                  //Get.back();
-                }, // Evento onPress
-              ),
-              Column(
-                children: [
-                  Icon(
-                    MdiIcons.chartBarStacked,
-                    size: (MediaQuery.of(context).size.width * 0.22),
-                  ),
-                  const Text('ESTADÍSTICAS',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                ],
-              ),
-              IconButton(
-                icon: const Icon(Icons.arrow_back), // Icono que deseas mostrar
-                color: Colors.transparent,
-                onPressed: () {
-                  Get.back();
-                }, // Evento onPress
-              ),
+          title: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              color: Colors.white,
+            ),
+            child: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10, left: 0, bottom: 8),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons
+                                    .arrow_back), // Icono que deseas mostrar
+                                onPressed: () {
+                                  pagesConfigCont.back();
+                                  //Get.back();
+                                }, // Evento onPress
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors
+                                        .white, // Color blanco para el borde
+                                    width:
+                                        1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                                  ),
+                                  color: Colors.white,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(12)),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(MdiIcons.chartBarStacked,
+                                      size: 40, color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        const Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Estadística',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Color(0xFF2B3141),
+                                    fontWeight: FontWeight.bold)),
+                            Text('CLIENTE',
+                                style: TextStyle(
+                                    color: Color(0xFF2B3141),
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ],
+                    ),
 
-              // const Text("          "),
-            ],
-          ),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(50), // Altura del TabBar
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 15),
-              child: Container(
-                width: (MediaQuery.of(context).size.width * 0.8),
-                height: (MediaQuery.of(context).size.width * 0.07),
-                decoration: decorationBackground,
-                child: TabBar(
-                  // isScrollable: true,//rlp si son muchos tab para que tenga scroll entre los tab
-                  indicator: clickServicesDecoration,
-                  labelColor: const Color(0xFFFDAE2A),
-                  unselectedLabelColor: Colors.white,
-                  automaticIndicatorColorAdjustment: false,
-                  controller: _tabController,
-                  tabs: const [
-                    Tab(text: 'Día'),
-                    Tab(text: 'Rango'),
-                    Tab(text: 'Sem.'),
-                    Tab(text: 'Mens.'),
+                    // const Text("          "),
                   ],
                 ),
+              ],
+            ),
+          ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(30), // Altura del TabBar
+            child: Container(
+              width: (MediaQuery.of(context).size.width * 0.935),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10)),
+                color: Colors.white,
+              ),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    width: (MediaQuery.of(context).size.width * 0.8),
+                    height: (MediaQuery.of(context).size.width * 0.07),
+                    decoration: decorationBackground,
+                    child: TabBar(
+                      // isScrollable: true,//rlp si son muchos tab para que tenga scroll entre los tab
+                      indicator: clickServicesDecoration,
+                      labelColor: const Color(0xFFFDAE2A),
+                      unselectedLabelColor: Colors.white,
+                      automaticIndicatorColorAdjustment: false,
+                      controller: _tabController,
+                      tabs: const [
+                        Tab(text: 'Día'),
+                        Tab(text: 'Rango'),
+                        Tab(text: 'Sem.'),
+                        Tab(text: 'Mens.'),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
