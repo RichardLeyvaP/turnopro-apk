@@ -118,6 +118,26 @@ class ShoppingCartController extends GetxController {
     }
   }
 
+  Future<int> requestDelete2(int id, int request_delete, int idBranch) async {
+    //todooooooooo
+    try {
+      orderDeleteCar = await productRepository.awaitRequestDelete2(
+          id, request_delete, idBranch);
+      if (orderDeleteCar.isNotEmpty) {
+        requestDeleteOrder.add(id);
+        internetError = 0;
+        update();
+        return 1;
+      } else {
+        return 0;
+      }
+    } catch (e) {
+      internetError = -99;
+      update();
+      return -99;
+    }
+  }
+
   Future<int> orderDelete(id) async {
     try {
       int result = await productRepository.orderDeleteCar(id); //todo

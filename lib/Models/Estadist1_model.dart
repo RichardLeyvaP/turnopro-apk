@@ -11,6 +11,7 @@ class Estadist1Model {
   final num amountWin; // Cambiar de int a num
   final String choice;
   final int serviceSpecial;
+  final int pay;
   final num specialAmount; // Cambiar de int a num
 
   Estadist1Model({
@@ -25,6 +26,7 @@ class Estadist1Model {
     required this.choice,
     required this.serviceSpecial,
     required this.specialAmount,
+    required this.pay,
   });
 
   factory Estadist1Model.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class Estadist1Model {
       choice: json['choice'],
       serviceSpecial: json['serviceSpecial'],
       specialAmount: json['SpecialAmount'],
+      pay: json['pay'],
     );
   }
 

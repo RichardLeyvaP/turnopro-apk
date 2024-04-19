@@ -25,13 +25,13 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
 
   /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
   final IconnsBack = Icons.arrow_back;
-  final IconnsP = MdiIcons.bellBadgeOutline;
+  final IconnsP = MdiIcons.accountGroup;
   String title = 'Clientes Atendidos';
-  String subTitle = 'Clientes Atendidos';
+  String subTitle = 'Detalle';
   final colorCont = Colors.white;
   double panddCont = 8;
   double borderCont = 12;
-  final colorIcon = Color(0xFFFF6750);
+  final colorIcon = Color(0xFF4470F3);
   /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
 
   @override
@@ -155,93 +155,113 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                   height: 12,
                                                                 ),
                                                                 Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
                                                                   children: [
-                                                                    Padding(
-                                                                      padding:
-                                                                          const EdgeInsets.all(
-                                                                              8.0),
-                                                                      child:
-                                                                          CircleAvatar(
-                                                                        radius:
-                                                                            20,
-                                                                        child:
-                                                                            ClipOval(
+                                                                    Row(
+                                                                      children: [
+                                                                        Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.all(8.0),
                                                                           child:
-                                                                              Image.network(
-                                                                            '${Env.apiEndpoint}/images/${_.estadist1[index].client_image}',
-                                                                            fit:
-                                                                                BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
-                                                                            width:
-                                                                                50, // Ancho deseado de la imagen dentro del círculo
-                                                                            height:
-                                                                                50,
-                                                                            loadingBuilder: (BuildContext context,
-                                                                                Widget child,
-                                                                                ImageChunkEvent? loadingProgress) {
-                                                                              if (loadingProgress == null) {
-                                                                                // Si la imagen se carga correctamente, mostramos la imagen
-                                                                                return child;
-                                                                              } else {
-                                                                                // Si la imagen aún se está cargando, mostramos un indicador de progreso
-                                                                                return const CircularProgressIndicator(
-                                                                                  color: Color(0xFFFDAE2A),
-                                                                                );
-                                                                              }
-                                                                            },
-                                                                            errorBuilder: (BuildContext context,
-                                                                                Object error,
-                                                                                StackTrace? stackTrace) {
-                                                                              // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
-                                                                              if (kDebugMode) {
-                                                                                return CircleAvatar(
-                                                                                  radius: 20,
-                                                                                  backgroundColor: Colors.transparent, // Fondo transparente para que el borde sea visible
-                                                                                  child: ClipOval(
-                                                                                    child: Image.asset(
-                                                                                      'assets/images/default_profile.jpg',
-                                                                                      fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
-                                                                                      width: 50, // Ancho deseado de la imagen dentro del círculo
-                                                                                      height: 50, // Alto deseado de la imagen dentro del círculo
-                                                                                    ),
-                                                                                  ),
-                                                                                );
-                                                                              } else {
-                                                                                // Si no estamos en modo de depuración, mostramos un texto de error
-                                                                                return CircleAvatar(
-                                                                                  radius: 20,
-                                                                                  backgroundColor: Colors.transparent, // Fondo transparente para que el borde sea visible
-                                                                                  child: ClipOval(
-                                                                                    child: Image.asset(
-                                                                                      'assets/images/default_profile.jpg',
-                                                                                      fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
-                                                                                      width: 50, // Ancho deseado de la imagen dentro del círculo
-                                                                                      height: 50, // Alto deseado de la imagen dentro del círculo
-                                                                                    ),
-                                                                                  ),
-                                                                                );
-                                                                              }
-                                                                            },
+                                                                              CircleAvatar(
+                                                                            radius:
+                                                                                20,
+                                                                            child:
+                                                                                ClipOval(
+                                                                              child: Image.network(
+                                                                                '${Env.apiEndpoint}/images/${_.estadist1[index].client_image}',
+                                                                                fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                                                                width: 50, // Ancho deseado de la imagen dentro del círculo
+                                                                                height: 50,
+                                                                                loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                                                                  if (loadingProgress == null) {
+                                                                                    // Si la imagen se carga correctamente, mostramos la imagen
+                                                                                    return child;
+                                                                                  } else {
+                                                                                    // Si la imagen aún se está cargando, mostramos un indicador de progreso
+                                                                                    return const CircularProgressIndicator(
+                                                                                      color: Color(0xFFFDAE2A),
+                                                                                    );
+                                                                                  }
+                                                                                },
+                                                                                errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                                                                  // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
+                                                                                  if (kDebugMode) {
+                                                                                    return CircleAvatar(
+                                                                                      radius: 20,
+                                                                                      backgroundColor: Colors.transparent, // Fondo transparente para que el borde sea visible
+                                                                                      child: ClipOval(
+                                                                                        child: Image.asset(
+                                                                                          'assets/images/default_profile.jpg',
+                                                                                          fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                                                                          width: 50, // Ancho deseado de la imagen dentro del círculo
+                                                                                          height: 50, // Alto deseado de la imagen dentro del círculo
+                                                                                        ),
+                                                                                      ),
+                                                                                    );
+                                                                                  } else {
+                                                                                    // Si no estamos en modo de depuración, mostramos un texto de error
+                                                                                    return CircleAvatar(
+                                                                                      radius: 20,
+                                                                                      backgroundColor: Colors.transparent, // Fondo transparente para que el borde sea visible
+                                                                                      child: ClipOval(
+                                                                                        child: Image.asset(
+                                                                                          'assets/images/default_profile.jpg',
+                                                                                          fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                                                                          width: 50, // Ancho deseado de la imagen dentro del círculo
+                                                                                          height: 50, // Alto deseado de la imagen dentro del círculo
+                                                                                        ),
+                                                                                      ),
+                                                                                    );
+                                                                                  }
+                                                                                },
+                                                                              ),
+                                                                            ),
                                                                           ),
-                                                                        ),
-                                                                      ),
 
-                                                                      //
+                                                                          //
+                                                                        ),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              10,
+                                                                        ),
+                                                                        Text(
+                                                                          _.estadist1[index]
+                                                                              .clientName
+                                                                              .toString(),
+                                                                          style: const TextStyle(
+                                                                              fontSize: 18,
+                                                                              color: Colors.black,
+                                                                              fontWeight: FontWeight.w700),
+                                                                        ),
+                                                                      ],
                                                                     ),
-                                                                    SizedBox(
-                                                                      width: 10,
-                                                                    ),
-                                                                    Text(
-                                                                      _.estadist1[index]
-                                                                          .clientName
-                                                                          .toString(),
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              18,
-                                                                          color: Color(
-                                                                              0xFFFDAE2A),
-                                                                          fontWeight:
-                                                                              FontWeight.w700),
-                                                                    ),
+                                                                    Container(
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: _.estadist1[index].pay ==
+                                                                                0
+                                                                            ? Color(0xFFFDAE2A)
+                                                                            : Color(0xFF19CF9E), //todo
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(8)),
+                                                                      ),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.all(8.0),
+                                                                        child: Text(
+                                                                            _.estadist1[index].pay == 0
+                                                                                ? 'PENDIENTE'
+                                                                                : 'PAGADO',
+                                                                            style: const TextStyle(
+                                                                                fontSize: 12,
+                                                                                color: Colors.white,
+                                                                                fontWeight: FontWeight.w700)),
+                                                                      ),
+                                                                    )
                                                                   ],
                                                                 ),
                                                                 Container(

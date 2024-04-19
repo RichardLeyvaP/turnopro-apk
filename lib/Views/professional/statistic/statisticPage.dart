@@ -89,7 +89,7 @@ class _StatisticPageState extends State<StatisticPage>
     final colorCont = Colors.white;
     double panddCont = 8;
     double borderCont = 12;
-    final colorIcon = Color(0xFFFF6750);
+    final colorIcon = Color(0xFF4470F3);
     /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
 
     return Scaffold(

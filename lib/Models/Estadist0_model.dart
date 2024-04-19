@@ -9,6 +9,7 @@ class Estadist0Model {
   final int totalServices;
   final String clientAleator;
   final int amountGenerate;
+  final int totalServicesRetention;
 
   Estadist0Model({
     required this.professionalId,
@@ -19,6 +20,7 @@ class Estadist0Model {
     required this.totalServices,
     required this.clientAleator,
     required this.amountGenerate,
+    required this.totalServicesRetention,
   });
 
   factory Estadist0Model.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class Estadist0Model {
       totalServices: json['totalServices'],
       clientAleator: json['clientAleator'],
       amountGenerate: json['amountGenerate'],
+      totalServicesRetention: json['totalServicesRetention'],
     );
   }
 

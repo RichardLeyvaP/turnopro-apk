@@ -56,7 +56,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
                 //todo aqui comente el que estaba
 
                 Padding(
-                  padding: const EdgeInsets.only(right: 10.0, left: 10),
+                  padding: const EdgeInsets.only(right: 12.0, left: 12),
                   child: Container(
                     width: (MediaQuery.of(context).size.width * 0.95),
                     height: 40,

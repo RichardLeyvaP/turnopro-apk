@@ -73,7 +73,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     await controllerShoppingCart
         .loadOrderDeleteCar(loginController.branchIdLoggedIn!);
     controllerShoppingCart.setLoading(false);
-    notiController.fetchNotificationList(loginController.branchIdLoggedIn,
+    await notiController.fetchNotificationList(loginController.branchIdLoggedIn,
         loginController.idProfessionalLoggedIn, 'Coordinador', 'callFirts');
 
     await clientsScheduledController

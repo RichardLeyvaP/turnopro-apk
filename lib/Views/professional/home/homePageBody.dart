@@ -1258,27 +1258,15 @@ class _HomePageBodyState extends State<HomePageBody>
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                GestureDetector(
-                                  onTap: () async {
-                                    // controllerLogin.setIsLoadingFor(true);
-                                    Get.dialog(
-                                      const Center(
-                                        child: CircularProgressIndicator(
-                                          color: Color(0xFFFDAE2A),
-                                        ),
-                                      ),
-                                      barrierDismissible: false,
-                                    ); //Get.back();
-                                    await clientsScheduledController
-                                        .fetchClientsScheduled(
-                                            controllerLogin
-                                                .idProfessionalLoggedIn,
-                                            controllerLogin.branchIdLoggedIn,
-                                            'Agenda');
-                                    Get.back();
-                                    pagesConfigC
-                                        .onTabTapped(1); //index = 1 -> /Clients
-                                  },
+                                Container(
+                                  width: (MediaQuery.of(context).size.width *
+                                      0.46), //Tamaño de los Cards
+                                  height: loginController.androidInfoWidth! >=
+                                          867.42 //propiedades de telefone
+                                      ? (MediaQuery.of(context).size.height *
+                                          0.198)
+                                      : (MediaQuery.of(context).size.height *
+                                          0.170),
                                   child: cartsHome(
                                       context,
                                       12,
@@ -1298,29 +1286,9 @@ class _HomePageBodyState extends State<HomePageBody>
                                       ),
                                       barrierDismissible: false,
                                     ); //Get.back();
-                                    String typeEnv = '';
-
-                                    if (loginController.chargeUserLoggedIn ==
-                                        'Barbero y Encargado') {
-                                      if (loginController.switchValue ==
-                                          false) //'Barbero'
-                                      {
-                                        typeEnv = 'Barbero';
-                                      } else {
-                                        typeEnv = 'Encargado';
-                                      }
-                                    } else {
-                                      typeEnv = 'ESTO ESTOY DEVOLVIENDO';
-                                    }
-                                    await notiController.fetchNotificationList(
-                                        loginController.branchIdLoggedIn,
-                                        loginController.idProfessionalLoggedIn,
-                                        typeEnv,
-                                        'Cart home');
-
+                                    await coexCont.fetchEstadist0();
                                     pagesConfigC.onTabTapped(
-                                        2); //index = 2 -> /NotificationsPageProf
-                                    // Get.back();
+                                        3); //index = 3 -> /StatisticPage
                                   },
                                   child: cartsHome(
                                       context,
@@ -1341,19 +1309,7 @@ class _HomePageBodyState extends State<HomePageBody>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 InkWell(
-                                  onTap: () async {
-                                    Get.dialog(
-                                      const Center(
-                                        child: CircularProgressIndicator(
-                                          color: Color(0xFFFDAE2A),
-                                        ),
-                                      ),
-                                      barrierDismissible: false,
-                                    ); //Get.back();
-                                    await coexCont.fetchEstadist0();
-                                    pagesConfigC.onTabTapped(
-                                        3); //index = 3 -> /StatisticPage
-                                  },
+                                  onTap: () async {},
                                   child: cartsHome(
                                       context,
                                       12,
@@ -1364,22 +1320,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                       Icons.notifications),
                                 ),
                                 InkWell(
-                                  onTap: () async {
-                                    Get.dialog(
-                                      const Center(
-                                        child: CircularProgressIndicator(
-                                          color: Color(0xFFFDAE2A),
-                                        ),
-                                      ),
-                                      barrierDismissible: false,
-                                    ); //Get.back();
-                                    // controllerLogin.setIsLoadingFor(true);
-                                    await coexistenceController
-                                        .fetchCoexistenceList();
-                                    pagesConfigC.onTabTapped(
-                                        4); //index = 4 -> /CoexistencePage
-                                    Get.back();
-                                  },
+                                  onTap: () async {},
                                   child: cartsHome(
                                       context,
                                       12,
@@ -1437,7 +1378,15 @@ class _HomePageBodyState extends State<HomePageBody>
                         borderRadius:
                             const BorderRadius.all(Radius.circular(18)),
                       ),
-                      child: IconButton(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(
+                              0xFFFF6750), // Color de fondo en verde
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                16.0), // Ajusta el radio según tus necesidades
+                          ),
+                        ),
                         onPressed: () {
                           if (loginController.codigoQrValid() == true) {
                             // int resulButton = 0;
@@ -1467,7 +1416,7 @@ class _HomePageBodyState extends State<HomePageBody>
                             );
                           }
                         },
-                        icon: Icon(
+                        child: Icon(
                           MdiIcons.thumbDownOutline,
                           color: Colors.white,
                           size: (MediaQuery.of(context).size.height * 0.04),
@@ -1580,7 +1529,15 @@ class _HomePageBodyState extends State<HomePageBody>
                           color: const Color(0xFF19CF9E),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(18))),
-                      child: IconButton(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(
+                              0xFF19CF9E), // Color de fondo en verde
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                16.0), // Ajusta el radio según tus necesidades
+                          ),
+                        ),
                         onPressed: () async {
                           //AQUI VEO SI YA ESCANEO EL CODIGO QR Y ESTA EN EL LOCAL
                           if (loginController.codigoQrValid() == true) {
@@ -1668,7 +1625,7 @@ class _HomePageBodyState extends State<HomePageBody>
                             );
                           }
                         },
-                        icon: Icon(
+                        child: Icon(
                           MdiIcons.thumbUpOutline,
                           color: Colors.white,
                           size: (MediaQuery.of(context).size.height * 0.04),
@@ -1747,26 +1704,6 @@ class _HomePageBodyState extends State<HomePageBody>
                   clientsL.reservation_id,
                   clientsL.client_name,
                   clientsL.client_image);
-              // clientsScheduledController.getselectCustomer(
-              //     index, clientsL.car_id);
-              //AQUI MANDO ID DE CARRO PAR ACARGAR EL CARRITO PARA LOS SERVICIO Y PRODUCTOS
-              //Y SE ACTUALIZA LA VARIABLE GLOBAL carIdClienteSelect
-              // clientsScheduledController.selectCarClient(clientsL.car_id);
-              // //AQUI MANDO EL ID DE RESERVACION Y ME DEVUELVE EL ESTADO DEL CLIENTE,
-              // //SI SE ESTA ATENDINEDO O NO , PARA ASI SABER CUANDO MOSTRAR LOS BOTONES DE ATENDIDO Y
-              // //SELECCIONAR SERVICIO Y PRODUCTOS
-              // clientsScheduledController
-              //     .returnClientStatus(clientsL.reservation_id);
-              // //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
-              // clientsScheduledController
-              //     .returnClientName((clientsL.client_name).toString());
-              // clientsScheduledController
-              //     .returnImageName((clientsL.client_image).toString());
-              // //todo  INICIO esto estaba en la pagina del modal al dar en Ver carrito
-              // await clientsScheduledController
-              //     .watchModifyTime(clientsL.reservation_id);
-              // // servControll
-              // //     .clearSelectService();
               //todo FIN esto estaba en la pagina del modal al dar en Ver carrito
               await chopCont.loadDataInitiallyNecessary().then((_) async {
                 await clientsScheduledController
@@ -2166,45 +2103,132 @@ class _HomePageBodyState extends State<HomePageBody>
         borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
         color: colorVariable,
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: CircleAvatar(
-                radius: 20, // Tamaño del CircleAvatar
-                backgroundColor: colorBottom, // Color de fondo del CircleAvatar
-                child: Icon(
-                  iconCart, // Icono que deseas mostrar
-                  size: 30, // Tamaño del icono
-                  color: colorVariable, // Color del icono
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: colorVariable, // Color de fondo en verde
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                16.0), // Ajusta el radio según tus necesidades
+          ),
+        ),
+        onPressed: () async {
+          if (titleCart == 'Agenda') {
+            Get.dialog(
+              const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFDAE2A),
                 ),
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  titleCart,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      height: 0.4),
+              barrierDismissible: false,
+            ); //Get.back();
+
+            await clientsScheduledController.fetchClientsScheduled(
+                loginController.idProfessionalLoggedIn,
+                loginController.branchIdLoggedIn,
+                'Agenda-Card');
+            Get.back();
+            pagesConfigC.onTabTapped(1); //index = 4 -> /CoexistencePage
+          }
+          if (titleCart == 'Convivencia') {
+            Get.dialog(
+              const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFDAE2A),
                 ),
-                Text(
-                  descriptionTitleCart,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400),
+              ),
+              barrierDismissible: false,
+            ); //Get.back();
+            // controllerLogin.setIsLoadingFor(true);
+            await coexistenceController.fetchCoexistenceList();
+            Get.back();
+            pagesConfigC.onTabTapped(4); //index = 4 -> /CoexistencePage
+          }
+          if (titleCart == 'Estadísticas') {
+            Get.dialog(
+              const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFDAE2A),
                 ),
-              ],
-            )
-          ],
+              ),
+              barrierDismissible: false,
+            ); //Get.back();
+            await coexCont.fetchEstadist0();
+            Get.back();
+            pagesConfigC.onTabTapped(3); //index = 3 -> /StatisticPage
+          }
+          if (titleCart == 'Notificaciones') {
+            Get.dialog(
+              const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFDAE2A),
+                ),
+              ),
+              barrierDismissible: false,
+            ); //Get.back();
+            String typeEnv = '';
+
+            if (loginController.chargeUserLoggedIn == 'Barbero y Encargado') {
+              if (loginController.switchValue == false) //'Barbero'
+              {
+                typeEnv = 'Barbero';
+              } else {
+                typeEnv = 'Encargado';
+              }
+            } else {
+              typeEnv = 'Barbero';
+            }
+
+            await notiController.fetchNotificationList(
+                loginController.branchIdLoggedIn,
+                loginController.idProfessionalLoggedIn,
+                typeEnv,
+                'Cart home');
+
+            pagesConfigC.onTabTapped(2); //index = 2 -> /NotificationsPageProf
+            Get.back();
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(right: 0, left: 0, top: 8, bottom: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: CircleAvatar(
+                  radius: 20, // Tamaño del CircleAvatar
+                  backgroundColor:
+                      colorBottom, // Color de fondo del CircleAvatar
+                  child: Icon(
+                    iconCart, // Icono que deseas mostrar
+                    size: 30, // Tamaño del icono
+                    color: colorVariable, // Color del icono
+                  ),
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    titleCart,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600,
+                        height: 0.4),
+                  ),
+                  Text(
+                    descriptionTitleCart,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

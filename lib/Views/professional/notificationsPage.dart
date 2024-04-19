@@ -25,6 +25,7 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
   @override
   void initState() {
     super.initState();
+
     if (logCont.chargeUserLoggedIn == 'Barbero y Encargado') {
       if (logCont.switchValue == false) //'Barbero'
       {
@@ -35,7 +36,7 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
     } else {
       typeEnv = logCont.chargeUserLoggedIn;
     }
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 5), () {
       notifCont.updateNotifications(
           logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn, typeEnv);
 
@@ -126,8 +127,8 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
                                               color:
                                                   Colors.grey.withOpacity(0.3),
                                               spreadRadius: 1,
-                                              blurRadius: 3,
-                                              offset: const Offset(0,
+                                              blurRadius: 5,
+                                              offset: const Offset(-5,
                                                   5), // Ajusta los valores para personalizar la sombra
                                             ),
                                           ],
@@ -166,7 +167,7 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
                                                 boxShadow: [
                                                   BoxShadow(
                                                     color: Colors.grey
-                                                        .withOpacity(0.7),
+                                                        .withOpacity(0.3),
                                                     spreadRadius: 1,
                                                     blurRadius: 5,
                                                     offset: const Offset(-5,
@@ -223,7 +224,7 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
                                                     boxShadow: [
                                                       BoxShadow(
                                                         color: Colors.grey
-                                                            .withOpacity(0.7),
+                                                            .withOpacity(0.3),
                                                         spreadRadius: 1,
                                                         blurRadius: 5,
                                                         offset: const Offset(-5,

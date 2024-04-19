@@ -129,8 +129,10 @@ class StatisticController extends GetxController {
 
   Future<void> getDataStatisticMen(mes, year) async {
     //todo asi mapea bien
-    print('111111 getDataStatisticDay');
+
     final LoginController controllerLogin = Get.find<LoginController>();
+    print(
+        '111111 getDataStatisticDay -mes:$mes...year:$year..idProf:${controllerLogin.idProfessionalLoggedIn}');
     earningByDaysMen.clear();
     averageEarningsMen = 0.0;
     totalEarningsMen = 0.0;

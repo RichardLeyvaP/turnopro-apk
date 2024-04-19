@@ -707,10 +707,12 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                           if (controllerLogin.codigoQrValid() == true) {
                             //rechazar la eliminacion
                             controllerShoppingCart.setLoading(true);
-                            int result = await contShopp.requestDelete(
-                                contShopp.orderDeleteCar[i].id, 0);
+                            await contShopp.requestDelete2(
+                                contShopp.orderDeleteCar[i].id,
+                                0,
+                                controllerLogin.branchIdLoggedIn!);
                             //aqui mandar notificacion
-                            if (result == 1) {
+                            if (contShopp.orderDeleteCar[i].is_product != 1) {
                               String serviceProduct = 'Servicio';
                               String? nameServiceProduct =
                                   contShopp.orderDeleteCar[i].nameService;
@@ -729,8 +731,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                   'Barbero');
                             }
                             if (controllerLogin.branchIdLoggedIn != null) {
-                              await contShopp.loadOrderDeleteCar(
-                                  controllerLogin.branchIdLoggedIn!);
+                              // await contShopp.loadOrderDeleteCar(
+                              //     controllerLogin.branchIdLoggedIn!);
                               controllerShoppingCart.setLoading(false);
                             }
                           } else {

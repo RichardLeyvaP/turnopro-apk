@@ -214,6 +214,51 @@ class ProductRepository extends GetConnect {
     }
   }
 
+  Future awaitRequestDelete2(id, request_delete, idBranch) async {
+    List<OrderDeleteModel> orderDEL = [];
+    try {
+      var url = '${Env.apiEndpoint}/order2';
+
+      // Parámetros que deseas enviar en la solicitud POST
+      final Map<String, dynamic> body = {
+        'id': id,
+        'request_delete': request_delete,
+        'id_branch': idBranch,
+      };
+
+      final response = await put(url, body);
+      //print('MANDE A ELIMINAR:$body');
+      if (response.statusCode == 200) {
+        print('tambien llegue aqui response.statusCode == 200');
+        final orders = response.body['carOrderDelete'];
+        print(orders);
+        if (orders != null) {
+          for (int i = 0; i < orders.length; i++) {
+            print(
+                'ordya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
+            orders[i].forEach((key, value) {
+              print(
+                  'ordya tengo la cola de la api es estaa $key: ${value.runtimeType}');
+            });
+          }
+          for (Map order in orders) {
+            print('DIO ERROR loadOrderDeleteCarv aqui mapeandooooo');
+            OrderDeleteModel u = OrderDeleteModel.fromJson(jsonEncode(order));
+            orderDEL.add(u);
+            print('DIO ERROR loadOrderDeleteCarv aqui mapeandooooo2222');
+          }
+        }
+        //retornando dos listas
+
+        return orderDEL;
+      } else {
+        return orderDEL;
+      }
+    } catch (e) {
+      return orderDEL;
+    }
+  }
+
   Future<int> orderDeleteCar(id) async {
     try {
       var url = '${Env.apiEndpoint}/order-destroy';
