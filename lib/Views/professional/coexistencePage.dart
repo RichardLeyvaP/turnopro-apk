@@ -57,15 +57,18 @@ class _CoexistencePageState extends State<CoexistencePage> {
                   Expanded(
                     flex: 4,
                     child: topPage(
-                        panddCont: panddCont,
-                        colorCont: colorCont,
-                        borderCont: borderCont,
-                        IconnsBack: IconnsBack,
-                        pagesConfigC: pagesConfigCont,
-                        IconnsP: IconnsP,
-                        title: title,
-                        subTitle: subTitle,
-                        colorIcon: colorIcon),
+                      panddCont: panddCont,
+                      colorCont: colorCont,
+                      borderCont: borderCont,
+                      IconnsBack: IconnsBack,
+                      pagesConfigC: pagesConfigCont,
+                      isPagesConfig: true,
+                      IconnsP: IconnsP,
+                      title: title,
+                      subTitle: subTitle,
+                      colorIcon: colorIcon,
+                      buttonRight: false,
+                    ),
                   ),
                   Expanded(
                       flex:

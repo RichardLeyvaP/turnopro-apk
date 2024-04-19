@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
+import 'package:get/get.dart';
 
 class topPage extends StatelessWidget {
   const topPage({
@@ -9,10 +10,16 @@ class topPage extends StatelessWidget {
     required this.borderCont,
     required this.IconnsBack,
     required this.pagesConfigC,
+    required this.isPagesConfig,
     required this.IconnsP,
     required this.title,
     required this.subTitle,
     required this.colorIcon,
+    required this.buttonRight,
+    this.direccButton,
+    this.textButton,
+    this.colorButton,
+    this.coexContro,
   });
 
   final double panddCont;
@@ -20,10 +27,16 @@ class topPage extends StatelessWidget {
   final double borderCont;
   final IconData IconnsBack;
   final PagesConfigController pagesConfigC;
+  final bool isPagesConfig;
   final IconData IconnsP;
   final String title;
   final String subTitle;
   final Color colorIcon;
+  final bool buttonRight;
+  final String? direccButton;
+  final String? textButton;
+  final Color? colorButton;
+  final dynamic coexContro;
 
   @override
   Widget build(BuildContext context) {
@@ -48,64 +61,129 @@ class topPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                  icon: Icon(
-                    IconnsBack,
-                    color: Color.fromARGB(200, 0, 0, 0),
-                  ),
-                  onPressed: () {
-                    print('estoy entrando aqui...');
-                    pagesConfigC.back();
-                    // Navigator.pop(context);
-                  },
-                ),
-                // Ajusta el espacio según sea necesario
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.white, // Color blanco para el borde
-                            width:
-                                1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                          ),
-                          color: colorIcon,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(IconnsP, size: 40, color: Colors.white),
-                        ),
+                    IconButton(
+                      icon: Icon(
+                        IconnsBack,
+                        color: Color.fromARGB(200, 0, 0, 0),
                       ),
+                      onPressed: () {
+                        print('estoy entrando aqui...');
+                        if (isPagesConfig == true) {
+                          pagesConfigC.back();
+                        } else {
+                          Get.back();
+                        }
+
+                        // Navigator.pop(context);
+                      },
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    // Ajusta el espacio según sea necesario
+                    Row(
                       children: [
-                        Text(
-                          title,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16,
-                              color: Color.fromARGB(200, 0, 0, 0)),
-                        ),
-                        Text(
-                          subTitle,
-                          style: TextStyle(
-                              fontSize: 11,
-                              color: Color.fromARGB(180, 0, 0, 0)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors
+                                        .white, // Color blanco para el borde
+                                    width:
+                                        1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                                  ),
+                                  color: colorIcon,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(12)),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(IconnsP,
+                                      size: 40, color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  title,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16,
+                                      color: Color.fromARGB(200, 0, 0, 0)),
+                                ),
+                                Text(
+                                  subTitle,
+                                  style: TextStyle(
+                                      fontSize: 11,
+                                      color: Color.fromARGB(180, 0, 0, 0)),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ],
                     ),
+
+                    // Añade más widgets o ajusta según sea necesario
                   ],
                 ),
+                buttonRight == true
+                    ? Padding(
+                        padding: const EdgeInsets.only(right: 12.0),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            Get.dialog(
+                              const Center(
+                                child: CircularProgressIndicator(
+                                  color: Color(0xFFFDAE2A),
+                                ),
+                              ),
+                              barrierDismissible: false,
+                            ); //Get.back();s
+                            if (textButton == 'MIS PAGOS') {
+                              await coexContro.fetchEstadistPagos();
+                            }
+                            //AQUI PONER OTRAS CONDICIONES SI ES POSIBLE
 
-                // Añade más widgets o ajusta según sea necesario
+                            Get.back();
+                            Get.toNamed(direccButton!);
+                            //Get.toNamed('/Estadistc2Pagos');
+                          },
+                          style: ButtonStyle(
+                            padding:
+                                MaterialStateProperty.all<EdgeInsetsGeometry>(
+                              const EdgeInsets.symmetric(
+                                vertical: 0,
+                              ),
+                            ),
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(colorButton!),
+                            // MaterialStateProperty.all<Color>(Color(0xFF4470F3)),
+                          ),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  textButton!,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : Container()
               ],
             ),
           ],

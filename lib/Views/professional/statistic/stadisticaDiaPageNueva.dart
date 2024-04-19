@@ -44,165 +44,178 @@ class _LineChartSample2State extends State<LineChartSample2> {
     int i = 0;
     return GetBuilder<StatisticController>(builder: (controllerStat) {
       return SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 8,
-            ),
-            //todo aqui comente el que estaba
+        child: Padding(
+          padding: const EdgeInsets.only(left: 12, right: 12),
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 8,
+                ),
+                //todo aqui comente el que estaba
 
-            Container(
-              width: (MediaQuery.of(context).size.width * 0.95),
-              height: 40,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-                color: Colors.white,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  onTap: () {
-                    _showCalendarModal(context, textContDate);
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0, left: 10),
+                  child: Container(
+                    width: (MediaQuery.of(context).size.width * 0.95),
+                    height: 40,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Color.fromARGB(60, 196, 194, 194),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InkWell(
+                        onTap: () {
+                          _showCalendarModal(context, textContDate);
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  MdiIcons.calendarBlank,
+                                  color: const Color.fromARGB(130, 0, 0, 0),
+                                ),
+                                Text(
+                                  controllerStat.dateRangeDia == ''
+                                      ? '  seleccione una fecha'
+                                      : dateActual ==
+                                              controllerStat.dateRangeDia
+                                          ? '   Fecha de Hoy- $dateAct'
+                                          : controllerStat.dateRangeDia,
+                                  style: const TextStyle(
+                                      color: Color.fromARGB(130, 0, 0, 0)),
+                                ),
+                              ],
+                            ),
+                            Icon(
+                              MdiIcons.arrowDownThin,
+                              color: const Color.fromARGB(130, 0, 0, 0),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                controllerStat.statisticsGeneralDia.isEmpty
+                    ? SizedBox(
+                        height: 540,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 150,
+                            ),
+                            Icon(
+                              Icons.bar_chart_outlined,
+                              size: 40,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            if (startDate1 != null && endDate1 != null) ...[
+                              Text(
+                                'No tiene Estadísticas en',
+                              ),
+                              Text(
+                                '($startDate1 - $endDate1)',
+                              ),
+                            ] else ...[
+                              Text(
+                                'No tiene Estadísticas en',
+                              ),
+                              Text(
+                                ' $dateAct',
+                              )
+                            ]
+                          ],
+                        ),
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            MdiIcons.calendarBlank,
-                            color: const Color.fromARGB(130, 0, 0, 0),
-                          ),
-                          Text(
-                            controllerStat.dateRangeDia == ''
-                                ? '  seleccione una fecha'
-                                : dateActual == controllerStat.dateRangeDia
-                                    ? '   Fecha de Hoy- $dateAct'
-                                    : controllerStat.dateRangeDia,
-                            style: const TextStyle(
-                                color: Color.fromARGB(130, 0, 0, 0)),
+                          Expanded(
+                            child: Container(
+                              height: 540,
+                              width: (MediaQuery.of(context).size.width * 0.95),
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12)),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 12, top: 4, left: 12, bottom: 4),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: controllerStat
+                                      .statisticsGeneralDia.entries
+                                      .map((entry) {
+                                    i++;
+
+                                    print(i);
+
+                                    return SizedBox(
+                                      height:
+                                          (MediaQuery.of(context).size.height *
+                                              0.035),
+                                      width:
+                                          (MediaQuery.of(context).size.width *
+                                              0.95),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Container(
+                                                margin: const EdgeInsets.only(
+                                                    right: 10),
+                                                child: Image(
+                                                  image: AssetImage(
+                                                    direcc[i < 13
+                                                        ? i
+                                                        : (i = 1) - 1],
+                                                  ),
+                                                  color:
+                                                      const Color(0xFFFDAE2A),
+                                                  width: 18,
+                                                  height: 18,
+                                                ),
+                                              ),
+                                              Text(entry.key,
+                                                  style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w500,
+                                                  )),
+                                            ],
+                                          ),
+                                          Text(
+                                            entry.value == null
+                                                ? '0'
+                                                : '${entry.value}',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w800,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                      Icon(
-                        MdiIcons.arrowDownThin,
-                        color: const Color.fromARGB(130, 0, 0, 0),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              ],
             ),
-
-            const SizedBox(
-              height: 10,
-            ),
-            controllerStat.statisticsGeneralDia.isEmpty
-                ? Center(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        const Image(
-                          image: AssetImage('assets/images/imageGrafic.png'),
-                          width: 40,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        if (startDate1 != null && endDate1 != null) ...[
-                          Text(
-                            'No tiene Estadísticas en:',
-                          ),
-                          Text(
-                            '($startDate1 - $endDate1)',
-                          ),
-                        ] else ...[
-                          Text(
-                            'No tiene Estadísticas en:',
-                          ),
-                          Text(
-                            ' $dateAct',
-                          )
-                        ]
-                      ],
-                    ),
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: Container(
-                          width: (MediaQuery.of(context).size.width * 0.95),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(12)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                right: 12, top: 4, left: 12, bottom: 4),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: controllerStat
-                                  .statisticsGeneralDia.entries
-                                  .map((entry) {
-                                i++;
-
-                                print(i);
-
-                                return SizedBox(
-                                  height: (MediaQuery.of(context).size.height *
-                                      0.039),
-                                  width: (MediaQuery.of(context).size.width *
-                                      0.95),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 10),
-                                            child: Image(
-                                              image: AssetImage(
-                                                direcc[
-                                                    i < 13 ? i : (i = 1) - 1],
-                                              ),
-                                              color: const Color(0xFFFDAE2A),
-                                              width: 20,
-                                              height: 20,
-                                            ),
-                                          ),
-                                          Text(entry.key,
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                              )),
-                                        ],
-                                      ),
-                                      Text(
-                                        entry.value == null
-                                            ? '0'
-                                            : '${entry.value}',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-          ],
+          ),
         ),
       );
     });

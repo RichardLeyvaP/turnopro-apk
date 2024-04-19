@@ -5,6 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:soundpool/soundpool.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
+import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/notification_model.dart';
 import 'package:turnopro_apk/get_connect/repository/notification.repository.dart';
 import 'package:uuid/uuid.dart';
@@ -148,6 +149,192 @@ class NotificationController extends GetxController {
     );
   }
   //todo/****AQUI LO DE LAS NOTIFICACIONES LOCALES****/
+
+  Future<void> professionalBranchNotifQueque(
+      idBranch, idProfe, type, msj) async {
+    final ClientsScheduledController clientCon =
+        Get.find<ClientsScheduledController>();
+    List<ClientsScheduledModel> clientsAux = [];
+    print('qwerc SII mandar ->NOTIFICACIONES-$msj');
+    print('12345llamada timer estoy en CAntidad de Notificaciones-$type');
+    print(
+        'llamada timer ...tipo:$type......idSucursal:$idBranch......iProf:$idProfe');
+    try {
+      Map<String, dynamic> resultList = await repository
+          .professionalBranchNotifQueque(idBranch, idProfe, type);
+      bool siHayEliminarService = false;
+
+      if (resultList.containsKey('Erroor') && resultList['Erroor'] == true) {
+        print(
+            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor, el error fue en Future<void> fetchNotificationList');
+      } else if (resultList.containsKey('notificationList') &&
+          resultList.containsKey('notificationListNew')) {
+        notification = resultList['notificationList'];
+
+        notificationListLength = notification.length;
+
+        notificationListNew = resultList['notificationListNew'];
+        notificationListNewLength = notificationListNew.length;
+
+        notificationListNew.forEach((element) async {
+          if (element.state == 0) {
+            if (!notificationListNewSounded.contains(element.id)) {
+              notificationListNewSounded.add(element.id);
+              scheduleNotification(element.tittle, element.description);
+            }
+          }
+
+          //SI HAY QUE ELIMINAR TIEMPO DEL RELOJ
+          if (element.state == 3 &&
+              element.tittle == 'Aceptada Eliminación de Servicio') {
+            print('modificar time de mm 1 estoy aqui en el forEach');
+            String textoCompleto = element.description;
+            // String descripcion =
+            //     textoCompleto.split('.')[0]; // Obtener la descripción
+            // Obtener el segundo número (999)
+            String numeroOcultoString = textoCompleto
+                .split('.')[1]
+                .trim(); // Obtener la parte después del punto y eliminar espacios en blanco
+            int idReservation =
+                int.parse(numeroOcultoString); // Convertir a entero
+            controllerclient.watchModifyTimeRest(idReservation,
+                textoCompleto); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
+            updateNotifications2(idBranch, idProfe,
+                element.id); //aqui es para no repetir esto y lo pongo en 0
+
+            //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
+            //DESCONTAR EL TIEMPO AL RELOJ
+            //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
+            siHayEliminarService = true;
+          }
+        });
+        if (siHayEliminarService ==
+            true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+        {
+          controllerclient.setActiveModifyTimeRest(true);
+        }
+//fin de trabajo de notificaciones
+//aqui empiza la asignacion de la cola
+
+        clientCon.correctConnection = true;
+        //aqui estoy guardando la cola del dia de hoy del profesional
+        List<ClientsScheduledModel>? clientsScheduledListAUX = [];
+        List<ClientsScheduledModel>? clientsScheduledListAUX2 = [];
+
+        clientsScheduledListAUX = (resultList['clientList'] ?? []).cast<
+            ClientsScheduledModel>(); //aqui estoy guardando la cola del dia de hoy del profesional
+        clientsScheduledListAUX2 =
+            (resultList['clientListSig'] ?? []).cast<ClientsScheduledModel>();
+        if (clientsScheduledListAUX != null &&
+            clientsScheduledListAUX2 != null) {
+          clientCon.clientsScheduledList = clientsScheduledListAUX;
+
+          clientCon.clientsScheduledListLength =
+              clientCon.clientsScheduledList.length;
+          print(
+              'llamada timer Cantidad de Clientes :${clientCon.clientsScheduledListLength}');
+          clientsAux = clientsScheduledListAUX2;
+          clientCon.clientsScheduledListLengthTail = clientsAux.length;
+          print(
+              'llamando a buscar clientes - BIEN4-clientsScheduledList.length:${clientCon.clientsScheduledList.length}');
+
+          //
+          //  if (closeIesperado == true) //es que cerró inesperadamente
+          {
+            if (resultList.containsKey('attendingClient')) {
+              List<Map>? attendingClientList = resultList['attendingClient'];
+              //aqui es donde tiene que entrar solamente si se loguea
+              if (controllerLogin.isLoggingIn == true) {
+                print(
+                    'EL TIEMPO clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn}) { entre poque vine del login ');
+
+                clientCon.logicaInesperada(attendingClientList);
+                controllerLogin.setIsLoggingIn(false);
+              } else {
+                print(
+                    'clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn})  NOOO ');
+              }
+            } else {
+              // La clave 'attendingClient' no está presente en el mapa
+              print(
+                  '!!!!!!!!!!!!!!!!!!!!La clave "attendingClient" no está presente en el mapa.');
+            }
+          }
+
+          //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+          clientCon.clientsScheduledNext = resultList['nextClient'];
+          clientCon.quantityClientAttended =
+              resultList['quantityClientAttended'];
+          clientCon.varClientsWaiting = resultList['varclientswaiting'];
+          if (clientCon.quantityClientAttended == 0) {
+            clientCon.clientsAttended = 'nobody';
+          }
+
+          if (clientCon.clientsScheduledNext != null) {
+            int idCar = clientCon.clientsScheduledNext!.car_id;
+            await clientCon.searchForCustomerServices(idCar);
+            await clientCon.filterShowNext();
+            //  setValueClock(true);
+          } else {
+            print('if (clientsScheduledNext != null) ESTOY DANDO null');
+            //  setValueClock(false);
+          }
+        }
+//aqui empiza la asignacion de la cola
+
+        update();
+      } else if (resultList.containsKey('notificationListEncarg') &&
+          resultList.containsKey('notificationListNewEncarg')) {
+        print('ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador');
+        notificationEncarg = resultList['notificationListEncarg'];
+
+        notificationListLengthEncarg = notificationEncarg.length;
+
+        notificationListNewEncarg = resultList['notificationListNewEncarg'];
+        notificationListNewLengthEncarg = notificationListNewEncarg.length;
+        print(
+            'ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador - notificationListNewLengthEncarg:${notificationEncarg.length}');
+
+        notificationListNewEncarg.forEach((element) async {
+          if (element.state == 3 &&
+              element.tittle == 'Aceptada Eliminación de Servicio') {
+            print('modificar time de mm 1 estoy aqui en el forEach');
+            String textoCompleto = element.description;
+            // String descripcion =
+            //     textoCompleto.split('.')[0]; // Obtener la descripción
+            // Obtener el segundo número (999)
+            String numeroOcultoString = textoCompleto
+                .split('.')[1]
+                .trim(); // Obtener la parte después del punto y eliminar espacios en blanco
+            int idReservation =
+                int.parse(numeroOcultoString); // Convertir a entero
+            controllerclient.watchModifyTimeRest(idReservation,
+                textoCompleto); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
+            updateNotifications2(idBranch, idProfe,
+                element.id); //aqui es para no repetir esto y lo pongo en 0
+
+            //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
+            //DESCONTAR EL TIEMPO AL RELOJ
+            //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
+            siHayEliminarService = true;
+          }
+        });
+        if (siHayEliminarService ==
+            true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+        {
+          controllerclient.setActiveModifyTimeRest(true);
+        }
+
+        update();
+      }
+      controllerLogin.setIsLoadingFor(false);
+    } catch (e) {
+      controllerLogin.setIsLoadingFor(false);
+      // Manejo de errores
+      print('Error al obtener la lista de notificaciones: $e');
+    }
+  }
+//todo/****AQUI LO DE LAS NOTIFICACIONES LOCALES****/
 
   Future<void> fetchNotificationList(idBranch, idProfe, type, msj) async {
     print('qwerc SII mandar ->NOTIFICACIONES-$msj');

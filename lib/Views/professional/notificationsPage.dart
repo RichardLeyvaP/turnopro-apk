@@ -87,10 +87,12 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
                         borderCont: borderCont,
                         IconnsBack: IconnsBack,
                         pagesConfigC: pagesConfigCont,
+                        isPagesConfig: true,
                         IconnsP: IconnsP,
                         title: title,
                         subTitle: subTitle,
-                        colorIcon: colorIcon),
+                        colorIcon: colorIcon,
+                        buttonRight: false),
                   ),
                   Expanded(
                       flex:

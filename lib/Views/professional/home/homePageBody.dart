@@ -185,9 +185,6 @@ class _HomePageBodyState extends State<HomePageBody>
 //
     WidgetsBinding.instance.addPostFrameCallback((_) {
       llamadasTimer1();
-      llamadasTimer2();
-      llamadasTimer();
-      llamadasTimer3();
     });
   }
 
@@ -199,10 +196,8 @@ class _HomePageBodyState extends State<HomePageBody>
     clientsScheduledController.animationController3!.dispose();
     clientsScheduledController.animationController4!.dispose();
     // channel.sink.close();
-    _timer?.cancel();
+
     _timer1?.cancel();
-    _timer2?.cancel();
-    _timer3?.cancel();
 
     super.dispose();
   }
@@ -499,182 +494,152 @@ class _HomePageBodyState extends State<HomePageBody>
     }
   }
 
-  Timer? _timer;
   Timer? _timer1;
-  Timer? _timer2;
-  Timer? _timer3;
 
   llamadasTimer1() {
-    print('cargando aqui-4');
-    print('llamada timer 1');
-
     _timer1 = //notificaciones
-        Timer.periodic(const Duration(seconds: 13), (Timer timer) async {
-      print('llamada timer 1 - 5segundos');
+        Timer.periodic(const Duration(seconds: 10), (Timer timer) async {
+      print('llamada timer en 10 segundos');
       if (loginController.idProfessionalLoggedIn != null &&
           loginController.branchIdLoggedIn != null &&
           (loginController.chargeUserLoggedIn == "Barbero" ||
               (loginController.chargeUserLoggedIn == "Barbero y Encargado"))) {
         //await Future.delayed(Duration(seconds: 1));
         //Buscar notificaciones
-        notiController.fetchNotificationList(
-            loginController.branchIdLoggedIn,
-            loginController.idProfessionalLoggedIn,
-            'Barbero',
-            'llamadasTimer1');
-      }
-    });
-  }
+        //variables
+        int idBranch = loginController.branchIdLoggedIn!;
+        int idProfe = loginController.idProfessionalLoggedIn!;
+        String type = 'Barbero';
+        String msj = 'llamadasTimer1';
 
-  llamadasTimer2() {
-    print('cargando aqui-5');
-    print('llamada timer 2');
+        notiController.professionalBranchNotifQueque(
+            idBranch, idProfe, type, msj);
 
-    _timer2 = //Clientes
-        Timer.periodic(const Duration(seconds: 19), (Timer timer) async {
-      print('llamada timer 2 - 11segundos');
-      if (loginController.idProfessionalLoggedIn != null &&
-          loginController.branchIdLoggedIn != null &&
-          (loginController.chargeUserLoggedIn == "Barbero" ||
-              (loginController.chargeUserLoggedIn == "Barbero y Encargado"))) {
-        // await Future.delayed(Duration(seconds: 1));
-        // Buscar clientes
-
-        await clientsScheduledController.fetchClientsScheduled(
-            loginController.idProfessionalLoggedIn,
-            loginController.branchIdLoggedIn,
-            'timer2');
-        // await Future.delayed(Duration(seconds: 2));
-
-        //guardar datos de los relojes en la db
-        await clientsScheduledController.upadateVariablesValueTimers();
-        //  await Future.delayed(Duration(seconds: 2));
-        //saber si hay que parar o reaunudar algun reloj
-        for (var i = 0;
-            i < clientsScheduledController.clientsScheduledList.length;
-            i++) {
-          int clock = 0;
-          if (clientsScheduledController.clientsScheduledList[i].attended ==
-              11) {
-            int reservationId = clientsScheduledController
-                .clientsScheduledList[i].reservation_id;
-            clock =
-                await clientsScheduledController.getValueClockDb(reservationId);
-            if (clock == 1) {
-              print('activando el Clock - 1');
-              clientsScheduledController.animationController1!.forward();
-              clientsScheduledController.acceptOrRejectClient(
-                  reservationId, 111);
-              clientsScheduledController.pauseResumeClock((clock - 1), -99);
-            }
-            if (clock == 2) {
-              print('activando el Clock - 2');
-              clientsScheduledController.animationController2!.forward();
-              clientsScheduledController.acceptOrRejectClient(
-                  reservationId, 111);
-              clientsScheduledController.pauseResumeClock((clock - 1), -99);
-            }
-            if (clock == 3) {
-              print('activando el Clock - 3');
-              clientsScheduledController.animationController3!.forward();
-              clientsScheduledController.acceptOrRejectClient(
-                  reservationId, 111);
-              clientsScheduledController.pauseResumeClock((clock - 1), -99);
-            }
-            if (clock == 4) {
-              print('activando el Clock - 4');
-              clientsScheduledController.animationController4!.forward();
-              clientsScheduledController.acceptOrRejectClient(
-                  reservationId, 111);
-              clientsScheduledController.pauseResumeClock((clock - 1), -99);
-            }
-          } //fin del if
+        //lo que llamaba el timer 2
+        print('llamada timer 2 - 11segundos');
+        if (loginController.idProfessionalLoggedIn != null &&
+            loginController.branchIdLoggedIn != null &&
+            (loginController.chargeUserLoggedIn == "Barbero" ||
+                (loginController.chargeUserLoggedIn ==
+                    "Barbero y Encargado"))) {
+          //guardar datos de los relojes en la db
+          await clientsScheduledController.upadateVariablesValueTimers();
+          //  await Future.delayed(Duration(seconds: 2));
+          //saber si hay que parar o reaunudar algun reloj
+          for (var i = 0;
+              i < clientsScheduledController.clientsScheduledList.length;
+              i++) {
+            int clock = 0;
+            if (clientsScheduledController.clientsScheduledList[i].attended ==
+                11) {
+              int reservationId = clientsScheduledController
+                  .clientsScheduledList[i].reservation_id;
+              clock = await clientsScheduledController
+                  .getValueClockDb(reservationId);
+              if (clock == 1) {
+                print('activando el Clock - 1');
+                clientsScheduledController.animationController1!.forward();
+                clientsScheduledController.acceptOrRejectClient(
+                    reservationId, 111);
+                clientsScheduledController.pauseResumeClock((clock - 1), -99);
+              }
+              if (clock == 2) {
+                print('activando el Clock - 2');
+                clientsScheduledController.animationController2!.forward();
+                clientsScheduledController.acceptOrRejectClient(
+                    reservationId, 111);
+                clientsScheduledController.pauseResumeClock((clock - 1), -99);
+              }
+              if (clock == 3) {
+                print('activando el Clock - 3');
+                clientsScheduledController.animationController3!.forward();
+                clientsScheduledController.acceptOrRejectClient(
+                    reservationId, 111);
+                clientsScheduledController.pauseResumeClock((clock - 1), -99);
+              }
+              if (clock == 4) {
+                print('activando el Clock - 4');
+                clientsScheduledController.animationController4!.forward();
+                clientsScheduledController.acceptOrRejectClient(
+                    reservationId, 111);
+                clientsScheduledController.pauseResumeClock((clock - 1), -99);
+              }
+            } //fin del if
+          }
         }
-      }
-    });
-  }
+        //lo que llamaba el timer 2
 
-  llamadasTimer() {
-    print('cargando aqui-6');
-    // Cancela cualquier temporizador existente para evitar duplicaciones
+        //ESTO ES LO QUE LLAMABA EL TIMER
+        if (loginController.idProfessionalLoggedIn != null &&
+            loginController.branchIdLoggedIn != null &&
+            (loginController.chargeUserLoggedIn == "Barbero" ||
+                (loginController.chargeUserLoggedIn ==
+                    "Barbero y Encargado"))) {
+          //en este caso son 3 minutos que esta definido en el controlador
+          //aqui verifico si se esta acabando algun servico para mandar una notificacion
+          //  await Future.delayed(Duration(seconds: 1));
+          verifyingClockTime(clientsScheduledController,
+              clientsScheduledController.endingTime);
+        }
+        //ESTO ES LO QUE LLAMABA EL TIMER
 
-    int endingtime = 1;
-
-    // Establece un temporizador que llama a la función cada 20 segundos
-    _timer = Timer.periodic(const Duration(seconds: 31), (Timer timer) async {
-      print('llamando a buscar clientes - ENTRANDO A TIMER en 2segundos');
-      if (loginController.idProfessionalLoggedIn != null &&
-          loginController.branchIdLoggedIn != null &&
-          (loginController.chargeUserLoggedIn == "Barbero" ||
-              (loginController.chargeUserLoggedIn == "Barbero y Encargado"))) {
-        //en este caso son 3 minutos que esta definido en el controlador
-        //aqui verifico si se esta acabando algun servico para mandar una notificacion
-        //  await Future.delayed(Duration(seconds: 1));
-        verifyingClockTime(
-            clientsScheduledController, clientsScheduledController.endingTime);
-      }
-    });
-  }
-
-  llamadasTimer3() {
-    print('cargando aqui-7');
-    // Cancela cualquier temporizador existente para evitar duplicaciones
-
-    // Establece un temporizador que llama a la función cada 20 segundos
-    _timer3 = Timer.periodic(const Duration(seconds: 17), (Timer timer) async {
-      print('llamando a buscar clientes - ENTRANDO A TIMER en 2segundos');
-      if (loginController.idProfessionalLoggedIn != null &&
-          loginController.branchIdLoggedIn != null &&
-          (loginController.chargeUserLoggedIn == "Barbero" ||
-              (loginController.chargeUserLoggedIn == "Barbero y Encargado"))) {
-        //en este caso son 3 minutos que esta definido en el controlador
-        //aqui verifico si se esta acabando algun servico para mandar una notificacion
-        //
-        // await Future.delayed(Duration(seconds: 2));
-        if ((clientsScheduledController.varClientsWaiting == true) &&
-            (loginController.usserPermissionQr == 1)) {
-          print('esteeeeee se cumplio que puede atender ..aqui entrandoya');
-          if (clientsScheduledController
-                  .animationControllerInitial!.isAnimating &&
-              clientsScheduledController.cantClientWait !=
-                  clientsScheduledController.clientsScheduledListLength) {
-            // La animación está activa (en progreso)
-            if (clientsScheduledController.contClientsWaiting == 10) {
-              print('esteeeeee varClientsWaiting Mande la notificacion ya');
-              //aqui llamar e insertar en las notificaciones
-              notiController.storeNotification(
-                  'Clientes en cola',
-                  loginController.branchIdLoggedIn,
-                  loginController.idProfessionalLoggedIn,
-                  'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!',
-                  'Barbero');
-              scheduleNotification(
-                  '!Alerta', 'Recuerda que tienes clientes en cola');
-              //para controlar que con este cliente solo le avise una vez
-              clientsScheduledController.setContClientsWaiting(20);
-              clientsScheduledController.setcantClientWait(
-                  clientsScheduledController.clientsScheduledListLength);
-            }
-            if (clientsScheduledController.contClientsWaiting == 10) {
-              print(
-                  'entando en 10 segundos aqui para insertar el tiempo si hubiera reloj activo');
-            } else if (clientsScheduledController.contClientsWaiting ==
-                100) //si llega a 100 mando que sea 20 de nuevo para q no pase de los valores del entero y tener un control mejor de el
-            {
-              clientsScheduledController.setContClientsWaiting(20);
+        //ESTO ES LO QUE LLAMABA EL TIMER 3
+        if (loginController.idProfessionalLoggedIn != null &&
+            loginController.branchIdLoggedIn != null &&
+            (loginController.chargeUserLoggedIn == "Barbero" ||
+                (loginController.chargeUserLoggedIn ==
+                    "Barbero y Encargado"))) {
+          //en este caso son 3 minutos que esta definido en el controlador
+          //aqui verifico si se esta acabando algun servico para mandar una notificacion
+          //
+          // await Future.delayed(Duration(seconds: 2));
+          if ((clientsScheduledController.varClientsWaiting == true) &&
+              (loginController.usserPermissionQr == 1)) {
+            print('esteeeeee se cumplio que puede atender ..aqui entrandoya');
+            if (clientsScheduledController
+                    .animationControllerInitial!.isAnimating &&
+                clientsScheduledController.cantClientWait !=
+                    clientsScheduledController.clientsScheduledListLength) {
+              // La animación está activa (en progreso)
+              if (clientsScheduledController.contClientsWaiting == 10) {
+                print('esteeeeee varClientsWaiting Mande la notificacion ya');
+                //aqui llamar e insertar en las notificaciones
+                notiController.storeNotification(
+                    'Clientes en cola',
+                    loginController.branchIdLoggedIn,
+                    loginController.idProfessionalLoggedIn,
+                    'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!',
+                    'Barbero');
+                scheduleNotification(
+                    '!Alerta', 'Recuerda que tienes clientes en cola');
+                //para controlar que con este cliente solo le avise una vez
+                clientsScheduledController.setContClientsWaiting(20);
+                clientsScheduledController.setcantClientWait(
+                    clientsScheduledController.clientsScheduledListLength);
+              }
+              if (clientsScheduledController.contClientsWaiting == 10) {
+                print(
+                    'entando en 10 segundos aqui para insertar el tiempo si hubiera reloj activo');
+              } else if (clientsScheduledController.contClientsWaiting ==
+                  100) //si llega a 100 mando que sea 20 de nuevo para q no pase de los valores del entero y tener un control mejor de el
+              {
+                clientsScheduledController.setContClientsWaiting(20);
+              } else {
+                clientsScheduledController
+                    .setContClientsWaiting(-91119); //sumo 1
+              }
             } else {
-              clientsScheduledController.setContClientsWaiting(-91119); //sumo 1
+              clientsScheduledController
+                  .setContClientsWaiting(-90009); //inicializo nuevamente a 0
+              // La animación está detenida
             }
           } else {
             clientsScheduledController
                 .setContClientsWaiting(-90009); //inicializo nuevamente a 0
-            // La animación está detenida
           }
-        } else {
-          clientsScheduledController
-              .setContClientsWaiting(-90009); //inicializo nuevamente a 0
+          //
         }
-        //
+        //ESTO ES LO QUE LLAMABA EL TIMER 3
       }
     });
   }

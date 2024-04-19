@@ -3,8 +3,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/Views/common/topPage.dart';
 import 'package:turnopro_apk/env.dart';
 
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -21,6 +23,17 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
       Get.find<PagesConfigController>();
   final double valuePadding = 12;
 
+  /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+  final IconnsBack = Icons.arrow_back;
+  final IconnsP = MdiIcons.bellBadgeOutline;
+  String title = 'Clientes Atendidos';
+  String subTitle = 'Clientes Atendidos';
+  final colorCont = Colors.white;
+  double panddCont = 8;
+  double borderCont = 12;
+  final colorIcon = Color(0xFFFF6750);
+  /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+
   @override
   Widget build(BuildContext context) {
     final double heightScreen = MediaQuery.of(context).size.height;
@@ -31,43 +44,6 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
     //DECLARACION DE VARIABLES
     const double borderRadiusValue = 12;
     return Scaffold(
-      appBar: AppBar(
-        // leading: Row(
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   children: [
-        //     IconButton(
-        //       icon: const Icon(Icons.arrow_back),
-        //       onPressed: () {
-        //         pagesConfigCont.back();
-        //         // Navigator.pop(context);
-        //       },
-        //     ),
-        //   ],
-        // ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Column(
-              children: [
-                Icon(
-                  Icons.person,
-                  size: 55,
-                ),
-                Text(
-                  'Clientes Atendidos',
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
-                ),
-              ],
-            ),
-            SizedBox(
-              width: (MediaQuery.of(context).size.width * 0.14),
-            ),
-          ],
-        ),
-        //actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
-        elevation: 0, // Quits the shadow
-        //shadowColor: Colors.amber, // Removes visual elevation
-      ),
       backgroundColor: const Color.fromARGB(255, 231, 232, 234),
       body: GetBuilder<CoexistenceController>(builder: (_) {
         return _.isLoading
@@ -75,29 +51,35 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                 child: CircularProgressIndicator(
                 color: Color(0xFFFDAE2A),
               ))
-            : _.estadist1Length > 0
-                ? Container(
-                    color: Color.fromARGB(255, 231, 232, 234),
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Expanded(
-                          flex:
-                              heightFlexBody, // 85% del espacio disponible para esta parte
-                          child: ListView.builder(
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 4,
+                    child: topPage(
+                        panddCont: panddCont,
+                        colorCont: colorCont,
+                        borderCont: borderCont,
+                        IconnsBack: IconnsBack,
+                        pagesConfigC: pagesConfigCont,
+                        isPagesConfig: false,
+                        IconnsP: IconnsP,
+                        title: title,
+                        subTitle: subTitle,
+                        colorIcon: colorIcon,
+                        buttonRight: false),
+                  ),
+                  Expanded(
+                      flex:
+                          heightFlexBody, // 85% del espacio disponible para esta parte
+                      child: _.estadist1Length > 0
+                          ? ListView.builder(
+                              padding: EdgeInsets
+                                  .zero, // Elimina cualquier padding del ListView
                               itemCount: _.estadist1Length,
                               itemBuilder: (context, index) => Padding(
-                                    padding: EdgeInsets.fromLTRB(
-                                        (MediaQuery.of(context).size.height *
-                                            0.013),
-                                        (MediaQuery.of(context).size.height *
-                                            0.006),
-                                        (MediaQuery.of(context).size.height *
-                                            0.013),
-                                        (MediaQuery.of(context).size.height *
-                                            0.006)),
+                                    padding:
+                                        EdgeInsets.fromLTRB(10, 10, 10, 10),
                                     child: FittedBox(
                                       fit: BoxFit.contain,
                                       child: Row(
@@ -533,24 +515,22 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                         ],
                                       ),
                                     ),
-                                  )),
-                        ),
-                      ],
-                    ),
-                  )
-                : const Center(
-                    //*AQUI ESTA EL CODIGO DE CUANDO NO HAY Convivencias
-                    child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('No hay Clientes Atendidos'),
-                        ],
-                      ),
-                    ],
-                  ));
+                                  ))
+                          : const Center(
+                              //*AQUI ESTA EL CODIGO DE CUANDO NO HAY Convivencias
+                              child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('No hay Clientes Atendidos'),
+                                  ],
+                                ),
+                              ],
+                            ))),
+                ],
+              );
       }),
     );
   }

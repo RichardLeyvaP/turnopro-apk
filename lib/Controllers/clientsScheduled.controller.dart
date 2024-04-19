@@ -1104,8 +1104,6 @@ class ClientsScheduledController extends GetxController {
         print('llamando a buscar clientes - ERROR2');
         print('qwerc SII mandar ->MAL-${clientsScheduledList.length}');
       } else {
-        print('llamando a buscar clientes - BIEN3');
-        print('con contador en 8 llamo la funcion3');
         correctConnection = true;
         //aqui estoy guardando la cola del dia de hoy del profesional
         List<ClientsScheduledModel>? clientsScheduledListAUX = [];

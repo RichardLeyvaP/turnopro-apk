@@ -776,7 +776,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     )
                   ],

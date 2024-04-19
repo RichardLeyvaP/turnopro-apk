@@ -101,10 +101,12 @@ class YourPageViewScreenState extends State<HomePageView> {
                                         borderCont: borderCont,
                                         IconnsBack: IconnsBack,
                                         pagesConfigC: pagesConfigC,
+                                        isPagesConfig: true,
                                         IconnsP: IconnsP,
                                         title: title,
                                         subTitle: subTitle,
-                                        colorIcon: colorIcon),
+                                        colorIcon: colorIcon,
+                                        buttonRight: false),
                                   ),
                                   loginController.setIsLoading2 == true
                                       ? Container(
