@@ -22,8 +22,6 @@ class _CoexistencePageState extends State<CoexistencePage> {
       Get.find<PagesConfigController>();
   final double valuePadding = 12;
 
-  final String imageDirection = 'assets/images/image_perfil.jpg';
-
   /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
   final IconnsBack = Icons.arrow_back;
   final IconnsP = MdiIcons.starOutline;

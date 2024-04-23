@@ -316,7 +316,7 @@ class ShoppingCartController extends GetxController {
         //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
         getTotalServicesProduct_Sum(type, priceProduct);
         //actualizar los productos pasando el id de la categoria
-        productCont.fetchproductList(index);
+        await productCont.fetchproductList(index);
         shoppingCart += 1;
         update();
       }

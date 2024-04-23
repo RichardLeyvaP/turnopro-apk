@@ -88,7 +88,7 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                             height: (MediaQuery.of(context)
                                                     .size
                                                     .height *
-                                                0.40),
+                                                0.63),
                                             width: (MediaQuery.of(context)
                                                     .size
                                                     .width *
@@ -227,14 +227,21 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                           width:
                                                                               10,
                                                                         ),
-                                                                        Text(
-                                                                          _.estadist1[index]
-                                                                              .clientName
-                                                                              .toString(),
-                                                                          style: const TextStyle(
-                                                                              fontSize: 18,
-                                                                              color: Colors.black,
-                                                                              fontWeight: FontWeight.w700),
+                                                                        Column(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          children: [
+                                                                            Text(
+                                                                              _.estadist1[index].clientName.toString(),
+                                                                              style: const TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w700),
+                                                                            ),
+                                                                            Text(
+                                                                              _.estadist1[index].date.toString(),
+                                                                              maxLines: 2, // Limita el texto a 2 líneas
+                                                                              overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                              style: const TextStyle(fontSize: 10, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
+                                                                            ),
+                                                                          ],
                                                                         ),
                                                                       ],
                                                                     ),
@@ -283,104 +290,6 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                           .spaceBetween,
                                                                   children: [
                                                                     Text(
-                                                                        'Cantidad Ganada',
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                16,
-                                                                            color: Color.fromARGB(
-                                                                                255,
-                                                                                0,
-                                                                                0,
-                                                                                0),
-                                                                            fontWeight:
-                                                                                FontWeight.w700)),
-                                                                    Text(
-                                                                      _.estadist1[index]
-                                                                          .amountWin
-                                                                          .toString(),
-                                                                      maxLines:
-                                                                          2, // Limita el texto a 2 líneas
-
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis, // Agrega los tres puntos suspensivos
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              0,
-                                                                              0,
-                                                                              0),
-                                                                          fontWeight:
-                                                                              FontWeight.w700),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
-                                                                        'Monto total'),
-                                                                    Text(
-                                                                      _.estadist1[index]
-                                                                          .amountTotal
-                                                                          .toString(),
-                                                                      maxLines:
-                                                                          2, // Limita el texto a 2 líneas
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis, // Agrega los tres puntos suspensivos
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          color: Color.fromARGB(
-                                                                              148,
-                                                                              0,
-                                                                              0,
-                                                                              0),
-                                                                          fontWeight:
-                                                                              FontWeight.w700),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
-                                                                        'Tiempo de Servicio'),
-                                                                    Text(
-                                                                      _.estadist1[index]
-                                                                          .time
-                                                                          .toString(),
-                                                                      maxLines:
-                                                                          2, // Limita el texto a 2 líneas
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis, // Agrega los tres puntos suspensivos
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          color: Color.fromARGB(
-                                                                              148,
-                                                                              0,
-                                                                              0,
-                                                                              0),
-                                                                          fontWeight:
-                                                                              FontWeight.w700),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
                                                                         'Elección'),
                                                                     Text(
                                                                       _.estadist1[index]
@@ -410,7 +319,36 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                           .spaceBetween,
                                                                   children: [
                                                                     Text(
-                                                                        'Servicios Especiales'),
+                                                                        'Cantidad de servicios'),
+                                                                    Text(
+                                                                      _.estadist1[index]
+                                                                          .Services
+                                                                          .toString(),
+                                                                      maxLines:
+                                                                          2, // Limita el texto a 2 líneas
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          color: Color.fromARGB(
+                                                                              148,
+                                                                              0,
+                                                                              0,
+                                                                              0),
+                                                                          fontWeight:
+                                                                              FontWeight.w700),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                        'Servicios especiales'),
                                                                     Text(
                                                                       _.estadist1[index]
                                                                           .serviceSpecial
@@ -439,39 +377,10 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                           .spaceBetween,
                                                                   children: [
                                                                     Text(
-                                                                        'Ganancia Especial'),
+                                                                        'Servicios regulares'),
                                                                     Text(
                                                                       _.estadist1[index]
-                                                                          .specialAmount
-                                                                          .toString(),
-                                                                      maxLines:
-                                                                          2, // Limita el texto a 2 líneas
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis, // Agrega los tres puntos suspensivos
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          color: Color.fromARGB(
-                                                                              148,
-                                                                              0,
-                                                                              0,
-                                                                              0),
-                                                                          fontWeight:
-                                                                              FontWeight.w700),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
-                                                                        'Fecha'),
-                                                                    Text(
-                                                                      _.estadist1[index]
-                                                                          .date
+                                                                          .serviceRegular
                                                                           .toString(),
                                                                       maxLines:
                                                                           2, // Limita el texto a 2 líneas
@@ -515,6 +424,307 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                               16,
                                                                           color: Color.fromARGB(
                                                                               148,
+                                                                              0,
+                                                                              0,
+                                                                              0),
+                                                                          fontWeight:
+                                                                              FontWeight.w700),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                        'Tiempo de servicio'),
+                                                                    Text(
+                                                                      _.estadist1[index]
+                                                                          .time
+                                                                          .toString(),
+                                                                      maxLines:
+                                                                          2, // Limita el texto a 2 líneas
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          color: Color.fromARGB(
+                                                                              148,
+                                                                              0,
+                                                                              0,
+                                                                              0),
+                                                                          fontWeight:
+                                                                              FontWeight.w700),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                        'Cantidad de productos'),
+                                                                    Text(
+                                                                      _.estadist1[index]
+                                                                          .Products
+                                                                          .toString(),
+                                                                      maxLines:
+                                                                          2, // Limita el texto a 2 líneas
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          color: Color.fromARGB(
+                                                                              148,
+                                                                              0,
+                                                                              0,
+                                                                              0),
+                                                                          fontWeight:
+                                                                              FontWeight.w700),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                        'Ganancia Especial'),
+                                                                    Text(
+                                                                      _.estadist1[index]
+                                                                          .SpecialAmount
+                                                                          .toString(),
+                                                                      maxLines:
+                                                                          2, // Limita el texto a 2 líneas
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          color: Color.fromARGB(
+                                                                              148,
+                                                                              0,
+                                                                              0,
+                                                                              0),
+                                                                          fontWeight:
+                                                                              FontWeight.w700),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                        'Total de servicio'),
+                                                                    Text(
+                                                                      _.estadist1[index]
+                                                                          .totalServices
+                                                                          .toString(),
+                                                                      maxLines:
+                                                                          2, // Limita el texto a 2 líneas
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          color: Color.fromARGB(
+                                                                              148,
+                                                                              0,
+                                                                              0,
+                                                                              0),
+                                                                          fontWeight:
+                                                                              FontWeight.w700),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                        'Total de productos'),
+                                                                    Text(
+                                                                      _.estadist1[index]
+                                                                          .totalProducts
+                                                                          .toString(),
+                                                                      maxLines:
+                                                                          2, // Limita el texto a 2 líneas
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          color: Color.fromARGB(
+                                                                              148,
+                                                                              0,
+                                                                              0,
+                                                                              0),
+                                                                          fontWeight:
+                                                                              FontWeight.w700),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                        'Total General'),
+                                                                    Text(
+                                                                      _.estadist1[index]
+                                                                          .totalGeneral
+                                                                          .toString(),
+                                                                      maxLines:
+                                                                          2, // Limita el texto a 2 líneas
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          color: Color.fromARGB(
+                                                                              148,
+                                                                              0,
+                                                                              0,
+                                                                              0),
+                                                                          fontWeight:
+                                                                              FontWeight.w700),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                        'Propina'),
+                                                                    Text(
+                                                                      _.estadist1[index]
+                                                                          .tips
+                                                                          .toString(),
+                                                                      maxLines:
+                                                                          2, // Limita el texto a 2 líneas
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          color: Color.fromARGB(
+                                                                              148,
+                                                                              0,
+                                                                              0,
+                                                                              0),
+                                                                          fontWeight:
+                                                                              FontWeight.w700),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                        'Propina 80%'),
+                                                                    Text(
+                                                                      _.estadist1[index]
+                                                                          .tips80
+                                                                          .toString(),
+                                                                      maxLines:
+                                                                          2, // Limita el texto a 2 líneas
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          color: Color.fromARGB(
+                                                                              148,
+                                                                              0,
+                                                                              0,
+                                                                              0),
+                                                                          fontWeight:
+                                                                              FontWeight.w700),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                        'Retención'),
+                                                                    Text(
+                                                                      _.estadist1[index]
+                                                                          .totalRetention
+                                                                          .toString(),
+                                                                      maxLines:
+                                                                          2, // Limita el texto a 2 líneas
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          color: Color.fromARGB(
+                                                                              148,
+                                                                              0,
+                                                                              0,
+                                                                              0),
+                                                                          fontWeight:
+                                                                              FontWeight.w700),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    const Text(
+                                                                        'Monto Generado',
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                16,
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                0,
+                                                                                0,
+                                                                                0),
+                                                                            fontWeight:
+                                                                                FontWeight.w700)),
+                                                                    Text(
+                                                                      _.estadist1[index]
+                                                                          .amountGenerate
+                                                                          .toString(),
+                                                                      maxLines:
+                                                                          2, // Limita el texto a 2 líneas
+
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          color: Color.fromARGB(
+                                                                              255,
                                                                               0,
                                                                               0,
                                                                               0),

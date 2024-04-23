@@ -78,9 +78,7 @@ class _StatisticPageState extends State<StatisticPage>
       color: Color.fromARGB(155, 231, 232, 234),
       borderRadius: BorderRadius.all(Radius.circular(10)),
     );
-    const backgroundColor = Color.fromARGB(255, 231, 232, 234);
-    //DECLARACION DE VARIABLES
-    const double borderRadiusValue = 12;
+
     /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
     final IconnsBack = Icons.arrow_back;
     final IconnsP = Icons.bar_chart_outlined;

@@ -10,10 +10,8 @@ import 'package:turnopro_apk/Routes/index.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:turnopro_apk/Views/common/loginFormPage.dart';
-import 'package:turnopro_apk/Views/common/selectProfessionalPage-NO.dart';
 import 'package:turnopro_apk/Views/coordinator/homeCoordinator/homeCoordinatorPage.dart';
 import 'package:turnopro_apk/Views/coordinator/profile/profileClient.dart';
-import 'package:turnopro_apk/Views/professional/clientsScheduled/clientsScheduled(NO%20UTILIZADA).dart';
 import 'package:turnopro_apk/Views/professional/statistic/estadistc0Page.dart';
 import 'package:turnopro_apk/Views/professional/statistic/estadistc1Page.dart';
 import 'package:turnopro_apk/Views/professional/statistic/estadistc2Pagos.dart';
@@ -148,11 +146,6 @@ class Myapp extends StatelessWidget {
         name: '/NotificationsPageProf',
         page: () => NotificationsPageProf(),
         binding: BindingsBuilder.put(() => NotificationController()),
-      ),
-      GetPage(
-        name: '/clients',
-        page: () => const ClientsScheduled(),
-        binding: BindingsBuilder.put(() => ClientsScheduledController()),
       ), //ESTA ESTA CARGANDO UNA API
       GetPage(
         name: '/CoexistencePage',

@@ -175,7 +175,7 @@ class ProductController extends GetxController {
   Future<void> initializeData() async {
     //todo aqui primero espero por las categorias para despues por el id de categoria llamar a los productos
     await _fetchcategoryList(); // Espera a que se complete _fetchcategoryList
-    fetchproductList(
+    await fetchproductList(
         idInicial); // Llama a fetchproductList después de obtener idInicial
   }
 

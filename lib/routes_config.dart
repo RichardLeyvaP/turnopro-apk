@@ -58,11 +58,6 @@ class RoutesConfig {
         binding: BindingsBuilder.put(() => NotificationController()),
       ),
       GetPage(
-        name: '/clients',
-        page: () => const ClientsScheduled(),
-        binding: BindingsBuilder.put(() => ClientsScheduledController()),
-      ), //ESTA ESTA CARGANDO UNA API
-      GetPage(
         name: '/CoexistencePage',
         page: () => const CoexistencePage(),
         binding: BindingsBuilder.put(() => CoexistenceController()),

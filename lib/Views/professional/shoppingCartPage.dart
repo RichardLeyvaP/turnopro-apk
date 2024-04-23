@@ -4,11 +4,13 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Views/common/topPage.dart';
 import 'package:turnopro_apk/env.dart';
 import 'package:http/http.dart' as http;
 
@@ -32,6 +34,18 @@ class ShoppingCartPage extends StatelessWidget {
     });
   }
 
+  /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+  final IconnsBack = Icons.arrow_back;
+  final IconnsP = MdiIcons.shoppingOutline;
+
+  String title = 'Carro de Compra';
+  String subTitle = 'Carro de Compra';
+  final colorCont = Colors.white;
+  double panddCont = 8;
+  double borderCont = 12;
+  final colorIcon = Color(0xFF19CF9E);
+  /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+
   @override
   Widget build(BuildContext context) {
     /* WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -46,663 +60,662 @@ class ShoppingCartPage extends StatelessWidget {
     const double borderRadiusValue = 12;
 
     return Scaffold(
-        appBar: AppBar(
-          leading: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  pagesConfigC.previousPage();
-                  //Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Column(
-                children: [
-                  Icon(
-                    Icons.shopping_cart,
-                    size: 50,
-                  ),
-                  Text(
-                    'Carro de Compra',
-                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
-                  ),
-                ],
-              ),
-              SizedBox(
-                width: (MediaQuery.of(context).size.width * 0.14),
-              ),
-            ],
-          ),
-          //actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
-          elevation: 0, // Quits the shadow
-          //shadowColor: Colors.amber, // Removes visual elevation
-        ),
         backgroundColor: const Color.fromARGB(255, 231, 232, 234),
         body: Column(
           children: [
-            controllerShoppingCart.serviceListLength > 0
-                ? Text(
-                    'Servicios Solicitados',
-                    style: TextStyle(
-                        fontSize: (MediaQuery.of(context).size.height * 0.02),
-                        fontWeight: FontWeight.w900),
-                  )
-                : const Text(''),
-            controllerShoppingCart.serviceListLength > 0
-                ? Expanded(
-                    flex:
-                        heightFlexBody, // 85% del espacio disponible para esta parte
-                    child: ListView.builder(
-                        itemCount: controllerShoppingCart.serviceListLength,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.fromLTRB(
-                                (MediaQuery.of(context).size.height * 0.013),
-                                (MediaQuery.of(context).size.height * 0.006),
-                                (MediaQuery.of(context).size.height * 0.013),
-                                (MediaQuery.of(context).size.height * 0.006)),
-                            child: FittedBox(
-                              fit: BoxFit.contain,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height:
-                                        (MediaQuery.of(context).size.height *
-                                            0.08),
-                                    width:
-                                        (MediaQuery.of(context).size.width * 1),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.7),
-                                          spreadRadius: 1,
-                                          blurRadius: 5,
-                                          offset: const Offset(-5,
-                                              5), // Ajusta los valores para personalizar la sombra
-                                        ),
-                                      ],
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(borderRadiusValue)),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(bottom: 7),
-                                      child: ListTile(
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(12)),
-                                          ),
-                                          title: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  CircleAvatar(
-                                                    radius: 30,
-                                                    child: ClipOval(
-                                                      child: Image.network(
-                                                        '${Env.apiEndpoint}/images/${controllerShoppingCart.selectserviceCart[index].image_service}',
-                                                        fit: BoxFit
-                                                            .cover, // Ajusta la imagen para cubrir completamente el área
-                                                        width:
-                                                            50, // Ancho deseado de la imagen dentro del círculo
-                                                        height: 50,
-                                                        loadingBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                Widget child,
-                                                                ImageChunkEvent?
-                                                                    loadingProgress) {
-                                                          if (loadingProgress ==
-                                                              null) {
-                                                            // Si la imagen se carga correctamente, mostramos la imagen
-                                                            return child;
-                                                          } else {
-                                                            // Si la imagen aún se está cargando, mostramos un indicador de progreso
-                                                            return const CircularProgressIndicator(
-                                                              color: Color(
-                                                                  0xFFFDAE2A),
-                                                            );
-                                                          }
-                                                        },
-                                                        errorBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                Object error,
-                                                                StackTrace?
-                                                                    stackTrace) {
-                                                          // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
-                                                          if (kDebugMode) {
-                                                            return CircleAvatar(
-                                                              radius: 30,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .transparent, // Fondo transparente para que el borde sea visible
-                                                              child: ClipOval(
-                                                                child:
-                                                                    Image.asset(
-                                                                  'assets/images/service-default.png',
-                                                                  fit: BoxFit
-                                                                      .cover, // Ajusta la imagen para cubrir completamente el área
-                                                                  width:
-                                                                      50, // Ancho deseado de la imagen dentro del círculo
-                                                                  height:
-                                                                      50, // Alto deseado de la imagen dentro del círculo
-                                                                ),
-                                                              ),
-                                                            );
-                                                          } else {
-                                                            // Si no estamos en modo de depuración, mostramos un texto de error
-                                                            return CircleAvatar(
-                                                              radius: 30,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .transparent, // Fondo transparente para que el borde sea visible
-                                                              child: ClipOval(
-                                                                child:
-                                                                    Image.asset(
-                                                                  'assets/images/service-default.png',
-                                                                  fit: BoxFit
-                                                                      .cover, // Ajusta la imagen para cubrir completamente el área
-                                                                  width:
-                                                                      50, // Ancho deseado de la imagen dentro del círculo
-                                                                  height:
-                                                                      50, // Alto deseado de la imagen dentro del círculo
-                                                                ),
-                                                              ),
-                                                            );
-                                                          }
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  //
-
-                                                  SizedBox(
-                                                    width: 4,
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text(
-                                                        controllerShoppingCart
-                                                            .selectserviceCart[
-                                                                index]
-                                                            .nameService
-                                                            .toString(),
-                                                        style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w800,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        controllerShoppingCart
-                                                            .selectserviceCart[
-                                                                index]
-                                                            .price_service
-                                                            .toString(),
-                                                        style: const TextStyle(
-                                                            fontSize: 13,
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    148,
-                                                                    0,
-                                                                    0,
-                                                                    0)),
-                                                      ),
-                                                    ],
+            Expanded(
+              flex: 4,
+              child: topPage(
+                panddCont: panddCont,
+                colorCont: colorCont,
+                borderCont: borderCont,
+                IconnsBack: IconnsBack,
+                pagesConfigC: pagesConfigC,
+                isPagesConfig: true,
+                IconnsP: IconnsP,
+                title: title,
+                subTitle: subTitle,
+                colorIcon: colorIcon,
+                totalCC: controllerShoppingCart.totalPrice.toStringAsFixed(0),
+                buttonRight: false,
+              ),
+            ),
+            Expanded(
+              flex: heightFlexBody,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: 10,
+                  left: 10,
+                  right: 10,
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: const Offset(-5,
+                            5), // Ajusta los valores para personalizar la sombra
+                      ),
+                    ],
+                    borderRadius: const BorderRadius.all(
+                        Radius.circular(borderRadiusValue)),
+                  ),
+                  child: Column(
+                    children: [
+                      controllerShoppingCart.serviceListLength > 0
+                          ? Text(
+                              'Servicios Solicitados',
+                              style: TextStyle(
+                                  fontSize:
+                                      (MediaQuery.of(context).size.height *
+                                          0.02),
+                                  fontWeight: FontWeight.w900),
+                            )
+                          : const Text(''),
+                      controllerShoppingCart.serviceListLength > 0
+                          ? Expanded(
+                              flex:
+                                  heightFlexBody, // 85% del espacio disponible para esta parte
+                              child: ListView.builder(
+                                  padding: EdgeInsets
+                                      .zero, // Elimina cualquier padding del ListView
+                                  itemCount:
+                                      controllerShoppingCart.serviceListLength,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          (MediaQuery.of(context).size.height *
+                                              0.013),
+                                          (MediaQuery.of(context).size.height *
+                                              0.006),
+                                          (MediaQuery.of(context).size.height *
+                                              0.013),
+                                          (MediaQuery.of(context).size.height *
+                                              0.006)),
+                                      child: FittedBox(
+                                        fit: BoxFit.contain,
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              height: (MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.08),
+                                              width: (MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  1),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.7),
+                                                    spreadRadius: 1,
+                                                    blurRadius: 5,
+                                                    offset: const Offset(-5,
+                                                        5), // Ajusta los valores para personalizar la sombra
                                                   ),
                                                 ],
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(
+                                                            borderRadiusValue)),
                                               ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  GetBuilder<
-                                                          ShoppingCartController>(
-                                                      builder: (_) {
-                                                    return InkWell(
-                                                      onTap: () {
-                                                        if (controllerLogin
-                                                                .codigoQrValid() ==
-                                                            true) {
-                                                          controllerShoppingCart
-                                                              .requestDelete(
-                                                                  controllerShoppingCart
-                                                                      .selectserviceCart[
-                                                                          index]
-                                                                      .id,
-                                                                  1);
-                                                        } else {
-                                                          Get.snackbar(
-                                                            'Mensaje',
-                                                            'Debe de escanear el código Qr de entrada',
-                                                            duration:
-                                                                const Duration(
-                                                                    milliseconds:
-                                                                        2500),
-                                                            backgroundColor:
-                                                                const Color
-                                                                        .fromARGB(
-                                                                    118,
-                                                                    255,
-                                                                    255,
-                                                                    255),
-                                                            showProgressIndicator:
-                                                                true,
-                                                            progressIndicatorBackgroundColor:
-                                                                const Color
-                                                                        .fromARGB(
-                                                                    255,
-                                                                    203,
-                                                                    205,
-                                                                    209),
-                                                            progressIndicatorValueColor:
-                                                                const AlwaysStoppedAnimation(
-                                                                    Color(
-                                                                        0xFFF18254)),
-                                                            overlayBlur: 3,
-                                                          );
-                                                        }
-                                                      },
-                                                      child: _.requestDeleteOrder.contains(
-                                                                  controllerShoppingCart
-                                                                      .selectserviceCart[
-                                                                          index]
-                                                                      .id) ||
-                                                              (_.idServiceCart.contains(controllerShoppingCart
-                                                                      .selectserviceCart[
-                                                                          index]
-                                                                      .nameService) &&
-                                                                  controllerShoppingCart
-                                                                          .selectserviceCart[
-                                                                              index]
-                                                                          .request_delete ==
-                                                                      1)
-                                                          ? const Icon(
-                                                              Icons.delete,
-                                                              size: 35,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      105,
-                                                                      139,
-                                                                      137,
-                                                                      136),
-                                                            )
-                                                          : const Icon(
-                                                              Icons.delete,
-                                                              size: 35,
-                                                              color: Color(
-                                                                  0xFFFDAE2A),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 7),
+                                                child: ListTile(
+                                                    shape:
+                                                        const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  12)),
+                                                    ),
+                                                    title: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            CircleAvatar(
+                                                              radius: 30,
+                                                              child: ClipOval(
+                                                                child: Image
+                                                                    .network(
+                                                                  '${Env.apiEndpoint}/images/${controllerShoppingCart.selectserviceCart[index].image_service}',
+                                                                  fit: BoxFit
+                                                                      .cover, // Ajusta la imagen para cubrir completamente el área
+                                                                  width:
+                                                                      50, // Ancho deseado de la imagen dentro del círculo
+                                                                  height: 50,
+                                                                  loadingBuilder: (BuildContext
+                                                                          context,
+                                                                      Widget
+                                                                          child,
+                                                                      ImageChunkEvent?
+                                                                          loadingProgress) {
+                                                                    if (loadingProgress ==
+                                                                        null) {
+                                                                      // Si la imagen se carga correctamente, mostramos la imagen
+                                                                      return child;
+                                                                    } else {
+                                                                      // Si la imagen aún se está cargando, mostramos un indicador de progreso
+                                                                      return const CircularProgressIndicator(
+                                                                        color: Color(
+                                                                            0xFFFDAE2A),
+                                                                      );
+                                                                    }
+                                                                  },
+                                                                  errorBuilder: (BuildContext
+                                                                          context,
+                                                                      Object
+                                                                          error,
+                                                                      StackTrace?
+                                                                          stackTrace) {
+                                                                    // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
+                                                                    if (kDebugMode) {
+                                                                      return CircleAvatar(
+                                                                        radius:
+                                                                            30,
+                                                                        backgroundColor:
+                                                                            Colors.transparent, // Fondo transparente para que el borde sea visible
+                                                                        child:
+                                                                            ClipOval(
+                                                                          child:
+                                                                              Image.asset(
+                                                                            'assets/images/service-default.png',
+                                                                            fit:
+                                                                                BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                                                            width:
+                                                                                50, // Ancho deseado de la imagen dentro del círculo
+                                                                            height:
+                                                                                50, // Alto deseado de la imagen dentro del círculo
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    } else {
+                                                                      // Si no estamos en modo de depuración, mostramos un texto de error
+                                                                      return CircleAvatar(
+                                                                        radius:
+                                                                            30,
+                                                                        backgroundColor:
+                                                                            Colors.transparent, // Fondo transparente para que el borde sea visible
+                                                                        child:
+                                                                            ClipOval(
+                                                                          child:
+                                                                              Image.asset(
+                                                                            'assets/images/service-default.png',
+                                                                            fit:
+                                                                                BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                                                            width:
+                                                                                50, // Ancho deseado de la imagen dentro del círculo
+                                                                            height:
+                                                                                50, // Alto deseado de la imagen dentro del círculo
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    }
+                                                                  },
+                                                                ),
+                                                              ),
                                                             ),
-                                                    );
-                                                  }),
-                                                ],
-                                              )
-                                            ],
-                                          )),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }),
-                  )
-                : const Text(''),
-            controllerShoppingCart.productListLength > 0
-                ? Text(
-                    'Productos Solicitados',
-                    style: TextStyle(
-                        fontSize: (MediaQuery.of(context).size.height * 0.02),
-                        fontWeight: FontWeight.w900),
-                  )
-                : const Text(''),
-            controllerShoppingCart.productListLength > 0
-                ? Expanded(
-                    flex:
-                        heightFlexBody, // 85% del espacio disponible para esta parte
+                                                            //
 
-                    child: ListView.builder(
-                        //todo builder
-                        itemCount: controllerShoppingCart.productListLength,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.fromLTRB(
-                                (MediaQuery.of(context).size.height * 0.013),
-                                (MediaQuery.of(context).size.height * 0.006),
-                                (MediaQuery.of(context).size.height * 0.013),
-                                (MediaQuery.of(context).size.height * 0.006)),
-                            child: FittedBox(
-                              fit: BoxFit.contain,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height:
-                                        (MediaQuery.of(context).size.height *
-                                            0.08),
-                                    width:
-                                        (MediaQuery.of(context).size.width * 1),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.7),
-                                          spreadRadius: 1,
-                                          blurRadius: 5,
-                                          offset: const Offset(-5,
-                                              5), // Ajusta los valores para personalizar la sombra
-                                        ),
-                                      ],
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(borderRadiusValue)),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(bottom: 7),
-                                      child: ListTile(
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(12)),
-                                          ),
-                                          title: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  CircleAvatar(
-                                                    radius: 30,
-                                                    child: ClipOval(
-                                                      child: Image.network(
-                                                        '${Env.apiEndpoint}/images/${controllerShoppingCart.selectproduct[index].image_product}',
-                                                        fit: BoxFit
-                                                            .cover, // Ajusta la imagen para cubrir completamente el área
-                                                        width:
-                                                            50, // Ancho deseado de la imagen dentro del círculo
-                                                        height: 50,
-                                                        loadingBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                Widget child,
-                                                                ImageChunkEvent?
-                                                                    loadingProgress) {
-                                                          if (loadingProgress ==
-                                                              null) {
-                                                            // Si la imagen se carga correctamente, mostramos la imagen
-                                                            return child;
-                                                          } else {
-                                                            // Si la imagen aún se está cargando, mostramos un indicador de progreso
-                                                            return const CircularProgressIndicator(
-                                                              color: Color(
-                                                                  0xFFFDAE2A),
-                                                            );
-                                                          }
-                                                        },
-                                                        errorBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                Object error,
-                                                                StackTrace?
-                                                                    stackTrace) {
-                                                          // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
-                                                          if (kDebugMode) {
-                                                            return CircleAvatar(
-                                                              radius: 30,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .transparent, // Fondo transparente para que el borde sea visible
-                                                              child: ClipOval(
-                                                                child:
-                                                                    Image.asset(
-                                                                  'assets/images/product-default.png',
-                                                                  fit: BoxFit
-                                                                      .cover, // Ajusta la imagen para cubrir completamente el área
-                                                                  width:
-                                                                      50, // Ancho deseado de la imagen dentro del círculo
-                                                                  height:
-                                                                      50, // Alto deseado de la imagen dentro del círculo
+                                                            SizedBox(
+                                                              width: 4,
+                                                            ),
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Text(
+                                                                  controllerShoppingCart
+                                                                      .selectserviceCart[
+                                                                          index]
+                                                                      .nameService
+                                                                      .toString(),
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w800,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            );
-                                                          } else {
-                                                            // Si no estamos en modo de depuración, mostramos un texto de error
-                                                            return CircleAvatar(
-                                                              radius: 30,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .transparent, // Fondo transparente para que el borde sea visible
-                                                              child: ClipOval(
-                                                                child:
-                                                                    Image.asset(
-                                                                  'assets/images/product-default.png',
-                                                                  fit: BoxFit
-                                                                      .cover, // Ajusta la imagen para cubrir completamente el área
-                                                                  width:
-                                                                      50, // Ancho deseado de la imagen dentro del círculo
-                                                                  height:
-                                                                      50, // Alto deseado de la imagen dentro del círculo
+                                                                Text(
+                                                                  controllerShoppingCart
+                                                                      .selectserviceCart[
+                                                                          index]
+                                                                      .price_service
+                                                                      .toString(),
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          13,
+                                                                      color: Color
+                                                                          .fromARGB(
+                                                                              148,
+                                                                              0,
+                                                                              0,
+                                                                              0)),
                                                                 ),
-                                                              ),
-                                                            );
-                                                          }
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-
-                                                  //
-
-                                                  SizedBox(
-                                                    width: 4,
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text(
-                                                        controllerShoppingCart
-                                                            .selectproduct[
-                                                                index]
-                                                            .name
-                                                            .toString(),
-                                                        style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w800,
+                                                              ],
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        controllerShoppingCart
-                                                            .selectproduct[
-                                                                index]
-                                                            .sale_price
-                                                            .toString(),
-                                                        style: const TextStyle(
-                                                            fontSize: 13,
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    148,
-                                                                    0,
-                                                                    0,
-                                                                    0)),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                              GetBuilder<
-                                                      ShoppingCartController>(
-                                                  builder: (_) {
-                                                return InkWell(
-                                                  onTap: () {
-                                                    if (controllerLogin
-                                                            .codigoQrValid() ==
-                                                        true) {
-                                                      controllerShoppingCart
-                                                          .requestDelete(
-                                                              controllerShoppingCart
-                                                                  .selectproduct[
-                                                                      index]
-                                                                  .id,
-                                                              1);
-                                                    } else {
-                                                      Get.snackbar(
-                                                        'Mensaje',
-                                                        'Debe de escanear el código Qr de entrada',
-                                                        duration:
-                                                            const Duration(
-                                                                milliseconds:
-                                                                    2500),
-                                                        backgroundColor:
-                                                            const Color
-                                                                    .fromARGB(
-                                                                118,
-                                                                255,
-                                                                255,
-                                                                255),
-                                                        showProgressIndicator:
-                                                            true,
-                                                        progressIndicatorBackgroundColor:
-                                                            const Color
-                                                                    .fromARGB(
-                                                                255,
-                                                                203,
-                                                                205,
-                                                                209),
-                                                        progressIndicatorValueColor:
-                                                            const AlwaysStoppedAnimation(
-                                                                Color(
-                                                                    0xFFFDAE2A)),
-                                                        overlayBlur: 3,
-                                                      );
-                                                    }
-                                                  },
-                                                  child: (_.requestDeleteOrder.contains(
-                                                              controllerShoppingCart
-                                                                  .selectproduct[
-                                                                      index]
-                                                                  .id)) ||
-                                                          (controllerShoppingCart
-                                                                  .selectproduct[
-                                                                      index]
-                                                                  .request_delete ==
-                                                              1)
-                                                      ? const Icon(
-                                                          Icons.delete,
-                                                          size: 35,
-                                                          color: Color.fromARGB(
-                                                              105,
-                                                              139,
-                                                              137,
-                                                              136),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            GetBuilder<
+                                                                    ShoppingCartController>(
+                                                                builder: (_) {
+                                                              return InkWell(
+                                                                onTap: () {
+                                                                  if (controllerLogin
+                                                                          .codigoQrValid() ==
+                                                                      true) {
+                                                                    controllerShoppingCart.requestDelete(
+                                                                        controllerShoppingCart
+                                                                            .selectserviceCart[index]
+                                                                            .id,
+                                                                        1);
+                                                                  } else {
+                                                                    Get.snackbar(
+                                                                      'Mensaje',
+                                                                      'Debe de escanear el código Qr de entrada',
+                                                                      duration: const Duration(
+                                                                          milliseconds:
+                                                                              2500),
+                                                                      backgroundColor: const Color
+                                                                              .fromARGB(
+                                                                          118,
+                                                                          255,
+                                                                          255,
+                                                                          255),
+                                                                      showProgressIndicator:
+                                                                          true,
+                                                                      progressIndicatorBackgroundColor: const Color
+                                                                              .fromARGB(
+                                                                          255,
+                                                                          203,
+                                                                          205,
+                                                                          209),
+                                                                      progressIndicatorValueColor:
+                                                                          const AlwaysStoppedAnimation(
+                                                                              Color(0xFFF18254)),
+                                                                      overlayBlur:
+                                                                          3,
+                                                                    );
+                                                                  }
+                                                                },
+                                                                child: _.requestDeleteOrder.contains(controllerShoppingCart
+                                                                            .selectserviceCart[
+                                                                                index]
+                                                                            .id) ||
+                                                                        (_.idServiceCart.contains(controllerShoppingCart.selectserviceCart[index].nameService) &&
+                                                                            controllerShoppingCart.selectserviceCart[index].request_delete ==
+                                                                                1)
+                                                                    ? const Icon(
+                                                                        Icons
+                                                                            .delete,
+                                                                        size:
+                                                                            35,
+                                                                        color: Color.fromARGB(
+                                                                            105,
+                                                                            139,
+                                                                            137,
+                                                                            136),
+                                                                      )
+                                                                    : const Icon(
+                                                                        Icons
+                                                                            .delete,
+                                                                        size:
+                                                                            35,
+                                                                        color: Color(
+                                                                            0xFFFDAE2A),
+                                                                      ),
+                                                              );
+                                                            }),
+                                                          ],
                                                         )
-                                                      : const Icon(
-                                                          Icons.delete,
-                                                          size: 35,
-                                                          color:
-                                                              Color(0xFFFDAE2A),
+                                                      ],
+                                                    )),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            )
+                          : const Text(''),
+                      controllerShoppingCart.productListLength > 0
+                          ? Text(
+                              'Productos Solicitados',
+                              style: TextStyle(
+                                  fontSize:
+                                      (MediaQuery.of(context).size.height *
+                                          0.02),
+                                  fontWeight: FontWeight.w900),
+                            )
+                          : const Text(''),
+                      controllerShoppingCart.productListLength > 0
+                          ? Expanded(
+                              flex:
+                                  heightFlexBody, // 85% del espacio disponible para esta parte
+
+                              child: ListView.builder(
+                                  //todo builder
+                                  padding: EdgeInsets
+                                      .zero, // Elimina cualquier padding del ListView
+                                  itemCount:
+                                      controllerShoppingCart.productListLength,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          (MediaQuery.of(context).size.height *
+                                              0.013),
+                                          (MediaQuery.of(context).size.height *
+                                              0.006),
+                                          (MediaQuery.of(context).size.height *
+                                              0.013),
+                                          (MediaQuery.of(context).size.height *
+                                              0.006)),
+                                      child: FittedBox(
+                                        fit: BoxFit.contain,
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              height: (MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.08),
+                                              width: (MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  1),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.7),
+                                                    spreadRadius: 1,
+                                                    blurRadius: 5,
+                                                    offset: const Offset(-5,
+                                                        5), // Ajusta los valores para personalizar la sombra
+                                                  ),
+                                                ],
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(
+                                                            borderRadiusValue)),
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 7),
+                                                child: ListTile(
+                                                    shape:
+                                                        const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  12)),
+                                                    ),
+                                                    title: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            CircleAvatar(
+                                                              radius: 30,
+                                                              child: ClipOval(
+                                                                child: Image
+                                                                    .network(
+                                                                  '${Env.apiEndpoint}/images/${controllerShoppingCart.selectproduct[index].image_product}',
+                                                                  fit: BoxFit
+                                                                      .cover, // Ajusta la imagen para cubrir completamente el área
+                                                                  width:
+                                                                      50, // Ancho deseado de la imagen dentro del círculo
+                                                                  height: 50,
+                                                                  loadingBuilder: (BuildContext
+                                                                          context,
+                                                                      Widget
+                                                                          child,
+                                                                      ImageChunkEvent?
+                                                                          loadingProgress) {
+                                                                    if (loadingProgress ==
+                                                                        null) {
+                                                                      // Si la imagen se carga correctamente, mostramos la imagen
+                                                                      return child;
+                                                                    } else {
+                                                                      // Si la imagen aún se está cargando, mostramos un indicador de progreso
+                                                                      return const CircularProgressIndicator(
+                                                                        color: Color(
+                                                                            0xFFFDAE2A),
+                                                                      );
+                                                                    }
+                                                                  },
+                                                                  errorBuilder: (BuildContext
+                                                                          context,
+                                                                      Object
+                                                                          error,
+                                                                      StackTrace?
+                                                                          stackTrace) {
+                                                                    // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
+                                                                    if (kDebugMode) {
+                                                                      return CircleAvatar(
+                                                                        radius:
+                                                                            30,
+                                                                        backgroundColor:
+                                                                            Colors.transparent, // Fondo transparente para que el borde sea visible
+                                                                        child:
+                                                                            ClipOval(
+                                                                          child:
+                                                                              Image.asset(
+                                                                            'assets/images/product-default.png',
+                                                                            fit:
+                                                                                BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                                                            width:
+                                                                                50, // Ancho deseado de la imagen dentro del círculo
+                                                                            height:
+                                                                                50, // Alto deseado de la imagen dentro del círculo
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    } else {
+                                                                      // Si no estamos en modo de depuración, mostramos un texto de error
+                                                                      return CircleAvatar(
+                                                                        radius:
+                                                                            30,
+                                                                        backgroundColor:
+                                                                            Colors.transparent, // Fondo transparente para que el borde sea visible
+                                                                        child:
+                                                                            ClipOval(
+                                                                          child:
+                                                                              Image.asset(
+                                                                            'assets/images/product-default.png',
+                                                                            fit:
+                                                                                BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                                                            width:
+                                                                                50, // Ancho deseado de la imagen dentro del círculo
+                                                                            height:
+                                                                                50, // Alto deseado de la imagen dentro del círculo
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    }
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            ),
+
+                                                            //
+
+                                                            SizedBox(
+                                                              width: 4,
+                                                            ),
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Text(
+                                                                  controllerShoppingCart
+                                                                      .selectproduct[
+                                                                          index]
+                                                                      .name
+                                                                      .toString(),
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w800,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  controllerShoppingCart
+                                                                      .selectproduct[
+                                                                          index]
+                                                                      .sale_price
+                                                                      .toString(),
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          13,
+                                                                      color: Color
+                                                                          .fromARGB(
+                                                                              148,
+                                                                              0,
+                                                                              0,
+                                                                              0)),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
                                                         ),
-                                                );
-                                              })
-                                            ],
-                                          )),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        }),
-                  )
-                : const Text(''),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 10.0, right: 10.0, top: 3.0, bottom: 3),
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Row(
-                  children: [
-                    Container(
-                      height: (MediaQuery.of(context).size.height * 0.065),
-                      width: (MediaQuery.of(context).size.width * 1),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.7),
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: const Offset(-5,
-                                5), // Ajusta los valores para personalizar la sombra
-                          ),
-                        ],
-                        borderRadius: const BorderRadius.all(
-                            Radius.circular(borderRadiusValue)),
-                      ),
-                      child: ListTile(
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                        ),
-                        title: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.87,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Total a pagar: ',
-                                style: TextStyle(
-                                    fontSize:
-                                        (MediaQuery.of(context).size.height *
-                                            0.025),
-                                    fontWeight: FontWeight.w200),
-                              ),
-                              Text(
-                                controllerShoppingCart.totalPrice
-                                    .toStringAsFixed(2),
-                                /*esto garantiza 2 lugares despues de la coma */
-                                style: TextStyle(
-                                    fontSize:
-                                        (MediaQuery.of(context).size.height *
-                                            0.035),
-                                    fontWeight: FontWeight.w900),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                                                        GetBuilder<
+                                                                ShoppingCartController>(
+                                                            builder: (_) {
+                                                          return InkWell(
+                                                            onTap: () {
+                                                              if (controllerLogin
+                                                                      .codigoQrValid() ==
+                                                                  true) {
+                                                                controllerShoppingCart
+                                                                    .requestDelete(
+                                                                        controllerShoppingCart
+                                                                            .selectproduct[index]
+                                                                            .id,
+                                                                        1);
+                                                              } else {
+                                                                Get.snackbar(
+                                                                  'Mensaje',
+                                                                  'Debe de escanear el código Qr de entrada',
+                                                                  duration: const Duration(
+                                                                      milliseconds:
+                                                                          2500),
+                                                                  backgroundColor:
+                                                                      const Color
+                                                                              .fromARGB(
+                                                                          118,
+                                                                          255,
+                                                                          255,
+                                                                          255),
+                                                                  showProgressIndicator:
+                                                                      true,
+                                                                  progressIndicatorBackgroundColor:
+                                                                      const Color
+                                                                              .fromARGB(
+                                                                          255,
+                                                                          203,
+                                                                          205,
+                                                                          209),
+                                                                  progressIndicatorValueColor:
+                                                                      const AlwaysStoppedAnimation(
+                                                                          Color(
+                                                                              0xFFFDAE2A)),
+                                                                  overlayBlur:
+                                                                      3,
+                                                                );
+                                                              }
+                                                            },
+                                                            child: (_.requestDeleteOrder.contains(controllerShoppingCart
+                                                                        .selectproduct[
+                                                                            index]
+                                                                        .id)) ||
+                                                                    (controllerShoppingCart
+                                                                            .selectproduct[index]
+                                                                            .request_delete ==
+                                                                        1)
+                                                                ? const Icon(
+                                                                    Icons
+                                                                        .delete,
+                                                                    size: 35,
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            105,
+                                                                            139,
+                                                                            137,
+                                                                            136),
+                                                                  )
+                                                                : const Icon(
+                                                                    Icons
+                                                                        .delete,
+                                                                    size: 35,
+                                                                    color: Color(
+                                                                        0xFFFDAE2A),
+                                                                  ),
+                                                          );
+                                                        })
+                                                      ],
+                                                    )),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            )
+                          : const Text(''),
+                    ],
+                  ),
                 ),
               ),
-            )
+            ),
           ],
         ));
   }

@@ -2108,7 +2108,7 @@ class _HomePageBodyState extends State<HomePageBody>
           primary: colorVariable, // Color de fondo en verde
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
-                16.0), // Ajusta el radio según tus necesidades
+                borderRadiusValue), // Ajusta el radio según tus necesidades
           ),
         ),
         onPressed: () async {
