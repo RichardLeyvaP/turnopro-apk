@@ -1048,12 +1048,19 @@ class ClientsScheduledController extends GetxController {
 
   Future<void> metodsClients(
       index, idCar, reservationId, clientName, imageName) async {
-    await getselectCustomer(index, idCar);
-    await selectCarClient(idCar);
-    await returnClientStatus(reservationId);
-    await returnClientName(clientName);
-    await returnImageName(imageName);
-    await watchModifyTime(reservationId);
+    (selectClientsScheduledList.contains(clientsScheduledList[index]))
+        ? selectClientsScheduledList.remove(clientsScheduledList[index])
+        : selectClientsScheduledList.add(clientsScheduledList[index]);
+    final ShoppingCartController shoppingCartController =
+        Get.find<ShoppingCartController>();
+    shoppingCartController.carIdClienteSelect = idCar;
+    //  await returnClientStatus(reservationId);
+    nameClientTemporary = clientName;
+    // await returnClientName(clientName);
+    urlImageTemporary = imageName;
+    //await returnImageName(imageName);
+    // await watchModifyTime(reservationId);
+    update();
   }
 
   Future<void> getselectCustomer(index, idCar) async {
