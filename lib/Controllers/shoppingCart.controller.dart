@@ -22,6 +22,7 @@ class ShoppingCartController extends GetxController {
       selectserviceCart = []; // Lista de service
   List<String> idServiceCart = []; // Lista de service
   List<OrderDeleteModel> orderDeleteCar = [];
+  bool buttonPress = false;
   List<int> requestDeleteOrder = []; // id de las ordenes solicitadas a eliminar
   List<int> productCarr = [];
   int internetError = 0;
@@ -38,6 +39,11 @@ class ShoppingCartController extends GetxController {
 
   void setLoading(value) {
     isLoading = value;
+    update();
+  }
+
+  void setButtonPress(value) {
+    buttonPress = value;
     update();
   }
 

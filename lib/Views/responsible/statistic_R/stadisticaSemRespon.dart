@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 //import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +13,8 @@ class StadisticaSemRespon extends StatefulWidget {
   @override
   State<StadisticaSemRespon> createState() => _StadisticaSemResponState();
 }
+
+final CoexistenceController coexCont = Get.find<CoexistenceController>();
 
 class _StadisticaSemResponState extends State<StadisticaSemRespon> {
   List<String> direcc = [
@@ -41,232 +44,181 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
     int i = 0;
     return GetBuilder<StatisticController>(builder: (controllerStat) {
       return SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 8,
-            ),
-            //todo aqui comente el que estaba
+        child: Padding(
+          padding: const EdgeInsets.only(left: 12, right: 12),
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 8,
+                ),
+                //todo aqui comente el que estaba
 
-            Container(
-              width: (MediaQuery.of(context).size.width * 0.95),
-              height: 40,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-                color: Colors.white,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  onTap: () {
-                    _showCalendarModal(context, textContDate);
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
+                Padding(
+                  padding: const EdgeInsets.only(right: 12.0, left: 12),
+                  child: Container(
+                    width: (MediaQuery.of(context).size.width * 0.95),
+                    height: 40,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Color.fromARGB(60, 196, 194, 194),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InkWell(
+                        onTap: () {
+                          _showCalendarModal(context, textContDate);
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  MdiIcons.calendarBlank,
+                                  color: const Color.fromARGB(130, 0, 0, 0),
+                                ),
+                                Text(
+                                  controllerStat.dateRangeSem == ''
+                                      ? '  seleccione una fecha'
+                                      : dateActual ==
+                                              controllerStat.dateRangeSem
+                                          ? '   Seleccione una semana'
+                                          : controllerStat.dateRangeSem,
+                                  style: const TextStyle(
+                                      color: Color.fromARGB(130, 0, 0, 0)),
+                                ),
+                              ],
+                            ),
+                            Icon(
+                              MdiIcons.arrowDownThin,
+                              color: const Color.fromARGB(130, 0, 0, 0),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                controllerStat.statisticsGeneralRespon.isEmpty
+                    ? SizedBox(
+                        height: 540,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 150,
+                            ),
+                            Icon(
+                              Icons.bar_chart_outlined,
+                              size: 40,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            if (startDate1 != null && endDate1 != null) ...[
+                              Text(
+                                'No tiene Estadísticas en',
+                              ),
+                              Text(
+                                '($startDate1 - $endDate1)',
+                              ),
+                            ] else ...[
+                              Text(
+                                'No tiene Estadísticas en',
+                              ),
+                              Text(
+                                ' $dateAct',
+                              )
+                            ]
+                          ],
+                        ),
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            MdiIcons.calendarBlank,
-                            color: const Color.fromARGB(130, 0, 0, 0),
-                          ),
-                          Text(
-                            controllerStat.dateRange == ''
-                                ? '  seleccione una fecha'
-                                : dateActual == controllerStat.dateRange
-                                    ? '   Seleccione una semana'
-                                    : controllerStat.dateRange,
-                            style: const TextStyle(
-                                color: Color.fromARGB(130, 0, 0, 0)),
+                          Expanded(
+                            child: Container(
+                              height: 540,
+                              width: (MediaQuery.of(context).size.width * 0.95),
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12)),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 12, top: 4, left: 12, bottom: 4),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: controllerStat
+                                      .statisticsGeneralRespon.entries
+                                      .map((entry) {
+                                    i++;
+
+                                    print(i);
+
+                                    return SizedBox(
+                                      height:
+                                          (MediaQuery.of(context).size.height *
+                                              0.035),
+                                      width:
+                                          (MediaQuery.of(context).size.width *
+                                              0.95),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Container(
+                                                margin: const EdgeInsets.only(
+                                                    right: 10),
+                                                child: Image(
+                                                  image: AssetImage(
+                                                    direcc[i < 13
+                                                        ? i
+                                                        : (i = 1) - 1],
+                                                  ),
+                                                  color:
+                                                      const Color(0xFFFDAE2A),
+                                                  width: 18,
+                                                  height: 18,
+                                                ),
+                                              ),
+                                              Text(entry.key,
+                                                  style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w500,
+                                                  )),
+                                            ],
+                                          ),
+                                          Text(
+                                            entry.value == null
+                                                ? '0'
+                                                : '${entry.value}',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w800,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                      Icon(
-                        MdiIcons.arrowDownThin,
-                        color: const Color.fromARGB(130, 0, 0, 0),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              ],
             ),
-
-            const SizedBox(
-              height: 10,
-            ),
-            controllerStat.statisticsGeneralRespon.isEmpty
-                ? Center(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        const Image(
-                          image: AssetImage('assets/images/imageGrafic.png'),
-                          width: 40,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        if (startDate1 != null && endDate1 != null) ...[
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'No tiene Estadísticas en la semana seleccionada de  ($startDate1 - $endDate1)',
-                            ),
-                          ),
-                        ] else ...[
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'No tiene Estadísticas en la semana seleccionada de $dateAct',
-                            ),
-                          )
-                        ]
-                      ],
-                    ),
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: controllerStat
-                              .statisticsGeneralRespon.entries
-                              .map((entry) {
-                            i++;
-
-                            print(i);
-
-                            return Column(
-                              children: [
-                                Container(
-                                  height: (MediaQuery.of(context).size.height *
-                                      0.09),
-                                  width: (MediaQuery.of(context).size.width *
-                                      0.95),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(12)),
-                                  ),
-                                  child: entry.key != 'Producto mas Vendido' &&
-                                          entry.key != 'Servicio mas Brindado'
-                                      ? listTitleRow(i, entry, context)
-                                      : listTitleColumn(i, entry, context),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    ],
-                  ),
-          ],
+          ),
         ),
       );
     });
-  }
-
-  ListTile listTitleRow(
-      int i, MapEntry<String, dynamic> entry, BuildContext context) {
-    return ListTile(
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(12)),
-      ),
-      title: Padding(
-        padding: const EdgeInsets.only(top: 15),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Agrega un contenedor para alinear el icono al centro verticalmente
-            Container(
-              margin: const EdgeInsets.only(right: 10),
-              child: Image(
-                image: AssetImage(
-                  direcc[i < 13 ? i : (i = 1) - 1],
-                ),
-                color: const Color.fromARGB(255, 3, 44, 97),
-                width: 35,
-                height: 35,
-              ),
-            ),
-            Text(
-              entry.key,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
-      subtitle: null,
-      trailing: Padding(
-        padding: const EdgeInsets.only(top: 15),
-        child: Text(
-          entry.value == null ? '0' : '${entry.value}',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-      ),
-    );
-  }
-
-  ListTile listTitleColumn(
-      int i, MapEntry<String, dynamic> entry, BuildContext context) {
-    return ListTile(
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(12)),
-      ),
-      title: Padding(
-        padding: const EdgeInsets.only(top: 15),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Agrega un contenedor para alinear el icono al centro verticalmente
-            Container(
-              margin: const EdgeInsets.only(right: 10, bottom: 30),
-              child: Image(
-                image: AssetImage(
-                  direcc[i < 13 ? i : (i = 1) - 1],
-                ),
-                color: const Color.fromARGB(255, 3, 44, 97),
-                width: 35,
-                height: 35,
-              ),
-            ),
-            Column(
-              children: [
-                Text(
-                  entry.key,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  entry.value == null ? '0' : '${entry.value}',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-      subtitle: null,
-      trailing: null,
-    );
   }
 
   int currentStep = 0;
@@ -396,7 +348,6 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
                                               _selectedYear, _selectedMonth, 1);
                                         }
                                       });
-                                      Navigator.of(context).pop();
                                     },
                                     items: List<DropdownMenuItem<int>>.generate(
                                         12, (int index) {
@@ -418,7 +369,6 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
                                         _focusedDay =
                                             DateTime(_selectedYear, 1, 1);
                                       });
-                                      Navigator.of(context).pop();
                                     },
                                     items: List<DropdownMenuItem<int>>.generate(
                                         currentYear - initialYear + 1,
@@ -486,7 +436,7 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
                         ElevatedButton(
                           style: const ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
-                            Color.fromARGB(255, 192, 191, 191),
+                            const Color.fromARGB(255, 43, 44, 49),
                           )),
                           onPressed: () {
                             setState(() {
@@ -501,7 +451,7 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
                         ElevatedButton(
                           style: const ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
-                            Color(0xFF4470F3),
+                            const Color.fromARGB(255, 43, 44, 49),
                           )),
                           onPressed: () async {
                             // Obtener el primer día de la semana
@@ -535,7 +485,6 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
 
                             await controllerStatistic.getDataStatisticRespon(
                                 startDate1, endDate1, 1, 7, mes, year);
-
                             Navigator.pop(context);
 
                             // Aquí puedes usar los valores firstDayOfWeek y lastDayOfWeek como desees

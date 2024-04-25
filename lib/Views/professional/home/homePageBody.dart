@@ -111,7 +111,7 @@ class _HomePageBodyState extends State<HomePageBody>
       });
     });*/
     print('cargando aqui-3');
-    initializeNotifications();
+    // initializeNotifications();
     //AQUI ME DEVUELVE A Q CLIENTE LE SIGUE Y ACUAL MOSTRAR EN LA COLA
     clientsScheduledController.filterShowNext();
     //clientsScheduledController.filterShowCardTimer();//todo ahora comente a ver que pasa
@@ -182,7 +182,7 @@ class _HomePageBodyState extends State<HomePageBody>
       duration: const Duration(seconds: 10),
     );
 //
-//
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       llamadasTimer1();
     });
@@ -1105,9 +1105,22 @@ class _HomePageBodyState extends State<HomePageBody>
                                                 i++) ...[
                                               cardTimer(
                                                 clientsList[
-                                                    clientsScheduledController
-                                                        .item[i]]!,
+                                                        clientsScheduledController
+                                                            .item[i]]!
+                                                    .reservation_id,
                                                 i,
+                                                clientsList[
+                                                        clientsScheduledController
+                                                            .item[i]]!
+                                                    .attended,
+                                                clientsList[
+                                                        clientsScheduledController
+                                                            .item[i]]!
+                                                    .car_id,
+                                                clientsList[
+                                                        clientsScheduledController
+                                                            .item[i]]!
+                                                    .client_image,
                                                 UniqueKey(),
                                                 clientsList[
                                                         clientsScheduledController
@@ -1656,8 +1669,11 @@ class _HomePageBodyState extends State<HomePageBody>
 
   //todo9
   cardTimer(
-    clientsL,
+    int idreservation,
     int index,
+    int attend,
+    int carrId,
+    String imag,
     Key uniqueKey,
     String name,
     ClientsScheduledController clientsScheduledController,
@@ -1680,8 +1696,7 @@ class _HomePageBodyState extends State<HomePageBody>
         {
           //VA A EJECUTARSE SI NO ESTA CON EL TECNICO
           int resulButton = 0;
-          resulButton =
-              loginController.handleButtonClickModal(clientsL.reservation_id);
+          resulButton = loginController.handleButtonClickModal(idreservation);
           if (resulButton == 1) {
             Get.dialog(
               const Center(
@@ -1696,24 +1711,20 @@ class _HomePageBodyState extends State<HomePageBody>
             loginController.handleButtonClickServiceClear();
             serviceControll.clearSelectService();
 
-            if (clientsL.attended != 4) {
+            if (attend != 4) {
               // aqui selecciono el cliente
               await clientsScheduledController.metodsClients(
-                  index,
-                  clientsL.car_id,
-                  clientsL.reservation_id,
-                  clientsL.client_name,
-                  clientsL.client_image);
+                  index, carrId, idreservation, name, imag);
               //todo FIN esto estaba en la pagina del modal al dar en Ver carrito
               await chopCont.loadDataInitiallyNecessary().then((_) async {
                 await clientsScheduledController
-                    .searchForCustomerServices(clientsL.car_id)
+                    .searchForCustomerServices(carrId)
                     .then((_) {
                   loginController.setHandleButtonClickModal();
-                  String clientName = clientsL.client_name;
-                  String urlImage = clientsL.client_image;
-                  int reservationId = clientsL.reservation_id;
-                  int carId = clientsL.car_id;
+                  String clientName = name;
+                  String urlImage = imag;
+                  int reservationId = idreservation;
+                  int carId = carrId;
                   //   _mostrarBottomSheet(          context);
                   //  showMyDialog(context);
                   print(

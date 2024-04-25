@@ -27,7 +27,7 @@ class topPage extends StatelessWidget {
   final Color colorCont;
   final double borderCont;
   final IconData IconnsBack;
-  final PagesConfigController pagesConfigC;
+  final dynamic pagesConfigC;
   final bool isPagesConfig;
   final IconData IconnsP;
   final String title;

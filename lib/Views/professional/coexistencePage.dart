@@ -20,6 +20,7 @@ class CoexistencePage extends StatefulWidget {
 class _CoexistencePageState extends State<CoexistencePage> {
   final PagesConfigController pagesConfigCont =
       Get.find<PagesConfigController>();
+  final LoginController loginController = Get.find<LoginController>();
   final double valuePadding = 12;
 
   /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
@@ -35,7 +36,15 @@ class _CoexistencePageState extends State<CoexistencePage> {
   /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loginController.setPagePosition('Coexistence-Barbero');
+    });
     final double heightScreen = MediaQuery.of(context).size.height;
     int heightFlexBody = 18;
     if (heightScreen <= 534.0) {

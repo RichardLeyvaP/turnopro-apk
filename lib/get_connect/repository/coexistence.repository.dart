@@ -89,14 +89,21 @@ class CoexistenceRepository extends GetConnect {
               ProfessionalModel.fromJson(jsonEncode(professional));
           //AQUI SOLO COJO QUE NO SEAN RESPONSABLES
           //todo cambiar por el nombre del cargo YASMANY TIENE QUE MANDARLO
-          if ((u.charge_id == 'Barbero' ||
-                  u.charge_id == 'Tecnico' ||
-                  u.charge_id == 'Barbero y Encargado') &&
-              (u.id != controllerLogin.idProfessionalLoggedIn)) {
+          if (u.charge_id == 'Barbero' || u.charge_id == 'Tecnico') {
             //charge_id=1 es un BARBERO
             //charge_id=7 es un TECNICO
             professionalList.add(u);
           }
+          //asi esra como estaba antes pero me devolvia a los Barberos responsables
+          //  if ((u.charge_id == 'Barbero' ||
+          //         u.charge_id == 'Tecnico' ||
+          //         u.charge_id == 'Barbero y Encargado') &&
+          //     (u.id != controllerLogin.idProfessionalLoggedIn)) {
+          //   //charge_id=1 es un BARBERO
+          //   //charge_id=7 es un TECNICO
+          //   professionalList.add(u);
+          // }
+          //asi esra como estaba antes pero me devolvia a los Barberos responsables
         }
         print('*************coexistenceList.length*************');
         print(professionalList.length);

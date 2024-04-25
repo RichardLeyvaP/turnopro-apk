@@ -567,7 +567,8 @@ class ClientsCoordinatorRepository extends GetConnect {
       value = true;
       return value;
     } else {
-      print('ERROR:acceptOrRejectClient1 value = false');
+      print(
+          'ERROR:acceptOrRejectClient1 value = false- response.statusCode${response.statusCode}');
 
       return false;
     }

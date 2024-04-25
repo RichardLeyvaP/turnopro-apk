@@ -243,7 +243,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 },
                                 child: cartsHome(
                                     context,
-                                    const Color(0xFF4470F3),
+                                    const Color(0xFFFF6750),
                                     'Notificaciones',
                                     'Tus Notificaciones',
                                     Icons.notifications),
@@ -287,9 +287,9 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 },
                                 child: cartsHome(
                                     context,
-                                    const Color(0xFFFF6750),
+                                    const Color(0xFF4470F3),
                                     'Estadísticas',
-                                    'Revisa Tus Ingresos',
+                                    'Revisa tus Ingresos',
                                     Icons.bar_chart),
                               ),
                               InkWell(
@@ -707,22 +707,23 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                           if (controllerLogin.codigoQrValid() == true) {
                             //rechazar la eliminacion
                             controllerShoppingCart.setLoading(true);
-                            await contShopp.requestDelete2(
+                            int isProduct =
+                                contShopp.orderDeleteCar[i].is_product;
+                            String serviceProduct = 'Servicio';
+                            String? nameServiceProduct =
+                                contShopp.orderDeleteCar[i].nameService;
+                            if (contShopp.orderDeleteCar[i].nameService ==
+                                null) {
+                              serviceProduct = 'Producto';
+                              nameServiceProduct =
+                                  contShopp.orderDeleteCar[i].nameProduct;
+                            }
+                            int result = await contShopp.requestDelete2(
                                 contShopp.orderDeleteCar[i].id,
                                 0,
                                 controllerLogin.branchIdLoggedIn!);
                             //aqui mandar notificacion
-                            if (contShopp.orderDeleteCar[i].is_product != 1) {
-                              String serviceProduct = 'Servicio';
-                              String? nameServiceProduct =
-                                  contShopp.orderDeleteCar[i].nameService;
-                              if (contShopp.orderDeleteCar[i].nameService ==
-                                  null) {
-                                serviceProduct = 'Producto';
-                                nameServiceProduct =
-                                    contShopp.orderDeleteCar[i].nameProduct;
-                              }
-
+                            if (isProduct != 1) {
                               notiController.storeNotification(
                                   'Solicitud de Eliminacion Rechazada',
                                   controllerLogin.branchIdLoggedIn,
@@ -767,94 +768,103 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    ' $titulo',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily: AutofillHints.familyName,
-                                        fontSize: 22),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 5, right: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                        service
-                                            ? ' ${contShopp.orderDeleteCar[i].nameService}'
-                                            : ' ${contShopp.orderDeleteCar[i].nameProduct}',
-                                        style: TextStyle(
-                                            fontSize: (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.018),
-                                            fontWeight: FontWeight.w500)),
-                                    Text(
-                                        contShopp.orderDeleteCar[i].hora
-                                            .toString(),
-                                        style: TextStyle(
-                                            fontSize: (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.018),
-                                            fontWeight: FontWeight.w800)),
-                                  ],
+                        padding: const EdgeInsets.only(top: 5, left: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  ' $titulo',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: AutofillHints.familyName,
+                                      fontSize: 20,
+                                      height: 1),
                                 ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              ],
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 5, right: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Icon(
-                                    MdiIcons.accountTie,
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        MdiIcons.formatListBulleted,
+                                      ),
+                                      Text(
+                                        service
+                                            ? '${contShopp.orderDeleteCar[i].nameService}'
+                                            : '${contShopp.orderDeleteCar[i].nameProduct}',
+                                        style: TextStyle(
+                                            fontSize: (MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.018),
+                                            fontWeight: FontWeight.w500,
+                                            height: 1),
+                                      ),
+                                    ],
                                   ),
                                   Text(
-                                    contShopp.orderDeleteCar[i].nameProfesional
-                                        .toString(),
-                                    style: TextStyle(
-                                        fontSize: (MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.018),
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                                      contShopp.orderDeleteCar[i].hora
+                                          .toString(),
+                                      style: TextStyle(
+                                          fontSize: (MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.018),
+                                          fontWeight: FontWeight.w800,
+                                          height: 1)),
                                 ],
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Icon(
-                                    Icons.person,
-                                    color: Color.fromARGB(180, 0, 0, 0),
-                                  ),
-                                  Text(
-                                    contShopp.orderDeleteCar[i].nameClient,
-                                    style: TextStyle(
-                                        fontSize: (MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.018),
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Icon(
+                                  MdiIcons.accountTie,
+                                ),
+                                Text(
+                                  contShopp.orderDeleteCar[i].nameProfesional
+                                      .toString(),
+                                  style: TextStyle(
+                                      fontSize:
+                                          (MediaQuery.of(context).size.height *
+                                              0.018),
+                                      fontWeight: FontWeight.w500,
+                                      height: 1),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const Icon(
+                                  Icons.person,
+                                  color: Color.fromARGB(180, 0, 0, 0),
+                                ),
+                                Text(
+                                  contShopp.orderDeleteCar[i].nameClient,
+                                  style: TextStyle(
+                                      fontSize:
+                                          (MediaQuery.of(context).size.height *
+                                              0.018),
+                                      fontWeight: FontWeight.w500,
+                                      height: 1),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ),

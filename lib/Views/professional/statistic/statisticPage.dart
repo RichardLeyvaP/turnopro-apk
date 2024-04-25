@@ -40,7 +40,7 @@ class _StatisticPageState extends State<StatisticPage>
   void initState() {
     _tabController = TabController(length: 4, vsync: this);
     super.initState();
-    if (logCont.chargeUserLoggedIn == 'Barbero y Encargado') {
+    /*  if (logCont.chargeUserLoggedIn == 'Barbero y Encargado') {
       if (logCont.switchValue == false) //'Barbero'
       {
         typeEnv = 'Barbero';
@@ -55,7 +55,7 @@ class _StatisticPageState extends State<StatisticPage>
           logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn, typeEnv);
 
       // Llama a cualquier función o realiza alguna tarea aquí
-    });
+    });*/
 
     // Get.back();
   }

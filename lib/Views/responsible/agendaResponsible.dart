@@ -7,6 +7,7 @@ import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
+import 'package:turnopro_apk/Views/common/topPage.dart';
 import 'package:turnopro_apk/env.dart';
 
 import '../../../Controllers/login.controller.dart';
@@ -36,93 +37,61 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
   );
   int cant = 8;
 
+  /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+  final IconnsBack = Icons.arrow_back;
+  final IconnsP = MdiIcons.accountOutline;
+  String title = 'Clientes';
+  String subTitle = 'Mis clientes';
+  final colorCont = Colors.white;
+  double panddCont = 8;
+  double borderCont = 12;
+  final colorIcon = Color(0xFF19CF9E);
+  /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 150,
-        leading: Stack(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    pagesConfigCont.back();
-
-                    // Navigator.pop(context);
-                  },
-                ),
-              ],
-            ),
-            Positioned(
-              bottom: -20,
-              left: -20,
-              child: Container(
-                width: 72.0, // Ajusta el tamaño del círculo según sea necesario
-                height: 72.0,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color.fromARGB(76, 224, 224,
-                      224), // Puedes ajustar el tono del gris según tus preferencias
-                ),
-              ),
-            )
-          ],
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Column(
-              children: [
-                Icon(
-                  MdiIcons.account,
-                  size: 55.0,
-                  color: Colors.white, // Color del ícono
-                ),
-                const Text(
-                  'Clientes',
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-                ),
-              ],
-            ),
-            SizedBox(
-              width: (MediaQuery.of(context).size.width * 0.14),
-            ),
-          ],
-        ),
-        //actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
-        elevation: 0, // Quits the shadow
-        //shadowColor: Colors.amber, // Removes visual elevation
-      ),
       backgroundColor: const Color.fromARGB(255, 231, 232, 234),
       body: GetBuilder<ClientsCoordinatorController>(
         builder: (controllerCORD) {
-          return controllerCORD.clientsScheduledListBranch
-                  .isNotEmpty //todo si hay cargarlos aqui
-              ? Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: ListView.builder(
-                          itemCount: controllerCORD
-                              .clientsScheduledListBranchLength, //aqui ver la long de clientAttenCORD y mostrar aqui los que esten
-                          itemBuilder: (context, index) {
-                            // Utiliza la función cardOptions para construir cada Card
-                            return cardClientTails(
-                                controllerCORD, context, index);
-                          },
-                        ),
+          return Column(
+            children: [
+              Expanded(
+                flex: 4,
+                child: topPage(
+                    panddCont: panddCont,
+                    colorCont: colorCont,
+                    borderCont: borderCont,
+                    IconnsBack: IconnsBack,
+                    pagesConfigC: pagesConfigCont,
+                    isPagesConfig: true,
+                    IconnsP: IconnsP,
+                    title: title,
+                    subTitle: subTitle,
+                    colorIcon: colorIcon,
+                    buttonRight: false),
+              ),
+              Expanded(
+                flex: 18,
+                child: controllerCORD.clientsScheduledListBranch
+                        .isNotEmpty //todo si hay cargarlos aqui
+                    ? ListView.builder(
+                        padding: EdgeInsets
+                            .zero, // Elimina cualquier padding del ListView
+                        itemCount: controllerCORD
+                            .clientsScheduledListBranchLength, //aqui ver la long de clientAttenCORD y mostrar aqui los que esten
+                        itemBuilder: (context, index) {
+                          // Utiliza la función cardOptions para construir cada Card
+                          return cardClientTails(
+                              controllerCORD, context, index);
+                        },
+                      )
+                    : const Center(
+                        child: Text('No hay clientes atendiéndose'),
                       ),
-                    ],
-                  ),
-                )
-              : const Center(
-                  child: Text('No hay clientes atendiéndose en este momento'),
-                );
+              ),
+            ],
+          );
         },
       ),
     );

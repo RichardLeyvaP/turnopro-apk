@@ -34,6 +34,7 @@ class CoexistenceController extends GetxController {
   bool isLoading = true;
   //LLAMANDO AL CONTROLADOR
   CoexistenceController() {
+    /*
     print('estoy inicializando CoexistenceController ');
     final StatisticController controllerStad = Get.find<StatisticController>();
     final LoginController controllerLogin = Get.find<LoginController>();
@@ -63,6 +64,7 @@ class CoexistenceController extends GetxController {
     final formatter = DateFormat('yyyy-MM-dd');
     final dateAct = formatter.format(now);
     controllerStad.getDataStatisticDay(dateAct, dateAct, 1, 1);
+    */
   }
 
   @override

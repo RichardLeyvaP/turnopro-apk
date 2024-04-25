@@ -686,7 +686,9 @@ class ClientsScheduledController extends GetxController {
 
   void modifingTime(time) {
     print(
-        'tiempo a sumar =  1-*-*-*-------------------inicio-------------------------${modifyTime[modifyTimeSpecific]}');
+        'tiempo a sumar =  1-*-*-*-------------------inicio------------modifyTimeSpecific-------------${modifyTimeSpecific}');
+    print(
+        'tiempo a sumar =  1-*-*-*-------------------inicio-----------modifyTime[modifyTimeSpecific]--------------${modifyTime[modifyTimeSpecific]}');
     modifyTime[modifyTimeSpecific] = time;
     print(
         '-*-*-*-------------------deSPUES------------------------${modifyTime[modifyTimeSpecific]}');
@@ -1058,8 +1060,9 @@ class ClientsScheduledController extends GetxController {
     nameClientTemporary = clientName;
     // await returnClientName(clientName);
     urlImageTemporary = imageName;
+    idClientTemporary = reservationId;
     //await returnImageName(imageName);
-    // await watchModifyTime(reservationId);
+    await watchModifyTime(reservationId);
     update();
   }
 

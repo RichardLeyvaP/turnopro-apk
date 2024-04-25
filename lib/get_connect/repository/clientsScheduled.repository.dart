@@ -338,7 +338,7 @@ class ClientsScheduledRepository extends GetConnect {
         return false;
       }
     } catch (e) {
-      print(e);
+      print('estoy en repositorio en - 7 error:$e');
     }
   }
 
@@ -438,14 +438,17 @@ class ClientsScheduledRepository extends GetConnect {
       bool value = false;
       var url =
           '${Env.apiEndpoint}/tail_attended?reservation_id=$reservationId&attended=$attended';
-
+      print(
+          'ERROR:acceptOrRejectClient1 value = false- reservationId:$reservationId');
+      print('ERROR:acceptOrRejectClient1 value = false- attended:$attended');
       final response = await get(url);
       if (response.statusCode == 200) {
         print('acceptOrRejectClient1 value = true');
         value = true;
         return value;
       } else {
-        print('ERROR:acceptOrRejectClient1 value = false');
+        print(
+            'ERROR:acceptOrRejectClient1 value = false- response.statusCode2${response.statusCode}');
 
         return false;
       }

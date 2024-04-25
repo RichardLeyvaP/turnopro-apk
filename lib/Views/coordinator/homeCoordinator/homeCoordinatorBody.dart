@@ -181,16 +181,16 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       children: [
                                         // Contenido de las pestañas
 
-                                        SingleChildScrollView(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8,
-                                                top: 4,
-                                                right: 8,
-                                                bottom: 6),
-                                            child: FadeIn(
-                                              duration:
-                                                  const Duration(seconds: 2),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 36,
+                                              left: 8,
+                                              right: 8,
+                                              bottom: 6),
+                                          child: FadeIn(
+                                            duration:
+                                                const Duration(seconds: 2),
+                                            child: SingleChildScrollView(
                                               child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
@@ -228,19 +228,14 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                                         ],
                                                       ));
                                                     } else {
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(top: 33),
-                                                        child: Column(
-                                                          children: [
-                                                            showRequestsDelete(
-                                                                context,
-                                                                contShopp,
-                                                                loginController,
-                                                                controllerclient),
-                                                          ],
-                                                        ),
+                                                      return Column(
+                                                        children: [
+                                                          showRequestsDelete(
+                                                              context,
+                                                              contShopp,
+                                                              loginController,
+                                                              controllerclient),
+                                                        ],
                                                       );
                                                     }
                                                   }),
@@ -690,94 +685,128 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                           height: (MediaQuery.of(context).size.height * 0.115),
                           width: (MediaQuery.of(context).size.width * 0.20),
                           decoration: BoxDecoration(
-                              border: Border.all(
-                                color:
-                                    Colors.white, // Color blanco para el borde
-                                width:
-                                    1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                            border: Border.all(
+                              color: Colors.white, // Color blanco para el borde
+                              width:
+                                  1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                            ),
+                          ),
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: const Color(
+                                    0xFF19CF9E), // Color de fondo en verde
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      12.0), // Ajusta el radio según tus necesidades
+                                ),
                               ),
-                              color: const Color.fromARGB(255, 43, 44, 49),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(12))),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconButton(
-                                    onPressed: () async {
-                                      if (loginController.codigoQrValid() ==
-                                          true) {
-                                        int idClient = controllerclient
-                                            .clientsScheduledListBranch[index]
-                                            .client_id;
-                                        int idReserv = controllerclient
-                                            .clientsScheduledListBranch[index]
-                                            .reservation_id;
-                                        int idBranch =
-                                            loginController.branchIdLoggedIn!;
-                                        // aqui llamar a la db y pedir todos los datos del cliente
-                                        /*   clientsScheduledController
+                              onPressed: () async {
+                                if (loginController.codigoQrValid() == true) {
+                                  Get.dialog(
+                                    const Center(
+                                      child: CircularProgressIndicator(
+                                        color: Color(0xFFFDAE2A),
+                                      ),
+                                    ),
+                                    barrierDismissible: false,
+                                  ); //Get.back();
+                                  int idClient = controllerclient
+                                      .clientsScheduledListBranch[index]
+                                      .client_id;
+                                  int idReserv = controllerclient
+                                      .clientsScheduledListBranch[index]
+                                      .reservation_id;
+                                  int idBranch =
+                                      loginController.branchIdLoggedIn!;
+                                  // aqui llamar a la db y pedir todos los datos del cliente
+                                  /*   clientsScheduledController
                                           .saveIdProfessional(controllerclient
                                               .clientsScheduledListBranch[index]
-                                              .professional_id!);*/
+                                              .professional_id!);
                                         controllerclient.setActualNameCORD(
                                             controllerclient
                                                 .clientsScheduledListBranch[
                                                     index]
-                                                .professional_name);
-                                        await controllerclient.getClientHistory(
-                                            idClient, idBranch, idReserv);
-                                        // pagesConfigC.updateSelectedIndex();
-                                        await pagesConfigC.showAppBar(false);
-                                        pageController2.nextPage(
-                                          duration: Duration(milliseconds: 300),
-                                          curve: Curves.ease,
-                                        );
-                                      } else {
-                                        Get.snackbar(
-                                          'Mensaje',
-                                          'Debe de escanear el código Qr de entrada',
-                                          duration: const Duration(
-                                              milliseconds: 2500),
-                                          backgroundColor: const Color.fromARGB(
-                                              118, 255, 255, 255),
-                                          showProgressIndicator: true,
-                                          progressIndicatorBackgroundColor:
-                                              const Color.fromARGB(
-                                                  255, 203, 205, 209),
-                                          progressIndicatorValueColor:
-                                              const AlwaysStoppedAnimation(
-                                                  Color(0xFFFDAE2A)),
-                                          overlayBlur: 3,
-                                        );
-                                      }
-                                    },
-                                    icon: Icon(
-                                      MdiIcons.eye,
-                                      color: Colors.white,
-                                      size:
-                                          (MediaQuery.of(context).size.height *
-                                              0.05),
-                                    ),
+                                                .professional_name);*/
+                                  await controllerclient
+                                      .getClientHistory(
+                                          idClient, idBranch, idReserv)
+                                      .then((_) async {
+                                    if (controllerclient.correctConnection ==
+                                        true) {
+                                      Get.back();
+                                      pageController2.nextPage(
+                                        duration: Duration(milliseconds: 300),
+                                        curve: Curves.ease,
+                                      );
+                                    } else {
+                                      Get.back();
+                                      Get.snackbar(
+                                        'Error',
+                                        'Problemas al conectarse al servidor.',
+                                        duration:
+                                            const Duration(milliseconds: 2500),
+                                        backgroundColor: const Color.fromARGB(
+                                            118, 255, 255, 255),
+                                        showProgressIndicator: true,
+                                        progressIndicatorBackgroundColor:
+                                            const Color.fromARGB(
+                                                255, 203, 205, 209),
+                                        progressIndicatorValueColor:
+                                            const AlwaysStoppedAnimation(
+                                                Color(0xFFFDAE2A)),
+                                        overlayBlur: 3,
+                                      );
+                                    }
+                                  });
+                                  // pagesConfigC.updateSelectedIndex();
+                                  // await pagesConfigC.showAppBar(false);
+                                } else {
+                                  Get.snackbar(
+                                    'Mensaje',
+                                    'Debe de escanear el código Qr de entrada',
+                                    duration:
+                                        const Duration(milliseconds: 2500),
+                                    backgroundColor: const Color.fromARGB(
+                                        118, 255, 255, 255),
+                                    showProgressIndicator: true,
+                                    progressIndicatorBackgroundColor:
+                                        const Color.fromARGB(
+                                            255, 203, 205, 209),
+                                    progressIndicatorValueColor:
+                                        const AlwaysStoppedAnimation(
+                                            Color(0xFFFDAE2A)),
+                                    overlayBlur: 3,
+                                  );
+                                }
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Icon(
+                                        MdiIcons.eye,
+                                        color: Colors.white,
+                                        size: (MediaQuery.of(context)
+                                                .size
+                                                .height *
+                                            0.05),
+                                      ),
+                                      const Text(
+                                        'VER MÁS',
+                                        style: TextStyle(
+                                            fontSize: 10,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w900),
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(
-                                    width: 10,
-                                  )
                                 ],
-                              ),
-                              const Text(
-                                'VER MÁS',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w800),
-                              ),
-                            ],
-                          ),
+                              )),
                         ),
-                      ),
+                      )
                     ],
                   )),
               const SizedBox(
@@ -788,9 +817,6 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     );
   }
 
-//
-//
-//
 //
 
   Container cartsHome(
@@ -1235,94 +1261,103 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    ' $titulo',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily: AutofillHints.familyName,
-                                        fontSize: 22),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 5, right: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                        service
-                                            ? ' ${contShopp.orderDeleteCar[i].nameService}'
-                                            : ' ${contShopp.orderDeleteCar[i].nameProduct}',
-                                        style: TextStyle(
-                                            fontSize: (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.018),
-                                            fontWeight: FontWeight.w500)),
-                                    Text(
-                                        contShopp.orderDeleteCar[i].hora
-                                            .toString(),
-                                        style: TextStyle(
-                                            fontSize: (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.018),
-                                            fontWeight: FontWeight.w800)),
-                                  ],
+                        padding: const EdgeInsets.only(top: 5, left: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  ' $titulo',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: AutofillHints.familyName,
+                                      fontSize: 20,
+                                      height: 1),
                                 ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              ],
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 5, right: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Icon(
-                                    MdiIcons.accountTie,
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        MdiIcons.formatListBulleted,
+                                      ),
+                                      Text(
+                                        service
+                                            ? '${contShopp.orderDeleteCar[i].nameService}'
+                                            : '${contShopp.orderDeleteCar[i].nameProduct}',
+                                        style: TextStyle(
+                                            fontSize: (MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.018),
+                                            fontWeight: FontWeight.w500,
+                                            height: 1),
+                                      ),
+                                    ],
                                   ),
                                   Text(
-                                    contShopp.orderDeleteCar[i].nameProfesional
-                                        .toString(),
-                                    style: TextStyle(
-                                        fontSize: (MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.018),
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                                      contShopp.orderDeleteCar[i].hora
+                                          .toString(),
+                                      style: TextStyle(
+                                          fontSize: (MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.018),
+                                          fontWeight: FontWeight.w800,
+                                          height: 1)),
                                 ],
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Icon(
-                                    Icons.person,
-                                    color: Color.fromARGB(180, 0, 0, 0),
-                                  ),
-                                  Text(
-                                    contShopp.orderDeleteCar[i].nameClient,
-                                    style: TextStyle(
-                                        fontSize: (MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.018),
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Icon(
+                                  MdiIcons.accountTie,
+                                ),
+                                Text(
+                                  contShopp.orderDeleteCar[i].nameProfesional
+                                      .toString(),
+                                  style: TextStyle(
+                                      fontSize:
+                                          (MediaQuery.of(context).size.height *
+                                              0.018),
+                                      fontWeight: FontWeight.w500,
+                                      height: 1),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const Icon(
+                                  Icons.person,
+                                  color: Color.fromARGB(180, 0, 0, 0),
+                                ),
+                                Text(
+                                  contShopp.orderDeleteCar[i].nameClient,
+                                  style: TextStyle(
+                                      fontSize:
+                                          (MediaQuery.of(context).size.height *
+                                              0.018),
+                                      fontWeight: FontWeight.w500,
+                                      height: 1),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -1341,48 +1376,56 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                       child: IconButton(
                         onPressed: () async {
                           if (controllerLogin.codigoQrValid() == true) {
-                            controllerShoppingCart.setLoading(true);
-                            int result = await contShopp
-                                .orderDelete(contShopp.orderDeleteCar[i].id);
-                            //aqui mandar notificacion
-                            print('return resul: IconButton $result');
-                            print(
-                                'return resul: orderDeleteCar[i].id ${contShopp.orderDeleteCar[i].id}');
-                            if (result == 1) {
-                              String typeDelete =
-                                  'Aceptada Eliminación de Servicio';
-                              String serviceProduct = 'Servicio';
-                              String? nameServiceProduct =
-                                  contShopp.orderDeleteCar[i].nameService;
-                              if (contShopp.orderDeleteCar[i].nameService ==
-                                  '') {
-                                typeDelete = 'Aceptada Eliminación de Producto';
-                                serviceProduct = 'Producto';
-                                nameServiceProduct =
-                                    contShopp.orderDeleteCar[i].nameProduct;
-                              }
+                            if (contShopp.buttonPress == false) {
+                              contShopp.setButtonPress(true);
 
-                              if (typeDelete ==
-                                  'Aceptada Eliminación de Servicio') {
-                                notiController.storeNotification2(
-                                    typeDelete,
-                                    controllerLogin.branchIdLoggedIn,
-                                    contShopp.orderDeleteCar[i].profesional_id,
-                                    '$serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado con tiempo de ${contShopp.orderDeleteCar[i].duration_service} min.${contShopp.orderDeleteCar[i].reservation_id}',
-                                    'Barbero');
-                              } else {
-                                notiController.storeNotification(
-                                    typeDelete,
-                                    controllerLogin.branchIdLoggedIn,
-                                    contShopp.orderDeleteCar[i].profesional_id,
-                                    'El $serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado satisfactoriamente.',
-                                    'Barbero');
+                              controllerShoppingCart.setLoading(true);
+                              int result = await contShopp
+                                  .orderDelete(contShopp.orderDeleteCar[i].id);
+                              //aqui mandar notificacion
+                              print('return resul: IconButton $result');
+                              print(
+                                  'return resul: orderDeleteCar[i].id ${contShopp.orderDeleteCar[i].id}');
+                              if (result == 1) {
+                                String typeDelete =
+                                    'Aceptada Eliminación de Servicio';
+                                String serviceProduct = 'Servicio';
+                                String? nameServiceProduct =
+                                    contShopp.orderDeleteCar[i].nameService;
+                                if (contShopp.orderDeleteCar[i].nameService ==
+                                    '') {
+                                  typeDelete =
+                                      'Aceptada Eliminación de Producto';
+                                  serviceProduct = 'Producto';
+                                  nameServiceProduct =
+                                      contShopp.orderDeleteCar[i].nameProduct;
+                                }
+
+                                if (typeDelete ==
+                                    'Aceptada Eliminación de Servicio') {
+                                  notiController.storeNotification2(
+                                      typeDelete,
+                                      controllerLogin.branchIdLoggedIn,
+                                      contShopp
+                                          .orderDeleteCar[i].profesional_id,
+                                      '$serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado con tiempo de ${contShopp.orderDeleteCar[i].duration_service} min.${contShopp.orderDeleteCar[i].reservation_id}',
+                                      'Barbero');
+                                } else {
+                                  notiController.storeNotification(
+                                      typeDelete,
+                                      controllerLogin.branchIdLoggedIn,
+                                      contShopp
+                                          .orderDeleteCar[i].profesional_id,
+                                      'El $serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado satisfactoriamente.',
+                                      'Barbero');
+                                }
                               }
-                            }
-                            if (controllerLogin.branchIdLoggedIn != null) {
-                              await contShopp.loadOrderDeleteCar(
-                                  controllerLogin.branchIdLoggedIn!);
-                              controllerShoppingCart.setLoading(false);
+                              if (controllerLogin.branchIdLoggedIn != null) {
+                                await contShopp.loadOrderDeleteCar(
+                                    controllerLogin.branchIdLoggedIn!);
+                                controllerShoppingCart.setLoading(false);
+                                contShopp.setButtonPress(false);
+                              }
                             }
                           } else {
                             Get.snackbar(

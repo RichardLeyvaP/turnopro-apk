@@ -22,6 +22,7 @@ class LoginController extends GetxController {
     androidInfo();
   }
 
+  String pagePosition = '';
   bool codigoQrvalid = false;
   bool setIsLoading = false;
   bool setIsLoading2 = false;
@@ -52,6 +53,13 @@ class LoginController extends GetxController {
 
   void setIsLoadingFor(value) {
     setIsLoading = value;
+    update();
+  }
+
+  void setPagePosition(value) {
+    print(
+        'llamada timer en 10 segundos llamadasTimer1()-setPagePosition(value):$value');
+    pagePosition = value;
     update();
   }
 

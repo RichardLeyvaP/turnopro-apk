@@ -70,7 +70,8 @@ class ProductRepository extends GetConnect {
       // category_branch?branch_id=10
       final response = await get(url);
       if (response.statusCode == 200) {
-        print('tambien llegue aqui response.statusCode == 200');
+        print(
+            'tambien llegue aqui response.statusCode == :${response.statusCode}');
         final orders = response.body['carOrderDelete'];
         print(orders);
         if (orders != null) {

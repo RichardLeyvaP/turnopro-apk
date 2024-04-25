@@ -68,7 +68,7 @@ class ClientsCoordinatorController extends GetxController {
   int quantityClientAttended = 0;
   int quantityClientAttendedTechnical = 0;
   bool isLoading = true;
-  bool correctConnection = true;
+  bool correctConnection = false;
 
   //Variables del reloj
   double sizeClock = 145;
@@ -917,8 +917,8 @@ class ClientsCoordinatorController extends GetxController {
         print(productCORD);
         print(serviceCORD);
         print(clientIdCORD);
+        update();
       }
-      update();
     } catch (e) {
       print('llamando _fetchCoexistenceList(); error del catch:$e');
     }

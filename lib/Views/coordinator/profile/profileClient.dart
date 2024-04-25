@@ -38,6 +38,13 @@ class _ProfileClientState extends State<ProfileClient> {
   );
 
   get closedCompleter => null;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      pagesConfigCont.showAppBar(false);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
