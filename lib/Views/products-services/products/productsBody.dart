@@ -2,12 +2,14 @@
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/product.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
+import 'package:turnopro_apk/env.dart';
 
 class ProductsBody extends StatefulWidget {
   const ProductsBody({
@@ -128,7 +130,8 @@ class _ProductsBodyState extends State<ProductsBody>
                                                       .product[itemIndex]
                                                       .product_exit;
                                             }
-
+                                            print(
+                                                'direcciones de imagenes:${controllerProduct.product[itemIndex].image_product}');
                                             return Column(
                                               children: [
                                                 controllerProduct
@@ -138,7 +141,9 @@ class _ProductsBodyState extends State<ProductsBody>
                                                                 .productListLength >
                                                             0
                                                     ? cartProduct(
-                                                        'assets/images/pngegg.png',
+                                                        controllerProduct
+                                                            .product[itemIndex]
+                                                            .image_product,
                                                         controllerProduct
                                                             .product[itemIndex]
                                                             .id,
@@ -219,12 +224,72 @@ class _ProductsBodyState extends State<ProductsBody>
                 decoration: const BoxDecoration(
                     borderRadius:
                         BorderRadius.all(Radius.circular(borderRadiusValue)),
-                    color: Color(0xFFFDAE2A)),
+                    color: Color.fromARGB(255, 231, 233, 233)),
                 child: FractionallySizedBox(
                   widthFactor: 0.6, // 50% del ancho del contenedor padre
                   heightFactor: 0.65, // 50% del alto del contenedor padre
-                  child: Center(
-                    child: Image.asset(addressProduct),
+                  child: Image.network(
+                    '${Env.apiEndpoint}/images/$addressProduct',
+                    fit: BoxFit
+                        .cover, // Ajusta la imagen para cubrir completamente el área
+                    width: 100, // Ancho deseado de la imagen dentro del círculo
+                    height: 100,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        // Si la imagen se carga correctamente, mostramos la imagen
+                        return child;
+                      } else {
+                        // Si la imagen aún se está cargando, mostramos un indicador de progreso
+                        return const SizedBox(
+                          width: 15,
+                          height: 15,
+                          child: CircularProgressIndicator(
+                            color: Color(0xFFFDAE2A),
+                          ),
+                        );
+                      }
+                    },
+                    errorBuilder: (BuildContext context, Object error,
+                        StackTrace? stackTrace) {
+                      // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
+                      if (kDebugMode) {
+                        return CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors
+                              .transparent, // Fondo transparente para que el borde sea visible
+                          child: ClipOval(
+                            child: Image.asset(
+                              'assets/images/default_profile.jpg',
+                              fit: BoxFit
+                                  .cover, // Ajusta la imagen para cubrir completamente el área
+                              width:
+                                  50, // Ancho deseado de la imagen dentro del círculo
+                              height:
+                                  50, // Alto deseado de la imagen dentro del círculo
+                            ),
+                          ),
+                        );
+                      } else {
+                        // Si no estamos en modo de depuración, mostramos un texto de error
+                        return CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors
+                              .transparent, // Fondo transparente para que el borde sea visible
+                          child: ClipOval(
+                            child: Image.asset(
+                              'assets/images/default_profile.jpg',
+                              fit: BoxFit
+                                  .cover, // Ajusta la imagen para cubrir completamente el área
+                              width:
+                                  50, // Ancho deseado de la imagen dentro del círculo
+                              height:
+                                  50, // Alto deseado de la imagen dentro del círculo
+                            ),
+                          ),
+                        );
+                      }
+                    },
                   ),
                 ),
               ),

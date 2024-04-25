@@ -21,6 +21,7 @@ class topPage extends StatelessWidget {
     this.colorButton,
     this.totalCC,
     this.coexContro,
+    this.page,
   });
 
   final double panddCont;
@@ -39,6 +40,7 @@ class topPage extends StatelessWidget {
   final Color? colorButton;
   final String? totalCC;
   final dynamic coexContro;
+  final String? page;
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +79,10 @@ class topPage extends StatelessWidget {
                         ),
                         onPressed: () {
                           print('estoy entrando aqui...');
+                          if ((title == 'Servicios' || title == 'Productos') &&
+                              page == 'Coordinador') {
+                            pagesConfigC.goToPreviousPage();
+                          }
                           if (isPagesConfig == true) {
                             if (title == 'Carro de Compra') {
                               pagesConfigC.previousPage();

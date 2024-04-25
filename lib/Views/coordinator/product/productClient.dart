@@ -6,6 +6,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
+import 'package:turnopro_apk/Views/common/topPage.dart';
 import 'package:turnopro_apk/env.dart';
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -22,18 +23,25 @@ class _ProductClientState extends State<ProductClient> {
       Get.find<PagesConfigController>();
   int cantVisitas = 3;
 
-  String description = 'Coca Cola Classic 350 ml';
-  String fecha = '10-01-2024';
-  String name = 'Coca Cola';
   Icon icon = Icon(
     MdiIcons.tag,
   );
-  int cant = 8;
+  /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+  final IconnsBack = Icons.arrow_back;
+  final IconnsP = MdiIcons.tagOutline;
+
+  String title = 'Productos';
+  String subTitle = 'Productos';
+  final colorCont = Colors.white;
+  double panddCont = 8;
+  double borderCont = 12;
+  final colorIcon = Color(0xFF4470F3);
+  /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*  appBar: AppBar(
         toolbarHeight: 150,
         leading: Stack(
           children: [
@@ -114,18 +122,42 @@ class _ProductClientState extends State<ProductClient> {
         elevation: 0, // Quits the shadow
         //shadowColor: Colors.amber, // Removes visual elevation
       ),
+      */
       backgroundColor: const Color.fromARGB(255, 231, 232, 234),
       body: GetBuilder<ClientsCoordinatorController>(
         builder: (controllerCORD) {
-          return controllerCORD
-                  .productCORD.isNotEmpty //todo si hay cargarlos aqui
-              ? Column(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: ListView.builder(
+          return Column(
+            children: [
+              Expanded(
+                flex: 4,
+                child: topPage(
+                  panddCont: panddCont,
+                  colorCont: colorCont,
+                  borderCont: borderCont,
+                  IconnsBack: IconnsBack,
+                  pagesConfigC: pagesConfigCont,
+                  isPagesConfig: true,
+                  IconnsP: IconnsP,
+                  title: title,
+                  subTitle: subTitle,
+                  colorIcon: colorIcon,
+                  buttonRight: false,
+                  page: 'Coordinador',
+                ),
+              ),
+              Expanded(
+                flex: 18,
+                child: controllerCORD
+                        .productCORD.isNotEmpty //todo si hay cargarlos aqui
+                    ? ListView.builder(
+                        padding: EdgeInsets
+                            .zero, // Elimina cualquier padding del ListView
                         itemCount: controllerCORD.productCORD.length,
                         itemBuilder: (context, index) {
+                          print(
+                              'images de products:${Env.apiEndpoint}/images/${controllerCORD.productCORD[index].image_product}}');
+                          print(
+                              'images de products:${controllerCORD.productCORD[index].image_product}');
                           // Utiliza la función cardOptions para construir cada Card
                           return cardOptions(
                             context,
@@ -139,13 +171,13 @@ class _ProductClientState extends State<ProductClient> {
                             controllerCORD.productCORD[index].image_product,
                           );
                         },
+                      )
+                    : const Center(
+                        child: Text('No ha comprado productos'),
                       ),
-                    ),
-                  ],
-                )
-              : const Center(
-                  child: Text('No ha comprado Productos'),
-                );
+              ),
+            ],
+          );
         },
       ),
     );
@@ -191,8 +223,8 @@ class _ProductClientState extends State<ProductClient> {
                             fit: BoxFit
                                 .cover, // Ajusta la imagen para cubrir completamente el área
                             width:
-                                10, // Ancho deseado de la imagen dentro del círculo
-                            height: 10,
+                                50, // Ancho deseado de la imagen dentro del círculo
+                            height: 50,
                             loadingBuilder: (BuildContext context, Widget child,
                                 ImageChunkEvent? loadingProgress) {
                               if (loadingProgress == null) {
@@ -214,9 +246,9 @@ class _ProductClientState extends State<ProductClient> {
                                   fit: BoxFit
                                       .cover, // Ajusta la imagen para cubrir completamente el área
                                   width:
-                                      10, // Ancho deseado de la imagen dentro del círculo
+                                      30, // Ancho deseado de la imagen dentro del círculo
                                   height:
-                                      10, // Alto deseado de la imagen dentro del círculo
+                                      30, // Alto deseado de la imagen dentro del círculo
                                 );
                               } else {
                                 // Si no estamos en modo de depuración, mostramos un texto de error
@@ -225,9 +257,9 @@ class _ProductClientState extends State<ProductClient> {
                                   fit: BoxFit
                                       .cover, // Ajusta la imagen para cubrir completamente el área
                                   width:
-                                      10, // Ancho deseado de la imagen dentro del círculo
+                                      30, // Ancho deseado de la imagen dentro del círculo
                                   height:
-                                      10, // Alto deseado de la imagen dentro del círculo
+                                      30, // Alto deseado de la imagen dentro del círculo
                                 );
                               }
                             },

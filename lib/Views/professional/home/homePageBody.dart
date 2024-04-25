@@ -1253,7 +1253,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700),
                             ),
-                            controllerLogin.setIsLoading == true
+                            loginController.setIsLoading == true
                                 ? const SizedBox(
                                     width: 24,
                                     height: 24,
@@ -1444,27 +1444,45 @@ class _HomePageBodyState extends State<HomePageBody>
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 30, top: 8),
+                        padding: const EdgeInsets.only(left: 15, top: 8),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Icon(
-                                  Icons.person,
-                                  color: const Color.fromARGB(255, 43, 44, 49),
-                                  size: 22,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    const Icon(
+                                      Icons.person,
+                                      color:
+                                          const Color.fromARGB(255, 43, 44, 49),
+                                      size: 22,
+                                    ),
+                                    Text(
+                                      firstName,
+                                      softWrap: true,
+                                      style: const TextStyle(
+                                          height: 1.0,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 20),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  firstName,
-                                  softWrap: true,
-                                  style: const TextStyle(
-                                      height: 1.0,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Text(
+                                      //AQUI ETSA EL TIEMPO TOTAL DEL SERVICIO
+                                      (clientsScheduledController
+                                          .clientsScheduledNext!.total_time),
+                                      style: const TextStyle(
+                                        height: 1.2,
+                                        fontSize: 16,
+                                        color: Color.fromARGB(180, 0, 0, 0),
+                                      )),
                                 ),
                               ],
                             ),
@@ -1507,24 +1525,6 @@ class _HomePageBodyState extends State<HomePageBody>
                                   ],
                                 ),
                               ),
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Icon(Icons.timer,
-                                    color: const Color.fromARGB(180, 0, 0, 0),
-                                    size: (MediaQuery.of(context).size.height *
-                                        0.018)),
-                                Text(
-                                    //AQUI ETSA EL TIEMPO TOTAL DEL SERVICIO
-                                    (clientsScheduledController
-                                        .clientsScheduledNext!.total_time),
-                                    style: const TextStyle(
-                                      height: 1.2,
-                                      fontSize: 16,
-                                      color: Color.fromARGB(180, 0, 0, 0),
-                                    )),
-                              ],
                             ),
                           ],
                         ),
@@ -2200,7 +2200,7 @@ class _HomePageBodyState extends State<HomePageBody>
           }
         },
         child: Padding(
-          padding: const EdgeInsets.only(right: 0, left: 0, top: 8, bottom: 8),
+          padding: const EdgeInsets.only(top: 8, bottom: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2225,7 +2225,7 @@ class _HomePageBodyState extends State<HomePageBody>
                     titleCart,
                     style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 17,
+                        fontSize: 18,
                         fontWeight: FontWeight.w600,
                         height: 0.4),
                   ),
@@ -2233,7 +2233,8 @@ class _HomePageBodyState extends State<HomePageBody>
                     descriptionTitleCart,
                     style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: 11,
+                        height: 1.5,
                         fontWeight: FontWeight.w400),
                   ),
                 ],

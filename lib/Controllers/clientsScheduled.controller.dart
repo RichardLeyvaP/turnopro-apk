@@ -739,6 +739,17 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
+  Future getProfessionalState2(idBranch, idReserv) async {
+    print('getProfessionalState(idBranch) async 11');
+    //todo nuevo
+    professionalDispon =
+        await repository.getProfessionalState2(idBranch, idReserv);
+    professionalDisponLength = professionalDispon.length;
+    print(
+        'getProfessionalState(idBranch) async 22 professionalDisponLength:$professionalDisponLength');
+    update();
+  }
+
   Future<void> acceptClientTechnical(reservationId, attended) async {
     // final LoginController controllerLogin = Get.find<LoginController>();
     quantityClientAttendedTechnical = 1;

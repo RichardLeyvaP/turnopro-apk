@@ -246,7 +246,6 @@ class _CoexistencePageState extends State<CoexistencePage> {
                                     ),
                                   ))
                           : const Center(
-                              //*AQUI ESTA EL CODIGO DE CUANDO NO HAY Convivencias
                               child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [

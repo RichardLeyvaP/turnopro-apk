@@ -278,6 +278,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                                   children: [
                                                     Text(
                                                       'No hay clientes en cola',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
                                                     ),
                                                   ],
                                                 ),
@@ -364,58 +366,23 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    GestureDetector(
-                                      onTap: () async {
-                                        // await pagesConfigC.showAppBar(false);
-                                        Get.dialog(
-                                          const Center(
-                                            child: CircularProgressIndicator(
-                                              color: Color(0xFFFDAE2A),
-                                            ),
-                                          ),
-                                          barrierDismissible: false,
-                                        ); //Get.back();
-                                        await clientsScheduledController
-                                            .clientsAttendBranch(loginController
-                                                .branchIdLoggedIn);
-                                        pagesConfigC.onTabTapped(1);
-                                        Get.back();
-                                        /* pagesConfigC.goToPage(
-                                            4, pagesConfigC.pageController2);*/
-                                      },
-                                      child: cartsHome(
-                                          context,
-                                          12,
-                                          const Color(0xFF19CF9E),
-                                          const Color.fromARGB(
-                                              255, 231, 233, 233),
-                                          'Atendiéndose',
-                                          'Clientes Atendiéndose',
-                                          Icons.person),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.dialog(
-                                          const Center(
-                                            child: CircularProgressIndicator(
-                                              color: Color(0xFFFDAE2A),
-                                            ),
-                                          ),
-                                          barrierDismissible: false,
-                                        ); //Get.back();
-                                        pagesConfigC.onTabTapped(
-                                            2); //index = 2 -> /NotificationsPageProf
-                                        Get.back();
-                                      },
-                                      child: cartsHome(
-                                          context,
-                                          12,
-                                          const Color(0xFF4470F3),
-                                          Color.fromARGB(255, 231, 233, 233),
-                                          'Notificaciones',
-                                          'Tus Notificaciones',
-                                          Icons.notifications),
-                                    ),
+                                    cartsHome(
+                                        context,
+                                        12,
+                                        const Color(0xFF19CF9E),
+                                        const Color.fromARGB(
+                                            255, 231, 233, 233),
+                                        'Atendiéndose',
+                                        'Clientes Atendiéndose',
+                                        Icons.person),
+                                    cartsHome(
+                                        context,
+                                        12,
+                                        const Color(0xFFFF6750),
+                                        Color.fromARGB(255, 231, 233, 233),
+                                        'Notificaciones',
+                                        'Tus Notificaciones',
+                                        Icons.notifications),
                                   ],
                                 ),
                                 SizedBox(
@@ -426,54 +393,22 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.dialog(
-                                          const Center(
-                                            child: CircularProgressIndicator(
-                                              color: Color(0xFFFDAE2A),
-                                            ),
-                                          ),
-                                          barrierDismissible: false,
-                                        ); //Get.back();
-                                        pagesConfigC.onTabTapped(
-                                            3); //index = 3 -> /StatisticPage
-                                        Get.back();
-                                      },
-                                      child: cartsHome(
-                                          context,
-                                          12,
-                                          const Color(0xFFFF6750),
-                                          Color.fromARGB(255, 231, 233, 233),
-                                          'Estadísticas',
-                                          'Revisa Tus Ingresos',
-                                          Icons.bar_chart),
-                                    ),
-                                    InkWell(
-                                      onTap: () async {
-                                        Get.dialog(
-                                          const Center(
-                                            child: CircularProgressIndicator(
-                                              color: Color(0xFFFDAE2A),
-                                            ),
-                                          ),
-                                          barrierDismissible: false,
-                                        ); //Get.back();
-                                        await coexistenceController
-                                            .fetchBranchProfessionals();
-                                        pagesConfigC.onTabTapped(
-                                            4); //index = 4 -> /CoexistencePage
-                                        Get.back();
-                                      },
-                                      child: cartsHome(
-                                          context,
-                                          12,
-                                          const Color(0xFFFDAE2A),
-                                          Color.fromARGB(255, 231, 233, 233),
-                                          'Convivencia',
-                                          'Cumplimiento de Reglas',
-                                          Icons.star),
-                                    ),
+                                    cartsHome(
+                                        context,
+                                        12,
+                                        const Color(0xFF4470F3),
+                                        Color.fromARGB(255, 231, 233, 233),
+                                        'Estadísticas',
+                                        'Revisa Tus Ingresos',
+                                        Icons.bar_chart),
+                                    cartsHome(
+                                        context,
+                                        12,
+                                        const Color(0xFFFDAE2A),
+                                        Color.fromARGB(255, 231, 233, 233),
+                                        'Convivencia',
+                                        'Cumplimiento de Reglas',
+                                        Icons.star),
                                   ],
                                 ),
                               ],
@@ -722,12 +657,12 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   /*   clientsScheduledController
                                           .saveIdProfessional(controllerclient
                                               .clientsScheduledListBranch[index]
-                                              .professional_id!);
-                                        controllerclient.setActualNameCORD(
-                                            controllerclient
-                                                .clientsScheduledListBranch[
-                                                    index]
-                                                .professional_name);*/
+                                              .professional_id!);*/
+                                  controllerclient.setActualNameCORD(
+                                      controllerclient
+                                          .clientsScheduledListBranch[index]
+                                          .professional_name);
+
                                   await controllerclient
                                       .getClientHistory(
                                           idClient, idBranch, idReserv)
@@ -835,44 +770,109 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
         borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
         color: colorVariable,
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: CircleAvatar(
-                radius: 20, // Tamaño del CircleAvatar
-                backgroundColor: colorBottom, // Color de fondo del CircleAvatar
-                child: Icon(
-                  iconCart, // Icono que deseas mostrar
-                  size: 30, // Tamaño del icono
-                  color: colorVariable, // Color del icono
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: colorVariable, // Color de fondo en verde
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                borderRadiusValue), // Ajusta el radio según tus necesidades
+          ),
+        ),
+        onPressed: () async {
+          if (titleCart == 'Atendiéndose') {
+            Get.dialog(
+              const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFDAE2A),
                 ),
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  titleCart,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600),
+              barrierDismissible: false,
+            ); //Get.back();
+            await clientsScheduledController
+                .clientsAttendBranch(loginController.branchIdLoggedIn);
+            pagesConfigC.onTabTapped(1);
+            Get.back();
+          }
+          if (titleCart == 'Convivencia') {
+            Get.dialog(
+              const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFDAE2A),
                 ),
-                Text(
-                  descriptionTitleCart,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400),
+              ),
+              barrierDismissible: false,
+            ); //Get.back();
+            await coexistenceController.fetchBranchProfessionals();
+            pagesConfigC.onTabTapped(4); //index = 4 -> /CoexistencePage
+            Get.back();
+          }
+          if (titleCart == 'Estadísticas') {
+            Get.dialog(
+              const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFDAE2A),
                 ),
-              ],
-            )
-          ],
+              ),
+              barrierDismissible: false,
+            ); //Get.back();
+            pagesConfigC.onTabTapped(3); //index = 3 -> /StatisticPage
+            Get.back();
+          }
+          if (titleCart == 'Notificaciones') {
+            Get.dialog(
+              const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFDAE2A),
+                ),
+              ),
+              barrierDismissible: false,
+            ); //Get.back();
+            pagesConfigC.onTabTapped(2); //index = 2 -> /NotificationsPageProf
+            Get.back();
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8, bottom: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: CircleAvatar(
+                  radius: 20, // Tamaño del CircleAvatar
+                  backgroundColor:
+                      colorBottom, // Color de fondo del CircleAvatar
+                  child: Icon(
+                    iconCart, // Icono que deseas mostrar
+                    size: 30, // Tamaño del icono
+                    color: colorVariable, // Color del icono
+                  ),
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    titleCart,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        height: 0.4),
+                  ),
+                  Text(
+                    descriptionTitleCart,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                        height: 1.5,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -1179,77 +1179,86 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
           child: Column(
             children: [
               Container(
+                height: (MediaQuery.of(context).size.height * 0.126),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(12)),
                 ),
                 child: Row(
                   children: [
-                    Container(
-                      height: (MediaQuery.of(context).size.height * 0.120),
-                      width: (MediaQuery.of(context).size.width * 0.20),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white, // Color blanco para el borde
-                          width:
-                              1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 6, top: 6, bottom: 6),
+                      child: Container(
+                        height: (MediaQuery.of(context).size.height * 0.126),
+                        width: (MediaQuery.of(context).size.width * 0.20),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFF6750),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(12)),
                         ),
-                        color: const Color(0xFFFF6750),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(12)),
-                      ),
-                      child: IconButton(
-                        onPressed: () async {
-                          if (controllerLogin.codigoQrValid() == true) {
-                            //rechazar la eliminacion
-                            controllerShoppingCart.setLoading(true);
-                            int result = await contShopp.requestDelete(
-                                contShopp.orderDeleteCar[i].id, 0);
-                            //aqui mandar notificacion
-                            if (result == 1) {
-                              String serviceProduct = 'Servicio';
-                              String? nameServiceProduct =
-                                  contShopp.orderDeleteCar[i].nameService;
-                              if (contShopp.orderDeleteCar[i].nameService ==
-                                  null) {
-                                serviceProduct = 'Producto';
-                                nameServiceProduct =
-                                    contShopp.orderDeleteCar[i].nameProduct;
-                              }
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: const Color(
+                                0xFFFF6750), // Color de fondo en verde
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  12.0), // Ajusta el radio según tus necesidades
+                            ),
+                            // Ajusta el radio según tus necesidades
+                          ),
+                          onPressed: () async {
+                            if (controllerLogin.codigoQrValid() == true) {
+                              //rechazar la eliminacion
+                              controllerShoppingCart.setLoading(true);
+                              int result = await contShopp.requestDelete(
+                                  contShopp.orderDeleteCar[i].id, 0);
+                              //aqui mandar notificacion
+                              if (result == 1) {
+                                String serviceProduct = 'Servicio';
+                                String? nameServiceProduct =
+                                    contShopp.orderDeleteCar[i].nameService;
+                                if (contShopp.orderDeleteCar[i].nameService ==
+                                    null) {
+                                  serviceProduct = 'Producto';
+                                  nameServiceProduct =
+                                      contShopp.orderDeleteCar[i].nameProduct;
+                                }
 
-                              notiController.storeNotification(
-                                  'Solicitud de Eliminacion Rechazada',
-                                  controllerLogin.branchIdLoggedIn,
-                                  contShopp.orderDeleteCar[i].profesional_id,
-                                  '!Atención..El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} no fue aprobado para su eliminación.',
-                                  'Barbero');
+                                notiController.storeNotification(
+                                    'Solicitud de Eliminacion Rechazada',
+                                    controllerLogin.branchIdLoggedIn,
+                                    contShopp.orderDeleteCar[i].profesional_id,
+                                    '!Atención..El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} no fue aprobado para su eliminación.',
+                                    'Barbero');
+                              }
+                              if (controllerLogin.branchIdLoggedIn != null) {
+                                await contShopp.loadOrderDeleteCar(
+                                    controllerLogin.branchIdLoggedIn!);
+                                controllerShoppingCart.setLoading(false);
+                              }
+                            } else {
+                              Get.snackbar(
+                                'Mensaje',
+                                'Debe de escanear el código Qr de entrada',
+                                duration: const Duration(milliseconds: 2500),
+                                backgroundColor:
+                                    const Color.fromARGB(118, 255, 255, 255),
+                                showProgressIndicator: true,
+                                progressIndicatorBackgroundColor:
+                                    const Color.fromARGB(255, 203, 205, 209),
+                                progressIndicatorValueColor:
+                                    const AlwaysStoppedAnimation(
+                                        Color(0xFFFDAE2A)),
+                                overlayBlur: 3,
+                              );
                             }
-                            if (controllerLogin.branchIdLoggedIn != null) {
-                              await contShopp.loadOrderDeleteCar(
-                                  controllerLogin.branchIdLoggedIn!);
-                              controllerShoppingCart.setLoading(false);
-                            }
-                          } else {
-                            Get.snackbar(
-                              'Mensaje',
-                              'Debe de escanear el código Qr de entrada',
-                              duration: const Duration(milliseconds: 2500),
-                              backgroundColor:
-                                  const Color.fromARGB(118, 255, 255, 255),
-                              showProgressIndicator: true,
-                              progressIndicatorBackgroundColor:
-                                  const Color.fromARGB(255, 203, 205, 209),
-                              progressIndicatorValueColor:
-                                  const AlwaysStoppedAnimation(
-                                      Color(0xFFFDAE2A)),
-                              overlayBlur: 3,
-                            );
-                          }
-                        },
-                        icon: Icon(
-                          MdiIcons.thumbDownOutline,
-                          color: Colors.white,
-                          size: (MediaQuery.of(context).size.height * 0.04),
+                          },
+                          child: Icon(
+                            MdiIcons.thumbDownOutline,
+                            color: Colors.white,
+                            size: (MediaQuery.of(context).size.height * 0.04),
+                          ),
                         ),
                       ),
                     ),
@@ -1261,7 +1270,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 5, left: 30),
+                        padding: const EdgeInsets.only(top: 5, left: 12),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -1274,8 +1283,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   ' $titulo',
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w600,
-                                      fontFamily: AutofillHints.familyName,
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       height: 1),
                                 ),
                               ],
@@ -1361,93 +1369,100 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                         ),
                       ),
                     ),
-                    Container(
-                      height: (MediaQuery.of(context).size.height * 0.120),
-                      width: (MediaQuery.of(context).size.width * 0.20),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.white, // Color blanco para el borde
-                            width:
-                                1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(right: 6, top: 6, bottom: 6),
+                      child: Container(
+                        height: (MediaQuery.of(context).size.height * 0.126),
+                        width: (MediaQuery.of(context).size.width * 0.20),
+                        decoration: BoxDecoration(
+                            color: const Color(0xFF19CF9E),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(12))),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: const Color(
+                                0xFF19CF9E), // Color de fondo en verde
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  12.0), // Ajusta el radio según tus necesidades
+                            ),
                           ),
-                          color: const Color(0xFF19CF9E),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12))),
-                      child: IconButton(
-                        onPressed: () async {
-                          if (controllerLogin.codigoQrValid() == true) {
-                            if (contShopp.buttonPress == false) {
-                              contShopp.setButtonPress(true);
+                          onPressed: () async {
+                            if (controllerLogin.codigoQrValid() == true) {
+                              if (contShopp.buttonPress == false) {
+                                contShopp.setButtonPress(true);
 
-                              controllerShoppingCart.setLoading(true);
-                              int result = await contShopp
-                                  .orderDelete(contShopp.orderDeleteCar[i].id);
-                              //aqui mandar notificacion
-                              print('return resul: IconButton $result');
-                              print(
-                                  'return resul: orderDeleteCar[i].id ${contShopp.orderDeleteCar[i].id}');
-                              if (result == 1) {
-                                String typeDelete =
-                                    'Aceptada Eliminación de Servicio';
-                                String serviceProduct = 'Servicio';
-                                String? nameServiceProduct =
-                                    contShopp.orderDeleteCar[i].nameService;
-                                if (contShopp.orderDeleteCar[i].nameService ==
-                                    '') {
-                                  typeDelete =
-                                      'Aceptada Eliminación de Producto';
-                                  serviceProduct = 'Producto';
-                                  nameServiceProduct =
-                                      contShopp.orderDeleteCar[i].nameProduct;
+                                controllerShoppingCart.setLoading(true);
+                                int result = await contShopp.orderDelete(
+                                    contShopp.orderDeleteCar[i].id);
+                                //aqui mandar notificacion
+                                print('return resul: IconButton $result');
+                                print(
+                                    'return resul: orderDeleteCar[i].id ${contShopp.orderDeleteCar[i].id}');
+                                if (result == 1) {
+                                  String typeDelete =
+                                      'Aceptada Eliminación de Servicio';
+                                  String serviceProduct = 'Servicio';
+                                  String? nameServiceProduct =
+                                      contShopp.orderDeleteCar[i].nameService;
+                                  if (contShopp.orderDeleteCar[i].nameService ==
+                                      '') {
+                                    typeDelete =
+                                        'Aceptada Eliminación de Producto';
+                                    serviceProduct = 'Producto';
+                                    nameServiceProduct =
+                                        contShopp.orderDeleteCar[i].nameProduct;
+                                  }
+
+                                  if (typeDelete ==
+                                      'Aceptada Eliminación de Servicio') {
+                                    notiController.storeNotification2(
+                                        typeDelete,
+                                        controllerLogin.branchIdLoggedIn,
+                                        contShopp
+                                            .orderDeleteCar[i].profesional_id,
+                                        '$serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado con tiempo de ${contShopp.orderDeleteCar[i].duration_service} min.${contShopp.orderDeleteCar[i].reservation_id}',
+                                        'Barbero');
+                                  } else {
+                                    notiController.storeNotification(
+                                        typeDelete,
+                                        controllerLogin.branchIdLoggedIn,
+                                        contShopp
+                                            .orderDeleteCar[i].profesional_id,
+                                        'El $serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado satisfactoriamente.',
+                                        'Barbero');
+                                  }
                                 }
-
-                                if (typeDelete ==
-                                    'Aceptada Eliminación de Servicio') {
-                                  notiController.storeNotification2(
-                                      typeDelete,
-                                      controllerLogin.branchIdLoggedIn,
-                                      contShopp
-                                          .orderDeleteCar[i].profesional_id,
-                                      '$serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado con tiempo de ${contShopp.orderDeleteCar[i].duration_service} min.${contShopp.orderDeleteCar[i].reservation_id}',
-                                      'Barbero');
-                                } else {
-                                  notiController.storeNotification(
-                                      typeDelete,
-                                      controllerLogin.branchIdLoggedIn,
-                                      contShopp
-                                          .orderDeleteCar[i].profesional_id,
-                                      'El $serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado satisfactoriamente.',
-                                      'Barbero');
+                                if (controllerLogin.branchIdLoggedIn != null) {
+                                  await contShopp.loadOrderDeleteCar(
+                                      controllerLogin.branchIdLoggedIn!);
+                                  controllerShoppingCart.setLoading(false);
+                                  contShopp.setButtonPress(false);
                                 }
                               }
-                              if (controllerLogin.branchIdLoggedIn != null) {
-                                await contShopp.loadOrderDeleteCar(
-                                    controllerLogin.branchIdLoggedIn!);
-                                controllerShoppingCart.setLoading(false);
-                                contShopp.setButtonPress(false);
-                              }
+                            } else {
+                              Get.snackbar(
+                                'Mensaje',
+                                'Debe de escanear el código Qr de entrada',
+                                duration: const Duration(milliseconds: 2500),
+                                backgroundColor:
+                                    const Color.fromARGB(118, 255, 255, 255),
+                                showProgressIndicator: true,
+                                progressIndicatorBackgroundColor:
+                                    const Color.fromARGB(255, 203, 205, 209),
+                                progressIndicatorValueColor:
+                                    const AlwaysStoppedAnimation(
+                                        Color(0xFFFDAE2A)),
+                                overlayBlur: 3,
+                              );
                             }
-                          } else {
-                            Get.snackbar(
-                              'Mensaje',
-                              'Debe de escanear el código Qr de entrada',
-                              duration: const Duration(milliseconds: 2500),
-                              backgroundColor:
-                                  const Color.fromARGB(118, 255, 255, 255),
-                              showProgressIndicator: true,
-                              progressIndicatorBackgroundColor:
-                                  const Color.fromARGB(255, 203, 205, 209),
-                              progressIndicatorValueColor:
-                                  const AlwaysStoppedAnimation(
-                                      Color(0xFFFDAE2A)),
-                              overlayBlur: 3,
-                            );
-                          }
-                        },
-                        icon: Icon(
-                          MdiIcons.thumbUpOutline,
-                          color: Colors.white,
-                          size: (MediaQuery.of(context).size.height * 0.04),
+                          },
+                          child: Icon(
+                            MdiIcons.thumbUpOutline,
+                            color: Colors.white,
+                            size: (MediaQuery.of(context).size.height * 0.04),
+                          ),
                         ),
                       ),
                     ),

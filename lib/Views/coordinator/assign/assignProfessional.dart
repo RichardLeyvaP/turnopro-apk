@@ -45,12 +45,13 @@ class _AssignProfessionalState extends State<AssignProfessional> {
   Icon icon = Icon(
     MdiIcons.tag,
   );
-
+  final colorCont = Colors.white;
+  double borderCont = 12;
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ClientsCoordinatorController>(builder: (controllerCoord) {
       return Scaffold(
-        appBar: AppBar(
+        /* appBar: AppBar(
           toolbarHeight: 170,
           leading: Stack(
             children: [
@@ -174,13 +175,6 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                     style: const TextStyle(
                         fontWeight: FontWeight.w100, fontSize: 11, height: 1.0),
                   ),
-                  const Text(
-                    'Reasignar',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
-                  ),
                 ],
               ),
               SizedBox(
@@ -191,7 +185,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
           //actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
           elevation: 0, // Quits the shadow
           //shadowColor: Colors.amber, // Removes visual elevation
-        ),
+        ),*/
         backgroundColor: const Color.fromARGB(255, 231, 232, 234),
         body: GetBuilder<ClientsScheduledController>(
           builder: (_) {
@@ -201,33 +195,175 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                       color: Color(0xFFFDAE2A),
                     ),
                   )
-                : _.professionalDisponLength > 0 //todo si hay cargarlos aqui
-                    ? Column(
-                        children: [
-                          Expanded(
-                            flex:
-                                1, //cantidad aqui de profesionales disponibles
-                            child: ListView.builder(
-                              itemCount: _.professionalDisponLength,
-                              itemBuilder: (context, index) {
-                                // Utiliza la función cardOptions para construir cada Card
-                                return cardOptions(
-                                    context,
-                                    // Pasa aquí los datos necesarios para cardOptions
-                                    icon,
-                                    _.professionalDispon[index]
-                                        .position, //todo aqui que me devuelva
-                                    '${_.professionalDispon[index].name}  ${_.professionalDispon[index].surname}',
-                                    _.professionalDispon[index].id,
-                                    _.professionalDispon[index].image_url);
-                              },
+                : Column(
+                    children: [
+                      Expanded(
+                        flex: 6,
+                        child: SafeArea(
+                          child: Padding(
+                            padding:
+                                EdgeInsets.only(top: 5, right: 10, left: 10),
+                            child: Container(
+                              height: 10,
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 3,
+                                    blurRadius: 5,
+                                    offset: Offset(0,
+                                        3), // Cambia el desplazamiento de la sombra
+                                  ),
+                                ],
+                                color: colorCont, //todo
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(borderCont)),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.arrow_back),
+                                    onPressed: () {
+                                      pagesConfigCont.goToPage(
+                                          1, pagesConfigCont.pageController2);
+
+                                      // Navigator.pop(context);
+                                    },
+                                  ),
+                                  Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 20),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: CircleAvatar(
+                                            radius: 25,
+                                            child: ClipOval(
+                                              child: Image.network(
+                                                '${Env.apiEndpoint}/images/${controllerCoord.imageLookCORD}',
+                                                fit: BoxFit
+                                                    .cover, // Ajusta la imagen para cubrir completamente el área
+                                                width:
+                                                    50, // Ancho deseado de la imagen dentro del círculo
+                                                height: 50,
+                                                loadingBuilder:
+                                                    (BuildContext context,
+                                                        Widget child,
+                                                        ImageChunkEvent?
+                                                            loadingProgress) {
+                                                  if (loadingProgress == null) {
+                                                    // Si la imagen se carga correctamente, mostramos la imagen
+                                                    return child;
+                                                  } else {
+                                                    // Si la imagen aún se está cargando, mostramos un indicador de progreso
+                                                    return const CircularProgressIndicator(
+                                                      color: Color(0xFFFDAE2A),
+                                                    );
+                                                  }
+                                                },
+                                                errorBuilder: (BuildContext
+                                                        context,
+                                                    Object error,
+                                                    StackTrace? stackTrace) {
+                                                  // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
+                                                  if (kDebugMode) {
+                                                    return CircleAvatar(
+                                                      radius: 25,
+                                                      backgroundColor: Colors
+                                                          .transparent, // Fondo transparente para que el borde sea visible
+                                                      child: ClipOval(
+                                                        child: Image.asset(
+                                                          'assets/images/default_profile.jpg',
+                                                          fit: BoxFit
+                                                              .cover, // Ajusta la imagen para cubrir completamente el área
+                                                          width:
+                                                              50, // Ancho deseado de la imagen dentro del círculo
+                                                          height:
+                                                              50, // Alto deseado de la imagen dentro del círculo
+                                                        ),
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    // Si no estamos en modo de depuración, mostramos un texto de error
+                                                    return CircleAvatar(
+                                                      radius: 25,
+                                                      backgroundColor: Colors
+                                                          .transparent, // Fondo transparente para que el borde sea visible
+                                                      child: ClipOval(
+                                                        child: Image.asset(
+                                                          'assets/images/default_profile.jpg',
+                                                          fit: BoxFit
+                                                              .cover, // Ajusta la imagen para cubrir completamente el área
+                                                          width:
+                                                              50, // Ancho deseado de la imagen dentro del círculo
+                                                          height:
+                                                              50, // Alto deseado de la imagen dentro del círculo
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        controllerCoord.clientNameCORD,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 20),
+                                      ),
+                                      Text(
+                                        'Barbero Actual: ${controllerCoord.professActualNameCORD}',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w100,
+                                            fontSize: 11,
+                                            height: 1.0),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: (MediaQuery.of(context).size.width *
+                                        0.14),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ],
-                      )
-                    : const Center(
-                        child: Text('No hay Barberos disponibles'),
-                      );
+                        ),
+                      ),
+                      Expanded(
+                        flex: 18, //cantidad aqui de profesionales disponibles
+                        child: _.professionalDisponLength >
+                                0 //todo si hay cargarlos aqui
+                            ? ListView.builder(
+                                padding: EdgeInsets
+                                    .zero, // Elimina cualquier padding del ListView
+                                itemCount: _.professionalDisponLength,
+                                itemBuilder: (context, index) {
+                                  // Utiliza la función cardOptions para construir cada Card
+                                  return cardOptions(
+                                      context,
+                                      // Pasa aquí los datos necesarios para cardOptions
+                                      icon,
+                                      _.professionalDispon[index]
+                                          .position, //todo aqui que me devuelva
+                                      '${_.professionalDispon[index].name}  ${_.professionalDispon[index].surname}',
+                                      _.professionalDispon[index].id,
+                                      _.professionalDispon[index].image_url);
+                                },
+                              )
+                            : const Center(
+                                child: Text('No hay Barberos disponibles'),
+                              ),
+                      ),
+                    ],
+                  );
           },
         ),
       );
@@ -330,7 +466,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                       Text(
                         title.toString(),
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.w900,
                           height: 1.1,
                         ),
@@ -346,7 +482,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                       Container(
                         width: 80, // Ajusta la altura según sea necesario
                         decoration: BoxDecoration(
-                          color: const Color.fromARGB(167, 241, 131, 84),
+                          color: const Color(0xFFFDAE2A),
                           borderRadius: BorderRadius.circular(
                               6), // La mitad de la altura para hacerlo circular
                         ),
@@ -377,7 +513,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                                14.0), // Ajusta el valor según sea necesario
+                                8.0), // Ajusta el valor según sea necesario
                           ),
                         ),
                         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
@@ -386,13 +522,8 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                               horizontal: 26.0), // Ajusta el padding
                         ),
                         backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
-                        side: MaterialStateProperty.all<BorderSide>(
-                          const BorderSide(
-                              color: Color.fromARGB(167, 241, 131, 84),
-                              width:
-                                  2.0), // Ajusta el grosor del borde según sea necesario
-                        ),
+                            MaterialStateProperty.all<Color>(Color(0xFF4470F3)),
+
                         // Añadir más propiedades de estilo aquí
                       ),
                       onPressed: () async {
@@ -451,8 +582,8 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                         'ASIGNAR',
                         style: TextStyle(
                             fontSize: 12,
-                            color: Color.fromARGB(167, 241, 131, 84),
-                            fontWeight: FontWeight.w800),
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700),
                       )),
                 ],
               ),

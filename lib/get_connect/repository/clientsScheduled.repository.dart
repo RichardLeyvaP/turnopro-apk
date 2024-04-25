@@ -432,6 +432,43 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
+  Future getProfessionalState2(idBranch, idReserv) async {
+    print('estoy en repositorio en - 10');
+    try {
+      List<ProfessionalModel> professionalList = [];
+      var url =
+          '${Env.apiEndpoint}/professional-state?branch_id=$idBranch&reservation_id=$idReserv';
+
+      final response = await get(url);
+      print(
+          'getProfessionalState(idBranch) async getProfessionalState(idBranch) url:$url');
+      print(
+          'getProfessionalState(idBranch) async getProfessionalState(idBranch) response.statusCode:${response.statusCode}');
+      if (response.statusCode == 200) {
+        final professionals = response.body['professionals'];
+        for (Map professional in professionals) {
+          ProfessionalModel u =
+              ProfessionalModel.fromJson(jsonEncode(professional));
+          //AQUI SOLO COJO QUE NO SEAN RESPONSABLES
+          if (u.name != 'Encargado' && u.name != 'Coordinador') {
+            //charge_id=3 es un responsable
+            professionalList.add(u);
+          }
+        }
+        print(
+            'getProfessionalState(idBranch) async getProfessionalState(idBranch) async');
+        print(professionalList.length);
+        print(
+            'getProfessionalState(idBranch) async getProfessionalState(idBranch) async professionalList.length:${professionalList.length}');
+        return professionalList;
+      }
+
+      return professionalList;
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future acceptOrRejectClient(reservationId, attended) async {
     print('estoy en repositorio en - 11');
     try {

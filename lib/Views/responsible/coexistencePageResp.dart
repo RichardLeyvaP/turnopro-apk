@@ -47,41 +47,6 @@ class _CoexistencePageResponsibleState
   Widget build(BuildContext context) {
     print('ESTOY ENTRANDO AQUI A CONVIVENCIAS');
     return Scaffold(
-      // appBar: AppBar(
-      //   leading: Row(
-      //     crossAxisAlignment: CrossAxisAlignment.start,
-      //     children: [
-      //       IconButton(
-      //         icon: const Icon(Icons.arrow_back),
-      //         onPressed: () {
-      //           pagesConfigCont.back();
-      //           // Navigator.pop(context);
-      //         },
-      //       ),
-      //     ],
-      //   ),
-      //   title: Row(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: [
-      //       const Column(
-      //         children: [
-      //           Icon(
-      //             Icons.stars,
-      //             size: 50,
-      //           ),
-      //           Text(
-      //             'Convivencias',
-      //             style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
-      //           ),
-      //         ],
-      //       ),
-      //       SizedBox(
-      //         width: (MediaQuery.of(context).size.width * 0.14),
-      //       ),
-      //     ],
-      //   ),
-      //   elevation: 0,
-      // ),
       body: GetBuilder<CoexistenceController>(builder: (controll) {
         List<ProfessionalModel> profesionales = controll.professional;
         return Column(
@@ -157,7 +122,7 @@ class _CoexistencePageResponsibleState
                                 child: Row(
                                   children: [
                                     CircleAvatar(
-                                      radius: 25,
+                                      radius: 20,
                                       child: ClipOval(
                                         child: Image.network(
                                           '${Env.apiEndpoint}/images/${profesional.image_url}',
@@ -186,7 +151,7 @@ class _CoexistencePageResponsibleState
                                             // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
                                             if (kDebugMode) {
                                               return CircleAvatar(
-                                                radius: 25,
+                                                radius: 20,
                                                 backgroundColor: Colors
                                                     .transparent, // Fondo transparente para que el borde sea visible
                                                 child: ClipOval(
@@ -204,7 +169,7 @@ class _CoexistencePageResponsibleState
                                             } else {
                                               // Si no estamos en modo de depuración, mostramos un texto de error
                                               return CircleAvatar(
-                                                radius: 25,
+                                                radius: 20,
                                                 backgroundColor: Colors
                                                     .transparent, // Fondo transparente para que el borde sea visible
                                                 child: ClipOval(
@@ -342,7 +307,7 @@ class _CoexistencePageResponsibleState
                                                             decoration:
                                                                 const BoxDecoration(
                                                               color: Color(
-                                                                  0xFF19CF9E),
+                                                                  0xFFFDAE2A),
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .only(
@@ -437,11 +402,8 @@ class _CoexistencePageResponsibleState
                                                                             .centerLeft,
                                                                     decoration:
                                                                         BoxDecoration(
-                                                                      color: Color.fromARGB(
-                                                                          82,
-                                                                          51,
-                                                                          172,
-                                                                          27),
+                                                                      color: Colors
+                                                                          .white,
                                                                       borderRadius:
                                                                           BorderRadius.circular(
                                                                               10),
@@ -449,29 +411,50 @@ class _CoexistencePageResponsibleState
                                                                           Border
                                                                               .all(
                                                                         color: Color.fromARGB(
-                                                                            210,
-                                                                            13,
-                                                                            75,
-                                                                            26),
+                                                                            100,
+                                                                            154,
+                                                                            155,
+                                                                            154),
                                                                         width:
                                                                             1,
                                                                       ),
                                                                     ),
-                                                                    child:
-                                                                        const Center(
-                                                                      child:
-                                                                          Text(
-                                                                        'CUMPLIÓ',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              14,
-                                                                          color:
-                                                                              Colors.black,
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.only(left: 8),
+                                                                          child:
+                                                                              Icon(
+                                                                            MdiIcons.starBox,
+                                                                            color:
+                                                                                const Color(0xFF4470F3),
+                                                                            size:
+                                                                                35,
+                                                                          ),
                                                                         ),
-                                                                      ),
+                                                                        const Text(
+                                                                          'CUMPLIÓ',
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontSize:
+                                                                                14,
+                                                                            color:
+                                                                                Colors.black,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                          ),
+                                                                        ),
+                                                                        const Padding(
+                                                                          padding:
+                                                                              EdgeInsets.only(right: 8),
+                                                                          child:
+                                                                              Text('     '),
+                                                                        )
+                                                                      ],
                                                                     ),
                                                                   ),
                                                                 ),
@@ -508,12 +491,8 @@ class _CoexistencePageResponsibleState
                                                                             .centerLeft,
                                                                     decoration:
                                                                         BoxDecoration(
-                                                                      color: const Color
-                                                                              .fromARGB(
-                                                                          83,
-                                                                          244,
-                                                                          67,
-                                                                          54),
+                                                                      color: Colors
+                                                                          .white,
                                                                       borderRadius:
                                                                           BorderRadius.circular(
                                                                               10),
@@ -521,28 +500,47 @@ class _CoexistencePageResponsibleState
                                                                           Border
                                                                               .all(
                                                                         color: Color.fromARGB(
-                                                                            211,
-                                                                            223,
-                                                                            18,
-                                                                            18),
+                                                                            100,
+                                                                            154,
+                                                                            155,
+                                                                            154),
                                                                         width:
                                                                             1,
                                                                       ),
                                                                     ),
                                                                     child:
-                                                                        const Center(
+                                                                        Center(
                                                                       child:
+                                                                          Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
+                                                                        children: [
+                                                                          Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.only(left: 8),
+                                                                            child:
+                                                                                Icon(
+                                                                              MdiIcons.minusBox,
+                                                                              color: const Color(0xFFFF6750),
+                                                                              size: 35,
+                                                                            ),
+                                                                          ),
                                                                           Text(
-                                                                        'INCUMPLIÓ',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              14,
-                                                                          color:
-                                                                              Colors.black,
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                        ),
+                                                                            'INCUMPLIÓ',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: 14,
+                                                                              color: Colors.black,
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ),
+                                                                          ),
+                                                                          const Padding(
+                                                                            padding:
+                                                                                EdgeInsets.only(right: 8),
+                                                                            child:
+                                                                                Text('     '),
+                                                                          )
+                                                                        ],
                                                                       ),
                                                                     ),
                                                                   ),
@@ -624,6 +622,38 @@ class _CoexistencePageResponsibleState
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
+                                                        controllerClient.noncomplianceProfessional[
+                                                                    controll
+                                                                        .coexistence[
+                                                                            index]
+                                                                        .type] ==
+                                                                3
+                                                            ? Icon(
+                                                                MdiIcons
+                                                                    .checkboxBlankOutline,
+                                                                color: const Color(
+                                                                    0xFFFDAE2A),
+                                                                size: 45,
+                                                              )
+                                                            : controllerClient.noncomplianceProfessional[controll
+                                                                        .coexistence[
+                                                                            index]
+                                                                        .type] ==
+                                                                    0
+                                                                ? Icon(
+                                                                    MdiIcons
+                                                                        .minusBox,
+                                                                    color: const Color(
+                                                                        0xFFFF6750),
+                                                                    size: 45,
+                                                                  )
+                                                                : Icon(
+                                                                    MdiIcons
+                                                                        .starBox,
+                                                                    color: const Color(
+                                                                        0xFF4470F3),
+                                                                    size: 45,
+                                                                  ),
                                                         Row(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
@@ -632,9 +662,6 @@ class _CoexistencePageResponsibleState
                                                               MainAxisAlignment
                                                                   .start,
                                                           children: [
-                                                            const SizedBox(
-                                                              width: 5,
-                                                            ),
                                                             SizedBox(
                                                               width: MediaQuery.of(
                                                                           context)
@@ -642,10 +669,16 @@ class _CoexistencePageResponsibleState
                                                                       .width *
                                                                   0.77,
                                                               child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
                                                                 crossAxisAlignment:
                                                                     CrossAxisAlignment
                                                                         .start,
                                                                 children: [
+                                                                  SizedBox(
+                                                                    height: 8,
+                                                                  ),
                                                                   Text(
                                                                     controll
                                                                         .coexistence[
@@ -667,82 +700,25 @@ class _CoexistencePageResponsibleState
                                                                             index]
                                                                         .description
                                                                         .toString(),
-                                                                    maxLines: 2,
+                                                                    maxLines:
+                                                                        2, // Limita el texto a 2 líneas
                                                                     overflow:
                                                                         TextOverflow
-                                                                            .ellipsis,
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      fontSize:
-                                                                          14,
-                                                                      color: Color
-                                                                          .fromARGB(
-                                                                              148,
-                                                                              0,
-                                                                              0,
-                                                                              0),
-                                                                    ),
+                                                                            .ellipsis, // Agrega los tres puntos suspensivos
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            14,
+                                                                        color: Color.fromARGB(
+                                                                            148,
+                                                                            0,
+                                                                            0,
+                                                                            0)),
                                                                   ),
                                                                 ],
                                                               ),
                                                             ),
                                                           ],
                                                         ),
-                                                        controllerCient.noncomplianceProfessional[
-                                                                    controll
-                                                                        .coexistence[
-                                                                            index]
-                                                                        .type] ==
-                                                                0
-                                                            ? const Icon(
-                                                                Icons.star,
-                                                                color:
-                                                                    Colors.red,
-                                                                shadows: [
-                                                                  Shadow(
-                                                                      offset: Offset(
-                                                                          0.5,
-                                                                          0.9))
-                                                                ],
-                                                                size: 50,
-                                                              )
-                                                            : controllerCient.noncomplianceProfessional[controll
-                                                                        .coexistence[
-                                                                            index]
-                                                                        .type] ==
-                                                                    1
-                                                                ? const Icon(
-                                                                    Icons.star,
-                                                                    color: Color
-                                                                        .fromRGBO(
-                                                                            26,
-                                                                            177,
-                                                                            71,
-                                                                            1),
-                                                                    shadows: [
-                                                                      Shadow(
-                                                                          offset: Offset(
-                                                                              0.5,
-                                                                              0.9))
-                                                                    ],
-                                                                    size: 50,
-                                                                  )
-                                                                : const Icon(
-                                                                    Icons.star,
-                                                                    color: Color
-                                                                        .fromRGBO(
-                                                                            145,
-                                                                            148,
-                                                                            145,
-                                                                            1),
-                                                                    shadows: [
-                                                                      Shadow(
-                                                                          offset: Offset(
-                                                                              0.5,
-                                                                              0.9))
-                                                                    ],
-                                                                    size: 50,
-                                                                  ),
                                                       ],
                                                     ),
                                                   ),
@@ -756,7 +732,7 @@ class _CoexistencePageResponsibleState
                                   )
                                 : Center(
                                     child: Text(
-                                    'No tiene reglas de convivencia definidas aún',
+                                    'No tiene reglas de convivencia definidas hoy',
                                   )),
                           )
                         : Text(' '),
@@ -764,64 +740,6 @@ class _CoexistencePageResponsibleState
                 ),
               ),
             ),
-
-            /*
-                 Expanded(
-                    flex: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                controllerLogin.greeting,
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w700),
-                              ),
-                              const Icon(
-                                Icons.auto_awesome,
-                                size: 30,
-                                color: Color.fromARGB(255, 236, 181, 14),
-                                shadows: [Shadow(offset: Offset(0.3, 0.9))],
-                              ),
-                            ],
-                          ),
-                          Text.rich(
-                            TextSpan(
-                              children: [
-                                const TextSpan(
-                                  text: 'Por favor ',
-                                  style: TextStyle(
-                                      fontSize: 14.0, color: const Color.fromARGB(255, 43, 44, 49)),
-                                ),
-                                TextSpan(
-                                  text: controllerLogin.nameUserLoggedIn,
-                                  style: const TextStyle(
-                                    fontSize: 16.0,
-                                    color: Color.fromARGB(255, 18, 41,
-                                        71), // Cambia el color según tu preferencia
-                                    fontWeight: FontWeight
-                                        .bold, // Puedes ajustar otros estilos según tu preferencia
-                                  ),
-                                ),
-                                const TextSpan(
-                                  text:
-                                      ', seleccione algún profesional y podrá modificar las reglas del mismo.',
-                                  style: TextStyle(
-                                      fontSize: 14.0, color: const Color.fromARGB(255, 43, 44, 49)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-            */
-            //AQUI PONER EL SINO HA SELECCIONADO A NADIE
           ],
         );
       }),

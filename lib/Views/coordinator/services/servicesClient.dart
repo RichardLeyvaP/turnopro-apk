@@ -5,6 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
+import 'package:turnopro_apk/Views/common/topPage.dart';
 import 'package:turnopro_apk/env.dart';
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -21,19 +22,23 @@ class _ServicesClientState extends State<ServicesClient> {
       Get.find<PagesConfigController>();
   int cantVisitas = 3;
 
-  String description = 'Regular';
-  String fecha = '10-01-2024';
-  String name = 'Corte de Cabello';
-  Icon icon = Icon(
-    MdiIcons.tag,
-  );
-  int cant = 8;
+  /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+  final IconnsBack = Icons.arrow_back;
+  final IconnsP = MdiIcons.server;
+
+  String title = 'Servicios';
+  String subTitle = 'Servicios';
+  final colorCont = Colors.white;
+  double panddCont = 8;
+  double borderCont = 12;
+  final colorIcon = Color(0xFF4470F3);
+  /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ClientsCoordinatorController>(builder: (controllerCORD) {
       return Scaffold(
-        appBar: AppBar(
+        /* appBar: AppBar(
           toolbarHeight: 150,
           leading: Stack(
             children: [
@@ -115,17 +120,37 @@ class _ServicesClientState extends State<ServicesClient> {
           //actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
           elevation: 0, // Quits the shadow
           //shadowColor: Colors.amber, // Removes visual elevation
-        ),
+        ),*/
         backgroundColor: const Color.fromARGB(255, 231, 232, 234),
         body: GetBuilder<NotificationController>(
           builder: (_) {
-            return controllerCORD
-                    .serviceCORD.isNotEmpty //todo si hay cargarlos aqui
-                ? Column(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: ListView.builder(
+            return Column(
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: topPage(
+                    panddCont: panddCont,
+                    colorCont: colorCont,
+                    borderCont: borderCont,
+                    IconnsBack: IconnsBack,
+                    pagesConfigC: pagesConfigCont,
+                    isPagesConfig: false,
+                    IconnsP: IconnsP,
+                    title: title,
+                    subTitle: subTitle,
+                    colorIcon: colorIcon,
+                    buttonRight: false,
+                    page:
+                        'Coordinador', //aqui el sabe a como dar atras en la flecha de la pagina
+                  ),
+                ),
+                Expanded(
+                  flex: 18,
+                  child: controllerCORD
+                          .serviceCORD.isNotEmpty //todo si hay cargarlos aqui
+                      ? ListView.builder(
+                          padding: EdgeInsets
+                              .zero, // Elimina cualquier padding del ListView
                           itemCount: controllerCORD.serviceCORD.length,
                           itemBuilder: (context, index) {
                             // Utiliza la función cardOptions para construir cada Card
@@ -137,13 +162,13 @@ class _ServicesClientState extends State<ServicesClient> {
                               controllerCORD.serviceCORD[index].cant,
                             );
                           },
+                        )
+                      : const Center(
+                          child: Text('No hay Servicios'),
                         ),
-                      ),
-                    ],
-                  )
-                : const Center(
-                    child: Text('No hay Servicios para mostrar'),
-                  );
+                ),
+              ],
+            );
           },
         ),
       );
@@ -154,7 +179,7 @@ class _ServicesClientState extends State<ServicesClient> {
     return Padding(
       padding: const EdgeInsets.only(right: 10, top: 8, left: 10),
       child: Container(
-        height: (MediaQuery.of(context).size.height * 0.1),
+        height: (MediaQuery.of(context).size.height * 0.09),
         width: (MediaQuery.of(context).size.width * 0.95),
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -190,14 +215,6 @@ class _ServicesClientState extends State<ServicesClient> {
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                           height: 1.1,
-                        ),
-                      ),
-                      Text(
-                        fecha.toString(),
-                        style: const TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                          color: Color.fromARGB(167, 241, 131, 84),
                         ),
                       ),
                     ],

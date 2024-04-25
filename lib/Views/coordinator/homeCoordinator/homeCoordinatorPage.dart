@@ -25,6 +25,7 @@ class _HomeCoordinatorPagesState extends State<HomeCoordinatorPages>
   final CoexistenceController coexistenceController =
       Get.find<CoexistenceController>();
   final LoginController loginController = Get.find<LoginController>();
+  final NotificationController notiContro = Get.find<NotificationController>();
   final ClientsCoordinatorController clientController =
       Get.find<ClientsCoordinatorController>();
   int carr = 199;
@@ -121,50 +122,71 @@ class _HomeCoordinatorPagesState extends State<HomeCoordinatorPages>
                               size: MediaQuery.of(context).size.width * 0.08,
                             ),
                             label: 'Home'),
-                        BottomNavigationBarItem(
-                            icon: Badge(
-                              label: GetBuilder<ClientsCoordinatorController>(
-                                  builder: (cCordContr) {
-                                return Text(
-                                    '${cCordContr.clientAttendBranchLength}');
-                              }),
-                              //  '${controClient.clientsScheduledListLength}'),
-                              child: Icon(
-                                Icons.perm_contact_calendar,
-                                size: MediaQuery.of(context).size.width * 0.08,
-                              ),
-                            ),
-                            label: 'Agenda'),
-                        BottomNavigationBarItem(
-                            icon: Badge(
-                              label: GetBuilder<NotificationController>(
-                                  builder: (_notiCont) {
-                                WidgetsBinding.instance
-                                    .addPostFrameCallback((_) {
-                                  // Se ejecutará después de que se haya construido el widget
-                                  //define que tipo de saludo dar dependiendo de la hora
-                                  if (_notiCont.notificationListNewLength !=
-                                      _notiCont.notificationListBack) {
-                                    _notiCont.updateNotificationListBack(
-                                        _notiCont.notificationListNewLength);
-                                  }
-                                });
+                        clientController.clientAttendBranchLength > 0
+                            ? BottomNavigationBarItem(
+                                icon: Badge(
+                                  label:
+                                      GetBuilder<ClientsCoordinatorController>(
+                                          builder: (cCordContr) {
+                                    return Text(
+                                        '${cCordContr.clientAttendBranchLength}');
+                                  }),
+                                  //  '${controClient.clientsScheduledListLength}'),
+                                  child: Icon(
+                                    Icons.perm_contact_calendar,
+                                    size: MediaQuery.of(context).size.width *
+                                        0.08,
+                                  ),
+                                ),
+                                label: 'Agenda')
+                            : BottomNavigationBarItem(
+                                icon: Icon(
+                                  Icons.perm_contact_calendar,
+                                  size:
+                                      MediaQuery.of(context).size.width * 0.08,
+                                ),
+                                label: 'Agenda'),
+                        notiContro.notificationListNewLength > 0
+                            ? BottomNavigationBarItem(
+                                icon: Badge(
+                                  label: GetBuilder<NotificationController>(
+                                      builder: (_notiCont) {
+                                    WidgetsBinding.instance
+                                        .addPostFrameCallback((_) {
+                                      // Se ejecutará después de que se haya construido el widget
+                                      //define que tipo de saludo dar dependiendo de la hora
+                                      if (_notiCont.notificationListNewLength !=
+                                          _notiCont.notificationListBack) {
+                                        _notiCont.updateNotificationListBack(
+                                            _notiCont
+                                                .notificationListNewLength);
+                                      }
+                                    });
 
-                                if (_notiCont.notificationListNewLength !=
-                                        _notiCont.notificationListBack &&
-                                    _notiCont.notificationListNewLength != 0) {
-                                  _notiCont.reproducirSound();
-                                }
-                                return Text(
-                                    (_notiCont.notificationListNewLength)
-                                        .toString());
-                              }),
-                              child: Icon(
-                                Icons.notifications,
-                                size: MediaQuery.of(context).size.width * 0.08,
-                              ),
-                            ),
-                            label: 'Notificaciones'),
+                                    if (_notiCont.notificationListNewLength !=
+                                            _notiCont.notificationListBack &&
+                                        _notiCont.notificationListNewLength !=
+                                            0) {
+                                      _notiCont.reproducirSound();
+                                    }
+                                    return Text(
+                                        (_notiCont.notificationListNewLength)
+                                            .toString());
+                                  }),
+                                  child: Icon(
+                                    Icons.notifications,
+                                    size: MediaQuery.of(context).size.width *
+                                        0.08,
+                                  ),
+                                ),
+                                label: 'Notificaciones')
+                            : BottomNavigationBarItem(
+                                icon: Icon(
+                                  Icons.notifications,
+                                  size:
+                                      MediaQuery.of(context).size.width * 0.08,
+                                ),
+                                label: 'Notificaciones'),
                         BottomNavigationBarItem(
                             icon: Icon(
                               Icons.bar_chart,

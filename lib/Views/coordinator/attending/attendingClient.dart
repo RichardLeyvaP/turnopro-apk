@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
+import 'package:turnopro_apk/Views/common/topPage.dart';
 import 'package:turnopro_apk/env.dart';
 
 import '../../../Controllers/login.controller.dart';
@@ -32,10 +33,21 @@ class _AttendingClientState extends State<AttendingClient> {
   );
   int cant = 8;
 
+  /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+  final IconnsBack = Icons.arrow_back;
+  final IconnsP = MdiIcons.accountOutline;
+  String title = 'Clientes Atendiéndose';
+  String subTitle = 'Clientes atendiéndose';
+  final colorCont = Colors.white;
+  double panddCont = 8;
+  double borderCont = 12;
+  final colorIcon = Color(0xFF19CF9E);
+  /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*  appBar: AppBar(
         toolbarHeight: 150,
         leading: Stack(
           children: [
@@ -98,296 +110,236 @@ class _AttendingClientState extends State<AttendingClient> {
         //actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
         elevation: 0, // Quits the shadow
         //shadowColor: Colors.amber, // Removes visual elevation
-      ),
+      ),*/
       backgroundColor: const Color.fromARGB(255, 231, 232, 234),
       body: GetBuilder<ClientsCoordinatorController>(
         builder: (controllerCORD) {
-          return controllerCORD
-                  .clientAttendBranch.isNotEmpty //todo si hay cargarlos aqui
-              ? Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: ListView.builder(
-                          itemCount: controllerCORD
-                              .clientAttendBranchLength, //aqui ver la long de clientAttenCORD y mostrar aqui los que esten
-                          itemBuilder: (context, index) {
-                            // Utiliza la función cardOptions para construir cada Card
-                            return cardClientTails(
-                                controllerCORD,
-                                context,
-                                index,
-                                pagesConfigCont.pageController2,
-                                pagesConfigCont);
-                          },
-                        ),
+          return Column(
+            children: [
+              Expanded(
+                flex: 4,
+                child: topPage(
+                    panddCont: panddCont,
+                    colorCont: colorCont,
+                    borderCont: borderCont,
+                    IconnsBack: IconnsBack,
+                    pagesConfigC: pagesConfigCont,
+                    isPagesConfig: true,
+                    IconnsP: IconnsP,
+                    title: title,
+                    subTitle: subTitle,
+                    colorIcon: colorIcon,
+                    buttonRight: false),
+              ),
+              Expanded(
+                flex: 18,
+                child: controllerCORD.clientAttendBranch
+                        .isNotEmpty //todo si hay cargarlos aqui
+                    ? ListView.builder(
+                        padding: EdgeInsets
+                            .zero, // Elimina cualquier padding del ListView
+                        itemCount: controllerCORD
+                            .clientAttendBranchLength, //aqui ver la long de clientAttenCORD y mostrar aqui los que esten
+                        itemBuilder: (context, index) {
+                          // Utiliza la función cardOptions para construir cada Card
+                          return cardClientTails(controllerCORD, context, index,
+                              pagesConfigCont.pageController2, pagesConfigCont);
+                        },
+                      )
+                    : const Center(
+                        child: Text('No hay clientes atendiéndose'),
                       ),
-                    ],
-                  ),
-                )
-              : const Center(
-                  child: Text('No hay clientes atendiéndose en este momento'),
-                );
+              ),
+            ],
+          );
         },
       ),
     );
   }
 
-  FittedBox cardClientTails(
+  cardClientTails(
       ClientsCoordinatorController controllerclient,
       BuildContext context,
       index,
       PageController pageController2,
       PagesConfigController pagesConfigC) {
-    return FittedBox(
-        fit: BoxFit.contain,
-        child: Column(
-          children: [
-            Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                ),
-                //AQUI CONTROLO SI HAY ALGUIEN EN COLA
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: CircleAvatar(
-                        radius: 25,
-                        child: ClipOval(
-                          child: Image.network(
-                            '${Env.apiEndpoint}/images/${controllerclient.clientAttendBranch[index].client_image}',
-                            fit: BoxFit
-                                .cover, // Ajusta la imagen para cubrir completamente el área
-                            width:
-                                50, // Ancho deseado de la imagen dentro del círculo
-                            height: 50,
-                            loadingBuilder: (BuildContext context, Widget child,
-                                ImageChunkEvent? loadingProgress) {
-                              if (loadingProgress == null) {
-                                // Si la imagen se carga correctamente, mostramos la imagen
-                                return child;
-                              } else {
-                                // Si la imagen aún se está cargando, mostramos un indicador de progreso
-                                return const CircularProgressIndicator(
-                                  color: Color(0xFFFDAE2A),
-                                );
-                              }
-                            },
-                            errorBuilder: (BuildContext context, Object error,
-                                StackTrace? stackTrace) {
-                              // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
-                              if (kDebugMode) {
-                                return CircleAvatar(
-                                  radius: 25,
-                                  backgroundColor: Colors
-                                      .transparent, // Fondo transparente para que el borde sea visible
-                                  child: ClipOval(
-                                    child: Image.asset(
-                                      'assets/images/default_profile.jpg',
-                                      fit: BoxFit
-                                          .cover, // Ajusta la imagen para cubrir completamente el área
-                                      width:
-                                          50, // Ancho deseado de la imagen dentro del círculo
-                                      height:
-                                          50, // Alto deseado de la imagen dentro del círculo
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 8),
+      child: FittedBox(
+          fit: BoxFit.contain,
+          child: Column(
+            children: [
+              Container(
+                  height: 65,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
+                  //AQUI CONTROLO SI HAY ALGUIEN EN COLA
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8, top: 8, bottom: 8, right: 4),
+                        child: CircleAvatar(
+                          radius: 25,
+                          child: ClipOval(
+                            child: Image.network(
+                              '${Env.apiEndpoint}/images/${controllerclient.clientAttendBranch[index].client_image}',
+                              fit: BoxFit
+                                  .cover, // Ajusta la imagen para cubrir completamente el área
+                              width:
+                                  50, // Ancho deseado de la imagen dentro del círculo
+                              height: 50,
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) {
+                                  // Si la imagen se carga correctamente, mostramos la imagen
+                                  return child;
+                                } else {
+                                  // Si la imagen aún se está cargando, mostramos un indicador de progreso
+                                  return const CircularProgressIndicator(
+                                    color: Color(0xFFFDAE2A),
+                                  );
+                                }
+                              },
+                              errorBuilder: (BuildContext context, Object error,
+                                  StackTrace? stackTrace) {
+                                // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
+                                if (kDebugMode) {
+                                  return CircleAvatar(
+                                    radius: 25,
+                                    backgroundColor: Colors
+                                        .transparent, // Fondo transparente para que el borde sea visible
+                                    child: ClipOval(
+                                      child: Image.asset(
+                                        'assets/images/default_profile.jpg',
+                                        fit: BoxFit
+                                            .cover, // Ajusta la imagen para cubrir completamente el área
+                                        width:
+                                            50, // Ancho deseado de la imagen dentro del círculo
+                                        height:
+                                            50, // Alto deseado de la imagen dentro del círculo
+                                      ),
                                     ),
-                                  ),
-                                );
-                              } else {
-                                // Si no estamos en modo de depuración, mostramos un texto de error
-                                return CircleAvatar(
-                                  radius: 25,
-                                  backgroundColor: Colors
-                                      .transparent, // Fondo transparente para que el borde sea visible
-                                  child: ClipOval(
-                                    child: Image.asset(
-                                      'assets/images/default_profile.jpg',
-                                      fit: BoxFit
-                                          .cover, // Ajusta la imagen para cubrir completamente el área
-                                      width:
-                                          50, // Ancho deseado de la imagen dentro del círculo
-                                      height:
-                                          50, // Alto deseado de la imagen dentro del círculo
+                                  );
+                                } else {
+                                  // Si no estamos en modo de depuración, mostramos un texto de error
+                                  return CircleAvatar(
+                                    radius: 25,
+                                    backgroundColor: Colors
+                                        .transparent, // Fondo transparente para que el borde sea visible
+                                    child: ClipOval(
+                                      child: Image.asset(
+                                        'assets/images/default_profile.jpg',
+                                        fit: BoxFit
+                                            .cover, // Ajusta la imagen para cubrir completamente el área
+                                        width:
+                                            50, // Ancho deseado de la imagen dentro del círculo
+                                        height:
+                                            50, // Alto deseado de la imagen dentro del círculo
+                                      ),
                                     ),
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                        //
+                      ),
+                      Container(
+                        height: (MediaQuery.of(context).size.height * 0.115),
+                        width: (MediaQuery.of(context).size.width * 0.8),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 0, top: 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        //CLIENTE
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          const Icon(
+                                            Icons.person,
+                                            color: const Color.fromARGB(
+                                                255, 43, 44, 49),
+                                            size: 22,
+                                          ),
+                                          Text(
+                                            controllerclient
+                                                .clientAttendBranch[index]
+                                                .client_name,
+                                            softWrap: true,
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                height: 1,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 10),
+                                        child: Text(
+                                          '${controllerclient.clientAttendBranch[index].start_time} - ${controllerclient.clientAttendBranch[index].final_hour}',
+                                          softWrap: true,
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                );
-                              }
-                            },
+                                  Row(
+                                    //PROFESIONAL
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Icon(
+                                        MdiIcons.accountTie,
+                                        color: const Color.fromARGB(
+                                            255, 43, 44, 49),
+                                        size: 22,
+                                      ),
+                                      Text(
+                                        controllerclient
+                                            .clientAttendBranch[index]
+                                            .professional_name!,
+                                        softWrap: true,
+                                        style: const TextStyle(
+                                            fontSize: 15,
+                                            height: 1,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      //
-                    ),
-                    Container(
-                      height: (MediaQuery.of(context).size.height * 0.115),
-                      width: (MediaQuery.of(context).size.width * 0.8),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 0, top: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              children: [
-                                Row(
-                                  //CLIENTE
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    const Icon(
-                                      Icons.person,
-                                      color:
-                                          const Color.fromARGB(255, 43, 44, 49),
-                                      size: 22,
-                                    ),
-                                    Text(
-                                      controllerclient.clientAttendBranch[index]
-                                          .client_name,
-                                      softWrap: true,
-                                      style: const TextStyle(
-                                          height: 1.0,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  //HORARIO
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Icon(
-                                      MdiIcons.clockOutline,
-                                      color:
-                                          const Color.fromARGB(255, 43, 44, 49),
-                                      size: 22,
-                                    ),
-                                    Text(
-                                      '${controllerclient.clientAttendBranch[index].start_time} - ${controllerclient.clientAttendBranch[index].final_hour}',
-                                      softWrap: true,
-                                      style: const TextStyle(
-                                          height: 1.0,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  //PROFESIONAL
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Icon(
-                                      MdiIcons.accountTie,
-                                      color:
-                                          const Color.fromARGB(255, 43, 44, 49),
-                                      size: 22,
-                                    ),
-                                    Text(
-                                      controllerclient.clientAttendBranch[index]
-                                          .professional_name!,
-                                      softWrap: true,
-                                      style: const TextStyle(
-                                          height: 1.0,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        await pagesConfigC.showAppBar(false);
-                        pageController2.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease,
-                        );
-                      },
-                      child: Image(
-                        image: AssetImage(
-                          'assets/images/client-attended.png',
-                        ),
-                        color: Color.fromARGB(255, 4, 49, 87),
-                      ),
-                      //  Container(
-                      //   height: (MediaQuery.of(context).size.height * 0.115),
-                      //   width: (MediaQuery.of(context).size.width * 0.20),
-                      //   decoration: BoxDecoration(
-                      //       border: Border.all(
-                      //         color: Colors.white, // Color blanco para el borde
-                      //         width:
-                      //             1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                      //       ),
-                      //       color: const Color.fromARGB(255, 43, 44, 49),
-                      //       borderRadius:
-                      //           const BorderRadius.all(Radius.circular(12))),
-                      //   child: Column(
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      //     crossAxisAlignment: CrossAxisAlignment.center,
-                      //     children: [
-                      //       Row(
-                      //         mainAxisAlignment: MainAxisAlignment.center,
-                      //         children: [
-                      //           IconButton(
-                      //             onPressed: () async {
-                      //               int idClient = controllerclient
-                      //                   .clientAttendBranch[index].client_id;
-                      //               int idReserv = controllerclient
-                      //                   .clientAttendBranch[index]
-                      //                   .reservation_id;
-                      //               int idBranch =
-                      //                   loginController.branchIdLoggedIn!;
-                      //               // aqui llamar a la db y pedir todos los datos del cliente
-                      //               await controllerclient.getClientHistory(
-                      //                   idClient, idBranch, idReserv);
-                      //               //pagesConfigC.updateSelectedIndex();
-                      //               await pagesConfigC.showAppBar(false);
-                      //               pageController2.nextPage(
-                      //                 duration: Duration(milliseconds: 300),
-                      //                 curve: Curves.ease,
-                      //               );
-                      //             },
-                      //             icon: Icon(
-                      //               MdiIcons.eye,
-                      //               color: Colors.white,
-                      //               size: (MediaQuery.of(context).size.height *
-                      //                   0.05),
-                      //             ),
-                      //           ),
-                      //           const SizedBox(
-                      //             width: 10,
-                      //           )
-                      //         ],
-                      //       ),
-                      //       const Text(
-                      //         'VER MÁS',
-                      //         style: TextStyle(
-                      //             color: Colors.white,
-                      //             fontWeight: FontWeight.w800),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                    ),
-                  ],
-                )),
-            const SizedBox(
-              height: 12,
-            )
-          ],
-        ));
+                    ],
+                  )),
+            ],
+          )),
+    );
   }
 }
