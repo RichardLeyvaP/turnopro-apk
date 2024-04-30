@@ -21,6 +21,8 @@ class ClientsCoordinatorController extends GetxController {
   List<ClientsScheduledModel> clientsScheduledListBranch = [];
   List<ClientsScheduledModel> clientsScheduledListBranchClient = [];
   List<ClientsScheduledModel> clientAttendBranch = [];
+  List<ClientsScheduledModel> clientsColacionBranch = [];
+  List<ClientsScheduledModel> clientsColacionRequestBranch = [];
   List<ClientsScheduledModel> selectClientsScheduledList = [];
   List<ClientsScheduledModel> selectclientsScheduledListTechnical = [];
   ClientsScheduledModel? clientsScheduledNext; // Cliente en espera
@@ -63,6 +65,8 @@ class ClientsCoordinatorController extends GetxController {
   int clientsScheduledListBranchLength = 0;
   int clientsScheduledListBranchClientLength = 0;
   int clientAttendBranchLength = 0;
+  int clientsColacionBranchLength = 0;
+  int clientsColacionRequestLength = 0;
   int clientsTechnicalLength = 0;
   int? carIdClientsScheduled;
   int quantityClientAttended = 0;
@@ -225,6 +229,52 @@ class ClientsCoordinatorController extends GetxController {
     update();
   } //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
 
+  Future<void> ClientsColacionBranch(idBranch) async {
+    Map<String, dynamic> resultList =
+        await repository.clientsColacionBranch(idBranch);
+    print(resultList);
+    //verificando , si entra al if es problemas de coneccion
+    if (resultList.containsKey('ConnectionIssues') &&
+        resultList['ConnectionIssues'] == true) {
+      correctConnection = false;
+      print(
+          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor(ClientsColacionBranch)');
+    } else {
+      correctConnection = true;
+      //aqui estoy guardando la cola del dia de hoy del profesional
+      clientsColacionBranch =
+          (resultList['clientAttendList'] ?? []).cast<ClientsScheduledModel>();
+      clientsColacionBranchLength = clientsColacionBranch.length;
+      print(
+          '-******-ClientsColacionBranch-****-* $clientsColacionBranchLength -****-************-* ');
+      //
+    }
+    update();
+  }
+
+  Future<void> ColacionRequestBranch(idBranch) async {
+    Map<String, dynamic> resultList =
+        await repository.clientsColacionRequestBranch(idBranch);
+    print(resultList);
+    //verificando , si entra al if es problemas de coneccion
+    if (resultList.containsKey('ConnectionIssues') &&
+        resultList['ConnectionIssues'] == true) {
+      correctConnection = false;
+      print(
+          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor(ClientsColacionBranch)');
+    } else {
+      correctConnection = true;
+      //aqui estoy guardando la cola del dia de hoy del profesional
+      clientsColacionRequestBranch =
+          (resultList['clientAttendList'] ?? []).cast<ClientsScheduledModel>();
+      clientsColacionRequestLength = clientsColacionRequestBranch.length;
+      print(
+          '-******-ColacionRequestBranch-****-* $clientsColacionRequestLength -****-************-* ');
+      //
+    }
+    update();
+  }
+
   Future<bool> reasignedClient(reservationId, clientId, professionalId) async {
     Map<String, dynamic> resultList = await repository.reasignedClient(
         reservationId, clientId, professionalId);
@@ -287,7 +337,7 @@ class ClientsCoordinatorController extends GetxController {
       int remainingMinutes1 = (remainingTime1 / 60).floor(); //MINUTOS RESTANTES
       //int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
       timeClientsActAttended1 = remainingMinutes1; //DB - timeClock
-      reservationId = clientsAttended1!.reservation_id; //DB - reservation_id
+      reservationId = clientsAttended1!.reservation_id!; //DB - reservation_id
       clock = 1; //DB - clock
       detached = 1; //DB - detached
       //  await set_timeClock(reservation_id,timeClock,detached,clock);
@@ -306,7 +356,7 @@ class ClientsCoordinatorController extends GetxController {
       int remainingMinutes2 = (remainingTime2 / 60).floor(); //MINUTOS RESTANTES
       //int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
       timeClientsActAttended2 = remainingMinutes2; //DB - timeClock
-      reservationId = clientsAttended2!.reservation_id; //DB - reservation_id
+      reservationId = clientsAttended2!.reservation_id!; //DB - reservation_id
       clock = 2; //DB - clock
       detached = 1; //DB - detached
       //  await set_timeClock(reservation_id,timeClock,detached,clock);
@@ -325,7 +375,7 @@ class ClientsCoordinatorController extends GetxController {
       int remainingMinutes3 = (remainingTime3 / 60).floor(); //MINUTOS RESTANTES
       //int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
       timeClientsActAttended3 = remainingMinutes3; //DB - timeClock
-      reservationId = clientsAttended3!.reservation_id; //DB - reservation_id
+      reservationId = clientsAttended3!.reservation_id!; //DB - reservation_id
       clock = 3; //DB - clock
       detached = 1; //DB - detached
       //  await set_timeClock(reservation_id,timeClock,detached,clock);
@@ -344,7 +394,7 @@ class ClientsCoordinatorController extends GetxController {
       int remainingMinutes4 = (remainingTime4 / 60).floor(); //MINUTOS RESTANTES
       //int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
       timeClientsActAttended4 = remainingMinutes4; //DB - timeClock
-      reservationId = clientsAttended4!.reservation_id; //DB - reservation_id
+      reservationId = clientsAttended4!.reservation_id!; //DB - reservation_id
       clock = 4; //DB - clock
       detached = 1; //DB - detached
       //  await set_timeClock(reservation_id,timeClock,detached,clock);
@@ -367,22 +417,22 @@ class ClientsCoordinatorController extends GetxController {
     //este nuevo cliente se le va a signar un reloj
     if (avail == 1) {
       clientsAttended1 = client;
-      timeClientsAttended1 = convertDateSecons(client.total_time);
+      timeClientsAttended1 = convertDateSecons(client.total_time!);
       busyClock = 0;
     }
     if (avail == 2) {
       clientsAttended2 = client;
-      timeClientsAttended2 = convertDateSecons(client.total_time);
+      timeClientsAttended2 = convertDateSecons(client.total_time!);
       busyClock = 1;
     }
     if (avail == 3) {
       clientsAttended3 = client;
-      timeClientsAttended3 = convertDateSecons(client.total_time);
+      timeClientsAttended3 = convertDateSecons(client.total_time!);
       busyClock = 2;
     }
     if (avail == 4) {
       clientsAttended4 = client;
-      timeClientsAttended4 = convertDateSecons(client.total_time);
+      timeClientsAttended4 = convertDateSecons(client.total_time!);
       busyClock = 3;
     }
     filterShowCardTimer();
@@ -970,7 +1020,7 @@ class ClientsCoordinatorController extends GetxController {
 
       if (clientsScheduledNext != null) {
         print('prueba 1 - != null');
-        int idCar = clientsScheduledNext!.car_id;
+        int idCar = clientsScheduledNext!.car_id!;
         await searchForCustomerServices(idCar);
         await filterShowNext();
         setValueClock(true);

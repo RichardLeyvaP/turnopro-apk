@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -168,9 +169,10 @@ class _ProductsBodyState extends State<ProductsBody>
                                                     : controllerProduct
                                                                 .productListLength ==
                                                             0
-                                                        ? const Text('')
+                                                        ? const Text(
+                                                            'Poca conección a internet,inténtelo nuevamente.') //mandar a cargar nuevamente los datos
                                                         : const Text(
-                                                            'Fallo la carga de los datos, revise su coneccion a internet'),
+                                                            'Poca conección a internet,inténtelo nuevamente'),
                                                 SizedBox(
                                                   height:
                                                       (MediaQuery.of(context)
@@ -186,7 +188,7 @@ class _ProductsBodyState extends State<ProductsBody>
                                     ),
                                   ))
                         : const Text(
-                            'Falló la conexion,revise su coneccion de Internet.'),
+                            'Revise su conección de Internet.Vuelva a intentarlo'),
                   ],
                 ),
               ),
@@ -226,70 +228,37 @@ class _ProductsBodyState extends State<ProductsBody>
                         BorderRadius.all(Radius.circular(borderRadiusValue)),
                     color: Color.fromARGB(255, 231, 233, 233)),
                 child: FractionallySizedBox(
-                  widthFactor: 0.6, // 50% del ancho del contenedor padre
+                  widthFactor: 1, // 50% del ancho del contenedor padre
                   heightFactor: 0.65, // 50% del alto del contenedor padre
-                  child: Image.network(
-                    '${Env.apiEndpoint}/images/$addressProduct',
-                    fit: BoxFit
-                        .cover, // Ajusta la imagen para cubrir completamente el área
-                    width: 100, // Ancho deseado de la imagen dentro del círculo
-                    height: 100,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) {
-                        // Si la imagen se carga correctamente, mostramos la imagen
-                        return child;
-                      } else {
-                        // Si la imagen aún se está cargando, mostramos un indicador de progreso
-                        return const SizedBox(
-                          width: 15,
-                          height: 15,
+                  child: CachedNetworkImage(
+                    // maxHeightDiskCache: 120,
+                    // maxWidthDiskCache: 160,
+                    imageUrl: '${Env.apiEndpoint}/images/$addressProduct',
+                    placeholder: (context, url) => Container(
+                      width: 30,
+                      height: 30,
+                      child: const Center(
+                        child: SizedBox(
+                          width: 30,
+                          height: 30,
                           child: CircularProgressIndicator(
-                            color: Color(0xFFFDAE2A),
+                            strokeWidth:
+                                2, // Personaliza el ancho del indicador como desees
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Color.fromARGB(110, 253, 176, 42)),
                           ),
-                        );
-                      }
-                    },
-                    errorBuilder: (BuildContext context, Object error,
-                        StackTrace? stackTrace) {
-                      // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
-                      if (kDebugMode) {
-                        return CircleAvatar(
-                          radius: 20,
-                          backgroundColor: Colors
-                              .transparent, // Fondo transparente para que el borde sea visible
-                          child: ClipOval(
-                            child: Image.asset(
-                              'assets/images/default_profile.jpg',
-                              fit: BoxFit
-                                  .cover, // Ajusta la imagen para cubrir completamente el área
-                              width:
-                                  50, // Ancho deseado de la imagen dentro del círculo
-                              height:
-                                  50, // Alto deseado de la imagen dentro del círculo
-                            ),
-                          ),
-                        );
-                      } else {
-                        // Si no estamos en modo de depuración, mostramos un texto de error
-                        return CircleAvatar(
-                          radius: 20,
-                          backgroundColor: Colors
-                              .transparent, // Fondo transparente para que el borde sea visible
-                          child: ClipOval(
-                            child: Image.asset(
-                              'assets/images/default_profile.jpg',
-                              fit: BoxFit
-                                  .cover, // Ajusta la imagen para cubrir completamente el área
-                              width:
-                                  50, // Ancho deseado de la imagen dentro del círculo
-                              height:
-                                  50, // Alto deseado de la imagen dentro del círculo
-                            ),
-                          ),
-                        );
-                      }
-                    },
+                        ),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Image.asset(
+                      'assets/images/product-default.png',
+                      cacheWidth: 30,
+                      cacheHeight: 30,
+                      fit: BoxFit.cover,
+                    ),
+                    fit: BoxFit.cover,
+                    width: 50,
+                    height: 50,
                   ),
                 ),
               ),

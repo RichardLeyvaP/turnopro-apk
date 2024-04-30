@@ -94,7 +94,7 @@ class _StadisticaSemCordiState extends State<StadisticaSemCordi> {
             const SizedBox(
               height: 10,
             ),
-            controllerStat.statisticsGeneralRespon.isEmpty
+            controllerStat.statisticsGeneralRespon2.isEmpty
                 ? Center(
                     child: Column(
                       children: [
@@ -134,7 +134,7 @@ class _StadisticaSemCordiState extends State<StadisticaSemCordi> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: controllerStat
-                              .statisticsGeneralRespon.entries
+                              .statisticsGeneralRespon2.entries
                               .map((entry) {
                             i++;
 
@@ -534,7 +534,7 @@ class _StadisticaSemCordiState extends State<StadisticaSemCordi> {
                             int year = -99;
 
                             await controllerStatistic.getDataStatisticRespon(
-                                startDate1, endDate1, 1, 7, mes, year);
+                                2, startDate1, endDate1, 1, 7, mes, year);
 
                             Navigator.pop(context);
 

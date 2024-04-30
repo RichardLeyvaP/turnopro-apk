@@ -35,17 +35,35 @@ class _AttendingClientState extends State<AttendingClient> {
 
   /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
   final IconnsBack = Icons.arrow_back;
-  final IconnsP = MdiIcons.accountOutline;
+  var IconnsP = MdiIcons.accountOutline;
   String title = 'Clientes Atendiéndose';
   String subTitle = 'Clientes atendiéndose';
   final colorCont = Colors.white;
   double panddCont = 8;
   double borderCont = 12;
-  final colorIcon = Color(0xFF19CF9E);
+  var colorIcon = Color(0xFF19CF9E);
   /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
 
   @override
   Widget build(BuildContext context) {
+    if (pagesConfigCont.colacionNotification == 0) {
+      /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+      IconnsP = MdiIcons.accountOutline;
+      title = 'Clientes Atendiéndose';
+      subTitle = 'Clientes atendiéndose';
+      panddCont = 8;
+      borderCont = 12;
+      colorIcon = Color(0xFF19CF9E);
+      /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+    } else if (pagesConfigCont.colacionNotification == 1) {
+      IconnsP = MdiIcons.accountTieOutline;
+      title = 'Profesionales en Colación';
+      subTitle = 'Profesionales en Colación';
+      panddCont = 8;
+      borderCont = 12;
+      colorIcon = Color(0xFFFF6750);
+      /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+    }
     return Scaffold(
       /*  appBar: AppBar(
         toolbarHeight: 150,
@@ -131,29 +149,223 @@ class _AttendingClientState extends State<AttendingClient> {
                     colorIcon: colorIcon,
                     buttonRight: false),
               ),
-              Expanded(
-                flex: 18,
-                child: controllerCORD.clientAttendBranch
-                        .isNotEmpty //todo si hay cargarlos aqui
-                    ? ListView.builder(
-                        padding: EdgeInsets
-                            .zero, // Elimina cualquier padding del ListView
-                        itemCount: controllerCORD
-                            .clientAttendBranchLength, //aqui ver la long de clientAttenCORD y mostrar aqui los que esten
-                        itemBuilder: (context, index) {
-                          // Utiliza la función cardOptions para construir cada Card
-                          return cardClientTails(controllerCORD, context, index,
-                              pagesConfigCont.pageController2, pagesConfigCont);
-                        },
-                      )
-                    : const Center(
-                        child: Text('No hay clientes atendiéndose'),
-                      ),
-              ),
+              pagesConfigCont.colacionNotification == 0
+                  ? Expanded(
+                      flex: 18,
+                      child: controllerCORD.clientAttendBranch
+                              .isNotEmpty //todo si hay cargarlos aqui
+                          ? ListView.builder(
+                              padding: EdgeInsets
+                                  .zero, // Elimina cualquier padding del ListView
+                              itemCount: controllerCORD
+                                  .clientAttendBranchLength, //aqui ver la long de clientAttenCORD y mostrar aqui los que esten
+                              itemBuilder: (context, index) {
+                                // Utiliza la función cardOptions para construir cada Card
+                                return cardClientTails(
+                                    controllerCORD,
+                                    context,
+                                    index,
+                                    pagesConfigCont.pageController2,
+                                    pagesConfigCont);
+                              },
+                            )
+                          : const Center(
+                              child: Text('No hay clientes atendiéndose'),
+                            ),
+                    )
+                  : Expanded(
+                      flex: 18,
+                      child: controllerCORD.clientsColacionBranch
+                              .isNotEmpty //todo si hay cargarlos aqui
+                          ? ListView.builder(
+                              padding: EdgeInsets
+                                  .zero, // Elimina cualquier padding del ListView
+                              itemCount: controllerCORD
+                                  .clientsColacionBranchLength, //aqui ver la long de clientAttenCORD y mostrar aqui los que esten
+                              itemBuilder: (context, index) {
+                                // Utiliza la función cardOptions para construir cada Card
+                                return cardProfessionalesColacion(
+                                    controllerCORD,
+                                    context,
+                                    index,
+                                    pagesConfigCont.pageController2,
+                                    pagesConfigCont);
+                              },
+                            )
+                          : const Center(
+                              child: Text('No hay profesionales en colación'),
+                            ),
+                    )
             ],
           );
         },
       ),
+    );
+  }
+
+  cardProfessionalesColacion(
+      ClientsCoordinatorController controllerclient,
+      BuildContext context,
+      index,
+      PageController pageController2,
+      PagesConfigController pagesConfigC) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 8),
+      child: FittedBox(
+          fit: BoxFit.contain,
+          child: Column(
+            children: [
+              Container(
+                  height: 65,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
+                  //AQUI CONTROLO SI HAY ALGUIEN EN COLA
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8, top: 8, bottom: 8, right: 4),
+                        child: CircleAvatar(
+                          radius: 25,
+                          child: ClipOval(
+                            child: Image.network(
+                              '${Env.apiEndpoint}/images/${controllerclient.clientAttendBranch[index].client_image}',
+                              fit: BoxFit
+                                  .cover, // Ajusta la imagen para cubrir completamente el área
+                              width:
+                                  50, // Ancho deseado de la imagen dentro del círculo
+                              height: 50,
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) {
+                                  // Si la imagen se carga correctamente, mostramos la imagen
+                                  return child;
+                                } else {
+                                  // Si la imagen aún se está cargando, mostramos un indicador de progreso
+                                  return const CircularProgressIndicator(
+                                    color: Color(0xFFFDAE2A),
+                                  );
+                                }
+                              },
+                              errorBuilder: (BuildContext context, Object error,
+                                  StackTrace? stackTrace) {
+                                // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
+                                if (kDebugMode) {
+                                  return CircleAvatar(
+                                    radius: 25,
+                                    backgroundColor: Colors
+                                        .transparent, // Fondo transparente para que el borde sea visible
+                                    child: ClipOval(
+                                      child: Image.asset(
+                                        'assets/images/default_profile.jpg',
+                                        fit: BoxFit
+                                            .cover, // Ajusta la imagen para cubrir completamente el área
+                                        width:
+                                            50, // Ancho deseado de la imagen dentro del círculo
+                                        height:
+                                            50, // Alto deseado de la imagen dentro del círculo
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  // Si no estamos en modo de depuración, mostramos un texto de error
+                                  return CircleAvatar(
+                                    radius: 25,
+                                    backgroundColor: Colors
+                                        .transparent, // Fondo transparente para que el borde sea visible
+                                    child: ClipOval(
+                                      child: Image.asset(
+                                        'assets/images/default_profile.jpg',
+                                        fit: BoxFit
+                                            .cover, // Ajusta la imagen para cubrir completamente el área
+                                        width:
+                                            50, // Ancho deseado de la imagen dentro del círculo
+                                        height:
+                                            50, // Alto deseado de la imagen dentro del círculo
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                        //
+                      ),
+                      Container(
+                        height: (MediaQuery.of(context).size.height * 0.11),
+                        width: (MediaQuery.of(context).size.width * 0.8),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 0, top: 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        //PROFESIONAL
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Icon(
+                                            MdiIcons.accountTie,
+                                            color: const Color.fromARGB(
+                                                255, 43, 44, 49),
+                                            size: 22,
+                                          ),
+                                          Text(
+                                            controllerclient
+                                                .clientAttendBranch[index]
+                                                .professional_name!,
+                                            softWrap: true,
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                height: 1,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 6.0),
+                                        child: Text(
+                                          controllerclient
+                                              .clientAttendBranch[index]
+                                              .start_time!,
+                                          softWrap: true,
+                                          style: const TextStyle(
+                                              fontSize: 15,
+                                              height: 1,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+            ],
+          )),
     );
   }
 
@@ -285,7 +497,7 @@ class _AttendingClientState extends State<AttendingClient> {
                                           Text(
                                             controllerclient
                                                 .clientAttendBranch[index]
-                                                .client_name,
+                                                .client_name!,
                                             softWrap: true,
                                             style: const TextStyle(
                                                 fontSize: 15,

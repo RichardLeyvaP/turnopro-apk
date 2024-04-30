@@ -8,6 +8,7 @@ import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Views/common/topPage.dart';
 import 'package:turnopro_apk/env.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ProductClient extends StatefulWidget {
@@ -218,51 +219,23 @@ class _ProductClientState extends State<ProductClient> {
                         padding: const EdgeInsets.all(8.0),
                         child: CircleAvatar(
                           radius: 25,
-                          child: Image.network(
-                            '${Env.apiEndpoint}/images/$imageProd}',
-                            fit: BoxFit
-                                .cover, // Ajusta la imagen para cubrir completamente el área
-                            width:
-                                50, // Ancho deseado de la imagen dentro del círculo
+                          child: CachedNetworkImage(
+                            maxHeightDiskCache: 100,
+                            maxWidthDiskCache: 100,
+                            imageUrl: '${Env.apiEndpoint}/images/$imageProd',
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(
+                              color: Color(0xFFFDAE2A),
+                            ),
+                            errorWidget: (context, url, error) => Image.asset(
+                              'assets/images/product-default.png',
+                              width: 30,
+                              height: 30,
+                              fit: BoxFit.cover,
+                            ),
+                            fit: BoxFit.cover,
+                            width: 50,
                             height: 50,
-                            loadingBuilder: (BuildContext context, Widget child,
-                                ImageChunkEvent? loadingProgress) {
-                              if (loadingProgress == null) {
-                                // Si la imagen se carga correctamente, mostramos la imagen
-                                return child;
-                              } else {
-                                // Si la imagen aún se está cargando, mostramos un indicador de progreso
-                                return const CircularProgressIndicator(
-                                  color: Color(0xFFFDAE2A),
-                                );
-                              }
-                            },
-                            errorBuilder: (BuildContext context, Object error,
-                                StackTrace? stackTrace) {
-                              // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
-                              if (kDebugMode) {
-                                return Image.asset(
-                                  'assets/images/product-default.png', //todo cambiar imagen de producto
-                                  fit: BoxFit
-                                      .cover, // Ajusta la imagen para cubrir completamente el área
-                                  width:
-                                      30, // Ancho deseado de la imagen dentro del círculo
-                                  height:
-                                      30, // Alto deseado de la imagen dentro del círculo
-                                );
-                              } else {
-                                // Si no estamos en modo de depuración, mostramos un texto de error
-                                return Image.asset(
-                                  'assets/images/product-default.png',
-                                  fit: BoxFit
-                                      .cover, // Ajusta la imagen para cubrir completamente el área
-                                  width:
-                                      30, // Ancho deseado de la imagen dentro del círculo
-                                  height:
-                                      30, // Alto deseado de la imagen dentro del círculo
-                                );
-                              }
-                            },
                           ),
                         ),
                       ),

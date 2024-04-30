@@ -42,7 +42,7 @@ class _StatisticPageResponState extends State<StatisticPageRespon>
 
   @override
   void initState() {
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     super.initState();
 
     // Get.back();
@@ -102,11 +102,7 @@ class _StatisticPageResponState extends State<StatisticPageRespon>
                       title: title,
                       subTitle: subTitle,
                       colorIcon: colorIcon,
-                      buttonRight: true,
-                      colorButton: Color(0xFF4470F3),
-                      direccButton: '/Estadistc2Pagos',
-                      textButton: 'MIS PAGOS',
-                      coexContro: coexCont,
+                      buttonRight: false,
                     ),
                   ),
                   SizedBox(
@@ -140,7 +136,7 @@ class _StatisticPageResponState extends State<StatisticPageRespon>
                                 automaticIndicatorColorAdjustment: false,
                                 controller: _tabController,
                                 tabs: const [
-                                  Tab(text: 'Día'),
+                                  // Tab(text: 'Día'),
                                   Tab(text: 'Rango'),
                                   Tab(text: 'Sem.'),
                                   Tab(text: 'Mens.'),
@@ -159,7 +155,7 @@ class _StatisticPageResponState extends State<StatisticPageRespon>
                       return TabBarView(
                         controller: _tabController,
                         children: [
-                          const Estadistc0Page(),
+                          //const Estadistc0Page(),
                           StadisticaRespon(),
                           StadisticaSemRespon(),
                           //  StadisticaMenRespon(),

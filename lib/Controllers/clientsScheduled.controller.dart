@@ -123,6 +123,20 @@ class ClientsScheduledController extends GetxController {
 
   int cantClientWait = 0;
 
+  //
+  //
+  //
+  String clientNameBarber = '';
+  String professionalNameBarber = '';
+  String branchNameBarber = '';
+  String imageDataBarber = '';
+  String imageUrlBarber = '';
+  String imageLookBarber = '';
+  int cantVisitBarber = 0;
+  String endLookBarber = '';
+  String lastDateBarber = '';
+  String frecuenciaBarber = '';
+
   void setcantClientWait(value) {
     cantClientWait = value;
     update();
@@ -201,6 +215,11 @@ class ClientsScheduledController extends GetxController {
 
   void setCloseIesperadoLogin(bool value) {
     closeIesperadoLogin = value;
+    update();
+  }
+
+  void setBoolFilterShowNext(bool value) {
+    boolFilterShowNext = value;
     update();
   }
 
@@ -321,7 +340,7 @@ class ClientsScheduledController extends GetxController {
       int remainingMinutes1 = (remainingTime1 / 60).floor(); //MINUTOS RESTANTES
       //int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
       timeClientsActAttended1 = remainingMinutes1; //DB - timeClock
-      reservationId = clientsAttended1!.reservation_id; //DB - reservation_id
+      reservationId = clientsAttended1!.reservation_id!; //DB - reservation_id
       clock = 1; //DB - clock
       detached = 1; //DB - detached
       //  await set_timeClock(reservation_id,timeClock,detached,clock);
@@ -340,7 +359,7 @@ class ClientsScheduledController extends GetxController {
       int remainingMinutes2 = (remainingTime2 / 60).floor(); //MINUTOS RESTANTES
       //int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
       timeClientsActAttended2 = remainingMinutes2; //DB - timeClock
-      reservationId = clientsAttended2!.reservation_id; //DB - reservation_id
+      reservationId = clientsAttended2!.reservation_id!; //DB - reservation_id
       clock = 2; //DB - clock
       detached = 1; //DB - detached
       //  await set_timeClock(reservation_id,timeClock,detached,clock);
@@ -359,7 +378,7 @@ class ClientsScheduledController extends GetxController {
       int remainingMinutes3 = (remainingTime3 / 60).floor(); //MINUTOS RESTANTES
       //int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
       timeClientsActAttended3 = remainingMinutes3; //DB - timeClock
-      reservationId = clientsAttended3!.reservation_id; //DB - reservation_id
+      reservationId = clientsAttended3!.reservation_id!; //DB - reservation_id
       clock = 3; //DB - clock
       detached = 1; //DB - detached
       //  await set_timeClock(reservation_id,timeClock,detached,clock);
@@ -378,7 +397,7 @@ class ClientsScheduledController extends GetxController {
       int remainingMinutes4 = (remainingTime4 / 60).floor(); //MINUTOS RESTANTES
       //int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
       timeClientsActAttended4 = remainingMinutes4; //DB - timeClock
-      reservationId = clientsAttended4!.reservation_id; //DB - reservation_id
+      reservationId = clientsAttended4!.reservation_id!; //DB - reservation_id
       clock = 4; //DB - clock
       detached = 1; //DB - detached
       //  await set_timeClock(reservation_id,timeClock,detached,clock);
@@ -401,22 +420,22 @@ class ClientsScheduledController extends GetxController {
     //este nuevo cliente se le va a signar un reloj
     if (avail == 1) {
       clientsAttended1 = client;
-      timeClientsAttended1 = convertDateSecons(client.total_time);
+      timeClientsAttended1 = convertDateSecons(client.total_time!);
       busyClock = 0;
     }
     if (avail == 2) {
       clientsAttended2 = client;
-      timeClientsAttended2 = convertDateSecons(client.total_time);
+      timeClientsAttended2 = convertDateSecons(client.total_time!);
       busyClock = 1;
     }
     if (avail == 3) {
       clientsAttended3 = client;
-      timeClientsAttended3 = convertDateSecons(client.total_time);
+      timeClientsAttended3 = convertDateSecons(client.total_time!);
       busyClock = 2;
     }
     if (avail == 4) {
       clientsAttended4 = client;
-      timeClientsAttended4 = convertDateSecons(client.total_time);
+      timeClientsAttended4 = convertDateSecons(client.total_time!);
       busyClock = 3;
     }
     filterShowCardTimer();
@@ -1022,6 +1041,34 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
+  Future<void> searchForCustomerServices2(idCar) async {
+    Map<dynamic, dynamic> resultList =
+        await repository.getCustomerServicesList2(idCar);
+
+    serviceCustomerSelected = resultList['serviceCustomer'];
+
+    print('showingServiceClients:$showingServiceClients');
+    if (showingServiceClients == false) {
+      serviceCustomerSelectedForm = serviceCustomerSelected;
+
+      professionalNameBarber = resultList['professionalNameBarber'];
+      imageUrlBarber = resultList['imageUrlBarber'];
+      imageLookBarber = resultList['imageLookBarber'];
+      cantVisitBarber = resultList['cantVisitBarber'];
+      endLookBarber = resultList['endLookBarber'];
+      frecuenciaBarber = resultList['frecuenciaBarber'];
+
+      print('ertyu - $professionalNameBarber');
+      print('ertyu - $imageUrlBarber');
+      print('ertyu - $imageLookBarber');
+      print('ertyu - $cantVisitBarber');
+      print('ertyu - $endLookBarber');
+      print('ertyu - $frecuenciaBarber');
+    }
+
+    update();
+  }
+
   Future<bool> changeNoncomplianceP(
       //todo1
       type,
@@ -1181,7 +1228,7 @@ class ClientsScheduledController extends GetxController {
           }
 
           if (clientsScheduledNext != null) {
-            int idCar = clientsScheduledNext!.car_id;
+            int idCar = clientsScheduledNext!.car_id!;
             await searchForCustomerServices(idCar);
             await filterShowNext();
             //  setValueClock(true);

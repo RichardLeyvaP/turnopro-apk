@@ -431,7 +431,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                 controllerClient
                                                                     .clientsScheduledList[
                                                                         index]
-                                                                    .reservation_id);
+                                                                    .reservation_id!);
                                                         //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
                                                         controllerClient.returnClientName(
                                                             (controllerClient
@@ -457,22 +457,22 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                               controllerClient
                                                                   .clientsScheduledList[
                                                                       index]
-                                                                  .client_name;
+                                                                  .client_name!;
                                                           String urlImage =
                                                               controllerClient
                                                                   .clientsScheduledList[
                                                                       index]
-                                                                  .client_image;
+                                                                  .client_image!;
                                                           int reservationId =
                                                               controllerClient
                                                                   .clientsScheduledList[
                                                                       index]
-                                                                  .reservation_id;
+                                                                  .reservation_id!;
                                                           int carId =
                                                               controllerClient
                                                                   .clientsScheduledList[
                                                                       index]
-                                                                  .car_id;
+                                                                  .car_id!;
                                                           ModalHelper.showModal(
                                                               pagesConfigC
                                                                   .pageController,
@@ -580,7 +580,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                               controllerClient
                                                                   .clientsScheduledList[
                                                                       index]
-                                                                  .client_name,
+                                                                  .client_name!,
                                                               //AQUI EL NOMBRE DEL CLIENTE
                                                               style: const TextStyle(
                                                                   fontSize: 15,

@@ -737,13 +737,125 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                         Color(0xFF4470F3))
                                                     : MaterialStateProperty.all<
                                                             Color>(
-                                                        Color.fromARGB(255, 192,
-                                                            191, 191))),
+                                                        Color(0xFFFF6750))),
                                             onPressed: () async {
                                               // Lógica para enviar el comentario
-
-                                              // Cerrar el primer modal
-                                              Navigator.pop(context);
+                                              //LLAMAR AL ENPOINT PARA SACAR DEL PUESTO DE TRABAJO
+                                              if (clientCon
+                                                      .verificateValueTimers() ==
+                                                  true) //aceptar
+                                              {
+                                                // Cerrar el primer modal
+                                                Navigator.pop(context);
+                                              } else {
+                                                print(
+                                                    'solicitud pidiendo ir a colación.');
+                                                if (_.usserPermissionQr == 1) {
+                                                  //todo esto cambiarlo
+                                                  int result = await _
+                                                      .ColacionProfessional(
+                                                          'Barbero', 3);
+                                                  if (result == 1) //codigo 200
+                                                  {
+                                                    Get.snackbar(
+                                                      '',
+                                                      'Solicitud de colación pedida correctamente,espere un momento...',
+                                                      colorText:
+                                                          const Color.fromARGB(
+                                                              255, 43, 44, 49),
+                                                      titleText:
+                                                          const Text('Mensaje'),
+                                                      duration: const Duration(
+                                                          seconds: 4),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color(
+                                                              0xFF4470F3),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFFDAE2A)),
+                                                      overlayBlur: 3,
+                                                    );
+                                                    print(
+                                                        'solicitud enviada correctamente');
+                                                  } else if (result ==
+                                                      2) //codigo diferente de 200
+                                                  {
+                                                    Get.snackbar(
+                                                      '',
+                                                      'Inténtelo nuevamente,problemas de conexión',
+                                                      colorText:
+                                                          const Color.fromARGB(
+                                                              255, 43, 44, 49),
+                                                      titleText:
+                                                          const Text('Alerta'),
+                                                      duration: const Duration(
+                                                          seconds: 4),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color(
+                                                              0xFF4470F3),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFFDAE2A)),
+                                                      overlayBlur: 3,
+                                                    );
+                                                    print(
+                                                        'problema al enviar la solicitud');
+                                                  } else if (result ==
+                                                      3) //entro a la exepcion del catch
+                                                  {
+                                                    Get.snackbar(
+                                                      '',
+                                                      'Inténtelo nuevamente,problemas de conexión...',
+                                                      colorText:
+                                                          const Color.fromARGB(
+                                                              255, 43, 44, 49),
+                                                      titleText:
+                                                          const Text('Alerta'),
+                                                      duration: const Duration(
+                                                          seconds: 4),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color(
+                                                              0xFF4470F3),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFFDAE2A)),
+                                                      overlayBlur: 3,
+                                                    );
+                                                    print(
+                                                        'problema al enviar la solicitud2');
+                                                  }
+                                                  //manadar un mensaje si la solicitud se envio bien
+                                                } else {
+                                                  Get.snackbar(
+                                                    'Mensaje',
+                                                    'Aún no ha entrado a trabajar.',
+                                                    duration: const Duration(
+                                                        milliseconds: 2500),
+                                                    backgroundColor:
+                                                        const Color.fromARGB(
+                                                            118, 255, 255, 255),
+                                                    showProgressIndicator: true,
+                                                    progressIndicatorBackgroundColor:
+                                                        const Color.fromARGB(
+                                                            255, 203, 205, 209),
+                                                    progressIndicatorValueColor:
+                                                        const AlwaysStoppedAnimation(
+                                                            Color(0xFFFDAE2A)),
+                                                    overlayBlur: 3,
+                                                  );
+                                                }
+                                                Navigator.pop(context);
+                                                // Cerrar el primer modal
+                                              }
                                             },
                                             child: (clientCon
                                                         .verificateValueTimers() ==
@@ -777,7 +889,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                         width: 6,
                                                       ),
                                                       const Text(
-                                                        'Cancelar',
+                                                        'Colación',
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontWeight:
@@ -839,7 +951,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                     width: 6,
                                                   ),
                                                   const Text(
-                                                    '  Salir  ',
+                                                    'Me retiro',
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:

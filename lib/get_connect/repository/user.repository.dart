@@ -50,6 +50,31 @@ class UserRepository extends GetConnect {
     }
   }
 
+  Future solitColacion(branchId, professionalId, type, state) async {
+    try {
+      var url = '${Env.apiEndpoint}/request_location_professional';
+      final Map<String, dynamic> body = {
+        'branch_id': branchId,
+        'professional_id': professionalId,
+        'type': type,
+        'state': state,
+      };
+
+      final response = await put(url, body);
+      print(url);
+      print('NO sali - code :${response.statusCode}');
+      if ((response.statusCode == 200)) {
+        print('sali de la sucursal');
+        return 1;
+      } else {
+        print('NO sali de la sucursal');
+        return 2;
+      }
+    } catch (e) {
+      print('NO sali de la sucursal error:$e');
+    }
+  }
+
   Future getUserLoggedBranch(String email, String password) async {
     try {
       var url =

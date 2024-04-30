@@ -12,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:turnopro_apk/Views/common/loginFormPage.dart';
 import 'package:turnopro_apk/Views/coordinator/homeCoordinator/homeCoordinatorPage.dart';
 import 'package:turnopro_apk/Views/coordinator/profile/profileClient.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/profileClientBarber.dart';
 import 'package:turnopro_apk/Views/professional/statistic/estadistc0Page.dart';
 import 'package:turnopro_apk/Views/professional/statistic/estadistc1Page.dart';
 import 'package:turnopro_apk/Views/professional/statistic/estadistc2Pagos.dart';
@@ -150,6 +151,11 @@ class Myapp extends StatelessWidget {
       GetPage(
         name: '/CoexistencePage',
         page: () => const CoexistencePage(),
+        binding: BindingsBuilder.put(() => CoexistenceController()),
+      ),
+      GetPage(
+        name: '/ProfileClientBarber',
+        page: () => const ProfileClientBarber(),
         binding: BindingsBuilder.put(() => CoexistenceController()),
       ),
       GetPage(

@@ -198,6 +198,62 @@ class ClientsScheduledRepository extends GetConnect {
     return minutes;
   }
 
+  Future getCustomerServicesList2(idCar) async {
+    print('estoy en repositorio en - 3');
+    print('ertyu - idCar $idCar');
+    try {
+      List<ServiceModel> serviceCustomer = [];
+      var url = '${Env.apiEndpoint}/car_services2?car_id=$idCar';
+
+      final response = await get(url);
+      if (response.statusCode == 200) {
+        print('ya tengo los servicios');
+        final customers = response.body['services'];
+        print('ertyu - services $customers');
+        // int i = 1;
+        for (Map service in customers) {
+          ServiceModel u = ServiceModel.fromJson(jsonEncode(service));
+          print('ertyu - service ${u.name}');
+          serviceCustomer.add(u);
+          // i++;
+          //AQUI LA LOGICA DE SABER CUAL ES EL QUE LE SIGUE
+        }
+        print('2 okkkkkkkk');
+
+        final data = response.body['clientHistory'];
+        print('ertyu - clientHistory $data');
+        String professionalNameBarber = data[0]['professionalName'];
+        String imageUrlBarber = data[0]['image_url'];
+        String imageLookBarber = data[0]['imageLook'];
+        int cantVisitBarber = data[0]['cantVisit'];
+        String endLookBarber = data[0]['endLook'];
+        String frecuenciaBarber = data[0]['frecuencia'];
+
+        print('ertyu - $professionalNameBarber');
+        print('ertyu - $imageUrlBarber');
+        print('ertyu - $imageLookBarber');
+        print('ertyu - $cantVisitBarber');
+        print('ertyu - $endLookBarber');
+        print('ertyu - $frecuenciaBarber');
+
+        return {
+          //valores de la cola
+          "serviceCustomer": serviceCustomer,
+          "professionalNameBarber": professionalNameBarber,
+          "imageUrlBarber": imageUrlBarber,
+          "imageLookBarber": imageLookBarber,
+          "cantVisitBarber": cantVisitBarber,
+          "endLookBarber": endLookBarber,
+          "frecuenciaBarber": frecuenciaBarber,
+        };
+      } else {
+        return serviceCustomer;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future getCustomerServicesList(idCar) async {
     print('estoy en repositorio en - 3');
 

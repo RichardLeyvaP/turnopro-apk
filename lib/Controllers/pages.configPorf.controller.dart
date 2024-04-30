@@ -31,6 +31,7 @@ class PagesConfigController extends GetxController {
   List<int> selectedIndexBackList = [];
   int selectedIndexBack = 0;
   int pages31Index = 0;
+  int colacionNotification = 0; //0 notification y 1 colacion
 
   //
   //todo **************** CONFIGURACIONES PARA HOME-PROFESIONAL ************************
@@ -92,6 +93,11 @@ class PagesConfigController extends GetxController {
 
   void updateSelectedIndex() {
     selectedIndex = 10;
+    update();
+  }
+
+  void updateColacionNotification(value) {
+    colacionNotification = value;
     update();
   }
 

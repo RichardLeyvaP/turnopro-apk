@@ -205,7 +205,7 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                   clientsScheduledController
                                                                       .clientsScheduledListTechnical[
                                                                           index]
-                                                                      .reservation_id);
+                                                                      .reservation_id!);
                                                           //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
                                                           clientsScheduledController.returnClientName(
                                                               (clientsScheduledController
@@ -230,15 +230,15 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                     clientsScheduledController
                                                                         .clientsScheduledListTechnical[
                                                                             index]
-                                                                        .client_name,
+                                                                        .client_name!,
                                                                     clientsScheduledController
                                                                         .clientsScheduledListTechnical[
                                                                             index]
-                                                                        .reservation_id,
+                                                                        .reservation_id!,
                                                                     clientsScheduledController
                                                                         .clientsScheduledListTechnical[
                                                                             index]
-                                                                        .car_id,
+                                                                        .car_id!,
                                                                     clientsScheduledController
                                                                         .clientsScheduledListTechnical[
                                                                             index]
@@ -303,7 +303,7 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                   clientsScheduledController
                                                                       .clientsScheduledListTechnical[
                                                                           index]
-                                                                      .client_name,
+                                                                      .client_name!,
                                                                   //AQUI EL NOMBRE DEL CLIENTE
                                                                   style: const TextStyle(
                                                                       fontSize:

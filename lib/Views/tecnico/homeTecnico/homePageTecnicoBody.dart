@@ -126,7 +126,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
         //agregar el id de ese cliente en un array para no mandar mas ese mensaje con ese cliente en espera
         if (clientsScheduledController.clientsAttendedTechnical != null) {
           clientsScheduledController.setNotificateClient(
-              clientsScheduledController.clientsAttendedTechnical!.client_id);
+              clientsScheduledController.clientsAttendedTechnical!.client_id!);
         }
       }
     });
@@ -177,7 +177,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
       // //todo AQUI DETENGO LOS TIMER QUE NO ESTAN VISIBLES
 
       if (controllerclient.clientsNextTechnical != null) {
-        String fullName = controllerclient.clientsNextTechnical!.client_name;
+        String fullName = controllerclient.clientsNextTechnical!.client_name!;
         //todo1                // Dividir el nombre completo por espacios
         List<String> partsName =
             fullName.split(" "); // Tomar los primeros dos nombres (si existen)
@@ -249,12 +249,12 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                 UniqueKey(),
                                                 controllerclient
                                                     .clientsAttendedTechnical!
-                                                    .client_name,
+                                                    .client_name!,
                                                 controllerclient,
                                                 _animationTechnicalController1!,
                                                 controllerclient
                                                     .clientsAttendedTechnical!
-                                                    .client_image),
+                                                    .client_image!),
                                           ]
                                           //SI NO ESTA ATENDIENDOA NADIE Y HAY GENTE EN LA COLA ESPERANDO CARGA EL TIMER INICIAL
                                           else if (controllerclient
@@ -543,7 +543,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                       .handleButtonClickTec(
                                                           controllerclient
                                                               .clientsNextTechnical!
-                                                              .reservation_id);
+                                                              .reservation_id!);
                                                   if (resulButton == 1) {
                                                     // detengo todos los timers que deben detenerse
                                                     _animationControllerInitialT!

@@ -3,15 +3,15 @@
 import 'dart:convert';
 
 class ClientsScheduledModel {
-  int reservation_id;
-  int car_id;
-  String start_time;
-  String final_hour;
-  String total_time;
-  String client_name;
-  String client_image;
-  int client_id;
-  int attended;
+  int? reservation_id;
+  int? car_id;
+  String? start_time;
+  String? final_hour;
+  String? total_time;
+  String? client_name;
+  String? client_image;
+  int? client_id;
+  int? attended;
   String? updated_at;
   String? professional_name;
   int? professional_id;
@@ -22,15 +22,15 @@ class ClientsScheduledModel {
   String? time;
 
   ClientsScheduledModel({
-    required this.reservation_id,
-    required this.car_id,
-    required this.start_time,
-    required this.final_hour,
-    required this.total_time,
-    required this.client_name,
-    required this.client_image,
-    required this.client_id,
-    required this.attended,
+    this.reservation_id,
+    this.car_id,
+    this.start_time,
+    this.final_hour,
+    this.total_time,
+    this.client_name,
+    this.client_image,
+    this.client_id,
+    this.attended,
     this.updated_at,
     this.professional_name,
     this.professional_id,

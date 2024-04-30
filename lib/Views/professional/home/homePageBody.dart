@@ -277,8 +277,10 @@ class _HomePageBodyState extends State<HomePageBody>
                         'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos',
                         'Barbero');
                     //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
-                    clientsScheduledController.setNotificationClients1(1,
-                        clientsScheduledController.clientsAttended1!.client_id);
+                    clientsScheduledController.setNotificationClients1(
+                        1,
+                        clientsScheduledController
+                            .clientsAttended1!.client_id!);
                     scheduleNotification('!Alerta',
                         'El tiempo de servicio del cliente $nameClient se agotará');
                   }
@@ -347,8 +349,10 @@ class _HomePageBodyState extends State<HomePageBody>
                     //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
                     scheduleNotification('!Alerta',
                         'El tiempo de servicio del cliente $nameClient se agotará');
-                    clientsScheduledController.setNotificationClients1(2,
-                        clientsScheduledController.clientsAttended2!.client_id);
+                    clientsScheduledController.setNotificationClients1(
+                        2,
+                        clientsScheduledController
+                            .clientsAttended2!.client_id!);
                   }
                 }
               }
@@ -409,8 +413,10 @@ class _HomePageBodyState extends State<HomePageBody>
                     //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
                     scheduleNotification('!Alerta',
                         'El tiempo de servicio del cliente $nameClient se agotará');
-                    clientsScheduledController.setNotificationClients1(3,
-                        clientsScheduledController.clientsAttended3!.client_id);
+                    clientsScheduledController.setNotificationClients1(
+                        3,
+                        clientsScheduledController
+                            .clientsAttended3!.client_id!);
                   }
                 }
               }
@@ -472,8 +478,10 @@ class _HomePageBodyState extends State<HomePageBody>
                     //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
                     scheduleNotification('!Alerta',
                         'El tiempo de servicio del cliente $nameClient se agotará');
-                    clientsScheduledController.setNotificationClients1(4,
-                        clientsScheduledController.clientsAttended4!.client_id);
+                    clientsScheduledController.setNotificationClients1(
+                        4,
+                        clientsScheduledController
+                            .clientsAttended4!.client_id!);
                   }
                 }
               }
@@ -533,7 +541,7 @@ class _HomePageBodyState extends State<HomePageBody>
             if (clientsScheduledController.clientsScheduledList[i].attended ==
                 11) {
               int reservationId = clientsScheduledController
-                  .clientsScheduledList[i].reservation_id;
+                  .clientsScheduledList[i].reservation_id!;
               clock = await clientsScheduledController
                   .getValueClockDb(reservationId);
               if (clock == 1) {
@@ -966,7 +974,7 @@ class _HomePageBodyState extends State<HomePageBody>
 
       if (clientsScheduledController.clientsScheduledNext != null) {
         String fullName =
-            clientsScheduledController.clientsScheduledNext!.client_name;
+            clientsScheduledController.clientsScheduledNext!.client_name!;
         //todo1                // Dividir el nombre completo por espacios
         List<String> partsName =
             fullName.split(" "); // Tomar los primeros dos nombres (si existen)
@@ -1107,25 +1115,25 @@ class _HomePageBodyState extends State<HomePageBody>
                                                 clientsList[
                                                         clientsScheduledController
                                                             .item[i]]!
-                                                    .reservation_id,
+                                                    .reservation_id!,
                                                 i,
                                                 clientsList[
                                                         clientsScheduledController
                                                             .item[i]]!
-                                                    .attended,
+                                                    .attended!,
                                                 clientsList[
                                                         clientsScheduledController
                                                             .item[i]]!
-                                                    .car_id,
+                                                    .car_id!,
                                                 clientsList[
                                                         clientsScheduledController
                                                             .item[i]]!
-                                                    .client_image,
+                                                    .client_image!,
                                                 UniqueKey(),
                                                 clientsList[
                                                         clientsScheduledController
                                                             .item[i]]!
-                                                    .client_name,
+                                                    .client_name!,
                                                 clientsScheduledController,
                                                 animationCont[
                                                     clientsScheduledController
@@ -1477,7 +1485,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                   child: Text(
                                       //AQUI ETSA EL TIEMPO TOTAL DEL SERVICIO
                                       (clientsScheduledController
-                                          .clientsScheduledNext!.total_time),
+                                          .clientsScheduledNext!.total_time!),
                                       style: const TextStyle(
                                         height: 1.2,
                                         fontSize: 16,
@@ -1557,9 +1565,14 @@ class _HomePageBodyState extends State<HomePageBody>
                             int resulButton = 0;
                             resulButton = loginController.handleButtonClick(
                                 clientsScheduledController
-                                    .clientsScheduledNext!.reservation_id);
+                                    .clientsScheduledNext!.reservation_id!);
                             if (resulButton == 1) {
                               //aqui manda aceptar, es decir atender este cliente
+                              //aqui intento hacer que cuando acepte no ce vea el siguiente en la lista
+                              // nunca a no ser que luego lo ponga en true porque tenga services simultaneos
+                              clientsScheduledController
+                                  .setBoolFilterShowNext(false);
+                              //
                               clientsScheduledController.clientsWaiting(false);
                               // detengo el timer de 2 minutos
                               clientsScheduledController

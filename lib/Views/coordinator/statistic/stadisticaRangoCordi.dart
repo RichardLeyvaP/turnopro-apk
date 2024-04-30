@@ -95,7 +95,7 @@ class _StadisticaCordiState extends State<StadisticaCordi> {
             const SizedBox(
               height: 10,
             ),
-            controllerStat.statisticsGeneralRespon.isEmpty
+            controllerStat.statisticsGeneralRespon1.isEmpty
                 ? Center(
                     child: Column(
                       children: [
@@ -129,7 +129,7 @@ class _StadisticaCordiState extends State<StadisticaCordi> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: controllerStat
-                              .statisticsGeneralRespon.entries
+                              .statisticsGeneralRespon1.entries
                               .map((entry) {
                             i++;
 
@@ -419,6 +419,7 @@ class _StadisticaCordiState extends State<StadisticaCordi> {
 
                                   await controllerStatistic
                                       .getDataStatisticRespon(
+                                          1,
                                           startDate1,
                                           endDate1,
                                           numberdayWeek,

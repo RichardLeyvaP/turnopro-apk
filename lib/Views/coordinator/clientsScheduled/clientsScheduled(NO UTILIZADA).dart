@@ -197,7 +197,7 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                                         controllerClient.returnClientStatus(
                                             controllerClient
                                                 .clientsScheduledList[index]
-                                                .reservation_id);
+                                                .reservation_id!);
                                         //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
                                         controllerClient.returnClientName(
                                             (controllerClient
@@ -307,7 +307,7 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                                               Text(
                                                 controllerClient
                                                     .clientsScheduledList[index]
-                                                    .client_name,
+                                                    .client_name!,
                                                 //AQUI EL NOMBRE DEL CLIENTE
                                                 style: const TextStyle(
                                                     fontSize: 15,

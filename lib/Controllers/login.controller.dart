@@ -719,6 +719,38 @@ class LoginController extends GetxController {
     }
   }
 
+  Future<int> ColacionProfessional(type, state) async {
+    try {
+      int exit = await usuarioLg.solitColacion(
+          branchIdLoggedIn, idProfessionalLoggedIn, type, state);
+
+      if (state == 2) //es solicitud a enviar
+      {
+        if (exit == 1) {
+          //aqui enviar notificacion que fue aceptada y que salio del puesto y poner el QR a false
+          print('solicitud aceptada');
+        }
+      } else if (state == 1) //es solicitud a enviar
+      {
+        if (exit == 1) {
+          //mandar mensaje que fue rechazada
+          print('solicitud rechazada');
+        }
+      } else if (state == 3) //es solicitud a enviar
+      {
+        if (exit == 1) {
+          //mandar mensaje y que le salga a los cordinadores y encargados la solicitud
+          print('solicitud enviada');
+        }
+      }
+
+      return exit; //if es 1 bien , si es 2 codigo diferente a 200
+    } catch (e) {
+      print('Erroor:$e');
+      return 3;
+    }
+  }
+
   Future<int> getIdPuesto(int idProfes) async {
     try {
       //INICIALIZANDO A NULL

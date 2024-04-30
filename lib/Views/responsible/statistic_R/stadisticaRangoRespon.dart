@@ -102,7 +102,7 @@ class _StadisticaResponState extends State<StadisticaRespon> {
                   ),
                 ),
 
-                controllerStat.statisticsGeneralRespon.isEmpty
+                controllerStat.statisticsGeneralRespon1.isEmpty
                     ? SizedBox(
                         height: 540,
                         child: Column(
@@ -153,7 +153,7 @@ class _StadisticaResponState extends State<StadisticaRespon> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: controllerStat
-                                      .statisticsGeneralRespon.entries
+                                      .statisticsGeneralRespon1.entries
                                       .map((entry) {
                                     i++;
 
@@ -376,6 +376,7 @@ class _StadisticaResponState extends State<StadisticaRespon> {
                                   int year = -99;
                                   await controllerStatistic
                                       .getDataStatisticRespon(
+                                          1,
                                           startDate1,
                                           endDate1,
                                           numberdayWeek,

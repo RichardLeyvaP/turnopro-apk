@@ -102,7 +102,7 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
                   ),
                 ),
 
-                controllerStat.statisticsGeneralRespon.isEmpty
+                controllerStat.statisticsGeneralRespon2.isEmpty
                     ? SizedBox(
                         height: 540,
                         child: Column(
@@ -153,7 +153,7 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: controllerStat
-                                      .statisticsGeneralRespon.entries
+                                      .statisticsGeneralRespon2.entries
                                       .map((entry) {
                                     i++;
 
@@ -484,7 +484,7 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
                             int year = -99;
 
                             await controllerStatistic.getDataStatisticRespon(
-                                startDate1, endDate1, 1, 7, mes, year);
+                                2, startDate1, endDate1, 1, 7, mes, year);
                             Navigator.pop(context);
 
                             // Aquí puedes usar los valores firstDayOfWeek y lastDayOfWeek como desees

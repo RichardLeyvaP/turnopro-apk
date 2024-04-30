@@ -271,7 +271,7 @@ class NotificationController extends GetxController {
           }
 
           if (clientCon.clientsScheduledNext != null) {
-            int idCar = clientCon.clientsScheduledNext!.car_id;
+            int idCar = clientCon.clientsScheduledNext!.car_id!;
             await clientCon.searchForCustomerServices(idCar);
             await clientCon.filterShowNext();
             //  setValueClock(true);

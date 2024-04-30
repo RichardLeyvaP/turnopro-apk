@@ -138,9 +138,14 @@ class _StadisticaMensualPageNuevaState
                                     ),
                                     barrierDismissible: false,
                                   ); //Get.back();
+                                  print(
+                                      'estadist :mes:$_selectedMonth y ano:$_selectedYear');
+                                  await controllerStatistic
+                                      .getDataStatisticRespon(3, 0, 0, 0, 0,
+                                          _selectedMonth, _selectedYear);
 
-                                  await controllerStatistic.getDataStatisticMen(
-                                      _selectedMonth, _selectedYear);
+                                  /*  await controllerStatistic.getDataStatisticMen(
+                                      _selectedMonth, _selectedYear);*/
                                   mesEscogido =
                                       '${_months[_selectedMonth - 1]} del $_selectedYear';
                                   Get.back();
@@ -177,7 +182,7 @@ class _StadisticaMensualPageNuevaState
                   ),
                 ),
 
-                controllerStat.statisticsGeneralMen.isEmpty
+                controllerStat.statisticsGeneralRespon3.isEmpty
                     ? SizedBox(
                         height: 540,
                         child: Column(
@@ -235,7 +240,7 @@ class _StadisticaMensualPageNuevaState
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: controllerStat
-                                      .statisticsGeneralMen.entries
+                                      .statisticsGeneralRespon3.entries
                                       .map((entry) {
                                     i++;
 

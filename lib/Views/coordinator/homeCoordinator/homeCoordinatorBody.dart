@@ -380,9 +380,9 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                         12,
                                         const Color(0xFFFF6750),
                                         Color.fromARGB(255, 231, 233, 233),
-                                        'Notificaciones',
-                                        'Tus Notificaciones',
-                                        Icons.notifications),
+                                        'Colación',
+                                        'Colación',
+                                        Icons.person_pin_rounded),
                                   ],
                                 ),
                                 SizedBox(
@@ -554,7 +554,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       Text(
                                         controllerclient
                                             .clientsScheduledListBranch[index]
-                                            .client_name,
+                                            .client_name!,
                                         softWrap: true,
                                         style: const TextStyle(
                                             height: 1.0,
@@ -647,10 +647,10 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   ); //Get.back();
                                   int idClient = controllerclient
                                       .clientsScheduledListBranch[index]
-                                      .client_id;
+                                      .client_id!;
                                   int idReserv = controllerclient
                                       .clientsScheduledListBranch[index]
-                                      .reservation_id;
+                                      .reservation_id!;
                                   int idBranch =
                                       loginController.branchIdLoggedIn!;
                                   // aqui llamar a la db y pedir todos los datos del cliente
@@ -780,6 +780,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
         ),
         onPressed: () async {
           if (titleCart == 'Atendiéndose') {
+            pagesConfigC.updateColacionNotification(0);
             Get.dialog(
               const Center(
                 child: CircularProgressIndicator(
@@ -818,7 +819,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
             pagesConfigC.onTabTapped(3); //index = 3 -> /StatisticPage
             Get.back();
           }
-          if (titleCart == 'Notificaciones') {
+          if (titleCart == 'Colación') {
+            pagesConfigC.updateColacionNotification(1);
             Get.dialog(
               const Center(
                 child: CircularProgressIndicator(
@@ -827,7 +829,9 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
               ),
               barrierDismissible: false,
             ); //Get.back();
-            pagesConfigC.onTabTapped(2); //index = 2 -> /NotificationsPageProf
+            await clientsScheduledController.ClientsColacionBranch(
+                loginController.branchIdLoggedIn);
+            pagesConfigC.onTabTapped(1); //index = 2 -> /NotificationsPageProf
             Get.back();
           }
         },
@@ -1025,7 +1029,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                           controllerclient
                                               .clientsScheduledListBranchClient[
                                                   i]
-                                              .client_name,
+                                              .client_name!,
                                           style: TextStyle(
                                               fontSize: (MediaQuery.of(context)
                                                       .size

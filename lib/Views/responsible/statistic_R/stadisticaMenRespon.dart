@@ -123,7 +123,7 @@ class _StadisticaMenResponState extends State<StadisticaMenRespon> {
                           )),
                           onPressed: () async {
                             await controllerStatistic.getDataStatisticRespon(
-                                0, 0, 0, 0, _selectedMonth, _selectedYear);
+                                3, 0, 0, 0, 0, _selectedMonth, _selectedYear);
                             mesEscogido =
                                 '${_months[_selectedMonth - 1]} del $_selectedYear';
                           },
@@ -139,7 +139,7 @@ class _StadisticaMenResponState extends State<StadisticaMenRespon> {
             const SizedBox(
               height: 10,
             ),
-            controllerStat.statisticsGeneralRespon.isEmpty
+            controllerStat.statisticsGeneralRespon2.isEmpty
                 ? Center(
                     child: Column(
                       children: [
@@ -179,7 +179,7 @@ class _StadisticaMenResponState extends State<StadisticaMenRespon> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: controllerStat
-                              .statisticsGeneralRespon.entries
+                              .statisticsGeneralRespon2.entries
                               .map((entry) {
                             i++;
 
