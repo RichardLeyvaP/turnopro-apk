@@ -14,7 +14,8 @@ class NotificationRepository extends GetConnect {
   Future<bool> storeNotification2(
       tittle, branchId, professionalId, description, type) async {
     try {
-      var url = '${Env.apiEndpoint}/notification2';
+      var url =
+          '${Env.apiEndpoint}/notification2'; //esta inserta la notificacion con state = 3
       print('inserto correctamente ********** la notificacio:$tittle');
       final Map<String, dynamic> body = {
         'tittle': tittle,
@@ -176,7 +177,9 @@ class NotificationRepository extends GetConnect {
             }
           }
           //AQUI PARA SABER CUANTOS ESTA ATENDIENDO
-          if (client.attended == 1) {
+          if (client.attended == 1 ||
+              client.attended == 11 ||
+              client.attended == 111) {
             print('clientes asistiendo entre a if (client.attended == 1) {');
             quantityClientAttended++;
           }
@@ -308,7 +311,8 @@ class NotificationRepository extends GetConnect {
 
   Future<int> updateNotifications2(idBranch, idProf, id) async {
     try {
-      var url = '${Env.apiEndpoint}/notification2';
+      var url =
+          '${Env.apiEndpoint}/notification2'; //pone de es estate del mensaje en 0
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {

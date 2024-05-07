@@ -239,6 +239,39 @@ class ClientsCoordinatorRepository extends GetConnect {
     return {"clientAttendList": clientList};
   } //
 
+  //
+  //
+  Future profOutRequestBranch(idBranch) async {
+    //clientes que se estan atendiendo de una branch
+    List<ClientsScheduledModel> clientList = [];
+
+    var url = '${Env.apiEndpoint}/branch_colacion4?branch_id=$idBranch';
+
+    final response = await get(url);
+    //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
+    if (response.statusCode == null) {
+      print('response.statusCode:${response.statusCode}');
+      return {
+        "ConnectionIssues": true,
+      };
+    } else
+      print('hay coneccion profOutRequestBranch');
+    if (response.statusCode == 200) {
+      print('ya tengo la cola de la api ClientsColacionBranch');
+      final customers = response.body['professionals'];
+      for (Map service in customers) {
+        ClientsScheduledModel client =
+            ClientsScheduledModel.fromJson(jsonEncode(service));
+
+        clientList.add(client);
+        print(
+            'yccca tengo la cola de la api profOutRequestBranch:${clientList.length}');
+      }
+    }
+
+    return {"clientAttendList": clientList};
+  } //
+
   Future clientsAttendBranch(idBranch) async {
     //clientes que se estan atendiendo de una branch
     List<ClientsScheduledModel> clientList = [];
@@ -431,7 +464,10 @@ class ClientsCoordinatorRepository extends GetConnect {
           }
         }
         //AQUI PARA SABER CUANTOS ESTA ATENDIENDO
-        if (client.attended == 1) {
+        if (client.attended == 1 ||
+            client.attended == 11 ||
+            client.attended == 111) {
+          //agregue aqui estos dos 11 y 111
           quantityClientAttended++;
         }
       }

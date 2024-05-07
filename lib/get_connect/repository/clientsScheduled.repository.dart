@@ -19,8 +19,11 @@ class ClientsScheduledRepository extends GetConnect {
       ClientsScheduledModel? nextClient;
       bool hasNextClient = false;
       int quantityClientAttended = 0;
+      int idTecn = controllerLogin.idProfessionalLoggedIn!;
 
-      var url = '${Env.apiEndpoint}/cola_branch_capilar?branch_id=$idBranch';
+      // var url = '${Env.apiEndpoint}/cola_branch_capilar?branch_id=$idBranch';
+      var url =
+          '${Env.apiEndpoint}/cola_branch_tecnico?branch_id=$idBranch&professional_id=$idTecn';
 
       final response = await get(url);
       //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
@@ -52,6 +55,7 @@ class ClientsScheduledRepository extends GetConnect {
             quantityClientAttended++;
           }
         }
+        print('imprimiendo cuantos atinede el tecnico:$quantityClientAttended');
       }
 
       return {
@@ -65,6 +69,125 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   //
+  //
+
+  Future getClientsScheduledListNew(idProfessional, idBranch) async {
+    print('estoy en repositorio en - 2');
+
+    try {
+      List<ClientsScheduledModel> clientList = [];
+      List<ClientsScheduledModel> clientListSig = [];
+      List<Map> attendingClientList = [];
+      ClientsScheduledModel? nextClient;
+      bool hasNextClient = false;
+      int quantityClientAttended = 0;
+      bool varclientswaiting = false;
+
+      var url =
+          '${Env.apiEndpoint}/cola_branch_professional_new?professional_id=$idProfessional&branch_id=$idBranch';
+      print('a.......... getClientsScheduledList:url:$url');
+
+      final response = await get(url).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 30 segundos
+
+      //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
+      if (response.statusCode == null) {
+        print('response.statusCode:${response.statusCode}');
+        return {
+          "ConnectionIssues": true,
+        };
+      } else
+        print('hay coneccion');
+      if (response.statusCode == 200) {
+        // print('ya tengo la cola de la api es estaa *****************');
+        final customers = response.body['tail'];
+        // print('ya tengo la cola de la api es estaa${customers}');
+
+// // //todo LEER TIPOS DE DATOS QUE VIENEN D LA API
+//       for (int i = 0; i < customers.length; i++) {
+//         print(
+//             'ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
+//         customers[i].forEach((key, value) {
+//           print(
+//               'ya tengo la cola de la api es estaa $key: ${value.runtimeType}');
+//         });
+//       }
+// // //todo LEER TIPOS DE DATOS QUE VIENEN D LA API
+
+        for (Map service in customers) {
+          // print(
+          //     'ya tengo la cola de la api es estaa *********for (Map service in customers)********');
+          ClientsScheduledModel client =
+              ClientsScheduledModel.fromJson(jsonEncode(service));
+          // print(
+          //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
+          //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
+          if (controllerLogin.isLoggingIn == true) {
+            if (client.detached == 1 && client.attended != 33) {
+              //33 es que lo rechazó el tecnico
+              //creo nuevo cliente
+              print(
+                  'clientes asistiendo entre a if (client.detached == 1) {//creo nuevo cliente');
+              Map newValue = {
+                "reservation_id": client.reservation_id,
+                //"updated_at": convertDateTimeToMinutes(client.updated_at!),
+                "updated_at": client.updated_at!,
+                "clock": client.clock!,
+                "timeClock": client.timeClock! * 60, //convirtiendolo en minutos
+                "client": client,
+              };
+              attendingClientList.add(newValue);
+              print(
+                  'clientes asistiendo client.reservation_id:${client.reservation_id}');
+              print('clientes asistiendo client.clock!:${client.clock!}');
+              print('clientes asistiendo timeClock:${client.timeClock! * 60}');
+              print('clientes asistiendo client:${client}');
+            }
+          }
+
+          clientList.add(client);
+          if (client.attended == 0) {
+            clientListSig.add(client);
+          }
+          //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
+
+          if (hasNextClient == false) {
+            if (client.attended == 0) {
+              nextClient = client;
+              hasNextClient = true;
+            }
+          }
+          //AQUI PARA SABER CUANTOS ESTA ATENDIENDO
+          if (client.attended == 1 ||
+              client.attended == 11 ||
+              client.attended == 111) {
+            print('clientes asistiendo entre a if (client.attended == 1) {');
+            quantityClientAttended++;
+          }
+          //Saber si no esta atendiendo a nadie
+          if (quantityClientAttended == 0) {
+            //para saber si hay algun cliente en espera
+            if (nextClient != null) {
+              varclientswaiting = true;
+            }
+          }
+        }
+      }
+
+      return {
+        "clientList": clientList,
+        "clientListSig": clientListSig,
+        "nextClient": nextClient,
+        "quantityClientAttended": quantityClientAttended,
+        "attendingClient": attendingClientList, //puede ser null
+        "varclientswaiting":
+            varclientswaiting, //este me dice si hay que mandar alguna notificacion recordando que hay cliente esperando en cola por ser atendido
+      };
+    } catch (e) {
+      print(e);
+    }
+  }
+//
   //
 
   Future getClientsScheduledList(idProfessional, idBranch) async {
@@ -154,7 +277,9 @@ class ClientsScheduledRepository extends GetConnect {
             }
           }
           //AQUI PARA SABER CUANTOS ESTA ATENDIENDO
-          if (client.attended == 1) {
+          if (client.attended == 1 ||
+              client.attended == 11 ||
+              client.attended == 111) {
             print('clientes asistiendo entre a if (client.attended == 1) {');
             quantityClientAttended++;
           }

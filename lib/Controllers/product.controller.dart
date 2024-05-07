@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages, unused_element
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/category_model.dart';
@@ -13,11 +14,12 @@ class ProductController extends GetxController {
   int idInicial = 0;
   int productListLength = 0;
   int categoryListLength = 0;
+  int pestana = 0;
   List<ProductModel> product = []; // Lista de Notificaciones
   List<int> cantProduct = List<int>.filled(10000, 0); // Lista de Notificaciones
   List<CategoryModel> category = []; // Lista de Notificaciones
   List<ProductModel> selectproduct = []; //Notificaciones seleccionados vacia
-  bool isLoading = true, isLoadingCategory = true;
+  bool isLoading = false, isLoadingCategory = false;
 
   /************************************************************* */
   // Mapa para almacenar la información de productos por categoría
@@ -36,6 +38,11 @@ class ProductController extends GetxController {
         update(); // Actualiza el widget cuando cambia el estado
       }
     }
+  }
+
+  void updatePestana(value) {
+    pestana = value;
+    update();
   }
 
   // Método para agregar una nueva categoría
@@ -97,7 +104,7 @@ class ProductController extends GetxController {
   void onReady() {
     super.onReady();
     // Future.delayed(const Duration(seconds: 2), () {
-    isLoading = false;
+    //isLoading = false;
     update();
     // });
   }
@@ -120,8 +127,16 @@ class ProductController extends GetxController {
     final LoginController controllerLogin = Get.find<LoginController>();
     try {
       List<ProductModel>? tempProduct;
-      isLoadingCategory = true;
-      update();
+      //isLoadingCategory = true;
+      Get.dialog(
+        const Center(
+          child: CircularProgressIndicator(
+            color: Color(0xFFFDAE2A),
+          ),
+        ),
+        barrierDismissible: false,
+      ); //Get.back();
+      // update();
       Future.delayed(const Duration(milliseconds: 1000), () async {
         tempProduct = await repository.getProductCategoryList(
             index, controllerLogin.branchIdLoggedIn);
@@ -129,7 +144,36 @@ class ProductController extends GetxController {
           product = tempProduct!;
           productListLength = product.length;
           print('Cantidad de productos -- -- -- $productListLength');
-          isLoadingCategory = false;
+          // isLoadingCategory = false;
+          Get.back();
+          update();
+        }
+      });
+    } catch (e) {
+      productListLength = -99;
+      update();
+    }
+  }
+
+  Future<void> fetchproductListIni(index) async {
+    //este la unica diferencia es que no tiene el cargar
+    print(
+        'LISTA2 _fetchServiceList Limpiando ENTRE ACTUALIZAR LOS PRODUCTOS:$index');
+    final LoginController controllerLogin = Get.find<LoginController>();
+    try {
+      List<ProductModel>? tempProduct;
+      //isLoadingCategory = true;
+
+      // update();
+      Future.delayed(const Duration(milliseconds: 1000), () async {
+        tempProduct = await repository.getProductCategoryList(
+            index, controllerLogin.branchIdLoggedIn);
+        if (tempProduct != null) {
+          product = tempProduct!;
+          productListLength = product.length;
+          print('Cantidad de productos -- -- -- $productListLength');
+          // isLoadingCategory = false;
+
           update();
         }
       });
@@ -173,9 +217,10 @@ class ProductController extends GetxController {
 
 //todo esta es la primera ves que carga los productos hace la llamada a  fetchproductList(idInicial);
   Future<void> initializeData() async {
+    updatePestana(0);
     //todo aqui primero espero por las categorias para despues por el id de categoria llamar a los productos
     await _fetchcategoryList(); // Espera a que se complete _fetchcategoryList
-    await fetchproductList(
+    await fetchproductListIni(
         idInicial); // Llama a fetchproductList después de obtener idInicial
   }
 

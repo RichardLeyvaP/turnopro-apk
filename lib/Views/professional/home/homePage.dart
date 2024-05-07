@@ -290,6 +290,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       const Size.fromHeight(70); // Ajusta el tamaño del AppBar aquí
   final ClientsScheduledController clientCon =
       Get.find<ClientsScheduledController>();
+  NotificationController notiController = Get.find<NotificationController>();
 
   @override //todo AppBar
   Widget build(BuildContext context) {
@@ -584,7 +585,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                   .all<EdgeInsetsGeometry>(
                                                 const EdgeInsets.symmetric(
                                                     vertical: 0,
-                                                    horizontal: 26.0),
+                                                    horizontal: 18.0),
                                               ),
                                               backgroundColor:
                                                   MaterialStateProperty.all<
@@ -626,6 +627,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           );
                         });
                       },
+                    );
+                  } else if (_.usserPermissionQr == 2) {
+                    Get.snackbar(
+                      'Mensaje',
+                      'Debe de esperar la respuesta a su solicitud',
+                      duration: const Duration(milliseconds: 2500),
+                      backgroundColor: const Color.fromARGB(118, 255, 255, 255),
+                      showProgressIndicator: true,
+                      progressIndicatorBackgroundColor:
+                          const Color.fromARGB(255, 203, 205, 209),
+                      progressIndicatorValueColor:
+                          const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
+                      overlayBlur: 3,
                     );
                   } else {
                     Get.toNamed(
@@ -727,7 +741,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                     .all<EdgeInsetsGeometry>(
                                                   const EdgeInsets.symmetric(
                                                       vertical: 0,
-                                                      horizontal: 26.0),
+                                                      horizontal: 18.0),
                                                 ),
                                                 backgroundColor: (clientCon
                                                             .verificateValueTimers() ==
@@ -754,9 +768,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                   //todo esto cambiarlo
                                                   int result = await _
                                                       .ColacionProfessional(
-                                                          'Barbero', 3);
+                                                          _.idProfessionalLoggedIn,
+                                                          'Barbero',
+                                                          3);
                                                   if (result == 1) //codigo 200
                                                   {
+                                                    //mando notificacion al barbero
+                                                    notiController.storeNotification(
+                                                        'Solicitud de Colación',
+                                                        _.branchIdLoggedIn,
+                                                        _.idProfessionalLoggedIn,
+                                                        'EL Barbero ${_.nameUserLoggedIn} esta pidiendo solicitud de colación',
+                                                        'Ambos'); //esto es para quele llegue a coordinador y encargado
+                                                    //
+                                                    _.setCodigoQrValid(
+                                                        2); //quiere decir que el qr esta bloquedo hasta que acepten o rechacen
                                                     Get.snackbar(
                                                       '',
                                                       'Solicitud de colación pedida correctamente,espere un momento...',
@@ -834,6 +860,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                         'problema al enviar la solicitud2');
                                                   }
                                                   //manadar un mensaje si la solicitud se envio bien
+                                                } else if (_
+                                                        .usserPermissionQr ==
+                                                    2) {
+                                                  Get.snackbar(
+                                                    'Mensaje',
+                                                    'Debe de esperar la respuesta a su solicitud',
+                                                    duration: const Duration(
+                                                        milliseconds: 2500),
+                                                    backgroundColor:
+                                                        const Color.fromARGB(
+                                                            118, 255, 255, 255),
+                                                    showProgressIndicator: true,
+                                                    progressIndicatorBackgroundColor:
+                                                        const Color.fromARGB(
+                                                            255, 203, 205, 209),
+                                                    progressIndicatorValueColor:
+                                                        const AlwaysStoppedAnimation(
+                                                            Color(0xFFFDAE2A)),
+                                                    overlayBlur: 3,
+                                                  );
                                                 } else {
                                                   Get.snackbar(
                                                     'Mensaje',
@@ -906,7 +952,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                     .all<EdgeInsetsGeometry>(
                                                   const EdgeInsets.symmetric(
                                                       vertical: 0,
-                                                      horizontal: 26.0),
+                                                      horizontal: 18.0),
                                                 ),
                                                 backgroundColor:
                                                     MaterialStateProperty
@@ -918,25 +964,134 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                 //SACAR DEL PUESTO DE TRABAJO AL BARBERO
                                                 //
                                                 // Lógica para enviar el comentario
-                                                Get.dialog(
-                                                  const Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      color: Color(0xFFFDAE2A),
-                                                    ),
-                                                  ),
-                                                  barrierDismissible: false,
-                                                ); //Get.back();
 
                                                 //LLAMAR AL ENPOINT PARA SACAR DEL PUESTO DE TRABAJO
                                                 if (_.usserPermissionQr == 1) {
-                                                  await _.exitPostworking(
-                                                      "Barbero");
-                                                  _.exit(_.tokenUserLoggedIn);
-                                                } else {
+                                                  //todo esto cambiarlo
+                                                  int result = await _
+                                                      .ColacionProfessional(
+                                                          _.idProfessionalLoggedIn,
+                                                          'Barbero',
+                                                          4); //solicitud de salida
+                                                  if (result == 1) //codigo 200
+                                                  {
+                                                    _.setCodigoQrValid(
+                                                        2); //si el QR = 2 sacarlo de la app
+
+                                                    notiController.storeNotification(
+                                                        'Solicitud de Salida',
+                                                        _.branchIdLoggedIn,
+                                                        _.idProfessionalLoggedIn,
+                                                        'EL Barbero ${_.nameUserLoggedIn} esta pidiendo solicitud de salida',
+                                                        'Ambos'); //esto es para quele llegue a coordinador y encargado
+                                                    Get.snackbar(
+                                                      '',
+                                                      'Solicitud de salida pedida correctamente,espere un momento...',
+                                                      colorText:
+                                                          const Color.fromARGB(
+                                                              255, 43, 44, 49),
+                                                      titleText:
+                                                          const Text('Mensaje'),
+                                                      duration: const Duration(
+                                                          seconds: 4),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color(
+                                                              0xFF4470F3),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFFDAE2A)),
+                                                      overlayBlur: 3,
+                                                    );
+                                                    print(
+                                                        'solicitud enviada correctamente');
+                                                  } else if (result ==
+                                                      2) //codigo diferente de 200
+                                                  {
+                                                    Get.snackbar(
+                                                      '',
+                                                      'Inténtelo nuevamente,problemas de conexión',
+                                                      colorText:
+                                                          const Color.fromARGB(
+                                                              255, 43, 44, 49),
+                                                      titleText:
+                                                          const Text('Alerta'),
+                                                      duration: const Duration(
+                                                          seconds: 4),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color(
+                                                              0xFF4470F3),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFFDAE2A)),
+                                                      overlayBlur: 3,
+                                                    );
+                                                    print(
+                                                        'problema al enviar la solicitud');
+                                                  } else if (result ==
+                                                      3) //entro a la exepcion del catch
+                                                  {
+                                                    Get.snackbar(
+                                                      '',
+                                                      'Inténtelo nuevamente,problemas de conexión...',
+                                                      colorText:
+                                                          const Color.fromARGB(
+                                                              255, 43, 44, 49),
+                                                      titleText:
+                                                          const Text('Alerta'),
+                                                      duration: const Duration(
+                                                          seconds: 4),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color(
+                                                              0xFF4470F3),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFFDAE2A)),
+                                                      overlayBlur: 3,
+                                                    );
+                                                    print(
+                                                        'problema al enviar la solicitud2');
+                                                  }
+                                                  //manadar un mensaje si la solicitud se envio bien
+
+                                                  //
+                                                  //
+                                                  //
+                                                  //
+                                                  //
+                                                } else if (_
+                                                        .usserPermissionQr ==
+                                                    2) {
+                                                  Get.snackbar(
+                                                    'Mensaje',
+                                                    'Debe de esperar la respuesta a su solicitud',
+                                                    duration: const Duration(
+                                                        milliseconds: 2500),
+                                                    backgroundColor:
+                                                        const Color.fromARGB(
+                                                            118, 255, 255, 255),
+                                                    showProgressIndicator: true,
+                                                    progressIndicatorBackgroundColor:
+                                                        const Color.fromARGB(
+                                                            255, 203, 205, 209),
+                                                    progressIndicatorValueColor:
+                                                        const AlwaysStoppedAnimation(
+                                                            Color(0xFFFDAE2A)),
+                                                    overlayBlur: 3,
+                                                  );
+                                                } else if (_
+                                                        .usserPermissionQr ==
+                                                    null) {
                                                   _.exit(_.tokenUserLoggedIn);
                                                 }
-                                                Get.back();
 
                                                 // Cerrar el primer modal
                                                 Navigator.pop(context);
@@ -950,8 +1105,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                   SizedBox(
                                                     width: 6,
                                                   ),
-                                                  const Text(
-                                                    'Me retiro',
+                                                  Text(
+                                                    _.usserPermissionQr == 1
+                                                        ? 'Me retiro'
+                                                        : 'Salir',
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:

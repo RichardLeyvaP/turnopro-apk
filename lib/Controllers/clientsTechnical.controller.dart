@@ -96,6 +96,7 @@ class ClientsTechnicalController extends GetxController {
       //obtener de Db el clock dado reservationId
       int clock = await controllerSche.getValueClockDb(reservationId);
       controllerSche.pauseResumeClock((clock - 1), 1);
+      update();
     }
   }
 

@@ -7,6 +7,7 @@ import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Views/common/topPage.dart';
 import 'package:turnopro_apk/env.dart';
+import 'package:intl/intl.dart';
 
 import '../../../Controllers/login.controller.dart';
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -209,6 +210,15 @@ class _AttendingClientState extends State<AttendingClient> {
       index,
       PageController pageController2,
       PagesConfigController pagesConfigC) {
+    DateFormat formatter = DateFormat('h:mm');
+    DateTime currentTime = formatter
+        .parse(controllerclient.clientsColacionBranch[index].start_time!);
+
+    // Paso 2: Sumar una hora al objeto DateTime
+    DateTime newTime = currentTime.add(Duration(hours: 1));
+
+    // Paso 3: Formatear el resultado en el formato deseado (hh:mm a)
+    String formattedNewTime = formatter.format(newTime);
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10, top: 8),
       child: FittedBox(
@@ -232,7 +242,7 @@ class _AttendingClientState extends State<AttendingClient> {
                           radius: 25,
                           child: ClipOval(
                             child: Image.network(
-                              '${Env.apiEndpoint}/images/${controllerclient.clientAttendBranch[index].client_image}',
+                              '${Env.apiEndpoint}/images/${controllerclient.clientsColacionBranch[index].client_image}',
                               fit: BoxFit
                                   .cover, // Ajusta la imagen para cubrir completamente el área
                               width:
@@ -322,15 +332,12 @@ class _AttendingClientState extends State<AttendingClient> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.end,
                                         children: [
-                                          Icon(
-                                            MdiIcons.accountTie,
-                                            color: const Color.fromARGB(
-                                                255, 43, 44, 49),
-                                            size: 22,
+                                          SizedBox(
+                                            width: 5,
                                           ),
                                           Text(
                                             controllerclient
-                                                .clientAttendBranch[index]
+                                                .clientsColacionBranch[index]
                                                 .professional_name!,
                                             softWrap: true,
                                             style: const TextStyle(
@@ -344,9 +351,7 @@ class _AttendingClientState extends State<AttendingClient> {
                                         padding:
                                             const EdgeInsets.only(right: 6.0),
                                         child: Text(
-                                          controllerclient
-                                              .clientAttendBranch[index]
-                                              .start_time!,
+                                          '${controllerclient.clientsColacionBranch[index].start_time!.substring(0, 5)} - $formattedNewTime',
                                           softWrap: true,
                                           style: const TextStyle(
                                               fontSize: 15,

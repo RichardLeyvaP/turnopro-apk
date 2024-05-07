@@ -23,6 +23,7 @@ class ClientsCoordinatorController extends GetxController {
   List<ClientsScheduledModel> clientAttendBranch = [];
   List<ClientsScheduledModel> clientsColacionBranch = [];
   List<ClientsScheduledModel> clientsColacionRequestBranch = [];
+  List<ClientsScheduledModel> pOutRequestBranch = [];
   List<ClientsScheduledModel> selectClientsScheduledList = [];
   List<ClientsScheduledModel> selectclientsScheduledListTechnical = [];
   ClientsScheduledModel? clientsScheduledNext; // Cliente en espera
@@ -67,6 +68,7 @@ class ClientsCoordinatorController extends GetxController {
   int clientAttendBranchLength = 0;
   int clientsColacionBranchLength = 0;
   int clientsColacionRequestLength = 0;
+  int pOutRequestLength = 0;
   int clientsTechnicalLength = 0;
   int? carIdClientsScheduled;
   int quantityClientAttended = 0;
@@ -270,6 +272,29 @@ class ClientsCoordinatorController extends GetxController {
       clientsColacionRequestLength = clientsColacionRequestBranch.length;
       print(
           '-******-ColacionRequestBranch-****-* $clientsColacionRequestLength -****-************-* ');
+      //
+    }
+    update();
+  }
+
+  Future<void> outRequestBranch(idBranch) async {
+    Map<String, dynamic> resultList =
+        await repository.profOutRequestBranch(idBranch);
+    print(resultList);
+    //verificando , si entra al if es problemas de coneccion
+    if (resultList.containsKey('ConnectionIssues') &&
+        resultList['ConnectionIssues'] == true) {
+      correctConnection = false;
+      print(
+          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor(outRequestBranch)');
+    } else {
+      correctConnection = true;
+      //aqui estoy guardando la cola del dia de hoy del profesional
+      pOutRequestBranch =
+          (resultList['clientAttendList'] ?? []).cast<ClientsScheduledModel>();
+      pOutRequestLength = pOutRequestBranch.length;
+      print(
+          'zz-******-pOutRequestLength-****-* $pOutRequestLength -****-************-* ');
       //
     }
     update();

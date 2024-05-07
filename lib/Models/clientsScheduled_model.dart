@@ -20,6 +20,7 @@ class ClientsScheduledModel {
   int? timeClock;
   int? detached;
   String? time;
+  String? charge;
 
   ClientsScheduledModel({
     this.reservation_id,
@@ -39,6 +40,7 @@ class ClientsScheduledModel {
     this.timeClock,
     this.detached,
     this.time,
+    this.charge,
   });
 
   Map<String, dynamic> toMap() {
@@ -59,6 +61,7 @@ class ClientsScheduledModel {
       'timeClock': timeClock,
       'detached': detached,
       'time': time,
+      'charge': charge,
     };
   }
 
@@ -82,6 +85,7 @@ class ClientsScheduledModel {
       timeClock: map['timeClock'] ?? 0,
       detached: map['detached'] ?? 0,
       time: map['time'] ?? '',
+      charge: map['charge'] ?? '',
     );
   }
 

@@ -214,18 +214,20 @@ class UserRepository extends GetConnect {
     }
   }
 
-  Future<bool> exitPostworking(int id, String type) async {
+  Future<bool> exitPostworking(int id, String type, int idProf) async {
     try {
       var url = '';
       if (type == "Barbero") {
-        url = '${Env.apiEndpoint}/update-state-prof-workplace?id=$id&busy=0';
+        url =
+            '${Env.apiEndpoint}/update-state-prof-workplace?id=$id&busy=0&professional_id=$idProf';
       } else if (type == "Tecnico") {
-        url = '${Env.apiEndpoint}/update-state-tec-workplace?id=$id&select=0';
+        url =
+            '${Env.apiEndpoint}/update-state-tec-workplace?id=$id&select=0&professional_id=$idProf';
       }
       print('este es el id del puesto url:$url');
 
       final response = await get(url);
-      print('este es el id del puesto url:$response');
+      print('este es el id del puesto url:${response.statusCode}');
 
       //print(response.body);
       if (response.statusCode == 200) {
@@ -239,11 +241,11 @@ class UserRepository extends GetConnect {
     }
   }
 
-  Future getIdPuesto(int idProfessional) async {
+  Future getIdPuestoRepo(int idProfessional, String charge) async {
     try {
       print('este es el id del puesto222-idProfessional:$idProfessional');
       var url =
-          '${Env.apiEndpoint}/workplace-show-professional?professional_id=$idProfessional';
+          '${Env.apiEndpoint}/workplace-show-professional?professional_id=$idProfessional&charge=$charge';
 
       final response = await get(url);
       print('este es el id del puesto333-response:$response');
@@ -260,6 +262,30 @@ class UserRepository extends GetConnect {
           print('este es el id del puesto333-return intValue22:$intValue');
           return intValue;
         }
+      } else {
+        return -99;
+      }
+    } catch (e) {
+      print('Error:$e');
+      return -999;
+    }
+  }
+
+  Future<int> getStateProfessional(int idProfessional) async {
+    try {
+      print('este es el id del puesto222-idProfessional:$idProfessional');
+      var url = '${Env.apiEndpoint}/professional-show-apk?id=$idProfessional';
+      print('este es el id del var url:$url');
+
+      final response = await get(url);
+      print('este es el id del puesto333-response:$response');
+      print(
+          'este es el id del puesto333-response.statusCode:${response.statusCode}');
+      //print(response.body);
+      if (response.statusCode == 200) {
+        final intValue = int.parse(response.body);
+        print('este es el id del puesto333-return response:${response.body}');
+        return intValue;
       } else {
         return -99;
       }

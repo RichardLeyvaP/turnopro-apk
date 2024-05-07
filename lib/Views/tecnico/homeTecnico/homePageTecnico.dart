@@ -462,6 +462,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         });
                       },
                     );
+                  } else if (_.usserPermissionQr == 2) {
+                    Get.snackbar(
+                      'Mensaje',
+                      'Debe de esperar la respuesta a su solicitud',
+                      duration: const Duration(milliseconds: 2500),
+                      backgroundColor: const Color.fromARGB(118, 255, 255, 255),
+                      showProgressIndicator: true,
+                      progressIndicatorBackgroundColor:
+                          const Color.fromARGB(255, 203, 205, 209),
+                      progressIndicatorValueColor:
+                          const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
+                      overlayBlur: 3,
+                    );
                   } else {
                     Get.toNamed(
                       '/QRViewExample',
@@ -483,6 +496,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 width: 10,
               ),
               GetBuilder<ClientsTechnicalController>(builder: (clCont) {
+                print(
+                    'imprimiendo cuantos atinede el tecnico: -> ${clCont.quantityClientAttended}');
                 return InkWell(
                   onTap: () {
                     showDialog(
@@ -541,8 +556,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                   right: 16,
                                                   bottom: 10),
                                           child: clCont
-                                                      .quantityClientAttendedTechnical ==
-                                                  1
+                                                      .quantityClientAttendedTechnical !=
+                                                  0
                                               ? Text(
                                                   'No puedes salir del sistema, tienes clientes atendiendo!')
                                               : Text(
@@ -554,54 +569,227 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                             MainAxisAlignment.spaceEvenly,
                                         children: <Widget>[
                                           ElevatedButton(
-                                              style: ButtonStyle(
+                                            style: ButtonStyle(
                                                 padding: MaterialStateProperty
                                                     .all<EdgeInsetsGeometry>(
                                                   const EdgeInsets.symmetric(
                                                       vertical: 0,
-                                                      horizontal: 26.0),
+                                                      horizontal: 18.0),
                                                 ),
                                                 backgroundColor:
-                                                    MaterialStateProperty.all<
-                                                            Color>(
-                                                        Color.fromARGB(255, 192,
-                                                            191, 191)),
-                                              ),
-                                              onPressed: () async {
-                                                // Lógica para enviar el comentario
-
+                                                    (clCont.quantityClientAttendedTechnical !=
+                                                            0)
+                                                        ? MaterialStateProperty
+                                                            .all<Color>(Color(
+                                                                0xFF4470F3))
+                                                        : MaterialStateProperty
+                                                            .all<Color>(Color(
+                                                                0xFFFF6750))),
+                                            onPressed: () async {
+                                              // Lógica para enviar el comentario
+                                              //LLAMAR AL ENPOINT PARA SACAR DEL PUESTO DE TRABAJO
+                                              // if ((!clCont.boolFilterShowNextTecnhical ==
+                                              //         true ||
+                                              //     clCont.quantityClientAttendedTechnical !=
+                                              //         0))
+                                              if ((clCont
+                                                      .quantityClientAttendedTechnical !=
+                                                  0)) //aceptar
+                                              {
                                                 // Cerrar el primer modal
                                                 Navigator.pop(context);
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    MdiIcons.cancel,
-                                                    color: Colors.white,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 6,
-                                                  ),
-                                                  const Text(
-                                                    'Cancelar',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w800),
-                                                  ),
-                                                ],
-                                              )),
-                                          if (!clCont.boolFilterShowNextTecnhical ==
-                                                  false ||
-                                              clCont.quantityClientAttendedTechnical ==
-                                                  0)
+                                              } else {
+                                                print(
+                                                    'solicitud pidiendo ir a colación.');
+                                                if (_.usserPermissionQr == 1) {
+                                                  //todo esto cambiarlo
+                                                  int result = await _
+                                                      .ColacionProfessional(
+                                                          _.idProfessionalLoggedIn,
+                                                          'Tecnico',
+                                                          3);
+                                                  if (result == 1) //codigo 200
+                                                  {
+                                                    _.setCodigoQrValid(
+                                                        2); //quiere decir que el qr esta bloquedo hasta que acepten o rechacen
+                                                    Get.snackbar(
+                                                      '',
+                                                      'Solicitud de colación pedida correctamente,espere un momento...',
+                                                      colorText:
+                                                          const Color.fromARGB(
+                                                              255, 43, 44, 49),
+                                                      titleText:
+                                                          const Text('Mensaje'),
+                                                      duration: const Duration(
+                                                          seconds: 4),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color(
+                                                              0xFF4470F3),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFFDAE2A)),
+                                                      overlayBlur: 3,
+                                                    );
+                                                    print(
+                                                        'solicitud enviada correctamente');
+                                                  } else if (result ==
+                                                      2) //codigo diferente de 200
+                                                  {
+                                                    Get.snackbar(
+                                                      '',
+                                                      'Inténtelo nuevamente,problemas de conexión',
+                                                      colorText:
+                                                          const Color.fromARGB(
+                                                              255, 43, 44, 49),
+                                                      titleText:
+                                                          const Text('Alerta'),
+                                                      duration: const Duration(
+                                                          seconds: 4),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color(
+                                                              0xFF4470F3),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFFDAE2A)),
+                                                      overlayBlur: 3,
+                                                    );
+                                                    print(
+                                                        'problema al enviar la solicitud');
+                                                  } else if (result ==
+                                                      3) //entro a la exepcion del catch
+                                                  {
+                                                    Get.snackbar(
+                                                      '',
+                                                      'Inténtelo nuevamente,problemas de conexión...',
+                                                      colorText:
+                                                          const Color.fromARGB(
+                                                              255, 43, 44, 49),
+                                                      titleText:
+                                                          const Text('Alerta'),
+                                                      duration: const Duration(
+                                                          seconds: 4),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color(
+                                                              0xFF4470F3),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFFDAE2A)),
+                                                      overlayBlur: 3,
+                                                    );
+                                                    print(
+                                                        'problema al enviar la solicitud2');
+                                                  }
+                                                  //manadar un mensaje si la solicitud se envio bien
+                                                } else if (_
+                                                        .usserPermissionQr ==
+                                                    2) {
+                                                  Get.snackbar(
+                                                    'Mensaje',
+                                                    'Debe de esperar la respuesta a su solicitud',
+                                                    duration: const Duration(
+                                                        milliseconds: 2500),
+                                                    backgroundColor:
+                                                        const Color.fromARGB(
+                                                            118, 255, 255, 255),
+                                                    showProgressIndicator: true,
+                                                    progressIndicatorBackgroundColor:
+                                                        const Color.fromARGB(
+                                                            255, 203, 205, 209),
+                                                    progressIndicatorValueColor:
+                                                        const AlwaysStoppedAnimation(
+                                                            Color(0xFFFDAE2A)),
+                                                    overlayBlur: 3,
+                                                  );
+                                                } else {
+                                                  Get.snackbar(
+                                                    'Mensaje',
+                                                    'Aún no ha entrado a trabajar.',
+                                                    duration: const Duration(
+                                                        milliseconds: 2500),
+                                                    backgroundColor:
+                                                        const Color.fromARGB(
+                                                            118, 255, 255, 255),
+                                                    showProgressIndicator: true,
+                                                    progressIndicatorBackgroundColor:
+                                                        const Color.fromARGB(
+                                                            255, 203, 205, 209),
+                                                    progressIndicatorValueColor:
+                                                        const AlwaysStoppedAnimation(
+                                                            Color(0xFFFDAE2A)),
+                                                    overlayBlur: 3,
+                                                  );
+                                                }
+                                                Navigator.pop(context);
+                                                // Cerrar el primer modal
+                                              }
+                                            },
+                                            // child: (!clCont.boolFilterShowNextTecnhical ==
+                                            //             false ||
+                                            //         clCont.quantityClientAttendedTechnical !=
+                                            //             0)
+                                            child:
+                                                (clCont.quantityClientAttendedTechnical !=
+                                                        0)
+                                                    ? Row(
+                                                        children: [
+                                                          Icon(
+                                                            MdiIcons.check,
+                                                            color: Colors.white,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 6,
+                                                          ),
+                                                          const Text(
+                                                            'Aceptar',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w800),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    : Row(
+                                                        children: [
+                                                          Icon(
+                                                            MdiIcons.cancel,
+                                                            color: Colors.white,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 6,
+                                                          ),
+                                                          const Text(
+                                                            'Colación',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w800),
+                                                          ),
+                                                        ],
+                                                      ),
+                                          ),
+                                          if ((clCont
+                                                  .quantityClientAttendedTechnical ==
+                                              0))
                                             ElevatedButton(
                                               style: ButtonStyle(
                                                 padding: MaterialStateProperty
                                                     .all<EdgeInsetsGeometry>(
                                                   const EdgeInsets.symmetric(
                                                       vertical: 0,
-                                                      horizontal: 26.0),
+                                                      horizontal: 18.0),
                                                 ),
                                                 backgroundColor:
                                                     MaterialStateProperty
@@ -615,24 +803,125 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                 // Lógica para enviar el comentario
 
                                                 //LLAMAR AL ENPOINT PARA SACAR DEL PUESTO DE TRABAJO
-                                                Get.dialog(
-                                                  const Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      color: Color(0xFFFDAE2A),
-                                                    ),
-                                                  ),
-                                                  barrierDismissible: false,
-                                                ); //Get.back();
-
                                                 if (_.usserPermissionQr == 1) {
-                                                  await _.exitPostworking(
-                                                      "Tecnico");
-                                                  _.exit(_.tokenUserLoggedIn);
-                                                } else {
+                                                  //todo esto cambiarlo
+                                                  int result = await _
+                                                      .ColacionProfessional(
+                                                          _.idProfessionalLoggedIn,
+                                                          'Tecnico',
+                                                          4); //solicitud de salida
+                                                  if (result == 1) //codigo 200
+                                                  {
+                                                    _.setCodigoQrValid(
+                                                        2); //si el QR = 2 sacarlo de la app
+                                                    Get.snackbar(
+                                                      '',
+                                                      'Solicitud de salida pedida correctamente,espere un momento...',
+                                                      colorText:
+                                                          const Color.fromARGB(
+                                                              255, 43, 44, 49),
+                                                      titleText:
+                                                          const Text('Mensaje'),
+                                                      duration: const Duration(
+                                                          seconds: 4),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color(
+                                                              0xFF4470F3),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFFDAE2A)),
+                                                      overlayBlur: 3,
+                                                    );
+                                                    print(
+                                                        'solicitud enviada correctamente');
+                                                  } else if (result ==
+                                                      2) //codigo diferente de 200
+                                                  {
+                                                    Get.snackbar(
+                                                      '',
+                                                      'Inténtelo nuevamente,problemas de conexión',
+                                                      colorText:
+                                                          const Color.fromARGB(
+                                                              255, 43, 44, 49),
+                                                      titleText:
+                                                          const Text('Alerta'),
+                                                      duration: const Duration(
+                                                          seconds: 4),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color(
+                                                              0xFF4470F3),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFFDAE2A)),
+                                                      overlayBlur: 3,
+                                                    );
+                                                    print(
+                                                        'problema al enviar la solicitud');
+                                                  } else if (result ==
+                                                      3) //entro a la exepcion del catch
+                                                  {
+                                                    Get.snackbar(
+                                                      '',
+                                                      'Inténtelo nuevamente,problemas de conexión...',
+                                                      colorText:
+                                                          const Color.fromARGB(
+                                                              255, 43, 44, 49),
+                                                      titleText:
+                                                          const Text('Alerta'),
+                                                      duration: const Duration(
+                                                          seconds: 4),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color(
+                                                              0xFF4470F3),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFFDAE2A)),
+                                                      overlayBlur: 3,
+                                                    );
+                                                    print(
+                                                        'problema al enviar la solicitud2');
+                                                  }
+                                                  //manadar un mensaje si la solicitud se envio bien
+
+                                                  //
+                                                  //
+                                                  //
+                                                  //
+                                                  //
+                                                } else if (_
+                                                        .usserPermissionQr ==
+                                                    2) {
+                                                  Get.snackbar(
+                                                    'Mensaje',
+                                                    'Debe de esperar la respuesta a su solicitud',
+                                                    duration: const Duration(
+                                                        milliseconds: 2500),
+                                                    backgroundColor:
+                                                        const Color.fromARGB(
+                                                            118, 255, 255, 255),
+                                                    showProgressIndicator: true,
+                                                    progressIndicatorBackgroundColor:
+                                                        const Color.fromARGB(
+                                                            255, 203, 205, 209),
+                                                    progressIndicatorValueColor:
+                                                        const AlwaysStoppedAnimation(
+                                                            Color(0xFFFDAE2A)),
+                                                    overlayBlur: 3,
+                                                  );
+                                                } else if (_
+                                                        .usserPermissionQr ==
+                                                    null) {
                                                   _.exit(_.tokenUserLoggedIn);
                                                 }
-                                                Get.back();
 
                                                 // Cerrar el primer modal
                                                 Navigator.pop(context);
@@ -646,8 +935,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                   SizedBox(
                                                     width: 6,
                                                   ),
-                                                  const Text(
-                                                    '   Salir   ',
+                                                  Text(
+                                                    _.usserPermissionQr == 1
+                                                        ? 'Me retiro'
+                                                        : 'Salir',
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:

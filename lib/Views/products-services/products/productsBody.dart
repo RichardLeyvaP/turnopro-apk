@@ -38,8 +38,12 @@ class _ProductsBodyState extends State<ProductsBody>
   @override
   void initState() {
     super.initState();
+
     _tabController = TabController(
-        length: controllerProduct.categoryListLength, vsync: this);
+        initialIndex: controllerProduct
+            .pestana, // Índice del tab que se seleccionará inicialmente (en este caso, el tab 2)
+        length: controllerProduct.categoryListLength,
+        vsync: this);
 
     // Asegúrate de llenar tabsID después de obtener sus valores en el método build
     for (int i = 0; i < controllerProduct.categoryListLength; i++) {
@@ -54,7 +58,9 @@ class _ProductsBodyState extends State<ProductsBody>
 
     // Agrega un listener al controlador de pestañas
     _tabController.addListener(() async {
+      print('cambio de pestalla:${_tabController.index}');
       //todo Llama a la función cuando la pestaña cambia
+      controllerProduct.updatePestana(_tabController.index);
       await controllerProduct.fetchproductList(tabsID[_tabController.index]);
       //}
     });

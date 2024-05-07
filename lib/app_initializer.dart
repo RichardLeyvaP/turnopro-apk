@@ -22,6 +22,7 @@ class AppInitializer {
     Get.put(LoginController());
     Get.put(ShoppingCartController());
     Get.put(ClientsScheduledController());
+    Get.put(NotificationController());
     Get.put(ClientsCoordinatorController());
     Get.put(ClientsTechnicalController());
     Get.put(StatisticController());

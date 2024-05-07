@@ -1,21 +1,21 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:soundpool/soundpool.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/notification_model.dart';
 import 'package:turnopro_apk/get_connect/repository/notification.repository.dart';
-import 'package:uuid/uuid.dart';
+import 'package:turnopro_apk/services/localNotification.dart';
 
 import 'login.controller.dart';
 
 class NotificationController extends GetxController {
   //LLAMANDO AL CONTROLADOR
   NotificationController() {
-    initializeNotifications();
+    // initializeNotifications();
   }
 //DECLARACION DE VARIABLES
   NotificationRepository repository = NotificationRepository();
@@ -37,6 +37,7 @@ class NotificationController extends GetxController {
   List<NotificationModel> selectNotification = [];
   bool isLoading = true;
   List<String> created_atTime = [];
+  int outAcept = 0;
 
   @override
   void onReady() {
@@ -49,6 +50,11 @@ class NotificationController extends GetxController {
 
   getList() {
     return notification;
+  }
+
+  void updateOutAcept(int value) {
+    outAcept = value;
+    update();
   }
 
   Future<bool> storeNotification2(
@@ -114,13 +120,20 @@ class NotificationController extends GetxController {
   }
 
   //todo/****AQUI LO DE LAS NOTIFICACIONES LOCALES****/
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+/*  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-  void initializeNotifications() async {
+
+  Future<void> initializeNotifications() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/launcher_icon');
+    const DarwinInitializationSettings initializationSettingsIOS =
+        DarwinInitializationSettings();
+
     const InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
+        InitializationSettings(
+            android: initializationSettingsAndroid,
+            iOS: initializationSettingsIOS);
+
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
@@ -147,11 +160,13 @@ class NotificationController extends GetxController {
       descripcion,
       platformChannelSpecifics,
     );
-  }
+  }*/
   //todo/****AQUI LO DE LAS NOTIFICACIONES LOCALES****/
 
   Future<void> professionalBranchNotifQueque(
       idBranch, idProfe, type, msj) async {
+    print('entrando aqui para mandar notificacion al-234');
+
     final ClientsScheduledController clientCon =
         Get.find<ClientsScheduledController>();
     List<ClientsScheduledModel> clientsAux = [];
@@ -175,12 +190,14 @@ class NotificationController extends GetxController {
 
         notificationListNew = resultList['notificationListNew'];
         notificationListNewLength = notificationListNew.length;
-
+        List<NotificationModel> notificationListNewAux1 = [];
         notificationListNew.forEach((element) async {
-          if (element.state == 0) {
+          if (element.state == 0 || element.state == 3) {
             if (!notificationListNewSounded.contains(element.id)) {
               notificationListNewSounded.add(element.id);
-              scheduleNotification(element.tittle, element.description);
+              // localNotificationsSimplifies(element.tittle, element.description);
+
+              notificationListNewAux1.add(element);
             }
           }
 
@@ -207,11 +224,82 @@ class NotificationController extends GetxController {
             //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
             siHayEliminarService = true;
           }
+          //esto es para saber que valor darle al qr si aceptan o rechazan la colación
+          if (element.state == 3 &&
+              element.tittle ==
+                  'Aceptada su solicitud de Colación') //pongo a null el qr
+          {
+            updateNotifications2(idBranch, idProfe, element.id);
+            controllerLogin.setCodigoQrValid(null);
+          }
+          if (element.state == 3 &&
+              element.tittle ==
+                  'Rechazada su solicitud de Colación') //pongo a 1 el qr
+          {
+            updateNotifications2(idBranch, idProfe, element.id);
+            controllerLogin.setCodigoQrValid(1);
+          }
+          if (element.state == 3 &&
+              element.tittle ==
+                  'Rechazada su solicitud de Salida') //pongo a 1 el qr
+          {
+            updateNotifications2(idBranch, idProfe, element.id);
+            controllerLogin.setCodigoQrValid(1);
+          }
+          if (element.state == 3 &&
+              element.tittle ==
+                  'Aceptada su solicitud de Salida') //pongo a 1 el qr
+          {
+            print('cargando aqui-16 para sacar del puesto y la apk-1');
+
+            updateOutAcept(element.id);
+          }
         });
+
+//aqui veo y voy mandando las notificaciones locales
+        for (final result1 in notificationListNewAux1) {
+          // Llama a la función localNotificationsSimplifies después del retraso
+          localNotificationsSimplifies(result1.tittle, result1.description);
+          print('aqui llamando las notificaciones nuevas1');
+          await Future.delayed(const Duration(seconds: 2)); // Espera 2 segundos
+        }
+
         if (siHayEliminarService ==
             true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
         {
           controllerclient.setActiveModifyTimeRest(true);
+        }
+        print(
+            'cargando aqui-16 para sacar del puesto y la apk-1Salir=$outAcept');
+        if (outAcept !=
+            0) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+        {
+          Get.snackbar(
+            'Mensaje',
+            'Cerrando aplicación.',
+            duration: const Duration(milliseconds: 2500),
+            backgroundColor: const Color.fromARGB(118, 255, 255, 255),
+            showProgressIndicator: true,
+            progressIndicatorBackgroundColor:
+                const Color.fromARGB(255, 203, 205, 209),
+            progressIndicatorValueColor:
+                const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
+            overlayBlur: 3,
+          );
+          Get.dialog(
+            const Center(
+              child: CircularProgressIndicator(
+                color: Color(0xFFFDAE2A),
+              ),
+            ),
+            barrierDismissible: false,
+          ); //Get.back();
+          await updateNotifications2(idBranch, idProfe, outAcept);
+          await controllerLogin.exitPostworking("Barbero");
+          controllerLogin.exit(controllerLogin.tokenUserLoggedIn);
+          updateOutAcept(0);
+          Get.back();
+          print('cargando aqui-16 para sacar del puesto y la apk-2');
         }
 //fin de trabajo de notificaciones
 //aqui empiza la asignacion de la cola
@@ -232,7 +320,7 @@ class NotificationController extends GetxController {
           clientCon.clientsScheduledListLength =
               clientCon.clientsScheduledList.length;
           print(
-              'llamada timer Cantidad de Clientes :${clientCon.clientsScheduledListLength}');
+              'llamada timer Cantidad de Clientes-3 :${clientCon.clientsScheduledListLength}');
           clientsAux = clientsScheduledListAUX2;
           clientCon.clientsScheduledListLengthTail = clientsAux.length;
           print(
@@ -263,6 +351,45 @@ class NotificationController extends GetxController {
 
           //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
           clientCon.clientsScheduledNext = resultList['nextClient'];
+          int clientNewAux = 0;
+//aqui verifico si entra un cliente nuevo
+          //************************************* */
+          if (clientCon.clientsScheduledListId.isNotEmpty) {
+            clientNewAux = clientCon.clientsScheduledListId.length;
+          }
+
+          clientCon.clientsScheduledList.forEach((element) async {
+            if (!clientCon.clientsScheduledListId
+                .contains(element.reservation_id)) {
+              clientCon.clientsScheduledListId.add(element.reservation_id!);
+            }
+          });
+
+          if (clientNewAux != 0) {
+            if (clientCon.clientsScheduledListId.length > clientNewAux) {
+              clientCon.setclientNew(
+                  clientCon.clientsScheduledListId.length - clientNewAux);
+            }
+          }
+
+          if (clientCon.clientNew > 0) {
+            String s = '';
+            if (clientCon.clientNew > 1) {
+              s = 's';
+            }
+
+            //mando notificacion al barbero
+            storeNotification(
+                'Nuevo cliente en cola',
+                controllerLogin.branchIdLoggedIn,
+                controllerLogin.idProfessionalLoggedIn,
+                'Tienes ${clientCon.clientNew} cliente$s nuevo$s en cola',
+                'Barbero');
+
+            clientCon.setclientNew(0);
+            //************************************* */
+          }
+
           clientCon.quantityClientAttended =
               resultList['quantityClientAttended'];
           clientCon.varClientsWaiting = resultList['varclientswaiting'];
@@ -334,6 +461,10 @@ class NotificationController extends GetxController {
       print('Error al obtener la lista de notificaciones: $e');
     }
   }
+  //
+  //
+  //
+  //
 //todo/****AQUI LO DE LAS NOTIFICACIONES LOCALES****/
 
   Future<void> fetchNotificationList(idBranch, idProfe, type, msj) async {
@@ -360,86 +491,87 @@ class NotificationController extends GetxController {
 
         notificationListNew = result['notificationListNew'];
         notificationListNewLength = notificationListNew.length;
-
-        notificationListNew.forEach((element) async {
-          if (element.state == 0) {
+        List<NotificationModel> notificationListNewAux =
+            []; // Lista de Notificaciones
+        for (final element in notificationListNew) {
+          if (element.state == 0 || element.state == 3) {
             if (!notificationListNewSounded.contains(element.id)) {
               notificationListNewSounded.add(element.id);
-              scheduleNotification(element.tittle, element.description);
+
+              notificationListNewAux.add(element);
+              //localNotificationsSimplifies(element.tittle, element.description);
             }
           }
 
-          //SI HAY QUE ELIMINAR TIEMPO DEL RELOJ
+          //esto es para saber que valor darle al qr si aceptan o rechazan la colación
           if (element.state == 3 &&
-              element.tittle == 'Aceptada Eliminación de Servicio') {
-            print('modificar time de mm 1 estoy aqui en el forEach');
-            String textoCompleto = element.description;
-            // String descripcion =
-            //     textoCompleto.split('.')[0]; // Obtener la descripción
-            // Obtener el segundo número (999)
-            String numeroOcultoString = textoCompleto
-                .split('.')[1]
-                .trim(); // Obtener la parte después del punto y eliminar espacios en blanco
-            int idReservation =
-                int.parse(numeroOcultoString); // Convertir a entero
-            controllerclient.watchModifyTimeRest(idReservation,
-                textoCompleto); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
-            updateNotifications2(idBranch, idProfe,
-                element.id); //aqui es para no repetir esto y lo pongo en 0
-
-            //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
-            //DESCONTAR EL TIEMPO AL RELOJ
-            //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
-            siHayEliminarService = true;
+              element.tittle ==
+                  'Aceptada su solicitud de Colación') //pongo a null el qr
+          {
+            updateNotifications2(idBranch, idProfe, element.id);
+            controllerLogin.setCodigoQrValid(null);
           }
-        });
-        if (siHayEliminarService ==
-            true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
-        {
-          controllerclient.setActiveModifyTimeRest(true);
+          if (element.state == 3 &&
+              element.tittle ==
+                  'Rechazada su solicitud de Colación') //pongo a 1 el qr
+          {
+            updateNotifications2(idBranch, idProfe, element.id);
+            controllerLogin.setCodigoQrValid(1);
+          }
+          if (element.state == 3 &&
+              element.tittle ==
+                  'Rechazada su solicitud de Salida') //pongo a 1 el qr
+          {
+            updateNotifications2(idBranch, idProfe, element.id);
+            controllerLogin.setCodigoQrValid(1);
+          }
+          if (element.state == 3 &&
+              element.tittle ==
+                  'Aceptada su solicitud de Salida') //pongo a 1 el qr
+          {
+            print('cargando aqui-16 para sacar del puesto y la apk-1');
+
+            updateOutAcept(element.id);
+          }
         }
 
-        update();
-      } else if (result.containsKey('notificationListEncarg') &&
-          result.containsKey('notificationListNewEncarg')) {
-        print('ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador');
-        notificationEncarg = result['notificationListEncarg'];
+//aqui veo y voy mandando las notificaciones locales
+        for (final result in notificationListNewAux) {
+          // Llama a la función localNotificationsSimplifies después del retraso
+          localNotificationsSimplifies(result.tittle, result.description);
+          print('aqui llamando las notificaciones nuevas');
+          await Future.delayed(const Duration(seconds: 2)); // Espera 2 segundos
+        }
 
-        notificationListLengthEncarg = notificationEncarg.length;
-
-        notificationListNewEncarg = result['notificationListNewEncarg'];
-        notificationListNewLengthEncarg = notificationListNewEncarg.length;
-        print(
-            'ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador - notificationListNewLengthEncarg:${notificationEncarg.length}');
-
-        notificationListNewEncarg.forEach((element) async {
-          if (element.state == 3 &&
-              element.tittle == 'Aceptada Eliminación de Servicio') {
-            print('modificar time de mm 1 estoy aqui en el forEach');
-            String textoCompleto = element.description;
-            // String descripcion =
-            //     textoCompleto.split('.')[0]; // Obtener la descripción
-            // Obtener el segundo número (999)
-            String numeroOcultoString = textoCompleto
-                .split('.')[1]
-                .trim(); // Obtener la parte después del punto y eliminar espacios en blanco
-            int idReservation =
-                int.parse(numeroOcultoString); // Convertir a entero
-            controllerclient.watchModifyTimeRest(idReservation,
-                textoCompleto); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
-            updateNotifications2(idBranch, idProfe,
-                element.id); //aqui es para no repetir esto y lo pongo en 0
-
-            //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
-            //DESCONTAR EL TIEMPO AL RELOJ
-            //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
-            siHayEliminarService = true;
-          }
-        });
-        if (siHayEliminarService ==
-            true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+        if (outAcept !=
+            0) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
         {
-          controllerclient.setActiveModifyTimeRest(true);
+          Get.snackbar(
+            'Mensaje',
+            'Cerrando aplicación.',
+            duration: const Duration(milliseconds: 2500),
+            backgroundColor: const Color.fromARGB(118, 255, 255, 255),
+            showProgressIndicator: true,
+            progressIndicatorBackgroundColor:
+                const Color.fromARGB(255, 203, 205, 209),
+            progressIndicatorValueColor:
+                const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
+            overlayBlur: 3,
+          );
+          Get.dialog(
+            const Center(
+              child: CircularProgressIndicator(
+                color: Color(0xFFFDAE2A),
+              ),
+            ),
+            barrierDismissible: false,
+          ); //Get.back();
+          await updateNotifications2(idBranch, idProfe, outAcept);
+          await controllerLogin.exitPostworking("Tecnico");
+          controllerLogin.exit(controllerLogin.tokenUserLoggedIn);
+          updateOutAcept(0);
+          Get.back();
+          print('cargando aqui-16 para sacar del puesto y la apk-2');
         }
 
         update();

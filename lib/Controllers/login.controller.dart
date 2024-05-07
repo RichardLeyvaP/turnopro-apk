@@ -7,6 +7,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/env.dart';
 import 'package:turnopro_apk/get_connect/repository/user.repository.dart';
@@ -464,8 +465,24 @@ class LoginController extends GetxController {
           int idPuesto = await getIdPuesto(idProfessionalLoggedIn!);
           if (idPuesto != -99 && idPuesto != -999) {
             print('id de mi puesto de trabajo = $idPuesto');
-            setCodigoQrValid(1);
+            int state = await getStateProfessionall(idProfessionalLoggedIn!);
+
+            //preguntar por el state
+            if (state == 2) //si esta en colación 2 Qr = null
+            {
+              print('estoy si aqui 1');
+              setCodigoQrValid(null);
+            } else if (state == 1) //si esta 1 Qr = 1
+            {
+              print('estoy si aqui 2');
+              setCodigoQrValid(1);
+            } else if (state == 3) // si esta en 3 Qr = 2
+            {
+              print('estoy si aqui 3');
+              setCodigoQrValid(2);
+            }
           } else {
+            print('estoy si aqui 4');
             print('id de mi puesto de trabajo = $idPuesto');
             setCodigoQrValid(null);
             print(
@@ -524,6 +541,8 @@ class LoginController extends GetxController {
   Future<void> loginGetIn(String u, String p, int idBranch) async {
     final ClientsScheduledController clientsScheduledController =
         Get.find<ClientsScheduledController>();
+    final PagesConfigController pagesConfigCont =
+        Get.find<PagesConfigController>();
     String email = u.toString(), pass = p.toString();
     incorrectFields = false;
     try {
@@ -560,8 +579,24 @@ class LoginController extends GetxController {
           int idPuesto = await getIdPuesto(idProfessionalLoggedIn!);
           if (idPuesto != -99 && idPuesto != -999) {
             print('id de mi puesto de trabajo = $idPuesto');
-            setCodigoQrValid(1);
+            int state = await getStateProfessionall(idProfessionalLoggedIn!);
+
+            //preguntar por el state
+            if (state == 1) //si esta 1 Qr = 1
+            {
+              print('estoy si aqui 2');
+              setCodigoQrValid(1);
+            } else if (state == 2) //si esta en colación 2 Qr = null
+            {
+              print('estoy si aqui 1');
+              setCodigoQrValid(null);
+            } else if (state == 3 || state == 4) // si esta en 3 Qr = 2
+            {
+              print('estoy si aqui 3');
+              setCodigoQrValid(2);
+            }
           } else {
+            print('estoy si aqui 4');
             print('id de mi puesto de trabajo = $idPuesto');
             setCodigoQrValid(null);
             print(
@@ -586,6 +621,7 @@ class LoginController extends GetxController {
             print('***************SOY BARBERO*************');
             pagina = '/Professional';
             loadingValue(false);
+            pagesConfigCont.selectedIndex = 0;
             update();
             Get.offAllNamed('/Professional');
           } else if (chargeUserLoggedIn == "Encargado") {
@@ -691,8 +727,10 @@ class LoginController extends GetxController {
         print('este es el id del puesto :$idPuesto');
 
         if (idPuesto != -99 && idPuesto != -999) {
-          result = await usuarioLg.exitPostworking(idPuesto, tipe);
+          result = await usuarioLg.exitPostworking(
+              idPuesto, tipe, idProfessionalLoggedIn!);
           if (result == true) {
+            await ColacionProfessional(idProfessionalLoggedIn, tipe, 0);
             bool exit = await usuarioLg.exitHours(
                 branchIdLoggedIn, idProfessionalLoggedIn);
             if (exit) {
@@ -719,10 +757,10 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<int> ColacionProfessional(type, state) async {
+  Future<int> ColacionProfessional(idProfe, type, state) async {
     try {
-      int exit = await usuarioLg.solitColacion(
-          branchIdLoggedIn, idProfessionalLoggedIn, type, state);
+      int exit =
+          await usuarioLg.solitColacion(branchIdLoggedIn, idProfe, type, state);
 
       if (state == 2) //es solicitud a enviar
       {
@@ -755,18 +793,28 @@ class LoginController extends GetxController {
     try {
       //INICIALIZANDO A NULL
       int idPuesto = -99;
-      print('este es el id del puesto idProfes:$idProfes');
-      idPuesto = await usuarioLg.getIdPuesto(idProfes);
+      print('este s es el id del puesto idProfes:$idProfes');
+      idPuesto = await usuarioLg.getIdPuestoRepo(idProfes, chargeUserLoggedIn);
       print(
-          'este es el id del puesto idProfes despue sde llamar al puesto:$idPuesto');
+          'este s es el id del puesto idProfes despue sde llamar al puesto:$idPuesto');
 
-      if (idPuesto != -99 && idPuesto != 0) {
-        print('EL PROFESIONAL SALIO DEL PUESTO CORRECTAMENTE');
-        return idPuesto;
-      } else {
-        print('NO ESTA EN NINGUN PUESTO EL PROFESIONAL');
-        return idPuesto;
-      }
+      print('NO s ESTA EN NINGUN PUESTO EL PROFESIONAL');
+      return idPuesto;
+    } catch (e) {
+      print('Erroor:$e');
+      return -999;
+    }
+  }
+
+  Future<int> getStateProfessionall(int idProfes) async {
+    try {
+      //INICIALIZANDO A NULL
+      int state = -99;
+      state = await usuarioLg.getStateProfessional(idProfes);
+      print(
+          'este es el id del puesto idProfes despue sde llamar al state:$state');
+
+      return state;
     } catch (e) {
       print('Erroor:$e');
       return -999;

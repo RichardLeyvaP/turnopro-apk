@@ -9,6 +9,7 @@ import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:turnopro_apk/Views/common/topPage.dart';
 import 'package:turnopro_apk/env.dart';
+import 'package:intl/intl.dart';
 
 import '../../../Controllers/login.controller.dart';
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -147,6 +148,15 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
       index,
       PageController pageController2,
       PagesConfigController pagesConfigC) {
+    DateFormat formatter = DateFormat('hh:mm');
+    DateTime currentTime = formatter
+        .parse(controllerclient.clientsColacionBranch[index].start_time!);
+
+    // Paso 2: Sumar una hora al objeto DateTime
+    DateTime newTime = currentTime.add(Duration(hours: 1));
+
+    // Paso 3: Formatear el resultado en el formato deseado (hh:mm a)
+    String formattedNewTime = formatter.format(newTime);
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10, top: 8),
       child: FittedBox(
@@ -279,9 +289,7 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                                         padding:
                                             const EdgeInsets.only(right: 6.0),
                                         child: Text(
-                                          controllerclient
-                                              .clientsColacionBranch[index]
-                                              .start_time!,
+                                          '${controllerclient.clientsColacionBranch[index].start_time!.substring(0, 5)} - $formattedNewTime',
                                           softWrap: true,
                                           style: const TextStyle(
                                               fontSize: 15,

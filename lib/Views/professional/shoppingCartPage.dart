@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:get/get.dart';
@@ -26,6 +27,7 @@ class ShoppingCartPage extends StatelessWidget {
       Get.find<ClientsScheduledController>();
   final LoginController controllerLogin = Get.find<LoginController>();
   final ShoppingCartController shoppingCar = Get.find<ShoppingCartController>();
+  NotificationController notiController = Get.find<NotificationController>();
   void ejecutarCadaQuinceSegundos() {
     Timer.periodic(Duration(seconds: 13), (timer) {
       // Lógica que quieres ejecutar cada 15 segundos
@@ -338,6 +340,14 @@ class ShoppingCartPage extends StatelessWidget {
                                                                             .selectserviceCart[index]
                                                                             .id,
                                                                         1);
+                                                                    notiController.storeNotification(
+                                                                        'Solicitud de servicio a eliminar',
+                                                                        controllerLogin
+                                                                            .branchIdLoggedIn,
+                                                                        controllerLogin
+                                                                            .idProfessionalLoggedIn,
+                                                                        'EL servicio "${controllerShoppingCart.selectserviceCart[index].nameService}" fue enviado a eliminar',
+                                                                        'Ambos'); //esto es para quele llegue a coordinador y encargado
                                                                   } else {
                                                                     Get.snackbar(
                                                                       'Mensaje',
@@ -634,6 +644,14 @@ class ShoppingCartPage extends StatelessWidget {
                                                               if (controllerLogin
                                                                       .codigoQrValid() ==
                                                                   true) {
+                                                                notiController.storeNotification(
+                                                                    'Solicitud de producto a eliminar',
+                                                                    controllerLogin
+                                                                        .branchIdLoggedIn,
+                                                                    controllerLogin
+                                                                        .idProfessionalLoggedIn,
+                                                                    'EL producto "${controllerShoppingCart.selectproduct[index].name}" fue enviado a eliminar',
+                                                                    'Ambos'); //esto es para quele llegue a coordinador y encargado
                                                                 controllerShoppingCart
                                                                     .requestDelete(
                                                                         controllerShoppingCart

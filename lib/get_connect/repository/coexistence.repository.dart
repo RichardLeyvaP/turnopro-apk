@@ -367,6 +367,8 @@ class CoexistenceRepository extends GetConnect {
           '${Env.apiEndpoint}/login-phone-get-branch?email=$email&password=$password';
 
       final response = await get(url).timeout(Duration(seconds: 10));
+      print(
+          'ya tengo la cola de la api es response.statusCode : ${response.statusCode}');
       if (response.statusCode == 200) {
         final barnchP = response.body['branches'];
         for (int i = 0; i < barnchP.length; i++) {

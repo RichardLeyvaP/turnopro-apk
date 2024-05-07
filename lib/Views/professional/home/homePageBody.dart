@@ -10,8 +10,8 @@ import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/Views/coordinator/coexistencePageCoordinator.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:turnopro_apk/services/localNotification.dart';
 
-import 'package:uuid/uuid.dart';
 //import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
 /*
@@ -43,44 +43,12 @@ class _HomePageBodyState extends State<HomePageBody>
   ServiceController serviceControll = Get.find<ServiceController>();
   ShoppingCartController chopCont = Get.find<ShoppingCartController>();
   CoexistenceController coexCont = Get.find<CoexistenceController>();
+  final ProductController controllerProduct = Get.put(ProductController());
 
   @override
   bool get wantKeepAlive => true;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-
-  void initializeNotifications() async {
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/launcher_icon');
-    const InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  }
-
-  void scheduleNotification(String title, String descripcion) async {
-    final Uuid uuid = Uuid(); // Crea una instancia de Uuid
-    final String channelId = uuid.v4(); // Genera un channelId único
-    AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      channelId, // ID del canal
-      'Nombre del Canal', // Nombre del Canal
-      channelDescription:
-          'Descripción del Canal', // Descripción del Canal (argumento nombrado)
-      importance: Importance.max,
-      priority: Priority.high,
-      ticker: 'ticker',
-      sound: RawResourceAndroidNotificationSound('livechat129007'),
-      // ^ Utiliza el nombre del archivo de sonido sin la extensión
-    );
-    NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      title,
-      descripcion,
-      platformChannelSpecifics,
-    );
-  }
 
 /*
   WebSocketChannel channel = IOWebSocketChannel.connect(
@@ -150,9 +118,9 @@ class _HomePageBodyState extends State<HomePageBody>
                 professionalId,
                 'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado',
                 'Barbero');
-
-            scheduleNotification('Incumplimiento de convivencia',
-                'Tu tiempo de espera de 3 minutos');
+//todo notificate
+            // scheduleNotification('Incumplimiento de convivencia',
+            //     'Tu tiempo de espera de 3 minutos');
           }
 
           // La animación ha llegado al final, reiniciar
@@ -281,8 +249,9 @@ class _HomePageBodyState extends State<HomePageBody>
                         1,
                         clientsScheduledController
                             .clientsAttended1!.client_id!);
-                    scheduleNotification('!Alerta',
-                        'El tiempo de servicio del cliente $nameClient se agotará');
+                    //todo notificate
+                    // scheduleNotification('!Alerta',
+                    //     'El tiempo de servicio del cliente $nameClient se agotará');
                   }
                 }
               }
@@ -347,8 +316,9 @@ class _HomePageBodyState extends State<HomePageBody>
                         'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos',
                         'Barbero');
                     //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
-                    scheduleNotification('!Alerta',
-                        'El tiempo de servicio del cliente $nameClient se agotará');
+                    //todo notificate
+                    // scheduleNotification('!Alerta',
+                    //     'El tiempo de servicio del cliente $nameClient se agotará');
                     clientsScheduledController.setNotificationClients1(
                         2,
                         clientsScheduledController
@@ -411,8 +381,9 @@ class _HomePageBodyState extends State<HomePageBody>
                         'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos',
                         'Barbero');
                     //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
-                    scheduleNotification('!Alerta',
-                        'El tiempo de servicio del cliente $nameClient se agotará');
+                    //todo notificate
+                    // scheduleNotification('!Alerta',
+                    //     'El tiempo de servicio del cliente $nameClient se agotará');
                     clientsScheduledController.setNotificationClients1(
                         3,
                         clientsScheduledController
@@ -476,8 +447,9 @@ class _HomePageBodyState extends State<HomePageBody>
                         'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos',
                         'Barbero');
                     //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
-                    scheduleNotification('!Alerta',
-                        'El tiempo de servicio del cliente $nameClient se agotará');
+                    //todo notificate
+                    // scheduleNotification('!Alerta',
+                    //     'El tiempo de servicio del cliente $nameClient se agotará');
                     clientsScheduledController.setNotificationClients1(
                         4,
                         clientsScheduledController
@@ -534,6 +506,8 @@ class _HomePageBodyState extends State<HomePageBody>
           await clientsScheduledController.upadateVariablesValueTimers();
           //  await Future.delayed(Duration(seconds: 2));
           //saber si hay que parar o reaunudar algun reloj
+          print(
+              'activando el Clock - 1 lenght - clientsScheduledList:${clientsScheduledController.clientsScheduledList.length}');
           for (var i = 0;
               i < clientsScheduledController.clientsScheduledList.length;
               i++) {
@@ -618,8 +592,9 @@ class _HomePageBodyState extends State<HomePageBody>
                     loginController.idProfessionalLoggedIn,
                     'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!',
                     'Barbero');
-                scheduleNotification(
-                    '!Alerta', 'Recuerda que tienes clientes en cola');
+                //todo notificate
+                // scheduleNotification(
+                //     '!Alerta', 'Recuerda que tienes clientes en cola');
                 //para controlar que con este cliente solo le avise una vez
                 clientsScheduledController.setContClientsWaiting(20);
                 clientsScheduledController.setcantClientWait(
@@ -989,6 +964,26 @@ class _HomePageBodyState extends State<HomePageBody>
       //todo IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         //   print('cargando aqui-10');
+        // print(
+        //     'entrando aqui para mandar notificacion al barbero clientsScheduledController.clientNew : ${clientsScheduledController.clientNew}');
+        if (clientsScheduledController.clientNew > 0) {
+          print('entrando aqui para mandar notificacion al barbero');
+          String s = '';
+          if (clientsScheduledController.clientNew > 1) {
+            s = 's';
+          }
+
+          //mando notificacion al barbero
+          notiController.storeNotification(
+              'Nuevo cliente en cola',
+              controllerLogin.branchIdLoggedIn,
+              controllerLogin.idProfessionalLoggedIn,
+              'Tienes ${clientsScheduledController.clientNew} cliente$s nuevo$s en cola',
+              'Barbero');
+
+          clientsScheduledController.setclientNew(0);
+        }
+
         //aqui solo debe entrar cuando o se agregan servicios o cuando se eliminan
         if (loginController.idProfessionalLoggedIn != null &&
             loginController.branchIdLoggedIn != null &&
@@ -1046,6 +1041,7 @@ class _HomePageBodyState extends State<HomePageBody>
           print('cargando aqui-15');
           await loginController.setLoggingInCharge(false);
         }
+
         clientsScheduledController.setCloseIesperado(false);
         // print(
         //     'clientes asistiendo ENTRE A DESTRUIR LAS VARIABLES DEL TIEMPO ASIGNADO activeModifyTime SOY = ${clientsScheduledController.activeModifyTime}');
@@ -1158,6 +1154,39 @@ class _HomePageBodyState extends State<HomePageBody>
                                                 clientsScheduledController
                                                     .animationControllerInitial!,
                                               ),
+                                            ] else if (loginController
+                                                    .usserPermissionQr ==
+                                                2) ...[
+                                              const Center(
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 35,
+                                                    ),
+                                                    Text(
+                                                      'Debe de esperar la respuesta',
+                                                      style: TextStyle(
+                                                          // color: Colors.white,
+                                                          color: Color.fromARGB(
+                                                              255, 39, 39, 39),
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                    Text(
+                                                      'a su solicitud',
+                                                      style: TextStyle(
+                                                          //color: Colors.white,
+                                                          color: Color.fromARGB(
+                                                              255, 39, 39, 39),
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 45,
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
                                             ] else ...[
                                               const Center(
                                                 child: Column(
@@ -1419,7 +1448,28 @@ class _HomePageBodyState extends State<HomePageBody>
                                 clientsScheduledController
                                     .clientsScheduledNext!.reservation_id,
                                 3);
+                            notiController.storeNotification(
+                                'Solicitud de rechazo',
+                                controllerLogin.branchIdLoggedIn,
+                                controllerLogin.idProfessionalLoggedIn,
+                                'EL profesional "${loginController.nameUserLoggedIn}" está rechazando a "${clientsScheduledController.clientsScheduledNext!.client_name}"',
+                                'Ambos'); //esto es para quele llegue a coordinador y encargado
                             //}
+                          } else if (loginController.usserPermissionQr == 2) {
+                            Get.snackbar(
+                              'Mensaje',
+                              'Debe de esperar la respuesta a su solicitud',
+                              duration: const Duration(milliseconds: 2500),
+                              backgroundColor:
+                                  const Color.fromARGB(118, 255, 255, 255),
+                              showProgressIndicator: true,
+                              progressIndicatorBackgroundColor:
+                                  const Color.fromARGB(255, 203, 205, 209),
+                              progressIndicatorValueColor:
+                                  const AlwaysStoppedAnimation(
+                                      Color(0xFFFDAE2A)),
+                              overlayBlur: 3,
+                            );
                           } else {
                             Get.snackbar(
                               'Mensaje',
@@ -1634,6 +1684,21 @@ class _HomePageBodyState extends State<HomePageBody>
                                           .clientsScheduledNext!.reservation_id,
                                       1);
                             }
+                          } else if (loginController.usserPermissionQr == 2) {
+                            Get.snackbar(
+                              'Mensaje',
+                              'Debe de esperar la respuesta a su solicitud',
+                              duration: const Duration(milliseconds: 2500),
+                              backgroundColor:
+                                  const Color.fromARGB(118, 255, 255, 255),
+                              showProgressIndicator: true,
+                              progressIndicatorBackgroundColor:
+                                  const Color.fromARGB(255, 203, 205, 209),
+                              progressIndicatorValueColor:
+                                  const AlwaysStoppedAnimation(
+                                      Color(0xFFFDAE2A)),
+                              overlayBlur: 3,
+                            );
                           } else {
                             Get.snackbar(
                               'Mensaje',
@@ -1707,48 +1772,74 @@ class _HomePageBodyState extends State<HomePageBody>
     return InkWell(
       onTap: () async {
         {
-          //VA A EJECUTARSE SI NO ESTA CON EL TECNICO
-          int resulButton = 0;
-          resulButton = loginController.handleButtonClickModal(idreservation);
-          if (resulButton == 1) {
-            Get.dialog(
-              const Center(
-                child: CircularProgressIndicator(
-                  color: Color(0xFFFDAE2A),
-                ),
-              ),
-              barrierDismissible: false,
-            );
-            //limpio la lista que controla que se de un solo click al seleccionar los servicios
-            loginController.inTheClock(true);
-            loginController.handleButtonClickServiceClear();
-            serviceControll.clearSelectService();
+          // Comprobar si la animación está en pausa
+          bool isPaused = _animationController.isAnimating &&
+              !_animationController.isCompleted;
+          // Comprobar si la animación ha completado su duración
+          bool isCompleted = _animationController.isCompleted;
+          print('este relojo esta en:$isPaused');
 
-            if (attend != 4) {
-              // aqui selecciono el cliente
-              await clientsScheduledController.metodsClients(
-                  index, carrId, idreservation, name, imag);
-              //todo FIN esto estaba en la pagina del modal al dar en Ver carrito
-              await chopCont.loadDataInitiallyNecessary().then((_) async {
-                await clientsScheduledController
-                    .searchForCustomerServices(carrId)
-                    .then((_) {
-                  loginController.setHandleButtonClickModal();
-                  String clientName = name;
-                  String urlImage = imag;
-                  int reservationId = idreservation;
-                  int carId = carrId;
-                  //   _mostrarBottomSheet(          context);
-                  //  showMyDialog(context);
-                  print(
-                      'LISTA2 _fetchServiceList Limpiando clientName:$clientName...reservationId:$reservationId....carId:$carId....urlImage:$urlImage');
-                  Get.back();
-                  //Get.toNamed('/servicesProductsPage');
-                  pagesConfigC.onTabTapped(1); //index = 1 -> /Clients
+          if (isPaused == true || isCompleted == true) {
+            //aqui llamar un metodo que me diga que attend es, y verificar
+            //VA A EJECUTARSE SI NO ESTA CON EL TECNICO
+            int resulButton = 0;
+            resulButton = loginController.handleButtonClickModal(idreservation);
+            if (resulButton == 1) {
+              Get.dialog(
+                const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xFFFDAE2A),
+                  ),
+                ),
+                barrierDismissible: false,
+              );
+              //limpio la lista que controla que se de un solo click al seleccionar los servicios
+
+              loginController.inTheClock(true);
+              loginController.handleButtonClickServiceClear();
+              serviceControll.clearSelectService();
+
+              if (isPaused == true || isCompleted == true) {
+                //aqui si el reloj esta detenido es que esta con el tecnico
+                // aqui selecciono el cliente
+                await clientsScheduledController.metodsClients(
+                    index, carrId, idreservation, name, imag);
+                //todo FIN esto estaba en la pagina del modal al dar en Ver carrito
+                await controllerProduct.initializeData();
+                await chopCont.loadDataInitiallyNecessary().then((_) async {
+                  await clientsScheduledController
+                      .searchForCustomerServices(carrId)
+                      .then((_) {
+                    loginController.setHandleButtonClickModal();
+                    String clientName = name;
+                    String urlImage = imag;
+                    int reservationId = idreservation;
+                    int carId = carrId;
+                    //   _mostrarBottomSheet(          context);
+                    //  showMyDialog(context);
+                    print(
+                        'LISTA2 _fetchServiceList Limpiando clientName:$clientName...reservationId:$reservationId....carId:$carId....urlImage:$urlImage');
+                    Get.back();
+                    //Get.toNamed('/servicesProductsPage');
+                    pagesConfigC.onTabTapped(1); //index = 1 -> /Clients
+                  });
                 });
-              });
-            }
-          } //cierre del if de comprobacion que no lo llame vairas veces
+              }
+            } //cierre del if de comprobacion que no lo llame vairas veces
+          } else if (isPaused == false) {
+            Get.snackbar(
+              'Mensaje',
+              'Este cliente está con el técnico, espere que regrese por favor...',
+              duration: const Duration(milliseconds: 2500),
+              backgroundColor: const Color.fromARGB(118, 255, 255, 255),
+              showProgressIndicator: true,
+              progressIndicatorBackgroundColor:
+                  const Color.fromARGB(255, 203, 205, 209),
+              progressIndicatorValueColor:
+                  const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
+              overlayBlur: 3,
+            );
+          }
         }
       },
       child: Padding(
@@ -2137,6 +2228,9 @@ class _HomePageBodyState extends State<HomePageBody>
         ),
         onPressed: () async {
           if (titleCart == 'Agenda') {
+            //todo notificate
+            localNotificationsSimplifies('LLamando desde Agenda',
+                'esta es la primera notificacion de prueba1');
             Get.dialog(
               const Center(
                 child: CircularProgressIndicator(

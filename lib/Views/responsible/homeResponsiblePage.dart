@@ -429,7 +429,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ? InkWell(
                       onTap: () {
                         //verifico si esta atendiendo a alguien no puede leer un nuevo codigo
-                        if (_.usserPermissionQr == 1) {
+                        if (_.usserPermissionQr == 1 ||
+                            _.usserPermissionQr == 2) {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -699,7 +700,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                   ); //Get.back();
 
                                                   if (_.usserPermissionQr ==
-                                                      1) {
+                                                          1 ||
+                                                      _.usserPermissionQr ==
+                                                          2) {
                                                     await _.exitPostworking(
                                                         "Admin");
                                                     _.exit(_.tokenUserLoggedIn);

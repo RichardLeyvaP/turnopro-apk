@@ -3,12 +3,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
-import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
-import 'package:turnopro_apk/Controllers/product.controller.dart';
-import 'package:turnopro_apk/Controllers/service.controller.dart';
-import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:turnopro_apk/Views/products-services/products/productsBody.dart';
 import 'package:turnopro_apk/Views/products-services/services/servicesBodyPage.dart';
 //import 'package:animate_do/animate_do.dart';
@@ -19,6 +14,8 @@ import 'package:turnopro_apk/env.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart' as dio;
+
+import '../../Routes/index.dart';
 
 class ServicesProductsPage extends StatefulWidget {
   const ServicesProductsPage({super.key});
@@ -41,12 +38,13 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
       Get.find<ShoppingCartController>();
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
   final LoginController controllerLog = Get.put(LoginController());
+  NotificationController notiController = Get.find<NotificationController>();
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    controllerProduct.initializeData();
+    // controllerProduct.initializeData();
   }
 
   @override
@@ -335,6 +333,14 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                   ),
                                   barrierDismissible: false,
                                 );
+                                //mando a notificar al tecnico
+                                notiController.storeNotification(
+                                    'Cliente llegando',
+                                    loginController.branchIdLoggedIn,
+                                    loginController.idProfessionalLoggedIn,
+                                    'EL cliente "${clientsController.nameClientTemporary}" fue enviado por el barbero ${loginController.nameUserLoggedIn}',
+                                    'Tecnico'); //esto es para quele llegue a coordinador y encargado
+
                                 //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
                                 await clientsController.acceptOrRejectClient(
                                     clientsController.idClientTemporary,

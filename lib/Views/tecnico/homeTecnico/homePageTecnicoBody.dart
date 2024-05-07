@@ -278,6 +278,49 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                   controllerclient,
                                                   _animationControllerInitialT!,
                                                 );
+                                              } else if (loginController
+                                                      .usserPermissionQr ==
+                                                  2) {
+                                                return const Center(
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 35,
+                                                      ),
+                                                      Text(
+                                                        'Debe de esperar la respuesta',
+                                                        style: TextStyle(
+                                                            // color: Colors.white,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    39,
+                                                                    39,
+                                                                    39),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
+                                                      Text(
+                                                        'a su solicitud',
+                                                        style: TextStyle(
+                                                            //color: Colors.white,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    39,
+                                                                    39,
+                                                                    39),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 45,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
                                               } else {
                                                 return const Center(
                                                   child: Column(
@@ -402,6 +445,26 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                               .reservation_id,
                                                           33);
                                                   // }
+                                                } else if (loginController
+                                                        .usserPermissionQr ==
+                                                    2) {
+                                                  Get.snackbar(
+                                                    'Mensaje',
+                                                    'Debe de esperar la respuesta a su solicitud',
+                                                    duration: const Duration(
+                                                        milliseconds: 2500),
+                                                    backgroundColor:
+                                                        const Color.fromARGB(
+                                                            118, 255, 255, 255),
+                                                    showProgressIndicator: true,
+                                                    progressIndicatorBackgroundColor:
+                                                        const Color.fromARGB(
+                                                            255, 203, 205, 209),
+                                                    progressIndicatorValueColor:
+                                                        const AlwaysStoppedAnimation(
+                                                            Color(0xFFFDAE2A)),
+                                                    overlayBlur: 3,
+                                                  );
                                                 } else {
                                                   Get.snackbar(
                                                     'Mensaje',
@@ -580,6 +643,26 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                                 .reservation_id,
                                                             5);
                                                   }
+                                                } else if (loginController
+                                                        .usserPermissionQr ==
+                                                    2) {
+                                                  Get.snackbar(
+                                                    'Mensaje',
+                                                    'Debe de esperar la respuesta a su solicitud',
+                                                    duration: const Duration(
+                                                        milliseconds: 2500),
+                                                    backgroundColor:
+                                                        const Color.fromARGB(
+                                                            118, 255, 255, 255),
+                                                    showProgressIndicator: true,
+                                                    progressIndicatorBackgroundColor:
+                                                        const Color.fromARGB(
+                                                            255, 203, 205, 209),
+                                                    progressIndicatorValueColor:
+                                                        const AlwaysStoppedAnimation(
+                                                            Color(0xFFFDAE2A)),
+                                                    overlayBlur: 3,
+                                                  );
                                                 } else {
                                                   Get.snackbar(
                                                     'Mensaje',
@@ -690,69 +773,22 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              GestureDetector(
-                                onTap: () async {
-                                  Get.dialog(
-                                    const Center(
-                                      child: CircularProgressIndicator(
-                                        color: Color(0xFFFDAE2A),
-                                      ),
-                                    ),
-                                    barrierDismissible: false,
-                                  ); //Get.back();
-                                  await clientsScheduledController
-                                      .fetchClientsTechnical(
-                                          loginController.branchIdLoggedIn);
-                                  pagesConfigC
-                                      .onTabTapped(1); //index = 1 -> /Clients
-                                  Get.back();
-                                },
-                                child: cartsHome(
-                                    context,
-                                    12,
-                                    const Color(0xFF19CF9E),
-                                    const Color.fromARGB(255, 231, 233, 233),
-                                    'Agenda',
-                                    'Clientes Agendados',
-                                    Icons.perm_contact_calendar),
-                              ),
-                              InkWell(
-                                onTap: () async {
-                                  Get.dialog(
-                                    const Center(
-                                      child: CircularProgressIndicator(
-                                        color: Color(0xFFFDAE2A),
-                                      ),
-                                    ),
-                                    barrierDismissible: false,
-                                  ); //Get.back();
-                                  if (loginController.idProfessionalLoggedIn !=
-                                          null &&
-                                      loginController.branchIdLoggedIn !=
-                                          null &&
-                                      (loginController.chargeUserLoggedIn ==
-                                          "Tecnico")) {
-                                    //await Future.delayed(Duration(seconds: 1));
-                                    //Buscar notificaciones
-                                    await notiController.fetchNotificationList(
-                                        loginController.branchIdLoggedIn,
-                                        loginController.idProfessionalLoggedIn,
-                                        'Tecnico',
-                                        'Cart-home');
-                                  }
-                                  pagesConfigC
-                                      .onTabTapped(2); //index = 1 -> /Clients
-                                  Get.back();
-                                },
-                                child: cartsHome(
-                                    context,
-                                    12,
-                                    const Color(0xFF4470F3),
-                                    Color.fromARGB(255, 231, 233, 233),
-                                    'Notificaciones',
-                                    'Tus Notificaciones',
-                                    Icons.notifications),
-                              ),
+                              cartsHome(
+                                  context,
+                                  12,
+                                  const Color(0xFF19CF9E),
+                                  const Color.fromARGB(255, 231, 233, 233),
+                                  'Agenda',
+                                  'Clientes Agendados',
+                                  Icons.perm_contact_calendar),
+                              cartsHome(
+                                  context,
+                                  12,
+                                  const Color(0xFF4470F3),
+                                  Color.fromARGB(255, 231, 233, 233),
+                                  'Notificaciones',
+                                  'Tus Notificaciones',
+                                  Icons.notifications),
                             ],
                           ),
                           SizedBox(
@@ -761,46 +797,22 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              InkWell(
-                                onTap: () {
-                                  pagesConfigC.onTabTapped(
-                                      3); //index = 3 -> /StatisticPage
-                                },
-                                child: cartsHome(
-                                    context,
-                                    12,
-                                    const Color(0xFFFF6750),
-                                    Color.fromARGB(255, 231, 233, 233),
-                                    'Estadísticas',
-                                    'Revisa Tus Ingresos',
-                                    Icons.bar_chart),
-                              ),
-                              InkWell(
-                                onTap: () async {
-                                  Get.dialog(
-                                    const Center(
-                                      child: CircularProgressIndicator(
-                                        color: Color(0xFFFDAE2A),
-                                      ),
-                                    ),
-                                    barrierDismissible: false,
-                                  ); //Get.back();
-                                  // controllerLogin.setIsLoadingFor(true);
-                                  await coexistenceController
-                                      .fetchCoexistenceList();
-                                  pagesConfigC.onTabTapped(
-                                      4); //index = 4 -> /CoexistencePage
-                                  Get.back();
-                                },
-                                child: cartsHome(
-                                    context,
-                                    12,
-                                    const Color(0xFFFDAE2A),
-                                    Color.fromARGB(255, 231, 233, 233),
-                                    'Convivencia',
-                                    'Cumplimiento de Reglas',
-                                    Icons.star),
-                              ),
+                              cartsHome(
+                                  context,
+                                  12,
+                                  const Color(0xFFFF6750),
+                                  Color.fromARGB(255, 231, 233, 233),
+                                  'Estadísticas',
+                                  'Revisa Tus Ingresos',
+                                  Icons.bar_chart),
+                              cartsHome(
+                                  context,
+                                  12,
+                                  const Color(0xFFFDAE2A),
+                                  Color.fromARGB(255, 231, 233, 233),
+                                  'Convivencia',
+                                  'Cumplimiento de Reglas',
+                                  Icons.star),
                             ],
                           ),
                         ],
@@ -1002,7 +1014,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                     padding: MaterialStateProperty.all<
                                         EdgeInsetsGeometry>(
                                       const EdgeInsets.symmetric(
-                                          vertical: 0, horizontal: 26.0),
+                                          vertical: 0, horizontal: 16.0),
                                     ),
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(
@@ -1036,7 +1048,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                     padding: MaterialStateProperty.all<
                                         EdgeInsetsGeometry>(
                                       const EdgeInsets.symmetric(
-                                          vertical: 0, horizontal: 26.0),
+                                          vertical: 0, horizontal: 16.0),
                                     ),
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(
@@ -1449,45 +1461,121 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
         borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
         color: colorVariable,
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: CircleAvatar(
-                radius: 20, // Tamaño del CircleAvatar
-                backgroundColor: colorBottom, // Color de fondo del CircleAvatar
-                child: Icon(
-                  iconCart, // Icono que deseas mostrar
-                  size: 30, // Tamaño del icono
-                  color: colorVariable, // Color del icono
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: colorVariable, // Color de fondo en verde
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                borderRadiusValue), // Ajusta el radio según tus necesidades
+          ),
+        ),
+        onPressed: () async {
+          if (titleCart == 'Agenda') {
+            Get.dialog(
+              const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFDAE2A),
                 ),
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  titleCart,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      height: 0.2),
+              barrierDismissible: false,
+            ); //Get.back();
+            await clientsScheduledController
+                .fetchClientsTechnical(loginController.branchIdLoggedIn);
+            pagesConfigC.onTabTapped(1); //index = 1 -> /Clients
+            Get.back();
+          }
+          if (titleCart == 'Convivencia') {
+            Get.dialog(
+              const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFDAE2A),
                 ),
-                Text(
-                  descriptionTitleCart,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400),
+              ),
+              barrierDismissible: false,
+            ); //Get.back();
+            // controllerLogin.setIsLoadingFor(true);
+            await coexistenceController.fetchCoexistenceList();
+            pagesConfigC.onTabTapped(4); //index = 4 -> /CoexistencePage
+            Get.back();
+          }
+          if (titleCart == 'Estadísticas') {
+            Get.dialog(
+              const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFDAE2A),
                 ),
-              ],
-            )
-          ],
+              ),
+              barrierDismissible: false,
+            ); //Get.back();
+            pagesConfigC.onTabTapped(3); //index = 3 -> /StatisticPage
+            Get.back();
+          }
+          if (titleCart == 'Notificaciones') {
+            Get.dialog(
+              const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFDAE2A),
+                ),
+              ),
+              barrierDismissible: false,
+            ); //Get.back();
+            if (loginController.idProfessionalLoggedIn != null &&
+                loginController.branchIdLoggedIn != null &&
+                (loginController.chargeUserLoggedIn == "Tecnico")) {
+              //await Future.delayed(Duration(seconds: 1));
+              //Buscar notificaciones
+              await notiController.fetchNotificationList(
+                  loginController.branchIdLoggedIn,
+                  loginController.idProfessionalLoggedIn,
+                  'Tecnico',
+                  'Cart-home');
+            }
+            pagesConfigC.onTabTapped(2); //index = 1 -> /Clients
+            Get.back();
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8, bottom: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: CircleAvatar(
+                  radius: 20, // Tamaño del CircleAvatar
+                  backgroundColor:
+                      colorBottom, // Color de fondo del CircleAvatar
+                  child: Icon(
+                    iconCart, // Icono que deseas mostrar
+                    size: 30, // Tamaño del icono
+                    color: colorVariable, // Color del icono
+                  ),
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    titleCart,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        height: 0.4),
+                  ),
+                  Text(
+                    descriptionTitleCart,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                        height: 1.5,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

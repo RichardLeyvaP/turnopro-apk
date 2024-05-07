@@ -18,7 +18,10 @@ class ClientsScheduledController extends GetxController {
   UserRepository repositoryUser = UserRepository();
   final LoginController controllerLogin = Get.find<LoginController>();
 
+  int clientNew = 0;
+
   List<ClientsScheduledModel> clientsScheduledList = []; // Lista de clientes
+  List<int> clientsScheduledListId = []; // Lista de clientes
   // Lista de clientes
   List<ClientsScheduledModel> clientsScheduledListTechnical =
       []; // Lista de clientes
@@ -74,7 +77,7 @@ class ClientsScheduledController extends GetxController {
   int busyClock = -99;
   String clientsAttended = 'nobody';
   String technicalClientsAttended = 'nobody';
-  List<ServiceModel> serviceCustomerSelected = [];
+  List<ServiceModel> serviceCustomerSelected = [], serviceCustomerAux = [];
   List<ServiceModel> serviceCustomerSelectedForm = [];
   List<ProfessionalModel> professionalDispon = [];
   int professionalDisponLength = 0;
@@ -144,6 +147,12 @@ class ClientsScheduledController extends GetxController {
 
   void setImagePath(value) {
     imagePath = value;
+
+    update();
+  }
+
+  void setclientNew(value) {
+    clientNew = value;
 
     update();
   }
@@ -1033,9 +1042,10 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<void> searchForCustomerServices(idCar) async {
-    serviceCustomerSelected = await repository.getCustomerServicesList(idCar);
+    serviceCustomerAux = await repository.getCustomerServicesList(idCar);
     print('showingServiceClients:$showingServiceClients');
     if (showingServiceClients == false) {
+      serviceCustomerSelected = serviceCustomerAux;
       serviceCustomerSelectedForm = serviceCustomerSelected;
     }
     update();
@@ -1158,7 +1168,99 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
+  Future<void> fetchClientsScheduledNew(idProfessional, idBranch, msj) async {
+    print('entrando aqui para mandar notificacion al barbero1111');
+    try {
+      List<ClientsScheduledModel> clientsAux = [];
+
+      String s = '';
+
+      Map<String, dynamic> resultList =
+          await repository.getClientsScheduledListNew(idProfessional, idBranch);
+      print(resultList);
+      //verificando , si entra al if es problemas de coneccion
+      if (resultList.containsKey('ConnectionIssues') &&
+          resultList['ConnectionIssues'] == true) {
+        correctConnection = false;
+        print('llamando a buscar clientes - ERROR2');
+        print('qwerc SII mandar ->MAL-${clientsScheduledList.length}');
+      } else {
+        correctConnection = true;
+        //aqui estoy guardando la cola del dia de hoy del profesional
+        List<ClientsScheduledModel>? clientsScheduledListAUX = [];
+        List<ClientsScheduledModel>? clientsScheduledListAUX2 = [];
+
+        clientsScheduledListAUX = (resultList['clientList'] ?? []).cast<
+            ClientsScheduledModel>(); //aqui estoy guardando la cola del dia de hoy del profesional
+        clientsScheduledListAUX2 =
+            (resultList['clientListSig'] ?? []).cast<ClientsScheduledModel>();
+        if (clientsScheduledListAUX != null &&
+            clientsScheduledListAUX2 != null) {
+          clientsScheduledList = clientsScheduledListAUX;
+
+          clientsScheduledListLength = clientsScheduledList.length;
+          print(
+              'llamada timer Cantidad de Clientes-1 :$clientsScheduledListLength');
+          clientsAux = clientsScheduledListAUX2;
+          clientsScheduledListLengthTail = clientsAux.length;
+          print(
+              'llamando a buscar clientes - BIEN4-clientsScheduledList.length:${clientsScheduledList.length}');
+          print(
+              'qwerc SII mandar ->BIEN-${clientsScheduledList.length}--entro de:$msj-idProfessional=$idProfessional--idBranche:$idBranch Objeto-${clientsScheduledList}');
+
+          //
+          //
+          //  if (closeIesperado == true) //es que cerró inesperadamente
+          {
+            if (resultList.containsKey('attendingClient')) {
+              List<Map>? attendingClientList = resultList['attendingClient'];
+              //aqui es donde tiene que entrar solamente si se loguea
+              if (controllerLogin.isLoggingIn == true) {
+                print(
+                    'EL TIEMPO clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn}) { entre poque vine del login ');
+
+                logicaInesperada(attendingClientList);
+                controllerLogin.setIsLoggingIn(false);
+              } else {
+                print(
+                    'clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn})  NOOO ');
+              }
+            } else {
+              // La clave 'attendingClient' no está presente en el mapa
+              print(
+                  '!!!!!!!!!!!!!!!!!!!!La clave "attendingClient" no está presente en el mapa.');
+            }
+          }
+
+          //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+          clientsScheduledNext = resultList['nextClient'];
+          quantityClientAttended = resultList['quantityClientAttended'];
+          varClientsWaiting = resultList['varclientswaiting'];
+          if (quantityClientAttended == 0) {
+            clientsAttended = 'nobody';
+          }
+
+          if (clientsScheduledNext != null) {
+            int idCar = clientsScheduledNext!.car_id!;
+            await searchForCustomerServices(idCar);
+            await filterShowNext();
+            //  setValueClock(true);
+          } else {
+            print('if (clientsScheduledNext != null) ESTOY DANDO null');
+            //  setValueClock(false);
+          }
+        }
+      }
+      update();
+      controllerLogin.setIsLoadingFor(false);
+    } catch (e) {
+      print(
+          'Dio error en Future<void> fetchClientsScheduled que se encuentra en el controlador del Login:$e');
+    }
+  }
+
   Future<void> fetchClientsScheduled(idProfessional, idBranch, msj) async {
+    print('entrando aqui para mandar notificacion al barbero2222');
     try {
       List<ClientsScheduledModel> clientsAux = [];
 
@@ -1187,7 +1289,7 @@ class ClientsScheduledController extends GetxController {
 
           clientsScheduledListLength = clientsScheduledList.length;
           print(
-              'llamada timer Cantidad de Clientes :$clientsScheduledListLength');
+              'llamada timer Cantidad de Clientes-2 :$clientsScheduledListLength');
           clientsAux = clientsScheduledListAUX2;
           clientsScheduledListLengthTail = clientsAux.length;
           print(
