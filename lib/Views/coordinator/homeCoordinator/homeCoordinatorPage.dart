@@ -28,6 +28,7 @@ class _HomeCoordinatorPagesState extends State<HomeCoordinatorPages>
   final NotificationController notiContro = Get.find<NotificationController>();
   final ClientsCoordinatorController clientController =
       Get.find<ClientsCoordinatorController>();
+
   int carr = 199;
 
   @override
@@ -98,22 +99,40 @@ class _HomeCoordinatorPagesState extends State<HomeCoordinatorPages>
                       showUnselectedLabels: false,
                       unselectedItemColor: Color.fromARGB(155, 177, 173, 173),
                       backgroundColor: Colors.white,
-                      fixedColor: const Color(0xFFFDAE2A),
+                      fixedColor: pagesConfigC.colacionNotification == 1
+                          ? Color.fromARGB(155, 177, 173, 173)
+                          : const Color(0xFFFDAE2A),
                       currentIndex: pagesConfigController.selectedIndex,
                       type: BottomNavigationBarType.fixed,
                       onTap: (index) async {
+                        await pagesConfigC.updateColacionNotification(0);
                         if (index == 0) {
                           pagesConfigC.pageController2
                               .jumpToPage(0); //AQUI VA  AL HOME
                           pagesConfigController.showAppBar(true);
-                        }
-                        if (index == 4) {
+                          pagesConfigController.onTabTapped(index);
+                        } else if (index == 1) {
+                          Get.dialog(
+                            const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFFFDAE2A),
+                              ),
+                            ),
+                            barrierDismissible: false,
+                          ); //Get.back();
+
+                          await clientController.clientsAttendBranch(
+                              loginController.branchIdLoggedIn);
+
+                          Get.back();
+                          pagesConfigController.onTabTapped(index);
+                        } else if (index == 4) {
                           await coexistenceController
                               .fetchBranchProfessionals();
+                          pagesConfigController.onTabTapped(index);
+                        } else {
+                          pagesConfigController.onTabTapped(index);
                         }
-
-                        print('mostrando aqui el valor de index : $index');
-                        pagesConfigController.onTabTapped(index);
                       },
                       items: [
                         BottomNavigationBarItem(
@@ -122,9 +141,11 @@ class _HomeCoordinatorPagesState extends State<HomeCoordinatorPages>
                               size: MediaQuery.of(context).size.width * 0.08,
                             ),
                             label: 'Home'),
-                        clientController.clientAttendBranchLength > 0
+                        clientController.clientAttendBranchLength > 0 &&
+                                pagesConfigC.colacionNotification == 0
                             ? BottomNavigationBarItem(
                                 icon: Badge(
+                                  backgroundColor: Color(0xFF19CF9E),
                                   label:
                                       GetBuilder<ClientsCoordinatorController>(
                                           builder: (cCordContr) {
@@ -167,7 +188,7 @@ class _HomeCoordinatorPagesState extends State<HomeCoordinatorPages>
                                             _notiCont.notificationListBack &&
                                         _notiCont.notificationListNewLength !=
                                             0) {
-                                      _notiCont.reproducirSound();
+                                      //  _notiCont.reproducirSound();
                                     }
                                     return Text(
                                         (_notiCont.notificationListNewLength)

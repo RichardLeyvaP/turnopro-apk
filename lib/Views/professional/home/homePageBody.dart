@@ -966,23 +966,6 @@ class _HomePageBodyState extends State<HomePageBody>
         //   print('cargando aqui-10');
         // print(
         //     'entrando aqui para mandar notificacion al barbero clientsScheduledController.clientNew : ${clientsScheduledController.clientNew}');
-        if (clientsScheduledController.clientNew > 0) {
-          print('entrando aqui para mandar notificacion al barbero');
-          String s = '';
-          if (clientsScheduledController.clientNew > 1) {
-            s = 's';
-          }
-
-          //mando notificacion al barbero
-          notiController.storeNotification(
-              'Nuevo cliente en cola',
-              controllerLogin.branchIdLoggedIn,
-              controllerLogin.idProfessionalLoggedIn,
-              'Tienes ${clientsScheduledController.clientNew} cliente$s nuevo$s en cola',
-              'Barbero');
-
-          clientsScheduledController.setclientNew(0);
-        }
 
         //aqui solo debe entrar cuando o se agregan servicios o cuando se eliminan
         if (loginController.idProfessionalLoggedIn != null &&
@@ -1444,16 +1427,17 @@ class _HomePageBodyState extends State<HomePageBody>
                             //     clientsScheduledController
                             //         .clientsScheduledNext!.reservation_id);
                             // if (resulButton == 1) {
-                            clientsScheduledController.acceptOrRejectClient(
-                                clientsScheduledController
-                                    .clientsScheduledNext!.reservation_id,
-                                3);
                             notiController.storeNotification(
                                 'Solicitud de rechazo',
                                 controllerLogin.branchIdLoggedIn,
                                 controllerLogin.idProfessionalLoggedIn,
                                 'EL profesional "${loginController.nameUserLoggedIn}" está rechazando a "${clientsScheduledController.clientsScheduledNext!.client_name}"',
                                 'Ambos'); //esto es para quele llegue a coordinador y encargado
+                            clientsScheduledController.acceptOrRejectClient(
+                                clientsScheduledController
+                                    .clientsScheduledNext!.reservation_id,
+                                3);
+
                             //}
                           } else if (loginController.usserPermissionQr == 2) {
                             Get.snackbar(
@@ -2228,9 +2212,6 @@ class _HomePageBodyState extends State<HomePageBody>
         ),
         onPressed: () async {
           if (titleCart == 'Agenda') {
-            //todo notificate
-            localNotificationsSimplifies('LLamando desde Agenda',
-                'esta es la primera notificacion de prueba1');
             Get.dialog(
               const Center(
                 child: CircularProgressIndicator(

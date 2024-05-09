@@ -129,7 +129,8 @@ class CoexistenceRepository extends GetConnect {
           '${Env.apiEndpoint}/professional-car-date?branch_id=$branch_id&professional_id=$professional_id&data=$data';
 
       final response = await get(url).timeout(Duration(seconds: 10));
-      print('werya tengo repositorio22 estoy en getBranchProfessionals');
+      print(
+          'werya tengo repositorio22 estoy en getBranchProfessionals url:$url');
       if (response.statusCode == 200) {
         print(
             'werya tengo repositorio33 response.statusCode == 200 estoy en getBranchProfessionals');

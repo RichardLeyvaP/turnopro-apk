@@ -55,6 +55,10 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
   double borderCont = 12;
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      clientSchedControl.showingServiceClient(true);
+    });
+
     // Recupera los argumentos pasados desde la ruta anterior
     final Map<String, dynamic> args = Get.arguments;
 
@@ -165,7 +169,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                                       height: 20,
                                       child: Center(
                                         child: Text(
-                                          ' ${controllerCoord.frecuenciaBarber}',
+                                          ' ${controllerCoord.frecuenciaBarber1}',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 10,
@@ -202,7 +206,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
             ),
             Expanded(
               flex: 12,
-              child: clientSchedControl.serviceCustomerSelectedForm
+              child: clientSchedControl.serviceCustomerSelectedForm1
                       .isNotEmpty //todo si hay cargarlos aqui
                   ? Padding(
                       padding:
@@ -216,19 +220,19 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                           padding: EdgeInsets
                               .zero, // Elimina cualquier padding del ListView
                           itemCount: clientSchedControl
-                              .serviceCustomerSelectedForm.length,
+                              .serviceCustomerSelectedForm1.length,
                           itemBuilder: (context, index) {
                             // Utiliza la función cardOptions para construir cada Card
                             return cardOptions2(
                               context,
                               // Pasa aquí los datos necesarios para cardOptions
                               clientSchedControl
-                                  .serviceCustomerSelectedForm[index].name,
+                                  .serviceCustomerSelectedForm1[index].name,
                               clientSchedControl
-                                  .serviceCustomerSelectedForm[index]
+                                  .serviceCustomerSelectedForm1[index]
                                   .type_service,
                               clientSchedControl
-                                  .serviceCustomerSelectedForm[index]
+                                  .serviceCustomerSelectedForm1[index]
                                   .image_service,
                             );
                           },
@@ -301,10 +305,10 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                                 'Último look',
                                 pagesConfigCont,
                                 pagesConfigCont.pageController2,
-                                clientSchedControl.endLookBarber,
-                                clientSchedControl.professionalNameBarber,
+                                clientSchedControl.endLookBarber1,
+                                clientSchedControl.professionalNameBarber1,
                                 clientSchedControl
-                                    .imageUrlBarber, // 'CARGAR LA IMAGEN DEL BARBERO',
+                                    .imageUrlBarber1, // 'CARGAR LA IMAGEN DEL BARBERO',
                               ),
                               SizedBox(
                                 height: 5,
@@ -314,7 +318,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(12))),
                                 child: Image.network(
-                                  '${Env.apiEndpoint}/images/${clientSchedControl.imageLookBarber}',
+                                  '${Env.apiEndpoint}/images/${clientSchedControl.imageLookBarber1}',
                                   fit: BoxFit
                                       .cover, // Puedes ajustar el modo de ajuste según sea necesario
                                   width: 360,

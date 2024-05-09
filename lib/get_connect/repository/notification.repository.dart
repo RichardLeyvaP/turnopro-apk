@@ -75,7 +75,7 @@ class NotificationRepository extends GetConnect {
         return false;
       }
     } catch (e) {
-      print('inserto correctamente ********** ERRORRR:$e');
+      print('inserto correctamente ********** ERRORRR->:$e');
       return false;
     }
   }
@@ -252,14 +252,31 @@ class NotificationRepository extends GetConnect {
           NotificationModel u =
               NotificationModel.fromJson(jsonEncode(notification));
 
-          if (u.type == type || u.type == 'Barbero y Encargado') {
-            notificationList.add(u);
-          }
-          if (u.state == 0 || u.state == 3) {
-            //si esta en estos estados es que no se ha visto
-            //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
+          if (type == 'Coordinador' || type == 'Encargado') {
+            if (u.type == type ||
+                u.type == 'Ambos' ||
+                u.type == 'Barbero y Encargado') {
+              notificationList.add(u);
+            }
+            if (u.state == 0 || u.state == 3) {
+              //si esta en estos estados es que no se ha visto
+              //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
+              if (u.type == type ||
+                  u.type == 'Ambos' ||
+                  u.type == 'Barbero y Encargado') {
+                notificationListNew.add(u); //barbero
+              }
+            }
+          } else {
             if (u.type == type || u.type == 'Barbero y Encargado') {
-              notificationListNew.add(u); //barbero
+              notificationList.add(u);
+            }
+            if (u.state == 0 || u.state == 3) {
+              //si esta en estos estados es que no se ha visto
+              //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
+              if (u.type == type || u.type == 'Barbero y Encargado') {
+                notificationListNew.add(u); //barbero
+              }
             }
           }
         }

@@ -89,7 +89,7 @@ class NotificationController extends GetxController {
     return result;
   }
 
-  Future<void> reproducirSound() async {
+  /* Future<void> reproducirSound() async {
     Soundpool pool = Soundpool(streamType: StreamType.notification);
     print('reproduciendo el sonido-1');
     int soundId = await rootBundle
@@ -100,7 +100,7 @@ class NotificationController extends GetxController {
     });
     int streamId = await pool.play(soundId);
     print('reproduciendo el sonido-2');
-  }
+  }*/
 
   updateNotificationListBack(int value) {
     notificationListBack = value;
@@ -485,7 +485,7 @@ class NotificationController extends GetxController {
         notification = result['notificationList'];
 
         print(
-            'llamada timer estoy en CAntidad de Notificaciones :${notification.length}');
+            'llamada timer estoy en CAntidad de Notificaciones fetchNotificationList :${notification.length}');
 
         notificationListLength = notification.length;
 
@@ -572,6 +572,49 @@ class NotificationController extends GetxController {
           updateOutAcept(0);
           Get.back();
           print('cargando aqui-16 para sacar del puesto y la apk-2');
+        }
+
+        update();
+      } else if (result.containsKey('notificationListEncarg') &&
+          result.containsKey('notificationListNewEncarg')) {
+        print('ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador');
+        notificationEncarg = result['notificationListEncarg'];
+
+        notificationListLengthEncarg = notificationEncarg.length;
+
+        notificationListNewEncarg = result['notificationListNewEncarg'];
+        notificationListNewLengthEncarg = notificationListNewEncarg.length;
+        print(
+            'ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador - notificationListNewLengthEncarg:${notificationEncarg.length}');
+
+        notificationListNewEncarg.forEach((element) async {
+          if (element.state == 3 &&
+              element.tittle == 'Aceptada Eliminación de Servicio') {
+            print('modificar time de mm 1 estoy aqui en el forEach');
+            String textoCompleto = element.description;
+            // String descripcion =
+            //     textoCompleto.split('.')[0]; // Obtener la descripción
+            // Obtener el segundo número (999)
+            String numeroOcultoString = textoCompleto
+                .split('.')[1]
+                .trim(); // Obtener la parte después del punto y eliminar espacios en blanco
+            int idReservation =
+                int.parse(numeroOcultoString); // Convertir a entero
+            controllerclient.watchModifyTimeRest(idReservation,
+                textoCompleto); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
+            updateNotifications2(idBranch, idProfe,
+                element.id); //aqui es para no repetir esto y lo pongo en 0
+
+            //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
+            //DESCONTAR EL TIEMPO AL RELOJ
+            //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
+            siHayEliminarService = true;
+          }
+        });
+        if (siHayEliminarService ==
+            true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+        {
+          controllerclient.setActiveModifyTimeRest(true);
         }
 
         update();

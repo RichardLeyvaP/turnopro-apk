@@ -78,7 +78,9 @@ class ClientsScheduledController extends GetxController {
   String clientsAttended = 'nobody';
   String technicalClientsAttended = 'nobody';
   List<ServiceModel> serviceCustomerSelected = [], serviceCustomerAux = [];
+  List<ServiceModel> serviceCustomerSelected1 = [];
   List<ServiceModel> serviceCustomerSelectedForm = [];
+  List<ServiceModel> serviceCustomerSelectedForm1 = [];
   List<ProfessionalModel> professionalDispon = [];
   int professionalDisponLength = 0;
 
@@ -138,7 +140,19 @@ class ClientsScheduledController extends GetxController {
   int cantVisitBarber = 0;
   String endLookBarber = '';
   String lastDateBarber = '';
-  String frecuenciaBarber = '';
+  String frecuenciaBarber = ''; //
+  //
+  //
+  String clientNameBarber1 = '';
+  String professionalNameBarber1 = '';
+  String branchNameBarber1 = '';
+  String imageDataBarber1 = '';
+  String imageUrlBarber1 = '';
+  String imageLookBarber1 = '';
+  int cantVisitBarber1 = 0;
+  String endLookBarber1 = '';
+  String lastDateBarber1 = '';
+  String frecuenciaBarber1 = '';
 
   void setcantClientWait(value) {
     cantClientWait = value;
@@ -1075,6 +1089,24 @@ class ClientsScheduledController extends GetxController {
       print('ertyu - $endLookBarber');
       print('ertyu - $frecuenciaBarber');
     }
+
+    update();
+  }
+
+  Future<void> searchForCustomerServices3(idCar) async {
+    Map<dynamic, dynamic> resultList =
+        await repository.getCustomerServicesList2(idCar);
+
+    serviceCustomerSelected1 = resultList['serviceCustomer'];
+
+    serviceCustomerSelectedForm1 = serviceCustomerSelected1;
+
+    professionalNameBarber1 = resultList['professionalNameBarber'];
+    imageUrlBarber1 = resultList['imageUrlBarber'];
+    imageLookBarber1 = resultList['imageLookBarber'];
+    cantVisitBarber1 = resultList['cantVisitBarber'];
+    endLookBarber1 = resultList['endLookBarber'];
+    frecuenciaBarber1 = resultList['frecuenciaBarber'];
 
     update();
   }

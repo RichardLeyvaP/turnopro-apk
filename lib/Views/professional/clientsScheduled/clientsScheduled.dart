@@ -53,6 +53,9 @@ class YourPageViewScreenState extends State<HomePageView> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controllerclient.showingServiceClient(false);
+    });
     print(
         '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\currentPageIndex:${pagesConfigC.currentPageIndex}');
     return Scaffold(
@@ -267,8 +270,13 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                 .clientsScheduledList[
                                                                     index]
                                                                 .client_name!;
-                                                        String urlImage =
-                                                            controllerClient
+                                                        String urlImage = controllerClient
+                                                                    .clientsScheduledList[
+                                                                        index]
+                                                                    .client_image! ==
+                                                                ''
+                                                            ? 'comments/default_profile.jpg'
+                                                            : controllerClient
                                                                 .clientsScheduledList[
                                                                     index]
                                                                 .client_image!;
@@ -288,7 +296,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                         //         true);
                                                         // aqui cargar los servicios que tiene
                                                         await controllerClient
-                                                            .searchForCustomerServices2(
+                                                            .searchForCustomerServices3(
                                                                 controllerClient
                                                                     .clientsScheduledList[
                                                                         index]

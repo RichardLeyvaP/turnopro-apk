@@ -24,6 +24,8 @@ class _AttendingClientState extends State<AttendingClient> {
   final PagesConfigController pagesConfigCont =
       Get.find<PagesConfigController>();
   final LoginController loginController = Get.find<LoginController>();
+  final PagesConfigController pagesConfigCont1 =
+      Get.find<PagesConfigController>();
   int cantVisitas = 3;
 
   String description = 'Coca Cola Classic 350 ml';
@@ -45,111 +47,55 @@ class _AttendingClientState extends State<AttendingClient> {
   var colorIcon = Color(0xFF19CF9E);
   /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
 
+  /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+
+  var IconnsP2 = MdiIcons.accountTieOutline;
+  String title2 = 'Profesionales en Colación';
+  String subTitle2 = 'Profesionales en Colación';
+  double panddCont2 = 8;
+  double borderCont2 = 12;
+  var colorIcon2 = Color(0xFFFF6750);
+  /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+
   @override
   Widget build(BuildContext context) {
-    if (pagesConfigCont.colacionNotification == 0) {
-      /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
-      IconnsP = MdiIcons.accountOutline;
-      title = 'Clientes Atendiéndose';
-      subTitle = 'Clientes atendiéndose';
-      panddCont = 8;
-      borderCont = 12;
-      colorIcon = Color(0xFF19CF9E);
-      /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
-    } else if (pagesConfigCont.colacionNotification == 1) {
-      IconnsP = MdiIcons.accountTieOutline;
-      title = 'Profesionales en Colación';
-      subTitle = 'Profesionales en Colación';
-      panddCont = 8;
-      borderCont = 12;
-      colorIcon = Color(0xFFFF6750);
-      /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
-    }
     return Scaffold(
-      /*  appBar: AppBar(
-        toolbarHeight: 150,
-        leading: Stack(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    /*  pagesConfigCont.pageController2
-                        .jumpToPage(0); //AQUI VA  AL HOME*/
-                    pagesConfigCont.showAppBar(true);
-                    pagesConfigCont.back();
-                    // pagesConfigCont.back();
-                    // pagesConfigCont.goToPreviousPage();
-                    // pagesConfigCont.goToPage(
-                    //     1, pagesConfigCont.pageController2);
-
-                    // Navigator.pop(context);
-                  },
-                ),
-              ],
-            ),
-            Positioned(
-              bottom: -20,
-              left: -20,
-              child: Container(
-                width: 72.0, // Ajusta el tamaño del círculo según sea necesario
-                height: 72.0,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color.fromARGB(76, 224, 224,
-                      224), // Puedes ajustar el tono del gris según tus preferencias
-                ),
-              ),
-            )
-          ],
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Column(
-              children: [
-                Icon(
-                  MdiIcons.account,
-                  size: 62.0,
-                  color: Colors.white, // Color del ícono
-                ),
-                const Text(
-                  'Clientes Atendiéndose',
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
-                ),
-              ],
-            ),
-            SizedBox(
-              width: (MediaQuery.of(context).size.width * 0.14),
-            ),
-          ],
-        ),
-        //actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
-        elevation: 0, // Quits the shadow
-        //shadowColor: Colors.amber, // Removes visual elevation
-      ),*/
       backgroundColor: const Color.fromARGB(255, 231, 232, 234),
       body: GetBuilder<ClientsCoordinatorController>(
         builder: (controllerCORD) {
           return Column(
             children: [
-              Expanded(
-                flex: 4,
-                child: topPage(
-                    panddCont: panddCont,
-                    colorCont: colorCont,
-                    borderCont: borderCont,
-                    IconnsBack: IconnsBack,
-                    pagesConfigC: pagesConfigCont,
-                    isPagesConfig: true,
-                    IconnsP: IconnsP,
-                    title: title,
-                    subTitle: subTitle,
-                    colorIcon: colorIcon,
-                    buttonRight: false),
-              ),
+              pagesConfigCont1.colacionNotification == 1
+                  ? Expanded(
+                      flex: 4,
+                      child: topPage(
+                          panddCont: panddCont2,
+                          colorCont: colorCont,
+                          borderCont: borderCont2,
+                          IconnsBack: IconnsBack,
+                          pagesConfigC: pagesConfigCont,
+                          isPagesConfig: true,
+                          IconnsP: IconnsP2,
+                          title: title2,
+                          subTitle: subTitle2,
+                          colorIcon: colorIcon2,
+                          buttonRight: false),
+                    )
+                  : Expanded(
+                      flex: 4,
+                      child: topPage(
+                          panddCont: panddCont,
+                          colorCont: colorCont,
+                          borderCont: borderCont,
+                          IconnsBack: IconnsBack,
+                          pagesConfigC: pagesConfigCont,
+                          isPagesConfig: true,
+                          IconnsP: IconnsP,
+                          title: title,
+                          subTitle: subTitle,
+                          colorIcon: colorIcon,
+                          buttonRight: false),
+                    ),
               pagesConfigCont.colacionNotification == 0
                   ? Expanded(
                       flex: 18,

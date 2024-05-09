@@ -76,7 +76,7 @@ class Estadist1Model {
       time: json['time'],
       servicesRealizated: json['servicesRealizated'],
       tips: json['tips'],
-      tips80: json['tips80%'],
+      tips80: json['tips80'],
       Services: json['Services'],
       totalServices: json['totalServices'],
       Products: json['Products'],

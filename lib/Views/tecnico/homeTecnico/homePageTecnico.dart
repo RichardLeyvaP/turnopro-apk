@@ -169,7 +169,7 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                                             _notiCont.notificationListBack &&
                                         _notiCont.notificationListNewLength !=
                                             0) {
-                                      _notiCont.reproducirSound();
+                                      // _notiCont.reproducirSound();
                                     }
                                     return Text(
                                         (_notiCont.notificationListNewLength)
@@ -215,13 +215,13 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
 // ignore: must_be_immutable
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final int? id;
-  const CustomAppBar({Key? key, required this.id}) : super(key: key);
+  CustomAppBar({Key? key, required this.id}) : super(key: key);
 
   @override
   //Size get preferredSize => const Size.fromHeight(kToolbarHeight);
   Size get preferredSize =>
       const Size.fromHeight(70); // Ajusta el tamaño del AppBar aquí
-
+  NotificationController notiController = Get.find<NotificationController>();
   // Utilizar una función o getter para obtener imageDirection
 
   @override //todo AppBar
@@ -610,6 +610,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                           3);
                                                   if (result == 1) //codigo 200
                                                   {
+                                                    //mando notificacion al barbero
+                                                    notiController.storeNotification(
+                                                        'Solicitud de Colación',
+                                                        _.branchIdLoggedIn,
+                                                        _.idProfessionalLoggedIn,
+                                                        'EL Técnico ${_.nameUserLoggedIn} esta pidiendo solicitud de colación',
+                                                        'Ambos'); //esto es para quele llegue a coordinador y encargado
                                                     _.setCodigoQrValid(
                                                         2); //quiere decir que el qr esta bloquedo hasta que acepten o rechacen
                                                     Get.snackbar(
@@ -814,6 +821,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                   {
                                                     _.setCodigoQrValid(
                                                         2); //si el QR = 2 sacarlo de la app
+                                                    notiController.storeNotification(
+                                                        'Solicitud de Salida',
+                                                        _.branchIdLoggedIn,
+                                                        _.idProfessionalLoggedIn,
+                                                        'EL Técnico ${_.nameUserLoggedIn} esta pidiendo solicitud de salida',
+                                                        'Ambos'); //esto es para quele llegue a coordinador y encargado
                                                     Get.snackbar(
                                                       '',
                                                       'Solicitud de salida pedida correctamente,espere un momento...',

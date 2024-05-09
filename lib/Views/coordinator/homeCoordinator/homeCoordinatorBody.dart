@@ -790,7 +790,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
         ),
         onPressed: () async {
           if (titleCart == 'Atendiéndose') {
-            pagesConfigC.updateColacionNotification(0);
+            await pagesConfigC.updateColacionNotification(0);
             Get.dialog(
               const Center(
                 child: CircularProgressIndicator(
@@ -830,7 +830,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
             Get.back();
           }
           if (titleCart == 'Colación') {
-            pagesConfigC.updateColacionNotification(1);
+            await pagesConfigC.updateColacionNotification(1);
             Get.dialog(
               const Center(
                 child: CircularProgressIndicator(

@@ -22,6 +22,15 @@ class AgendaResponsible extends StatefulWidget {
 }
 
 class _AgendaResponsibleState extends State<AgendaResponsible> {
+  @override
+  void dispose() {
+    // Llama a updateColacionNotification(value) cuando el widget se elimina
+    pagesConfigCont1.updateColacionNotification(0);
+    print('entre al dispose _AgendaResponsibleState');
+
+    super.dispose();
+  }
+
   final double valuePadding = 12;
   final StatisticController controllerStatistic =
       Get.find<StatisticController>();
@@ -51,47 +60,53 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
   var colorIcon = Color(0xFF19CF9E);
   /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
 
+  var IconnsP2 = MdiIcons.accountTieOutline;
+  String title2 = 'Profesionales en Colación';
+  String subTitle2 = 'Profesionales en Colación';
+  double panddCont2 = 8;
+  double borderCont2 = 12;
+  var colorIcon2 = Color(0xFFFF6750);
+  /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
+
   @override
   Widget build(BuildContext context) {
-    if (pagesConfigCont1.colacionNotification == 0) {
-      /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
-      IconnsP = MdiIcons.accountOutline;
-      title = 'Clientes ';
-      subTitle = 'Clientes del día';
-      panddCont = 8;
-      borderCont = 12;
-      colorIcon = Color(0xFF19CF9E);
-      /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
-    } else if (pagesConfigCont1.colacionNotification == 1) {
-      IconnsP = MdiIcons.accountTieOutline;
-      title = 'Profesionales en Colación';
-      subTitle = 'Profesionales en Colación';
-      panddCont = 8;
-      borderCont = 12;
-      colorIcon = Color(0xFFFF6750);
-      /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
-    }
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 231, 232, 234),
       body: GetBuilder<ClientsCoordinatorController>(
         builder: (controllerCORD) {
           return Column(
             children: [
-              Expanded(
-                flex: 4,
-                child: topPage(
-                    panddCont: panddCont,
-                    colorCont: colorCont,
-                    borderCont: borderCont,
-                    IconnsBack: IconnsBack,
-                    pagesConfigC: pagesConfigCont,
-                    isPagesConfig: true,
-                    IconnsP: IconnsP,
-                    title: title,
-                    subTitle: subTitle,
-                    colorIcon: colorIcon,
-                    buttonRight: false),
-              ),
+              pagesConfigCont1.colacionNotification == 1
+                  ? Expanded(
+                      flex: 4,
+                      child: topPage(
+                          panddCont: panddCont2,
+                          colorCont: colorCont,
+                          borderCont: borderCont2,
+                          IconnsBack: IconnsBack,
+                          pagesConfigC: pagesConfigCont,
+                          isPagesConfig: true,
+                          IconnsP: IconnsP2,
+                          title: title2,
+                          subTitle: subTitle2,
+                          colorIcon: colorIcon2,
+                          buttonRight: false),
+                    )
+                  : Expanded(
+                      flex: 4,
+                      child: topPage(
+                          panddCont: panddCont,
+                          colorCont: colorCont,
+                          borderCont: borderCont,
+                          IconnsBack: IconnsBack,
+                          pagesConfigC: pagesConfigCont,
+                          isPagesConfig: true,
+                          IconnsP: IconnsP,
+                          title: title,
+                          subTitle: subTitle,
+                          colorIcon: colorIcon,
+                          buttonRight: false),
+                    ),
               pagesConfigCont1.colacionNotification == 0
                   ? Expanded(
                       flex: 18,

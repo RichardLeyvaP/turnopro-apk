@@ -10,6 +10,7 @@ import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 //import 'package:lottie/lottie.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
@@ -29,6 +30,8 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
   final LoginController controllerLogin = Get.find<LoginController>();
   final NotificationController controllerNotif =
       Get.find<NotificationController>();
+  final PagesConfigController pagesConfigCont =
+      Get.find<PagesConfigController>();
 
   final PagesConfigResponController pagesConfigReC =
       Get.find<PagesConfigResponController>();
@@ -81,7 +84,9 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                       showUnselectedLabels: false,
                       unselectedItemColor: Color.fromARGB(155, 177, 173, 173),
                       backgroundColor: Colors.white,
-                      fixedColor: const Color(0xFFFDAE2A),
+                      fixedColor: pagesConfigCont.colacionNotification == 1
+                          ? Color.fromARGB(155, 177, 173, 173)
+                          : const Color(0xFFFDAE2A),
                       currentIndex: pagesConfigRespC.selectedIndexResp,
                       type: BottomNavigationBarType.fixed,
                       onTap: (index) async {
@@ -97,8 +102,25 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                           await coexistenceController
                               .fetchBranchProfessionals();
                           Get.back();
+                          pagesConfigRespC.onTabTapped(index);
                         }
-                        pagesConfigRespC.onTabTapped(index);
+                        if (index == 1) {
+                          Get.dialog(
+                            const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFFFDAE2A),
+                              ),
+                            ),
+                            barrierDismissible: false,
+                          ); //Get.back();
+                          await pagesConfigCont.updateColacionNotification(0);
+                          await controClient.fetchClientsScheduledBranch(
+                              controllerLogin.branchIdLoggedIn);
+                          Get.back();
+                          pagesConfigRespC.onTabTapped(index);
+                        } else {
+                          pagesConfigRespC.onTabTapped(index);
+                        }
                       },
                       items: [
                         BottomNavigationBarItem(
@@ -107,9 +129,11 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                               size: MediaQuery.of(context).size.width * 0.08,
                             ),
                             label: 'Home'),
-                        controClient.clientsScheduledListBranchLength > 0
+                        controClient.clientsScheduledListBranchLength > 0 &&
+                                pagesConfigCont.colacionNotification == 0
                             ? BottomNavigationBarItem(
                                 icon: Badge(
+                                  backgroundColor: Color(0xFF19CF9E),
                                   label: Text(
                                       '${controClient.clientsScheduledListBranchLength}'),
                                   child: Icon(
@@ -156,7 +180,7 @@ class _HomeResponsiblePagesState extends State<HomeResponsiblePages> {
                                         _notiCont
                                                 .notificationListNewLengthEncarg !=
                                             0) {
-                                      _notiCont.reproducirSound();
+                                      // _notiCont.reproducirSound();
                                     }
                                     return Text((_notiCont
                                             .notificationListNewLengthEncarg)

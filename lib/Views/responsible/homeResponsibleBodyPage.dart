@@ -547,7 +547,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
@@ -829,7 +829,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
@@ -1098,7 +1098,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 30, top: 10),
+                        padding: const EdgeInsets.only(left: 15, top: 10),
                         child: SingleChildScrollView(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1384,7 +1384,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 5, left: 30),
+                        padding: const EdgeInsets.only(top: 5, left: 15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,

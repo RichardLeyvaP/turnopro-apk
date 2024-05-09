@@ -96,7 +96,7 @@ class PagesConfigController extends GetxController {
     update();
   }
 
-  void updateColacionNotification(value) {
+  Future<void> updateColacionNotification(value) async {
     colacionNotification = value;
     update();
   }

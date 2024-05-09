@@ -359,7 +359,9 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                             ),
                                                                           ),
                                                                           Text(
-                                                                            _.estadist0[index].tips80.toString(),
+                                                                            _.estadist0[index].tips80 == null
+                                                                                ? '0'
+                                                                                : _.estadist0[index].tips80.toString(),
                                                                             maxLines:
                                                                                 2, // Limita el texto a 2 líneas
                                                                             overflow:

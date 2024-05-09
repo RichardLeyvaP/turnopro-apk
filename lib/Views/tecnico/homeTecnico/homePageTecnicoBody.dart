@@ -438,6 +438,14 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                               .clientsNextTechnical!
                                                               .reservation_id);
                                                   if (resulButton == 1) {*/
+                                                  notiController.storeNotification(
+                                                      'Solicitud de rechazo',
+                                                      loginController
+                                                          .branchIdLoggedIn,
+                                                      loginController
+                                                          .idProfessionalLoggedIn,
+                                                      'EL profesional "${loginController.nameUserLoggedIn}" está rechazando a "${clientsScheduledController.clientsNextTechnical!.client_name}"',
+                                                      'Ambos'); //esto es para quele llegue a coordinador y encargado
                                                   controllerclient
                                                       .acceptClientTechnical(
                                                           controllerclient
@@ -1064,13 +1072,6 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                       ),
                                       barrierDismissible: false,
                                     ); //Get.back();
-                                    await clientsScheduledController
-                                        .acceptClientTechnical(
-                                            clientsScheduledController
-                                                .clientsAttendedTechnical!
-                                                .reservation_id,
-                                            11);
-                                    //AQUI ENVIAR NOTIFICACION AL PROFESIONAL QUE YA VA EL CLIENTE DE VUELTA PARA ACABAR EL SERVICIO
                                     notiController.storeNotification(
                                         'Cliente Regresando',
                                         loginController.branchIdLoggedIn,
@@ -1079,6 +1080,14 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                             .professional_id,
                                         ' El cliente ${clientsScheduledController.clientsAttendedTechnical!.client_name} ya está disponible para que continúes con el servicio',
                                         'Barbero');
+                                    await clientsScheduledController
+                                        .acceptClientTechnical(
+                                            clientsScheduledController
+                                                .clientsAttendedTechnical!
+                                                .reservation_id,
+                                            11);
+                                    //AQUI ENVIAR NOTIFICACION AL PROFESIONAL QUE YA VA EL CLIENTE DE VUELTA PARA ACABAR EL SERVICIO
+
                                     Get.back();
                                     // Cerrar el primer modal
                                     Navigator.pop(context);

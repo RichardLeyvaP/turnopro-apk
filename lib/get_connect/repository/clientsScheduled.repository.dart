@@ -351,7 +351,7 @@ class ClientsScheduledRepository extends GetConnect {
         String imageUrlBarber = data[0]['image_url'];
         String imageLookBarber = data[0]['imageLook'];
         int cantVisitBarber = data[0]['cantVisit'];
-        String endLookBarber = data[0]['endLook'];
+        String endLookBarber = data[0]['endLook'] ?? '';
         String frecuenciaBarber = data[0]['frecuencia'];
 
         print('ertyu - $professionalNameBarber');
