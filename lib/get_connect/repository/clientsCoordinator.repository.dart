@@ -443,7 +443,11 @@ class ClientsCoordinatorRepository extends GetConnect {
         ClientsScheduledModel client =
             ClientsScheduledModel.fromJson(jsonEncode(service));
         //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
-        if (client.detached == 1 && client.attended != 33) {
+        if (client.detached == 1 &&
+            client.attended != 0 &&
+            client.attended != 2) {
+          //0 es estar en cola, 2 es finalizado
+
           Map newValue = {
             "reservation_id": client.reservation_id,
             "updated_at": convertDateTimeToMinutes(client.updated_at!),
@@ -466,7 +470,9 @@ class ClientsCoordinatorRepository extends GetConnect {
         //AQUI PARA SABER CUANTOS ESTA ATENDIENDO
         if (client.attended == 1 ||
             client.attended == 11 ||
-            client.attended == 111) {
+            client.attended == 111 ||
+            client.attended == 33) {
+          //33 es rechazado por el tecnico pero es atendido por el barbero
           //agregue aqui estos dos 11 y 111
           quantityClientAttended++;
         }

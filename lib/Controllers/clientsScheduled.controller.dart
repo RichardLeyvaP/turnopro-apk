@@ -1242,27 +1242,6 @@ class ClientsScheduledController extends GetxController {
 
           //
           //
-          //  if (closeIesperado == true) //es que cerró inesperadamente
-          {
-            if (resultList.containsKey('attendingClient')) {
-              List<Map>? attendingClientList = resultList['attendingClient'];
-              //aqui es donde tiene que entrar solamente si se loguea
-              if (controllerLogin.isLoggingIn == true) {
-                print(
-                    'EL TIEMPO clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn}) { entre poque vine del login ');
-
-                logicaInesperada(attendingClientList);
-                controllerLogin.setIsLoggingIn(false);
-              } else {
-                print(
-                    'clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn})  NOOO ');
-              }
-            } else {
-              // La clave 'attendingClient' no está presente en el mapa
-              print(
-                  '!!!!!!!!!!!!!!!!!!!!La clave "attendingClient" no está presente en el mapa.');
-            }
-          }
 
           //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
           clientsScheduledNext = resultList['nextClient'];
@@ -1270,16 +1249,6 @@ class ClientsScheduledController extends GetxController {
           varClientsWaiting = resultList['varclientswaiting'];
           if (quantityClientAttended == 0) {
             clientsAttended = 'nobody';
-          }
-
-          if (clientsScheduledNext != null) {
-            int idCar = clientsScheduledNext!.car_id!;
-            await searchForCustomerServices(idCar);
-            await filterShowNext();
-            //  setValueClock(true);
-          } else {
-            print('if (clientsScheduledNext != null) ESTOY DANDO null');
-            //  setValueClock(false);
           }
         }
       }
@@ -1461,6 +1430,7 @@ class ClientsScheduledController extends GetxController {
         //   'clientes asistiendo!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo no está vacía.');
         //print('clientes asistiendo : ${attendingClientList.length}');
         // Obtener la hora actual
+
         DateTime horaActual = DateTime.now();
         DateTime hora1 = DateTime.parse('2024-02-27 19:34:45');
         int diferenciaSegundos = 0;
@@ -1508,6 +1478,7 @@ class ClientsScheduledController extends GetxController {
             diferenciaSegundos = 0;
           }*/
           // Calcular la diferencia en segundos entre hora1 y la hora actual
+
           int diferenciaSegundos = horaActual.difference(hora1).inSeconds;
 
           print('clientes asistiendo clock:$clock');
@@ -1520,67 +1491,66 @@ class ClientsScheduledController extends GetxController {
               'clientes asistiendo hora timeClock:${(timeClock! - diferenciaSegundos)}');
           // Lógica adicional si es necesario con las variables asignadas
           if (clock == 1) {
-            print('clientes asistiendo entre a :$clock');
-            // Asignar a variables específicas para clock 1
-            clientsAttended1 = client;
-            timeClientsAttended1 = (timeClock! - diferenciaSegundos) <= 0
-                ? 0
-                : (timeClock! - diferenciaSegundos); //tiempo en segundos
-            //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
-            //  await set_timeClock(reservation_id,timeClock,detached,clock);
-            // await setTimeClock(client!.reservation_id, 0, 0, 1);//todo comente a ver si ya lo hace bien
-            // ... otras asignaciones para clock 1
-            //  setTimeClock(client!.reservation_id, timeClientsAttended1, 1, 1);
-            print(
-                'clientes asistiendo hora timeClock***********timeClock*****:$timeClock');
-            print(
-                'clientes asistiendo hora timeClock*********diferenciaSegundos*******:$diferenciaSegundos');
-            print(
-                'clientes asistiendo hora timeClock*********timeClientsAttended1*******:$timeClientsAttended1');
+            if (client!.attended == 4 ||
+                client!.attended == 5 ||
+                client!.attended == 33) {
+              clientsAttended1 = client;
+              timeClientsAttended1 = timeClock!;
+            } else {
+              print('clientes asistiendo entre a :$clock');
+              // Asignar a variables específicas para clock 1
+              clientsAttended1 = client;
+              timeClientsAttended1 = (timeClock! - diferenciaSegundos) <= 0
+                  ? 0
+                  : (timeClock! - diferenciaSegundos); //tiempo en segundos
+              //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
+              //  await set_timeClock(reservation_id,timeClock,detached,clock);
+              // await setTimeClock(client!.reservation_id, 0, 0, 1);//todo comente a ver si ya lo hace bien
+              // ... otras asignaciones para clock 1
+              //  setTimeClock(client!.reservation_id, timeClientsAttended1, 1, 1);
+              print(
+                  'clientes asistiendo hora timeClock***********timeClock*****:$timeClock');
+              print(
+                  'clientes asistiendo hora timeClock*********diferenciaSegundos*******:$diferenciaSegundos');
+              print(
+                  'clientes asistiendo hora timeClock*********timeClientsAttended1*******:$timeClientsAttended1');
+            }
           } else if (clock == 2) {
-            print('clientes asistiendo entre a :$clock');
-            // Asignar a variables específicas para clock 2
-            clientsAttended2 = client;
-            timeClientsAttended2 = (timeClock! - diferenciaSegundos) <= 0
-                ? 0
-                : (timeClock! - diferenciaSegundos); //tiempo en segundos
-            //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
-            //  await set_timeClock(reservation_id,timeClock,detached,clock);
-            // await setTimeClock(client!.reservation_id, 0, 0, 2);//todo comente a ver si ya lo hace bien
-            // ... otras asignaciones para clock 2
-            //  setTimeClock(client!.reservation_id, timeClientsAttended2, 1, 2);
-            print(
-                'clientes asistiendo hora timeClock*******************:$timeClientsAttended2');
+            if (client!.attended == 4 ||
+                client!.attended == 5 ||
+                client!.attended == 33) {
+              clientsAttended2 = client;
+              timeClientsAttended2 = timeClock!;
+            } else {
+              clientsAttended2 = client;
+              timeClientsAttended2 = (timeClock! - diferenciaSegundos) <= 0
+                  ? 0
+                  : (timeClock! - diferenciaSegundos); //tiempo en segundos
+            }
           } else if (clock == 3) {
-            print('clientes asistiendo entre a :$clock');
-            // Asignar a variables específicas para clock 3
-            clientsAttended3 = client;
-            timeClientsAttended3 = (timeClock! - diferenciaSegundos) <= 0
-                ? 0
-                : (timeClock! - diferenciaSegundos); //tiempo en segundos
-            //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
-            //  await set_timeClock(reservation_id,timeClock,detached,clock);
-            // await setTimeClock(client!.reservation_id, 0, 0, 3);//todo comente a ver si ya lo hace bien
-
-            // ... otras asignaciones para clock 3
-            // setTimeClock(client!.reservation_id, timeClientsAttended3, 1, 3);
-            print(
-                'clientes asistiendo hora timeClock****************:$timeClientsAttended3');
+            if (client!.attended == 4 ||
+                client!.attended == 5 ||
+                client!.attended == 33) {
+              clientsAttended3 = client;
+              timeClientsAttended3 = timeClock!;
+            } else {
+              clientsAttended3 = client;
+              timeClientsAttended3 = (timeClock! - diferenciaSegundos) <= 0
+                  ? 0
+                  : (timeClock! - diferenciaSegundos); //tiempo en segundos
+            }
           } else if (clock == 4) {
-            print('clientes asistiendo entre a :$clock');
-            // Asignar a variables específicas para clock 3
-            clientsAttended4 = client;
-            timeClientsAttended4 = (timeClock! - diferenciaSegundos) <= 0
-                ? 0
-                : (timeClock! - diferenciaSegundos); //tiempo en segundos
-            //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
-            //  await set_timeClock(reservation_id,timeClock,detached,clock);
-            // await setTimeClock(client!.reservation_id, 0, 0, 4);//todo comente a ver si ya lo hace bien
-
-            // ... otras asignaciones para clock 3
-            //  setTimeClock(client!.reservation_id, timeClientsAttended4, 1, 4);
-            print(
-                'clientes asistiendo hora timeClock*****************:$timeClientsAttended4');
+            if (client!.attended == 4 ||
+                client!.attended == 5 ||
+                client!.attended == 33) {
+              clientsAttended3 = client;
+              timeClientsAttended3 = timeClock!;
+            } else {
+              clientsAttended4 = client;
+              timeClientsAttended4 = (timeClock! - diferenciaSegundos) <= 0
+                  ? 0
+                  : (timeClock! - diferenciaSegundos); //tiempo en segundos
+            }
           }
           // Puedes agregar más condiciones según sea necesario para otros valores de clock
         } //cierre for (var map in attendingClientList)

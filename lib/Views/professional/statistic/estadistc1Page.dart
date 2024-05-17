@@ -88,7 +88,7 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                             height: (MediaQuery.of(context)
                                                     .size
                                                     .height *
-                                                0.63),
+                                                0.67),
                                             width: (MediaQuery.of(context)
                                                     .size
                                                     .width *
@@ -245,29 +245,18 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                         ),
                                                                       ],
                                                                     ),
-                                                                    Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        color: _.estadist1[index].pay ==
-                                                                                0
-                                                                            ? Color(0xFFFDAE2A)
-                                                                            : Color(0xFF19CF9E), //todo
-                                                                        borderRadius:
-                                                                            BorderRadius.all(Radius.circular(8)),
-                                                                      ),
-                                                                      child:
-                                                                          Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.all(8.0),
-                                                                        child: Text(
-                                                                            _.estadist1[index].pay == 0
-                                                                                ? 'PENDIENTE'
-                                                                                : 'PAGADO',
-                                                                            style: const TextStyle(
-                                                                                fontSize: 12,
-                                                                                color: Colors.white,
-                                                                                fontWeight: FontWeight.w700)),
-                                                                      ),
+                                                                    Padding(
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                              8.0),
+                                                                      child: Text(
+                                                                          _.estadist1[index].pay == 0
+                                                                              ? 'PENDIENTE'
+                                                                              : 'PAGADO',
+                                                                          style: TextStyle(
+                                                                              fontSize: 16,
+                                                                              color: _.estadist1[index].pay == 0 ? Color(0xFFFDAE2A) : Color(0xFF19CF9E),
+                                                                              fontWeight: FontWeight.w700)),
                                                                     )
                                                                   ],
                                                                 ),
@@ -662,6 +651,39 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                           fontWeight:
                                                                               FontWeight.w700),
                                                                     ),
+                                                                  ],
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    const Text(
+                                                                      'Bonos de Metas',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            16,
+                                                                      ),
+                                                                    ),
+                                                                    Text(
+                                                                        _.estadist1[index].metaamount
+                                                                            .toString(),
+                                                                        maxLines:
+                                                                            2, // Limita el texto a 2 líneas
+                                                                        overflow:
+                                                                            TextOverflow
+                                                                                .ellipsis, // Agrega los tres puntos suspensivos
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                16,
+                                                                            color: Color.fromARGB(
+                                                                                148,
+                                                                                0,
+                                                                                0,
+                                                                                0),
+                                                                            fontWeight:
+                                                                                FontWeight.w700)),
                                                                   ],
                                                                 ),
                                                                 Row(

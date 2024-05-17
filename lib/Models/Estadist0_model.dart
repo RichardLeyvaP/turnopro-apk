@@ -15,6 +15,8 @@ class Estadist0Model {
   final int? clientAleator;
   final int? amountGenerate;
   final int? totalRetention;
+  final int? metacant;
+  final int? metaamount; //duda si es entero o double
 
   Estadist0Model({
     required this.professional_id,
@@ -31,6 +33,8 @@ class Estadist0Model {
     this.clientAleator,
     this.amountGenerate,
     this.totalRetention,
+    this.metacant,
+    this.metaamount,
   });
 
   factory Estadist0Model.fromJson(Map<String, dynamic> json) {
@@ -49,6 +53,8 @@ class Estadist0Model {
       clientAleator: json['clientAleator'],
       amountGenerate: json['amountGenerate'],
       totalRetention: json['totalRetention'],
+      metacant: json['metaCant'],
+      metaamount: json['metaAmount'],
     );
   }
 

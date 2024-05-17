@@ -132,6 +132,7 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                         controClient.clientsTechnicalLength != 0
                             ? BottomNavigationBarItem(
                                 icon: Badge(
+                                  backgroundColor: Color(0xFF19CF9E),
                                   label: Text(
                                       '${controClient.clientsTechnicalLength}'),
                                   child: Icon(

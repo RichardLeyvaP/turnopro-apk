@@ -187,21 +187,20 @@ class _LineChartSample2State extends State<LineChartSample2> {
                                                   height: 18,
                                                 ),
                                               ),
-                                              Text(entry.key,
-                                                  style: const TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.w500,
-                                                  )),
+                                              Text(
+                                                entry.key,
+                                              ),
                                             ],
                                           ),
                                           Text(
                                             entry.value == null
                                                 ? '0'
                                                 : '${entry.value}',
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w800,
-                                            ),
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Color.fromARGB(
+                                                    148, 0, 0, 0),
+                                                fontWeight: FontWeight.w700),
                                           )
                                         ],
                                       ),

@@ -261,6 +261,8 @@ class NotificationController extends GetxController {
           // Llama a la función localNotificationsSimplifies después del retraso
           localNotificationsSimplifies(result1.tittle, result1.description);
           print('aqui llamando las notificaciones nuevas1');
+          print(
+              'aqui llamando las notificaciones nuevas1:result1.tittle : ${result1.tittle}');
           await Future.delayed(const Duration(seconds: 2)); // Espera 2 segundos
         }
 

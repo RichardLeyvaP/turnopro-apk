@@ -83,7 +83,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                       (MediaQuery.of(context)
                                                               .size
                                                               .height *
-                                                          0.396),
+                                                          0.42),
                                                   width: (MediaQuery.of(context)
                                                           .size
                                                           .width *
@@ -381,6 +381,30 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                               'Retención'),
                                                                           Text(
                                                                             _.estadist0[index].totalRetention.toString(),
+                                                                            maxLines:
+                                                                                2, // Limita el texto a 2 líneas
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                            style: const TextStyle(
+                                                                                fontSize: 16,
+                                                                                color: Color.fromARGB(148, 0, 0, 0),
+                                                                                fontWeight: FontWeight.w700),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
+                                                                        children: [
+                                                                          const Text(
+                                                                            'Bonos de Metas',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: 16,
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            _.estadist0[index].metaamount.toString(),
                                                                             maxLines:
                                                                                 2, // Limita el texto a 2 líneas
                                                                             overflow:

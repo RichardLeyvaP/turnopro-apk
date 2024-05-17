@@ -168,14 +168,21 @@ class StatisticController extends GetxController {
     earningByDays.clear();
     averageEarnings = 0.0;
     totalEarnings = 0.0;
+
+    if (page == 1) {
+      dateRangeDia = '   $startDateIn  -  $endDateIn';
+    } else if (page == 2) {
+      dateRangeSem = '   $startDateIn  -  $endDateIn';
+    } else if (page == 3) {
+      dateRange = '   $startDateIn  -  $endDateIn';
+    }
+
     if (mes == -99 && year == -99) {
-      dateRange = '';
       if (quantityDatesIn > 7) {
         quantityDates = 7;
       } else {
         quantityDates = quantityDatesIn;
       }
-      dateRange = '   $startDateIn  -  $endDateIn';
     }
 
     try {

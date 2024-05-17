@@ -114,6 +114,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     _timer = Timer.periodic(const Duration(seconds: 15), (Timer timer) {
       print('callTimerTec1');
       if (clientsScheduledController.boolFilterShowNextTecnhical == true &&
+          clientsScheduledController.listClientReal > 0 &&
           (loginController.codigoQrValid() == true) &&
           !clientsScheduledController.idClientsEspera.contains(
               clientsScheduledController.clientsAttendedTechnical!.client_id)) {
@@ -403,305 +404,343 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(12)),
                                       ),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            height: (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.115),
-                                            width: (MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.20),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: Colors
-                                                    .white, // Color blanco para el borde
-                                                width:
-                                                    1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                                              ),
-                                              color: Color(0xFFFF6750),
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(18)),
-                                            ),
-                                            child: IconButton(
-                                              onPressed: () {
-                                                if (loginController
-                                                        .codigoQrValid() ==
-                                                    true) {
-                                                  /*  int resulButton = 0;
-                                                  resulButton = loginController
-                                                      .handleButtonClickTec(
-                                                          controllerclient
-                                                              .clientsNextTechnical!
-                                                              .reservation_id);
-                                                  if (resulButton == 1) {*/
-                                                  notiController.storeNotification(
-                                                      'Solicitud de rechazo',
-                                                      loginController
-                                                          .branchIdLoggedIn,
-                                                      loginController
-                                                          .idProfessionalLoggedIn,
-                                                      'EL profesional "${loginController.nameUserLoggedIn}" está rechazando a "${clientsScheduledController.clientsNextTechnical!.client_name}"',
-                                                      'Ambos'); //esto es para quele llegue a coordinador y encargado
-                                                  controllerclient
-                                                      .acceptClientTechnical(
-                                                          controllerclient
-                                                              .clientsNextTechnical!
-                                                              .reservation_id,
-                                                          33);
-                                                  // }
-                                                } else if (loginController
-                                                        .usserPermissionQr ==
-                                                    2) {
-                                                  Get.snackbar(
-                                                    'Mensaje',
-                                                    'Debe de esperar la respuesta a su solicitud',
-                                                    duration: const Duration(
-                                                        milliseconds: 2500),
-                                                    backgroundColor:
-                                                        const Color.fromARGB(
-                                                            118, 255, 255, 255),
-                                                    showProgressIndicator: true,
-                                                    progressIndicatorBackgroundColor:
-                                                        const Color.fromARGB(
-                                                            255, 203, 205, 209),
-                                                    progressIndicatorValueColor:
-                                                        const AlwaysStoppedAnimation(
-                                                            Color(0xFFFDAE2A)),
-                                                    overlayBlur: 3,
-                                                  );
-                                                } else {
-                                                  Get.snackbar(
-                                                    'Mensaje',
-                                                    'Debe de escanear el código Qr de entrada',
-                                                    duration: const Duration(
-                                                        milliseconds: 2500),
-                                                    backgroundColor:
-                                                        const Color.fromARGB(
-                                                            118, 255, 255, 255),
-                                                    showProgressIndicator: true,
-                                                    progressIndicatorBackgroundColor:
-                                                        const Color.fromARGB(
-                                                            255, 203, 205, 209),
-                                                    progressIndicatorValueColor:
-                                                        const AlwaysStoppedAnimation(
-                                                            Color(0xFFF18254)),
-                                                    overlayBlur: 3,
-                                                  );
-                                                }
-                                              },
-                                              icon: Icon(
-                                                MdiIcons.thumbDownOutline,
-                                                color: Colors.white,
-                                                size: (MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.04),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            height: (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.115),
-                                            width: (MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.8),
-                                            decoration: const BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(12)),
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 30, top: 8),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      const Icon(
-                                                        Icons.person,
-                                                        color: const Color
-                                                                .fromARGB(
-                                                            255, 43, 44, 49),
-                                                        size: 22,
-                                                      ),
-                                                      Text(
-                                                        firstName,
-                                                        softWrap: true,
-                                                        style: const TextStyle(
-                                                            height: 1.0,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 20),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Icon(Icons.timer,
-                                                          color: const Color
-                                                                  .fromARGB(
-                                                              180, 0, 0, 0),
-                                                          size: (MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .height *
-                                                              0.018)),
-                                                      Text(
-                                                          //AQUI ETSA EL TIEMPO TOTAL DEL SERVICIO
-                                                          ' ${(controllerclient.clientsNextTechnical!.total_time)}',
-                                                          style:
-                                                              const TextStyle(
-                                                            height: 1.2,
-                                                            fontSize: 16,
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    180,
-                                                                    0,
-                                                                    0,
-                                                                    0),
-                                                          )),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            height: (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.115),
-                                            width: (MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.20),
-                                            decoration: BoxDecoration(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(6.0),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              height: (MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.115),
+                                              width: (MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.20),
+                                              decoration: BoxDecoration(
                                                 border: Border.all(
                                                   color: Colors
                                                       .white, // Color blanco para el borde
                                                   width:
                                                       1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                                                 ),
-                                                color: const Color(0xFF19CF9E),
+                                                color: Color(0xFFFF6750),
                                                 borderRadius:
                                                     const BorderRadius.all(
-                                                        Radius.circular(18))),
-                                            child: IconButton(
-                                              onPressed: () async {
-                                                if (loginController
-                                                        .codigoQrValid() ==
-                                                    true) {
-                                                  int resulButton = 0;
-                                                  resulButton = loginController
-                                                      .handleButtonClickTec(
-                                                          controllerclient
-                                                              .clientsNextTechnical!
-                                                              .reservation_id!);
-                                                  if (resulButton == 1) {
-                                                    // detengo todos los timers que deben detenerse
-                                                    _animationControllerInitialT!
-                                                        .stop();
-                                                    _animationControllerInitialT!
-                                                        .reset();
-
-                                                    _animationTechnicalController1!
-                                                        .stop();
-                                                    _animationTechnicalController1!
-                                                        .reset();
-                                                    //
-                                                    //todo FALTA QUE SE MUESTRE EL RELOJ
-                                                    //
-                                                    _animationTechnicalController1!
-                                                            .duration =
-                                                        const Duration(
-                                                            seconds:
-                                                                300); //por ahora 5min
-                                                    /* Duration(
-                                                          seconds: controllerclient
-                                                              .convertDateSecons(
-                                                                  controllerclient
-                                                                      .clientsAttendedTechnical!
-                                                                      .total_time));*/
-                                                    _animationTechnicalController1!
-                                                        .forward();
-
-                                                    //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
+                                                        Radius.circular(18)),
+                                              ),
+                                              child: IconButton(
+                                                onPressed: () {
+                                                  if (loginController
+                                                          .codigoQrValid() ==
+                                                      true) {
+                                                    /*  int resulButton = 0;
+                                                    resulButton = loginController
+                                                        .handleButtonClickTec(
+                                                            controllerclient
+                                                                .clientsNextTechnical!
+                                                                .reservation_id);
+                                                    if (resulButton == 1) {*/
+                                                    notiController.storeNotification(
+                                                        'Solicitud de rechazo',
+                                                        loginController
+                                                            .branchIdLoggedIn,
+                                                        loginController
+                                                            .idProfessionalLoggedIn,
+                                                        'EL profesional "${loginController.nameUserLoggedIn}" está rechazando a "${clientsScheduledController.clientsNextTechnical!.client_name}"',
+                                                        'Ambos'); //esto es para quele llegue a coordinador y encargado
+                                                    //necesito un metodo igual que este pero que sea para el tecnico
                                                     controllerclient
                                                         .acceptClientTechnical(
                                                             controllerclient
                                                                 .clientsNextTechnical!
                                                                 .reservation_id,
-                                                            5);
+                                                            33);
+                                                    // }
+                                                  } else if (loginController
+                                                          .usserPermissionQr ==
+                                                      2) {
+                                                    Get.snackbar(
+                                                      'Mensaje',
+                                                      'Debe de esperar la respuesta a su solicitud',
+                                                      duration: const Duration(
+                                                          milliseconds: 2500),
+                                                      backgroundColor:
+                                                          const Color.fromARGB(
+                                                              118,
+                                                              255,
+                                                              255,
+                                                              255),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              203,
+                                                              205,
+                                                              209),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFFDAE2A)),
+                                                      overlayBlur: 3,
+                                                    );
+                                                  } else {
+                                                    Get.snackbar(
+                                                      'Mensaje',
+                                                      'Debe de escanear el código Qr de entrada',
+                                                      duration: const Duration(
+                                                          milliseconds: 2500),
+                                                      backgroundColor:
+                                                          const Color.fromARGB(
+                                                              118,
+                                                              255,
+                                                              255,
+                                                              255),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              203,
+                                                              205,
+                                                              209),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFF18254)),
+                                                      overlayBlur: 3,
+                                                    );
                                                   }
-                                                } else if (loginController
-                                                        .usserPermissionQr ==
-                                                    2) {
-                                                  Get.snackbar(
-                                                    'Mensaje',
-                                                    'Debe de esperar la respuesta a su solicitud',
-                                                    duration: const Duration(
-                                                        milliseconds: 2500),
-                                                    backgroundColor:
-                                                        const Color.fromARGB(
-                                                            118, 255, 255, 255),
-                                                    showProgressIndicator: true,
-                                                    progressIndicatorBackgroundColor:
-                                                        const Color.fromARGB(
-                                                            255, 203, 205, 209),
-                                                    progressIndicatorValueColor:
-                                                        const AlwaysStoppedAnimation(
-                                                            Color(0xFFFDAE2A)),
-                                                    overlayBlur: 3,
-                                                  );
-                                                } else {
-                                                  Get.snackbar(
-                                                    'Mensaje',
-                                                    'Debe de escanear el código Qr de entrada',
-                                                    duration: const Duration(
-                                                        milliseconds: 2500),
-                                                    backgroundColor:
-                                                        const Color.fromARGB(
-                                                            118, 255, 255, 255),
-                                                    showProgressIndicator: true,
-                                                    progressIndicatorBackgroundColor:
-                                                        const Color.fromARGB(
-                                                            255, 203, 205, 209),
-                                                    progressIndicatorValueColor:
-                                                        const AlwaysStoppedAnimation(
-                                                            Color(0xFFF18254)),
-                                                    overlayBlur: 3,
-                                                  );
-                                                }
-                                              },
-                                              icon: Icon(
-                                                MdiIcons.thumbUpOutline,
-                                                color: Colors.white,
-                                                size: (MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.04),
+                                                },
+                                                icon: Icon(
+                                                  MdiIcons.thumbDownOutline,
+                                                  color: Colors.white,
+                                                  size: (MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.04),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                            Container(
+                                              height: (MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.115),
+                                              width: (MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.8),
+                                              decoration: const BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(12)),
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 30, top: 8),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        const Icon(
+                                                          Icons.person,
+                                                          color: const Color
+                                                                  .fromARGB(
+                                                              255, 43, 44, 49),
+                                                          size: 22,
+                                                        ),
+                                                        Text(
+                                                          firstName,
+                                                          softWrap: true,
+                                                          style:
+                                                              const TextStyle(
+                                                                  height: 1.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontSize: 20),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Icon(Icons.timer,
+                                                            color: const Color
+                                                                    .fromARGB(
+                                                                180, 0, 0, 0),
+                                                            size: (MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height *
+                                                                0.018)),
+                                                        Text(
+                                                            //AQUI ETSA EL TIEMPO TOTAL DEL SERVICIO
+                                                            ' ${(controllerclient.clientsNextTechnical!.total_time)}',
+                                                            style:
+                                                                const TextStyle(
+                                                              height: 1.2,
+                                                              fontSize: 16,
+                                                              color: Color
+                                                                  .fromARGB(180,
+                                                                      0, 0, 0),
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              height: (MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.115),
+                                              width: (MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.20),
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color: Colors
+                                                        .white, // Color blanco para el borde
+                                                    width:
+                                                        1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                                                  ),
+                                                  color:
+                                                      const Color(0xFF19CF9E),
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(18))),
+                                              child: IconButton(
+                                                onPressed: () async {
+                                                  if (loginController
+                                                          .codigoQrValid() ==
+                                                      true) {
+                                                    int resulButton = 0;
+                                                    resulButton = loginController
+                                                        .handleButtonClickTec(
+                                                            controllerclient
+                                                                .clientsNextTechnical!
+                                                                .reservation_id!);
+                                                    if (resulButton == 1) {
+                                                      // detengo todos los timers que deben detenerse
+                                                      _animationControllerInitialT!
+                                                          .stop();
+                                                      _animationControllerInitialT!
+                                                          .reset();
+
+                                                      _animationTechnicalController1!
+                                                          .stop();
+                                                      _animationTechnicalController1!
+                                                          .reset();
+                                                      //
+                                                      //todo FALTA QUE SE MUESTRE EL RELOJ
+                                                      //
+                                                      _animationTechnicalController1!
+                                                              .duration =
+                                                          const Duration(
+                                                              seconds:
+                                                                  300); //por ahora 5min
+                                                      /* Duration(
+                                                            seconds: controllerclient
+                                                                .convertDateSecons(
+                                                                    controllerclient
+                                                                        .clientsAttendedTechnical!
+                                                                        .total_time));*/
+                                                      _animationTechnicalController1!
+                                                          .forward();
+
+                                                      //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
+                                                      controllerclient
+                                                          .acceptClientTechnical(
+                                                              controllerclient
+                                                                  .clientsNextTechnical!
+                                                                  .reservation_id,
+                                                              5);
+                                                    }
+                                                  } else if (loginController
+                                                          .usserPermissionQr ==
+                                                      2) {
+                                                    Get.snackbar(
+                                                      'Mensaje',
+                                                      'Debe de esperar la respuesta a su solicitud',
+                                                      duration: const Duration(
+                                                          milliseconds: 2500),
+                                                      backgroundColor:
+                                                          const Color.fromARGB(
+                                                              118,
+                                                              255,
+                                                              255,
+                                                              255),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              203,
+                                                              205,
+                                                              209),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFFDAE2A)),
+                                                      overlayBlur: 3,
+                                                    );
+                                                  } else {
+                                                    Get.snackbar(
+                                                      'Mensaje',
+                                                      'Debe de escanear el código Qr de entrada',
+                                                      duration: const Duration(
+                                                          milliseconds: 2500),
+                                                      backgroundColor:
+                                                          const Color.fromARGB(
+                                                              118,
+                                                              255,
+                                                              255,
+                                                              255),
+                                                      showProgressIndicator:
+                                                          true,
+                                                      progressIndicatorBackgroundColor:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              203,
+                                                              205,
+                                                              209),
+                                                      progressIndicatorValueColor:
+                                                          const AlwaysStoppedAnimation(
+                                                              Color(
+                                                                  0xFFF18254)),
+                                                      overlayBlur: 3,
+                                                    );
+                                                  }
+                                                },
+                                                icon: Icon(
+                                                  MdiIcons.thumbUpOutline,
+                                                  color: Colors.white,
+                                                  size: (MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.04),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     )
                                   : Padding(

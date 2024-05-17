@@ -903,7 +903,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     /* if (fin > 2) {
     fin = 2;
   }*/
-    //todo aqui le muestra las solicitudes de Colación
+
+    //todo aqui le muestra las solicitudes de Salida
     for (int i = 0; i < controllerclient.pOutRequestLength; i++) {
       titulo = 'Solicitando Salida';
 
@@ -913,58 +914,83 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
           child: Column(
             children: [
               Container(
+                height: (MediaQuery.of(context).size.height * 0.126),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(12)),
                 ),
                 child: Row(
                   children: [
-                    Container(
-                      height: (MediaQuery.of(context).size.height * 0.120),
-                      width: (MediaQuery.of(context).size.width * 0.20),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white, // Color blanco para el borde
-                          width:
-                              1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 6, top: 6, bottom: 6),
+                      child: Container(
+                        height: (MediaQuery.of(context).size.height * 0.120),
+                        width: (MediaQuery.of(context).size.width * 0.20),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.white, // Color blanco para el borde
+                            width:
+                                1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                          ),
+                          color: const Color(0xFFFF6750),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(12)),
                         ),
-                        color: const Color(0xFFFF6750),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(12)),
-                      ),
-                      child: IconButton(
-                        onPressed: () async {
-                          //  if (controllerLogin.codigoQrValid() == true) {
-                          if (controllerLogin.usserPermissionQr == 1 ||
-                              controllerLogin.usserPermissionQr == 2) {
-                            controllerShoppingCart.setLoading(true);
-                            int idProf = controllerclient
-                                .pOutRequestBranch[i].professional_id!;
-                            String charge =
-                                controllerclient.pOutRequestBranch[i].charge!;
-                            if (charge == 'Barbero y Encargado') {
-                              charge = 'Barbero';
-                            }
+                        child: IconButton(
+                          onPressed: () async {
+                            //  if (controllerLogin.codigoQrValid() == true) {
+                            if (controllerLogin.usserPermissionQr == 1 ||
+                                controllerLogin.usserPermissionQr == 2) {
+                              controllerShoppingCart.setLoading(true);
+                              int idProf = controllerclient
+                                  .pOutRequestBranch[i].professional_id!;
+                              String charge =
+                                  controllerclient.pOutRequestBranch[i].charge!;
+                              if (charge == 'Barbero y Encargado') {
+                                charge = 'Barbero';
+                              }
 
-                            int result =
-                                await controllerLogin.ColacionProfessional(
-                                    idProf, charge, 1);
-                            //aqui mandar notificacion
-                            if (result == 1) {
-                              //codigo 200
-                              String typeDelete =
-                                  'Rechazada su solicitud de Salida';
+                              int result =
+                                  await controllerLogin.ColacionProfessional(
+                                      idProf, charge, 1);
+                              //aqui mandar notificacion
+                              if (result == 1) {
+                                //codigo 200
+                                String typeDelete =
+                                    'Rechazada su solicitud de Salida';
 
-                              notiController.storeNotification2(
-                                  typeDelete,
-                                  controllerLogin.branchIdLoggedIn,
-                                  idProf,
-                                  'Su solicitud de Salida fue rechazada',
-                                  charge);
+                                notiController.storeNotification2(
+                                    typeDelete,
+                                    controllerLogin.branchIdLoggedIn,
+                                    idProf,
+                                    'Su solicitud de Salida fue rechazada',
+                                    charge);
+                              } else {
+                                Get.snackbar(
+                                  'Alerta',
+                                  'Inténtelo nuevamente,problemas de conexión',
+                                  duration: const Duration(milliseconds: 2500),
+                                  backgroundColor:
+                                      const Color.fromARGB(118, 255, 255, 255),
+                                  showProgressIndicator: true,
+                                  progressIndicatorBackgroundColor:
+                                      const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor:
+                                      const AlwaysStoppedAnimation(
+                                          Color(0xFFFDAE2A)),
+                                  overlayBlur: 3,
+                                );
+                              }
+                              if (controllerLogin.branchIdLoggedIn != null) {
+                                await controllerclient.outRequestBranch(
+                                    controllerLogin.branchIdLoggedIn);
+                                controllerShoppingCart.setLoading(false);
+                              }
                             } else {
                               Get.snackbar(
-                                'Alerta',
-                                'Inténtelo nuevamente,problemas de conexión',
+                                'Mensaje',
+                                'Debe de escanear el código Qr de entrada',
                                 duration: const Duration(milliseconds: 2500),
                                 backgroundColor:
                                     const Color.fromARGB(118, 255, 255, 255),
@@ -977,32 +1003,12 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 overlayBlur: 3,
                               );
                             }
-                            if (controllerLogin.branchIdLoggedIn != null) {
-                              await clientsScheduledController.outRequestBranch(
-                                  controllerLogin.branchIdLoggedIn);
-                              controllerShoppingCart.setLoading(false);
-                            }
-                          } else {
-                            Get.snackbar(
-                              'Mensaje',
-                              'Debe de escanear el código Qr de entrada',
-                              duration: const Duration(milliseconds: 2500),
-                              backgroundColor:
-                                  const Color.fromARGB(118, 255, 255, 255),
-                              showProgressIndicator: true,
-                              progressIndicatorBackgroundColor:
-                                  const Color.fromARGB(255, 203, 205, 209),
-                              progressIndicatorValueColor:
-                                  const AlwaysStoppedAnimation(
-                                      Color(0xFFFDAE2A)),
-                              overlayBlur: 3,
-                            );
-                          }
-                        },
-                        icon: Icon(
-                          MdiIcons.thumbDownOutline,
-                          color: Colors.white,
-                          size: (MediaQuery.of(context).size.height * 0.04),
+                          },
+                          icon: Icon(
+                            MdiIcons.thumbDownOutline,
+                            color: Colors.white,
+                            size: (MediaQuery.of(context).size.height * 0.04),
+                          ),
                         ),
                       ),
                     ),
@@ -1014,14 +1020,13 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
                       child: Padding(
-                        padding:
-                            const EdgeInsets.only(top: 22, left: 15, right: 10),
+                        padding: const EdgeInsets.only(left: 15, top: 10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
@@ -1034,97 +1039,126 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 ),
                               ],
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Icon(
-                                      MdiIcons.accountTie,
-                                    ),
-                                    Text(
-                                      controllerclient.pOutRequestBranch[i]
-                                          .professional_name!,
-                                      style: TextStyle(
-                                        fontSize: (MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.018),
-                                        fontWeight: FontWeight.w500,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 0, right: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Icon(
+                                        MdiIcons.accountTie,
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                    controllerclient
-                                        .pOutRequestBranch[i].start_time!,
-                                    style: TextStyle(
-                                        fontSize: (MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.018),
-                                        fontWeight: FontWeight.w800,
-                                        height: 1)),
-                              ],
+                                      Text(
+                                        controllerclient.pOutRequestBranch[i]
+                                            .professional_name!,
+                                        style: TextStyle(
+                                          fontSize: (MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.018),
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                      controllerclient
+                                          .pOutRequestBranch[i].start_time!,
+                                      style: TextStyle(
+                                          fontSize: (MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.018),
+                                          fontWeight: FontWeight.w800,
+                                          height: 1)),
+                                ],
+                              ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                    Container(
-                      height: (MediaQuery.of(context).size.height * 0.120),
-                      width: (MediaQuery.of(context).size.width * 0.20),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.white, // Color blanco para el borde
-                            width:
-                                1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                          ),
-                          color: const Color(0xFF19CF9E),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12))),
-                      child: IconButton(
-                        onPressed: () async {
-                          if (controllerLogin.usserPermissionQr == 1 ||
-                              controllerLogin.usserPermissionQr == 2) {
-                            controllerShoppingCart.setLoading(true);
-                            int idProf = controllerclient
-                                .pOutRequestBranch[i].professional_id!;
-                            String charge =
-                                controllerclient.pOutRequestBranch[i].charge!;
-                            if (charge == 'Barbero y Encargado') {
-                              charge = 'Barbero';
-                            }
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(right: 6, top: 6, bottom: 6),
+                      child: Container(
+                        height: (MediaQuery.of(context).size.height * 0.120),
+                        width: (MediaQuery.of(context).size.width * 0.20),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white, // Color blanco para el borde
+                              width:
+                                  1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                            ),
+                            color: const Color(0xFF19CF9E),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(12))),
+                        child: IconButton(
+                          onPressed: () async {
+                            if (controllerLogin.usserPermissionQr == 1 ||
+                                controllerLogin.usserPermissionQr == 2) {
+                              controllerShoppingCart.setLoading(true);
+                              int idProf = controllerclient
+                                  .pOutRequestBranch[i].professional_id!;
+                              String charge =
+                                  controllerclient.pOutRequestBranch[i].charge!;
+                              if (charge == 'Barbero y Encargado') {
+                                charge = 'Barbero';
+                              }
 
-                            int result =
-                                await controllerLogin.ColacionProfessional(
-                                    idProf, charge, 0);
-                            //aqui mandar notificacion
-                            if (result == 1) {
-                              //poner a 4 para que le cierre la session el Qr
-                              // controllerLogin.setCodigoQrValid(null);
-                              //viendo a la hora que se le aceptó
-                              var now = DateTime.now(); //hora actual
-                              //sumo 1 hora
-                              var formatter = DateFormat('hh:mm');
-                              String formattedTime = formatter.format(now);
+                              int result =
+                                  await controllerLogin.ColacionProfessional(
+                                      idProf, charge, 0);
+                              //aqui mandar notificacion
+                              if (result == 1) {
+                                //poner a 4 para que le cierre la session el Qr
+                                // controllerLogin.setCodigoQrValid(null);
+                                //viendo a la hora que se le aceptó
+                                var now = DateTime.now(); //hora actual
+                                //sumo 1 hora
+                                var formatter = DateFormat('hh:mm');
+                                String formattedTime = formatter.format(now);
 
-                              //codigo 200
-                              String typeDelete =
-                                  'Aceptada su solicitud de Salida';
+                                //codigo 200
+                                String typeDelete =
+                                    'Aceptada su solicitud de Salida';
 
-                              notiController.storeNotification2(
-                                  typeDelete,
-                                  controllerLogin.branchIdLoggedIn,
-                                  idProf,
-                                  'Aceptada su solicitud de Salida, ($formattedTime).',
-                                  charge);
+                                notiController.storeNotification2(
+                                    typeDelete,
+                                    controllerLogin.branchIdLoggedIn,
+                                    idProf,
+                                    'Aceptada su solicitud de Salida, ($formattedTime).',
+                                    charge);
+                              } else {
+                                Get.snackbar(
+                                  'Alerta',
+                                  'Inténtelo nuevamente,problemas de conexión',
+                                  duration: const Duration(milliseconds: 2500),
+                                  backgroundColor:
+                                      const Color.fromARGB(118, 255, 255, 255),
+                                  showProgressIndicator: true,
+                                  progressIndicatorBackgroundColor:
+                                      const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor:
+                                      const AlwaysStoppedAnimation(
+                                          Color(0xFFFDAE2A)),
+                                  overlayBlur: 3,
+                                );
+                              }
+                              if (controllerLogin.branchIdLoggedIn != null) {
+                                await controllerclient.outRequestBranch(
+                                    controllerLogin.branchIdLoggedIn);
+                                controllerShoppingCart.setLoading(false);
+                              }
                             } else {
                               Get.snackbar(
-                                'Alerta',
-                                'Inténtelo nuevamente,problemas de conexión',
+                                'Mensaje',
+                                'Debe de escanear el código Qr de entrada',
                                 duration: const Duration(milliseconds: 2500),
                                 backgroundColor:
                                     const Color.fromARGB(118, 255, 255, 255),
@@ -1137,32 +1171,12 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 overlayBlur: 3,
                               );
                             }
-                            if (controllerLogin.branchIdLoggedIn != null) {
-                              await clientsScheduledController.outRequestBranch(
-                                  controllerLogin.branchIdLoggedIn);
-                              controllerShoppingCart.setLoading(false);
-                            }
-                          } else {
-                            Get.snackbar(
-                              'Mensaje',
-                              'Debe de escanear el código Qr de entrada',
-                              duration: const Duration(milliseconds: 2500),
-                              backgroundColor:
-                                  const Color.fromARGB(118, 255, 255, 255),
-                              showProgressIndicator: true,
-                              progressIndicatorBackgroundColor:
-                                  const Color.fromARGB(255, 203, 205, 209),
-                              progressIndicatorValueColor:
-                                  const AlwaysStoppedAnimation(
-                                      Color(0xFFFDAE2A)),
-                              overlayBlur: 3,
-                            );
-                          }
-                        },
-                        icon: Icon(
-                          MdiIcons.thumbUpOutline,
-                          color: Colors.white,
-                          size: (MediaQuery.of(context).size.height * 0.04),
+                          },
+                          icon: Icon(
+                            MdiIcons.thumbUpOutline,
+                            color: Colors.white,
+                            size: (MediaQuery.of(context).size.height * 0.04),
+                          ),
                         ),
                       ),
                     ),
@@ -1179,10 +1193,12 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     }
     //
     //
+    //todo aqui le muestra las solicitudes de Salida
     //
     //
+
     //
-    // //todo aqui le muestra las solicitudes de Colación
+    //todo aqui le muestra las solicitudes de Colación
     for (int i = 0; i < controllerclient.clientsColacionRequestLength; i++) {
       titulo = 'Solicitando Colación';
 
@@ -1192,59 +1208,86 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
           child: Column(
             children: [
               Container(
+                height: (MediaQuery.of(context).size.height * 0.126),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(12)),
                 ),
                 child: Row(
                   children: [
-                    Container(
-                      height: (MediaQuery.of(context).size.height * 0.120),
-                      width: (MediaQuery.of(context).size.width * 0.20),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white, // Color blanco para el borde
-                          width:
-                              1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 6, top: 6, bottom: 6),
+                      child: Container(
+                        height: (MediaQuery.of(context).size.height * 0.120),
+                        width: (MediaQuery.of(context).size.width * 0.20),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.white, // Color blanco para el borde
+                            width:
+                                1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                          ),
+                          color: const Color(0xFFFF6750),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(12)),
                         ),
-                        color: const Color(0xFFFF6750),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(12)),
-                      ),
-                      child: IconButton(
-                        onPressed: () async {
-                          //  if (controllerLogin.codigoQrValid() == true) {
-                          if (controllerLogin.usserPermissionQr == 1 ||
-                              controllerLogin.usserPermissionQr == 2) {
-                            controllerShoppingCart.setLoading(true);
-                            int idProf = controllerclient
-                                .clientsColacionRequestBranch[i]
-                                .professional_id!;
-                            String charge = controllerclient
-                                .clientsColacionRequestBranch[i].charge!;
-                            if (charge == 'Barbero y Encargado') {
-                              charge = 'Barbero';
-                            }
+                        child: IconButton(
+                          onPressed: () async {
+                            //  if (controllerLogin.codigoQrValid() == true) {
+                            if (controllerLogin.usserPermissionQr == 1 ||
+                                controllerLogin.usserPermissionQr == 2) {
+                              controllerShoppingCart.setLoading(true);
+                              int idProf = controllerclient
+                                  .clientsColacionRequestBranch[i]
+                                  .professional_id!;
+                              String charge = controllerclient
+                                  .clientsColacionRequestBranch[i].charge!;
+                              if (charge == 'Barbero y Encargado') {
+                                charge = 'Barbero';
+                              }
+                              print('este es el cargo : $charge');
 
-                            int result =
-                                await controllerLogin.ColacionProfessional(
-                                    idProf, charge, 1);
-                            //aqui mandar notificacion
-                            if (result == 1) {
-                              //codigo 200
-                              String typeDelete =
-                                  'Rechazada su solicitud de Colación';
+                              int result =
+                                  await controllerLogin.ColacionProfessional(
+                                      idProf, charge, 1);
+                              //aqui mandar notificacion
+                              if (result == 1) {
+                                //codigo 200
+                                String typeDelete =
+                                    'Rechazada su solicitud de Colación';
 
-                              notiController.storeNotification2(
-                                  typeDelete,
-                                  controllerLogin.branchIdLoggedIn,
-                                  idProf,
-                                  'Su solicitud de Colación fue rechazada',
-                                  charge);
+                                notiController.storeNotification2(
+                                    typeDelete,
+                                    controllerLogin.branchIdLoggedIn,
+                                    idProf,
+                                    'Su solicitud de Colación fue rechazada',
+                                    charge);
+                              } else {
+                                Get.snackbar(
+                                  'Alerta',
+                                  'Inténtelo nuevamente,problemas de conexión',
+                                  duration: const Duration(milliseconds: 2500),
+                                  backgroundColor:
+                                      const Color.fromARGB(118, 255, 255, 255),
+                                  showProgressIndicator: true,
+                                  progressIndicatorBackgroundColor:
+                                      const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor:
+                                      const AlwaysStoppedAnimation(
+                                          Color(0xFFFDAE2A)),
+                                  overlayBlur: 3,
+                                );
+                              }
+                              if (controllerLogin.branchIdLoggedIn != null) {
+                                await clientsScheduledController
+                                    .ColacionRequestBranch(
+                                        controllerLogin.branchIdLoggedIn);
+                                controllerShoppingCart.setLoading(false);
+                              }
                             } else {
                               Get.snackbar(
-                                'Alerta',
-                                'Inténtelo nuevamente,problemas de conexión',
+                                'Mensaje',
+                                'Debe de escanear el código Qr de entrada',
                                 duration: const Duration(milliseconds: 2500),
                                 backgroundColor:
                                     const Color.fromARGB(118, 255, 255, 255),
@@ -1257,33 +1300,12 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 overlayBlur: 3,
                               );
                             }
-                            if (controllerLogin.branchIdLoggedIn != null) {
-                              await clientsScheduledController
-                                  .ColacionRequestBranch(
-                                      controllerLogin.branchIdLoggedIn);
-                              controllerShoppingCart.setLoading(false);
-                            }
-                          } else {
-                            Get.snackbar(
-                              'Mensaje',
-                              'Debe de escanear el código Qr de entrada',
-                              duration: const Duration(milliseconds: 2500),
-                              backgroundColor:
-                                  const Color.fromARGB(118, 255, 255, 255),
-                              showProgressIndicator: true,
-                              progressIndicatorBackgroundColor:
-                                  const Color.fromARGB(255, 203, 205, 209),
-                              progressIndicatorValueColor:
-                                  const AlwaysStoppedAnimation(
-                                      Color(0xFFFDAE2A)),
-                              overlayBlur: 3,
-                            );
-                          }
-                        },
-                        icon: Icon(
-                          MdiIcons.thumbDownOutline,
-                          color: Colors.white,
-                          size: (MediaQuery.of(context).size.height * 0.04),
+                          },
+                          icon: Icon(
+                            MdiIcons.thumbDownOutline,
+                            color: Colors.white,
+                            size: (MediaQuery.of(context).size.height * 0.04),
+                          ),
                         ),
                       ),
                     ),
@@ -1295,14 +1317,13 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
                       child: Padding(
-                        padding:
-                            const EdgeInsets.only(top: 22, left: 15, right: 10),
+                        padding: const EdgeInsets.only(left: 15, top: 10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
@@ -1315,102 +1336,132 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 ),
                               ],
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Icon(
-                                      MdiIcons.accountTie,
-                                    ),
-                                    Text(
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 0, right: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Icon(
+                                        MdiIcons.accountTie,
+                                      ),
+                                      Text(
+                                        controllerclient
+                                            .clientsColacionRequestBranch[i]
+                                            .professional_name!,
+                                        style: TextStyle(
+                                          fontSize: (MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.018),
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
                                       controllerclient
                                           .clientsColacionRequestBranch[i]
-                                          .professional_name!,
+                                          .start_time!,
                                       style: TextStyle(
-                                        fontSize: (MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.018),
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                    controllerclient
-                                        .clientsColacionRequestBranch[i]
-                                        .start_time!,
-                                    style: TextStyle(
-                                        fontSize: (MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.018),
-                                        fontWeight: FontWeight.w800,
-                                        height: 1)),
-                              ],
+                                          fontSize: (MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.018),
+                                          fontWeight: FontWeight.w800,
+                                          height: 1)),
+                                ],
+                              ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                    Container(
-                      height: (MediaQuery.of(context).size.height * 0.120),
-                      width: (MediaQuery.of(context).size.width * 0.20),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.white, // Color blanco para el borde
-                            width:
-                                1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                          ),
-                          color: const Color(0xFF19CF9E),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12))),
-                      child: IconButton(
-                        onPressed: () async {
-                          if (controllerLogin.usserPermissionQr == 1 ||
-                              controllerLogin.usserPermissionQr == 2) {
-                            controllerShoppingCart.setLoading(true);
-                            int idProf = controllerclient
-                                .clientsColacionRequestBranch[i]
-                                .professional_id!;
-                            String charge = controllerclient
-                                .clientsColacionRequestBranch[i].charge!;
-                            if (charge == 'Barbero y Encargado') {
-                              charge = 'Barbero';
-                            }
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(right: 6, top: 6, bottom: 6),
+                      child: Container(
+                        height: (MediaQuery.of(context).size.height * 0.120),
+                        width: (MediaQuery.of(context).size.width * 0.20),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white, // Color blanco para el borde
+                              width:
+                                  1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                            ),
+                            color: const Color(0xFF19CF9E),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(12))),
+                        child: IconButton(
+                          onPressed: () async {
+                            if (controllerLogin.usserPermissionQr == 1 ||
+                                controllerLogin.usserPermissionQr == 2) {
+                              controllerShoppingCart.setLoading(true);
+                              int idProf = controllerclient
+                                  .clientsColacionRequestBranch[i]
+                                  .professional_id!;
+                              String charge = controllerclient
+                                  .clientsColacionRequestBranch[i].charge!;
+                              if (charge == 'Barbero y Encargado') {
+                                charge = 'Barbero';
+                              }
 
-                            int result =
-                                await controllerLogin.ColacionProfessional(
-                                    idProf, charge, 2);
-                            //aqui mandar notificacion
-                            if (result == 1) {
-                              //poner a null el Qr
-                              // controllerLogin.setCodigoQrValid(null);
-                              //viendo a la hora que se le aceptó
-                              var now = DateTime.now(); //hora actual
-                              var oneHourLater =
-                                  now.add(Duration(hours: 1)); //sumo 1 hora
-                              var formatter = DateFormat('hh:mm');
-                              String formattedTime = formatter.format(now);
-                              String formattedTime2 =
-                                  formatter.format(oneHourLater);
-                              //codigo 200
-                              String typeDelete =
-                                  'Aceptada su solicitud de Colación';
+                              int result =
+                                  await controllerLogin.ColacionProfessional(
+                                      idProf, charge, 2);
+                              //aqui mandar notificacion
+                              if (result == 1) {
+                                //poner a null el Qr
+                                // controllerLogin.setCodigoQrValid(null);
+                                //viendo a la hora que se le aceptó
+                                var now = DateTime.now(); //hora actual
+                                var oneHourLater =
+                                    now.add(Duration(hours: 1)); //sumo 1 hora
+                                var formatter = DateFormat('hh:mm');
+                                String formattedTime = formatter.format(now);
+                                String formattedTime2 =
+                                    formatter.format(oneHourLater);
+                                //codigo 200
+                                String typeDelete =
+                                    'Aceptada su solicitud de Colación';
 
-                              notiController.storeNotification2(
-                                  typeDelete,
-                                  controllerLogin.branchIdLoggedIn,
-                                  idProf,
-                                  'Aceptada su solicitud de Colación, de ($formattedTime a $formattedTime2)',
-                                  charge);
+                                notiController.storeNotification2(
+                                    typeDelete,
+                                    controllerLogin.branchIdLoggedIn,
+                                    idProf,
+                                    'Aceptada su solicitud de Colación, de ($formattedTime a $formattedTime2)',
+                                    charge);
+                              } else {
+                                Get.snackbar(
+                                  'Alerta',
+                                  'Inténtelo nuevamente,problemas de conexión',
+                                  duration: const Duration(milliseconds: 2500),
+                                  backgroundColor:
+                                      const Color.fromARGB(118, 255, 255, 255),
+                                  showProgressIndicator: true,
+                                  progressIndicatorBackgroundColor:
+                                      const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor:
+                                      const AlwaysStoppedAnimation(
+                                          Color(0xFFFDAE2A)),
+                                  overlayBlur: 3,
+                                );
+                              }
+                              if (controllerLogin.branchIdLoggedIn != null) {
+                                await clientsScheduledController
+                                    .ColacionRequestBranch(
+                                        controllerLogin.branchIdLoggedIn);
+                                controllerShoppingCart.setLoading(false);
+                              }
                             } else {
                               Get.snackbar(
-                                'Alerta',
-                                'Inténtelo nuevamente,problemas de conexión',
+                                'Mensaje',
+                                'Debe de escanear el código Qr de entrada',
                                 duration: const Duration(milliseconds: 2500),
                                 backgroundColor:
                                     const Color.fromARGB(118, 255, 255, 255),
@@ -1423,33 +1474,12 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 overlayBlur: 3,
                               );
                             }
-                            if (controllerLogin.branchIdLoggedIn != null) {
-                              await clientsScheduledController
-                                  .ColacionRequestBranch(
-                                      controllerLogin.branchIdLoggedIn);
-                              controllerShoppingCart.setLoading(false);
-                            }
-                          } else {
-                            Get.snackbar(
-                              'Mensaje',
-                              'Debe de escanear el código Qr de entrada',
-                              duration: const Duration(milliseconds: 2500),
-                              backgroundColor:
-                                  const Color.fromARGB(118, 255, 255, 255),
-                              showProgressIndicator: true,
-                              progressIndicatorBackgroundColor:
-                                  const Color.fromARGB(255, 203, 205, 209),
-                              progressIndicatorValueColor:
-                                  const AlwaysStoppedAnimation(
-                                      Color(0xFFFDAE2A)),
-                              overlayBlur: 3,
-                            );
-                          }
-                        },
-                        icon: Icon(
-                          MdiIcons.thumbUpOutline,
-                          color: Colors.white,
-                          size: (MediaQuery.of(context).size.height * 0.04),
+                          },
+                          icon: Icon(
+                            MdiIcons.thumbUpOutline,
+                            color: Colors.white,
+                            size: (MediaQuery.of(context).size.height * 0.04),
+                          ),
                         ),
                       ),
                     ),
@@ -1465,11 +1495,9 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
       );
     }
     //
+    //todo aqui le muestra las solicitudes de Colación
     //
-    //
-    //
-    //
-    //
+
     //todo aqui le muestra a los clientes solicitados como rechazados
     for (int i = 0;
         i < controllerclient.clientsScheduledListBranchClientLength;
@@ -1482,83 +1510,129 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
           child: Column(
             children: [
               Container(
+                height: (MediaQuery.of(context).size.height * 0.126),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(12)),
                 ),
                 child: Row(
                   children: [
-                    Container(
-                      height: (MediaQuery.of(context).size.height * 0.120),
-                      width: (MediaQuery.of(context).size.width * 0.20),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white, // Color blanco para el borde
-                          width:
-                              1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 6, top: 6, bottom: 6),
+                      child: Container(
+                        height: (MediaQuery.of(context).size.height * 0.126),
+                        width: (MediaQuery.of(context).size.width * 0.20),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.white, // Color blanco para el borde
+                            width:
+                                1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                          ),
+                          color: const Color(0xFFFF6750),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(12)),
                         ),
-                        color: const Color(0xFFFF6750),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(12)),
-                      ),
-                      child: IconButton(
-                        onPressed: () async {
-                          if (controllerLogin.codigoQrValid() == true) {
-                            //rechazar la eliminacion
-                            controllerShoppingCart.setLoading(true);
-                            //aqui mandar a poner en 0 de nuevo en la cola al cliente
+                        child: IconButton(
+                          onPressed: () async {
+                            if (controllerLogin.usserPermissionQr == 1 ||
+                                controllerLogin.usserPermissionQr == 2) {
+                              //rechazar la eliminacion
+                              controllerShoppingCart.setLoading(true);
+                              print('rechazando la solicitud');
+                              //aqui mandar a poner en 0 de nuevo en la cola al cliente
+                              bool result = false;
+                              String charge = controllerclient
+                                  .clientsScheduledListBranchClient[i].charge!;
+                              print('rechazando la solicitud - charge:$charge');
+                              if (charge == 'Barbero y Encargado') {
+                                charge = 'Barbero';
+                              }
+                              if (charge == 'Barbero') {
+                                result = await clientsScheduledController
+                                    .acceptOrRejectClientCoord(
+                                        controllerclient
+                                            .clientsScheduledListBranchClient[i]
+                                            .reservation_id,
+                                        0);
+                              } else if (charge == 'Tecnico') {
+                                result = await clientsScheduledController
+                                    .acceptOrRejectClientCoord(
+                                        controllerclient
+                                            .clientsScheduledListBranchClient[i]
+                                            .reservation_id,
+                                        4);
+                              }
 
-                            bool result = await clientsScheduledController
-                                .acceptOrRejectClientCoord(
-                                    controllerclient
-                                        .clientsScheduledListBranchClient[i]
-                                        .reservation_id,
-                                    0);
-                            String charge = controllerclient
-                                .clientsScheduledListBranchClient[i].charge!;
-                            if (charge == 'Barbero y Encargado') {
-                              charge = 'Barbero';
+                              //aqui mandar notificacion
+                              print('return resul: IconButton $result');
+                              if (result == true) {
+                                if (charge == 'Barbero') {
+                                  notiController.storeNotification(
+                                      'Solicitud de Eliminacion Rechazada',
+                                      controllerLogin.branchIdLoggedIn,
+                                      controllerclient
+                                          .clientsScheduledListBranchClient[i]
+                                          .professional_id,
+                                      '!Atención..El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} no fue rechazado.',
+                                      'Barbero');
+                                } else if (charge == 'Tecnico') {
+                                  notiController.storeNotification(
+                                      'Solicitud de Eliminacion Rechazada',
+                                      controllerLogin.branchIdLoggedIn,
+                                      controllerclient
+                                          .clientsScheduledListBranchClient[i]
+                                          .professional_id,
+                                      '!Atención..El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} no fue rechazado.',
+                                      'Tecnico');
+                                }
+                                if (controllerLogin.branchIdLoggedIn != null) {
+                                  await controllerclient
+                                      .fetchClientsRechazBranch(
+                                          controllerLogin.branchIdLoggedIn!);
+                                  await contShopp.loadOrderDeleteCar(
+                                      controllerLogin.branchIdLoggedIn!);
+                                  controllerShoppingCart.setLoading(false);
+                                }
+                              } else {
+                                Get.snackbar(
+                                  'Mensaje',
+                                  'Intentelo nuevamente',
+                                  duration: const Duration(milliseconds: 2500),
+                                  backgroundColor:
+                                      const Color.fromARGB(118, 255, 255, 255),
+                                  showProgressIndicator: true,
+                                  progressIndicatorBackgroundColor:
+                                      const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor:
+                                      const AlwaysStoppedAnimation(
+                                          Color(0xFFFDAE2A)),
+                                  overlayBlur: 3,
+                                );
+                                controllerShoppingCart.setLoading(false);
+                              }
+                            } else {
+                              Get.snackbar(
+                                'Mensaje',
+                                'Debe de escanear el código Qr de entrada',
+                                duration: const Duration(milliseconds: 2500),
+                                backgroundColor:
+                                    const Color.fromARGB(118, 255, 255, 255),
+                                showProgressIndicator: true,
+                                progressIndicatorBackgroundColor:
+                                    const Color.fromARGB(255, 203, 205, 209),
+                                progressIndicatorValueColor:
+                                    const AlwaysStoppedAnimation(
+                                        Color(0xFFFDAE2A)),
+                                overlayBlur: 3,
+                              );
                             }
-                            //aqui mandar notificacion
-                            print('return resul: IconButton $result');
-                            if (result == true) {
-                              notiController.storeNotification(
-                                  'Solicitud de Eliminacion Rechazada',
-                                  controllerLogin.branchIdLoggedIn,
-                                  controllerclient
-                                      .clientsScheduledListBranchClient[i]
-                                      .professional_id,
-                                  '!Atención..El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} no fue rechazado.',
-                                  charge);
-                            }
-                            if (controllerLogin.branchIdLoggedIn != null) {
-                              await controllerclient.fetchClientsRechazBranch(
-                                  controllerLogin.branchIdLoggedIn!);
-                              await contShopp.loadOrderDeleteCar(
-                                  controllerLogin.branchIdLoggedIn!);
-                              controllerShoppingCart.setLoading(false);
-                            }
-                          } else {
-                            Get.snackbar(
-                              'Mensaje',
-                              'Debe de escanear el código Qr de entrada',
-                              duration: const Duration(milliseconds: 2500),
-                              backgroundColor:
-                                  const Color.fromARGB(118, 255, 255, 255),
-                              showProgressIndicator: true,
-                              progressIndicatorBackgroundColor:
-                                  const Color.fromARGB(255, 203, 205, 209),
-                              progressIndicatorValueColor:
-                                  const AlwaysStoppedAnimation(
-                                      Color(0xFFFDAE2A)),
-                              overlayBlur: 3,
-                            );
-                          }
-                        },
-                        icon: Icon(
-                          MdiIcons.thumbDownOutline,
-                          color: Colors.white,
-                          size: (MediaQuery.of(context).size.height * 0.04),
+                          },
+                          icon: Icon(
+                            MdiIcons.thumbDownOutline,
+                            color: Colors.white,
+                            size: (MediaQuery.of(context).size.height * 0.04),
+                          ),
                         ),
                       ),
                     ),
@@ -1570,7 +1644,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 30, top: 10),
+                        padding: const EdgeInsets.only(left: 15, top: 10),
                         child: SingleChildScrollView(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1584,8 +1658,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                     ' $titulo',
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w600,
-                                        fontFamily: AutofillHints.familyName,
-                                        fontSize: 22),
+                                        fontSize: 18,
+                                        height: 1),
                                   ),
                                 ],
                               ),
@@ -1642,10 +1716,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                     MdiIcons.accountTie,
                                   ),
                                   Text(
-                                    controllerclient
-                                        .clientsScheduledListBranchClient[i]
-                                        .professional_name
-                                        .toString(),
+                                    '${controllerclient.clientsScheduledListBranchClient[i].professional_name.toString()}',
                                     style: TextStyle(
                                         fontSize: (MediaQuery.of(context)
                                                 .size
@@ -1660,78 +1731,115 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                         ),
                       ),
                     ),
-                    Container(
-                      height: (MediaQuery.of(context).size.height * 0.120),
-                      width: (MediaQuery.of(context).size.width * 0.20),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.white, // Color blanco para el borde
-                            width:
-                                1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(right: 6, top: 6, bottom: 6),
+                      child: Container(
+                        height: (MediaQuery.of(context).size.height * 0.126),
+                        width: (MediaQuery.of(context).size.width * 0.20),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white, // Color blanco para el borde
+                              width:
+                                  1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                            ),
+                            color: const Color(0xFF19CF9E),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(12))),
+                        child: IconButton(
+                          onPressed: () async {
+                            if (controllerLogin.usserPermissionQr == 1 ||
+                                controllerLogin.usserPermissionQr == 2) {
+                              controllerShoppingCart.setLoading(true);
+                              String charge = controllerclient
+                                  .clientsScheduledListBranchClient[i].charge!;
+                              bool result = false;
+                              String typeDelete = '';
+                              if (charge == 'Barbero y Encargado') {
+                                charge = 'Barbero';
+                              }
+                              if (charge == 'Barbero') {
+                                result = await clientsScheduleCont
+                                    .deleteReservationClientCoor(
+                                        controllerclient
+                                            .clientsScheduledListBranchClient[i]
+                                            .reservation_id,
+                                        'Fue rechazado por ${controllerclient.clientsScheduledListBranchClient[i].professional_name}');
+                                typeDelete = 'Aceptada Eliminación de Cliente';
+                              } else if (charge == 'Tecnico') {
+                                result = await clientsScheduledController
+                                    .acceptOrRejectClientCoord(
+                                        controllerclient
+                                            .clientsScheduledListBranchClient[i]
+                                            .reservation_id,
+                                        11);
+
+                                typeDelete = 'Aceptada Eliminación de Cliente';
+                              }
+
+                              //aqui mandar notificacion
+                              print('return resul: IconButton $result');
+                              if (result == true) {
+                                if (charge == 'Barbero') {
+                                  notiController.storeNotification(
+                                      typeDelete,
+                                      controllerLogin.branchIdLoggedIn,
+                                      controllerclient
+                                          .clientsScheduledListBranchClient[i]
+                                          .professional_id,
+                                      'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue eliminado de su cola',
+                                      'Barbero');
+                                } else if (charge == 'Tecnico') {
+                                  //enviar mensaje al barbero que el cliente esta regresando porque fue rechazado
+
+                                  notiController.storeNotification(
+                                      'Cliente rechazado por el Técnico',
+                                      controllerLogin.branchIdLoggedIn,
+                                      controllerclient
+                                          .clientsScheduledListBranchClient[i]
+                                          .idBarber,
+                                      'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue rechazado por el Técnico ${controllerclient.clientsScheduledListBranchClient[i].professional_name}',
+                                      'Barbero');
+                                  //enviar notificacion al propio tecnico que fue aceptada
+                                  notiController.storeNotification(
+                                      typeDelete,
+                                      controllerLogin.branchIdLoggedIn,
+                                      controllerclient
+                                          .clientsScheduledListBranchClient[i]
+                                          .professional_id,
+                                      'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue eliminado de su cola',
+                                      'Tecnico');
+                                }
+                              }
+                              if (controllerLogin.branchIdLoggedIn != null) {
+                                await controllerclient.fetchClientsRechazBranch(
+                                    controllerLogin.branchIdLoggedIn!);
+                                await contShopp.loadOrderDeleteCar(
+                                    controllerLogin.branchIdLoggedIn!);
+                                controllerShoppingCart.setLoading(false);
+                              }
+                            } else {
+                              Get.snackbar(
+                                'Mensaje',
+                                'Debe de escanear el código Qr de entrada',
+                                duration: const Duration(milliseconds: 2500),
+                                backgroundColor:
+                                    const Color.fromARGB(118, 255, 255, 255),
+                                showProgressIndicator: true,
+                                progressIndicatorBackgroundColor:
+                                    const Color.fromARGB(255, 203, 205, 209),
+                                progressIndicatorValueColor:
+                                    const AlwaysStoppedAnimation(
+                                        Color(0xFFFDAE2A)),
+                                overlayBlur: 3,
+                              );
+                            }
+                          },
+                          icon: Icon(
+                            MdiIcons.thumbUpOutline,
+                            color: Colors.white,
+                            size: (MediaQuery.of(context).size.height * 0.04),
                           ),
-                          color: const Color(0xFF19CF9E),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12))),
-                      child: IconButton(
-                        onPressed: () async {
-                          if (controllerLogin.codigoQrValid() == true) {
-                            controllerShoppingCart.setLoading(true);
-
-                            bool result = await clientsScheduleCont
-                                .deleteReservationClientCoor(
-                                    controllerclient
-                                        .clientsScheduledListBranchClient[i]
-                                        .reservation_id,
-                                    'Fue rechazado por ${controllerclient.clientsScheduledListBranchClient[i].professional_name}');
-
-                            String charge = controllerclient
-                                .clientsScheduledListBranchClient[i].charge!;
-                            if (charge == 'Barbero y Encargado') {
-                              charge = 'Barbero';
-                            }
-                            //aqui mandar notificacion
-                            print('return resul: IconButton $result');
-                            if (result == true) {
-                              String typeDelete =
-                                  'Aceptada Eliminación de Cliente';
-
-                              notiController.storeNotification(
-                                  typeDelete,
-                                  controllerLogin.branchIdLoggedIn,
-                                  controllerclient
-                                      .clientsScheduledListBranchClient[i]
-                                      .professional_id,
-                                  'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue eliminado de su cola',
-                                  charge);
-                            }
-                            if (controllerLogin.branchIdLoggedIn != null) {
-                              await controllerclient.fetchClientsRechazBranch(
-                                  controllerLogin.branchIdLoggedIn!);
-                              await contShopp.loadOrderDeleteCar(
-                                  controllerLogin.branchIdLoggedIn!);
-                              controllerShoppingCart.setLoading(false);
-                            }
-                          } else {
-                            Get.snackbar(
-                              'Mensaje',
-                              'Debe de escanear el código Qr de entrada',
-                              duration: const Duration(milliseconds: 2500),
-                              backgroundColor:
-                                  const Color.fromARGB(118, 255, 255, 255),
-                              showProgressIndicator: true,
-                              progressIndicatorBackgroundColor:
-                                  const Color.fromARGB(255, 203, 205, 209),
-                              progressIndicatorValueColor:
-                                  const AlwaysStoppedAnimation(
-                                      Color(0xFFFDAE2A)),
-                              overlayBlur: 3,
-                            );
-                          }
-                        },
-                        icon: Icon(
-                          MdiIcons.thumbUpOutline,
-                          color: Colors.white,
-                          size: (MediaQuery.of(context).size.height * 0.04),
                         ),
                       ),
                     ),
@@ -1749,12 +1857,6 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     //
     //
     //todo aqui le muestra a los clientes solicitados como rechazados
-    //
-    //
-    //
-    //
-    //
-    //
 //todo aqui le muestra las solicitudes de eliminacion de Servicios y Productos
     for (int i = 0; i < contShopp.orderDeleteCar.length; i++) {
       if (contShopp.orderDeleteCar[i].nameService == '') {
@@ -2070,9 +2172,6 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     }
     //
     //todo aqui le muestra las solicitudes de eliminacion de Servicios y Productos
-    //
-    //
-    //
     //
 
     //

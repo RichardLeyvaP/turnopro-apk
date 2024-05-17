@@ -11,6 +11,7 @@ import 'package:turnopro_apk/Models/coexistence_model.dart';
 import 'package:turnopro_apk/Models/professional_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/env.dart';
+import 'package:http/http.dart' as http;
 
 class CoexistenceRepository extends GetConnect {
   final ClientsScheduledController controllerClient =
@@ -52,6 +53,44 @@ class CoexistenceRepository extends GetConnect {
         print('*************coexistenceList.length*************');
         print(coexistenceList.length);
         return coexistenceList;
+      } else {
+        return coexistenceList;
+      }
+    } catch (e) {
+      print('Error:$e');
+      return coexistenceList;
+    }
+  }
+
+  final client = http.Client();
+  //todo nuevaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  Future getAnoStadist(idProfessional, idBranch, year) async {
+    List<CoexistenceModel> coexistenceList = [];
+    try {
+      final response = await client.get(Uri.parse(
+          '${Env.apiEndpoint}/professional-win-year?professional_id=$idProfessional&branch_id=$idBranch&year=$year'));
+      // var url =
+      //     '${Env.apiEndpoint}/professional-win-year?professional_id=$idProfessional&branch_id=$idBranch&year=$year';
+      //  print('url de grafico:$url');
+
+      // final response = await get(url);
+      if (response.statusCode == 200) {
+        // La respuesta fue exitosa
+        final Map<String, dynamic> responseBody = json.decode(response.body);
+        final stadist = responseBody['monthlyEarnings'];
+        final stadistVar = responseBody;
+
+        print('resultadosssssss stadist-ENERO:${stadist['abril']}');
+        print('resultadosssssss stadist:$stadist');
+
+        print('resultadosssssss 2 -> ${stadistVar['averageEarnings']}');
+        print('resultadosssssss 3 -> ${stadistVar['totalEarnings']}');
+
+        return {
+          'stadist': stadist,
+          'averageEarnings': stadistVar['averageEarnings'],
+          'totalEarnings': stadistVar['totalEarnings']
+        };
       } else {
         return coexistenceList;
       }
@@ -169,109 +208,14 @@ class CoexistenceRepository extends GetConnect {
   ///
 //
 //
-  Future<List<PaymentModel>> fetchEstadistPagos(
-      professional_id, branch_id) async {
+  Future fetchEstadistPagos(professional_id, branch_id, charge) async {
     // todo esta es la que carga a los profesionales y a los tecnicos
     List<PaymentModel> branchProf = [];
-    /* String jsonExample = '''
-    [
-      {
-        "id": 2,
-        "branch_id": 15,
-        "professional_id": 67,
-        "date": "2024-04-10 05:03:37",
-        "type": "Quincena",
-        "amount": "50634.09"
-      },
-      {
-        "id": 3,
-        "branch_id": 15,
-        "professional_id": 68,
-        "date": "2024-04-11 09:15:22",
-        "type": "Quincena",
-        "amount": "60000.0"
-      },
-      {
-        "id": 4,
-        "branch_id": 16,
-        "professional_id": 70,
-        "date": "2024-04-12 14:30:45",
-        "type": "Mensual",
-        "amount": "75000.0"
-      },
-      {
-        "id": 5,
-        "branch_id": 17,
-        "professional_id": 71,
-        "date": "2024-04-13 11:20:10",
-        "type": "Quincena",
-        "amount": "45000.0"
-      },
-      {
-        "id": 6,
-        "branch_id": 18,
-        "professional_id": 72,
-        "date": "2024-04-14 16:45:55",
-        "type": "Mensual",
-        "amount": "80000.0"
-      },
-      {
-        "id": 7,
-        "branch_id": 19,
-        "professional_id": 73,
-        "date": "2024-04-15 08:00:30",
-        "type": "Quincena",
-        "amount": "55000.0"
-      },
-      {
-        "id": 8,
-        "branch_id": 20,
-        "professional_id": 75,
-        "date": "2024-04-16 10:10:15",
-        "type": "Mensual",
-        "amount": "70000.0"
-      },
-      {
-        "id": 9,
-        "branch_id": 21,
-        "professional_id": 77,
-        "date": "2024-04-17 13:55:20",
-        "type": "Quincena",
-        "amount": "48000.0"
-      },
-      {
-        "id": 10,
-        "branch_id": 22,
-        "professional_id": 78,
-        "date": "2024-04-18 17:25:40",
-        "type": "Mensual",
-        "amount": "85000.0"
-      },
-      {
-        "id": 11,
-        "branch_id": 23,
-        "professional_id": 80,
-        "date": "2024-04-19 12:40:18",
-        "type": "Quincena",
-        "amount": "60000.0"
-      },
-      {
-        "id": 12,
-        "branch_id": 24,
-        "professional_id": 81,
-        "date": "2024-04-20 09:30:55",
-        "type": "Mensual",
-        "amount": "72000.0"
-      }
-    ]
-  ''';
 
-    List<PaymentModel> branchProfTest = PaymentModel.listFromJson(jsonExample);
-    print('werya tengo repositorio11 estoy en getBranchProfessionals');
-    return branchProfTest;*/
     try {
       var url =
-          '${Env.apiEndpoint}/professional-payment-show?branch_id=$branch_id&professional_id=$professional_id';
+          '${Env.apiEndpoint}/professional-payment-show-apk?branch_id=$branch_id&professional_id=$professional_id&charge=$charge';
+      // '${Env.apiEndpoint}/professional-payment-show?branch_id=$branch_id&professional_id=$professional_id';
 
       final response = await get(url).timeout(Duration(seconds: 10));
       print('werya tengo repositorio22 estoy en getBranchProfessionals');
@@ -279,14 +223,36 @@ class CoexistenceRepository extends GetConnect {
         print(
             'werya tengo repositorio33 response.statusCode == 200 estoy en getBranchProfessionals');
         // Parsear el body como una cadena JSON
+        // Obtén el cuerpo (body) como una cadena (String)
+
         final jsonResponse = response.body;
-        print(
-            'werya tengo repositorio----------------33 response.statusCode == 200 estoy en getBranchProfessionals');
+        print('werya tengo repositorio33 response.responseBody: $jsonResponse');
 
-        final List<dynamic> branchP = jsonResponse;
+// Ahora puedes trabajar con 'jsonResponse' como un mapa de Dart
+// Ejemplo: acceder a los pagos
+        final List<dynamic> payments = response.body['payments'];
 
-        for (int i = 0; i < branchP.length; i++) {
-          final Map<String, dynamic> branch = branchP[i];
+// Ejemplo: acceder a las demás variables
+        final int pendiente = jsonResponse['pendiente'];
+        final int pagado = jsonResponse['pagado'];
+        final int clientAtended = jsonResponse['clientAtended'];
+        final int servCant = jsonResponse['servCant'];
+        final int amountGenerate = jsonResponse['amountGenerate'];
+        final int propina80 = jsonResponse['propina80'];
+        final int metaCant = jsonResponse['metaCant'];
+        final int metaAmount = jsonResponse['metaAmount'];
+        final int retention = jsonResponse['retention'];
+        final int winnerRetention = jsonResponse['winnerRetention'];
+        final int winnerAmount = jsonResponse['winnerAmount'];
+        final int productCant = jsonResponse['productCant'];
+        final int productAmount = jsonResponse['productAmount'];
+        final int productBonoCant = jsonResponse['productBonoCant'];
+        final int servAmount = jsonResponse['servAmount'];
+        final int servBonoCant = jsonResponse['servBonoCant'];
+        for (int i = 0; i < payments.length; i++) {
+          final Map<String, dynamic> branch = payments[i];
+          print(
+              'werya tengo repositorio44 response.statusCode == 200 estoy 2345:${payments[i]}');
 
           // Crear una instancia de Estadist1Model
           PaymentModel u = PaymentModel.fromJson(branch);
@@ -296,12 +262,30 @@ class CoexistenceRepository extends GetConnect {
         }
 
         print(
-            'werya tengo repositorio44 response.statusCode == 200 estoy en branchProf:${branchProf.length}');
-        return branchProf;
+            'werya tengo repositorio44 response.statusCode == 200 estoy en branchProf:${pendiente}');
+        return {
+          'branchProf': branchProf,
+          'pendiente': pendiente,
+          'pagado': pagado,
+          'clientAtended': clientAtended,
+          'servCant': servCant,
+          'amountGenerate': amountGenerate,
+          'propina80': propina80,
+          'metaCant': metaCant,
+          'metaAmount': metaAmount,
+          'retention': retention,
+          'winnerRetention': winnerRetention,
+          'winnerAmount': winnerAmount,
+          'productCant': productCant,
+          'productAmount': productAmount,
+          'servAmount': servAmount,
+          'productBonoCant': productBonoCant,
+          'servBonoCant': servBonoCant,
+        };
       } else {
+        print('Request failed with status: ${response.statusCode}');
         return branchProf;
         // Si ocurre algún error con la solicitud HTTP
-        print('Request failed with status: ${response.statusCode}');
       }
     } catch (e) {
       print('werya tengo Error2 :$e');

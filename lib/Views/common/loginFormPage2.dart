@@ -79,7 +79,7 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                               children: [
                                 Icon(
                                   MdiIcons.store,
-                                  color: Colors.white,
+                                  color: Color(0xFFFDAE2A),
                                   size: (MediaQuery.of(context).size.height *
                                       0.04),
                                 ),
@@ -92,8 +92,8 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors
-                                          .white, // Cambia el color del texto a blanco
+                                      color: Color(
+                                          0xFFFDAE2A), // Cambia el color del texto a blanco
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -133,7 +133,7 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                                           children: [
                                             Icon(
                                               MdiIcons.store,
-                                              color: Colors.white,
+                                              color: Color(0xFFFDAE2A),
                                               size: (MediaQuery.of(context)
                                                       .size
                                                       .height *
@@ -144,7 +144,7 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                                               style: const TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.white,
+                                                color: Color(0xFFFDAE2A),
                                               ),
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -162,8 +162,8 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                               padding: const EdgeInsets.only(
                                   top: 2, left: 14, right: 14, bottom: 2),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                color: const Color(0xFFFDAE2A),
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
                               ),
                               elevation: 2,
                             ),
@@ -172,7 +172,7 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                                 Icons.arrow_forward_ios_outlined,
                               ),
                               iconSize: 14,
-                              iconEnabledColor: Colors.white,
+                              iconEnabledColor: Color(0xFFFDAE2A),
                               iconDisabledColor: Colors.grey,
                             ),
                             dropdownStyleData: DropdownStyleData(
@@ -180,8 +180,8 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                               width:
                                   (MediaQuery.of(context).size.width * 0.825),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: const Color(0xFFFDAE2A),
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
                               ),
                               offset: const Offset(40, 0),
                               scrollbarTheme: ScrollbarThemeData(

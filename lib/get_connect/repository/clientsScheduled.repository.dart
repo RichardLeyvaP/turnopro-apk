@@ -19,6 +19,7 @@ class ClientsScheduledRepository extends GetConnect {
       ClientsScheduledModel? nextClient;
       bool hasNextClient = false;
       int quantityClientAttended = 0;
+      int quantityClientRechaz = 0;
       int idTecn = controllerLogin.idProfessionalLoggedIn!;
 
       // var url = '${Env.apiEndpoint}/cola_branch_capilar?branch_id=$idBranch';
@@ -40,6 +41,7 @@ class ClientsScheduledRepository extends GetConnect {
         for (Map service in customers) {
           ClientsScheduledModel client =
               ClientsScheduledModel.fromJson(jsonEncode(service));
+
           clientList.add(client);
           //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
           if (hasNextClient == false) {
@@ -54,6 +56,11 @@ class ClientsScheduledRepository extends GetConnect {
             //HASTA AHORA EL TECNICO SOLO ATENDERA UNO SOLO
             quantityClientAttended++;
           }
+          //AQUI PARA SABER CUANTOS ESTAN DE SOLICITUD DE RECHAZO
+          if (client.attended == 33) {
+            //HASTA AHORA EL TECNICO SOLO ATENDERA UNO SOLO
+            quantityClientRechaz++;
+          }
         }
         print('imprimiendo cuantos atinede el tecnico:$quantityClientAttended');
       }
@@ -62,6 +69,7 @@ class ClientsScheduledRepository extends GetConnect {
         "clientList": clientList,
         "nextClient": nextClient,
         "quantityClientAttended": quantityClientAttended,
+        "quantityClientRechaz": quantityClientRechaz,
       };
     } catch (e) {
       print(e);
@@ -242,7 +250,9 @@ class ClientsScheduledRepository extends GetConnect {
           //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
           //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
           if (controllerLogin.isLoggingIn == true) {
-            if (client.detached == 1 && client.attended != 33) {
+            if (client.detached == 1 &&
+                client.attended != 0 &&
+                client.attended != 2) {
               //33 es que lo rechazó el tecnico
               //creo nuevo cliente
               print(
@@ -279,7 +289,10 @@ class ClientsScheduledRepository extends GetConnect {
           //AQUI PARA SABER CUANTOS ESTA ATENDIENDO
           if (client.attended == 1 ||
               client.attended == 11 ||
-              client.attended == 111) {
+              client.attended == 111 ||
+              client.attended == 33) {
+            print('relojes activos:${client.clock!}');
+            //33 es rechazado por el tecnico pero es atendido por el barbero
             print('clientes asistiendo entre a if (client.attended == 1) {');
             quantityClientAttended++;
           }

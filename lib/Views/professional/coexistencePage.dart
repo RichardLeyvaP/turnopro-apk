@@ -86,7 +86,7 @@ class _CoexistencePageState extends State<CoexistencePage> {
                                   .zero, // Elimina cualquier padding del ListView
                               itemCount: _.coexistenceListLength,
                               itemBuilder: (context, index) => Padding(
-                                    padding: EdgeInsets.only(
+                                    padding: const EdgeInsets.only(
                                       top: 10,
                                       left: 10,
                                       right: 10,

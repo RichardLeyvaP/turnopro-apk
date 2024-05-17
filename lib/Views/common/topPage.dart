@@ -46,7 +46,7 @@ class topPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.only(top: 5, right: 10, left: 10),
+        padding: EdgeInsets.only(top: 5, right: 10, left: 10, bottom: 5),
         child: Container(
           height: 90,
           decoration: BoxDecoration(

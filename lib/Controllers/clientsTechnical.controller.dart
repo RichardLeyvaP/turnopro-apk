@@ -13,6 +13,7 @@ class ClientsTechnicalController extends GetxController {
 
   List<ClientsScheduledModel> clientsScheduledListTechnical =
       []; // Lista de clientes
+  int listClientReal = 0;
   List<ClientsScheduledModel> selectclientsScheduledListTechnical = [];
   ClientsScheduledModel? clientsScheduledNext; // Cliente en espera
   ClientsScheduledModel?
@@ -186,6 +187,7 @@ class ClientsTechnicalController extends GetxController {
       clientsTechnicalLength = clientsScheduledListTechnical.length;
       //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
       clientsNextTechnical = resultList['nextClient'];
+      int cantRechaz = resultList['quantityClientRechaz'];
       print(
           'callTimerTec-clientsScheduledListTechnical:${clientsScheduledListTechnical.length}');
       quantityClientAttendedTechnical = resultList['quantityClientAttended'];
@@ -197,6 +199,7 @@ class ClientsTechnicalController extends GetxController {
       } else {
         boolFilterShowNextTecnhical = false;
       }
+      listClientReal = clientsTechnicalLength - cantRechaz;
     }
     update();
   }

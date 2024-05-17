@@ -197,6 +197,7 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                         controClient.clientsScheduledListLength > 0
                             ? BottomNavigationBarItem(
                                 icon: Badge(
+                                  backgroundColor: Color(0xFF19CF9E),
                                   label: Text(
                                       '${controClient.clientsScheduledListLength}'),
                                   child: Icon(
@@ -1098,17 +1099,22 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                               },
                                               child: Row(
                                                 children: [
+                                                  _.usserPermissionQr == 1
+                                                      ? SizedBox(
+                                                          width: 0,
+                                                        )
+                                                      : SizedBox(
+                                                          width: 16,
+                                                        ),
                                                   Icon(
                                                     MdiIcons.exitToApp,
                                                     color: Colors.white,
                                                   ),
-                                                  SizedBox(
-                                                    width: 6,
-                                                  ),
+                                                  SizedBox(width: 6),
                                                   Text(
                                                     _.usserPermissionQr == 1
                                                         ? 'Me retiro'
-                                                        : 'Salir',
+                                                        : 'Salir    ',
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:

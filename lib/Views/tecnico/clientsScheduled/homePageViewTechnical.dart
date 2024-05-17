@@ -106,6 +106,8 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                       .clientsTechnicalLength >
                                                   0
                                               ? ListView.builder(
+                                                  padding: EdgeInsets
+                                                      .zero, // Elimina cualquier padding del ListView
                                                   itemCount:
                                                       clientsScheduledController
                                                           .clientsTechnicalLength,
@@ -146,9 +148,19 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                             ? Border.all(
                                                                 width: 2,
                                                                 color: const Color(
-                                                                    0xFFF18254))
-                                                            : Border.all(
-                                                                width: 0.01),
+                                                                    0xFFFDAE2A))
+                                                            : clientsScheduledController
+                                                                        .clientsScheduledListTechnical[
+                                                                            index]
+                                                                        .attended ==
+                                                                    33
+                                                                ? Border.all(
+                                                                    width: 2,
+                                                                    color: const Color(
+                                                                        0xFFFF6750))
+                                                                : Border.all(
+                                                                    width:
+                                                                        0.01),
                                                         color: Colors.white,
                                                         boxShadow: [
                                                           BoxShadow(
@@ -357,31 +369,37 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                         style:
                                                                             TextStyle(
                                                                           color:
-                                                                              Color(0xFFF18254),
+                                                                              Color(0xFFFDAE2A),
                                                                         ),
                                                                       ),
                                                                     ],
                                                                   )
-                                                                : const Row(
-                                                                    children: [
-                                                                      Opacity(
-                                                                        opacity:
-                                                                            1,
-                                                                        child:
-                                                                            Icon(
-                                                                          Icons
-                                                                              .play_circle,
-                                                                          size:
-                                                                              60,
-                                                                          color: Color.fromARGB(
-                                                                              85,
-                                                                              83,
-                                                                              82,
-                                                                              82),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  )
+                                                                : clientsScheduledController
+                                                                            .clientsScheduledListTechnical[index]
+                                                                            .attended ==
+                                                                        33
+                                                                    ? const Column(
+                                                                        children: [
+                                                                          Image(
+                                                                            image:
+                                                                                AssetImage(
+                                                                              'assets/images/icons/lavado.png',
+                                                                            ),
+                                                                            width:
+                                                                                50,
+                                                                            height:
+                                                                                50,
+                                                                          ),
+                                                                          Text(
+                                                                            'Solicitud rechazo',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: Color(0xFFFF6750),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      )
+                                                                    : Container()
                                                           ],
                                                         ),
                                                         //subtitle: Text(clientsScheduledController.users[index].username.toString()),

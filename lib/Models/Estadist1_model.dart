@@ -1,27 +1,5 @@
 import 'dart:convert';
 
-// {
-//           "id": 167,
-//          // "clientName": "Aldo Marion",
-//           "client_image": "comments/default.jpg",
-//         //  "data": "2024-04-14 17:34:40",
-//         //  "time": "01:25:00",
-//          // "servicesRealizated": "Barba, , Corte de cabello",
-//           "tips": 10000,
-//           "tips80%": 8000,
-//          // "Services": 3,
-//         //  "totalServices": 75000,
-//          // "Products": 0,
-//         //  "totalProducts": 12000,
-//          // "choice": "Seleccionado",
-//          // "serviceSpecial": 0,
-//          // "SpecialAmount": 0,
-//          // "serviceRegular": 2,
-//         //  "pay": 1,
-//           "totalRetention": 10220,
-//          // "totalGeneral": 87000,
-//          // "amountGenerate": 51100
-//       }
 class Estadist1Model {
   final int id;
   final String clientName;
@@ -43,6 +21,8 @@ class Estadist1Model {
   final int? totalRetention;
   final int? totalGeneral;
   final int? amountGenerate;
+  final int? metacant;
+  final int? metaamount; //duda si es entero o double
 
   Estadist1Model({
     required this.id,
@@ -65,6 +45,8 @@ class Estadist1Model {
     this.totalRetention,
     this.totalGeneral,
     this.amountGenerate,
+    this.metacant,
+    this.metaamount,
   });
 
   factory Estadist1Model.fromJson(Map<String, dynamic> json) {
@@ -89,6 +71,8 @@ class Estadist1Model {
       totalRetention: json['totalRetention'],
       totalGeneral: json['totalGeneral'],
       amountGenerate: json['amountGenerate'],
+      metacant: json['metaCant'],
+      metaamount: json['metaAmount'],
     );
   }
 

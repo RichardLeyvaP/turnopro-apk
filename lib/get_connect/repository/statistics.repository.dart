@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http; // Asegúrate de importar http
 
 class WeeklyStatisticsRepository extends GetConnect {
   Future getDayStatisticsRespon(idBranch, startDate, endDate, mes, year) async {
+    // 2, startDate1, endDate1, 1, 7, mes, year)
     try {
       if (idBranch != null) {
         String url = '';

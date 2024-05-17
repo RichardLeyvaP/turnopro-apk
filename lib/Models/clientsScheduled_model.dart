@@ -4,8 +4,10 @@ import 'dart:convert';
 
 class ClientsScheduledModel {
   int? reservation_id;
+  int? idBarber;
   int? car_id;
   String? start_time;
+  String? nameBarber;
   String? final_hour;
   String? total_time;
   String? client_name;
@@ -24,8 +26,10 @@ class ClientsScheduledModel {
 
   ClientsScheduledModel({
     this.reservation_id,
+    this.idBarber,
     this.car_id,
     this.start_time,
+    this.nameBarber,
     this.final_hour,
     this.total_time,
     this.client_name,
@@ -46,11 +50,13 @@ class ClientsScheduledModel {
   Map<String, dynamic> toMap() {
     return {
       'reservation_id': reservation_id,
+      'idBarber': idBarber,
       'car_id': car_id,
       'start_time': start_time,
       'final_hour': final_hour,
       'total_time': total_time,
       'client_name': client_name,
+      'nameBarber': nameBarber,
       'client_image': client_image,
       'client_id': client_id,
       'attended': attended,
@@ -68,11 +74,13 @@ class ClientsScheduledModel {
   factory ClientsScheduledModel.fromMap(Map<String, dynamic> map) {
     return ClientsScheduledModel(
       reservation_id: map['reservation_id'],
+      idBarber: map['idBarber'],
       car_id: map['car_id'],
       start_time: map['start_time'],
       final_hour: map['final_hour'],
       total_time: map['total_time'],
       client_name: map['client_name'],
+      nameBarber: map['nameBarber'],
       client_image: map['client_image'] ?? '',
       client_id: map['client_id'],
       attended: map['attended'] ?? 0,

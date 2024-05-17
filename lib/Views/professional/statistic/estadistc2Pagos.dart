@@ -1,3 +1,5 @@
+//ESTE ES EL ULTIMOS QUE FALLABA
+//
 // ignore_for_file: file_names, depend_on_referenced_packages
 //import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,7 @@ class Estadistc2Pagos extends StatefulWidget {
 }
 
 class _Estadistc2PagosState extends State<Estadistc2Pagos> {
+  final LoginController loginCont = Get.find<LoginController>();
   final PagesConfigController pagesConfigCont =
       Get.find<PagesConfigController>();
   final double valuePadding = 12;
@@ -53,7 +56,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
             : Column(
                 children: [
                   Expanded(
-                    flex: 4,
+                    flex: 5,
                     child: topPage(
                         panddCont: panddCont,
                         colorCont: colorCont,
@@ -67,16 +70,580 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                         colorIcon: colorIcon,
                         buttonRight: false),
                   ),
+                  //pendientes y por cobrar
+                  FittedBox(
+                    fit: BoxFit.contain,
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10, right: 10, left: 10, bottom: 10),
+                          child: Container(
+                            height: (MediaQuery.of(context).size.height * 0.08),
+                            width: (MediaQuery.of(context).size.width * 1),
+                            child: GetBuilder<ClientsScheduledController>(
+                                builder: (controllerClient) {
+                              return Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height:
+                                        (MediaQuery.of(context).size.height *
+                                            0.085),
+                                    width: MediaQuery.of(context).size.width *
+                                        0.485,
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFFFDAE2A), //todo
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          const Text('Pendiente a Cobrar',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w700)),
+                                          Text(
+                                              '  ${_.estadistPagosFijo['pendiente'].toString()}  ',
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w700)),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    height:
+                                        (MediaQuery.of(context).size.height *
+                                            0.085),
+                                    width: MediaQuery.of(context).size.width *
+                                        0.485,
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFF19CF9E), //todo
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          const Text('Ganancia Total',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w700)),
+                                          Text(
+                                              '  ${_.estadistPagosFijo['pagado'].toString()}  ',
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w700)),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (loginCont.chargeUserLoggedIn == 'Barbero' ||
+                      loginCont.chargeUserLoggedIn ==
+                          'Barbero y Encargado') ...[
+                    Expanded(
+                      flex: 13,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Row(
+                            children: [
+                              Container(
+                                height:
+                                    (MediaQuery.of(context).size.height * 0.4),
+                                width: (MediaQuery.of(context).size.width * 1),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.7),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: const Offset(-5,
+                                          5), // Ajusta los valores para personalizar la sombra
+                                    ),
+                                  ],
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(borderRadiusValue)),
+                                ),
+                                child: GetBuilder<ClientsScheduledController>(
+                                    builder: (controllerClient) {
+                                  return ListTile(
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(12)),
+                                      ),
+                                      title: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.9,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const SizedBox(
+                                                      height: 6,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Icon(
+                                                              MdiIcons
+                                                                  .accountDetails,
+                                                              color: const Color(
+                                                                  0xFFFDAE2A),
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            const Text(
+                                                              'Detalles',
+
+                                                              overflow: TextOverflow
+                                                                  .ellipsis, // Agrega los tres puntos suspensivos
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  color: Color(
+                                                                      0xFFFDAE2A),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        const Text(
+                                                          '',
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 2,
+                                                    ),
+                                                    Container(
+                                                      height: 1,
+                                                      width: 1000,
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              155,
+                                                              182,
+                                                              184,
+                                                              182),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 6,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        const Text(
+                                                          'Clientes Atendidos',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                            _.estadistPagosFijo[
+                                                                    'clientAtended']
+                                                                .toString(),
+                                                            maxLines:
+                                                                2, // Limita el texto a 2 líneas
+                                                            overflow: TextOverflow
+                                                                .ellipsis, // Agrega los tres puntos suspensivos
+                                                            style: const TextStyle(
+                                                                fontSize: 16,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        148,
+                                                                        0,
+                                                                        0,
+                                                                        0),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700)),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        const Text(
+                                                          'Propina 80%',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                            _.estadistPagosFijo[
+                                                                    'propina80']
+                                                                .toString(),
+                                                            maxLines:
+                                                                2, // Limita el texto a 2 líneas
+                                                            overflow: TextOverflow
+                                                                .ellipsis, // Agrega los tres puntos suspensivos
+                                                            style: const TextStyle(
+                                                                fontSize: 16,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        148,
+                                                                        0,
+                                                                        0,
+                                                                        0),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700)),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        const Text(
+                                                          'Cantidad de Servicios',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          _.estadistPagosFijo[
+                                                                  'servCant']
+                                                              .toString(),
+                                                          maxLines:
+                                                              2, // Limita el texto a 2 líneas
+                                                          overflow: TextOverflow
+                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                          style: const TextStyle(
+                                                              fontSize: 16,
+                                                              color: Color
+                                                                  .fromARGB(148,
+                                                                      0, 0, 0),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        const Text(
+                                                          'Ganancia en Productos',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          _.estadistPagosFijo[
+                                                                  'productCant']
+                                                              .toString(),
+                                                          maxLines:
+                                                              2, // Limita el texto a 2 líneas
+                                                          overflow: TextOverflow
+                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                          style: const TextStyle(
+                                                              fontSize: 16,
+                                                              color: Color
+                                                                  .fromARGB(148,
+                                                                      0, 0, 0),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        const Text(
+                                                          'Retención',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          _.estadistPagosFijo[
+                                                                  'retention']
+                                                              .toString(),
+                                                          maxLines:
+                                                              2, // Limita el texto a 2 líneas
+                                                          overflow: TextOverflow
+                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                          style: const TextStyle(
+                                                              fontSize: 16,
+                                                              color: Color
+                                                                  .fromARGB(148,
+                                                                      0, 0, 0),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        const Text(
+                                                          'Metas de Convivencias',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          _.estadistPagosFijo[
+                                                                  'metaAmount']
+                                                              .toString(),
+                                                          maxLines:
+                                                              2, // Limita el texto a 2 líneas
+                                                          overflow: TextOverflow
+                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                          style: const TextStyle(
+                                                              fontSize: 16,
+                                                              color: Color
+                                                                  .fromARGB(148,
+                                                                      0, 0, 0),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        const Text(
+                                                          'Metas de Servicios',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          _.estadistPagosFijo[
+                                                                  'servAmount']
+                                                              .toString(),
+                                                          maxLines:
+                                                              2, // Limita el texto a 2 líneas
+                                                          overflow: TextOverflow
+                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                          style: const TextStyle(
+                                                              fontSize: 16,
+                                                              color: Color
+                                                                  .fromARGB(148,
+                                                                      0, 0, 0),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        const Text(
+                                                          'Metas de Productos',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          _.estadistPagosFijo[
+                                                                  'productAmount']
+                                                              .toString(),
+                                                          maxLines:
+                                                              2, // Limita el texto a 2 líneas
+                                                          overflow: TextOverflow
+                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                          style: const TextStyle(
+                                                              fontSize: 16,
+                                                              color: Color
+                                                                  .fromARGB(148,
+                                                                      0, 0, 0),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        const Text(
+                                                          'Monto Generado',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          _.estadistPagosFijo[
+                                                                  'amountGenerate']
+                                                              .toString(),
+
+                                                          maxLines:
+                                                              2, // Limita el texto a 2 líneas
+                                                          overflow: TextOverflow
+                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                          style: const TextStyle(
+                                                              fontSize: 16,
+                                                              color: Color
+                                                                  .fromARGB(148,
+                                                                      0, 0, 0),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        const Text(
+                                                          'Monto Líquido',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          _.estadistPagosFijo[
+                                                                  'winnerRetention']
+                                                              .toString(),
+                                                          maxLines:
+                                                              2, // Limita el texto a 2 líneas
+                                                          overflow: TextOverflow
+                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                          style: const TextStyle(
+                                                              fontSize: 16,
+                                                              color: Color
+                                                                  .fromARGB(148,
+                                                                      0, 0, 0),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        const Text(
+                                                          'Monto Ganado',
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              color: Color
+                                                                  .fromARGB(220,
+                                                                      0, 0, 0),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                        Text(
+                                                          _.estadistPagosFijo[
+                                                                  'winnerAmount']
+                                                              .toString(),
+                                                          maxLines:
+                                                              2, // Limita el texto a 2 líneas
+                                                          overflow: TextOverflow
+                                                              .ellipsis, // Agrega los tres puntos suspensivos
+                                                          style: const TextStyle(
+                                                              fontSize: 16,
+                                                              color: Color
+                                                                  .fromARGB(220,
+                                                                      0, 0, 0),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ));
+                                }),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                  //detalles solo del barbero
+                  //pagos
                   Expanded(
-                    flex:
-                        heightFlexBody, // 85% del espacio disponible para esta parte
+                    flex: loginCont.chargeUserLoggedIn == 'Barbero' ||
+                            loginCont.chargeUserLoggedIn ==
+                                'Barbero y Encargado'
+                        ? 13
+                        : 22, // 85% del espacio disponible para esta parte
                     child: _.estadistPagosLength > 0
                         ? ListView.builder(
                             padding: EdgeInsets
                                 .zero, // Elimina cualquier padding del ListView
                             itemCount: _.estadistPagosLength,
                             itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.only(
+                                  padding: const EdgeInsets.only(
                                     top: 10,
                                     left: 10,
                                     right: 10,
@@ -89,7 +656,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                           height: (MediaQuery.of(context)
                                                   .size
                                                   .height *
-                                              0.145),
+                                              0.13),
                                           width: (MediaQuery.of(context)
                                                   .size
                                                   .width *
@@ -150,7 +717,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                                 CrossAxisAlignment
                                                                     .start,
                                                             children: [
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                 height: 12,
                                                               ),
                                                               Row(
@@ -161,7 +728,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                                   Icon(
                                                                     MdiIcons
                                                                         .calendar,
-                                                                    color: Color(
+                                                                    color: const Color(
                                                                         0xFFFDAE2A),
                                                                   ),
                                                                   Text(
@@ -195,7 +762,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                                     184,
                                                                     182),
                                                               ),
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                 height: 6,
                                                               ),
                                                               Row(
@@ -203,7 +770,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                                     MainAxisAlignment
                                                                         .spaceBetween,
                                                                 children: [
-                                                                  Text(
+                                                                  const Text(
                                                                       'Tipo de Pago'),
                                                                   Text(
                                                                     _

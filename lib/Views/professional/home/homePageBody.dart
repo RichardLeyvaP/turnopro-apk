@@ -655,63 +655,96 @@ class _HomePageBodyState extends State<HomePageBody>
       ];
 
       activeClock() {
-        print('La aplicación se activeClock() {--');
+        print('La aplicación se activeClock() {--111');
         for (var i = 0; i < clientsScheduledController.item.length; i++) {
           if (clientsScheduledController.item[i] == 0) {
             animationCont[0]!.duration =
                 Duration(seconds: animationCont[0]!.duration!.inSeconds);
             animationCont[0]!.forward();
+
             print(
-                'La aplicación se activeClock() {-- ${animationCont[0]!.duration!.inSeconds}');
+                'La aplicación se activeClock() {--1 ${animationCont[0]!.duration!.inSeconds}');
           } else if (clientsScheduledController.item[i] == 1) {
             animationCont[1]!.duration =
                 Duration(seconds: animationCont[1]!.duration!.inSeconds);
             animationCont[1]!.forward();
             print(
-                'La aplicación se activeClock() {-- ${animationCont[1]!.duration!.inSeconds}');
+                'La aplicación se activeClock() {--2 ${animationCont[1]!.duration!.inSeconds}');
           } else if (clientsScheduledController.item[i] == 2) {
             animationCont[2]!.duration =
                 Duration(seconds: animationCont[2]!.duration!.inSeconds);
             animationCont[2]!.forward();
             print(
-                'La aplicación se activeClock() {-- ${animationCont[2]!.duration!.inSeconds}');
+                'La aplicación se activeClock() {--3 ${animationCont[2]!.duration!.inSeconds}');
           } else if (clientsScheduledController.item[i] == 3) {
             animationCont[3]!.duration =
                 Duration(seconds: animationCont[3]!.duration!.inSeconds);
             animationCont[3]!.forward();
             print(
-                'La aplicación se activeClock() {-- ${animationCont[3]!.duration!.inSeconds}');
+                'La aplicación se activeClock() {--4 ${animationCont[3]!.duration!.inSeconds}');
           }
         }
       }
 
       activeClockLogin() {
-        print('La aplicación se activeClock() {--');
+        print('La aplicación se activeClock() {--9');
         for (var i = 0; i < clientsScheduledController.item.length; i++) {
           if (clientsScheduledController.item[i] == 0) {
+            print(
+                'relojes activos: 1-${clientsScheduledController.clientsAttended1!.attended}');
             animationCont[0]!.duration = Duration(
                 seconds: clientsScheduledController.timeClientsAttended1!);
             animationCont[0]!.forward();
+            //verificar si esta con el tecnico y detenerlo
+            if (clientsScheduledController.clientsAttended1!.attended == 4 ||
+                clientsScheduledController.clientsAttended1!.attended == 5 ||
+                clientsScheduledController.clientsAttended1!.attended == 33) {
+              animationCont[0]!.stop();
+            }
+
             print(
-                'La aplicación se activeClock() {-- ${clientsScheduledController.timeClientsAttended1!}');
+                'La aplicación se activeClock() {--8 ${clientsScheduledController.timeClientsAttended1!}');
           } else if (clientsScheduledController.item[i] == 1) {
+            print(
+                'relojes activos: 2-${clientsScheduledController.clientsAttended2!.attended}');
             animationCont[1]!.duration = Duration(
                 seconds: clientsScheduledController.timeClientsAttended2!);
             animationCont[1]!.forward();
+            //verificar si esta con el tecnico y detenerlo
+
+            if (clientsScheduledController.clientsAttended2!.attended == 4 ||
+                clientsScheduledController.clientsAttended2!.attended == 5 ||
+                clientsScheduledController.clientsAttended2!.attended == 33) {
+              animationCont[1]!.stop();
+            }
             print(
-                'La aplicación se activeClock() {-- ${clientsScheduledController.timeClientsAttended2!}');
+                'La aplicación se activeClock() {--7 ${clientsScheduledController.timeClientsAttended2!}');
           } else if (clientsScheduledController.item[i] == 2) {
+            print(
+                'relojes activos: 3-${clientsScheduledController.clientsAttended3!.attended}');
             animationCont[2]!.duration = Duration(
                 seconds: clientsScheduledController.timeClientsAttended3!);
             animationCont[2]!.forward();
+            if (clientsScheduledController.clientsAttended3!.attended == 4 ||
+                clientsScheduledController.clientsAttended3!.attended == 5 ||
+                clientsScheduledController.clientsAttended3!.attended == 33) {
+              animationCont[2]!.stop();
+            }
             print(
-                'La aplicación se activeClock() {-- ${clientsScheduledController.timeClientsAttended3!}');
+                'La aplicación se activeClock() {--6 ${clientsScheduledController.timeClientsAttended3!}');
           } else if (clientsScheduledController.item[i] == 3) {
+            print(
+                'relojes activos: 4-${clientsScheduledController.clientsAttended4!.attended}');
             animationCont[3]!.duration = Duration(
                 seconds: clientsScheduledController.timeClientsAttended4!);
             animationCont[3]!.forward();
+            if (clientsScheduledController.clientsAttended4!.attended == 4 ||
+                clientsScheduledController.clientsAttended4!.attended == 5 ||
+                clientsScheduledController.clientsAttended4!.attended == 33) {
+              animationCont[3]!.stop();
+            }
             print(
-                'La aplicación se activeClock() {-- ${clientsScheduledController.timeClientsAttended4!}');
+                'La aplicación se activeClock() {--5 ${clientsScheduledController.timeClientsAttended4!}');
           }
         }
       }
@@ -1320,6 +1353,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                       barrierDismissible: false,
                                     ); //Get.back();
                                     await coexCont.fetchEstadist0();
+                                    Get.back();
                                     pagesConfigC.onTabTapped(
                                         3); //index = 3 -> /StatisticPage
                                   },
@@ -1741,6 +1775,10 @@ class _HomePageBodyState extends State<HomePageBody>
     ClientsScheduledController clientsScheduledController,
     AnimationController _animationController,
   ) {
+    if (attend == 4 || attend == 5) //esta con el tecnico
+    {
+      // aqui parar el reloj
+    }
     String segundos = "";
     // Color colorInicial = Colors.white;
     Color colorInicial = Colors.white;
@@ -1752,6 +1790,9 @@ class _HomePageBodyState extends State<HomePageBody>
         name.split(" "); // Tomar los primeros dos nombres (si existen)
     String firstName = partsName.isNotEmpty ? partsName[0] : "";
     // String secondName = partsName.length > 1 ? partsName[1] : "";
+    int hoursN = 0;
+    int minutesN = 0;
+    String formattedMinutes = '00';
 
     return InkWell(
       onTap: () async {
@@ -1886,6 +1927,20 @@ class _HomePageBodyState extends State<HomePageBody>
                         colorInicialCirculo = Colors.white;
                         fontSizeText = 10;
                       }
+                      print('cambioReloj - minutes:$minutes');
+                      if (minutes > 59) {
+                        // División entera para obtener las horas
+                        hoursN = minutes ~/ 60;
+
+                        // Resto de la división para obtener los minutos
+                        minutesN = minutes % 60;
+
+                        // Para asegurar que siempre se muestren dos dígitos
+                        formattedMinutes = minutesN.toString().padLeft(2, '0');
+
+                        print('cambioReloj - horasN: $hoursN');
+                        print('cambioReloj - minutesN: $formattedMinutes');
+                      }
 
                       return SizedBox(
                         width: clientsScheduledController.sizeClock,
@@ -1935,25 +1990,62 @@ class _HomePageBodyState extends State<HomePageBody>
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          '$minutes :',
-                                          style: TextStyle(
-                                              fontSize: (MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.04), //todo2
-                                              fontFamily: GoogleFonts.orbitron()
-                                                  .fontFamily,
-                                              color: colorInicial,
-                                              fontWeight: FontWeight.w900),
-                                        ),
+                                        minutes > 59
+                                            ? minutesN > 9
+                                                ? Text(
+                                                    '$hoursN : $minutesN :',
+                                                    style: TextStyle(
+                                                        fontSize:
+                                                            (MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.038), //todo2
+                                                        fontFamily: GoogleFonts
+                                                                .orbitron()
+                                                            .fontFamily,
+                                                        color: colorInicial,
+                                                        fontWeight:
+                                                            FontWeight.w900),
+                                                  )
+                                                : Text(
+                                                    '$hoursN : $formattedMinutes :',
+                                                    style: TextStyle(
+                                                        fontSize:
+                                                            (MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.038), //todo2
+                                                        fontFamily: GoogleFonts
+                                                                .orbitron()
+                                                            .fontFamily,
+                                                        color: colorInicial,
+                                                        fontWeight:
+                                                            FontWeight.w900),
+                                                  )
+                                            : Text(
+                                                '$minutes :',
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        (MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.038), //todo2
+                                                    fontFamily:
+                                                        GoogleFonts.orbitron()
+                                                            .fontFamily,
+                                                    color: colorInicial,
+                                                    fontWeight:
+                                                        FontWeight.w900),
+                                              ),
                                         Text(
                                           "$segundos$seconds",
                                           style: TextStyle(
                                               fontSize: (MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.04),
+                                                  0.038),
                                               color: colorInicial,
                                               fontFamily: GoogleFonts.orbitron()
                                                   .fontFamily,
@@ -2221,7 +2313,8 @@ class _HomePageBodyState extends State<HomePageBody>
               barrierDismissible: false,
             ); //Get.back();
 
-            await clientsScheduledController.fetchClientsScheduled(
+//todo optimización de codigo-cambio de ruta (anterior-fetchClientsScheduled)
+            await clientsScheduledController.fetchClientsScheduledNew(
                 loginController.idProfessionalLoggedIn,
                 loginController.branchIdLoggedIn,
                 'Agenda-Card');

@@ -20,6 +20,26 @@ class CoexistenceController extends GetxController {
   int estadist1Length = 0;
   int estadistPagosLength = 0;
   int estadist0Length = 0;
+  Map<String, String> estadistPagosFijo = {
+    'pendiente': '0',
+    'pagado': '0',
+    'clientAtended': '0',
+    'servCant': '0',
+    'amountGenerate': '0',
+    'propina80': '0',
+    'metaCant': '0',
+    'metaAmount': '0',
+    'retention': '0',
+    'winnerRetention': '0',
+    'winnerAmount': '0',
+    'productCant': '0',
+    'productAmount': '0',
+    'servAmount': '0',
+  };
+
+  //VARIABLES DE ESTADIDSTICA ANUAL
+
+  //VARIABLES DE ESTADIDSTICA ANUAL
   List<CoexistenceModel> coexistence = [];
   List<Estadist1Model> estadist1 = [];
   List<Estadist0Model> estadist0 = [];
@@ -93,6 +113,41 @@ class CoexistenceController extends GetxController {
     controllerLogin.setIsLoadingFor(false);
   }
 
+  int averageEarnings = 0, totalEarnings = 0;
+  List<double> meses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  //todo nuevaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  Future<void> getStadistAno(int ano) async {
+    final LoginController controllerLogin = Get.find<LoginController>();
+    int? idProfessional = controllerLogin.idProfessionalLoggedIn;
+    int? idBranch = controllerLogin.branchIdLoggedIn;
+    Map<String, dynamic> resultList =
+        await repository.getAnoStadist(idProfessional, idBranch, ano);
+    meses[0] = double.parse(resultList['stadist']['enero'].toString());
+    print('resultadosssssss 4');
+    meses[1] = double.parse(resultList['stadist']['febrero'].toString());
+    print('resultadosssssss 5');
+    meses[2] = double.parse(resultList['stadist']['marzo'].toString());
+    print('resultadosssssss 6');
+    meses[3] = double.parse(resultList['stadist']['abril'].toString());
+    print('resultadosssssss 7');
+    meses[4] = double.parse(resultList['stadist']['mayo'].toString());
+    print('resultadosssssss 8');
+    meses[5] = double.parse(resultList['stadist']['junio'].toString());
+    print('resultadosssssss 9');
+    meses[6] = double.parse(resultList['stadist']['julio'].toString());
+    meses[7] = double.parse(resultList['stadist']['agosto'].toString());
+    meses[8] = double.parse(resultList['stadist']['septiembre'].toString());
+    meses[9] = double.parse(resultList['stadist']['octubre'].toString());
+    meses[10] = double.parse(resultList['stadist']['noviembre'].toString());
+    meses[11] = double.parse(resultList['stadist']['diciembre'].toString());
+    print('resultadosssssss 15');
+
+    averageEarnings = resultList['averageEarnings'];
+    totalEarnings = resultList['totalEarnings'];
+
+    update();
+  }
+
   Future<void> fetchEstadist1(data) async {
     print('werya tengo1');
     final LoginController controllerLogin = Get.find<LoginController>();
@@ -112,11 +167,42 @@ class CoexistenceController extends GetxController {
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
     int? idBranch = controllerLogin.branchIdLoggedIn;
-    estadistPagos =
-        await repository.fetchEstadistPagos(idProfessional, idBranch);
+    String? charge = controllerLogin.chargeUserLoggedIn;
+    if (charge == 'Barbero y Encargado') {
+      if (controllerLogin.switchValue == false) {
+        charge = 'Barbero';
+      } else if (controllerLogin.switchValue == true) {
+        charge = 'Encargado';
+      }
+    }
+
+    Map<String, dynamic> resultList =
+        await repository.fetchEstadistPagos(idProfessional, idBranch, charge);
+
+    estadistPagos = resultList['branchProf'];
     print(estadistPagos.length);
     estadistPagosLength = estadistPagos.length;
-    print('werya tengo-result coexistenceListLength:${estadistPagosLength}');
+    print(
+        'werya tengo-result coexistenceListLength:${resultList['pendiente']}');
+    estadistPagosFijo = {
+      'pendiente': resultList['pendiente'].toString(),
+      'pagado': resultList['pagado'].toString(),
+      'clientAtended': resultList['clientAtended'].toString(),
+      'servCant': resultList['servCant'].toString(),
+      'amountGenerate': resultList['amountGenerate'].toString(),
+      'propina80': resultList['propina80'].toString(),
+      'metaCant': resultList['metaCant'].toString(),
+      'metaAmount': resultList['metaAmount'].toString(),
+      'retention': resultList['retention'].toString(),
+      'winnerRetention': resultList['winnerRetention'].toString(),
+      'winnerAmount': resultList['winnerAmount'].toString(),
+      'productCant': resultList['productCant'].toString(),
+      'productAmount': resultList['productAmount'].toString(),
+      'servAmount': resultList['servAmount'].toString(),
+      //estos 2 son las cantidades de bonos por servicio y por productos
+      'productBonoCant': resultList['productBonoCant'].toString(),
+      'servBonoCant': resultList['servBonoCant'].toString(),
+    };
 
     update();
     controllerLogin.setIsLoadingFor(false);
@@ -133,7 +219,7 @@ class CoexistenceController extends GetxController {
     print('werya tengo-result coexistenceListLength:${estadist0Length}');
 
     update();
-    controllerLogin.setIsLoadingFor(false);
+    //controllerLogin.setIsLoadingFor(false);
   }
 
   Future<void> specificCoexistenceList(idProfessional) async {
