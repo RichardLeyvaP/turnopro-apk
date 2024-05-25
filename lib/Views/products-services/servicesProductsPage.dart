@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
+import 'package:turnopro_apk/Utility/textTruncate.dart';
 import 'package:turnopro_apk/Views/products-services/products/productsBody.dart';
 import 'package:turnopro_apk/Views/products-services/services/servicesBodyPage.dart';
 //import 'package:animate_do/animate_do.dart';
@@ -60,6 +61,12 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
       loginController.setIsLoadingFor(false);
       //loginController.inTheClock(false);
     });
+    bool hasText = false;
+    void _checkText() {
+      setState(() {
+        hasText = commentController.text.trim().isNotEmpty;
+      });
+    }
 
     //VARIABLE A UTILIZAR
     BoxDecoration clickServicesDecoration = const BoxDecoration(
@@ -199,11 +206,20 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(clientsController.nameClientTemporary,
+                              TruncatedText(
+                                text: clientsController.nameClientTemporary,
+                                maxLength: 22,
+                                styleText: const TextStyle(
+                                    fontSize: 16,
+                                    color: const Color(0xFF2B3141),
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              /*   Text(clientsController.nameClientTemporary,
                                   style: const TextStyle(
                                       fontSize: 16,
                                       color: const Color(0xFF2B3141),
-                                      fontWeight: FontWeight.bold)),
+                                      fontWeight: FontWeight.bold)),*/
+
                               Text('CLIENTE',
                                   style: const TextStyle(
                                       color: const Color(0xFF2B3141),
@@ -438,6 +454,9 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                     right: 16,
                                                   ),
                                                   child: TextFormField(
+                                                    onChanged: (value) {
+                                                      _checkText();
+                                                    },
                                                     controller:
                                                         commentController,
                                                     maxLines: 5,
@@ -576,8 +595,15 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                         ),
                                                         backgroundColor:
                                                             MaterialStateProperty
-                                                                .all<Color>(Color(
-                                                                    0xFF19CF9E)),
+                                                                .all<Color>(hasText
+                                                                    ? Color(
+                                                                        0xFF19CF9E)
+                                                                    : Color
+                                                                        .fromARGB(
+                                                                            155,
+                                                                            192,
+                                                                            191,
+                                                                            191)),
                                                       ),
                                                       onPressed: () async {
                                                         // Lógica para enviar el comentario
@@ -586,13 +612,9 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                             commentController
                                                                 .text;
                                                         // Eliminar espacios en blanco al principio y al final
-                                                        String
-                                                            textWithoutSpaces =
-                                                            commentText.trim();
 
                                                         // Verificar que el campo no esté vacío
-                                                        if (textWithoutSpaces
-                                                            .isNotEmpty) {
+                                                        if (hasText) {
                                                           // Cerrar el primer modal
                                                           Navigator.pop(
                                                               context);
@@ -692,6 +714,27 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                           print(
                                                               'Comentario enviado - $commentText ');
                                                         } else {
+                                                          Get.snackbar(
+                                                            'Mensaje',
+                                                            'Debe escribir un comentario al respecto',
+                                                            duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        2500),
+                                                            showProgressIndicator:
+                                                                true,
+                                                            progressIndicatorBackgroundColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    146,
+                                                                    99,
+                                                                    19),
+                                                            progressIndicatorValueColor:
+                                                                const AlwaysStoppedAnimation(
+                                                                    Color(
+                                                                        0xFFFDAE2A)),
+                                                            overlayBlur: 3,
+                                                          );
                                                           // El campo de texto está vacío, puedes mostrar un mensaje o realizar alguna acción
                                                           print(
                                                               'El comentario no puede estar vacío');

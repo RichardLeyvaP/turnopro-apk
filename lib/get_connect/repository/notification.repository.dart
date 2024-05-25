@@ -89,6 +89,7 @@ class NotificationRepository extends GetConnect {
 //
 //
   Future professionalBranchNotifQueque(idBranch, idProf, type) async {
+    int? varStatusCode;
     try {
       print('llamada timer en 10 segundos A professionalBranchNotifQueque');
       List<NotificationModel> notificationList = [];
@@ -106,6 +107,7 @@ class NotificationRepository extends GetConnect {
           '${Env.apiEndpoint}/professional-branch-notif-queque?branch_id=$idBranch&professional_id=$idProf'; //cambiar aqui por servicios en la api
 
       final response = await get(url);
+      varStatusCode = response.statusCode;
       if (response.statusCode == 200) {
         // final jsonResponse = jsonDecode(response.body);
 
@@ -226,8 +228,6 @@ class NotificationRepository extends GetConnect {
             "notificationListNew": notificationListNew,
           };
         }
-      } else {
-        return notificationList;
       }
     } catch (e) {
       print('llamada timer en 10 segundos DI ERROR EN :$e');
@@ -235,6 +235,11 @@ class NotificationRepository extends GetConnect {
         'Erroor': true
       }; //si retorna null es que dio error deve ser de conexion
     }
+    // finally {
+    //   if (varStatusCode == 200) {
+
+    //   }
+    // }
   }
 
   Future getNotificationList(idBranch, idProf, type) async {

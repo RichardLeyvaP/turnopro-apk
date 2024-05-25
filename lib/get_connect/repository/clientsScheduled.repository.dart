@@ -16,7 +16,7 @@ class ClientsScheduledRepository extends GetConnect {
     print('estoy en repositorio en - 1');
     try {
       List<ClientsScheduledModel> clientList = [];
-      ClientsScheduledModel? nextClient;
+      ClientsScheduledModel? nextClient, clientAtenYa;
       bool hasNextClient = false;
       int quantityClientAttended = 0;
       int quantityClientRechaz = 0;
@@ -43,7 +43,7 @@ class ClientsScheduledRepository extends GetConnect {
               ClientsScheduledModel.fromJson(jsonEncode(service));
 
           clientList.add(client);
-          //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
+          //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 4
           if (hasNextClient == false) {
             //EL PRIMERO QUE ENCUENTRE CON 4 SERA EL SIGUIENTE
             if (client.attended == 4) {
@@ -53,7 +53,10 @@ class ClientsScheduledRepository extends GetConnect {
           }
           //AQUI PARA SABER CUANTOS ESTA ATENDIENDO por el tecnico
           if (client.attended == 5) {
+            //con solo una vez que entre aqui ya pone en null a nesClient
             //HASTA AHORA EL TECNICO SOLO ATENDERA UNO SOLO
+            clientAtenYa = client;
+
             quantityClientAttended++;
           }
           //AQUI PARA SABER CUANTOS ESTAN DE SOLICITUD DE RECHAZO
@@ -62,10 +65,12 @@ class ClientsScheduledRepository extends GetConnect {
             quantityClientRechaz++;
           }
         }
-        print('imprimiendo cuantos atinede el tecnico:$quantityClientAttended');
+        print(
+            'imprimiendo cuantos atinede el tecnico:...$quantityClientAttended');
       }
 
       return {
+        "clientAtenYa": clientAtenYa,
         "clientList": clientList,
         "nextClient": nextClient,
         "quantityClientAttended": quantityClientAttended,
@@ -511,7 +516,7 @@ class ClientsScheduledRepository extends GetConnect {
         return false;
       }
     } catch (e) {
-      print(e);
+      print('typeOfService(idProfessional, idBranch):$e');
     }
   }
 

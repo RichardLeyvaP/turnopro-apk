@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages, unused_element, unrelated_type_equality_checks
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
@@ -10,15 +11,20 @@ import 'package:turnopro_apk/get_connect/repository/clientsScheduled.repository.
 class ClientsTechnicalController extends GetxController {
   //DECLARACION DE VARIABLES
   ClientsScheduledRepository repository = ClientsScheduledRepository();
+  final LoginController controllerLogin = Get.find<LoginController>();
 
   List<ClientsScheduledModel> clientsScheduledListTechnical =
       []; // Lista de clientes
   int listClientReal = 0;
+
+  AnimationController? animationControllerInitialT;
+
   List<ClientsScheduledModel> selectclientsScheduledListTechnical = [];
   ClientsScheduledModel? clientsScheduledNext; // Cliente en espera
   ClientsScheduledModel?
       clientsNextTechnical; // Cliente en espera // Cliente en espera
-  ClientsScheduledModel? clientsAttendedTechnical; // Cliente en espera
+  ClientsScheduledModel? clientsAttendedTechnical,
+      clientAten; // Cliente en espera
   List<int> idClientsEspera = [];
   bool activeModifyTime = false;
   int modifyTimeSpecific = -99;
@@ -72,6 +78,16 @@ class ClientsTechnicalController extends GetxController {
     update();
   }
 
+  setQuantityAttendedTec() {
+    quantityClientAttendedTechnical = 0;
+    update();
+  }
+
+  void setTotalTimeInitialTec(value) {
+    totalTimeInitial = value;
+    update();
+  }
+
   bool verificateValueTimersTec() {
     bool hasClient1 = clientsAttendedTechnical != null;
     if (hasClient1) {
@@ -82,16 +98,17 @@ class ClientsTechnicalController extends GetxController {
   }
 
   Future<void> acceptClientTechnical(reservationId, attended) async {
-    final LoginController controllerLogin = Get.find<LoginController>();
     final ClientsScheduledController controllerSche =
         Get.find<ClientsScheduledController>();
-    quantityClientAttendedTechnical = 1;
-    boolFilterShowNextTecnhical = false;
-    update();
+//     quantityClientAttendedTechnical = 1;
+//     boolFilterShowNextTecnhical = false;
+// update();
     bool value = await repository.acceptOrRejectClient(reservationId, attended);
     //si lo que devuelve es true actualizo la cola
     if (value == true) {
-      quantityClientAttendedTechnical = 1;
+      //para decir que en ese momento no hay nadie atendiendose
+      clientAten = null;
+      // quantityClientAttendedTechnical = 1;
       int? idBranch = controllerLogin.branchIdLoggedIn;
       await fetchClientsTechnical(idBranch);
       //obtener de Db el clock dado reservationId
@@ -168,40 +185,70 @@ class ClientsTechnicalController extends GetxController {
   }
 
   Future<void> fetchClientsTechnical(idBranch) async {
-    List<int> clientsAux = [];
-    Map<String, dynamic> resultList =
-        await repository.getClientsTechnicalList(idBranch);
-    print('111ya entre a buscar inicialmente los clientes del tecnico');
-    print(resultList);
-    //verificando , si entra al if es problemas de coneccion
-    if (resultList.containsKey('ConnectionIssues') &&
-        resultList['ConnectionIssues'] == true) {
-      correctConnection = false;
-      print(
-          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
-    } else {
-      correctConnection = true;
-      //aqui estoy guardando la cola del dia de hoy del profesional
-      clientsScheduledListTechnical =
-          (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
-      clientsTechnicalLength = clientsScheduledListTechnical.length;
-      //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
-      clientsNextTechnical = resultList['nextClient'];
-      int cantRechaz = resultList['quantityClientRechaz'];
-      print(
-          'callTimerTec-clientsScheduledListTechnical:${clientsScheduledListTechnical.length}');
-      quantityClientAttendedTechnical = resultList['quantityClientAttended'];
-      if (quantityClientAttendedTechnical == 0 &&
-          clientsScheduledListTechnical.isNotEmpty) {
-        clientsAttendedTechnical = clientsNextTechnical;
-        boolFilterShowNextTecnhical = true;
-        technicalClientsAttended = 'nobody';
+    bool noUpdate = false;
+    try {
+      List<int> clientsAux = [];
+      Map<String, dynamic> resultList =
+          await repository.getClientsTechnicalList(idBranch);
+      print('111ya entre a buscar inicialmente los clientes del tecnico');
+      print(resultList);
+      //verificando , si entra al if es problemas de coneccion
+      if (resultList.containsKey('ConnectionIssues') &&
+          resultList['ConnectionIssues'] == true) {
+        correctConnection = false;
+        print(
+            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
       } else {
-        boolFilterShowNextTecnhical = false;
+        correctConnection = true;
+        //aqui estoy guardando la cola del dia de hoy del profesional
+        clientsScheduledListTechnical =
+            (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
+        clientsTechnicalLength = clientsScheduledListTechnical.length;
+        //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+
+        clientsNextTechnical = resultList['nextClient'];
+        int cantRechaz = resultList['quantityClientRechaz'];
+
+        if (cantRechaz >
+            0) //pongo el qr en 2, hasta que le acepten o rechacen la solicitud
+        {
+          controllerLogin.setCodigoQrValid(2);
+        }
+        print(
+            'callTimerTec-clientsScheduledListTechnical:${clientsScheduledListTechnical.length}');
+        quantityClientAttendedTechnical = resultList['quantityClientAttended'];
+        if (quantityClientAttendedTechnical == 0 &&
+            clientsScheduledListTechnical.isNotEmpty) {
+          clientsAttendedTechnical = clientsNextTechnical;
+          boolFilterShowNextTecnhical = true;
+          technicalClientsAttended = 'nobody';
+        } else if (quantityClientAttendedTechnical >
+            0) //es porque hay alguien atendiendose y se cerro de momento
+        {
+          clientAten = resultList['clientAtenYa'];
+          clientsAttendedTechnical = clientAten;
+          boolFilterShowNextTecnhical = false;
+          /* if (clientsScheduledListTechnical.isEmpty) {
+          boolFilterShowNextTecnhical = false;
+        } else {
+          boolFilterShowNextTecnhical = true;
+          technicalClientsAttended = 'nobody';
+        }*/
+        } else {
+          boolFilterShowNextTecnhical = true;
+        }
+        listClientReal = clientsTechnicalLength - cantRechaz;
       }
-      listClientReal = clientsTechnicalLength - cantRechaz;
+    } catch (e) {
+      noUpdate = true;
+      print('Error en Tecnico:$e');
+    } finally {
+      print(
+          'Error al obtener la cola del tecnico: noUpdate == click $noUpdate');
+      if (noUpdate == false) {
+        update();
+      }
     }
-    update();
   }
 
   Future<void> selectCarClient(carId) async {

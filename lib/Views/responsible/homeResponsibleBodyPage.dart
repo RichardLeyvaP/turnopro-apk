@@ -1060,7 +1060,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                           onPressed: () async {
                             if (controllerLogin.usserPermissionQr == 1 ||
                                 controllerLogin.usserPermissionQr == 2) {
-                              //rechazar la eliminacion
+                              //rechazar la Eliminación
                               controllerShoppingCart.setLoading(true);
                               print('rechazando la solicitud');
                               //aqui mandar a poner en 0 de nuevo en la cola al cliente
@@ -1091,8 +1091,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                               print('return resul: IconButton $result');
                               if (result == true) {
                                 if (charge == 'Barbero') {
-                                  notiController.storeNotification(
-                                      'Solicitud de Eliminacion Rechazada',
+                                  notiController.storeNotification2(
+                                      'Solicitud de Eliminación Rechazada',
                                       controllerLogin.branchIdLoggedIn,
                                       controllerclient
                                           .clientsScheduledListBranchClient[i]
@@ -1100,8 +1100,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                       '!Atención..El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} no fue rechazado.',
                                       'Barbero');
                                 } else if (charge == 'Tecnico') {
-                                  notiController.storeNotification(
-                                      'Solicitud de Eliminacion Rechazada',
+                                  notiController.storeNotification2(
+                                      'Solicitud de Eliminación Rechazada',
                                       controllerLogin.branchIdLoggedIn,
                                       controllerclient
                                           .clientsScheduledListBranchClient[i]
@@ -1304,7 +1304,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                               print('return resul: IconButton $result');
                               if (result == true) {
                                 if (charge == 'Barbero') {
-                                  notiController.storeNotification(
+                                  notiController.storeNotification2(
                                       typeDelete,
                                       controllerLogin.branchIdLoggedIn,
                                       controllerclient
@@ -1324,7 +1324,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                       'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue rechazado por el Técnico ${controllerclient.clientsScheduledListBranchClient[i].professional_name}',
                                       'Barbero');
                                   //enviar notificacion al propio tecnico que fue aceptada
-                                  notiController.storeNotification(
+                                  notiController.storeNotification2(
                                       typeDelete,
                                       controllerLogin.branchIdLoggedIn,
                                       controllerclient
@@ -1384,7 +1384,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
     //
 
     //
-//todo aqui le muestra las solicitudes de eliminacion de Servicios y Productos
+//todo aqui le muestra las solicitudes de Eliminación de Servicios y Productos
     for (int i = 0; i < contShopp.orderDeleteCar.length; i++) {
       if (contShopp.orderDeleteCar[i].nameService == '') {
         titulo = 'Eliminación de Producto';
@@ -1429,7 +1429,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                           ),
                           onPressed: () async {
                             if (controllerLogin.codigoQrValid() == true) {
-                              //rechazar la eliminacion
+                              //rechazar la Eliminación
                               controllerShoppingCart.setLoading(true);
                               int result = await contShopp.requestDelete(
                                   contShopp.orderDeleteCar[i].id, 0);
@@ -1446,7 +1446,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 }
 
                                 notiController.storeNotification(
-                                    'Solicitud de Eliminacion Rechazada',
+                                    'Solicitud de Eliminación Rechazada',
                                     controllerLogin.branchIdLoggedIn,
                                     contShopp.orderDeleteCar[i].profesional_id,
                                     '!Atención..El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} no fue aprobado para su eliminación.',
@@ -1698,7 +1698,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
       );
     }
     //
-    //todo aqui le muestra las solicitudes de eliminacion de Servicios y Productos
+    //todo aqui le muestra las solicitudes de Eliminación de Servicios y Productos
     //
     //
     //
@@ -1770,7 +1770,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                       child: IconButton(
                         onPressed: () async {
                           /*
-                          //rechazar la eliminacion
+                          //rechazar la Eliminación
                           controllerShoppingCart.setLoading(true);
                           int result = await contShopp.requestDelete(
                               contShopp.orderDeleteCar[i].id, 0);
@@ -1787,7 +1787,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                             }
 
                             notiController.storeNotification(
-                                'Solicitud de Eliminacion Rechazada',
+                                'Solicitud de Eliminación Rechazada',
                                 controllerLogin.branchIdLoggedIn,
                                 contShopp.orderDeleteCar[i].profesional_id,
                                 '!Atención..El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} no fue aprobado para su eliminación.');
@@ -1800,7 +1800,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
 */
 
                           if (controllerLogin.codigoQrValid() == true) {
-                            //rechazar la eliminacion
+                            //rechazar la Eliminación
                             controllerShoppingCart.setLoading(true);
                             int result = await contShopp.requestDelete(
                                 contShopp.orderDeleteCar[i].id, 0);
@@ -1817,7 +1817,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                               }
 
                               notiController.storeNotification(
-                                  'Solicitud de Eliminacion Rechazada',
+                                  'Solicitud de Eliminación Rechazada',
                                   controllerLogin.branchIdLoggedIn,
                                   contShopp.orderDeleteCar[i].profesional_id,
                                   '!Atención..El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} no fue aprobado para su eliminación.');
@@ -2052,7 +2052,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 'return resul: profesional_id ${contShopp.orderDeleteCar[i].profesional_id}');
 
                             notiController.storeNotification(
-                                'Aceptada su Solicitud de Eliminacion ',
+                                'Aceptada su Solicitud de Eliminación ',
                                 controllerLogin.branchIdLoggedIn,
                                 contShopp.orderDeleteCar[i].profesional_id,
                                 'El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} fue aprobado y eliminado satisfactoriamente.');

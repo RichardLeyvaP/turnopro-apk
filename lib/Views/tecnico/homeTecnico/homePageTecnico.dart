@@ -106,6 +106,21 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                           }
                           Get.back();
                         }
+                        if (index == 3) //Notificaciones
+                        {
+                          Get.dialog(
+                            const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFFFDAE2A),
+                              ),
+                            ),
+                            barrierDismissible: false,
+                          ); //Get.back();
+                          // controllerLogin.setIsLoadingFor(true);
+
+                          await coexistenceController.fetchEstadist0();
+                          Get.back();
+                        }
                         if (index == 4) //Notificaciones
                         {
                           Get.dialog(
@@ -609,6 +624,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                           _.idProfessionalLoggedIn,
                                                           'Tecnico',
                                                           3);
+
                                                   if (result == 1) //codigo 200
                                                   {
                                                     //mando notificacion al barbero

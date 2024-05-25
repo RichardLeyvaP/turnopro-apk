@@ -189,6 +189,7 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                           ),
                                                         ),
                                                         onTap: () async {
+                                                          /*
                                                           // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
                                                           clientsScheduledController
                                                               .showingServiceClientTechnical(
@@ -256,6 +257,8 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                             index]
                                                                         .professional_id!);
                                                           });
+
+                                                          */
                                                         },
                                                         title: Row(
                                                           mainAxisAlignment:

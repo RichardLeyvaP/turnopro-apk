@@ -15,6 +15,7 @@ import 'package:intl/intl.dart';
 class CoexistenceController extends GetxController {
   //DECLARACION DE VARIABLES
   CoexistenceRepository repository = CoexistenceRepository();
+  final LoginController controllerLogin = Get.find<LoginController>();
   double getTotal = 20.0;
   int coexistenceListLength = 0;
   int estadist1Length = 0;
@@ -52,7 +53,10 @@ class CoexistenceController extends GetxController {
   BranchModel? selectedBranch; // Lista de Notificaciones
   List<CoexistenceModel> selectCoexistence = [];
   bool isLoading = true;
+  bool retriesResult = false;
+  String? chargeSave;
   //LLAMANDO AL CONTROLADOR
+
   CoexistenceController() {
     /*
     print('estoy inicializando CoexistenceController ');
@@ -113,7 +117,7 @@ class CoexistenceController extends GetxController {
     controllerLogin.setIsLoadingFor(false);
   }
 
-  int averageEarnings = 0, totalEarnings = 0;
+  String averageEarnings = '0', totalEarnings = '0';
   List<double> meses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   //todo nuevaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
   Future<void> getStadistAno(int ano) async {
@@ -142,8 +146,11 @@ class CoexistenceController extends GetxController {
     meses[11] = double.parse(resultList['stadist']['diciembre'].toString());
     print('resultadosssssss 15');
 
-    averageEarnings = resultList['averageEarnings'];
-    totalEarnings = resultList['totalEarnings'];
+    //   averageEarnings = resultList['averageEarnings'];
+
+    averageEarnings = resultList['averageEarnings'].toString();
+    totalEarnings = resultList['totalEarnings'].toString();
+    //   totalEarnings = resultList['totalEarnings'];
 
     update();
   }
@@ -153,7 +160,10 @@ class CoexistenceController extends GetxController {
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
     int? idBranch = controllerLogin.branchIdLoggedIn;
-    estadist1 = await repository.fetchEstadist1(idProfessional, idBranch, data);
+    String? charge = controllerLogin.chargeUserLoggedIn;
+    chargeSave = charge;
+    estadist1 =
+        await repository.fetchEstadist1(idProfessional, idBranch, data, charge);
     print(estadist1.length);
     estadist1Length = estadist1.length;
     print('werya tengo-result coexistenceListLength:${estadist1Length}');
@@ -163,6 +173,7 @@ class CoexistenceController extends GetxController {
   }
 
   Future<void> fetchEstadistPagos() async {
+    retriesResult = false;
     print('werya tengo1');
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
@@ -180,6 +191,8 @@ class CoexistenceController extends GetxController {
         await repository.fetchEstadistPagos(idProfessional, idBranch, charge);
 
     estadistPagos = resultList['branchProf'];
+    retriesResult = resultList[
+        'retries']; //en este controlo si dio error al buscar los datos con true
     print(estadistPagos.length);
     estadistPagosLength = estadistPagos.length;
     print(
@@ -213,7 +226,10 @@ class CoexistenceController extends GetxController {
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
     int? idBranch = controllerLogin.branchIdLoggedIn;
-    estadist0 = await repository.fetchEstadist0(idProfessional, idBranch);
+    String? charge = controllerLogin.chargeUserLoggedIn;
+    chargeSave = charge;
+    estadist0 =
+        await repository.fetchEstadist0(idProfessional, idBranch, charge);
     print(estadist0.length);
     estadist0Length = estadist0.length;
     print('werya tengo-result coexistenceListLength:${estadist0Length}');

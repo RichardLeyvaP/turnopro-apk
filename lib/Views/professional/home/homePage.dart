@@ -10,6 +10,8 @@ import 'package:animate_do/animate_do.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/Utility/textTruncate.dart';
+import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
 import 'package:turnopro_apk/env.dart';
 import 'package:intl/intl.dart';
 
@@ -136,7 +138,7 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                             barrierDismissible: false,
                           ); //Get.back();
 
-                          await clientController.fetchClientsScheduled(
+                          await clientController.fetchClientsScheduledNew(
                               loginController.idProfessionalLoggedIn,
                               loginController.branchIdLoggedIn,
                               'if (index == 1)');
@@ -394,15 +396,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 SizedBox(
                   height: 5,
                 ),
-                Text(
-                  logUser.nameUserLoggedIn,
-                  style: const TextStyle(
-                    color: const Color.fromARGB(255, 43, 44, 49),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w900,
-                    height: 1.2,
-                  ),
-                ),
+                logUser.chargeUserLoggedIn == 'Barbero y Encargado'
+                    ? TruncatedText(
+                        text: logUser.nameUserLoggedIn,
+                        maxLength: 13,
+                        styleText: const TextStyle(
+                          color: const Color.fromARGB(255, 43, 44, 49),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w900,
+                          height: 1.2,
+                        ),
+                      )
+                    : Text(
+                        logUser.nameUserLoggedIn,
+                        style: const TextStyle(
+                          color: const Color.fromARGB(255, 43, 44, 49),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w900,
+                          height: 1.2,
+                        ),
+                      ),
                 const Text(
                   'Barbero',
                   style: TextStyle(

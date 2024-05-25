@@ -7,8 +7,10 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
 import 'package:turnopro_apk/env.dart';
 import 'package:turnopro_apk/get_connect/repository/user.repository.dart';
 
@@ -537,10 +539,123 @@ class LoginController extends GetxController {
 //
 //
 //
+  int obtenerHoraActualEnSegundos() {
+    DateTime ahora = DateTime.now();
+    int segundos = ahora.hour * 3600 + ahora.minute * 60 + ahora.second;
+    return segundos;
+  }
+
+  clockInitialTimeB(
+      ClientsScheduledController clientsScheduledController, String tyype) {
+    //aqui obtengo la hora actual para comparar con la anterior si es posible
+    int hAs = obtenerHoraActualEnSegundos();
+    LocalStorage.prefs.setInt('valueHoraAct', hAs);
+    print('--este es el value del clok-valueHoraAct-LOGIN:$hAs');
+    if (LocalStorage.prefs.getBool('valueClockActiv') == true) {
+      int timeAsig = 180;
+      //obtengo la hora anterior y actual en segundos
+      int hourAnt = LocalStorage.prefs.getInt('valueHoraAnt')!;
+      int hourAct = LocalStorage.prefs.getInt('valueHoraAct')!;
+      int segundExit = hourAct - hourAnt;
+      //resto los segundos que estuvo fuera
+      int valueAntClock = LocalStorage.prefs.getInt('valueClockIni')!;
+      int diferSeg = valueAntClock - segundExit;
+      if (diferSeg > 0) {
+        //aun no s eacabaron los 3 minutos
+        // asigno el tiempo
+        timeAsig = diferSeg;
+      } else //es que se acaboron los 3 min
+      {
+        // ya una vez en el dia esto cumplido ya no importa el reloj de espera
+        //al salir del sistema esta variable debe tomar false
+        timeAsig = 1;
+      }
+      LocalStorage.prefs.setInt('valueClockIni', timeAsig);
+
+      print('--este es el value del clok-hourAnt:$hourAnt');
+      print('--este es el value del clok-hourAct:$hourAct');
+      print('--este es el value del clok-segundExit:$segundExit');
+      print('--este es el value del clok-valueAntClock:$valueAntClock');
+      print('--este es el value del clok-diferSeg:$diferSeg');
+
+      clientsScheduledController.setTotalTimeInitial(timeAsig);
+    }
+  }
+
+  clockInitialTimeT(
+      ClientsTechnicalController clientsScheduledController, String tyype) {
+    //aqui obtengo la hora actual para comparar con la anterior si es posible
+
+    if (LocalStorage.prefs.getBool('valueClockActivT') == true) {
+      int timeAsig = 180;
+      //obtengo la hora anterior y actual en segundos
+      int hourAnt = LocalStorage.prefs.getInt('valueHoraAnt')!;
+      int hourAct = obtenerHoraActualEnSegundos();
+      int segundExit = hourAct - hourAnt;
+      //resto los segundos que estuvo fuera
+      int valueAntClock = LocalStorage.prefs.getInt('valueClockIni')!;
+      int diferSeg = valueAntClock - segundExit;
+      if (diferSeg > 0) {
+        //aun no s eacabaron los 3 minutos
+        // asigno el tiempo
+        timeAsig = diferSeg;
+      } else //es que se acaboron los 3 min
+      {
+        // ya una vez en el dia esto cumplido ya no importa el reloj de espera
+        //al salir del sistema esta variable debe tomar false
+        timeAsig = 1;
+      }
+      LocalStorage.prefs.setInt('valueClockIni', timeAsig);
+
+      print('--este es el value del clok-hourAnt:$hourAnt');
+      print('--este es el value del clok-hourAct:$hourAct');
+      print('--este es el value del clok-segundExit:$segundExit');
+      print('--este es el value del clok-valueAntClock:$valueAntClock');
+      print('--este es el value del clok-diferSeg:$diferSeg');
+
+      clientsScheduledController.setTotalTimeInitialTec(timeAsig);
+    }
+
+    if (LocalStorage.prefs.getBool('valueClockTec1ActivT') != null) {
+      bool activeClock = LocalStorage.prefs.getBool('valueClockTec1ActivT')!;
+      if (activeClock) {
+        int timeAsig = 180;
+        //obtengo la hora anterior y actual en segundos
+        int hourAnt = LocalStorage.prefs.getInt('valueHoraAnt')!;
+        int hourAct = obtenerHoraActualEnSegundos();
+        int segundExit = hourAct - hourAnt;
+        //resto los segundos que estuvo fuera
+        int valueAntClock = LocalStorage.prefs.getInt('valueClockTec1')!;
+        int diferSeg = valueAntClock - segundExit;
+        if (diferSeg > 0) {
+          //aun no s eacabaron los 3 minutos
+          // asigno el tiempo
+          timeAsig = diferSeg;
+        } else //es que se acaboron los 3 min
+        {
+          // ya una vez en el dia esto cumplido ya no importa el reloj de espera
+          //al salir del sistema esta variable debe tomar false
+          timeAsig = 1;
+        }
+        LocalStorage.prefs.setInt('valueClockTec1', timeAsig);
+
+        print('--este es el value del clok-hourAnt-T:$hourAnt');
+        print('--este es el value del clok-hourAct-T:$hourAct');
+        print('--este es el value del clok-segundExit-T:$segundExit');
+        print('--este es el value del clok-valueAntClock-T:$valueAntClock');
+        print('--este es el value del clok-diferSeg-T:$diferSeg');
+
+        // clientsScheduledController.setTotalTimeInitialTec(timeAsig);
+      }
+    }
+  }
+
 //
   Future<void> loginGetIn(String u, String p, int idBranch) async {
     final ClientsScheduledController clientsScheduledController =
         Get.find<ClientsScheduledController>();
+    final ClientsTechnicalController clientsScheduledControllerT =
+        Get.find<ClientsTechnicalController>();
     final PagesConfigController pagesConfigCont =
         Get.find<PagesConfigController>();
     String email = u.toString(), pass = p.toString();
@@ -605,6 +720,8 @@ class LoginController extends GetxController {
 
           if (chargeUserLoggedIn == "Barbero" ||
               chargeUserLoggedIn == "Barbero y Encargado") {
+            //aqui es para saber solamnete el tiempo del reloj inicial de los 3min
+            clockInitialTimeB(clientsScheduledController, 'Barbero');
             //aqui cargo la cola del barbero para poder tener en el home al siguiente de la cola inicialmente
             print('estoy aqui al cargar datos del controlador de client');
             setIsLoggingIn(true);
@@ -631,6 +748,8 @@ class LoginController extends GetxController {
             update();
             Get.offAllNamed('/HomeResponsible');
           } else if (chargeUserLoggedIn == "Tecnico") {
+            //aqui es para saber solamnete el tiempo del reloj inicial de los 3min
+            clockInitialTimeT(clientsScheduledControllerT, 'Tecnico');
             print('***************SOY TECNICO CAPILAR*************');
             pagina = '/HomeTecnico';
             loadingValue(false);
@@ -675,9 +794,17 @@ class LoginController extends GetxController {
               'SI CERRO SECION CORRECTAMENTE ELIMINANDO LOS DATOS DE SECCION');
           await clearSessionData();
           print('reiniciar app mandando');
+          LocalStorage.prefs.setBool('valueClockActiv', false);
+          LocalStorage.prefs.setBool('valueClockActivT', false);
+          LocalStorage.prefs.setBool('convivenciaIncumplida', false);
+          LocalStorage.prefs.setBool('convivenciaIncumplidaT', false);
           Get.offAllNamed('/LoginFormPage');
         } else {
           await clearSessionData();
+          LocalStorage.prefs.setBool('valueClockActiv', false);
+          LocalStorage.prefs.setBool('valueClockActivT', false);
+          LocalStorage.prefs.setBool('convivenciaIncumplida', false);
+          LocalStorage.prefs.setBool('convivenciaIncumplidaT', false);
           print('reiniciar app:$result');
           print(
               'NO CERRO SECION CORRECTAMENTE ELIMINANDO LOS DATOS DE SECCION');

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
 import 'package:turnopro_apk/app_initializer.dart';
 import 'package:turnopro_apk/dependency_injection.dart';
 import 'package:turnopro_apk/myApp.dart';
@@ -15,6 +16,7 @@ void main() async {
   //
   WidgetsFlutterBinding.ensureInitialized();
   await initializeNotificationsNew();
+  await LocalStorage.configurePrefs();
 
   //  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   //     FlutterLocalNotificationsPlugin();

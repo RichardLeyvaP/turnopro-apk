@@ -1,15 +1,13 @@
 // ignore_for_file: file_names, depend_on_referenced_packages, prefer_typing_uninitialized_variables, no_logic_in_create_state
 
-import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/product.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
+import 'package:turnopro_apk/Utility/textTruncate.dart';
 import 'package:turnopro_apk/env.dart';
 
 class ProductsBody extends StatefulWidget {
@@ -83,7 +81,7 @@ class _ProductsBodyState extends State<ProductsBody>
           : Padding(
               padding: const EdgeInsets.only(right: 14, left: 14),
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(14),
                       bottomRight: Radius.circular(14)),
@@ -233,38 +231,41 @@ class _ProductsBodyState extends State<ProductsBody>
                     borderRadius:
                         BorderRadius.all(Radius.circular(borderRadiusValue)),
                     color: Color.fromARGB(255, 231, 233, 233)),
-                child: FractionallySizedBox(
-                  widthFactor: 1, // 50% del ancho del contenedor padre
-                  heightFactor: 0.65, // 50% del alto del contenedor padre
-                  child: CachedNetworkImage(
-                    // maxHeightDiskCache: 120,
-                    // maxWidthDiskCache: 160,
-                    imageUrl: '${Env.apiEndpoint}/images/$addressProduct',
-                    placeholder: (context, url) => Container(
-                      width: 30,
-                      height: 30,
-                      child: const Center(
-                        child: SizedBox(
-                          width: 30,
-                          height: 30,
-                          child: CircularProgressIndicator(
-                            strokeWidth:
-                                2, // Personaliza el ancho del indicador como desees
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                Color.fromARGB(110, 253, 176, 42)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FractionallySizedBox(
+                    widthFactor: 1, // 50% del ancho del contenedor padre
+                    heightFactor: 0.65, // 50% del alto del contenedor padre
+                    child: CachedNetworkImage(
+                      // maxHeightDiskCache: 120,
+                      // maxWidthDiskCache: 160,
+                      imageUrl: '${Env.apiEndpoint}/images/$addressProduct',
+                      placeholder: (context, url) => const SizedBox(
+                        width: 30,
+                        height: 30,
+                        child: Center(
+                          child: SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: CircularProgressIndicator(
+                              strokeWidth:
+                                  2, // Personaliza el ancho del indicador como desees
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Color.fromARGB(110, 253, 176, 42)),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    errorWidget: (context, url, error) => Image.asset(
-                      'assets/images/product-default.png',
-                      cacheWidth: 30,
-                      cacheHeight: 30,
+                      errorWidget: (context, url, error) => Image.asset(
+                        'assets/images/product-default.png',
+                        cacheWidth: 30,
+                        cacheHeight: 30,
+                        fit: BoxFit.cover,
+                      ),
                       fit: BoxFit.cover,
+                      width: 50,
+                      height: 50,
                     ),
-                    fit: BoxFit.cover,
-                    width: 50,
-                    height: 50,
                   ),
                 ),
               ),
@@ -287,19 +288,21 @@ class _ProductsBodyState extends State<ProductsBody>
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            propertiesName,
-                            style: const TextStyle(
+                          TruncatedText(
+                            text: propertiesName,
+                            maxLength: 54,
+                            styleText: const TextStyle(
                                 fontSize: 13,
                                 color: Color.fromARGB(148, 0, 0, 0)),
                           ),
                           Row(
                             children: [
                               const Text(
-                                'Cant. Disponible: ',
+                                'Cantidad Disp: ',
                                 style: TextStyle(
                                     fontSize: 13,
-                                    color: Color.fromARGB(148, 0, 0, 0)),
+                                    color: Color.fromARGB(148, 0, 0, 0),
+                                    fontWeight: FontWeight.w800),
                               ),
                               Text(
                                 '$productExit',
@@ -324,7 +327,7 @@ class _ProductsBodyState extends State<ProductsBody>
                         ),
                       ),
                       subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 10, left: 15),
+                        padding: const EdgeInsets.only(top: 2, left: 15),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -355,217 +358,6 @@ class _ProductsBodyState extends State<ProductsBody>
                                                 .carIdClienteSelect,
                                             'product',
                                             id);
-
-                                    //
-                                    //
-                                    //
-
-                                    //mensaje de verificación si desea agregar un producto
-                                    /*
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return GetBuilder<LoginController>(
-                                            builder: (_) {
-                                          return Dialog(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ), //this right here
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: <Widget>[
-                                                Container(
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    color: Color(0xFFFDAE2A),
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(8),
-                                                      topRight:
-                                                          Radius.circular(8),
-                                                    ),
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: <Widget>[
-                                                      const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 12),
-                                                        child: Text(
-                                                          'Confirmación',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 15,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700),
-                                                        ),
-                                                      ),
-                                                      IconButton(
-                                                        icon: Icon(Icons.close,
-                                                            color:
-                                                                Colors.white),
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                                Container(
-                                                  height: 150,
-                                                  child: Column(
-                                                    children: [
-                                                      const Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  top: 10,
-                                                                  left: 16,
-                                                                  right: 16,
-                                                                  bottom: 10),
-                                                          child: Text(
-                                                              'Deseas agregar este producto?')),
-                                                      //
-
-                                                      ButtonBar(
-                                                        alignment:
-                                                            MainAxisAlignment
-                                                                .spaceEvenly,
-                                                        children: <Widget>[
-                                                          ElevatedButton(
-                                                            style: ButtonStyle(
-                                                              padding:
-                                                                  MaterialStateProperty
-                                                                      .all<
-                                                                          EdgeInsetsGeometry>(
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    vertical: 0,
-                                                                    horizontal:
-                                                                        26.0),
-                                                              ),
-                                                              backgroundColor:
-                                                                  MaterialStateProperty.all<
-                                                                          Color>(
-                                                                      const Color(
-                                                                          0xFFFF6750)),
-                                                            ),
-                                                            onPressed:
-                                                                () async {
-                                                              // Lógica para enviar el comentario
-
-                                                              // Cerrar el primer modal
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Icon(
-                                                                  MdiIcons
-                                                                      .cancel,
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 6,
-                                                                ),
-                                                                const Text(
-                                                                  'Cancelar',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w800),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          ElevatedButton(
-                                                            style: ButtonStyle(
-                                                              padding:
-                                                                  MaterialStateProperty
-                                                                      .all<
-                                                                          EdgeInsetsGeometry>(
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    vertical: 0,
-                                                                    horizontal:
-                                                                        26.0),
-                                                              ),
-                                                              backgroundColor:
-                                                                  MaterialStateProperty.all<
-                                                                          Color>(
-                                                                      const Color(
-                                                                          0xFF19CF9E)),
-                                                            ),
-                                                            onPressed:
-                                                                () async {
-                                                              controllerProduct
-                                                                  .buyProduct(
-                                                                      itemIndex);
-                                                              controllerShoppingCart
-                                                                  .updateShoppingCartValue(
-                                                                      priceProduct,
-                                                                      tabsID[_tabController
-                                                                          .index], //le paso el id d ela categoria
-                                                                      controllerShoppingCart
-                                                                          .carIdClienteSelect,
-                                                                      'product',
-                                                                      id);
-
-                                                              // Cerrar el primer modal
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Icon(
-                                                                  MdiIcons
-                                                                      .checkCircleOutline,
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 6,
-                                                                ),
-                                                                const Text(
-                                                                  '  Aceptar  ',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w800),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        });
-                                      },
-                                    );
-                                 */
                                   } else {
                                     Get.snackbar(
                                       'Mensaje',

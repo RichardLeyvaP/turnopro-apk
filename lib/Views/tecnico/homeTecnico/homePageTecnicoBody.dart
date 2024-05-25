@@ -10,6 +10,7 @@ import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
+import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
 import 'package:turnopro_apk/env.dart';
 
 class HomePageTecnicoBody extends StatefulWidget {
@@ -21,8 +22,6 @@ class HomePageTecnicoBody extends StatefulWidget {
 
 class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
-  AnimationController? _animationControllerInitialT;
-
   AnimationController? _animationTechnicalController1;
 
   final ClientsTechnicalController clientsScheduledController =
@@ -54,16 +53,19 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     });
 
     //INICIALIZANDO CONTROLES DE LOS RELOJES
-    _animationControllerInitialT = AnimationController(
+    clientsScheduledController.animationControllerInitialT =
+        AnimationController(
       vsync: this,
       duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
     );
 
 // Inicia la animación
-    _animationControllerInitialT!.addStatusListener((status) {
+    clientsScheduledController.animationControllerInitialT!
+        .addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
-            0) {
+                0 &&
+            LocalStorage.prefs.getBool('convivenciaIncumplidaT') == false) {
           //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
           String type = 'Tiempo';
           int branchId = loginController.branchIdLoggedIn!;
@@ -79,22 +81,99 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
               'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado.',
               'Tecnico');
         }
-
+        LocalStorage.prefs.setBool('convivenciaIncumplidaT', true);
+        LocalStorage.prefs.setInt('valueClockIni', 180);
+        clientsScheduledController.setTotalTimeInitialTec(180);
+        LocalStorage.prefs.setBool('valueClockActivT', false);
+        clientsScheduledController.animationControllerInitialT =
+            AnimationController(
+          vsync: this,
+          duration:
+              Duration(seconds: clientsScheduledController.totalTimeInitial),
+        );
         // La animación ha llegado al final, reiniciar
-        _animationControllerInitialT!.reset();
-        _animationControllerInitialT!.forward();
+        clientsScheduledController.animationControllerInitialT!.reset();
+        clientsScheduledController.animationControllerInitialT!.forward();
       }
     });
 
-    _animationTechnicalController1 = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 10),
-    );
+    if (LocalStorage.prefs.getBool('valueClockTec1ActivT') != null) {
+      bool activeClock = LocalStorage.prefs.getBool('valueClockTec1ActivT')!;
+      if (activeClock) {
+        //si es true hay clientes atendiendose
+//obtengo el tiempo en el que esta
+        int timeAct = LocalStorage.prefs.getInt('valueClockTec1')!;
+        if (timeAct < 0) {
+          timeAct = 2;
+        }
+        _animationTechnicalController1 = AnimationController(
+          vsync: this,
+          duration: Duration(seconds: timeAct),
+        );
+        _animationTechnicalController1!.forward();
+      } else {
+        //si es false simplemente creo e inicializo el control para ser utilizado proximamente
+        _animationTechnicalController1 = AnimationController(
+          vsync: this,
+          duration: const Duration(seconds: 10),
+        );
+      }
+    } else {
+      //si es null simplemente creo e inicializo el control para ser utilizado proximamente
+      _animationTechnicalController1 = AnimationController(
+        vsync: this,
+        duration: const Duration(seconds: 10),
+      );
+    }
+  }
+
+  Future<void> saveData() async {
+    if (LocalStorage.prefs.getBool('valueClockActivT') == true) {
+      int valueClock = getTimeRemaining();
+      int valueSave = valueClock;
+      await LocalStorage.prefs.setInt('valueClockIni', valueSave);
+
+      print('--este es el value del clok... ->Value guardado:$valueSave');
+    }
+
+//si el clock de cliente atendido esta activo
+    if (LocalStorage.prefs.getBool('valueClockTec1ActivT') == true) {
+      int valueClock = getTimeRemainingAten();
+      int valueSave = valueClock;
+      await LocalStorage.prefs.setInt('valueClockTec1', valueSave);
+    }
+  }
+
+  int getTimeRemaining() {
+    if (clientsScheduledController.animationControllerInitialT != null) {
+      return (clientsScheduledController.totalTimeInitial -
+              (clientsScheduledController.animationControllerInitialT!.value *
+                  clientsScheduledController.totalTimeInitial))
+          .round();
+    } else {
+      return 180;
+    }
+  }
+
+  int getTimeRemainingAten() {
+    int timeAct = LocalStorage.prefs.getInt('valueClockTec1')!;
+    if (_animationTechnicalController1 != null) {
+      return (timeAct - (_animationTechnicalController1!.value * timeAct))
+          .round();
+    } else {
+      return 180;
+    }
+  }
+
+  int obtenerHoraActualEnSegundos() {
+    DateTime ahora = DateTime.now();
+    int segundos = ahora.hour * 3600 + ahora.minute * 60 + ahora.second;
+    return segundos;
   }
 
   @override
   void dispose() {
-    _animationControllerInitialT!.dispose();
+    clientsScheduledController.animationControllerInitialT!.dispose();
     _animationTechnicalController1!.dispose();
     // Asegúrate de cancelar el temporizador al eliminar el widget
     _timer?.cancel();
@@ -137,7 +216,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     // Cancela cualquier temporizador existente para evitar duplicaciones
 
     // Establece un temporizador que llama a la función cada 20 segundos
-    _timer3 = Timer.periodic(const Duration(seconds: 13), (Timer timer) {
+    _timer3 = Timer.periodic(const Duration(seconds: 9), (Timer timer) {
+      saveData();
       print('callTimerTec4');
 
       if (loginController.idProfessionalLoggedIn != null &&
@@ -156,7 +236,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     // Cancela cualquier temporizador existente para evitar duplicaciones
 
     // Establece un temporizador que llama a la función cada 20 segundos
-    _timer2 = Timer.periodic(const Duration(seconds: 19), (Timer timer) {
+    _timer2 = Timer.periodic(const Duration(seconds: 11), (Timer timer) {
       print('callTimerTec2');
       // actualizo la cola
       if (clientsScheduledController.showingServiceClientsTechnical == false &&
@@ -186,7 +266,10 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
         // String secondName = partsName.length > 1 ? partsName[1] : "";
       }
 
-      _animationControllerInitialT!.forward();
+      // clientsScheduledController.animationControllerInitialT!.forward();
+      // LocalStorage.prefs.setBool('valueClockActivT', true);
+      // int hAs = obtenerHoraActualEnSegundos();
+      // LocalStorage.prefs.setInt('valueHoraAnt', hAs);
 
       return Column(
         //Cart anaranjado grande inicial que tiene el cronometro
@@ -198,7 +281,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                     left: 12, top: 4, right: 12, bottom: 8),
                 child: Column(
                   children: [
-                    clientsScheduledController.clientsTechnicalLength > 0
+                    clientsScheduledController.clientsTechnicalLength > 0 &&
+                            clientsScheduledController.listClientReal > 0
                         ? Container(
                             decoration: const BoxDecoration(
                               borderRadius:
@@ -237,12 +321,15 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                             MainAxisAlignment.center,
                                         children: [
                                           //AQUI MUESTRA LOS TIMER DE LOS CLIENTES QUE ESTE ATENDIENDO
-                                          if (controllerclient
-                                                      .clientsAttendedTechnical !=
-                                                  null &&
-                                              clientsScheduledController
-                                                      .quantityClientAttendedTechnical !=
-                                                  0) ...[
+                                          if ((controllerclient
+                                                          .clientsAttendedTechnical !=
+                                                      null &&
+                                                  clientsScheduledController
+                                                          .quantityClientAttendedTechnical !=
+                                                      0) ||
+                                              (clientsScheduledController
+                                                      .clientAten !=
+                                                  null)) ...[
                                             cardTimer(
                                                 controllerclient
                                                     .clientsAttendedTechnical!,
@@ -261,7 +348,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                           else if (controllerclient
                                                       .quantityClientAttendedTechnical ==
                                                   0 &&
-                                              controllerclient.clientsAttendedTechnical ==
+                                              controllerclient
+                                                      .clientsAttendedTechnical ==
                                                   null) ...[
                                             const SizedBox(
                                               height: 70,
@@ -275,9 +363,10 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                   true) {
                                                 return cardTimer2(
                                                   UniqueKey(),
-                                                  'Esperando...',
+                                                  'Esperando',
                                                   controllerclient,
-                                                  _animationControllerInitialT!,
+                                                  clientsScheduledController
+                                                      .animationControllerInitialT!,
                                                 );
                                               } else if (loginController
                                                       .usserPermissionQr ==
@@ -360,23 +449,6 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                 );
                                               }
                                             }),
-                                          ] else if (controllerclient
-                                                  .clientsNextTechnical ==
-                                              null) ...[
-                                            const SizedBox(
-                                              height: 50,
-                                            ),
-                                            const Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(Icons.attribution_sharp),
-                                                Text('No hay nadie en cola.'),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              height: 50,
-                                            ),
                                           ]
                                         ]),
                                   ),
@@ -393,370 +465,444 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                     controllerclient.boolFilterShowNextTecnhical
                         ? Padding(
                             padding: const EdgeInsets.only(
-                                left: 8, top: 8, right: 8, bottom: 6),
+                                left: 0, top: 8, right: 0, bottom: 6),
                             child: FittedBox(
-                              fit: BoxFit.contain,
-                              child: controllerclient.clientsNextTechnical !=
-                                      null
-                                  ? Container(
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(12)),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(6.0),
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              height: (MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.115),
-                                              width: (MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.20),
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                  color: Colors
-                                                      .white, // Color blanco para el borde
-                                                  width:
-                                                      1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                                                ),
-                                                color: Color(0xFFFF6750),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(18)),
-                                              ),
-                                              child: IconButton(
-                                                onPressed: () {
-                                                  if (loginController
-                                                          .codigoQrValid() ==
-                                                      true) {
-                                                    /*  int resulButton = 0;
-                                                    resulButton = loginController
-                                                        .handleButtonClickTec(
-                                                            controllerclient
-                                                                .clientsNextTechnical!
-                                                                .reservation_id);
-                                                    if (resulButton == 1) {*/
-                                                    notiController.storeNotification(
-                                                        'Solicitud de rechazo',
-                                                        loginController
-                                                            .branchIdLoggedIn,
-                                                        loginController
-                                                            .idProfessionalLoggedIn,
-                                                        'EL profesional "${loginController.nameUserLoggedIn}" está rechazando a "${clientsScheduledController.clientsNextTechnical!.client_name}"',
-                                                        'Ambos'); //esto es para quele llegue a coordinador y encargado
-                                                    //necesito un metodo igual que este pero que sea para el tecnico
-                                                    controllerclient
-                                                        .acceptClientTechnical(
-                                                            controllerclient
-                                                                .clientsNextTechnical!
-                                                                .reservation_id,
-                                                            33);
-                                                    // }
-                                                  } else if (loginController
-                                                          .usserPermissionQr ==
-                                                      2) {
-                                                    Get.snackbar(
-                                                      'Mensaje',
-                                                      'Debe de esperar la respuesta a su solicitud',
-                                                      duration: const Duration(
-                                                          milliseconds: 2500),
-                                                      backgroundColor:
-                                                          const Color.fromARGB(
-                                                              118,
-                                                              255,
-                                                              255,
-                                                              255),
-                                                      showProgressIndicator:
-                                                          true,
-                                                      progressIndicatorBackgroundColor:
-                                                          const Color.fromARGB(
-                                                              255,
-                                                              203,
-                                                              205,
-                                                              209),
-                                                      progressIndicatorValueColor:
-                                                          const AlwaysStoppedAnimation(
-                                                              Color(
-                                                                  0xFFFDAE2A)),
-                                                      overlayBlur: 3,
-                                                    );
-                                                  } else {
-                                                    Get.snackbar(
-                                                      'Mensaje',
-                                                      'Debe de escanear el código Qr de entrada',
-                                                      duration: const Duration(
-                                                          milliseconds: 2500),
-                                                      backgroundColor:
-                                                          const Color.fromARGB(
-                                                              118,
-                                                              255,
-                                                              255,
-                                                              255),
-                                                      showProgressIndicator:
-                                                          true,
-                                                      progressIndicatorBackgroundColor:
-                                                          const Color.fromARGB(
-                                                              255,
-                                                              203,
-                                                              205,
-                                                              209),
-                                                      progressIndicatorValueColor:
-                                                          const AlwaysStoppedAnimation(
-                                                              Color(
-                                                                  0xFFF18254)),
-                                                      overlayBlur: 3,
-                                                    );
-                                                  }
-                                                },
-                                                icon: Icon(
-                                                  MdiIcons.thumbDownOutline,
-                                                  color: Colors.white,
-                                                  size: (MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.04),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              height: (MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.115),
-                                              width: (MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.8),
-                                              decoration: const BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(12)),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 30, top: 8),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      children: [
-                                                        const Icon(
-                                                          Icons.person,
-                                                          color: const Color
-                                                                  .fromARGB(
-                                                              255, 43, 44, 49),
-                                                          size: 22,
-                                                        ),
-                                                        Text(
-                                                          firstName,
-                                                          softWrap: true,
-                                                          style:
-                                                              const TextStyle(
-                                                                  height: 1.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: 20),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Icon(Icons.timer,
-                                                            color: const Color
-                                                                    .fromARGB(
-                                                                180, 0, 0, 0),
-                                                            size: (MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                0.018)),
-                                                        Text(
-                                                            //AQUI ETSA EL TIEMPO TOTAL DEL SERVICIO
-                                                            ' ${(controllerclient.clientsNextTechnical!.total_time)}',
-                                                            style:
-                                                                const TextStyle(
-                                                              height: 1.2,
-                                                              fontSize: 16,
-                                                              color: Color
-                                                                  .fromARGB(180,
-                                                                      0, 0, 0),
-                                                            )),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              height: (MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.115),
-                                              width: (MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.20),
-                                              decoration: BoxDecoration(
+                                fit: BoxFit.contain,
+                                child: controllerclient.clientsNextTechnical !=
+                                        null
+                                    ? Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(12)),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(6.0),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                height: (MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.115),
+                                                width: (MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.20),
+                                                decoration: BoxDecoration(
                                                   border: Border.all(
                                                     color: Colors
                                                         .white, // Color blanco para el borde
                                                     width:
                                                         1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                                                   ),
-                                                  color:
-                                                      const Color(0xFF19CF9E),
+                                                  color: Color(0xFFFF6750),
                                                   borderRadius:
                                                       const BorderRadius.all(
-                                                          Radius.circular(18))),
-                                              child: IconButton(
-                                                onPressed: () async {
-                                                  if (loginController
-                                                          .codigoQrValid() ==
-                                                      true) {
-                                                    int resulButton = 0;
+                                                          Radius.circular(18)),
+                                                ),
+                                                child: IconButton(
+                                                  onPressed: () {
+                                                    if (loginController
+                                                            .codigoQrValid() ==
+                                                        true) {
+                                                      /*  int resulButton = 0;
                                                     resulButton = loginController
                                                         .handleButtonClickTec(
                                                             controllerclient
                                                                 .clientsNextTechnical!
-                                                                .reservation_id!);
-                                                    if (resulButton == 1) {
-                                                      // detengo todos los timers que deben detenerse
-                                                      _animationControllerInitialT!
-                                                          .stop();
-                                                      _animationControllerInitialT!
-                                                          .reset();
-
-                                                      _animationTechnicalController1!
-                                                          .stop();
-                                                      _animationTechnicalController1!
-                                                          .reset();
-                                                      //
-                                                      //todo FALTA QUE SE MUESTRE EL RELOJ
-                                                      //
-                                                      _animationTechnicalController1!
-                                                              .duration =
-                                                          const Duration(
-                                                              seconds:
-                                                                  300); //por ahora 5min
-                                                      /* Duration(
-                                                            seconds: controllerclient
-                                                                .convertDateSecons(
-                                                                    controllerclient
-                                                                        .clientsAttendedTechnical!
-                                                                        .total_time));*/
-                                                      _animationTechnicalController1!
-                                                          .forward();
-
-                                                      //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
+                                                                .reservation_id);
+                                                    if (resulButton == 1) {*/
+                                                      notiController.storeNotification(
+                                                          'Solicitud de rechazo',
+                                                          loginController
+                                                              .branchIdLoggedIn,
+                                                          loginController
+                                                              .idProfessionalLoggedIn,
+                                                          'EL Técnico "${loginController.nameUserLoggedIn}" está rechazando al cliente "${clientsScheduledController.clientsNextTechnical!.client_name}"',
+                                                          'Ambos'); //esto es para quele llegue a coordinador y encargado
+                                                      //necesito un metodo igual que este pero que sea para el tecnico
+                                                      loginController
+                                                          .setCodigoQrValid(2);
                                                       controllerclient
                                                           .acceptClientTechnical(
                                                               controllerclient
                                                                   .clientsNextTechnical!
                                                                   .reservation_id,
-                                                              5);
+                                                              33);
+                                                      clientsScheduledController
+                                                              .animationControllerInitialT =
+                                                          AnimationController(
+                                                        vsync: this,
+                                                        duration: Duration(
+                                                            seconds: 180),
+                                                      );
+                                                      // La animación ha llegado al final, reiniciar
+                                                      clientsScheduledController
+                                                          .animationControllerInitialT!
+                                                          .reset();
+                                                      clientsScheduledController
+                                                          .animationControllerInitialT!
+                                                          .stop();
+                                                      // }
+                                                    } else if (loginController
+                                                            .usserPermissionQr ==
+                                                        2) {
+                                                      Get.snackbar(
+                                                        'Mensaje',
+                                                        'Debe de esperar la respuesta a su solicitud',
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    2500),
+                                                        backgroundColor:
+                                                            const Color
+                                                                    .fromARGB(
+                                                                118,
+                                                                255,
+                                                                255,
+                                                                255),
+                                                        showProgressIndicator:
+                                                            true,
+                                                        progressIndicatorBackgroundColor:
+                                                            const Color
+                                                                    .fromARGB(
+                                                                255,
+                                                                203,
+                                                                205,
+                                                                209),
+                                                        progressIndicatorValueColor:
+                                                            const AlwaysStoppedAnimation(
+                                                                Color(
+                                                                    0xFFFDAE2A)),
+                                                        overlayBlur: 3,
+                                                      );
+                                                    } else {
+                                                      Get.snackbar(
+                                                        'Mensaje',
+                                                        'Debe de escanear el código Qr de entrada',
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    2500),
+                                                        backgroundColor:
+                                                            const Color
+                                                                    .fromARGB(
+                                                                118,
+                                                                255,
+                                                                255,
+                                                                255),
+                                                        showProgressIndicator:
+                                                            true,
+                                                        progressIndicatorBackgroundColor:
+                                                            const Color
+                                                                    .fromARGB(
+                                                                255,
+                                                                203,
+                                                                205,
+                                                                209),
+                                                        progressIndicatorValueColor:
+                                                            const AlwaysStoppedAnimation(
+                                                                Color(
+                                                                    0xFFF18254)),
+                                                        overlayBlur: 3,
+                                                      );
                                                     }
-                                                  } else if (loginController
-                                                          .usserPermissionQr ==
-                                                      2) {
-                                                    Get.snackbar(
-                                                      'Mensaje',
-                                                      'Debe de esperar la respuesta a su solicitud',
-                                                      duration: const Duration(
-                                                          milliseconds: 2500),
-                                                      backgroundColor:
-                                                          const Color.fromARGB(
-                                                              118,
-                                                              255,
-                                                              255,
-                                                              255),
-                                                      showProgressIndicator:
-                                                          true,
-                                                      progressIndicatorBackgroundColor:
-                                                          const Color.fromARGB(
-                                                              255,
-                                                              203,
-                                                              205,
-                                                              209),
-                                                      progressIndicatorValueColor:
-                                                          const AlwaysStoppedAnimation(
-                                                              Color(
-                                                                  0xFFFDAE2A)),
-                                                      overlayBlur: 3,
-                                                    );
-                                                  } else {
-                                                    Get.snackbar(
-                                                      'Mensaje',
-                                                      'Debe de escanear el código Qr de entrada',
-                                                      duration: const Duration(
-                                                          milliseconds: 2500),
-                                                      backgroundColor:
-                                                          const Color.fromARGB(
-                                                              118,
-                                                              255,
-                                                              255,
-                                                              255),
-                                                      showProgressIndicator:
-                                                          true,
-                                                      progressIndicatorBackgroundColor:
-                                                          const Color.fromARGB(
-                                                              255,
-                                                              203,
-                                                              205,
-                                                              209),
-                                                      progressIndicatorValueColor:
-                                                          const AlwaysStoppedAnimation(
-                                                              Color(
-                                                                  0xFFF18254)),
-                                                      overlayBlur: 3,
-                                                    );
-                                                  }
-                                                },
-                                                icon: Icon(
-                                                  MdiIcons.thumbUpOutline,
-                                                  color: Colors.white,
-                                                  size: (MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.04),
+                                                  },
+                                                  icon: Icon(
+                                                    MdiIcons.thumbDownOutline,
+                                                    color: Colors.white,
+                                                    size:
+                                                        (MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.04),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                              Container(
+                                                height: (MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.115),
+                                                width: (MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.8),
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(12)),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 30, top: 8),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          const Icon(
+                                                            Icons.person,
+                                                            color: const Color
+                                                                    .fromARGB(
+                                                                255,
+                                                                43,
+                                                                44,
+                                                                49),
+                                                            size: 22,
+                                                          ),
+                                                          Text(
+                                                            firstName,
+                                                            softWrap: true,
+                                                            style: const TextStyle(
+                                                                height: 1.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 20),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Icon(Icons.timer,
+                                                              color: const Color
+                                                                      .fromARGB(
+                                                                  180, 0, 0, 0),
+                                                              size: (MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height *
+                                                                  0.018)),
+                                                          Text(
+                                                              //AQUI ETSA EL TIEMPO TOTAL DEL SERVICIO
+                                                              ' ${(controllerclient.clientsNextTechnical!.total_time)}',
+                                                              style:
+                                                                  const TextStyle(
+                                                                height: 1.2,
+                                                                fontSize: 16,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        180,
+                                                                        0,
+                                                                        0,
+                                                                        0),
+                                                              )),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                height: (MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.115),
+                                                width: (MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.20),
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      color: Colors
+                                                          .white, // Color blanco para el borde
+                                                      width:
+                                                          1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                                                    ),
+                                                    color:
+                                                        const Color(0xFF19CF9E),
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                            Radius.circular(
+                                                                18))),
+                                                child: IconButton(
+                                                  onPressed: () async {
+                                                    if (loginController
+                                                            .codigoQrValid() ==
+                                                        true) {
+                                                      int resulButton = 0;
+                                                      resulButton = loginController
+                                                          .handleButtonClickTec(
+                                                              controllerclient
+                                                                  .clientsNextTechnical!
+                                                                  .reservation_id!);
+                                                      if (resulButton == 1) {
+                                                        //aqui inicia el tmer de cliente atendido
+                                                        LocalStorage.prefs.setBool(
+                                                            'valueClockTec1ActivT',
+                                                            true);
+                                                        LocalStorage.prefs
+                                                            .setInt(
+                                                                'valueClockTec1',
+                                                                300);
+
+                                                        _animationTechnicalController1!
+                                                            .stop();
+                                                        _animationTechnicalController1!
+                                                            .reset();
+
+                                                        //
+                                                        //todo FALTA QUE SE MUESTRE EL RELOJ
+                                                        //
+
+                                                        //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
+                                                        await controllerclient
+                                                            .acceptClientTechnical(
+                                                                controllerclient
+                                                                    .clientsNextTechnical!
+                                                                    .reservation_id,
+                                                                5);
+                                                        _animationTechnicalController1!
+                                                                .duration =
+                                                            const Duration(
+                                                                seconds:
+                                                                    300); //por ahora 5min
+
+                                                        _animationTechnicalController1!
+                                                            .forward();
+                                                        // detengo todos los timers que deben detenerse
+                                                        LocalStorage.prefs.setBool(
+                                                            'valueClockActivT',
+                                                            false);
+                                                        LocalStorage.prefs
+                                                            .setInt(
+                                                                'valueClockIni',
+                                                                180);
+                                                        clientsScheduledController
+                                                            .animationControllerInitialT!
+                                                            .stop();
+                                                        clientsScheduledController
+                                                            .animationControllerInitialT!
+                                                            .reset();
+                                                      }
+                                                    } else if (loginController
+                                                            .usserPermissionQr ==
+                                                        2) {
+                                                      Get.snackbar(
+                                                        'Mensaje',
+                                                        'Debe de esperar la respuesta a su solicitud',
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    2500),
+                                                        backgroundColor:
+                                                            const Color
+                                                                    .fromARGB(
+                                                                118,
+                                                                255,
+                                                                255,
+                                                                255),
+                                                        showProgressIndicator:
+                                                            true,
+                                                        progressIndicatorBackgroundColor:
+                                                            const Color
+                                                                    .fromARGB(
+                                                                255,
+                                                                203,
+                                                                205,
+                                                                209),
+                                                        progressIndicatorValueColor:
+                                                            const AlwaysStoppedAnimation(
+                                                                Color(
+                                                                    0xFFFDAE2A)),
+                                                        overlayBlur: 3,
+                                                      );
+                                                    } else {
+                                                      Get.snackbar(
+                                                        'Mensaje',
+                                                        'Debe de escanear el código Qr de entrada',
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    2500),
+                                                        backgroundColor:
+                                                            const Color
+                                                                    .fromARGB(
+                                                                118,
+                                                                255,
+                                                                255,
+                                                                255),
+                                                        showProgressIndicator:
+                                                            true,
+                                                        progressIndicatorBackgroundColor:
+                                                            const Color
+                                                                    .fromARGB(
+                                                                255,
+                                                                203,
+                                                                205,
+                                                                209),
+                                                        progressIndicatorValueColor:
+                                                            const AlwaysStoppedAnimation(
+                                                                Color(
+                                                                    0xFFF18254)),
+                                                        overlayBlur: 3,
+                                                      );
+                                                    }
+                                                  },
+                                                  icon: Icon(
+                                                    MdiIcons.thumbUpOutline,
+                                                    color: Colors.white,
+                                                    size:
+                                                        (MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.04),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                  : Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: GetBuilder<LoginController>(
-                                          builder: (controllerLogin) {
-                                        return const Row(
-                                          children: [
-                                            Text(
-                                              'No hay clientes en cola',
-                                            ),
-                                          ],
-                                        );
-                                      }),
-                                    ),
-                            ),
+                                      )
+                                    : clientsScheduledController
+                                                .clientsTechnicalLength >
+                                            0
+                                        ? Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: GetBuilder<LoginController>(
+                                                builder: (controllerLogin) {
+                                              return const Column(
+                                                children: [
+                                                  Text(
+                                                    'Esperando respuesta ',
+                                                  ),
+                                                  Text(
+                                                    'de la solicitud de rechazo',
+                                                  ),
+                                                ],
+                                              );
+                                            }),
+                                          )
+                                        : Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: GetBuilder<LoginController>(
+                                                builder: (controllerLogin) {
+                                              return const Row(
+                                                children: [
+                                                  Text(
+                                                    'No hay clientes en cola',
+                                                  ),
+                                                ],
+                                              );
+                                            }),
+                                          )),
                           )
                         : controllerclient.clientsNextTechnical == null
                             ? Padding(
@@ -1036,15 +1182,28 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(name,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 16,
                                               color: Color(0xFF2B3141),
                                               fontWeight: FontWeight.bold)),
-                                      Text('CLIENTE',
-                                          style: TextStyle(
-                                              color: Color(0xFF2B3141),
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.bold)),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: const Color(0xFFFDAE2A)
+                                            // Puedes agregar otras propiedades de estilo aquí si es necesario
+                                            ),
+                                        width: 82,
+                                        height: 20,
+                                        child: const Center(
+                                          child: Text(
+                                            'CLIENTE',
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w800),
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ],
@@ -1103,6 +1262,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                   ),
                                   onPressed: () async {
                                     // Lógica para enviar el comentario
+
                                     Get.dialog(
                                       const Center(
                                         child: CircularProgressIndicator(
@@ -1111,13 +1271,17 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                       ),
                                       barrierDismissible: false,
                                     ); //Get.back();
+                                    String nameClient =
+                                        clientsScheduledController
+                                            .clientsAttendedTechnical!
+                                            .client_name!;
                                     notiController.storeNotification(
                                         'Cliente Regresando',
                                         loginController.branchIdLoggedIn,
                                         clientsScheduledController
                                             .clientsAttendedTechnical!
                                             .professional_id,
-                                        ' El cliente ${clientsScheduledController.clientsAttendedTechnical!.client_name} ya está disponible para que continúes con el servicio',
+                                        'El cliente ${clientsScheduledController.clientsAttendedTechnical!.client_name} ya está disponible para que continúes con el servicio',
                                         'Barbero');
                                     await clientsScheduledController
                                         .acceptClientTechnical(
@@ -1125,16 +1289,63 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                 .clientsAttendedTechnical!
                                                 .reservation_id,
                                             11);
+                                    //reseteo y lo dejo en punta para el proximo cliente
+                                    _animationTechnicalController1!.stop();
+                                    _animationTechnicalController1!.reset();
+
+                                    //ponemos afalse la variable que nos indica que hay cliente atendiendose
+                                    LocalStorage.prefs
+                                        .setBool('valueClockTec1ActivT', false);
+                                    LocalStorage.prefs
+                                        .setBool('valueClockActivT', true);
+                                    //y dejamos inicializada en 5 min para el nuevo cliente por atender
+                                    LocalStorage.prefs
+                                        .setInt('valueClockTec1', 300);
+                                    //reiniciando el timer del inicio
+                                    LocalStorage.prefs
+                                        .setInt('valueClockIni', 180);
+                                    clientsScheduledController
+                                        .setTotalTimeInitialTec(180);
+                                    clientsScheduledController
+                                            .animationControllerInitialT =
+                                        AnimationController(
+                                      vsync: this,
+                                      duration: Duration(seconds: 180),
+                                    );
+                                    // La animación ha llegado al final, reiniciar
+                                    clientsScheduledController
+                                        .animationControllerInitialT!
+                                        .reset();
+                                    clientsScheduledController
+                                        .animationControllerInitialT!
+                                        .forward();
+
                                     //AQUI ENVIAR NOTIFICACION AL PROFESIONAL QUE YA VA EL CLIENTE DE VUELTA PARA ACABAR EL SERVICIO
 
                                     Get.back();
+                                    Get.snackbar(
+                                      'Mensaje',
+                                      'Finalizado servicio del cliente $nameClient',
+                                      duration:
+                                          const Duration(milliseconds: 2500),
+                                      backgroundColor: const Color.fromARGB(
+                                          118, 255, 255, 255),
+                                      showProgressIndicator: true,
+                                      progressIndicatorBackgroundColor:
+                                          const Color.fromARGB(
+                                              255, 203, 205, 209),
+                                      progressIndicatorValueColor:
+                                          const AlwaysStoppedAnimation(
+                                              Color(0xFFFDAE2A)),
+                                      overlayBlur: 3,
+                                    );
                                     // Cerrar el primer modal
                                     Navigator.pop(context);
                                   },
                                   child: Row(
                                     children: [
                                       Icon(
-                                        MdiIcons.cancel,
+                                        MdiIcons.check,
                                         color: Colors.white,
                                       ),
                                       SizedBox(
@@ -1325,12 +1536,11 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     Color colorInicialCirculo = const Color(0xFFFDAE2A);
     double fontSizeText = (MediaQuery.of(context).size.width * 0.030);
     // Dividir el nombre completo por espacios
-
-    List<String> partsName =
-        name.split(" "); // Tomar los primeros dos nombres (si existen)
-    String firstName = partsName.isNotEmpty ? partsName[0] : "";
-    // String secondName = partsName.length > 1 ? partsName[1] : "";
-
+    bool isPaused =
+        clientsScheduledController.animationControllerInitialT!.isAnimating;
+    if (!isPaused) {
+      clientsScheduledController.animationControllerInitialT!.forward();
+    }
     return Padding(
       padding: const EdgeInsets.only(left: 6, right: 6),
       child: Column(
@@ -1369,10 +1579,16 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                     }
 
                     if (minutes == 0 && seconds == 0) {
-                      firstName = 'Terminó';
-                      colorInicial = Colors.red;
-                      colorInicialCirculo = Colors.white;
-                      fontSizeText = 10;
+                      clientsScheduledController.animationControllerInitialT =
+                          AnimationController(
+                        vsync: this,
+                        duration: Duration(seconds: 180),
+                      );
+                      // La animación ha llegado al final, reiniciar
+                      clientsScheduledController.animationControllerInitialT!
+                          .reset();
+                      clientsScheduledController.animationControllerInitialT!
+                          .forward();
                     }
 
                     return SizedBox(
@@ -1466,29 +1682,17 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
           ),
           Align(
               alignment: Alignment.center,
-              child: firstName == 'Esperando'
-                  ? Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Text(
-                        '$firstName...',
-                        style: TextStyle(
-                            fontSize: 10,
-                            height: 1.3,
-                            color: Color(0xFFFDAE2A),
-                            fontWeight: FontWeight.w900),
-                      ),
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text(
-                        firstName,
-                        style: TextStyle(
-                            fontSize: 18,
-                            height: 1.3,
-                            color: Color(0xFFFDAE2A),
-                            fontWeight: FontWeight.w600),
-                      ),
-                    )),
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: Text(
+                  '$name...',
+                  style: const TextStyle(
+                      fontSize: 10,
+                      height: 1.3,
+                      color: Color(0xFFFDAE2A),
+                      fontWeight: FontWeight.w900),
+                ),
+              )),
         ],
       ),
     );
@@ -1555,6 +1759,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
               ),
               barrierDismissible: false,
             ); //Get.back();
+            await coexistenceController.fetchEstadist0();
             pagesConfigC.onTabTapped(3); //index = 3 -> /StatisticPage
             Get.back();
           }

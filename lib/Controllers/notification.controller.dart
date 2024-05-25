@@ -166,7 +166,7 @@ class NotificationController extends GetxController {
   Future<void> professionalBranchNotifQueque(
       idBranch, idProfe, type, msj) async {
     print('entrando aqui para mandar notificacion al-234');
-
+    bool noUpdate = false;
     final ClientsScheduledController clientCon =
         Get.find<ClientsScheduledController>();
     List<ClientsScheduledModel> clientsAux = [];
@@ -231,6 +231,20 @@ class NotificationController extends GetxController {
           {
             updateNotifications2(idBranch, idProfe, element.id);
             controllerLogin.setCodigoQrValid(null);
+          }
+          if (element.state == 3 &&
+              element.tittle ==
+                  'Solicitud de Eliminación Rechazada') //pongo a null el qr
+          {
+            updateNotifications2(idBranch, idProfe, element.id);
+            controllerLogin.setCodigoQrValid(1);
+          }
+          if (element.state == 3 &&
+              element.tittle ==
+                  'Aceptada Eliminación de Cliente') //pongo a null el qr
+          {
+            updateNotifications2(idBranch, idProfe, element.id);
+            controllerLogin.setCodigoQrValid(1);
           }
           if (element.state == 3 &&
               element.tittle ==
@@ -410,8 +424,6 @@ class NotificationController extends GetxController {
           }
         }
 //aqui empiza la asignacion de la cola
-
-        update();
       } else if (resultList.containsKey('notificationListEncarg') &&
           resultList.containsKey('notificationListNewEncarg')) {
         print('ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador');
@@ -453,14 +465,18 @@ class NotificationController extends GetxController {
         {
           controllerclient.setActiveModifyTimeRest(true);
         }
-
+      }
+    } catch (e) {
+      // Manejo de errores
+      noUpdate = true;
+      print('Error al obtener la lista de notificaciones: $e');
+    } finally {
+      print(
+          'Error al obtener la lista de notificaciones: noUpdate == Timer10segun $noUpdate');
+      if (noUpdate == false) {
         update();
       }
       controllerLogin.setIsLoadingFor(false);
-    } catch (e) {
-      controllerLogin.setIsLoadingFor(false);
-      // Manejo de errores
-      print('Error al obtener la lista de notificaciones: $e');
     }
   }
   //

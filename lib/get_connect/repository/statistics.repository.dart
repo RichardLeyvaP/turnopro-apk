@@ -44,11 +44,11 @@ class WeeklyStatisticsRepository extends GetConnect {
   }
 
   Future getDayStatisticsList(
-      idProfessional, idBranch, startDate, endDate) async {
+      idProfessional, idBranch, startDate, endDate, charge) async {
     try {
       if (idProfessional != null) {
         var url =
-            '${Env.apiEndpoint}/professionals_ganancias_branch?professional_id=$idProfessional&branch_id=$idBranch&startDate=$startDate&endDate=$endDate';
+            '${Env.apiEndpoint}/professionals_ganancias_branch?professional_id=$idProfessional&branch_id=$idBranch&startDate=$startDate&endDate=$endDate&charge=$charge';
         print(idProfessional);
         print(idBranch);
         print(startDate);

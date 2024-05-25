@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/Utility/utils.dart';
 import 'package:turnopro_apk/env.dart';
 
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -46,428 +47,597 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                   color: Colors.white,
                   child: Column(
                     children: [
-                      Expanded(
-                          flex:
-                              heightFlexBody, // 85% del espacio disponible para esta parte
-                          child: _.estadist0Length > 0
-                              ? ListView.builder(
-                                  padding: EdgeInsets
-                                      .zero, // Elimina cualquier padding del ListView
-                                  itemCount: _.estadist0Length,
-                                  itemBuilder: (context, index) => InkWell(
-                                        onTap: () async {
-                                          print(
-                                              'estoy dando en :${_.estadist0[index].data.toString()}');
-                                          Get.dialog(
-                                            const Center(
-                                              child: CircularProgressIndicator(
-                                                color: Color(0xFFFDAE2A),
-                                              ),
-                                            ),
-                                            barrierDismissible: false,
-                                          ); //Get.back();
-                                          await _.fetchEstadist1(
-                                              _.estadist0[index].data);
-                                          Get.back();
-                                          Get.toNamed('/Estadistc1Page');
-                                        },
-                                        child: Padding(
-                                          padding: EdgeInsets.fromLTRB(
-                                              10, 10, 10, 0),
-                                          child: FittedBox(
-                                            fit: BoxFit.contain,
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  height:
-                                                      (MediaQuery.of(context)
+                      _.chargeSave == 'Tecnico'
+                          ? Expanded(
+                              flex:
+                                  heightFlexBody, // 85% del espacio disponible para esta parte
+                              child: _.estadist0Length > 0
+                                  ? ListView.builder(
+                                      padding: EdgeInsets
+                                          .zero, // Elimina cualquier padding del ListView
+                                      itemCount: _.estadist0Length,
+                                      itemBuilder: (context, index) => InkWell(
+                                            onTap: () async {
+                                              print(
+                                                  'estoy dando en :${_.estadist0[index].data.toString()}');
+                                              Get.dialog(
+                                                const Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    color: Color(0xFFFDAE2A),
+                                                  ),
+                                                ),
+                                                barrierDismissible: false,
+                                              ); //Get.back();
+                                              await _.fetchEstadist1(
+                                                  _.estadist0[index].data);
+                                              Get.back();
+                                              Get.toNamed('/Estadistc1Page');
+                                            },
+                                            child: Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  10, 10, 10, 0),
+                                              child: FittedBox(
+                                                fit: BoxFit.contain,
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      height: (MediaQuery.of(
+                                                                  context)
                                                               .size
                                                               .height *
-                                                          0.42),
-                                                  width: (MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      1),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: Colors.grey
-                                                            .withOpacity(0.7),
-                                                        spreadRadius: 1,
-                                                        blurRadius: 5,
-                                                        offset: const Offset(-5,
-                                                            5), // Ajusta los valores para personalizar la sombra
+                                                          0.15),
+                                                      width: (MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .width *
+                                                          1),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: Colors.grey
+                                                                .withOpacity(
+                                                                    0.7),
+                                                            spreadRadius: 1,
+                                                            blurRadius: 5,
+                                                            offset: const Offset(
+                                                                -5,
+                                                                5), // Ajusta los valores para personalizar la sombra
+                                                          ),
+                                                        ],
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                    .all(
+                                                                Radius.circular(
+                                                                    borderRadiusValue)),
                                                       ),
-                                                    ],
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(
-                                                                borderRadiusValue)),
-                                                  ),
-                                                  child: GetBuilder<
-                                                          ClientsScheduledController>(
-                                                      builder:
-                                                          (controllerClient) {
-                                                    return ListTile(
-                                                        shape:
-                                                            const RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
+                                                      child: GetBuilder<
+                                                              ClientsScheduledController>(
+                                                          builder:
+                                                              (controllerClient) {
+                                                        return ListTile(
+                                                            shape:
+                                                                const RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
                                                                       .circular(
                                                                           12)),
-                                                        ),
-                                                        title: Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Row(
+                                                            ),
+                                                            title: Row(
                                                               crossAxisAlignment:
                                                                   CrossAxisAlignment
-                                                                      .start,
+                                                                      .center,
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment
-                                                                      .start,
+                                                                      .spaceBetween,
                                                               children: [
-                                                                const SizedBox(
-                                                                  width: 5,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .width *
-                                                                      0.9,
-                                                                  child: Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      SizedBox(
-                                                                        height:
-                                                                            12,
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
+                                                                Row(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    const SizedBox(
+                                                                      width: 5,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width *
+                                                                          0.9,
+                                                                      child:
+                                                                          Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
                                                                         children: [
+                                                                          SizedBox(
+                                                                            height:
+                                                                                12,
+                                                                          ),
                                                                           Row(
                                                                             mainAxisAlignment:
-                                                                                MainAxisAlignment.start,
+                                                                                MainAxisAlignment.spaceBetween,
                                                                             children: [
-                                                                              Icon(
-                                                                                MdiIcons.calendar,
-                                                                                color: Color(0xFFFDAE2A),
-                                                                              ),
-                                                                              SizedBox(
-                                                                                width: 5,
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                                children: [
+                                                                                  Icon(
+                                                                                    MdiIcons.calendar,
+                                                                                    color: Color(0xFFFDAE2A),
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    width: 5,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    formatNumber(_.estadist0[index].day_of_week.toString()),
+                                                                                    maxLines: 2, // Limita el texto a 2 líneas
+                                                                                    overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                                    style: const TextStyle(fontSize: 18, color: Color(0xFFFDAE2A), fontWeight: FontWeight.w700),
+                                                                                  ),
+                                                                                ],
                                                                               ),
                                                                               Text(
-                                                                                _.estadist0[index].day_of_week.toString(),
+                                                                                formatNumber(_.estadist0[index].data.toString()),
                                                                                 maxLines: 2, // Limita el texto a 2 líneas
                                                                                 overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
                                                                                 style: const TextStyle(fontSize: 18, color: Color(0xFFFDAE2A), fontWeight: FontWeight.w700),
                                                                               ),
                                                                             ],
                                                                           ),
-                                                                          Text(
-                                                                            _.estadist0[index].data.toString(),
-                                                                            maxLines:
-                                                                                2, // Limita el texto a 2 líneas
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
-                                                                            style: const TextStyle(
-                                                                                fontSize: 18,
-                                                                                color: Color(0xFFFDAE2A),
-                                                                                fontWeight: FontWeight.w700),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                2,
+                                                                          ),
+                                                                          Container(
+                                                                            height:
+                                                                                1,
+                                                                            width:
+                                                                                1000,
+                                                                            color: const Color.fromARGB(
+                                                                                155,
+                                                                                182,
+                                                                                184,
+                                                                                182),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                6,
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              Text('Clientes atendidos'),
+                                                                              Text(
+                                                                                formatNumber(_.estadist0[index].attendedClient.toString()),
+                                                                                maxLines: 2, // Limita el texto a 2 líneas
+                                                                                overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                                style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              const Text(
+                                                                                'Monto Generado',
+                                                                                style: TextStyle(fontSize: 16, color: Color.fromARGB(220, 0, 0, 0), fontWeight: FontWeight.w700),
+                                                                              ),
+                                                                              Text(
+                                                                                formatNumber(_.estadist0[index].amountGenerate.toString()),
+                                                                                maxLines: 2, // Limita el texto a 2 líneas
+                                                                                overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                                style: const TextStyle(fontSize: 16, color: Color.fromARGB(220, 0, 0, 0), fontWeight: FontWeight.w700),
+                                                                              ),
+                                                                            ],
                                                                           ),
                                                                         ],
                                                                       ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            2,
-                                                                      ),
-                                                                      Container(
-                                                                        height:
-                                                                            1,
-                                                                        width:
-                                                                            1000,
-                                                                        color: const Color.fromARGB(
-                                                                            155,
-                                                                            182,
-                                                                            184,
-                                                                            182),
-                                                                      ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            6,
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        children: [
-                                                                          Text(
-                                                                              'Clientes atendidos'),
-                                                                          Text(
-                                                                            _.estadist0[index].attendedClient.toString(),
-                                                                            maxLines:
-                                                                                2, // Limita el texto a 2 líneas
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
-                                                                            style: const TextStyle(
-                                                                                fontSize: 16,
-                                                                                color: Color.fromARGB(148, 0, 0, 0),
-                                                                                fontWeight: FontWeight.w700),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        children: [
-                                                                          Text(
-                                                                              'Clientes aleatorios'),
-                                                                          Text(
-                                                                            _.estadist0[index].clientAleator.toString(),
-                                                                            maxLines:
-                                                                                2, // Limita el texto a 2 líneas
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
-                                                                            style: const TextStyle(
-                                                                                fontSize: 16,
-                                                                                color: Color.fromARGB(148, 0, 0, 0),
-                                                                                fontWeight: FontWeight.w700),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        children: [
-                                                                          Text(
-                                                                              'Servicios'),
-                                                                          Text(
-                                                                            _.estadist0[index].services.toString(),
-                                                                            maxLines:
-                                                                                2, // Limita el texto a 2 líneas
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
-                                                                            style: const TextStyle(
-                                                                                fontSize: 16,
-                                                                                color: Color.fromARGB(148, 0, 0, 0),
-                                                                                fontWeight: FontWeight.w700),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        children: [
-                                                                          Text(
-                                                                              'Total en servicios'),
-                                                                          Text(
-                                                                            _.estadist0[index].totalServices.toString(),
-                                                                            maxLines:
-                                                                                2, // Limita el texto a 2 líneas
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
-                                                                            style: const TextStyle(
-                                                                                fontSize: 16,
-                                                                                color: Color.fromARGB(148, 0, 0, 0),
-                                                                                fontWeight: FontWeight.w700),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        children: [
-                                                                          const Text(
-                                                                            'Total en productos',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontSize: 16,
-                                                                            ),
-                                                                          ),
-                                                                          Text(
-                                                                            _.estadist0[index].totalProducts.toString(),
-                                                                            maxLines:
-                                                                                2, // Limita el texto a 2 líneas
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
-                                                                            style: const TextStyle(
-                                                                                fontSize: 16,
-                                                                                color: Color.fromARGB(148, 0, 0, 0),
-                                                                                fontWeight: FontWeight.w700),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        children: [
-                                                                          const Text(
-                                                                              'Total General',
-                                                                              style: TextStyle(
-                                                                                fontSize: 16,
-                                                                              )),
-                                                                          Text(
-                                                                            _.estadist0[index].totalGeneral.toString(),
-                                                                            maxLines:
-                                                                                2, // Limita el texto a 2 líneas
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
-                                                                            style: const TextStyle(
-                                                                                fontSize: 16,
-                                                                                color: Color.fromARGB(148, 0, 0, 0),
-                                                                                fontWeight: FontWeight.w700),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        children: [
-                                                                          const Text(
-                                                                            'Propina',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontSize: 16,
-                                                                            ),
-                                                                          ),
-                                                                          Text(
-                                                                              _.estadist0[index].tips.toString(),
-                                                                              maxLines: 2, // Limita el texto a 2 líneas
-                                                                              overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
-                                                                              style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700)),
-                                                                        ],
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        children: [
-                                                                          const Text(
-                                                                            'Propina 80%',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontSize: 16,
-                                                                            ),
-                                                                          ),
-                                                                          Text(
-                                                                            _.estadist0[index].tips80 == null
-                                                                                ? '0'
-                                                                                : _.estadist0[index].tips80.toString(),
-                                                                            maxLines:
-                                                                                2, // Limita el texto a 2 líneas
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
-                                                                            style: const TextStyle(
-                                                                                fontSize: 16,
-                                                                                color: Color.fromARGB(148, 0, 0, 0),
-                                                                                fontWeight: FontWeight.w700),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        children: [
-                                                                          Text(
-                                                                              'Retención'),
-                                                                          Text(
-                                                                            _.estadist0[index].totalRetention.toString(),
-                                                                            maxLines:
-                                                                                2, // Limita el texto a 2 líneas
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
-                                                                            style: const TextStyle(
-                                                                                fontSize: 16,
-                                                                                color: Color.fromARGB(148, 0, 0, 0),
-                                                                                fontWeight: FontWeight.w700),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        children: [
-                                                                          const Text(
-                                                                            'Bonos de Metas',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontSize: 16,
-                                                                            ),
-                                                                          ),
-                                                                          Text(
-                                                                            _.estadist0[index].metaamount.toString(),
-                                                                            maxLines:
-                                                                                2, // Limita el texto a 2 líneas
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
-                                                                            style: const TextStyle(
-                                                                                fontSize: 16,
-                                                                                color: Color.fromARGB(148, 0, 0, 0),
-                                                                                fontWeight: FontWeight.w700),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        children: [
-                                                                          const Text(
-                                                                            'Monto Generado',
-                                                                            style: TextStyle(
-                                                                                fontSize: 16,
-                                                                                color: Color.fromARGB(220, 0, 0, 0),
-                                                                                fontWeight: FontWeight.w700),
-                                                                          ),
-                                                                          Text(
-                                                                            _.estadist0[index].amountGenerate.toString(),
-                                                                            maxLines:
-                                                                                2, // Limita el texto a 2 líneas
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
-                                                                            style: const TextStyle(
-                                                                                fontSize: 16,
-                                                                                color: Color.fromARGB(220, 0, 0, 0),
-                                                                                fontWeight: FontWeight.w700),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ],
-                                                                  ),
+                                                                    ),
+                                                                  ],
                                                                 ),
                                                               ],
-                                                            ),
-                                                          ],
-                                                        ));
-                                                  }),
+                                                            ));
+                                                      }),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ],
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      ))
-                              : const Center(
-                                  //*AQUI ESTA EL CODIGO DE CUANDO NO HAY Convivencias
-                                  child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Row(
+                                          ))
+                                  : const Center(
+                                      //*AQUI ESTA EL CODIGO DE CUANDO NO HAY Convivencias
+                                      child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Text('No hay Clientes Atendidos'),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text('No hay Clientes Atendidos'),
+                                          ],
+                                        ),
                                       ],
-                                    ),
-                                  ],
-                                ))),
+                                    )))
+                          //
+
+                          : Expanded(
+                              flex:
+                                  heightFlexBody, // 85% del espacio disponible para esta parte
+                              child: _.estadist0Length > 0
+                                  ? ListView.builder(
+                                      padding: EdgeInsets
+                                          .zero, // Elimina cualquier padding del ListView
+                                      itemCount: _.estadist0Length,
+                                      itemBuilder: (context, index) => InkWell(
+                                            onTap: () async {
+                                              print(
+                                                  'estoy dando en :${_.estadist0[index].data.toString()}');
+                                              Get.dialog(
+                                                const Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    color: Color(0xFFFDAE2A),
+                                                  ),
+                                                ),
+                                                barrierDismissible: false,
+                                              ); //Get.back();
+                                              await _.fetchEstadist1(
+                                                  _.estadist0[index].data);
+                                              Get.back();
+                                              Get.toNamed('/Estadistc1Page');
+                                            },
+                                            child: Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  10, 10, 10, 0),
+                                              child: FittedBox(
+                                                fit: BoxFit.contain,
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      height: (MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .height *
+                                                          0.445),
+                                                      width: (MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .width *
+                                                          1),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: Colors.grey
+                                                                .withOpacity(
+                                                                    0.7),
+                                                            spreadRadius: 1,
+                                                            blurRadius: 5,
+                                                            offset: const Offset(
+                                                                -5,
+                                                                5), // Ajusta los valores para personalizar la sombra
+                                                          ),
+                                                        ],
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                    .all(
+                                                                Radius.circular(
+                                                                    borderRadiusValue)),
+                                                      ),
+                                                      child: GetBuilder<
+                                                              ClientsScheduledController>(
+                                                          builder:
+                                                              (controllerClient) {
+                                                        return ListTile(
+                                                            shape:
+                                                                const RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          12)),
+                                                            ),
+                                                            title: Row(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Row(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    const SizedBox(
+                                                                      width: 5,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width *
+                                                                          0.9,
+                                                                      child:
+                                                                          Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          SizedBox(
+                                                                            height:
+                                                                                12,
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                                children: [
+                                                                                  Icon(
+                                                                                    MdiIcons.calendar,
+                                                                                    color: Color(0xFFFDAE2A),
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    width: 5,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    _.estadist0[index].day_of_week.toString(),
+                                                                                    maxLines: 2, // Limita el texto a 2 líneas
+                                                                                    overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                                    style: const TextStyle(fontSize: 18, color: Color(0xFFFDAE2A), fontWeight: FontWeight.w700),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                              Text(
+                                                                                _.estadist0[index].data.toString(),
+                                                                                maxLines: 2, // Limita el texto a 2 líneas
+                                                                                overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                                style: const TextStyle(fontSize: 18, color: Color(0xFFFDAE2A), fontWeight: FontWeight.w700),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                2,
+                                                                          ),
+                                                                          Container(
+                                                                            height:
+                                                                                1,
+                                                                            width:
+                                                                                1000,
+                                                                            color: const Color.fromARGB(
+                                                                                155,
+                                                                                182,
+                                                                                184,
+                                                                                182),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                6,
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              Text('Clientes atendidos'),
+                                                                              Text(
+                                                                                formatNumber(_.estadist0[index].attendedClient.toString()),
+                                                                                maxLines: 2, // Limita el texto a 2 líneas
+                                                                                overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                                style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              Text('Clientes aleatorios'),
+                                                                              Text(
+                                                                                formatNumber(_.estadist0[index].clientAleator.toString()),
+                                                                                maxLines: 2, // Limita el texto a 2 líneas
+                                                                                overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                                style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              Text('Servicios'),
+                                                                              Text(
+                                                                                formatNumber(_.estadist0[index].services.toString()),
+                                                                                maxLines: 2, // Limita el texto a 2 líneas
+                                                                                overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                                style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              Text('Total en servicios'),
+                                                                              Text(
+                                                                                formatNumber(_.estadist0[index].totalServices.toString()),
+                                                                                maxLines: 2, // Limita el texto a 2 líneas
+                                                                                overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                                style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              const Text(
+                                                                                'Total en productos',
+                                                                                style: TextStyle(
+                                                                                  fontSize: 16,
+                                                                                ),
+                                                                              ),
+                                                                              Text(
+                                                                                formatNumber(_.estadist0[index].totalProducts.toString()),
+                                                                                maxLines: 2, // Limita el texto a 2 líneas
+                                                                                overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                                style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              const Text('Total General',
+                                                                                  style: TextStyle(
+                                                                                    fontSize: 16,
+                                                                                  )),
+                                                                              Text(
+                                                                                formatNumber(_.estadist0[index].totalGeneral.toString()),
+                                                                                maxLines: 2, // Limita el texto a 2 líneas
+                                                                                overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                                style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              const Text(
+                                                                                'Propina',
+                                                                                style: TextStyle(
+                                                                                  fontSize: 16,
+                                                                                ),
+                                                                              ),
+                                                                              Text(formatNumber(_.estadist0[index].tips.toString()),
+                                                                                  maxLines: 2, // Limita el texto a 2 líneas
+                                                                                  overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                                  style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700)),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              const Text(
+                                                                                'Propina 80%',
+                                                                                style: TextStyle(
+                                                                                  fontSize: 16,
+                                                                                ),
+                                                                              ),
+                                                                              Text(
+                                                                                _.estadist0[index].tips80 == null ? '0' : formatNumber(_.estadist0[index].tips80.toString()),
+                                                                                maxLines: 2, // Limita el texto a 2 líneas
+                                                                                overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                                style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              Text('Retención'),
+                                                                              Text(
+                                                                                formatNumber(_.estadist0[index].totalRetention.toString()),
+                                                                                maxLines: 2, // Limita el texto a 2 líneas
+                                                                                overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                                style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              const Text(
+                                                                                'Bonos de Metas',
+                                                                                style: TextStyle(
+                                                                                  fontSize: 16,
+                                                                                ),
+                                                                              ),
+                                                                              Text(
+                                                                                formatNumber(_.estadist0[index].metaamount.toString()),
+                                                                                maxLines: 2, // Limita el texto a 2 líneas
+                                                                                overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                                style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              const Text(
+                                                                                'Ganancia del Barbero',
+                                                                                style: TextStyle(
+                                                                                  fontSize: 16,
+                                                                                ),
+                                                                              ),
+                                                                              Text(
+                                                                                formatNumber(_.estadist0[index].amountGenerate.toString()),
+                                                                                maxLines: 2, // Limita el texto a 2 líneas
+                                                                                overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                                style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              const Text(
+                                                                                'Monto Líquido',
+                                                                                style: TextStyle(fontSize: 16, color: Color.fromARGB(220, 0, 0, 0), fontWeight: FontWeight.w700),
+                                                                              ),
+                                                                              Text(
+                                                                                formatNumber(_.estadist0[index].winPay.toString()),
+                                                                                maxLines: 2, // Limita el texto a 2 líneas
+                                                                                overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                                style: const TextStyle(fontSize: 16, color: Color.fromARGB(220, 0, 0, 0), fontWeight: FontWeight.w700),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ));
+                                                      }),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ))
+                                  : const Center(
+                                      //*AQUI ESTA EL CODIGO DE CUANDO NO HAY Convivencias
+                                      child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text('No hay Clientes Atendidos'),
+                                          ],
+                                        ),
+                                      ],
+                                    ))),
                       //
                       //
                       //

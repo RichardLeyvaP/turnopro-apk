@@ -61,6 +61,7 @@ class StatisticController extends GetxController {
     earningByDaysDia.clear();
     averageEarningsDia = 0.0;
     totalEarningsDia = 0.0;
+
     dateRangeDia = '';
     if (quantityDatesIn > 7) {
       quantityDatesDia = 7;
@@ -73,7 +74,8 @@ class StatisticController extends GetxController {
           controllerLogin.idProfessionalLoggedIn,
           controllerLogin.branchIdLoggedIn,
           startDateIn,
-          endDateIn);
+          endDateIn,
+          controllerLogin.chargeUserLoggedIn);
       print('respuest getDayStatisticsList----$responseId');
 
       if (responseId['Monto Generado'] != 0) {
@@ -113,7 +115,8 @@ class StatisticController extends GetxController {
           controllerLogin.idProfessionalLoggedIn,
           controllerLogin.branchIdLoggedIn,
           startDateIn,
-          endDateIn);
+          endDateIn,
+          controllerLogin.chargeUserLoggedIn);
       print('respuest getDayStatisticsList----$responseId');
 
       if (responseId['Monto Generado'] != 0) {

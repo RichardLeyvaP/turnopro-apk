@@ -10,6 +10,7 @@ import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/Views/coordinator/coexistencePageCoordinator.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
 import 'package:turnopro_apk/services/localNotification.dart';
 
 //import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -53,6 +54,32 @@ class _HomePageBodyState extends State<HomePageBody>
 /*
   WebSocketChannel channel = IOWebSocketChannel.connect(
       'wss://api2.simplifies.cl/api/notification-professional?branch_id=15&professional_id=76');*/
+
+  Future<void> saveData() async {
+    int valueClock = getTimeRemaining();
+    int valueSave = valueClock;
+    await LocalStorage.prefs.setInt('valueClockIni', valueSave);
+
+    print('--este es el value del clok... ->Value guardado:$valueSave');
+  }
+
+  int getTimeRemaining() {
+    if (clientsScheduledController.animationControllerInitial != null) {
+      return (clientsScheduledController.totalTimeInitial -
+              (clientsScheduledController.animationControllerInitial!.value *
+                  clientsScheduledController.totalTimeInitial))
+          .round();
+    } else {
+      return 180;
+    }
+  }
+
+  int obtenerHoraActualEnSegundos() {
+    DateTime ahora = DateTime.now();
+    int segundos = ahora.hour * 3600 + ahora.minute * 60 + ahora.second;
+    return segundos;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -85,10 +112,12 @@ class _HomePageBodyState extends State<HomePageBody>
     //clientsScheduledController.filterShowCardTimer();//todo ahora comente a ver que pasa
 
     //INICIALIZANDO CONTROLES DE LOS RELOJES
+
     clientsScheduledController.animationControllerInitial = AnimationController(
       vsync: this,
       duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
     );
+
     //clientsScheduledController.animationControllerInitial!.forward();
     //clientsScheduledController.animationControllerInitial!.forward();
 // Inicia la animación
@@ -101,7 +130,9 @@ class _HomePageBodyState extends State<HomePageBody>
           if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
                   0 &&
               loginController.usserPermissionQr == 1 &&
-              clientsScheduledController.clientsScheduledListLength > 0) {
+              clientsScheduledController.clientsScheduledListLength > 0 &&
+              LocalStorage.prefs.getBool('convivenciaIncumplida') == false) {
+            print('--este es el value del clok-FINALIZANDO*****22');
             print(
                 'inserto correctamente ********** .noncomplianceProfessional[]');
             //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
@@ -123,9 +154,22 @@ class _HomePageBodyState extends State<HomePageBody>
             //     'Tu tiempo de espera de 3 minutos');
           }
 
+          LocalStorage.prefs.setBool('convivenciaIncumplida', true);
+          LocalStorage.prefs.setInt('valueClockIni', 180);
+          clientsScheduledController.setTotalTimeInitial(180);
+          LocalStorage.prefs.setBool('valueClockActiv', false);
           // La animación ha llegado al final, reiniciar
+          clientsScheduledController.animationControllerInitial =
+              AnimationController(
+            vsync: this,
+            duration:
+                Duration(seconds: clientsScheduledController.totalTimeInitial),
+          );
           clientsScheduledController.animationControllerInitial!.reset();
           clientsScheduledController.animationControllerInitial!.forward();
+
+          print(
+              '--este es el value del clok-FINALIZANDO*****33:${clientsScheduledController.totalTimeInitial}');
         } else {
           print(
               'inserto correctamente NO ENTRO ********** .noncomplianceProfessional[]');
@@ -159,6 +203,7 @@ class _HomePageBodyState extends State<HomePageBody>
   @override
   void dispose() {
     clientsScheduledController.animationControllerInitial!.dispose();
+
     clientsScheduledController.animationController1!.dispose();
     clientsScheduledController.animationController2!.dispose();
     clientsScheduledController.animationController3!.dispose();
@@ -189,10 +234,15 @@ class _HomePageBodyState extends State<HomePageBody>
 
         clientsScheduledController.animationControllerInitial!.reset();
         clientsScheduledController.animationControllerInitial!.forward();
+        LocalStorage.prefs.setBool('valueClockActiv', true);
+        int hAs = obtenerHoraActualEnSegundos();
+        LocalStorage.prefs.setInt('valueHoraAnt', hAs);
       }
     } else {
       if (clientsScheduledController.animationControllerInitial != null) {
         clientsScheduledController.animationControllerInitial!.stop();
+        LocalStorage.prefs.setBool('valueClockActiv', false);
+        LocalStorage.prefs.setInt('valueClockIni', 180);
       }
     }
   }
@@ -475,11 +525,13 @@ class _HomePageBodyState extends State<HomePageBody>
   }
 
   Timer? _timer1;
-
+  int initialValue = 10;
   llamadasTimer1() {
     _timer1 = //notificaciones
-        Timer.periodic(const Duration(seconds: 10), (Timer timer) async {
-      print('llamada timer en 10 segundos');
+        Timer.periodic(const Duration(seconds: 9), (Timer timer) async {
+      saveData();
+
+      print('llamada timer en 10 segundos obtenerHoraActualEnSegundos:');
       if (loginController.idProfessionalLoggedIn != null &&
           loginController.branchIdLoggedIn != null &&
           (loginController.chargeUserLoggedIn == "Barbero" ||
@@ -575,6 +627,7 @@ class _HomePageBodyState extends State<HomePageBody>
           //aqui verifico si se esta acabando algun servico para mandar una notificacion
           //
           // await Future.delayed(Duration(seconds: 2));
+
           if ((clientsScheduledController.varClientsWaiting == true) &&
               (loginController.usserPermissionQr == 1)) {
             print('esteeeeee se cumplio que puede atender ..aqui entrandoya');
@@ -1412,355 +1465,373 @@ class _HomePageBodyState extends State<HomePageBody>
     //todoooooooooooooooooooooooooooooooooooooooooo
   }
 
-  Padding cardClientTails(
-      ClientsScheduledController clientsScheduledController,
+  cardClientTails(
+      ClientsScheduledController clientsScheduledController2,
       BuildContext context,
       String firstName,
       List<AnimationController?> animationCont) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 8,
-        right: 8,
-      ),
-      child: FittedBox(
-        fit: BoxFit.contain,
-        child: clientsScheduledController.clientsScheduledNext != null
-            ? Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(18)),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      height: (MediaQuery.of(context).size.height * 0.115),
-                      width: (MediaQuery.of(context).size.width * 0.20),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white, // Color blanco para el borde
-                          width:
-                              1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                        ),
-                        color: Color(0xFFFF6750),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(18)),
-                      ),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: const Color(
-                              0xFFFF6750), // Color de fondo en verde
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                16.0), // Ajusta el radio según tus necesidades
-                          ),
-                        ),
-                        onPressed: () {
-                          if (loginController.codigoQrValid() == true) {
-                            // int resulButton = 0;
-                            // resulButton = loginController.handleButtonClick(
-                            //     clientsScheduledController
-                            //         .clientsScheduledNext!.reservation_id);
-                            // if (resulButton == 1) {
-                            notiController.storeNotification(
-                                'Solicitud de rechazo',
-                                controllerLogin.branchIdLoggedIn,
-                                controllerLogin.idProfessionalLoggedIn,
-                                'EL profesional "${loginController.nameUserLoggedIn}" está rechazando a "${clientsScheduledController.clientsScheduledNext!.client_name}"',
-                                'Ambos'); //esto es para quele llegue a coordinador y encargado
-                            clientsScheduledController.acceptOrRejectClient(
-                                clientsScheduledController
-                                    .clientsScheduledNext!.reservation_id,
-                                3);
-
-                            //}
-                          } else if (loginController.usserPermissionQr == 2) {
-                            Get.snackbar(
-                              'Mensaje',
-                              'Debe de esperar la respuesta a su solicitud',
-                              duration: const Duration(milliseconds: 2500),
-                              backgroundColor:
-                                  const Color.fromARGB(118, 255, 255, 255),
-                              showProgressIndicator: true,
-                              progressIndicatorBackgroundColor:
-                                  const Color.fromARGB(255, 203, 205, 209),
-                              progressIndicatorValueColor:
-                                  const AlwaysStoppedAnimation(
-                                      Color(0xFFFDAE2A)),
-                              overlayBlur: 3,
-                            );
-                          } else {
-                            Get.snackbar(
-                              'Mensaje',
-                              'Debe de escanear el código Qr de entrada',
-                              duration: const Duration(milliseconds: 2500),
-                              backgroundColor:
-                                  const Color.fromARGB(118, 255, 255, 255),
-                              showProgressIndicator: true,
-                              progressIndicatorBackgroundColor:
-                                  const Color.fromARGB(255, 203, 205, 209),
-                              progressIndicatorValueColor:
-                                  const AlwaysStoppedAnimation(
-                                      Color(0xFFFDAE2A)),
-                              overlayBlur: 3,
-                            );
-                          }
-                        },
-                        child: Icon(
-                          MdiIcons.thumbDownOutline,
-                          color: Colors.white,
-                          size: (MediaQuery.of(context).size.height * 0.04),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: (MediaQuery.of(context).size.height * 0.115),
-                      width: (MediaQuery.of(context).size.width * 0.8),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 15, top: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    const Icon(
-                                      Icons.person,
-                                      color:
-                                          const Color.fromARGB(255, 43, 44, 49),
-                                      size: 22,
-                                    ),
-                                    Text(
-                                      firstName,
-                                      softWrap: true,
-                                      style: const TextStyle(
-                                          height: 1.0,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Text(
-                                      //AQUI ETSA EL TIEMPO TOTAL DEL SERVICIO
-                                      (clientsScheduledController
-                                          .clientsScheduledNext!.total_time!),
-                                      style: const TextStyle(
-                                        height: 1.2,
-                                        fontSize: 16,
-                                        color: Color.fromARGB(180, 0, 0, 0),
-                                      )),
-                                ),
-                              ],
-                            ),
-                            Expanded(
-                              child: ListView.builder(
-                                itemCount: clientsScheduledController
-                                            .serviceCustomerSelected.length >
-                                        2
-                                    ? 2
-                                    : clientsScheduledController
-                                        .serviceCustomerSelected.length,
-                                itemBuilder: (context, index) => Row(
-                                  children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              MdiIcons.menu,
-                                            ),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            Text(
-                                              clientsScheduledController
-                                                  .serviceCustomerSelected[
-                                                      index]
-                                                  .name,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: (MediaQuery.of(context).size.height * 0.115),
-                      width: (MediaQuery.of(context).size.width * 0.20),
-                      decoration: BoxDecoration(
+    return GetBuilder<ClientsScheduledController>(
+        builder: (clientsScheduledControllerE) {
+      return Padding(
+        padding: const EdgeInsets.only(
+          left: 8,
+          right: 8,
+        ),
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: clientsScheduledControllerE.clientsScheduledNext != null
+              ? Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(18)),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: (MediaQuery.of(context).size.height * 0.115),
+                        width: (MediaQuery.of(context).size.width * 0.20),
+                        decoration: BoxDecoration(
                           border: Border.all(
                             color: Colors.white, // Color blanco para el borde
                             width:
                                 1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                           ),
-                          color: const Color(0xFF19CF9E),
+                          color: Color(0xFFFF6750),
                           borderRadius:
-                              const BorderRadius.all(Radius.circular(18))),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: const Color(
-                              0xFF19CF9E), // Color de fondo en verde
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                16.0), // Ajusta el radio según tus necesidades
+                              const BorderRadius.all(Radius.circular(18)),
+                        ),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: const Color(
+                                0xFFFF6750), // Color de fondo en verde
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  16.0), // Ajusta el radio según tus necesidades
+                            ),
+                          ),
+                          onPressed: () {
+                            if (loginController.codigoQrValid() == true) {
+                              // int resulButton = 0;
+                              // resulButton = loginController.handleButtonClick(
+                              //     clientsScheduledController
+                              //         .clientsScheduledNext!.reservation_id);
+                              // if (resulButton == 1) {
+                              notiController.storeNotification(
+                                  'Solicitud de rechazo',
+                                  controllerLogin.branchIdLoggedIn,
+                                  controllerLogin.idProfessionalLoggedIn,
+                                  'EL profesional "${loginController.nameUserLoggedIn}" está rechazando a "${clientsScheduledControllerE.clientsScheduledNext!.client_name}"',
+                                  'Ambos'); //esto es para quele llegue a coordinador y encargado
+                              clientsScheduledControllerE.acceptOrRejectClient(
+                                  clientsScheduledControllerE
+                                      .clientsScheduledNext!.reservation_id,
+                                  3);
+
+                              //}
+                            } else if (loginController.usserPermissionQr == 2) {
+                              Get.snackbar(
+                                'Mensaje',
+                                'Debe de esperar la respuesta a su solicitud',
+                                duration: const Duration(milliseconds: 2500),
+                                backgroundColor:
+                                    const Color.fromARGB(118, 255, 255, 255),
+                                showProgressIndicator: true,
+                                progressIndicatorBackgroundColor:
+                                    const Color.fromARGB(255, 203, 205, 209),
+                                progressIndicatorValueColor:
+                                    const AlwaysStoppedAnimation(
+                                        Color(0xFFFDAE2A)),
+                                overlayBlur: 3,
+                              );
+                            } else {
+                              Get.snackbar(
+                                'Mensaje',
+                                'Debe de escanear el código Qr de entrada',
+                                duration: const Duration(milliseconds: 2500),
+                                backgroundColor:
+                                    const Color.fromARGB(118, 255, 255, 255),
+                                showProgressIndicator: true,
+                                progressIndicatorBackgroundColor:
+                                    const Color.fromARGB(255, 203, 205, 209),
+                                progressIndicatorValueColor:
+                                    const AlwaysStoppedAnimation(
+                                        Color(0xFFFDAE2A)),
+                                overlayBlur: 3,
+                              );
+                            }
+                          },
+                          child: Icon(
+                            MdiIcons.thumbDownOutline,
+                            color: Colors.white,
+                            size: (MediaQuery.of(context).size.height * 0.04),
                           ),
                         ),
-                        onPressed: () async {
-                          //AQUI VEO SI YA ESCANEO EL CODIGO QR Y ESTA EN EL LOCAL
-                          if (loginController.codigoQrValid() == true) {
-                            int resulButton = 0;
-                            resulButton = loginController.handleButtonClick(
-                                clientsScheduledController
-                                    .clientsScheduledNext!.reservation_id!);
-                            if (resulButton == 1) {
-                              //aqui manda aceptar, es decir atender este cliente
-                              //aqui intento hacer que cuando acepte no ce vea el siguiente en la lista
-                              // nunca a no ser que luego lo ponga en true porque tenga services simultaneos
-                              clientsScheduledController
-                                  .setBoolFilterShowNext(false);
-                              //
-                              clientsScheduledController.clientsWaiting(false);
-                              // detengo el timer de 2 minutos
-                              clientsScheduledController
-                                  .animationControllerInitial!
-                                  .stop();
-                              clientsScheduledController
-                                  .animationControllerInitial!
-                                  .reset();
-                              // detengo todos los timers que deben detenerse
-                              for (int j = 0;
-                                  j < clientsScheduledController.itemDel.length;
-                                  j++) {
-                                animationCont[
-                                        clientsScheduledController.itemDel[j]]!
-                                    .stop();
-                                animationCont[
-                                        clientsScheduledController.itemDel[j]]!
-                                    .reset();
-                              }
-                              await clientsScheduledController
-                                  .newClientAttended(
-                                      clientsScheduledController
-                                          .clientsScheduledNext!,
-                                      clientsScheduledController.availability);
-
-                              //
-                              //
-                              //
-                              //HACE LAS VERIFICACIONES NECESARIAS PARA ACTIVAR LOS RELOJES QUE NECESITEN SER ACTIVADOS
-                              if (clientsScheduledController.busyClock == 0) {
-                                animationCont[0]!.duration = Duration(
-                                    seconds: clientsScheduledController
-                                        .timeClientsAttended1!);
-                                animationCont[0]!.forward();
-                              } else if (clientsScheduledController.busyClock ==
-                                  1) {
-                                animationCont[1]!.duration = Duration(
-                                    seconds: clientsScheduledController
-                                        .timeClientsAttended2!);
-                                animationCont[1]!.forward();
-                              } else if (clientsScheduledController.busyClock ==
-                                  2) {
-                                animationCont[2]!.duration = Duration(
-                                    seconds: clientsScheduledController
-                                        .timeClientsAttended3!);
-                                animationCont[2]!.forward();
-                              } else if (clientsScheduledController.busyClock ==
-                                  3) {
-                                animationCont[3]!.duration = Duration(
-                                    seconds: clientsScheduledController
-                                        .timeClientsAttended4!);
-                                animationCont[3]!.forward();
-                              }
-
-                              //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
-                              await clientsScheduledController
-                                  .acceptOrRejectClient(
-                                      clientsScheduledController
-                                          .clientsScheduledNext!.reservation_id,
-                                      1);
-                            }
-                          } else if (loginController.usserPermissionQr == 2) {
-                            Get.snackbar(
-                              'Mensaje',
-                              'Debe de esperar la respuesta a su solicitud',
-                              duration: const Duration(milliseconds: 2500),
-                              backgroundColor:
-                                  const Color.fromARGB(118, 255, 255, 255),
-                              showProgressIndicator: true,
-                              progressIndicatorBackgroundColor:
-                                  const Color.fromARGB(255, 203, 205, 209),
-                              progressIndicatorValueColor:
-                                  const AlwaysStoppedAnimation(
-                                      Color(0xFFFDAE2A)),
-                              overlayBlur: 3,
-                            );
-                          } else {
-                            Get.snackbar(
-                              'Mensaje',
-                              'Debe de escanear el código Qr de entrada',
-                              duration: const Duration(milliseconds: 2500),
-                              backgroundColor:
-                                  const Color.fromARGB(118, 255, 255, 255),
-                              showProgressIndicator: true,
-                              progressIndicatorBackgroundColor:
-                                  const Color.fromARGB(255, 203, 205, 209),
-                              progressIndicatorValueColor:
-                                  const AlwaysStoppedAnimation(
-                                      Color(0xFFFDAE2A)),
-                              overlayBlur: 3,
-                            );
-                          }
-                        },
-                        child: Icon(
-                          MdiIcons.thumbUpOutline,
+                      ),
+                      Container(
+                        height: (MediaQuery.of(context).size.height * 0.115),
+                        width: (MediaQuery.of(context).size.width * 0.8),
+                        decoration: const BoxDecoration(
                           color: Colors.white,
-                          size: (MediaQuery.of(context).size.height * 0.04),
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15, top: 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      const Icon(
+                                        Icons.person,
+                                        color: const Color.fromARGB(
+                                            255, 43, 44, 49),
+                                        size: 22,
+                                      ),
+                                      Text(
+                                        firstName,
+                                        softWrap: true,
+                                        style: const TextStyle(
+                                            height: 1.0,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 20),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: Text(
+                                        //AQUI ETSA EL TIEMPO TOTAL DEL SERVICIO
+                                        (clientsScheduledControllerE
+                                            .clientsScheduledNext!.total_time!),
+                                        style: const TextStyle(
+                                          height: 1.2,
+                                          fontSize: 16,
+                                          color: Color.fromARGB(180, 0, 0, 0),
+                                        )),
+                                  ),
+                                ],
+                              ),
+                              Expanded(
+                                child: ListView.builder(
+                                  itemCount: clientsScheduledControllerE
+                                              .serviceCustomerSelected.length >
+                                          2
+                                      ? 2
+                                      : clientsScheduledControllerE
+                                          .serviceCustomerSelected.length,
+                                  itemBuilder: (context, index) => Row(
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                MdiIcons.menu,
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                clientsScheduledControllerE
+                                                    .serviceCustomerSelected[
+                                                        index]
+                                                    .name,
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            : Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GetBuilder<LoginController>(builder: (controllerLogin) {
-                  return const Row(
-                    children: [
-                      Text('No hay clientes en cola',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                            color: Color.fromARGB(255, 82, 81, 81),
-                          )),
+                      Container(
+                        height: (MediaQuery.of(context).size.height * 0.115),
+                        width: (MediaQuery.of(context).size.width * 0.20),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white, // Color blanco para el borde
+                              width:
+                                  1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                            ),
+                            color: const Color(0xFF19CF9E),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(18))),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: const Color(
+                                0xFF19CF9E), // Color de fondo en verde
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  16.0), // Ajusta el radio según tus necesidades
+                            ),
+                          ),
+                          onPressed: () async {
+                            //AQUI VEO SI YA ESCANEO EL CODIGO QR Y ESTA EN EL LOCAL
+                            if (loginController.codigoQrValid() == true) {
+                              int resulButton = 0;
+                              resulButton = loginController.handleButtonClick(
+                                  clientsScheduledControllerE
+                                      .clientsScheduledNext!.reservation_id!);
+                              if (resulButton == 1) {
+                                //aqui manda aceptar, es decir atender este cliente
+                                //aqui intento hacer que cuando acepte no ce vea el siguiente en la lista
+                                // nunca a no ser que luego lo ponga en true porque tenga services simultaneos
+                                clientsScheduledControllerE
+                                    .setBoolFilterShowNext(false);
+                                //
+                                clientsScheduledControllerE
+                                    .clientsWaiting(false);
+                                // detengo el timer de 2 minutos
+                                clientsScheduledControllerE
+                                    .animationControllerInitial!
+                                    .stop();
+                                clientsScheduledControllerE
+                                    .animationControllerInitial!
+                                    .reset();
+                                LocalStorage.prefs
+                                    .setBool('valueClockActiv', false);
+                                LocalStorage.prefs.setInt('valueClockIni', 180);
+                                // detengo todos los timers que deben detenerse
+                                for (int j = 0;
+                                    j <
+                                        clientsScheduledControllerE
+                                            .itemDel.length;
+                                    j++) {
+                                  animationCont[clientsScheduledControllerE
+                                          .itemDel[j]]!
+                                      .stop();
+                                  animationCont[clientsScheduledControllerE
+                                          .itemDel[j]]!
+                                      .reset();
+                                }
+                                await clientsScheduledControllerE
+                                    .newClientAttended(
+                                        clientsScheduledControllerE
+                                            .clientsScheduledNext!,
+                                        clientsScheduledControllerE
+                                            .availability);
+
+                                //
+                                //
+                                //
+                                //HACE LAS VERIFICACIONES NECESARIAS PARA ACTIVAR LOS RELOJES QUE NECESITEN SER ACTIVADOS
+                                if (clientsScheduledControllerE.busyClock ==
+                                    0) {
+                                  animationCont[0]!.duration = Duration(
+                                      seconds: clientsScheduledControllerE
+                                          .timeClientsAttended1!);
+                                  animationCont[0]!.forward();
+                                } else if (clientsScheduledControllerE
+                                        .busyClock ==
+                                    1) {
+                                  animationCont[1]!.duration = Duration(
+                                      seconds: clientsScheduledControllerE
+                                          .timeClientsAttended2!);
+                                  animationCont[1]!.forward();
+                                } else if (clientsScheduledControllerE
+                                        .busyClock ==
+                                    2) {
+                                  animationCont[2]!.duration = Duration(
+                                      seconds: clientsScheduledControllerE
+                                          .timeClientsAttended3!);
+                                  animationCont[2]!.forward();
+                                } else if (clientsScheduledControllerE
+                                        .busyClock ==
+                                    3) {
+                                  animationCont[3]!.duration = Duration(
+                                      seconds: clientsScheduledControllerE
+                                          .timeClientsAttended4!);
+                                  animationCont[3]!.forward();
+                                }
+
+                                //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
+                                await clientsScheduledControllerE
+                                    .acceptOrRejectClient(
+                                        clientsScheduledControllerE
+                                            .clientsScheduledNext!
+                                            .reservation_id,
+                                        1);
+                              }
+                            } else if (loginController.usserPermissionQr == 2) {
+                              Get.snackbar(
+                                'Mensaje',
+                                'Debe de esperar la respuesta a su solicitud',
+                                duration: const Duration(milliseconds: 2500),
+                                backgroundColor:
+                                    const Color.fromARGB(118, 255, 255, 255),
+                                showProgressIndicator: true,
+                                progressIndicatorBackgroundColor:
+                                    const Color.fromARGB(255, 203, 205, 209),
+                                progressIndicatorValueColor:
+                                    const AlwaysStoppedAnimation(
+                                        Color(0xFFFDAE2A)),
+                                overlayBlur: 3,
+                              );
+                            } else {
+                              Get.snackbar(
+                                'Mensaje',
+                                'Debe de escanear el código Qr de entrada',
+                                duration: const Duration(milliseconds: 2500),
+                                backgroundColor:
+                                    const Color.fromARGB(118, 255, 255, 255),
+                                showProgressIndicator: true,
+                                progressIndicatorBackgroundColor:
+                                    const Color.fromARGB(255, 203, 205, 209),
+                                progressIndicatorValueColor:
+                                    const AlwaysStoppedAnimation(
+                                        Color(0xFFFDAE2A)),
+                                overlayBlur: 3,
+                              );
+                            }
+                          },
+                          child: Icon(
+                            MdiIcons.thumbUpOutline,
+                            color: Colors.white,
+                            size: (MediaQuery.of(context).size.height * 0.04),
+                          ),
+                        ),
+                      ),
                     ],
-                  );
-                }),
-              ),
-      ),
-    );
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child:
+                      GetBuilder<LoginController>(builder: (controllerLogin) {
+                    return const Row(
+                      children: [
+                        Text('No hay clientes en cola',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                              color: Color.fromARGB(255, 82, 81, 81),
+                            )),
+                      ],
+                    );
+                  }),
+                ),
+        ),
+      );
+    });
   }
 
   //todo9
@@ -1830,6 +1901,9 @@ class _HomePageBodyState extends State<HomePageBody>
                 await clientsScheduledController.metodsClients(
                     index, carrId, idreservation, name, imag);
                 //todo FIN esto estaba en la pagina del modal al dar en Ver carrito
+
+                //aqui devuelve en category_branch las categorias
+                //aqui devuelve en category_products los productos por categorias
                 await controllerProduct.initializeData();
                 await chopCont.loadDataInitiallyNecessary().then((_) async {
                   await clientsScheduledController
@@ -1993,7 +2067,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                         minutes > 59
                                             ? minutesN > 9
                                                 ? Text(
-                                                    '$hoursN : $minutesN :',
+                                                    '$hoursN:$minutesN:',
                                                     style: TextStyle(
                                                         fontSize:
                                                             (MediaQuery.of(
@@ -2304,6 +2378,7 @@ class _HomePageBodyState extends State<HomePageBody>
         ),
         onPressed: () async {
           if (titleCart == 'Agenda') {
+            //  getData();
             Get.dialog(
               const Center(
                 child: CircularProgressIndicator(

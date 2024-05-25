@@ -159,13 +159,18 @@ class CoexistenceRepository extends GetConnect {
 //
 //
   Future<List<Estadist1Model>> fetchEstadist1(
-      professional_id, branch_id, data) async {
+      professional_id, branch_id, data, charge) async {
     // todo esta es la que carga a los profesionales y a los tecnicos
     List<Estadist1Model> branchProf = [];
     print('werya tengo repositorio11 estoy en getBranchProfessionals');
     try {
       var url =
           '${Env.apiEndpoint}/professional-car-date?branch_id=$branch_id&professional_id=$professional_id&data=$data';
+      if (charge == 'Tecnico') {
+        url =
+            '${Env.apiEndpoint}/tecnico-car-date?branch_id=$branch_id&professional_id=$professional_id&data=$data';
+        print('soy tecnico siii');
+      }
 
       final response = await get(url).timeout(Duration(seconds: 10));
       print(
@@ -176,16 +181,25 @@ class CoexistenceRepository extends GetConnect {
         // Parsear el body como una cadena JSON
         final jsonResponse = response.body['car'];
         print(
-            'werya tengo repositorio----------------33 response.statusCode == 200 estoy en getBranchProfessionals');
+            'response.statusCode == 200 estoy en getBranchProfessionals-charge:$charge');
+
+        for (int i = 0; i < jsonResponse.length; i++) {
+          print(
+              'ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
+          jsonResponse[i].forEach((key, value) {
+            print(
+                'ya tengo la cola de la api es estaa $key: ${value.runtimeType}');
+          });
+        }
 
         final List<dynamic> branchP = jsonResponse;
 
         for (int i = 0; i < branchP.length; i++) {
           final Map<String, dynamic> branch = branchP[i];
-
+          print('ya tengo la cola de la api es estaa i: $i ');
           // Crear una instancia de Estadist1Model
           Estadist1Model u = Estadist1Model.fromJson(branch);
-
+          print('ya tengo la cola de la api es estaa i: $i - ${u.clientName}');
           // Agregar la instancia a la lista branchProf
           branchProf.add(u);
         }
@@ -208,18 +222,107 @@ class CoexistenceRepository extends GetConnect {
   ///
 //
 //
-  Future fetchEstadistPagos(professional_id, branch_id, charge) async {
-    // todo esta es la que carga a los profesionales y a los tecnicos
-    List<PaymentModel> branchProf = [];
+//todo COMENTANDO ESTE METODO Y PROBANDO EL DE ABAJO QUE SI FALLA REINTENTA 3 VECES IR A LA DB A BUSCAR LA INFORMACIÓN
+//   Future fetchEstadistPagos(professional_id, branch_id, charge) async {
+//     // todo esta es la que carga a los profesionales y a los tecnicos
+//     List<PaymentModel> branchProf = [];
 
+//     try {
+//       var url =
+//           '${Env.apiEndpoint}/professional-payment-show-apk?branch_id=$branch_id&professional_id=$professional_id&charge=$charge';
+//       // '${Env.apiEndpoint}/professional-payment-show?branch_id=$branch_id&professional_id=$professional_id';
+
+//       final response = await get(url).timeout(Duration(seconds: 10));
+//       print('werya tengo repositorio22 estoy en getBranchProfessionals');
+//       if (response.statusCode == 200) {
+//         print(
+//             'werya tengo repositorio33 response.statusCode == 200 estoy en getBranchProfessionals');
+//         // Parsear el body como una cadena JSON
+//         // Obtén el cuerpo (body) como una cadena (String)
+
+//         final jsonResponse = response.body;
+//         print('werya tengo repositorio33 response.responseBody: $jsonResponse');
+
+// // Ahora puedes trabajar con 'jsonResponse' como un mapa de Dart
+// // Ejemplo: acceder a los pagos
+//         final List<dynamic> payments = response.body['payments'];
+
+// // Ejemplo: acceder a las demás variables
+//         final int pendiente = jsonResponse['pendiente'];
+//         final int pagado = jsonResponse['pagado'];
+//         final int clientAtended = jsonResponse['clientAtended'];
+//         final int servCant = jsonResponse['servCant'];
+//         final int amountGenerate = jsonResponse['amountGenerate'];
+//         final int propina80 = jsonResponse['propina80'];
+//         final int metaCant = jsonResponse['metaCant'];
+//         final int metaAmount = jsonResponse['metaAmount'];
+//         final int retention = jsonResponse['retention'];
+//         final int winnerRetention = jsonResponse['winnerRetention'];
+//         final int winnerAmount = jsonResponse['winnerAmount'];
+//         final int productCant = jsonResponse['productCant'];
+//         final int productAmount = jsonResponse['productAmount'];
+//         final int productBonoCant = jsonResponse['productBonoCant'];
+//         final int servAmount = jsonResponse['servAmount'];
+//         final int servBonoCant = jsonResponse['servBonoCant'];
+//         for (int i = 0; i < payments.length; i++) {
+//           final Map<String, dynamic> branch = payments[i];
+//           print(
+//               'werya tengo repositorio44 response.statusCode == 200 estoy 2345:${payments[i]}');
+
+//           // Crear una instancia de Estadist1Model
+//           PaymentModel u = PaymentModel.fromJson(branch);
+
+//           // Agregar la instancia a la lista branchProf
+//           branchProf.add(u);
+//         }
+
+//         print(
+//             'werya tengo repositorio44 response.statusCode == 200 estoy en branchProf:${pendiente}');
+//         return {
+//           'branchProf': branchProf,
+//           'pendiente': pendiente,
+//           'pagado': pagado,
+//           'clientAtended': clientAtended,
+//           'servCant': servCant,
+//           'amountGenerate': amountGenerate,
+//           'propina80': propina80,
+//           'metaCant': metaCant,
+//           'metaAmount': metaAmount,
+//           'retention': retention,
+//           'winnerRetention': winnerRetention,
+//           'winnerAmount': winnerAmount,
+//           'productCant': productCant,
+//           'productAmount': productAmount,
+//           'servAmount': servAmount,
+//           'productBonoCant': productBonoCant,
+//           'servBonoCant': servBonoCant,
+//         };
+//       } else {
+//         print('Request failed with status: ${response.statusCode}');
+//         return branchProf;
+//         // Si ocurre algún error con la solicitud HTTP
+//       }
+//     } catch (e) {
+//       print('werya tengo Error2 :$e');
+//       return branchProf;
+//     }
+//   }
+
+//TODO METODO NUEVO CON 3 REINTENTOS
+
+  Future<Map<String, dynamic>> fetchEstadistPagos(
+      professional_id, branch_id, charge) async {
+    List<PaymentModel> branchProf = [];
+    int attempts = 0;
+
+    print('ENTRE AL NUEVO METODO ESTE NUMERO DE VECES:$attempts');
     try {
       var url =
           '${Env.apiEndpoint}/professional-payment-show-apk?branch_id=$branch_id&professional_id=$professional_id&charge=$charge';
-      // '${Env.apiEndpoint}/professional-payment-show?branch_id=$branch_id&professional_id=$professional_id';
-
       final response = await get(url).timeout(Duration(seconds: 10));
-      print('werya tengo repositorio22 estoy en getBranchProfessionals');
+
       if (response.statusCode == 200) {
+        attempts = 10;
         print(
             'werya tengo repositorio33 response.statusCode == 200 estoy en getBranchProfessionals');
         // Parsear el body como una cadena JSON
@@ -258,7 +361,10 @@ class CoexistenceRepository extends GetConnect {
           PaymentModel u = PaymentModel.fromJson(branch);
 
           // Agregar la instancia a la lista branchProf
-          branchProf.add(u);
+          if (u.type == 'Adelanto') {
+            //solamnete mostrar que sea adelando(Pedido por el cliente)
+            branchProf.add(u);
+          }
         }
 
         print(
@@ -281,29 +387,72 @@ class CoexistenceRepository extends GetConnect {
           'servAmount': servAmount,
           'productBonoCant': productBonoCant,
           'servBonoCant': servBonoCant,
+          'retries': false, //es que td esta bien
         };
       } else {
-        print('Request failed with status: ${response.statusCode}');
-        return branchProf;
-        // Si ocurre algún error con la solicitud HTTP
+        return {
+          'branchProf': branchProf,
+          'pendiente': '0',
+          'pagado': '0',
+          'clientAtended': '0',
+          'servCant': '0',
+          'amountGenerate': '0',
+          'propina80': '0',
+          'metaCant': '0',
+          'metaAmount': '0',
+          'retention': '0',
+          'winnerRetention': '0',
+          'winnerAmount': '0',
+          'productCant': '0',
+          'productAmount': '0',
+          'servAmount': '0',
+          'productBonoCant': '0',
+          'servBonoCant': '0',
+          'retries': true, //es que td esta bien
+        };
       }
     } catch (e) {
-      print('werya tengo Error2 :$e');
-      return branchProf;
+      print('Error: $e');
+      return {
+        'branchProf': branchProf,
+        'pendiente': '0',
+        'pagado': '0',
+        'clientAtended': '0',
+        'servCant': '0',
+        'amountGenerate': '0',
+        'propina80': '0',
+        'metaCant': '0',
+        'metaAmount': '0',
+        'retention': '0',
+        'winnerRetention': '0',
+        'winnerAmount': '0',
+        'productCant': '0',
+        'productAmount': '0',
+        'servAmount': '0',
+        'productBonoCant': '0',
+        'servBonoCant': '0',
+        'retries': true, //es que td esta bien
+      };
     }
   }
 
+//TODO METODO NUEVO CON 3 REINTENTOS
 //
 ////
 //
   Future<List<Estadist0Model>> fetchEstadist0(
-      professional_id, branch_id) async {
+      professional_id, branch_id, charge) async {
     // todo esta es la que carga a los profesionales y a los tecnicos
     List<Estadist0Model> branchProf = [];
     print('werya tengo repositorio11 estoy en getBranchProfessionals');
     try {
       var url =
           '${Env.apiEndpoint}/professional-car?branch_id=$branch_id&professional_id=$professional_id';
+      if (charge == 'Tecnico') //tecnico
+      {
+        url =
+            '${Env.apiEndpoint}/tecnico-car?branch_id=$branch_id&professional_id=$professional_id';
+      }
 
       final response = await get(url).timeout(Duration(seconds: 10));
       print('werya tengo repositorio22 estoy en getBranchProfessionals');

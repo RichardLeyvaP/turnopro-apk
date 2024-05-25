@@ -43,6 +43,13 @@ class _LineChartSample2State extends State<LineChartSample2> {
 
     int i = 0;
     return GetBuilder<StatisticController>(builder: (controllerStat) {
+      if (coexCont.chargeSave == 'Tecnico') {
+        direcc = [
+          'assets/images/icons/montoEsp.png',
+          'assets/images/icons/clientesAten.png',
+          'assets/images/icons/montoGen.png',
+        ];
+      }
       return SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(left: 12, right: 12),
@@ -177,7 +184,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
                                                     right: 10),
                                                 child: Image(
                                                   image: AssetImage(
-                                                    direcc[i < 13
+                                                    direcc[i < direcc.length
                                                         ? i
                                                         : (i = 1) - 1],
                                                   ),
@@ -371,12 +378,21 @@ class _LineChartSample2State extends State<LineChartSample2> {
                                       'intervalo-quantityDates ----:$quantityDates');
                                   print(
                                       'intervalo-numberdayWeek ----:$numberdayWeek');
+                                  Navigator.pop(context);
+                                  Get.dialog(
+                                    const Center(
+                                      child: CircularProgressIndicator(
+                                        color: Color(0xFFFDAE2A),
+                                      ),
+                                    ),
+                                    barrierDismissible: false,
+                                  ); //Get.back();
                                   await controllerStatistic.getDataStatisticDay(
                                       startDate1,
                                       endDate1,
                                       numberdayWeek,
                                       quantityDates);
-                                  Navigator.pop(context);
+                                  Get.back();
                                 },
                                 child: Text('Seleccionar'),
                               )

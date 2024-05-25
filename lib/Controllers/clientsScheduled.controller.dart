@@ -97,6 +97,7 @@ class ClientsScheduledController extends GetxController {
   double sizeClock = 145;
   double sizeClockTechnical = 145;
   int totalTimeInitial = 3 * 60; //Iniciando en 3 minutos el reloj
+  int totalTimeInitialT = 3 * 60; //Iniciando en 3 minutos el reloj
   bool callCliente = false; //si esta en false es que es la primera vez
   bool boolFilterShowNext = false; //si esta en false es que es la primera vez
   bool boolFilterShowNextTecnhical =
@@ -156,6 +157,11 @@ class ClientsScheduledController extends GetxController {
 
   void setcantClientWait(value) {
     cantClientWait = value;
+    update();
+  }
+
+  void setTotalTimeInitial(value) {
+    totalTimeInitial = value;
     update();
   }
 
@@ -998,13 +1004,11 @@ class ClientsScheduledController extends GetxController {
       if (resultTypeService) {
         print('************** true');
         boolFilterShowNext = true;
-      } else {
-        print('************** false');
-        boolFilterShowNext = false;
       }
       update();
     } catch (e) {
-      print(e);
+      print(
+          'Error al obtener la lista de notificaciones: noUpdate-*********************$e');
     }
   }
 
@@ -1201,6 +1205,7 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<void> fetchClientsScheduledNew(idProfessional, idBranch, msj) async {
+    bool noUpdate = false;
     print('entrando aqui para mandar notificacion al barbero1111');
     try {
       List<ClientsScheduledModel> clientsAux = [];
@@ -1252,11 +1257,17 @@ class ClientsScheduledController extends GetxController {
           }
         }
       }
-      update();
-      controllerLogin.setIsLoadingFor(false);
     } catch (e) {
+      noUpdate = true;
       print(
           'Dio error en Future<void> fetchClientsScheduled que se encuentra en el controlador del Login:$e');
+    } finally {
+      print(
+          'Error al obtener la lista de notificaciones: noUpdate == click $noUpdate');
+      if (noUpdate == false) {
+        update();
+      }
+      controllerLogin.setIsLoadingFor(false);
     }
   }
 

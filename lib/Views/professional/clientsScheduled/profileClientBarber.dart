@@ -187,7 +187,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                                   fontWeight: FontWeight.w600, fontSize: 18),
                             ),
                             Text(
-                              'Visitas : ${controllerCoord.cantVisitBarber}',
+                              'Visitas : ${controllerCoord.cantVisitBarber1}',
                               style: const TextStyle(
                                   height: 1,
                                   fontWeight: FontWeight.w600,

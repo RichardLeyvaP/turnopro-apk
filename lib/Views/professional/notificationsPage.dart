@@ -104,10 +104,16 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
                                   .zero, // Elimina cualquier padding del ListView
                               itemCount: _.notificationListLength,
                               itemBuilder: (context, index) {
-                                String textoCompleto =
+                                String description =
                                     _.notification[index].description;
-                                String description = textoCompleto
-                                    .split('.')[0]; // Obtener la descripción
+                                if (_.notification[index].tittle ==
+                                    'Aceptada Eliminación de Servicio') {
+                                  String textoCompleto =
+                                      _.notification[index].description;
+                                  description = textoCompleto
+                                      .split('.')[0]; // Obtener la descripción
+                                }
+
                                 return Padding(
                                   padding: EdgeInsets.only(
                                     top: 10,

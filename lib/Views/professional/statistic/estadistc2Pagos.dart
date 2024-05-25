@@ -23,6 +23,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
   final LoginController loginCont = Get.find<LoginController>();
   final PagesConfigController pagesConfigCont =
       Get.find<PagesConfigController>();
+  final CoexistenceController coexCont = Get.find<CoexistenceController>();
   final double valuePadding = 12;
 
   /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
@@ -38,6 +39,15 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (coexCont.retriesResult == true) {
+        Get.snackbar(
+          'Alerta',
+          'Hubo problema al conectar con el servidor, por favor intentarlo nuevamente',
+          duration: const Duration(milliseconds: 2500),
+        );
+      }
+    });
     final double heightScreen = MediaQuery.of(context).size.height;
     int heightFlexBody = 18;
     if (heightScreen <= 534.0) {
@@ -56,7 +66,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
             : Column(
                 children: [
                   Expanded(
-                    flex: 5,
+                    flex: 6,
                     child: topPage(
                         panddCont: panddCont,
                         colorCont: colorCont,
@@ -160,7 +170,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                       loginCont.chargeUserLoggedIn ==
                           'Barbero y Encargado') ...[
                     Expanded(
-                      flex: 13,
+                      flex: 14,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10, right: 10),
                         child: FittedBox(
@@ -280,7 +290,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                               .spaceBetween,
                                                       children: [
                                                         const Text(
-                                                          'Clientes Atendidos',
+                                                          'Clientes atendidos',
                                                           style: TextStyle(
                                                             fontSize: 16,
                                                           ),
@@ -344,7 +354,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                               .spaceBetween,
                                                       children: [
                                                         const Text(
-                                                          'Cantidad de Servicios',
+                                                          'Cantidad de servicios',
                                                           style: TextStyle(
                                                             fontSize: 16,
                                                           ),
@@ -374,7 +384,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                               .spaceBetween,
                                                       children: [
                                                         const Text(
-                                                          'Ganancia en Productos',
+                                                          'Ganancia en productos',
                                                           style: TextStyle(
                                                             fontSize: 16,
                                                           ),
@@ -555,14 +565,14 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                               .spaceBetween,
                                                       children: [
                                                         const Text(
-                                                          'Monto Líquido',
+                                                          'Monto Ganado',
                                                           style: TextStyle(
                                                             fontSize: 16,
                                                           ),
                                                         ),
                                                         Text(
                                                           _.estadistPagosFijo[
-                                                                  'winnerRetention']
+                                                                  'winnerAmount']
                                                               .toString(),
                                                           maxLines:
                                                               2, // Limita el texto a 2 líneas
@@ -585,7 +595,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                               .spaceBetween,
                                                       children: [
                                                         const Text(
-                                                          'Monto Ganado',
+                                                          'Monto Líquido',
                                                           style: TextStyle(
                                                               fontSize: 16,
                                                               color: Color
@@ -597,7 +607,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                         ),
                                                         Text(
                                                           _.estadistPagosFijo[
-                                                                  'winnerAmount']
+                                                                  'winnerRetention']
                                                               .toString(),
                                                           maxLines:
                                                               2, // Limita el texto a 2 líneas
@@ -630,6 +640,171 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                     ),
                   ],
                   //detalles solo del barbero
+
+                  //pocos detalles solo del tecnico
+                  if (loginCont.chargeUserLoggedIn == 'Tecnico') ...[
+                    Expanded(
+                      flex: 4,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Row(
+                            children: [
+                              Container(
+                                height:
+                                    (MediaQuery.of(context).size.height * 0.11),
+                                width: (MediaQuery.of(context).size.width * 1),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.7),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: const Offset(-5,
+                                          5), // Ajusta los valores para personalizar la sombra
+                                    ),
+                                  ],
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(borderRadiusValue)),
+                                ),
+                                child: GetBuilder<ClientsScheduledController>(
+                                    builder: (controllerClient) {
+                                  return ListTile(
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(12)),
+                                      ),
+                                      title: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.9,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const SizedBox(
+                                                      height: 6,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Icon(
+                                                              MdiIcons
+                                                                  .accountDetails,
+                                                              color: const Color(
+                                                                  0xFFFDAE2A),
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            const Text(
+                                                              'Detalles',
+
+                                                              overflow: TextOverflow
+                                                                  .ellipsis, // Agrega los tres puntos suspensivos
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  color: Color(
+                                                                      0xFFFDAE2A),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        const Text(
+                                                          '',
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 2,
+                                                    ),
+                                                    Container(
+                                                      height: 1,
+                                                      width: 1000,
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              155,
+                                                              182,
+                                                              184,
+                                                              182),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 6,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        const Text(
+                                                          'Clientes atendidos',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                            _.estadistPagosFijo[
+                                                                    'clientAtended']
+                                                                .toString(),
+                                                            maxLines:
+                                                                2, // Limita el texto a 2 líneas
+                                                            overflow: TextOverflow
+                                                                .ellipsis, // Agrega los tres puntos suspensivos
+                                                            style: const TextStyle(
+                                                                fontSize: 16,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        148,
+                                                                        0,
+                                                                        0,
+                                                                        0),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700)),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ));
+                                }),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                   //pagos
                   Expanded(
                     flex: loginCont.chargeUserLoggedIn == 'Barbero' ||
