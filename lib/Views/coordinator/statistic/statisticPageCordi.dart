@@ -1,17 +1,11 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
-import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/Views/common/topPage.dart';
-import 'package:turnopro_apk/Views/professional/statistic/estadistc0Page.dart';
-import 'package:turnopro_apk/Views/professional/statistic/stadisticaDiaPageNueva.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaMensualPageNueva.dart';
-import 'package:turnopro_apk/Views/professional/statistic/stadisticaSemanalPageNueva.dart';
-import 'package:turnopro_apk/Views/responsible/statistic_R/stadisticaMenRespon.dart';
 import 'package:turnopro_apk/Views/responsible/statistic_R/stadisticaRangoRespon.dart';
 import 'package:turnopro_apk/Views/responsible/statistic_R/stadisticaSemRespon.dart';
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -103,13 +97,13 @@ class _StatisticPageCordinState extends State<StatisticPageCordin>
                       subTitle: subTitle,
                       colorIcon: colorIcon,
                       buttonRight: true,
-                      colorButton: Color(0xFF4470F3),
+                      colorButton: const Color(0xFF4470F3),
                       direccButton: '/Estadistc2Pagos',
                       textButton: 'MIS PAGOS',
                       coexContro: coexCont,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Padding(
@@ -158,7 +152,7 @@ class _StatisticPageCordinState extends State<StatisticPageCordin>
                     child: GetBuilder<StatisticController>(builder: (contStat) {
                       return TabBarView(
                         controller: _tabController,
-                        children: [
+                        children: const [
                           //const Estadistc0Page(),
                           StadisticaRespon(),
                           StadisticaSemRespon(),

@@ -340,6 +340,8 @@ class ClientsCoordinatorController extends GetxController {
   AnimationController? animationController4;
 
   upadateVariablesValueTimers() async {
+    print(
+        'estoy entrando pa saber que relojes estan activos-upadateVariablesValueTimers-clientsCoordinator');
     bool hasClient1 = clientsAttended1 != null;
     bool hasClient2 = clientsAttended2 != null;
     bool hasClient3 = clientsAttended3 != null;
@@ -366,6 +368,7 @@ class ClientsCoordinatorController extends GetxController {
       clock = 1; //DB - clock
       detached = 1; //DB - detached
       //  await set_timeClock(reservation_id,timeClock,detached,clock);
+
       await setTimeClock(
           reservationId, timeClientsActAttended1, detached, clock);
       print(
@@ -437,32 +440,32 @@ class ClientsCoordinatorController extends GetxController {
     update();
   }
 
-  Future<void> newClientAttended(
-      ClientsScheduledModel client, int avail) async {
-    //este nuevo cliente se le va a signar un reloj
-    if (avail == 1) {
-      clientsAttended1 = client;
-      timeClientsAttended1 = convertDateSecons(client.total_time!);
-      busyClock = 0;
-    }
-    if (avail == 2) {
-      clientsAttended2 = client;
-      timeClientsAttended2 = convertDateSecons(client.total_time!);
-      busyClock = 1;
-    }
-    if (avail == 3) {
-      clientsAttended3 = client;
-      timeClientsAttended3 = convertDateSecons(client.total_time!);
-      busyClock = 2;
-    }
-    if (avail == 4) {
-      clientsAttended4 = client;
-      timeClientsAttended4 = convertDateSecons(client.total_time!);
-      busyClock = 3;
-    }
-    filterShowCardTimer();
-    update();
-  }
+  // Future<void> newClientAttended(
+  //     ClientsScheduledModel client, int avail) async {
+  //   //este nuevo cliente se le va a signar un reloj
+  //   if (avail == 1) {
+  //     clientsAttended1 = client;
+  //     timeClientsAttended1 = convertDateSecons(client.total_time!);
+  //     busyClock = 0;
+  //   }
+  //   if (avail == 2) {
+  //     clientsAttended2 = client;
+  //     timeClientsAttended2 = convertDateSecons(client.total_time!);
+  //     busyClock = 1;
+  //   }
+  //   if (avail == 3) {
+  //     clientsAttended3 = client;
+  //     timeClientsAttended3 = convertDateSecons(client.total_time!);
+  //     busyClock = 2;
+  //   }
+  //   if (avail == 4) {
+  //     clientsAttended4 = client;
+  //     timeClientsAttended4 = convertDateSecons(client.total_time!);
+  //     busyClock = 3;
+  //   }
+  //   filterShowCardTimer();
+  //   update();
+  // }
 
   void filterShowCardTimer() {
     bool hasClient1 = clientsAttended1 != null;
@@ -695,129 +698,129 @@ class ClientsCoordinatorController extends GetxController {
     return value;
   }
 
-  Future<void> acceptOrRejectClient(reservationId, attended) async {
-    final LoginController controllerLogin = Get.find<LoginController>();
+  // Future<void> acceptOrRejectClient(reservationId, attended) async {
+  //   final LoginController controllerLogin = Get.find<LoginController>();
 
-    bool value = await repository.acceptOrRejectClient(reservationId, attended);
-    //si lo que devuelve es true actualizo la cola
-    if (value == true) {
-      int? idBranch = controllerLogin.branchIdLoggedIn;
-      int? idProfessional = controllerLogin.idProfessionalLoggedIn;
-      //aqui actualizo la cola
-      await fetchClientsScheduled(idProfessional, idBranch);
-      //verificar que reloj es el que hay que QUITAR
-      if (attended == 2) {
-        //si es 2 es que ya termino de atender al cliente1
-        if (clientsAttended1 != null) {
-          if (reservationId == clientsAttended1!.reservation_id) {
-            //SACO DE MI LISTA A clientsAttended1
-            clientsAttended1 = null;
-            //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended1
-            if (item.contains(0)) {
-              item.remove(0);
-            }
-            pausResumeClock[0] = -99;
-            //await sentValueClockDb(reservationId, 0);
-            await setTimeClock(reservationId, 0, 0, 0);
-          }
-        }
-        if (clientsAttended2 != null) {
-          //si es 2 es que ya termino de atender al cliente2
-          if (reservationId == clientsAttended2!.reservation_id) {
-            //SACO DE MI LISTA A clientsAttended2
-            clientsAttended2 = null;
-            //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended2
-            if (item.contains(1)) {
-              item.remove(1);
-            }
-            pausResumeClock[1] = -99;
-            // await sentValueClockDb(reservationId, 0);
-            await setTimeClock(reservationId, 0, 0, 0);
-          }
-        }
-        if (clientsAttended3 != null) {
-          //si es 2 es que ya termino de atender al cliente3
-          if (reservationId == clientsAttended3!.reservation_id) {
-            //SACO DE MI LISTA A clientsAttended3
-            clientsAttended3 = null;
-            //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended3
-            if (item.contains(2)) {
-              item.remove(2);
-            }
-            pausResumeClock[2] = -99;
-            // await sentValueClockDb(reservationId, 0);
-            await setTimeClock(reservationId, 0, 0, 0);
-          }
-        }
-        if (clientsAttended4 != null) {
-          //si es 2 es que ya termino de atender al cliente4
-          if (reservationId == clientsAttended4!.reservation_id) {
-            //SACO DE MI LISTA A clientsAttended4
-            clientsAttended4 = null;
-            //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended4
-            if (item.contains(3)) {
-              item.remove(3);
-            }
-            pausResumeClock[3] = -99;
-            //await sentValueClockDb(reservationId, 0);
-            await setTimeClock(reservationId, 0, 0, 0);
-          }
-        }
-      }
-      //SI ES ATEENDED = 4 ES PORQUE VA A MANDARLO AL TECNICO
-      //AQUI MANDAR A LLAMAR A LA FUNCION set_clock(TIMER), DEPENDIENDO DEL TIMER QUE SEA
-      //ESTO LO MODIFICA EN LA BD PARA QUE EL TECNICO TENGA ACCESO A EL
-      if (attended == 4) {
-        //ES PORQUE ES EL RELOJ 1
-        if (clientsAttended1 != null &&
-            reservationId == clientsAttended1!.reservation_id) {
-          //Pausar reloj 1
-          pauseResumeClock(0, 0);
-          bool clock = await sentValueClockDb(reservationId, 1);
-          print('EL RELOJ MANDO COMO RESPUESTA : $clock');
-          print('..............1');
-        }
-        //ES PORQUE ES EL RELOJ 2
-        if (clientsAttended2 != null &&
-            reservationId == clientsAttended2!.reservation_id) {
-          //Pausar reloj 2
-          pauseResumeClock(1, 0);
-          print('..............2');
-          bool clock = await sentValueClockDb(reservationId, 2);
-          print('EL RELOJ MANDO COMO RESPUESTA : $clock');
-        }
-        //ES PORQUE ES EL RELOJ 3
-        if (clientsAttended3 != null &&
-            reservationId == clientsAttended3!.reservation_id) {
-          //Pausar reloj 3
-          pauseResumeClock(2, 0);
-          print('..............3');
-          bool clock = await sentValueClockDb(reservationId, 3);
-          print('EL RELOJ MANDO COMO RESPUESTA : $clock');
-        }
-        //ES PORQUE ES EL RELOJ 4
-        if (clientsAttended4 != null &&
-            reservationId == clientsAttended4!.reservation_id) {
-          //Pausar reloj 4
-          pauseResumeClock(3, 0);
-          print('..............4');
-          bool clock = await sentValueClockDb(reservationId, 4);
-          print('EL RELOJ MANDO COMO RESPUESTA : $clock');
-        }
-      }
-      update();
+  //   bool value = await repository.acceptOrRejectClient(reservationId, attended);
+  //   //si lo que devuelve es true actualizo la cola
+  //   if (value == true) {
+  //     int? idBranch = controllerLogin.branchIdLoggedIn;
+  //     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
+  //     //aqui actualizo la cola
+  //     await fetchClientsScheduled(idProfessional, idBranch);
+  //     //verificar que reloj es el que hay que QUITAR
+  //     if (attended == 2) {
+  //       //si es 2 es que ya termino de atender al cliente1
+  //       if (clientsAttended1 != null) {
+  //         if (reservationId == clientsAttended1!.reservation_id) {
+  //           //SACO DE MI LISTA A clientsAttended1
+  //           clientsAttended1 = null;
+  //           //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended1
+  //           if (item.contains(0)) {
+  //             item.remove(0);
+  //           }
+  //           pausResumeClock[0] = -99;
+  //           //await sentValueClockDb(reservationId, 0);
+  //           await setTimeClock(reservationId, 0, 0, 0);
+  //         }
+  //       }
+  //       if (clientsAttended2 != null) {
+  //         //si es 2 es que ya termino de atender al cliente2
+  //         if (reservationId == clientsAttended2!.reservation_id) {
+  //           //SACO DE MI LISTA A clientsAttended2
+  //           clientsAttended2 = null;
+  //           //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended2
+  //           if (item.contains(1)) {
+  //             item.remove(1);
+  //           }
+  //           pausResumeClock[1] = -99;
+  //           // await sentValueClockDb(reservationId, 0);
+  //           await setTimeClock(reservationId, 0, 0, 0);
+  //         }
+  //       }
+  //       if (clientsAttended3 != null) {
+  //         //si es 2 es que ya termino de atender al cliente3
+  //         if (reservationId == clientsAttended3!.reservation_id) {
+  //           //SACO DE MI LISTA A clientsAttended3
+  //           clientsAttended3 = null;
+  //           //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended3
+  //           if (item.contains(2)) {
+  //             item.remove(2);
+  //           }
+  //           pausResumeClock[2] = -99;
+  //           // await sentValueClockDb(reservationId, 0);
+  //           await setTimeClock(reservationId, 0, 0, 0);
+  //         }
+  //       }
+  //       if (clientsAttended4 != null) {
+  //         //si es 2 es que ya termino de atender al cliente4
+  //         if (reservationId == clientsAttended4!.reservation_id) {
+  //           //SACO DE MI LISTA A clientsAttended4
+  //           clientsAttended4 = null;
+  //           //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended4
+  //           if (item.contains(3)) {
+  //             item.remove(3);
+  //           }
+  //           pausResumeClock[3] = -99;
+  //           //await sentValueClockDb(reservationId, 0);
+  //           await setTimeClock(reservationId, 0, 0, 0);
+  //         }
+  //       }
+  //     }
+  //     //SI ES ATEENDED = 4 ES PORQUE VA A MANDARLO AL TECNICO
+  //     //AQUI MANDAR A LLAMAR A LA FUNCION set_clock(TIMER), DEPENDIENDO DEL TIMER QUE SEA
+  //     //ESTO LO MODIFICA EN LA BD PARA QUE EL TECNICO TENGA ACCESO A EL
+  //     if (attended == 4) {
+  //       //ES PORQUE ES EL RELOJ 1
+  //       if (clientsAttended1 != null &&
+  //           reservationId == clientsAttended1!.reservation_id) {
+  //         //Pausar reloj 1
+  //         pauseResumeClock(0, 0);
+  //         bool clock = await sentValueClockDb(reservationId, 1);
+  //         print('EL RELOJ MANDO COMO RESPUESTA : $clock');
+  //         print('..............1');
+  //       }
+  //       //ES PORQUE ES EL RELOJ 2
+  //       if (clientsAttended2 != null &&
+  //           reservationId == clientsAttended2!.reservation_id) {
+  //         //Pausar reloj 2
+  //         pauseResumeClock(1, 0);
+  //         print('..............2');
+  //         bool clock = await sentValueClockDb(reservationId, 2);
+  //         print('EL RELOJ MANDO COMO RESPUESTA : $clock');
+  //       }
+  //       //ES PORQUE ES EL RELOJ 3
+  //       if (clientsAttended3 != null &&
+  //           reservationId == clientsAttended3!.reservation_id) {
+  //         //Pausar reloj 3
+  //         pauseResumeClock(2, 0);
+  //         print('..............3');
+  //         bool clock = await sentValueClockDb(reservationId, 3);
+  //         print('EL RELOJ MANDO COMO RESPUESTA : $clock');
+  //       }
+  //       //ES PORQUE ES EL RELOJ 4
+  //       if (clientsAttended4 != null &&
+  //           reservationId == clientsAttended4!.reservation_id) {
+  //         //Pausar reloj 4
+  //         pauseResumeClock(3, 0);
+  //         print('..............4');
+  //         bool clock = await sentValueClockDb(reservationId, 4);
+  //         print('EL RELOJ MANDO COMO RESPUESTA : $clock');
+  //       }
+  //     }
+  //     update();
 
-      filterShowCardTimer();
-      filterShowNext();
+  //     filterShowCardTimer();
+  //     filterShowNext();
 
-      //AQUI ACTUALIZO LA VARIABLE QUE ME DICE QUE YA LLAMO A UN CLIENTE
-      if (attended == 1) {
-        callCliente = true;
-      }
-    } else {
-      print('Dio error al mandar a aceptar o rechazar al cliente');
-    }
-  }
+  //     //AQUI ACTUALIZO LA VARIABLE QUE ME DICE QUE YA LLAMO A UN CLIENTE
+  //     if (attended == 1) {
+  //       callCliente = true;
+  //     }
+  //   } else {
+  //     print('Dio error al mandar a aceptar o rechazar al cliente');
+  //   }
+  // }
 
   Future<void> filterShowNext() async {
     try {
@@ -1006,144 +1009,144 @@ class ClientsCoordinatorController extends GetxController {
     return text;
   }
 
-  Future<void> fetchClientsScheduled(idProfessional, idBranch) async {
-    Map<String, dynamic> resultList =
-        await repository.getClientsScheduledList(idProfessional, idBranch);
-    print(resultList);
-    //verificando , si entra al if es problemas de coneccion
-    if (resultList.containsKey('ConnectionIssues') &&
-        resultList['ConnectionIssues'] == true) {
-      correctConnection = false;
-      print(
-          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
-    } else {
-      correctConnection = true;
-      //aqui estoy guardando la cola del dia de hoy del profesional
-      clientsScheduledList =
-          (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
-      clientsScheduledListLength = clientsScheduledList.length;
-      //
-      //
-      if (closeIesperado == true) //es que cerró inesperadamente
-      {
-        if (resultList.containsKey('attendingClient')) {
-          List<Map>? attendingClientList = resultList['attendingClient'];
-          logicaInesperada(attendingClientList);
-        } else {
-          // La clave 'attendingClient' no está presente en el mapa
-          print(
-              '!!!!!!!!!!!!!!!!!!!!La clave "attendingClient" no está presente en el mapa.');
-        }
-      }
+  // Future<void> fetchClientsScheduled(idProfessional, idBranch) async {
+  //   Map<String, dynamic> resultList =
+  //       await repository.getClientsScheduledList(idProfessional, idBranch);
+  //   print(resultList);
+  //   //verificando , si entra al if es problemas de coneccion
+  //   if (resultList.containsKey('ConnectionIssues') &&
+  //       resultList['ConnectionIssues'] == true) {
+  //     correctConnection = false;
+  //     print(
+  //         'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
+  //   } else {
+  //     correctConnection = true;
+  //     //aqui estoy guardando la cola del dia de hoy del profesional
+  //     clientsScheduledList =
+  //         (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
+  //     clientsScheduledListLength = clientsScheduledList.length;
+  //     //
+  //     //
+  //     if (closeIesperado == true) //es que cerró inesperadamente
+  //     {
+  //       if (resultList.containsKey('attendingClient')) {
+  //         List<Map>? attendingClientList = resultList['attendingClient'];
+  //         logicaInesperada(attendingClientList);
+  //       } else {
+  //         // La clave 'attendingClient' no está presente en el mapa
+  //         print(
+  //             '!!!!!!!!!!!!!!!!!!!!La clave "attendingClient" no está presente en el mapa.');
+  //       }
+  //     }
 
-      //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
-      clientsScheduledNext = resultList['nextClient'];
-      quantityClientAttended = resultList['quantityClientAttended'];
-      if (quantityClientAttended == 0) {
-        clientsAttended = 'nobody';
-      }
+  //     //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+  //     clientsScheduledNext = resultList['nextClient'];
+  //     quantityClientAttended = resultList['quantityClientAttended'];
+  //     if (quantityClientAttended == 0) {
+  //       clientsAttended = 'nobody';
+  //     }
 
-      if (clientsScheduledNext != null) {
-        print('prueba 1 - != null');
-        int idCar = clientsScheduledNext!.car_id!;
-        await searchForCustomerServices(idCar);
-        await filterShowNext();
-        setValueClock(true);
-      } else {
-        print('prueba 2 - == null');
-        setValueClock(false);
-      }
-    }
-    update();
-  }
+  //     if (clientsScheduledNext != null) {
+  //       print('prueba 1 - != null');
+  //       int idCar = clientsScheduledNext!.car_id!;
+  //       await searchForCustomerServices(idCar);
+  //       await filterShowNext();
+  //       setValueClock(true);
+  //     } else {
+  //       print('prueba 2 - == null');
+  //       setValueClock(false);
+  //     }
+  //   }
+  //   update();
+  // }
 
-  Future<void> logicaInesperada(List<Map>? attendingClientList) async {
-    if (attendingClientList != null && attendingClientList.isNotEmpty) {
-      // La lista no es nula y tiene elementos
-      // Hacer algo con la lista...
-      print(
-          '!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo no está vacía.');
-      print('clientes asistiendo : ${attendingClientList.length}');
-      // Usando un bucle for-in
-      for (var map in attendingClientList) {
-        int? id;
-        int? updated;
-        int? clock;
-        int? timeClock;
-        ClientsScheduledModel? client;
+  // Future<void> logicaInesperada(List<Map>? attendingClientList) async {
+  //   if (attendingClientList != null && attendingClientList.isNotEmpty) {
+  //     // La lista no es nula y tiene elementos
+  //     // Hacer algo con la lista...
+  //     print(
+  //         '!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo no está vacía.');
+  //     print('clientes asistiendo : ${attendingClientList.length}');
+  //     // Usando un bucle for-in
+  //     for (var map in attendingClientList) {
+  //       int? id;
+  //       int? updated;
+  //       int? clock;
+  //       int? timeClock;
+  //       ClientsScheduledModel? client;
 
-        map.forEach((key, value) {
-          // Asignar valores a las variables según la clave
-          switch (key) {
-            case "reservation_id":
-              id = value;
-              break;
-            case "updated_at":
-              updated = value;
-              break;
-            case "clock":
-              clock = value;
-              break;
-            case "timeClock":
-              timeClock = value;
-              break;
-            case "client":
-              client = value;
-              break;
-            default:
-              // Manejar otras claves si es necesario
-              break;
-          }
-        });
+  //       map.forEach((key, value) {
+  //         // Asignar valores a las variables según la clave
+  //         switch (key) {
+  //           case "reservation_id":
+  //             id = value;
+  //             break;
+  //           case "updated_at":
+  //             updated = value;
+  //             break;
+  //           case "clock":
+  //             clock = value;
+  //             break;
+  //           case "timeClock":
+  //             timeClock = value;
+  //             break;
+  //           case "client":
+  //             client = value;
+  //             break;
+  //           default:
+  //             // Manejar otras claves si es necesario
+  //             break;
+  //         }
+  //       });
 
-        // Lógica adicional si es necesario con las variables asignadas
-        if (clock == 1) {
-          // Asignar a variables específicas para clock 1
-          clientsAttended1 = client;
-          timeClientsAttended1 = timeClock;
-          //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
-          //  await set_timeClock(reservation_id,timeClock,detached,clock);
-          // await setTimeClock(client!.reservation_id, 0, 0, 1);//todo comente a ver si ya lo hace bien
-          // ... otras asignaciones para clock 1
-        } else if (clock == 2) {
-          // Asignar a variables específicas para clock 2
-          clientsAttended2 = client;
-          timeClientsAttended2 = timeClock;
-          //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
-          //  await set_timeClock(reservation_id,timeClock,detached,clock);
-          // await setTimeClock(client!.reservation_id, 0, 0, 2);//todo comente a ver si ya lo hace bien
-          // ... otras asignaciones para clock 2
-        } else if (clock == 3) {
-          // Asignar a variables específicas para clock 3
-          clientsAttended3 = client;
-          timeClientsAttended3 = timeClock;
-          //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
-          //  await set_timeClock(reservation_id,timeClock,detached,clock);
-          // await setTimeClock(client!.reservation_id, 0, 0, 3);//todo comente a ver si ya lo hace bien
+  //       // Lógica adicional si es necesario con las variables asignadas
+  //       if (clock == 1) {
+  //         // Asignar a variables específicas para clock 1
+  //         clientsAttended1 = client;
+  //         timeClientsAttended1 = timeClock;
+  //         //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
+  //         //  await set_timeClock(reservation_id,timeClock,detached,clock);
+  //         // await setTimeClock(client!.reservation_id, 0, 0, 1);//todo comente a ver si ya lo hace bien
+  //         // ... otras asignaciones para clock 1
+  //       } else if (clock == 2) {
+  //         // Asignar a variables específicas para clock 2
+  //         clientsAttended2 = client;
+  //         timeClientsAttended2 = timeClock;
+  //         //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
+  //         //  await set_timeClock(reservation_id,timeClock,detached,clock);
+  //         // await setTimeClock(client!.reservation_id, 0, 0, 2);//todo comente a ver si ya lo hace bien
+  //         // ... otras asignaciones para clock 2
+  //       } else if (clock == 3) {
+  //         // Asignar a variables específicas para clock 3
+  //         clientsAttended3 = client;
+  //         timeClientsAttended3 = timeClock;
+  //         //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
+  //         //  await set_timeClock(reservation_id,timeClock,detached,clock);
+  //         // await setTimeClock(client!.reservation_id, 0, 0, 3);//todo comente a ver si ya lo hace bien
 
-          // ... otras asignaciones para clock 3
-        } else if (clock == 4) {
-          // Asignar a variables específicas para clock 3
-          clientsAttended4 = client;
-          timeClientsAttended4 = timeClock;
-          //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
-          //  await set_timeClock(reservation_id,timeClock,detached,clock);
-          // await setTimeClock(client!.reservation_id, 0, 0, 4);//todo comente a ver si ya lo hace bien
+  //         // ... otras asignaciones para clock 3
+  //       } else if (clock == 4) {
+  //         // Asignar a variables específicas para clock 3
+  //         clientsAttended4 = client;
+  //         timeClientsAttended4 = timeClock;
+  //         //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
+  //         //  await set_timeClock(reservation_id,timeClock,detached,clock);
+  //         // await setTimeClock(client!.reservation_id, 0, 0, 4);//todo comente a ver si ya lo hace bien
 
-          // ... otras asignaciones para clock 3
-        }
-        // Puedes agregar más condiciones según sea necesario para otros valores de clock
-      } //cierre for (var map in attendingClientList)
-      //VERIFICO QUE RELOJ ESTA OCUPADO Y VEO SI HAY DISPONIBILIDAD
-      filterShowCardTimer();
-      update();
-      //
-    } else {
-      // La lista es nula o está vacía
-      print(
-          '!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo es nula o está vacía.');
-    }
-  }
+  //         // ... otras asignaciones para clock 3
+  //       }
+  //       // Puedes agregar más condiciones según sea necesario para otros valores de clock
+  //     } //cierre for (var map in attendingClientList)
+  //     //VERIFICO QUE RELOJ ESTA OCUPADO Y VEO SI HAY DISPONIBILIDAD
+  //     filterShowCardTimer();
+  //     update();
+  //     //
+  //   } else {
+  //     // La lista es nula o está vacía
+  //     print(
+  //         '!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo es nula o está vacía.');
+  //   }
+  // }
 
 //
 //

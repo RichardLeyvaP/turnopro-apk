@@ -158,7 +158,7 @@ class _StatisticPageResponState extends State<StatisticPageRespon>
                     child: GetBuilder<StatisticController>(builder: (contStat) {
                       return TabBarView(
                         controller: _tabController,
-                        children: [
+                        children: const [
                           //const Estadistc0Page(),
                           StadisticaRespon(),
                           StadisticaSemRespon(),

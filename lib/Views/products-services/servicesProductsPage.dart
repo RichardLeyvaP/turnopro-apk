@@ -235,43 +235,42 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(12.0),
-                              child: Badge(
-                                  label: Text(_.shoppingCart.toString()),
-                                  child: _.shoppingCart == 0
-                                      ? CircleAvatar(
+                              child: _.shoppingCart == 0
+                                  ? CircleAvatar(
+                                      radius: 22, // Tamaño del CircleAvatar
+                                      backgroundColor: const Color(
+                                          0xFF2B3141), // Color de fondo del CircleAvatar
+                                      child: IconButton(
+                                        icon: const Icon(
+                                          Icons.shopping_cart,
+                                          size: 30,
+                                          color: Colors.white,
+                                        ), // Icono que deseas mostrar
+                                        onPressed: () {
+                                          Get.snackbar(
+                                            'Mensaje del Carrito de Compra',
+                                            'Su carrito esta vacio',
+                                            duration: const Duration(
+                                                milliseconds: 2500),
+                                            showProgressIndicator: true,
+                                            progressIndicatorBackgroundColor:
+                                                const Color(0xFF4470F3),
+                                            progressIndicatorValueColor:
+                                                const AlwaysStoppedAnimation(
+                                                    Color(0xFFFDAE2A)),
+                                            overlayBlur: 3,
+                                          );
+                                        }, // Evento onPress
+                                      ))
+                                  : Badge(
+                                      label: Text(_.shoppingCart.toString()),
+                                      child: CircleAvatar(
                                           radius: 22, // Tamaño del CircleAvatar
                                           backgroundColor: const Color(
                                               0xFF2B3141), // Color de fondo del CircleAvatar
                                           child: IconButton(
                                             icon: const Icon(
                                               Icons.shopping_cart_outlined,
-                                              size: 30,
-                                              color: Color.fromARGB(
-                                                  255, 49, 48, 48),
-                                            ), // Icono que deseas mostrar
-                                            onPressed: () {
-                                              Get.snackbar(
-                                                'Mensaje del Carrito de Compra',
-                                                'Su carrito esta vacio',
-                                                duration: const Duration(
-                                                    milliseconds: 2500),
-                                                showProgressIndicator: true,
-                                                progressIndicatorBackgroundColor:
-                                                    const Color(0xFF4470F3),
-                                                progressIndicatorValueColor:
-                                                    const AlwaysStoppedAnimation(
-                                                        Color(0xFFFDAE2A)),
-                                                overlayBlur: 3,
-                                              );
-                                            }, // Evento onPress
-                                          ))
-                                      : CircleAvatar(
-                                          radius: 22, // Tamaño del CircleAvatar
-                                          backgroundColor: const Color(
-                                              0xFF2B3141), // Color de fondo del CircleAvatar
-                                          child: IconButton(
-                                            icon: const Icon(
-                                              Icons.shopping_cart,
                                               size: 30,
                                               color: Colors.white,
                                             ), // Icono que deseas mostrar

@@ -91,7 +91,8 @@ class NotificationRepository extends GetConnect {
   Future professionalBranchNotifQueque(idBranch, idProf, type) async {
     int? varStatusCode;
     try {
-      print('llamada timer en 10 segundos A professionalBranchNotifQueque');
+      print(
+          'llamada timer en 10 segundos A professionalBranchNotifQueque repository');
       List<NotificationModel> notificationList = [];
       List<NotificationModel> notificationListNew = [];
       //variables de la cola
@@ -136,10 +137,13 @@ class NotificationRepository extends GetConnect {
         // final List<dynamic> tailData = jsonResponse['tail'];
         //todo  TAILS
         final customers = response.body['tail'];
-
+        print(
+            'llamada timer en 10 segundos A professionalBranchNotifQueque repository-customers:$customers');
         for (Map service in customers) {
           ClientsScheduledModel client =
               ClientsScheduledModel.fromJson(jsonEncode(service));
+          print(
+              'llamada timer en 10 segundos A professionalBranchNotifQueque repository-customers333:$customers');
           // print(
           //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
           //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
@@ -168,6 +172,8 @@ class NotificationRepository extends GetConnect {
 
           clientList.add(client);
           if (client.attended == 0) {
+            print(
+                'llamada timer en 10 segundos A professionalBranchNotifQueque repository cliente espernado ser atendido');
             clientListSig.add(client);
           }
           //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0

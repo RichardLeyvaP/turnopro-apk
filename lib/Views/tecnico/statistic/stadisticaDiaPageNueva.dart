@@ -5,6 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:turnopro_apk/Utility/utils.dart';
 
 class LineChartSample2 extends StatefulWidget {
   const LineChartSample2({super.key});
@@ -98,14 +99,14 @@ class _LineChartSample2State extends State<LineChartSample2> {
                 ? Center(
                     child: Column(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         const Image(
                           image: AssetImage('assets/images/imageGrafic.png'),
                           width: 40,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         if (startDate1 != null && endDate1 != null) ...[
@@ -186,7 +187,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
                                     trailing: Padding(
                                       padding: const EdgeInsets.only(top: 15),
                                       child: Text(
-                                        '${entry.value}',
+                                        formatNumber(entry.value),
                                         style: TextStyle(
                                           fontSize: (MediaQuery.of(context)
                                                   .size

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_charts/flutter_charts.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
+import 'package:turnopro_apk/Utility/utils.dart';
 
 class StadisticaMensualPageNueva extends StatefulWidget {
   const StadisticaMensualPageNueva({Key? key}) : super(key: key);
@@ -21,14 +22,14 @@ class _StadisticaMensualPageNuevaState
   }
 
   final CoexistenceController cControll = Get.find<CoexistenceController>();
-  String totalEarnings = '350000';
-  String averageEarnings = '185000';
-  Color buttonColor = Color(0xFF4470F3); // Color inicial del botón
+
+  Color buttonColor = const Color(0xFF4470F3); // Color inicial del botón
 
   void _changeColor() {
     setState(() {
-      buttonColor =
-          (buttonColor == Color(0xFF4470F3)) ? Colors.green : Color(0xFF4470F3);
+      buttonColor = (buttonColor == const Color(0xFF4470F3))
+          ? Colors.green
+          : const Color(0xFF4470F3);
     });
   }
 
@@ -65,14 +66,14 @@ class _StadisticaMensualPageNuevaState
                                 padding: EdgeInsets.all(2.0),
                                 child: Column(
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Promedio',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w700,
                                           fontSize: 16,
                                           color: Colors.white),
                                     ),
-                                    Text('${_.averageEarnings}',
+                                    Text(formatNumber(_.averageEarnings),
                                         style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.white,
@@ -94,16 +95,16 @@ class _StadisticaMensualPageNuevaState
                                     BorderRadius.all(Radius.circular(8)),
                               ),
                               child: Padding(
-                                padding: EdgeInsets.all(2.0),
+                                padding: const EdgeInsets.all(2.0),
                                 child: Column(
                                   children: [
-                                    Text('Total',
+                                    const Text('Total',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             fontSize: 16,
                                             color: Colors.white)),
-                                    Text('${_.totalEarnings}',
-                                        style: TextStyle(
+                                    Text(formatNumber(_.totalEarnings),
+                                        style: const TextStyle(
                                             fontSize: 16,
                                             color: Colors.white,
                                             fontWeight: FontWeight.w700)),

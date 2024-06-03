@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Utility/utils.dart';
 
 class topPage extends StatelessWidget {
   const topPage({
@@ -46,7 +47,7 @@ class topPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.only(top: 5, right: 10, left: 10, bottom: 5),
+        padding: const EdgeInsets.only(top: 5, right: 10, left: 10, bottom: 5),
         child: Container(
           height: 90,
           decoration: BoxDecoration(
@@ -75,7 +76,7 @@ class topPage extends StatelessWidget {
                       IconButton(
                         icon: Icon(
                           IconnsBack,
-                          color: Color.fromARGB(200, 0, 0, 0),
+                          color: const Color.fromARGB(200, 0, 0, 0),
                         ),
                         onPressed: () {
                           print('estoy entrando aqui...');
@@ -128,14 +129,14 @@ class topPage extends StatelessWidget {
                                 children: [
                                   Text(
                                     title,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 16,
                                         color: Color.fromARGB(200, 0, 0, 0)),
                                   ),
                                   Text(
                                     subTitle,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 11,
                                         color: Color.fromARGB(180, 0, 0, 0)),
                                   ),
@@ -188,7 +189,7 @@ class topPage extends StatelessWidget {
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(
                                     textButton!,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w800),
                                   ),
@@ -202,14 +203,17 @@ class topPage extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 children: [
-                                  Text(
+                                  const Text(
                                     'TOTAL',
                                     style: TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.w800),
                                   ),
-                                  Text(totalCC == null ? '0' : totalCC!,
-                                      style: TextStyle(
+                                  Text(
+                                      totalCC == null
+                                          ? '0'
+                                          : formatNumber(totalCC!),
+                                      style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w800)),
                                 ],

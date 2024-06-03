@@ -1,6 +1,5 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
@@ -9,7 +8,6 @@ import 'package:turnopro_apk/Views/common/topPage.dart';
 import 'package:turnopro_apk/Views/professional/statistic/estadistc0Page.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaDiaPageNueva.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaMensualPageNueva.dart';
-import 'package:turnopro_apk/Views/professional/statistic/stadisticaSemanalPageNueva.dart';
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class StatisticPage extends StatefulWidget {

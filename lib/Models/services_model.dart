@@ -7,7 +7,7 @@ class ServiceModel {
   int id;
   String name;
   int simultaneou;
-  double price_service;
+  int price_service;
   String type_service;
   double profit_percentaje;
   int duration_service;
@@ -17,6 +17,7 @@ class ServiceModel {
   int? request_delete;
   int? is_product;
   int? cant;
+  bool? cliente;
 
   ServiceModel({
     required this.id,
@@ -32,6 +33,7 @@ class ServiceModel {
     this.request_delete,
     this.is_product,
     this.cant,
+    this.cliente,
   });
 
   Map<dynamic, dynamic> toMap() {
@@ -49,6 +51,7 @@ class ServiceModel {
       'request_delete': request_delete,
       'is_product': is_product,
       'cant': cant,
+      'cliente': cliente,
     };
   }
 
@@ -57,7 +60,7 @@ class ServiceModel {
       id: map['id'] ?? 0,
       name: map['name'] ?? '',
       simultaneou: map['simultaneou'] ?? 0,
-      price_service: (map['price_service'] ?? 0.0).toDouble(),
+      price_service: (map['price_service'] ?? 0),
       type_service: map['type_service'] ?? '',
       profit_percentaje: (map['profit_percentaje'] ?? 0.0).toDouble(),
       duration_service: map['duration_service'] ?? 0,
@@ -67,6 +70,7 @@ class ServiceModel {
       request_delete: map['request_delete'] ?? 0,
       is_product: map['is_product'] ?? 0,
       cant: map['cant'] ?? 0,
+      cliente: map['cliente'] ?? false,
     );
   }
 

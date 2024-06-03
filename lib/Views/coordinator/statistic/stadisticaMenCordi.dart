@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 //import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:turnopro_apk/Utility/utils.dart';
 
 class StadisticaMenCordi extends StatefulWidget {
   const StadisticaMenCordi({super.key});
@@ -255,8 +256,8 @@ class _StadisticaMenCordiState extends State<StadisticaMenCordi> {
       trailing: Padding(
         padding: const EdgeInsets.only(top: 15),
         child: Text(
-          entry.value == null ? '0' : '${entry.value}',
-          style: TextStyle(
+          entry.value == null ? '0' : formatNumber(entry.value.toString()),
+          style: const TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w800,
           ),

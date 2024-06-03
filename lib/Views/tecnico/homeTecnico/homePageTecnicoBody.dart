@@ -64,8 +64,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
         .addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
-                0 &&
-            LocalStorage.prefs.getBool('convivenciaIncumplidaT') == false) {
+            0) {
           //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
           String type = 'Tiempo';
           int branchId = loginController.branchIdLoggedIn!;

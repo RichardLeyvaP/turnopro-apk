@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
+import 'package:turnopro_apk/Utility/utils.dart';
 import 'package:turnopro_apk/Views/professional/statistic/stadisticaDiaPageNueva.dart';
 //import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
@@ -259,7 +260,7 @@ class CartOption extends StatelessWidget {
                       fontSize: 14, color: Color.fromARGB(162, 0, 0, 0)),
                 ),
                 Text(
-                  totalEarnings.toStringAsFixed(2),
+                  formatNumber(totalEarnings.toString()),
                   style: const TextStyle(
                       color: Color.fromARGB(245, 39, 141, 61),
                       fontSize: 24,
@@ -285,7 +286,7 @@ class CartOption extends StatelessWidget {
                       fontSize: 14, color: Color.fromARGB(162, 0, 0, 0)),
                 ),
                 Text(
-                  averageEarnings!.toStringAsFixed(2),
+                  formatNumber(averageEarnings.toString()),
                   style: const TextStyle(
                       color: Color(0xFFFDAE2A),
                       fontSize: 24,

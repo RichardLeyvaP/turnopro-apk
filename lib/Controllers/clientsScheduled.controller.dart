@@ -9,6 +9,7 @@ import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/professional_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
 import 'package:turnopro_apk/get_connect/repository/clientsScheduled.repository.dart';
 import 'package:turnopro_apk/get_connect/repository/user.repository.dart';
 
@@ -167,7 +168,7 @@ class ClientsScheduledController extends GetxController {
 
   void setImagePath(value) {
     imagePath = value;
-
+    isLoading = false;
     update();
   }
 
@@ -177,17 +178,21 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
-  void setNotificationClients1(int value, int idClient) {
+  void setNotificationClients1(int value, int idClient, String telefone) {
     if (value == 1) {
+      sendWhatsappNotification(telefone);
       notificationClients1 = idClient;
     }
     if (value == 2) {
+      sendWhatsappNotification(telefone);
       notificationClients2 = idClient;
     }
     if (value == 3) {
+      sendWhatsappNotification(telefone);
       notificationClients3 = idClient;
     }
     if (value == 4) {
+      sendWhatsappNotification(telefone);
       notificationClients4 = idClient;
     }
     update();
@@ -319,33 +324,9 @@ class ClientsScheduledController extends GetxController {
     print('Reloj 2: $clock2');
   }
 
-  upadateVariablesValueTimersSPlano() async {
-//saveData();
-    bool hasClient1 = clientsAttended1 != null;
-    bool hasClient2 = clientsAttended2 != null;
-    bool hasClient3 = clientsAttended3 != null;
-    bool hasClient4 = clientsAttended4 != null;
-    //
-    if (hasClient1) {
-      await setTimeClock(
-          clientsAttended1!.reservation_id, timeClientsActAttended1, 1, 1);
-    }
-    if (hasClient2) {
-      await setTimeClock(
-          clientsAttended2!.reservation_id, timeClientsActAttended2, 1, 2);
-    }
-    if (hasClient3) {
-      await setTimeClock(
-          clientsAttended3!.reservation_id, timeClientsActAttended3, 1, 3);
-    }
-    if (hasClient4) {
-      await setTimeClock(
-          clientsAttended4!.reservation_id, timeClientsActAttended4, 1, 4);
-    }
-  }
-
   upadateVariablesValueTimers() async {
-    print('tiempo a sumar =  33 upadateVariablesValueTimers() -----');
+    // print(
+    //   'estoy entrando pa saber que relojes estan activos-upadateVariablesValueTimers-clientsSchudeld');
     // saveData();
     bool hasClient1 = clientsAttended1 != null;
     bool hasClient2 = clientsAttended2 != null;
@@ -373,8 +354,14 @@ class ClientsScheduledController extends GetxController {
       clock = 1; //DB - clock
       detached = 1; //DB - detached
       //  await set_timeClock(reservation_id,timeClock,detached,clock);
+      print(
+          'estoy entrando pa saber que relojes - timeClientsActAttended1:$timeClientsActAttended1');
       await setTimeClock(
-          reservationId, timeClientsActAttended1, detached, clock);
+          reservationId,
+          timeClientsActAttended1,
+          detached,
+          clock,
+          true); //ese true es que esta mandando actualizar la variable 3min
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended1 reservation_id : $reservationId -  clock : $clock - detached :$detached');
     }
@@ -393,7 +380,11 @@ class ClientsScheduledController extends GetxController {
       detached = 1; //DB - detached
       //  await set_timeClock(reservation_id,timeClock,detached,clock);
       await setTimeClock(
-          reservationId, timeClientsActAttended2, detached, clock);
+          reservationId,
+          timeClientsActAttended2,
+          detached,
+          clock,
+          true); //ese true es que esta mandando actualizar la variable 3min
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended2 reservation_id : $reservationId -  clock : $clock - detached :$detached');
     }
@@ -412,7 +403,11 @@ class ClientsScheduledController extends GetxController {
       detached = 1; //DB - detached
       //  await set_timeClock(reservation_id,timeClock,detached,clock);
       await setTimeClock(
-          reservationId, timeClientsActAttended3, detached, clock);
+          reservationId,
+          timeClientsActAttended3,
+          detached,
+          clock,
+          true); //ese true es que esta mandando actualizar la variable 3min
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended3 reservation_id : $reservationId -  clock : $clock - detached :$detached');
     }
@@ -431,7 +426,11 @@ class ClientsScheduledController extends GetxController {
       detached = 1; //DB - detached
       //  await set_timeClock(reservation_id,timeClock,detached,clock);
       await setTimeClock(
-          reservationId, timeClientsActAttended4, detached, clock);
+          reservationId,
+          timeClientsActAttended4,
+          detached,
+          clock,
+          true); //ese true es que esta mandando actualizar la variable 3min
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended4 reservation_id : $reservationId -  clock : $clock - detached :$detached');
     } else {
@@ -450,21 +449,41 @@ class ClientsScheduledController extends GetxController {
     if (avail == 1) {
       clientsAttended1 = client;
       timeClientsAttended1 = convertDateSecons(client.total_time!);
+      int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended1!);
+      //aqu hace analisis y guarda en memoria del telefono
+      //cuando falta 3 minu para acabar
+      controllerLogin.getUpdateTime(timeMinutes, 1);
+      //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
       busyClock = 0;
     }
     if (avail == 2) {
       clientsAttended2 = client;
       timeClientsAttended2 = convertDateSecons(client.total_time!);
+      int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended2!);
+      //aqu hace analisis y guarda en memoria del telefono
+      //cuando falta 3 minu para acabar
+      controllerLogin.getUpdateTime(timeMinutes, 2);
+      //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
       busyClock = 1;
     }
     if (avail == 3) {
       clientsAttended3 = client;
       timeClientsAttended3 = convertDateSecons(client.total_time!);
+      int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended3!);
+      //aqu hace analisis y guarda en memoria del telefono
+      //cuando falta 3 minu para acabar
+      controllerLogin.getUpdateTime(timeMinutes, 3);
+      //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
       busyClock = 2;
     }
     if (avail == 4) {
       clientsAttended4 = client;
       timeClientsAttended4 = convertDateSecons(client.total_time!);
+      int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended4!);
+      //aqu hace analisis y guarda en memoria del telefono
+      //cuando falta 3 minu para acabar
+      controllerLogin.getUpdateTime(timeMinutes, 4);
+      //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
       busyClock = 3;
     }
     filterShowCardTimer();
@@ -787,6 +806,18 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
+  Future<List<ProfessionalModel>> getFirstProfessional(
+      idBranch, idReserv, idBarberAct) async {
+    print('getProfessionalState(idBranch) async 11');
+    //todo nuevo
+    List<ProfessionalModel> profDisp = [];
+
+    profDisp = await repository.getProfessionalState2First(
+        idBranch, idReserv, idBarberAct);
+
+    return profDisp;
+  }
+
   Future getProfessionalState2(idBranch, idReserv) async {
     print('getProfessionalState(idBranch) async 11');
     //todo nuevo
@@ -886,7 +917,8 @@ class ClientsScheduledController extends GetxController {
             }
             pausResumeClock[0] = -99;
             //await sentValueClockDb(reservationId, 0);
-            await setTimeClock(reservationId, 0, 0, 0);
+            await setTimeClock(reservationId, 0, 0, 1,
+                false); //ese true es que esta mandando actualizar la variable 3min //el ultimo campo es el reloj
           }
         }
         if (clientsAttended2 != null) {
@@ -901,7 +933,8 @@ class ClientsScheduledController extends GetxController {
             }
             pausResumeClock[1] = -99;
             // await sentValueClockDb(reservationId, 0);
-            await setTimeClock(reservationId, 0, 0, 0);
+            await setTimeClock(reservationId, 0, 0, 2,
+                false); //ese true es que esta mandando actualizar la variable 3min //el ultimo campo es el reloj
           }
         }
         if (clientsAttended3 != null) {
@@ -916,7 +949,8 @@ class ClientsScheduledController extends GetxController {
             }
             pausResumeClock[2] = -99;
             // await sentValueClockDb(reservationId, 0);
-            await setTimeClock(reservationId, 0, 0, 0);
+            await setTimeClock(reservationId, 0, 0, 3,
+                false); //ese true es que esta mandando actualizar la variable 3min //el ultimo campo es el reloj
           }
         }
         if (clientsAttended4 != null) {
@@ -931,7 +965,8 @@ class ClientsScheduledController extends GetxController {
             }
             pausResumeClock[3] = -99;
             //await sentValueClockDb(reservationId, 0);
-            await setTimeClock(reservationId, 0, 0, 0);
+            await setTimeClock(reservationId, 0, 0, 4,
+                false); //ese true es que esta mandando actualizar la variable 3min //el ultimo campo es el reloj
           }
         }
       }
@@ -1012,12 +1047,35 @@ class ClientsScheduledController extends GetxController {
     }
   }
 
-  Future<void> setTimeClock(reservationId, timeClock, detached, clock) async {
+  Future<void> setTimeClock(
+      reservationId, timeClock, detached, clock, actVarTelef) async {
     print('llamada timer setTimeClock');
     try {
       bool result = await repository.setTimeClock(
           reservationId, timeClock, detached, clock);
       if (result) {
+        //todo este es el importante cuando agrega servicios y elimina
+        //cuando falta 3 minu para acabar
+        // (reservationId, 0, 0, 4)
+        if (timeClock == 0 && detached == 0) {
+          if (clock == 1) {
+            // Para eliminar una clave específica del almacenamiento y establecerla como null
+            LocalStorage.prefs.remove('varSistemHr3min1');
+          }
+          if (clock == 2) {
+            // Para eliminar una clave específica del almacenamiento y establecerla como null
+            LocalStorage.prefs.remove('varSistemHr3min2');
+          }
+          if (clock == 3) {
+            // Para eliminar una clave específica del almacenamiento y establecerla como null
+            LocalStorage.prefs.remove('varSistemHr3min3');
+          }
+          if (clock == 4) {
+            // Para eliminar una clave específica del almacenamiento y establecerla como null
+            LocalStorage.prefs.remove('varSistemHr3min4');
+          }
+        }
+
         print(
             'EL TIEMPO ACTUAL DEL RELOJ ************** true $reservationId - $timeClock - $detached - $clock');
         print('llamada timer setTimeClock - result != null-(ESTA BIEN)');
@@ -1395,27 +1453,48 @@ class ClientsScheduledController extends GetxController {
             print('clientes asistiendo entre a :$clock');
             // Asignar a variables específicas para clock 1
             timeClientsAttended1 = timeClock!;
-
+            //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
+            int timeMinutes =
+                controllerLogin.secondsToMinutes(timeClientsAttended1!);
+            //aqu hace analisis y guarda en memoria del telefono
+            //cuando falta 3 minu para acabar
+            controllerLogin.getUpdateTime(timeMinutes, 1);
+            //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
             print(
                 'clientes asistiendo hora timeClock***********timeClock*****:$timeClock');
           } else if (clock == 2 && detached == 99) {
             print('clientes asistiendo entre a :$clock');
             // Asignar a variables específicas para clock 2
             timeClientsAttended2 = timeClock!;
-            print(
-                'clientes asistiendo hora timeClock*******************:$timeClientsAttended2');
+            //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
+            int timeMinutes =
+                controllerLogin.secondsToMinutes(timeClientsAttended2!);
+            //aqu hace analisis y guarda en memoria del telefono
+            //cuando falta 3 minu para acabar
+            controllerLogin.getUpdateTime(timeMinutes, 2);
+            //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
           } else if (clock == 3 && detached == 99) {
             print('clientes asistiendo entre a :$clock');
             // Asignar a variables específicas para clock 3
             timeClientsAttended3 = timeClock!;
-            print(
-                'clientes asistiendo hora timeClock****************:$timeClientsAttended3');
+            //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
+            int timeMinutes =
+                controllerLogin.secondsToMinutes(timeClientsAttended3!);
+            //aqu hace analisis y guarda en memoria del telefono
+            //cuando falta 3 minu para acabar
+            controllerLogin.getUpdateTime(timeMinutes, 3);
+            //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
           } else if (clock == 4 && detached == 99) {
             print('clientes asistiendo entre a :$clock');
             // Asignar a variables específicas para clock 3
             timeClientsAttended4 = timeClock!;
-            print(
-                'clientes asistiendo hora timeClock*****************:$timeClientsAttended4');
+            //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
+            int timeMinutes =
+                controllerLogin.secondsToMinutes(timeClientsAttended4!);
+            //aqu hace analisis y guarda en memoria del telefono
+            //cuando falta 3 minu para acabar
+            controllerLogin.getUpdateTime(timeMinutes, 4);
+            //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
           }
           // Puedes agregar más condiciones según sea necesario para otros valores de clock
         } //cierre for (var map in attendingClientList)
@@ -1514,17 +1593,13 @@ class ClientsScheduledController extends GetxController {
               timeClientsAttended1 = (timeClock! - diferenciaSegundos) <= 0
                   ? 0
                   : (timeClock! - diferenciaSegundos); //tiempo en segundos
-              //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
-              //  await set_timeClock(reservation_id,timeClock,detached,clock);
-              // await setTimeClock(client!.reservation_id, 0, 0, 1);//todo comente a ver si ya lo hace bien
-              // ... otras asignaciones para clock 1
-              //  setTimeClock(client!.reservation_id, timeClientsAttended1, 1, 1);
-              print(
-                  'clientes asistiendo hora timeClock***********timeClock*****:$timeClock');
-              print(
-                  'clientes asistiendo hora timeClock*********diferenciaSegundos*******:$diferenciaSegundos');
-              print(
-                  'clientes asistiendo hora timeClock*********timeClientsAttended1*******:$timeClientsAttended1');
+              //pasar el tiempo de segundos a minutos
+              int timeMinutes =
+                  controllerLogin.secondsToMinutes(timeClientsAttended1!);
+              //aqu hace analisis y guarda en memoria del telefono
+              //cuando falta 3 minu para acabar
+              controllerLogin.getUpdateTime(timeMinutes, 1);
+              //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
             }
           } else if (clock == 2) {
             if (client!.attended == 4 ||
@@ -1537,6 +1612,12 @@ class ClientsScheduledController extends GetxController {
               timeClientsAttended2 = (timeClock! - diferenciaSegundos) <= 0
                   ? 0
                   : (timeClock! - diferenciaSegundos); //tiempo en segundos
+              int timeMinutes =
+                  controllerLogin.secondsToMinutes(timeClientsAttended2!);
+              //aqu hace analisis y guarda en memoria del telefono
+              //cuando falta 3 minu para acabar
+              controllerLogin.getUpdateTime(timeMinutes, 2);
+              //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
             }
           } else if (clock == 3) {
             if (client!.attended == 4 ||
@@ -1549,6 +1630,12 @@ class ClientsScheduledController extends GetxController {
               timeClientsAttended3 = (timeClock! - diferenciaSegundos) <= 0
                   ? 0
                   : (timeClock! - diferenciaSegundos); //tiempo en segundos
+              int timeMinutes =
+                  controllerLogin.secondsToMinutes(timeClientsAttended3!);
+              //aqu hace analisis y guarda en memoria del telefono
+              //cuando falta 3 minu para acabar
+              controllerLogin.getUpdateTime(timeMinutes, 3);
+              //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
             }
           } else if (clock == 4) {
             if (client!.attended == 4 ||
@@ -1561,6 +1648,12 @@ class ClientsScheduledController extends GetxController {
               timeClientsAttended4 = (timeClock! - diferenciaSegundos) <= 0
                   ? 0
                   : (timeClock! - diferenciaSegundos); //tiempo en segundos
+              int timeMinutes =
+                  controllerLogin.secondsToMinutes(timeClientsAttended4!);
+              //aqu hace analisis y guarda en memoria del telefono
+              //cuando falta 3 minu para acabar
+              controllerLogin.getUpdateTime(timeMinutes, 4);
+              //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
             }
           }
           // Puedes agregar más condiciones según sea necesario para otros valores de clock
@@ -1676,5 +1769,16 @@ class ClientsScheduledController extends GetxController {
       return -99;
     }
     //si return = false es que no se inserto en la Db
+  }
+
+  Future<void> sendWhatsappNotification(
+    String telefone,
+  ) async {
+    try {
+      await repository.sendWhatsappNotificationRepos(telefone);
+      print('enviado el mensaje de whatsap correctamente');
+    } catch (e) {
+      print('ERROR enviando el mensaje de whatsap correctamente$e');
+    }
   }
 }

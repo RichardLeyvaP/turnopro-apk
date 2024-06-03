@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:turnopro_apk/Models/category_model.dart';
 import 'package:turnopro_apk/Models/orderDelete_model.dart';
@@ -13,13 +14,14 @@ class ProductRepository extends GetConnect {
   double PriceT = 0.0;
   double PriceProduct = 0.0;
   double PriceService = 0.0;
-
+  final LoginController loginCont = Get.find<LoginController>();
   Future getCartProductService() async {
     try {
       List<ProductModel> productListCar = [];
       List<ServiceModel> serviceListCar = [];
       final ShoppingCartController shoppingCartController =
           Get.find<ShoppingCartController>();
+
       int carId = shoppingCartController.carIdClienteSelect!;
       var url =
           '${Env.apiEndpoint}/car_orders?id=$carId'; //todo REVISAR aqui enviar el id del carro correspondiente al cliente-profesional
@@ -153,6 +155,52 @@ class ProductRepository extends GetConnect {
   }
 
   //*ESTE METODO ME DEVUELVE TODOS LOS PRODUCTOS
+  Future addOrderProduct(car_id, productId, categoryId, branchId) async {
+    try {
+      print('Nuevo metodo para productos - Iniciando');
+      List<ProductModel> productList = [];
+      var url = '${Env.apiEndpoint}/store-products';
+
+      // Parámetros que deseas enviar en la solicitud POST
+      final Map<String, dynamic> body = {
+        'car_id': car_id,
+        'product_id': productId,
+        'category_id': categoryId,
+        'branch_id': branchId
+      };
+      print('Nuevo metodo para productos - car_id:$car_id');
+      print('Nuevo metodo para productos - productId:$productId');
+      print('Nuevo metodo para productos - categoryId:$categoryId');
+      print('Nuevo metodo para productos - branchId:$branchId');
+      // Realizar la solicitud POST
+      final response = await post(url, body);
+      print(
+          'Nuevo metodo para productos - response.statusCode:${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        final products = response.body['category_products'];
+        if (products != null) {
+          print('Nuevo metodo para productos - products != null');
+          for (Map product in products) {
+            ProductModel prod = ProductModel.fromJson(jsonEncode(product));
+            productList.add(prod);
+            print(
+                'Nuevo metodo para productos - Mapeando los productos:${prod.name}');
+          }
+        }
+        return productList; //aqui retorno los productos
+      } else {
+        print(
+            'Nuevo metodo para productos - Dando error response.statusCode:${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Nuevo metodo para productos - Dando error en el catch:$e');
+      return null;
+    }
+  }
+
+//*ESTE METODO ME DEVUELVE TODOS LOS PRODUCTOS
   Future<int> addOrderCartList(
       //todo REVISAR REVISAR este metodo
       car_id,
@@ -301,6 +349,124 @@ class ProductRepository extends GetConnect {
         // print(
         //     'Aqui retorno los category_products por almacen-branch ${categoryList.length}');
         return categoryList;
+      } else {
+        return categoryList;
+      }
+    } catch (e) {
+      print('ERROR getCategoryList:$e');
+      return categoryList;
+    }
+  }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// Define una función para convertir una lista de JSON a una lista de ProductModel
+  List<ProductModel> parseProducts(List<dynamic> jsonList) {
+    return jsonList.map((json) => ProductModel.fromMap(json)).toList();
+  }
+
+//todo BIEN getCategoryList(branchIdLoggedIn)
+  Future metdNewServiceProductRepository(
+      branch_id, professional_id, car_id) async {
+    List<CategoryModel> categoryList = [];
+    List<ProductModel> products = [];
+
+    try {
+      var url =
+          '${Env.apiEndpoint}/category-products-branch?branch_id=$branch_id&professional_id=$professional_id&car_id=$car_id';
+//todo aqui van las categorias de los productos para el tab
+      final response = await get(url);
+      print('category.length.new.statusCode:${response.statusCode}');
+      print('category.length.new.-url:$url');
+      if (response.statusCode == 200) {
+        final categorys = response.body[
+            'category_products']; //optengo las categorias con tds los productos
+        int shoppingCart =
+            response.body['product_select'] + response.body['service_select'];
+        int cont = 0;
+        if (categorys != null) {
+          for (Map category in categorys) {
+            category.length;
+            Map<String, dynamic> categoryMap = {
+              'id': category['id'],
+              'name': category['name'],
+              'code': 'esperando',
+              'description': category['description'],
+            };
+
+            CategoryModel u = CategoryModel.fromJson(jsonEncode(categoryMap));
+            categoryList.add(u);
+            print('category.length.new-ya en products:${category['products']}');
+// Convertir JSON a List<ProductModel>
+            // Convertir List<dynamic> a List<ProductModel>
+            // Extrae la lista de productos del objeto category
+            List<dynamic> productsJson = category['products'];
+
+// Convierte la lista de JSON a una lista de ProductModel usando la función parseProducts
+            if (cont == 0) {
+              //solo pasar el primer producto
+              products = parseProducts(productsJson);
+              print(
+                  'category.length.new-ya en products------products:${products}');
+              cont++;
+            }
+
+            // Usar la lista de productos
+            products.forEach((product) {
+              print(
+                  'category.length.new-ya en products**********:${product.name}');
+              print('${product.name}: ${product.sale_price}');
+            });
+          }
+
+          print(
+              'category.length.new-ya en categoryList-ULTIMO:${categoryList.length}');
+        }
+        //services
+        final services = response.body['professional_services'];
+        int serviceTimeAux = 0;
+        List<ServiceModel> servicesList = [], selectServ = [];
+        for (Map service in services) {
+          ServiceModel serv = ServiceModel.fromJson(jsonEncode(service));
+          servicesList.add(serv);
+          if (serviceTimeAux < serv.duration_service) {
+            serviceTimeAux = serv
+                .duration_service; //aqui guardo el mayor tiempo de servicio para utilizarlo en la barra cuando muetra los servicios
+          }
+          if (serv.cliente == true) {
+            selectServ.add(serv);
+          }
+        }
+
+        loginCont.setServiceTime(serviceTimeAux);
+        // print(
+        //     'Aqui retorno los category_products por almacen-branch ${categoryList.length}');
+        //  return categoryList;
+        return {
+          'categoryList': categoryList,
+          'productCategory': products,
+          'servicesList': servicesList,
+          'selectServ': selectServ,
+          'shoppingCart': shoppingCart,
+        };
       } else {
         return categoryList;
       }

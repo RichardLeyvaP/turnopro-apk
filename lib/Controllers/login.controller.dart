@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:ui';
+import 'package:intl/intl.dart';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/animation.dart';
@@ -31,6 +32,146 @@ class LoginController extends GetxController {
   bool setIsLoading2 = false;
 
   bool switchValue = false; //false es barbero y true Encargado
+
+  //optener la hora actual
+  String getCurrentTime() {
+    // Obtener la hora actual
+    DateTime now = DateTime.now();
+
+    // Formatear la hora
+    String formattedTime = DateFormat('HH:mm:ss').format(now);
+
+    return formattedTime;
+  }
+
+  //optener la hora actual
+  String getDateString(DateTime hr) {
+    // Formatear la hora
+    String formattedTime = DateFormat('HH:mm:ss').format(hr);
+    return formattedTime;
+  }
+
+  //convierte una hora pasada en string en un formato de hora DateTime
+  DateTime parseTime(String time) {
+    DateFormat format = DateFormat('HH:mm:ss');
+    return format.parse(time);
+  }
+
+//restar duracion a una hora dada
+  DateTime subtractTime(String time, Duration duration) {
+    DateTime dateTime = parseTime(time);
+    return dateTime.subtract(duration);
+  }
+
+  Duration getDurationTime(int min) {
+    return Duration(minutes: min);
+  }
+
+//sumar una duracion dada a una hora
+  DateTime addTime(String time, Duration duration) {
+    DateTime dateTime = parseTime(time);
+    return dateTime.add(duration);
+  }
+
+  //comparar 2 horas si h1>h2 devuelve true
+  bool isTime1GreaterThanTime2(String h1, String h2) {
+    DateFormat format = DateFormat('HH:mm:ss');
+
+    // Convertir las cadenas a objetos DateTime
+    DateTime time1 = format.parse(h1);
+    DateTime time2 = format.parse(h2);
+
+    // Comparar los tiempos
+    return time1.isAfter(time2);
+  }
+
+  int secondsToMinutes(int seconds) {
+    int minutes = seconds ~/ 60; // División entera
+    // int remainingSeconds = seconds % 60; // Resto de la división
+
+    return minutes;
+  }
+
+  DateTime h3min = DateTime.now();
+
+  void getUpdateTime(int tiempo, int clock) {
+    print('entrando en getUpdateTime');
+    int timeAlert = 0;
+    int alert =
+        0; //0 es que acabo el tiempo, 1 es que aun no llega los 3 minutos, y 2 es que ya le qeuda menos de 3 min
+    String hActual = getCurrentTime();
+    if (tiempo > 0 && tiempo < 3) {
+      timeAlert = tiempo;
+    } else if (tiempo > 3) {
+      timeAlert = tiempo - 3; //3 significa que son 3 minutos
+    }
+    if (timeAlert > 3) //hay tiempo para sumarle a la hora actual
+    {
+      //aqui ya tengo la hora en que faltarian 3 minutos para terminar
+      h3min = addTime(hActual, getDurationTime(timeAlert));
+      alert = 1;
+    } else if (timeAlert > 0) {
+      alert = 2;
+    }
+    //aqui ya verifico los estados y ghuardo resultado
+    if (clock == 1) //si fuera reloj 1
+    {
+      if (alert == 0) {
+        //aqui retorna un String 'FIN'
+        LocalStorage.prefs.setString('varSistemHr3min1', 'FIN');
+        //quiere decir que acabo el tiempo
+      } else if (alert == 2) {
+        LocalStorage.prefs.setString('varSistemHr3min1', 'MENOR');
+        //quiere decir que ya e smenor que 3 min
+      } else {
+        //asignar aqui a la variable en memoria del telefono esa hora
+        LocalStorage.prefs.setString('varSistemHr3min1', getDateString(h3min));
+        //aqui retorna la hora enq ue hay qeu mandar la notificacion
+      }
+    } else if (clock == 2) //si fuera reloj 2
+    {
+      if (alert == 0) {
+        //aqui retorna un String 'FIN'
+        LocalStorage.prefs.setString('varSistemHr3min2', 'FIN');
+        //quiere decir que acabo el tiempo
+      } else if (alert == 2) {
+        LocalStorage.prefs.setString('varSistemHr3min2', 'MENOR');
+        //quiere decir que ya e smenor que 3 min
+      } else {
+        //asignar aqui a la variable en memoria del telefono esa hora
+        LocalStorage.prefs.setString('varSistemHr3min2', getDateString(h3min));
+        //aqui retorna la hora enq ue hay qeu mandar la notificacion
+      }
+    } else if (clock == 3) //si fuera reloj 1
+    {
+      if (alert == 0) {
+        //aqui retorna un String 'FIN'
+        LocalStorage.prefs.setString('varSistemHr3min3', 'FIN');
+        //quiere decir que acabo el tiempo
+      } else if (alert == 2) {
+        LocalStorage.prefs.setString('varSistemHr3min3', 'MENOR');
+        //quiere decir que ya e smenor que 3 min
+      } else {
+        //asignar aqui a la variable en memoria del telefono esa hora
+        LocalStorage.prefs.setString('varSistemHr3min3', getDateString(h3min));
+        //aqui retorna la hora enq ue hay qeu mandar la notificacion
+      }
+    } else if (clock == 4) //si fuera reloj 1
+    {
+      if (alert == 0) {
+        //aqui retorna un String 'FIN'
+        LocalStorage.prefs.setString('varSistemHr3min4', 'FIN');
+        //quiere decir que acabo el tiempo
+      } else if (alert == 2) {
+        LocalStorage.prefs.setString('varSistemHr3min4', 'MENOR');
+        //quiere decir que ya e smenor que 3 min
+      } else {
+        //asignar aqui a la variable en memoria del telefono esa hora
+        LocalStorage.prefs.setString('varSistemHr3min4', getDateString(h3min));
+        //aqui retorna la hora enq ue hay qeu mandar la notificacion
+      }
+    }
+  }
 
   Future<void> setswitchValue() async {
     final ClientsScheduledController clientsScheduledController =
@@ -99,6 +240,7 @@ class LoginController extends GetxController {
   int? branchNameLoggedIn;
   int branchTecnicLoggedIn = 0;
   int? usserPermissionQr;
+  int usserPermissionQrAntes = 1;
   int usserMssQr = -99;
 
   //variables para el encargado
@@ -233,9 +375,18 @@ class LoginController extends GetxController {
     update();
   }
 
+  void setCodigoQrValidAnt(value) {
+    usserPermissionQrAntes = value;
+    update();
+  }
+
   void setCodigoQrValid(value) {
     usserPermissionQr = value;
     update();
+  }
+
+  int getCodigoQrValid() {
+    return usserPermissionQr ?? 0;
   }
 
   bool codigoQrValid() {
@@ -769,6 +920,7 @@ class LoginController extends GetxController {
                 ' NO ENTRO PORQUE NO TIENE UN ROL PARA LA APP, COINCIDE QUE ES TRABAJADOR PERO NO DEL APK');
           }
         }
+        Get.back();
 
         update();
       } //cierre if (result != null) {
@@ -777,8 +929,10 @@ class LoginController extends GetxController {
         await loadingValue(false);
         update();
         print(' result == null por eso no entro');
+        Get.back();
       }
     } catch (e) {
+      Get.back();
       print('errorrrrrr:$e');
     }
   }

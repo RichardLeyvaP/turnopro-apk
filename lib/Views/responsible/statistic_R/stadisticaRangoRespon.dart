@@ -7,6 +7,7 @@ import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:turnopro_apk/Utility/textTruncate.dart';
+import 'package:turnopro_apk/Utility/utils.dart';
 
 class StadisticaRespon extends StatefulWidget {
   const StadisticaRespon({super.key});
@@ -211,7 +212,8 @@ class _StadisticaResponState extends State<StadisticaRespon> {
                                               : Text(
                                                   entry.value == null
                                                       ? '0'
-                                                      : '${entry.value}',
+                                                      : formatNumber(entry.value
+                                                          .toString()),
                                                   style: const TextStyle(
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w800,

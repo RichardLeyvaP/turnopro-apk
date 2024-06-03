@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 //import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:turnopro_apk/Utility/utils.dart';
 
 class StadisticaMenRespon extends StatefulWidget {
   const StadisticaMenRespon({super.key});
@@ -150,7 +151,7 @@ class _StadisticaMenResponState extends State<StadisticaMenRespon> {
                           image: AssetImage('assets/images/imageGrafic.png'),
                           width: 40,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         if (mesEscogido != null) ...[
@@ -161,8 +162,8 @@ class _StadisticaMenResponState extends State<StadisticaMenRespon> {
                             ),
                           ),
                         ] else ...[
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
                             child: Text(
                               'No tiene Estadísticas hasta el momento',
                             ),
@@ -255,8 +256,8 @@ class _StadisticaMenResponState extends State<StadisticaMenRespon> {
       trailing: Padding(
         padding: const EdgeInsets.only(top: 15),
         child: Text(
-          entry.value == null ? '0' : '${entry.value}',
-          style: TextStyle(
+          entry.value == null ? '0' : formatNumber(entry.value.toString()),
+          style: const TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w800,
           ),

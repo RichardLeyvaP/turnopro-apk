@@ -5,6 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:turnopro_apk/Utility/utils.dart';
 
 class StadisticaCordi extends StatefulWidget {
   const StadisticaCordi({super.key});
@@ -99,14 +100,14 @@ class _StadisticaCordiState extends State<StadisticaCordi> {
                 ? Center(
                     child: Column(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         const Image(
                           image: AssetImage('assets/images/imageGrafic.png'),
                           width: 40,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         if (startDate1 != null && endDate1 != null) ...[
@@ -205,8 +206,8 @@ class _StadisticaCordiState extends State<StadisticaCordi> {
       trailing: Padding(
         padding: const EdgeInsets.only(top: 15),
         child: Text(
-          entry.value == null ? '0' : '${entry.value}',
-          style: TextStyle(
+          entry.value == null ? '0' : formatNumber(entry.value.toString()),
+          style: const TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w800,
           ),

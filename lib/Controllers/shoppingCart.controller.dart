@@ -163,12 +163,12 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  getTotalServicesProduct_Sum(String type, double x) {
+  getTotalServicesProduct_Sum(String type, int prec) {
     if (type == 'service') {
-      getTotalServices = getTotalServices + x;
+      getTotalServices = getTotalServices + prec;
     } else if (type == 'product') {
       //todo revisar la suma de los precios del producto
-      getTotalProduct = getTotalProduct + x;
+      getTotalProduct = getTotalProduct + prec;
     }
     totalPrice = getTotalServices + getTotalProduct;
     update();
@@ -238,6 +238,34 @@ class ShoppingCartController extends GetxController {
     } catch (e) {
       internetError = -99;
       print('error:$e');
+      update();
+    }
+  }
+
+  //
+  //
+
+  Future shopProduct(
+      priceProduct, car_id, productId, categoryId, branchId) async {
+    try {
+      final ProductController productCont = Get.find<ProductController>();
+      List<ProductModel>? tempProduct;
+      getTotalProduct = getTotalProduct + priceProduct;
+      totalPrice = getTotalServices + getTotalProduct;
+
+      tempProduct = await productRepository.addOrderProduct(
+          car_id, productId, categoryId, branchId);
+      //actualizar los productos pasando el id de la categoria
+      if (tempProduct != null) {
+        productCont.productActualizate(tempProduct);
+
+        shoppingCart += 1;
+      } else {
+        print('Ha dado error al comprar los productos y dio tempProduct=null');
+      }
+    } catch (e) {
+      print('error:$e');
+    } finally {
       update();
     }
   }
@@ -328,6 +356,31 @@ class ShoppingCartController extends GetxController {
       }
     }
   }
+
+  /* Future shopProduct(
+      priceProduct, categoryId, car_id, type, productId, branchId) async {
+    final ProductController productCont = Get.find<ProductController>();
+    List<ProductModel>? tempProduct;
+    if (type == 'product') {
+      //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
+      getTotalProduct = getTotalProduct + priceProduct;
+      totalPrice = getTotalServices + getTotalProduct;
+
+      tempProduct =
+          await addShopProduct(priceProduct,car_id, productId, categoryId, branchId);
+//actualizar los productos pasando el id de la categoria
+      if (tempProduct != null) {
+        productCont.product = tempProduct;
+        productListLength = productCont.product.length;
+        print('Cantidad de productos -- -- -- $productListLength');
+        shoppingCart += 1;
+      } else {
+        print('Ha dado error al comprar los productos y dio tempProduct=null');
+      }
+
+      update();
+    }
+  }*/
 
   void deleteShoppingCartValue(int newValue) {
     shoppingCart -= newValue;

@@ -9,6 +9,7 @@ import 'package:turnopro_apk/Controllers/service.controller.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
+import 'package:turnopro_apk/Utility/utils.dart';
 import 'package:turnopro_apk/env.dart';
 //import 'package:turnopro_apk/Routes/index.dart';
 
@@ -42,6 +43,8 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
     const double borderRadiusValue = 12;
 
     return GetBuilder<ServiceController>(builder: (_) {
+      print('object-long service:${_.serviceListLength}');
+      // print('object-long service-services:${_.services[0].name}');
       return _.isLoading
           ? const Center(
               child: CircularProgressIndicator(
@@ -55,7 +58,7 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                       Expanded(
                         flex: 24,
                         child: Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(10),
                                 bottomRight: Radius.circular(10)),
@@ -111,13 +114,13 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                                     .services[
                                                                         index]
                                                                     .name))) ||
-                                                        (_.selectServiceNew.contains(
-                                                            _.services[index]))
+                                                        (_.selectServiceNew.contains(_.services[index]) ||
+                                                            _.services[index]
+                                                                    .cliente ==
+                                                                true)
                                                     ? const BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    borderRadiusValue)),
+                                                        borderRadius: BorderRadius.all(
+                                                            Radius.circular(borderRadiusValue)),
                                                         gradient: LinearGradient(
                                                           colors: [
                                                             Colors.white,
@@ -158,7 +161,12 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                               .contains(_
                                                                   .services[
                                                                       index]
-                                                                  .name))) {
+                                                                  .name)) &&
+                                                          _.services[index]
+                                                                  .cliente ==
+                                                              false) {
+                                                        print(
+                                                            'aquoi seleccionandolo');
                                                         _.getSelectServiceNew(
                                                             _.services[index]);
 
@@ -214,6 +222,9 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                               children: [
                                                                 CircleAvatar(
                                                                   radius: 20,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .white, //fondo de la imagen
                                                                   child:
                                                                       ClipOval(
                                                                     child: Image
@@ -225,6 +236,7 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                                           50, // Ancho deseado de la imagen dentro del círculo
                                                                       height:
                                                                           50,
+
                                                                       loadingBuilder: (BuildContext context,
                                                                           Widget
                                                                               child,
@@ -334,9 +346,11 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                               ],
                                                             ),
                                                             Text(
-                                                              _.services[index]
+                                                              formatNumber(_
+                                                                  .services[
+                                                                      index]
                                                                   .price_service
-                                                                  .toString(),
+                                                                  .toString()),
                                                               style: TextStyle(
                                                                   fontSize: (MediaQuery.of(
                                                                               context)
@@ -450,7 +464,7 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                       );
                                     }),
                               ),
-                              //todo este era el que decia abajo total a pagar
+                              //todo este era el que decia abajo total a pagar*/
                             ],
                           ),
                         ),
@@ -516,8 +530,22 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                         );
                                         _.clearSelectServiceNew();
                                       } else {
-                                        print(
-                                            'memsj problemas al agregar servicios');
+                                        Get.snackbar(
+                                          'Mensaje',
+                                          'No hay servicios seleccionados',
+                                          duration: const Duration(
+                                              milliseconds: 2500),
+                                          backgroundColor: const Color.fromARGB(
+                                              118, 255, 255, 255),
+                                          showProgressIndicator: true,
+                                          progressIndicatorBackgroundColor:
+                                              const Color.fromARGB(
+                                                  255, 203, 205, 209),
+                                          progressIndicatorValueColor:
+                                              const AlwaysStoppedAnimation(
+                                                  Color(0xFFFDAE2A)),
+                                          overlayBlur: 3,
+                                        );
                                       }
                                     },
                                     child: const Text(

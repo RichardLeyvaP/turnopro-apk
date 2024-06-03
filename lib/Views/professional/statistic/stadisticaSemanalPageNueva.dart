@@ -6,6 +6,7 @@ import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:turnopro_apk/Utility/utils.dart';
 
 class StadisticaSemanalPageNueva extends StatefulWidget {
   const StadisticaSemanalPageNueva({super.key});
@@ -109,25 +110,25 @@ class _StadisticaSemanalPageNuevaState
                         height: 540,
                         child: Column(
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               height: 150,
                             ),
-                            Icon(
+                            const Icon(
                               Icons.bar_chart_outlined,
                               size: 40,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             if (startDate1 != null && endDate1 != null) ...[
-                              Text(
+                              const Text(
                                 'No tiene Estadísticas en',
                               ),
                               Text(
                                 '($startDate1 - $endDate1)',
                               ),
                             ] else ...[
-                              Text(
+                              const Text(
                                 'No tiene Estadísticas en',
                               ),
                               Text(
@@ -199,8 +200,9 @@ class _StadisticaSemanalPageNuevaState
                                           Text(
                                             entry.value == null
                                                 ? '0'
-                                                : '${entry.value}',
-                                            style: TextStyle(
+                                                : formatNumber(
+                                                    (entry.value).toString()),
+                                            style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w800,
                                             ),

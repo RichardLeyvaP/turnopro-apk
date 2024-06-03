@@ -202,7 +202,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                                 184,
                                                                                 182),
                                                                           ),
-                                                                          SizedBox(
+                                                                          const SizedBox(
                                                                             height:
                                                                                 6,
                                                                           ),
@@ -210,7 +210,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                             mainAxisAlignment:
                                                                                 MainAxisAlignment.spaceBetween,
                                                                             children: [
-                                                                              Text('Clientes atendidos'),
+                                                                              const Text('Clientes atendidos'),
                                                                               Text(
                                                                                 formatNumber(_.estadist0[index].attendedClient.toString()),
                                                                                 maxLines: 2, // Limita el texto a 2 líneas
@@ -454,7 +454,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                             mainAxisAlignment:
                                                                                 MainAxisAlignment.spaceBetween,
                                                                             children: [
-                                                                              Text('Servicios'),
+                                                                              Text('Cantidad de Servicios'),
                                                                               Text(
                                                                                 formatNumber(_.estadist0[index].services.toString()),
                                                                                 maxLines: 2, // Limita el texto a 2 líneas

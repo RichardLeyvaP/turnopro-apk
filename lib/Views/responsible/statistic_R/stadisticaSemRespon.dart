@@ -6,6 +6,8 @@ import 'package:turnopro_apk/Controllers/coexistence.controller.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:turnopro_apk/Utility/textTruncate.dart';
+import 'package:turnopro_apk/Utility/utils.dart';
 
 class StadisticaSemRespon extends StatefulWidget {
   const StadisticaSemRespon({super.key});
@@ -107,25 +109,25 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
                         height: 540,
                         child: Column(
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               height: 150,
                             ),
-                            Icon(
+                            const Icon(
                               Icons.bar_chart_outlined,
                               size: 40,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             if (startDate1 != null && endDate1 != null) ...[
-                              Text(
+                              const Text(
                                 'No tiene Estadísticas en',
                               ),
                               Text(
                                 '($startDate1 - $endDate1)',
                               ),
                             ] else ...[
-                              Text(
+                              const Text(
                                 'No tiene Estadísticas en',
                               ),
                               Text(
@@ -156,7 +158,8 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
                                       .statisticsGeneralRespon2.entries
                                       .map((entry) {
                                     i++;
-
+                                    String productServ = entry.key.toString();
+                                    String resultValue = entry.value.toString();
                                     print(i);
 
                                     return SizedBox(
@@ -194,15 +197,27 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
                                                   )),
                                             ],
                                           ),
-                                          Text(
-                                            entry.value == null
-                                                ? '0'
-                                                : '${entry.value}',
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w800,
-                                            ),
-                                          )
+                                          (productServ ==
+                                                      'Producto más Vendido' ||
+                                                  productServ ==
+                                                      'Servicio más Brindado')
+                                              ? TruncatedText(
+                                                  text: resultValue,
+                                                  maxLength: 13,
+                                                  styleText: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w800,
+                                                  ))
+                                              : Text(
+                                                  entry.value == null
+                                                      ? '0'
+                                                      : formatNumber(entry.value
+                                                          .toString()),
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w800,
+                                                  ),
+                                                )
                                         ],
                                       ),
                                     );

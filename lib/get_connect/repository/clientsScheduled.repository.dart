@@ -480,6 +480,25 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
+//
+  Future sendWhatsappNotificationRepos(String telefone) async {
+    print('estoy en repositorio en - 5');
+    try {
+      var url = '${Env.apiEndpoint}/whatsapp-notification';
+
+      final Map<String, dynamic> body = {'telefone_client': telefone};
+
+      final response = await post(url, body);
+      if (response.statusCode == 200) {
+        print(
+            'EL mensaje de whatassapp se ha enviado  correctamente :${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+      print('ERROR AL ENVIAR eL mensaje de whatassapp:$e');
+    }
+  }
+
   /* Future<bool> getServicesSimultaneou(idCar) async {
     var url =
         '${Env.apiEndpoint}/car_services?car_id=$idCar'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
@@ -527,14 +546,18 @@ class ClientsScheduledRepository extends GetConnect {
       print('EL TIEMPO ACTUAL timeClock->$timeClock');
       print('EL TIEMPO ACTUAL detached->$detached');
       print('EL TIEMPO ACTUAL clock->$clock');
-      var url =
-          '${Env.apiEndpoint}/set_timeClock?reservation_id=$reservationId&timeClock=$timeClock&detached=$detached&clock=$clock';
+      if (timeClock != null) {
+        var url =
+            '${Env.apiEndpoint}/set_timeClock?reservation_id=$reservationId&timeClock=$timeClock&detached=$detached&clock=$clock';
 
-      final response = await get(url);
-      if (response.statusCode == 200) {
-        return true;
+        final response = await get(url);
+        if (response.statusCode == 200) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
-        return false;
+        print('el timeClock llego null por eso entro aqui al else');
       }
     } catch (e) {
       print('estoy en repositorio en - 7 error:$e');
@@ -622,6 +645,46 @@ class ClientsScheduledRepository extends GetConnect {
         print(professionalList.length);
         print(
             'getProfessionalState(idBranch) async getProfessionalState(idBranch) async professionalList.length:${professionalList.length}');
+        return professionalList;
+      }
+
+      return professionalList;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future getProfessionalState2First(idBranch, idReserv, idBarberAct) async {
+    print('estoy en repositorio en - 10');
+    try {
+      List<ProfessionalModel> professionalList = [];
+      int cant = 0;
+      var url =
+          '${Env.apiEndpoint}/professional-state?branch_id=$idBranch&reservation_id=$idReserv';
+
+      final response = await get(url);
+      print(
+          'getProfessionalState(idBranch) async getProfessionalState(idBranch) url:$url');
+      print(
+          'getProfessionalState(idBranch) async getProfessionalState(idBranch) response.statusCode:${response.statusCode}');
+      if (response.statusCode == 200) {
+        final professionals = response.body['professionals'];
+        for (Map professional in professionals) {
+          ProfessionalModel u =
+              ProfessionalModel.fromJson(jsonEncode(professional));
+          //AQUI SOLO COJO QUE NO SEAN RESPONSABLES
+          if (u.charge_id != 'Encargado' &&
+              u.charge_id != 'Coordinador' &&
+              u.id != idBarberAct &&
+              cant == 0) {
+            //que no sea ni coordinador,ni encargado,ni el mismo barbero
+
+            professionalList.add(u);
+            cant++; //para garantizar que solo me devuelva 1
+          }
+        }
+        print(
+            'profe libres - professionalList.length:${professionalList.length}');
         return professionalList;
       }
 

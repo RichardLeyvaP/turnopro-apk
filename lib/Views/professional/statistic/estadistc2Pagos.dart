@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/Utility/utils.dart';
 import 'package:turnopro_apk/Views/common/topPage.dart';
 import 'package:turnopro_apk/env.dart';
 
@@ -66,7 +67,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
             : Column(
                 children: [
                   Expanded(
-                    flex: 6,
+                    flex: 4,
                     child: topPage(
                         panddCont: panddCont,
                         colorCont: colorCont,
@@ -119,7 +120,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w700)),
                                           Text(
-                                              '  ${_.estadistPagosFijo['pendiente'].toString()}  ',
+                                              '  ${formatNumber(_.estadistPagosFijo['pendiente'].toString())}  ',
                                               style: const TextStyle(
                                                   fontSize: 16,
                                                   color: Colors.white,
@@ -149,7 +150,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w700)),
                                           Text(
-                                              '  ${_.estadistPagosFijo['pagado'].toString()}  ',
+                                              '  ${formatNumber(_.estadistPagosFijo['pagado'].toString())}  ',
                                               style: const TextStyle(
                                                   fontSize: 16,
                                                   color: Colors.white,
@@ -166,9 +167,12 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                       ],
                     ),
                   ),
-                  if (loginCont.chargeUserLoggedIn == 'Barbero' ||
+                  /* 
+                Aqui estaba la estadistica de detalles del barbero que el cliente mando a aquitar
+                 if (loginCont.chargeUserLoggedIn == 'Barbero' ||
                       loginCont.chargeUserLoggedIn ==
                           'Barbero y Encargado') ...[
+                    
                     Expanded(
                       flex: 14,
                       child: Padding(
@@ -328,9 +332,10 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                           ),
                                                         ),
                                                         Text(
-                                                            _.estadistPagosFijo[
+                                                            formatNumber(_
+                                                                .estadistPagosFijo[
                                                                     'propina80']
-                                                                .toString(),
+                                                                .toString()),
                                                             maxLines:
                                                                 2, // Limita el texto a 2 líneas
                                                             overflow: TextOverflow
@@ -390,9 +395,10 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                           ),
                                                         ),
                                                         Text(
-                                                          _.estadistPagosFijo[
+                                                          formatNumber(_
+                                                              .estadistPagosFijo[
                                                                   'productCant']
-                                                              .toString(),
+                                                              .toString()),
                                                           maxLines:
                                                               2, // Limita el texto a 2 líneas
                                                           overflow: TextOverflow
@@ -420,9 +426,10 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                           ),
                                                         ),
                                                         Text(
-                                                          _.estadistPagosFijo[
+                                                          formatNumber(_
+                                                              .estadistPagosFijo[
                                                                   'retention']
-                                                              .toString(),
+                                                              .toString()),
                                                           maxLines:
                                                               2, // Limita el texto a 2 líneas
                                                           overflow: TextOverflow
@@ -450,9 +457,10 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                           ),
                                                         ),
                                                         Text(
-                                                          _.estadistPagosFijo[
+                                                          formatNumber(_
+                                                              .estadistPagosFijo[
                                                                   'metaAmount']
-                                                              .toString(),
+                                                              .toString()),
                                                           maxLines:
                                                               2, // Limita el texto a 2 líneas
                                                           overflow: TextOverflow
@@ -480,9 +488,10 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                           ),
                                                         ),
                                                         Text(
-                                                          _.estadistPagosFijo[
+                                                          formatNumber(_
+                                                              .estadistPagosFijo[
                                                                   'servAmount']
-                                                              .toString(),
+                                                              .toString()),
                                                           maxLines:
                                                               2, // Limita el texto a 2 líneas
                                                           overflow: TextOverflow
@@ -510,9 +519,10 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                           ),
                                                         ),
                                                         Text(
-                                                          _.estadistPagosFijo[
+                                                          formatNumber(_
+                                                              .estadistPagosFijo[
                                                                   'productAmount']
-                                                              .toString(),
+                                                              .toString()),
                                                           maxLines:
                                                               2, // Limita el texto a 2 líneas
                                                           overflow: TextOverflow
@@ -540,9 +550,10 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                           ),
                                                         ),
                                                         Text(
-                                                          _.estadistPagosFijo[
+                                                          formatNumber(_
+                                                              .estadistPagosFijo[
                                                                   'amountGenerate']
-                                                              .toString(),
+                                                              .toString()),
 
                                                           maxLines:
                                                               2, // Limita el texto a 2 líneas
@@ -571,9 +582,10 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                           ),
                                                         ),
                                                         Text(
-                                                          _.estadistPagosFijo[
+                                                          formatNumber(_
+                                                              .estadistPagosFijo[
                                                                   'winnerAmount']
-                                                              .toString(),
+                                                              .toString()),
                                                           maxLines:
                                                               2, // Limita el texto a 2 líneas
                                                           overflow: TextOverflow
@@ -606,9 +618,10 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                                       .w700),
                                                         ),
                                                         Text(
-                                                          _.estadistPagosFijo[
+                                                          formatNumber(_
+                                                              .estadistPagosFijo[
                                                                   'winnerRetention']
-                                                              .toString(),
+                                                              .toString()),
                                                           maxLines:
                                                               2, // Limita el texto a 2 líneas
                                                           overflow: TextOverflow
@@ -638,9 +651,10 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                         ),
                       ),
                     ),
+                 
                   ],
                   //detalles solo del barbero
-
+*/
                   //pocos detalles solo del tecnico
                   if (loginCont.chargeUserLoggedIn == 'Tecnico') ...[
                     Expanded(
@@ -810,7 +824,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                     flex: loginCont.chargeUserLoggedIn == 'Barbero' ||
                             loginCont.chargeUserLoggedIn ==
                                 'Barbero y Encargado'
-                        ? 13
+                        ? 18
                         : 22, // 85% del espacio disponible para esta parte
                     child: _.estadistPagosLength > 0
                         ? ListView.builder(
@@ -819,7 +833,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                             itemCount: _.estadistPagosLength,
                             itemBuilder: (context, index) => Padding(
                                   padding: const EdgeInsets.only(
-                                    top: 10,
+                                    top: 4,
                                     left: 10,
                                     right: 10,
                                   ),
@@ -990,11 +1004,11 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                                             FontWeight.w700),
                                                                   ),
                                                                   Text(
-                                                                    _
+                                                                    formatNumber(_
                                                                         .estadistPagos[
                                                                             index]
                                                                         .amount
-                                                                        .toString(),
+                                                                        .toString()),
                                                                     maxLines:
                                                                         2, // Limita el texto a 2 líneas
                                                                     overflow:

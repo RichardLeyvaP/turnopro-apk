@@ -8,6 +8,7 @@ import 'package:turnopro_apk/Routes/index.dart';
 class DependencyInjection {
   static void registerDependencies() {
     Get.put(LoginController());
+    Get.put(ShoppingCartController());
     Get.put(StatisticController());
     Get.put(ClientsScheduledController());
     Get.put(NotificationController());
@@ -18,6 +19,7 @@ class DependencyInjection {
 
     Get.put(PagesConfigController());
     Get.put(PagesConfigResponController());
+    Get.put(ProductController());
 
     // Agrega más controladores según sea necesario
   }

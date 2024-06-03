@@ -7,6 +7,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
+import 'package:turnopro_apk/Utility/textTruncate.dart';
 import 'package:turnopro_apk/env.dart';
 
 import '../../../Controllers/clientsScheduled.controller.dart';
@@ -271,26 +272,6 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                           height: 5,
                         ),
 
-                        /*  cardOptions(context, iconService, 'Servicios',
-                            pagesConfigCont, 2),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        cardOptions(
-                            context, icon, 'Productos', pagesConfigCont, 3),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        */
-                        /* cardOptions(
-                            context,
-                            Icon(
-                              MdiIcons.camera,
-                            ),
-                            'Último look',
-                            pagesConfigCont,
-                            pagesConfigCont.pageController2,
-                            null),*/
                         const SizedBox(
                           height: 0,
                         ),
@@ -386,359 +367,12 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                               //
                               //
                               //
-                              //
-                              //
-                              //
-                              //
-                              //
-                              // Container(
-                              //   decoration: const BoxDecoration(
-                              //       borderRadius:
-                              //           BorderRadius.all(Radius.circular(12))),
-                              //   child: Image.network(
-                              //     '${Env.apiEndpoint}/images/${clientSchedControl.imageLookBarber1}',
-                              //     fit: BoxFit
-                              //         .cover, // Puedes ajustar el modo de ajuste según sea necesario
-                              //     width: 360,
-
-                              //     height: (loginControl.androidInfoHeight! *
-                              //         0.275), //todo cambiadoNuevoValores
-                              //     loadingBuilder: (BuildContext context,
-                              //         Widget child,
-                              //         ImageChunkEvent? loadingProgress) {
-                              //       if (loadingProgress == null) {
-                              //         // Si la imagen se carga correctamente, mostramos la imagen
-                              //         return child;
-                              //       } else {
-                              //         // Si la imagen aún se está cargando, mostramos un indicador de progreso
-                              //         return const CircularProgressIndicator(
-                              //           color: Color(0xFFFDAE2A),
-                              //         );
-                              //       }
-                              //     },
-                              //     errorBuilder: (BuildContext context,
-                              //         Object error, StackTrace? stackTrace) {
-                              //       // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
-                              //       if (kDebugMode) {
-                              //         return CircleAvatar(
-                              //           radius: 25,
-                              //           backgroundColor: Colors
-                              //               .transparent, // Fondo transparente para que el borde sea visible
-                              //           child: ClipOval(
-                              //             child: Image.asset(
-                              //               'assets/images/default_profile.jpg',
-                              //               fit: BoxFit
-                              //                   .cover, // Ajusta la imagen para cubrir completamente el área
-                              //               width:
-                              //                   50, // Ancho deseado de la imagen dentro del círculo
-                              //               height:
-                              //                   50, // Alto deseado de la imagen dentro del círculo
-                              //             ),
-                              //           ),
-                              //         );
-                              //       } else {
-                              //         // Si no estamos en modo de depuración, mostramos un texto de error
-                              //         return CircleAvatar(
-                              //           radius: 25,
-                              //           backgroundColor: Colors
-                              //               .transparent, // Fondo transparente para que el borde sea visible
-                              //           child: ClipOval(
-                              //             child: Image.asset(
-                              //               'assets/images/default_profile.jpg',
-                              //               fit: BoxFit
-                              //                   .cover, // Ajusta la imagen para cubrir completamente el área
-                              //               width:
-                              //                   50, // Ancho deseado de la imagen dentro del círculo
-                              //               height:
-                              //                   50, // Alto deseado de la imagen dentro del círculo
-                              //             ),
-                              //           ),
-                              //         );
-                              //       }
-                              //     },
-                              //   ),
-                              // ),
-                              // //
                             ],
                           ),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        /*   Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            ElevatedButton(
-                                style: ButtonStyle(
-                                  padding: MaterialStateProperty.all<
-                                      EdgeInsetsGeometry>(
-                                    const EdgeInsets.symmetric(
-                                        vertical: 10.0,
-                                        horizontal: 52.0), // Ajusta el padding
-                                  ),
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          const Color(0xFFFF6750)),
-                                  // Añadir más propiedades de estilo aquí
-                                ),
-                                onPressed: () async {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return GetBuilder<
-                                              ClientsScheduledController>(
-                                          builder: (_) {
-                                        return Dialog(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                          ), //this right here
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: <Widget>[
-                                              Container(
-                                                decoration: const BoxDecoration(
-                                                  color: Color(0xFF19CF9E),
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topLeft: Radius.circular(8),
-                                                    topRight:
-                                                        Radius.circular(8),
-                                                  ),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: <Widget>[
-                                                    const Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 12),
-                                                      child: Text(
-                                                        'Motivo',
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700),
-                                                      ),
-                                                    ),
-                                                    IconButton(
-                                                      icon: Icon(Icons.close,
-                                                          color: Colors.white),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                height: 240,
-                                                child: Column(
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                        left: 16,
-                                                        right: 16,
-                                                      ),
-                                                      child: TextFormField(
-                                                        controller:
-                                                            commentController,
-                                                        maxLines: 5,
-                                                        decoration:
-                                                            const InputDecoration(
-                                                          border:
-                                                              InputBorder.none,
-                                                          hintText:
-                                                              'Escribe el motivo porque va a ser eliminado el cliente...',
-                                                          hintStyle: TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    137,
-                                                                    43,
-                                                                    49,
-                                                                    65),
-                                                          ), // Cambiar el color del hintText
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    //
-
-                                                    ButtonBar(
-                                                      alignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: <Widget>[
-                                                        ElevatedButton(
-                                                          style: ButtonStyle(
-                                                            padding:
-                                                                MaterialStateProperty
-                                                                    .all<
-                                                                        EdgeInsetsGeometry>(
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  vertical: 0,
-                                                                  horizontal:
-                                                                      26.0),
-                                                            ),
-                                                            backgroundColor:
-                                                                MaterialStateProperty.all<
-                                                                        Color>(
-                                                                    const Color(
-                                                                        0xFFFF6750)),
-                                                          ),
-                                                          onPressed: () async {
-                                                            // Lógica para enviar el comentario
-                                                            // Obtener el valor del campo de texto
-                                                            String commentText =
-                                                                commentController
-                                                                    .text;
-                                                            // Eliminar espacios en blanco al principio y al final
-                                                            String
-                                                                textWithoutSpaces =
-                                                                commentText
-                                                                    .trim();
-
-                                                            // Verificar que el campo no esté vacío
-                                                            if (textWithoutSpaces
-                                                                .isNotEmpty) {
-                                                              print(
-                                                                  'Cliente eliminado correctamente de la cola deleteReservationClient value = :1');
-                                                              //todo falta poner un cargando
-                                                              await _.deleteReservationClient(
-                                                                  controllerCoord
-                                                                      .idReservCORD,
-                                                                  commentText);
-                                                              //aqui actualizo la cola
-                                                              await clientCoordControl
-                                                                  .fetchClientsScheduledBranch(
-                                                                      loginControl
-                                                                          .branchIdLoggedIn);
-                                                              clientCoordControl
-                                                                  .setLoading(
-                                                                      false);
-                                                              Get.snackbar(
-                                                                'Mensaje',
-                                                                'Cliente eliminado de la cola',
-                                                                duration: const Duration(
-                                                                    milliseconds:
-                                                                        3000),
-                                                              );
-                                                              //todo falta mandar mensaje al profesional que se le elimino tal cliente de la cola poruqe no habia llegado
-                                                              print(
-                                                                  'Cliente eliminado correctamente de la cola deleteReservationClient value = :2');
-                                                              // Cerrar el primer modal
-                                                              Navigator.pop(
-                                                                  context);
-                                                              await pagesConfigCont
-                                                                  .showAppBar(
-                                                                      true);
-                                                              pagesConfigCont
-                                                                  .goToPreviousPage();
-
-                                                              print(
-                                                                  'El comentario enviado - $commentText ');
-                                                            } else {
-                                                              // El campo de texto está vacío, puedes mostrar un mensaje o realizar alguna acción
-                                                              print(
-                                                                  'El comentario no puede estar vacío');
-                                                            }
-                                                          },
-                                                          child: Row(
-                                                            children: [
-                                                              Icon(
-                                                                MdiIcons.send,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                              SizedBox(
-                                                                width: 6,
-                                                              ),
-                                                              const Text(
-                                                                'ENVIAR y ELIMINAR',
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w800),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        );
-                                      });
-                                    },
-                                  );
-                                },
-                                child: const Text(
-                                  'ELIMINAR',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w800),
-                                )),
-                            ElevatedButton(
-                                style: ButtonStyle(
-                                  padding: MaterialStateProperty.all<
-                                      EdgeInsetsGeometry>(
-                                    const EdgeInsets.symmetric(
-                                        vertical: 10.0,
-                                        horizontal: 52.0), // Ajusta el padding
-                                  ),
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          const Color(0xFF4470F3)),
-
-                                  // Añadir más propiedades de estilo aquí
-                                ),
-                                onPressed: () async {
-                                  //llamar el ENPOINT professional-state
-                                  Get.dialog(
-                                    const Center(
-                                      child: CircularProgressIndicator(
-                                        color: Color(0xFFFDAE2A),
-                                      ),
-                                    ),
-                                    barrierDismissible: false,
-                                  ); //Get.back();
-                                  print(
-                                      'mostrando id de reservaciones:${clientCoordControl.idReservCORD}');
-                                  // await clientSchedControl.getProfessionalState(
-                                  //     loginControl.branchIdLoggedIn);
-                                  await clientSchedControl
-                                      .getProfessionalState2(
-                                          loginControl.branchIdLoggedIn,
-                                          clientCoordControl.idReservCORD);
-
-                                  await pagesConfigCont.showAppBar(false);
-                                  pagesConfigCont.goToPage(
-                                      6, pagesConfigCont.pageController2);
-                                  Get.back();
-                                },
-                                child: const Text(
-                                  'REASIGNAR',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w800),
-                                )),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 45,
-                        )*/
                       ]),
                 ),
               ),
@@ -753,7 +387,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
     return Padding(
       padding: const EdgeInsets.only(right: 10, top: 8, left: 10),
       child: Container(
-        height: (MediaQuery.of(context).size.height * 0.07),
+        height: (MediaQuery.of(context).size.height * 0.08),
         width: (MediaQuery.of(context).size.width * 0.95),
         decoration: const BoxDecoration(
           color: Color.fromARGB(255, 241, 240, 240),
@@ -773,6 +407,9 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                     padding: const EdgeInsets.only(
                         left: 8.0, right: 8, bottom: 8, top: 2),
                     child: CircleAvatar(
+                      backgroundColor:
+                          Colors.white, //color de fondo de la imagen
+
                       radius: 24,
                       child: ClipOval(
                         child: Image.network(
@@ -989,9 +626,11 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                             fontWeight: FontWeight.w500,
                             height: 1.2),
                       ),
-                      Text(
-                        endLook,
-                        style: const TextStyle(
+                      TruncatedText(
+                        text:
+                            'endLook sdasd sad sdasd asd asd sad sa d sad sad sa d sad asd sa d asdasdasd sadsad asdasd asd sadasd ',
+                        maxLength: 35,
+                        styleText: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w300,
                             height: 1.2),

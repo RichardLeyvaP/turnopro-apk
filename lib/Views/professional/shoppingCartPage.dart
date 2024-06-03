@@ -11,6 +11,7 @@ import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Utility/utils.dart';
 import 'package:turnopro_apk/Views/common/topPage.dart';
 import 'package:turnopro_apk/env.dart';
 import 'package:http/http.dart' as http;
@@ -28,13 +29,6 @@ class ShoppingCartPage extends StatelessWidget {
   final LoginController controllerLogin = Get.find<LoginController>();
   final ShoppingCartController shoppingCar = Get.find<ShoppingCartController>();
   NotificationController notiController = Get.find<NotificationController>();
-  void ejecutarCadaQuinceSegundos() {
-    Timer.periodic(Duration(seconds: 13), (timer) {
-      // Lógica que quieres ejecutar cada 15 segundos
-      print('Método ejecutado cada 15 segundos  shoppingCar.loadCart()');
-      shoppingCar.loadCart();
-    });
-  }
 
   /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
   final IconnsBack = Icons.arrow_back;
@@ -303,11 +297,11 @@ class ShoppingCartPage extends StatelessWidget {
                                                                   ),
                                                                 ),
                                                                 Text(
-                                                                  controllerShoppingCart
+                                                                  formatNumber(controllerShoppingCart
                                                                       .selectserviceCart[
                                                                           index]
                                                                       .price_service
-                                                                      .toString(),
+                                                                      .toString()),
                                                                   style: const TextStyle(
                                                                       fontSize:
                                                                           13,
@@ -617,11 +611,11 @@ class ShoppingCartPage extends StatelessWidget {
                                                                   ),
                                                                 ),
                                                                 Text(
-                                                                  controllerShoppingCart
+                                                                  formatNumber(controllerShoppingCart
                                                                       .selectproduct[
                                                                           index]
                                                                       .sale_price
-                                                                      .toString(),
+                                                                      .toString()),
                                                                   style: const TextStyle(
                                                                       fontSize:
                                                                           13,

@@ -184,7 +184,8 @@ class NotificationController extends GetxController {
             'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor, el error fue en Future<void> fetchNotificationList');
       } else if (resultList.containsKey('notificationList') &&
           resultList.containsKey('notificationListNew')) {
-        notification = resultList['notificationList'];
+        notification =
+            resultList['notificationList']; //busca aqui las notificaciones
 
         notificationListLength = notification.length;
 

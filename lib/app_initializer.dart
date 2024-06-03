@@ -30,5 +30,6 @@ class AppInitializer {
     Get.put(PagesConfigResponController());
     Get.put(ServiceController());
     Get.put(CoexistenceController());
+    Get.put(ProductController());
   }
 }

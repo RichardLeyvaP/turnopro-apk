@@ -39,7 +39,7 @@ class _SplashPageState extends State<SplashPage> {
               height: 88,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 4,
           ),
           Row(

@@ -257,33 +257,55 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                                     ),
                                     onPressed: () async {
                                       if (branchIdLoggedIn != -99) {
-                                        await controllerLogin
-                                            .loadingValue(true);
+                                        Get.dialog(
+                                          const Center(
+                                            child: Material(
+                                              color: Colors.transparent,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  CircularProgressIndicator(
+                                                    color: Color(0xFFFDAE2A),
+                                                  ),
+                                                  SizedBox(height: 16),
+                                                  Text('Cargando datos...',
+                                                      style: TextStyle(
+                                                          color: Colors.white)),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          barrierDismissible: false,
+                                        ); //Get.back();
+                                        // await controllerLogin
+                                        //     .loadingValue(true);
                                         String email = controllerLogin.uss;
                                         String password = controllerLogin.pass;
                                         controll.branchProfessional = [];
                                         controll.selectedBranch = null;
-                                        controllerLogin.loginGetIn(
+                                        await controllerLogin.loginGetIn(
                                             email, password, branchIdLoggedIn);
                                       }
                                     },
-                                    child: contLog.isLoading
-                                        ? Container(
-                                            width: 22,
-                                            height: 22,
-                                            child:
-                                                const CircularProgressIndicator(
-                                              color: const Color(0xFFFDAE2A),
-                                              strokeWidth: 3,
-                                            ),
-                                          )
-                                        : Text(
-                                            ' ENTRAR',
-                                            style: const TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w800),
-                                          )),
+                                    child:
+                                        // contLog.isLoading
+                                        //     ? Container(
+                                        //         width: 22,
+                                        //         height: 22,
+                                        //         child:
+                                        //             const CircularProgressIndicator(
+                                        //           color: const Color(0xFFFDAE2A),
+                                        //           strokeWidth: 3,
+                                        //         ),
+                                        //       )
+                                        //     :
+                                        Text(
+                                      ' ENTRAR',
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w800),
+                                    )),
                               ),
                             ],
                           );
