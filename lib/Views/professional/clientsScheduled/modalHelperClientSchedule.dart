@@ -103,6 +103,8 @@ class ModalHelper {
                             children: [
                               CircleAvatar(
                                 radius: 28,
+                                backgroundColor:
+                                    Colors.white, //fondo de la imagen
                                 child: ClipOval(
                                   child: Image.network(
                                     '${Env.apiEndpoint}/images/$urlImage',

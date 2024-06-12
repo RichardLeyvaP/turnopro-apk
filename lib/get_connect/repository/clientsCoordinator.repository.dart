@@ -65,6 +65,43 @@ class ClientsCoordinatorRepository extends GetConnect {
   //
   //
   //
+  Future reasignedClientTotem(branchId, professionalId) async {
+    List<ClientsScheduledModel> clientList = [];
+    try {
+      var url =
+          '${Env.apiEndpoint}/reasigned-client-totem?branch_id=$branchId&professional_id=$professionalId';
+
+      final response = await get(url);
+
+      print('url que viene en reasignedClientTotem:$url');
+      if (response.statusCode == null) {
+        print('response.statusCode:${response.statusCode}');
+        return {
+          "ConnectionIssues": true,
+        };
+      } else if (response.statusCode == 200) {
+        int res = response.body;
+        if (res == 1) {
+          return {
+            "result": true,
+          };
+        } else if (res == 0) {
+          return {
+            "result": false,
+          };
+        }
+      }
+
+      return {"result": 2};
+    } catch (e) {
+      print('response.statusCode:${e}');
+      print(e);
+    }
+  } //
+
+  //
+  //
+  //
   Future reasignedClient(reservationId, clientId, professionalId) async {
     List<ClientsScheduledModel> clientList = [];
     try {

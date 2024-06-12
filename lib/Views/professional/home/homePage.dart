@@ -318,6 +318,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               child: CircleAvatar(
                 radius: 25,
+                backgroundColor: Colors.white, //fondo de la imagen
                 child: ClipOval(
                   child: Image.network(
                     '${Env.apiEndpoint}/images/${logUser.imageUrlLoggedIn}',

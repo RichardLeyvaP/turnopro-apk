@@ -129,6 +129,8 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                 ),
                                 CircleAvatar(
                                   radius: 25,
+                                  backgroundColor:
+                                      Colors.white, //fondo de la imagen
                                   child: ClipOval(
                                     child: Image.network(
                                       '${Env.apiEndpoint}/images/${clientsController.urlImageTemporary}',
@@ -652,8 +654,8 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                                   clientsController
                                                                       .idClientTemporary,
                                                                   2);
-                                                          clientsController
-                                                              .fetchClientsScheduled(
+                                                          clientsController //todo cambioHOY /estaba antes fetchClientsScheduled
+                                                              .fetchClientsScheduledNew(
                                                                   loginController
                                                                       .idProfessionalLoggedIn,
                                                                   loginController

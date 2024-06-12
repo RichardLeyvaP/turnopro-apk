@@ -54,7 +54,7 @@ class _HomePageBodyState extends State<HomePageBody>
   bool get wantKeepAlive => true;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-  bool _isMounted = true;
+
 /*
   WebSocketChannel channel = IOWebSocketChannel.connect(
       'wss://api2.simplifies.cl/api/notification-professional?branch_id=15&professional_id=76');*/
@@ -199,10 +199,10 @@ class _HomePageBodyState extends State<HomePageBody>
 
     //INICIALIZANDO CONTROLES DE LOS RELOJES
 
-    // clientsScheduledController.animationControllerInitial = AnimationController(
-    //   vsync: this,
-    //   duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
-    // );
+    clientsScheduledController.animationControllerInitial = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
+    );
 
     //clientsScheduledController.animationControllerInitial!.forward();
     //clientsScheduledController.animationControllerInitial!.forward();
@@ -344,7 +344,7 @@ class _HomePageBodyState extends State<HomePageBody>
 
     clientsScheduledController.animationController1 = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 50),
+      duration: const Duration(seconds: 10),
     );
     clientsScheduledController.animationController2 = AnimationController(
       vsync: this,
@@ -362,6 +362,72 @@ class _HomePageBodyState extends State<HomePageBody>
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       llamadasTimer1();
+      _timer2 = Timer.periodic(Duration(seconds: 2), (timer) async {
+        print(
+            'Esto se ejecuta 2 segundos después de renderizar el cuadro--nuevo');
+        if (getTimeRemaining() < 3) {
+          // aaqui cancelar hasta que vea si rasigna o no
+          loginController.setCodigoQrValidAnt(0); //10 es en espera
+        }
+        if (loginController.idProfessionalLoggedIn != null &&
+            loginController.branchIdLoggedIn != null &&
+            (loginController.chargeUserLoggedIn == "Barbero" ||
+                (loginController.chargeUserLoggedIn ==
+                    "Barbero y Encargado"))) {
+          verifyingClockTimeActive();
+        }
+        if (loginController.segundoPlano == 3) {
+          print('cargando aqui-11');
+          print('..segundoPlano siii APAGANDO LLAMADA');
+          loginController.getSegundoPlano(1);
+        }
+        if (clientsScheduledController.activeModifyTime == true) {
+          print('cargando aqui-12');
+          //AQUI GARANTIZO QUE AUMENTE EL VALOR DEL RELOJ UNA SOLA VEZ Y QUE INSERTE EN LA DB 1 SOLA VEZ
+          clientsScheduledController.setActiveModifyTime(false);
+        }
+        if (clientsScheduledController.activeModifyTimeRest == true) {
+          print('cargando aqui-13');
+          //AQUI GARANTIZO QUE disminuya EL VALOR DEL RELOJ UNA SOLA VEZ Y QUE INSERTE EN LA DB 1 SOLA VEZ
+          clientsScheduledController.setActiveModifyTimeRest(false);
+          clientsScheduledController.clearModifyTimeSpecificRest();
+        }
+
+        if (loginController.ejecutadoEvent == false) {
+          print('cargando aqui-14');
+          // Se ejecutará después de que se haya construido el widget
+          //define que tipo de saludo dar dependiendo de la hora
+
+          if (clientsScheduledController.closeIesperado == true) {
+            print('-*-*-*-**>>>> si fui un sierre inesperado');
+            if (clientsScheduledController.item.isNotEmpty) {
+              loginController.setCodigoQrValid(1);
+            } else if (loginController.usserPermissionQr == -99 &&
+                loginController.usserPermissionQr == 0) {
+              loginController.setCodigoQrValid(null);
+              print(
+                  'id de mi puesto de trabajo 1 no esta en ningun puesto:null');
+            }
+          } else {
+            print('-*-*-*-**>>>> NOOO fui un sierre inesperado');
+          }
+          if (loginController.isLoggingInCharge == true) {
+            await loginController.setLoggingInCharge(false);
+          }
+
+          clientsScheduledController.setCloseIesperado(false);
+          clientsScheduledController.clockChanges(false);
+          loginController.ejecutado_(true);
+          clientsScheduledController.modifingTimeClose();
+        }
+        clientsScheduledController.setCloseIesperadoLogin(false);
+        if (loginController.isLoggingInCharge == true) {
+          print('cargando aqui-15');
+          await loginController.setLoggingInCharge(false);
+        }
+
+        clientsScheduledController.setCloseIesperado(false);
+      });
 
       // print(
     });
@@ -376,7 +442,7 @@ class _HomePageBodyState extends State<HomePageBody>
     clientsScheduledController.animationController3!.dispose();
     clientsScheduledController.animationController4!.dispose();
     // channel.sink.close();
-    _isMounted = false;
+
     _timer1?.cancel();
 
     super.dispose();
@@ -396,9 +462,7 @@ class _HomePageBodyState extends State<HomePageBody>
       print('estoy reiniciando el reloj inicial');
       bool isAnimating =
           clientsScheduledController.animationControllerInitial!.isAnimating;
-      if (!isAnimating &&
-          clientsScheduledController.animationControllerInitial != null &&
-          _isMounted) {
+      if (!isAnimating) {
         print('estoy reiniciando el reloj inicial--NO ESTABA ANIMADO');
 
         clientsScheduledController.animationControllerInitial!.reset();
@@ -878,17 +942,6 @@ class _HomePageBodyState extends State<HomePageBody>
           loginController.branchIdLoggedIn != null &&
           (loginController.chargeUserLoggedIn == "Barbero" ||
               (loginController.chargeUserLoggedIn == "Barbero y Encargado"))) {
-        //pregunto si no tinee a nadie en cola
-        //voy a ver si hay alguno para reasignarlo
-        print(
-            'Cliente reasignado correctamente ->ANTES DEL IF clientsScheduledListLengthTail:${clientsScheduledController.clientsScheduledListLength})');
-        if (clientsScheduledController.clientsScheduledListLength == 0) {
-          print(
-              'Cliente reasignado correctamente -> (clientsScheduledController.clientsScheduledListLengthTail > 0)');
-          clientCord.reasignedClientTottem(loginController.branchIdLoggedIn,
-              loginController.idProfessionalLoggedIn);
-        }
-
         //await Future.delayed(Duration(seconds: 1));
         //Buscar notificaciones
         //variables
@@ -899,13 +952,6 @@ class _HomePageBodyState extends State<HomePageBody>
 
         notiController.professionalBranchNotifQueque(
             idBranch, idProfe, type, msj);
-        if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
-          await notiController.fetchNotificationList(
-              loginController.branchIdLoggedIn,
-              loginController.idProfessionalLoggedIn,
-              'Encargado',
-              'Cart home');
-        }
 
         //lo que llamaba el timer 2
         print('llamada timer 2 - 11segundos');
@@ -1049,71 +1095,6 @@ class _HomePageBodyState extends State<HomePageBody>
     //AQUI REVISO SI HAY ALGUNO POR ACTIVAR LO ACTIVO
 
     super.build(context);
-
-    _timer2 = Timer.periodic(Duration(seconds: 2), (timer) async {
-      print(
-          'Esto se ejecuta 2 segundos después de renderizar el cuadro--nuevo');
-      if (getTimeRemaining() < 3) {
-        // aaqui cancelar hasta que vea si rasigna o no
-        loginController.setCodigoQrValidAnt(0); //10 es en espera
-      }
-      if (loginController.idProfessionalLoggedIn != null &&
-          loginController.branchIdLoggedIn != null &&
-          (loginController.chargeUserLoggedIn == "Barbero" ||
-              (loginController.chargeUserLoggedIn == "Barbero y Encargado"))) {
-        verifyingClockTimeActive();
-      }
-      if (loginController.segundoPlano == 3) {
-        print('cargando aqui-11');
-        print('..segundoPlano siii APAGANDO LLAMADA');
-        loginController.getSegundoPlano(1);
-      }
-      if (clientsScheduledController.activeModifyTime == true) {
-        print('cargando aqui-12');
-        //AQUI GARANTIZO QUE AUMENTE EL VALOR DEL RELOJ UNA SOLA VEZ Y QUE INSERTE EN LA DB 1 SOLA VEZ
-        clientsScheduledController.setActiveModifyTime(false);
-      }
-      if (clientsScheduledController.activeModifyTimeRest == true) {
-        print('cargando aqui-13');
-        //AQUI GARANTIZO QUE disminuya EL VALOR DEL RELOJ UNA SOLA VEZ Y QUE INSERTE EN LA DB 1 SOLA VEZ
-        clientsScheduledController.setActiveModifyTimeRest(false);
-        clientsScheduledController.clearModifyTimeSpecificRest();
-      }
-
-      if (loginController.ejecutadoEvent == false) {
-        print('cargando aqui-14');
-        // Se ejecutará después de que se haya construido el widget
-        //define que tipo de saludo dar dependiendo de la hora
-
-        if (clientsScheduledController.closeIesperado == true) {
-          print('-*-*-*-**>>>> si fui un sierre inesperado');
-          if (clientsScheduledController.item.isNotEmpty) {
-            loginController.setCodigoQrValid(1);
-          } else if (loginController.usserPermissionQr == -99 &&
-              loginController.usserPermissionQr == 0) {
-            loginController.setCodigoQrValid(null);
-            print('id de mi puesto de trabajo 1 no esta en ningun puesto:null');
-          }
-        } else {
-          print('-*-*-*-**>>>> NOOO fui un sierre inesperado');
-        }
-        if (loginController.isLoggingInCharge == true) {
-          await loginController.setLoggingInCharge(false);
-        }
-
-        clientsScheduledController.setCloseIesperado(false);
-        clientsScheduledController.clockChanges(false);
-        loginController.ejecutado_(true);
-        clientsScheduledController.modifingTimeClose();
-      }
-      clientsScheduledController.setCloseIesperadoLogin(false);
-      if (loginController.isLoggingInCharge == true) {
-        print('cargando aqui-15');
-        await loginController.setLoggingInCharge(false);
-      }
-
-      clientsScheduledController.setCloseIesperado(false);
-    });
 
     return GetBuilder<ClientsScheduledController>(
         builder: (clientsScheduledController) {
@@ -1720,7 +1701,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                 ),
                               ],
                             )
-                          : const Text('No hay clientes en cola.',
+                          : const Text('No hay clientes en cola',
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 16,
@@ -2077,8 +2058,6 @@ class _HomePageBodyState extends State<HomePageBody>
                             //AQUI VEO SI YA ESCANEO EL CODIGO QR Y ESTA EN EL LOCAL
                             if (loginController.codigoQrValid() == true &&
                                 loginController.usserPermissionQrAntes == 1) {
-                              clientsScheduledControllerE
-                                  .setBoolFilterShowNext(false);
                               int resulButton = 0;
                               resulButton = loginController.handleButtonClick(
                                   clientsScheduledControllerE
@@ -2087,10 +2066,11 @@ class _HomePageBodyState extends State<HomePageBody>
                                 //aqui manda aceptar, es decir atender este cliente
                                 //aqui intento hacer que cuando acepte no ce vea el siguiente en la lista
                                 // nunca a no ser que luego lo ponga en true porque tenga services simultaneos
-
+                                clientsScheduledControllerE
+                                    .setBoolFilterShowNext(false);
                                 //
-                                clientsScheduledControllerE.clientsWaiting(
-                                    false); //este es para saber si hay algun cliente esperando para mandar la notificación
+                                clientsScheduledControllerE
+                                    .clientsWaiting(false);
                                 // detengo el timer de 2 minutos
                                 clientsScheduledControllerE
                                     .animationControllerInitial!
@@ -2204,7 +2184,22 @@ class _HomePageBodyState extends State<HomePageBody>
                     ],
                   ),
                 )
-              : null,
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child:
+                      GetBuilder<LoginController>(builder: (controllerLogin) {
+                    return const Row(
+                      children: [
+                        Text('No hay clientes en cola',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                              color: Color.fromARGB(255, 82, 81, 81),
+                            )),
+                      ],
+                    );
+                  }),
+                ),
         ),
       );
     });
@@ -2245,15 +2240,13 @@ class _HomePageBodyState extends State<HomePageBody>
       onTap: () async {
         {
           // Comprobar si la animación está en pausa
-          // bool isPaused = _animationController.isAnimating && !_animationController.isCompleted;
-
-          bool isPaused = _animationController.isAnimating;
+          bool isPaused = _animationController.isAnimating &&
+              !_animationController.isCompleted;
           // Comprobar si la animación ha completado su duración
           bool isCompleted = _animationController.isCompleted;
           print('este relojo esta en:$isPaused');
 
-          // if (isPaused == true || isCompleted == true) {
-          if (isPaused == true || isCompleted) {
+          if (isPaused == true || isCompleted == true) {
             //aqui llamar un metodo que me diga que attend es, y verificar
             //VA A EJECUTARSE SI NO ESTA CON EL TECNICO
             int resulButton = 0;

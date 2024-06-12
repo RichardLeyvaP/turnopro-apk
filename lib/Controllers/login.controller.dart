@@ -94,8 +94,8 @@ class LoginController extends GetxController {
 
   DateTime h3min = DateTime.now();
 
-  void getUpdateTime(int tiempo, int clock) {
-    print('entrando en getUpdateTime');
+  void getUpdateTime(int tiempo, int clock, String place) {
+    print('entrando en getUpdateTime-> $place');
     int timeAlert = 0;
     int alert =
         0; //0 es que acabo el tiempo, 1 es que aun no llega los 3 minutos, y 2 es que ya le qeuda menos de 3 min
@@ -116,6 +116,8 @@ class LoginController extends GetxController {
     //aqui ya verifico los estados y ghuardo resultado
     if (clock == 1) //si fuera reloj 1
     {
+      print(
+          'EL TIEMPO ACTUAL DEL RELOJ duracionSend YA sera 1-:${getDateString(h3min)}');
       if (alert == 0) {
         //aqui retorna un String 'FIN'
         LocalStorage.prefs.setString('varSistemHr3min1', 'FIN');
@@ -130,6 +132,8 @@ class LoginController extends GetxController {
       }
     } else if (clock == 2) //si fuera reloj 2
     {
+      print(
+          'EL TIEMPO ACTUAL DEL RELOJ duracionSend YA sera 2-:${getDateString(h3min)}');
       if (alert == 0) {
         //aqui retorna un String 'FIN'
         LocalStorage.prefs.setString('varSistemHr3min2', 'FIN');
@@ -144,6 +148,8 @@ class LoginController extends GetxController {
       }
     } else if (clock == 3) //si fuera reloj 1
     {
+      print(
+          'EL TIEMPO ACTUAL DEL RELOJ duracionSend YA sera 3-:${getDateString(h3min)}');
       if (alert == 0) {
         //aqui retorna un String 'FIN'
         LocalStorage.prefs.setString('varSistemHr3min3', 'FIN');
@@ -158,6 +164,8 @@ class LoginController extends GetxController {
       }
     } else if (clock == 4) //si fuera reloj 1
     {
+      print(
+          'EL TIEMPO ACTUAL DEL RELOJ duracionSend YA sera 4-:${getDateString(h3min)}');
       if (alert == 0) {
         //aqui retorna un String 'FIN'
         LocalStorage.prefs.setString('varSistemHr3min4', 'FIN');
@@ -182,11 +190,13 @@ class LoginController extends GetxController {
       print('soy un switchValue:true');
       Get.offAllNamed('/HomeResponsible');
     } else {
+      setLoggingInCharge(true);
       switchValue = false;
       setIsLoggingIn(true);
       setLoggingInCharge(true);
       clientsScheduledController.setCloseIesperado(true);
       clientsScheduledController.setCloseIesperadoLogin(true);
+
       await clientsScheduledController.fetchClientsScheduled(
           idProfessionalLoggedIn, branchIdLoggedIn, 'setswitchValue');
       print('soy un switchValue:false');
@@ -283,7 +293,6 @@ class LoginController extends GetxController {
     } else {
       // Agregar el ID del botón a la lista de IDs presionados
       pressedButtonIds.add(buttonId);
-      update();
       // Aquí puedes poner el código que deseas ejecutar solo una vez
       print('Botón $buttonId presionado return 1');
       return 1;
@@ -869,6 +878,18 @@ class LoginController extends GetxController {
                 'id de mi puesto de trabajo estoy entrando a poner el codigo1 en :null');
           }
 
+          if (chargeUserLoggedIn == 'Encargado' ||
+              chargeUserLoggedIn == 'Coordinador') {
+            int entrada = 0;
+            entrada = await getEntradaPuesto(
+                idProfessionalLoggedIn!, branchIdLoggedIn!);
+            if (entrada == 1) {
+              setCodigoQrValid(1);
+            } else {
+              setCodigoQrValid(null);
+            }
+          }
+
           if (chargeUserLoggedIn == "Barbero" ||
               chargeUserLoggedIn == "Barbero y Encargado") {
             //aqui es para saber solamnete el tiempo del reloj inicial de los 3min
@@ -933,7 +954,7 @@ class LoginController extends GetxController {
       }
     } catch (e) {
       Get.back();
-      print('errorrrrrr:$e');
+      print('errorrrrrreeeeeeeeeeeeeeeee:$e');
     }
   }
 
@@ -1080,6 +1101,22 @@ class LoginController extends GetxController {
           'este s es el id del puesto idProfes despue sde llamar al puesto:$idPuesto');
 
       print('NO s ESTA EN NINGUN PUESTO EL PROFESIONAL');
+      return idPuesto;
+    } catch (e) {
+      print('Erroor:$e');
+      return -999;
+    }
+  }
+
+  Future<int> getEntradaPuesto(int idProfes, int branch) async {
+    try {
+      //INICIALIZANDO A NULL
+      int idPuesto = -99;
+      print('este s es el id del puesto idProfes:$idProfes');
+      idPuesto = await usuarioLg.getEntradaPuestoRepo(idProfes, branch);
+      print(
+          'este s es el id del puesto idProfes despue sde llamar al puesto:$idPuesto');
+
       return idPuesto;
     } catch (e) {
       print('Erroor:$e');

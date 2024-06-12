@@ -242,6 +242,8 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                                           ),
                                           child: CircleAvatar(
                                             radius: 25,
+                                            backgroundColor: Colors
+                                                .white, //fondo de la imagen
                                             child: ClipOval(
                                               child: Image.network(
                                                 '${Env.apiEndpoint}/images/${controllerCoord.imageLookCORD}',
@@ -392,6 +394,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                 children: [
                   CircleAvatar(
                     radius: 25,
+                    backgroundColor: Colors.white, //fondo de la imagen
                     child: ClipOval(
                       child: Image.network(
                         '${Env.apiEndpoint}/images/$imageUrl',

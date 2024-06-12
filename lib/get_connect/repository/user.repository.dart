@@ -271,6 +271,32 @@ class UserRepository extends GetConnect {
     }
   }
 
+  Future<int> getEntradaPuestoRepo(int idProfessional, int idBanch) async {
+    try {
+      print('este es el id del puesto222-idProfessional:$idProfessional');
+      var url =
+          '${Env.apiEndpoint}/record-show-professional?professional_id=$idProfessional&branch_id=$idBanch';
+
+      final response = await get(url);
+      print('este es el id del puesto333-response:$response');
+      print(
+          'este es el id del puesto333-response.statusCode:${response.statusCode}');
+      //print(response.body);
+      if (response.statusCode == 200) {
+        int intValue = int.parse(response.body);
+        print('este es el id del puesto333-return response:$intValue');
+
+        print('este es el id del puesto333-return intValue22:$intValue');
+        return intValue;
+      } else {
+        return -99;
+      }
+    } catch (e) {
+      print('Error:$e');
+      return -999;
+    }
+  }
+
   Future<int> getStateProfessional(int idProfessional) async {
     try {
       print('este es el id del puesto222-idProfessional:$idProfessional');

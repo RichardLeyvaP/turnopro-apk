@@ -193,6 +193,7 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                             left: 8, top: 8, bottom: 8, right: 4),
                         child: CircleAvatar(
                           radius: 25,
+                          backgroundColor: Colors.white, //fondo de la imagen
                           child: ClipOval(
                             child: Image.network(
                               '${Env.apiEndpoint}/images/${controllerclient.clientsColacionBranch[index].client_image}',
@@ -347,6 +348,7 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                         padding: const EdgeInsets.all(12.0),
                         child: CircleAvatar(
                           radius: 25,
+                          backgroundColor: Colors.white, //fondo de la imagen
                           child: ClipOval(
                             child: Image.network(
                               '${Env.apiEndpoint}/images/${controllerclient.clientsScheduledListBranch[index].client_image}',

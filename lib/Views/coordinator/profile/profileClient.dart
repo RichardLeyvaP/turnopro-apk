@@ -100,7 +100,8 @@ class _ProfileClientState extends State<ProfileClient> {
                                 Stack(children: [
                                   Container(
                                     child: CircleAvatar(
-                                      backgroundColor: Colors.transparent,
+                                      backgroundColor:
+                                          Colors.white, //fondo de la imagen
                                       radius: 45,
                                       child:
                                           //
@@ -786,6 +787,7 @@ class _ProfileClientState extends State<ProfileClient> {
                   // ),
                   CircleAvatar(
                     radius: 18,
+                    backgroundColor: Colors.white, //fondo de la imagen
                     child: ClipOval(
                       child: Image.network(
                         '${Env.apiEndpoint}/images/$imageUltimateBarber',

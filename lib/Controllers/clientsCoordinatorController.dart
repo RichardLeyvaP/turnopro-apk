@@ -321,6 +321,32 @@ class ClientsCoordinatorController extends GetxController {
     } else {
       return false;
     }
+  }
+
+  Future reasignedClientTottem(branchId, professionalId) async {
+    print(
+        'Cliente reasignado correctamente ->Entrando al método ---> reasignedClientTottem');
+    Map<String, dynamic> resultList =
+        await repository.reasignedClientTotem(branchId, professionalId);
+    print(resultList);
+    //verificando , si entra al if es problemas de coneccion
+    if (resultList.containsKey('ConnectionIssues') &&
+        resultList['ConnectionIssues'] == true) {
+      print(
+          'Cliente reasignado correctamente ->Problemas al conectarse con el servidor');
+    } else if (resultList.containsKey('result') &&
+        resultList['result'] == true) {
+      print(
+          'Cliente reasignado correctamente -> SIII desde reasignedClientTottem');
+      //
+    } else if (resultList.containsKey('result') &&
+        resultList['result'] == false) {
+      print(
+          'Cliente reasignado correctamente -> No habia cliente spara reasignar desde reasignedClientTottem');
+    } else {
+      print(
+          'Cliente reasignado correctamente -> NOOOO desde reasignedClientTottem');
+    }
   } //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
 
   //ESTA VARIABLE HAY QUE LLENARLA DIRECTAMENTE DE LA DB
@@ -822,26 +848,26 @@ class ClientsCoordinatorController extends GetxController {
   //   }
   // }
 
-  Future<void> filterShowNext() async {
-    try {
-      final LoginController controllerLogin = Get.find<LoginController>();
-      int? idBranch = controllerLogin.branchIdLoggedIn;
-      int? idProfessional = controllerLogin.idProfessionalLoggedIn;
+  // Future<void> filterShowNext() async {
+  //   try {
+  //     final LoginController controllerLogin = Get.find<LoginController>();
+  //     int? idBranch = controllerLogin.branchIdLoggedIn;
+  //     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
 
-      bool resultTypeService =
-          await repository.typeOfService(idProfessional, idBranch);
-      if (resultTypeService) {
-        print('************** true');
-        boolFilterShowNext = true;
-      } else {
-        print('************** false');
-        boolFilterShowNext = false;
-      }
-      update();
-    } catch (e) {
-      print(e);
-    }
-  }
+  //     bool resultTypeService =
+  //         await repository.typeOfService(idProfessional, idBranch);
+  //     if (resultTypeService) {
+  //       print('************** true');
+  //       boolFilterShowNext = true;
+  //     } else {
+  //       print('************** false');
+  //       boolFilterShowNext = false;
+  //     }
+  //     update();
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   Future<void> setTimeClock(reservationId, timeClock, detached, clock) async {
     try {

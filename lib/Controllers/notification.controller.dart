@@ -473,19 +473,20 @@ class NotificationController extends GetxController {
       print('Error al obtener la lista de notificaciones: $e');
     } finally {
       print(
-          'Error al obtener la lista de notificaciones: noUpdate == Timer10segun $noUpdate');
+          'Obtener la lista de notificaciones: noUpdate == Timer10segun $noUpdate');
       if (noUpdate == false) {
         update();
       }
       controllerLogin.setIsLoadingFor(false);
     }
   }
+
   //
   //
   //
   //
 //todo/****AQUI LO DE LAS NOTIFICACIONES LOCALES****/
-
+//tecnicooooooo
   Future<void> fetchNotificationList(idBranch, idProfe, type, msj) async {
     print('qwerc SII mandar ->NOTIFICACIONES-$msj');
     print('12345llamada timer estoy en CAntidad de Notificaciones-$type');
@@ -551,6 +552,20 @@ class NotificationController extends GetxController {
             print('cargando aqui-16 para sacar del puesto y la apk-1');
 
             updateOutAcept(element.id);
+          }
+          if (element.state == 3 &&
+              element.tittle ==
+                  'Solicitud de Eliminación Rechazada') //pongo a null el qr
+          {
+            updateNotifications2(idBranch, idProfe, element.id);
+            controllerLogin.setCodigoQrValid(1);
+          }
+          if (element.state == 3 &&
+              element.tittle ==
+                  'Aceptada Eliminación de Cliente') //pongo a null el qr
+          {
+            updateNotifications2(idBranch, idProfe, element.id);
+            controllerLogin.setCodigoQrValid(1);
           }
         }
 

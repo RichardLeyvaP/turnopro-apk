@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/service.controller.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:turnopro_apk/Utility/utils.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/env.dart';
 //import 'package:turnopro_apk/Routes/index.dart';
 
@@ -25,6 +27,7 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
 
   final ShoppingCartController controllerShoppingCart =
       Get.find<ShoppingCartController>();
+  final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
 
   final LoginController controllerLogin = Get.find<LoginController>();
   final ClientsScheduledController clientsController =
@@ -502,32 +505,97 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                     ),
                                     onPressed: () async {
                                       String s = '';
+                                      Get.dialog(
+                                        const Center(
+                                          child: Material(
+                                            color: Colors.transparent,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                CircularProgressIndicator(
+                                                  color: Color(0xFFFDAE2A),
+                                                ),
+                                                SizedBox(height: 16),
+                                                Text('Agregando servicios...',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        barrierDismissible: false,
+                                      ); //Get.back();
                                       if (_.selectServiceNew.isNotEmpty) {
                                         int resp = await shpCont
                                             .updateShoppingCartValueSerNew(
                                                 _.selectServiceNew);
-                                        if (resp == 1) {
-                                          s = 's';
+                                        Get.back(); //quito el cargando
+                                        if (resp >= 1) {
+                                          if (resp > 1) {
+                                            s = 's';
+                                          }
+                                          Get.snackbar(
+                                            'Mensaje',
+                                            'Servicio$s agregado$s correctamente',
+                                            duration: const Duration(
+                                                milliseconds: 2500),
+                                            backgroundColor:
+                                                const Color.fromARGB(
+                                                    118, 255, 255, 255),
+                                            showProgressIndicator: true,
+                                            progressIndicatorBackgroundColor:
+                                                const Color.fromARGB(
+                                                    255, 203, 205, 209),
+                                            progressIndicatorValueColor:
+                                                const AlwaysStoppedAnimation(
+                                                    Color(0xFFFDAE2A)),
+                                            overlayBlur: 3,
+                                          );
+                                        } else if (resp < 0 &&
+                                            resp != -990099) {
+                                          Get.snackbar(
+                                            'Mensaje',
+                                            'Conexión lenta al agregarse (${resp * -1}) servicios',
+                                            duration: const Duration(
+                                                milliseconds: 2500),
+                                            backgroundColor:
+                                                const Color.fromARGB(
+                                                    118, 255, 255, 255),
+                                            showProgressIndicator: true,
+                                            progressIndicatorBackgroundColor:
+                                                const Color.fromARGB(
+                                                    255, 203, 205, 209),
+                                            progressIndicatorValueColor:
+                                                const AlwaysStoppedAnimation(
+                                                    Color(0xFFFDAE2A)),
+                                            overlayBlur: 3,
+                                          );
+                                          //aqui mando al home ya que hubo problemas al insertar
+                                          loginController.inTheClock(false);
+                                          pagesConfigC.back();
+                                        } else if (resp == -990099) {
+                                          Get.snackbar(
+                                            '!Alerta',
+                                            'Problema al agregar los servicios,inténtelo de nuevo',
+                                            duration: const Duration(
+                                                milliseconds: 2500),
+                                            backgroundColor:
+                                                const Color.fromARGB(
+                                                    118, 255, 255, 255),
+                                            showProgressIndicator: true,
+                                            progressIndicatorBackgroundColor:
+                                                const Color.fromARGB(
+                                                    255, 203, 205, 209),
+                                            progressIndicatorValueColor:
+                                                const AlwaysStoppedAnimation(
+                                                    Color(0xFFFDAE2A)),
+                                            overlayBlur: 3,
+                                          );
+                                          //aqui mando al home ya que hubo problemas al insertar
+                                          loginController.inTheClock(false);
+                                          pagesConfigC.back();
                                         }
 
-                                        print(
-                                            'memsj perfecto agregado los servicios');
-                                        Get.snackbar(
-                                          'Mensaje',
-                                          'Servicio$s agregado$s correctamente',
-                                          duration: const Duration(
-                                              milliseconds: 2500),
-                                          backgroundColor: const Color.fromARGB(
-                                              118, 255, 255, 255),
-                                          showProgressIndicator: true,
-                                          progressIndicatorBackgroundColor:
-                                              const Color.fromARGB(
-                                                  255, 203, 205, 209),
-                                          progressIndicatorValueColor:
-                                              const AlwaysStoppedAnimation(
-                                                  Color(0xFFFDAE2A)),
-                                          overlayBlur: 3,
-                                        );
                                         _.clearSelectServiceNew();
                                       } else {
                                         Get.snackbar(

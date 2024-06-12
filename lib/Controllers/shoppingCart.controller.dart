@@ -31,6 +31,7 @@ class ShoppingCartController extends GetxController {
   double totalPrice = 0.0;
   int productListLength = 0;
   int serviceListLength = 0;
+  int serviceListLengthCant = 0;
   int shoppingCart = 0;
   int responseId = 0;
   bool load_request = false;
@@ -44,6 +45,17 @@ class ShoppingCartController extends GetxController {
 
   void setButtonPress(value) {
     buttonPress = value;
+    update();
+  }
+
+  void setServiceSelectCant(int value) {
+    if (value == 0) {
+      // vaciar
+      serviceListLengthCant = 0;
+    } else {
+      serviceListLengthCant = serviceListLengthCant + value;
+    }
+
     update();
   }
 
@@ -221,24 +233,28 @@ class ShoppingCartController extends GetxController {
     }
   }*/
 
-  Future<void> _addOrderCartList(car_id, product_id, service_id, type) async {
+  Future<int> _addOrderCartList(car_id, product_id, service_id, type) async {
     try {
-      responseId = await productRepository.addOrderCartList(
+      int res = await productRepository.addOrderCartList(
           car_id, product_id, service_id, type);
       print('internetError responseId:$responseId');
-      if (responseId != -990099) {
+      if (res != -990099) {
         print('agregar responseId');
-        productCarr.add(responseId);
+        productCarr.add(res);
         internetError = 0;
+        update();
+        return 0;
       } else {
         print('internetError ');
         internetError = -99;
+        update();
+        return -99;
       }
-      update();
     } catch (e) {
       internetError = -99;
       print('error:$e');
       update();
+      return -990099;
     }
   }
 
@@ -295,32 +311,48 @@ class ShoppingCartController extends GetxController {
   //                    'service',
   //                 _.services[index].name);
   //(priceService, id, car_id, type, servicioName)
-  Future<int> updateShoppingCartValueSerNew(selectServiceNew) async {
+  Future<int> updateShoppingCartValueSerNew(
+      List<ServiceModel> selectServiceNew) async {
     try {
       int durationService = 0;
       final ClientsScheduledController clientsController =
           Get.find<ClientsScheduledController>();
+      int cant = 0;
       for (ServiceModel service in selectServiceNew) {
         // Llama al método _addOrderCartList con los parámetros necesarios
         idServiceCart.add(service.name);
-        _addOrderCartList(carIdClienteSelect, 0, service.id,
+        int resul = await _addOrderCartList(carIdClienteSelect, 0, service.id,
             'service'); //todo REVISAR TIENE PROBLEMA
         //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
-        getTotalServicesProduct_Sum('service', service.price_service);
-        shoppingCart += 1;
-        serviceListLength = selectserviceCart.length;
-        print('memsj Servicio guardado exitosamente: ${service.id}');
-        durationService += service.duration_service;
-        update();
+        if (resul == 0) //todo esta bien si retorna 0
+        {
+          cant++;
+          getTotalServicesProduct_Sum('service', service.price_service);
+          shoppingCart += 1;
+          serviceListLength = selectserviceCart.length;
+          print('memsj Servicio guardado exitosamente: ${service.id}');
+          durationService += service.duration_service;
+        }
+        // Pausa por 200 ms entre cada solicitud para evitar sobrecargar el servidor
+        await Future.delayed(const Duration(milliseconds: 200));
+      }
+      if (cant == selectServiceNew.length) {
+        print('todos los servicios se insertaron correctamente');
+      } else {
+        cant = cant - selectServiceNew.length;
+        print(
+            'todos los servicios NO se insertaron correctamente faltaron: $cant por insertarse');
       }
       print('memsj durationService: $durationService');
-      clientsController.modifingTime((durationService));
 
-      return 1;
+      clientsController.modifingTime((durationService));
+      return cant;
     } catch (e) {
       print('memsj Error al guardar el servicio: $e');
-      return 0;
+      return -990099;
       // Manejar el error según sea necesario
+    } finally {
+      update();
     }
   }
 

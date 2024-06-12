@@ -10,6 +10,7 @@ import 'package:turnopro_apk/Models/branch_model.dart';
 import 'package:turnopro_apk/Models/coexistence_model.dart';
 import 'package:turnopro_apk/Models/professional_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/env.dart';
 import 'package:http/http.dart' as http;
 
@@ -128,21 +129,17 @@ class CoexistenceRepository extends GetConnect {
               ProfessionalModel.fromJson(jsonEncode(professional));
           //AQUI SOLO COJO QUE NO SEAN RESPONSABLES
           //todo cambiar por el nombre del cargo YASMANY TIENE QUE MANDARLO
-          if (u.charge_id == 'Barbero' || u.charge_id == 'Tecnico') {
-            //charge_id=1 es un BARBERO
-            //charge_id=7 es un TECNICO
+          if (loginController.chargeUserLoggedIn == "Coordinador") {
+            //puede modificar las reglas de todos
+            if (u.charge_id == 'Barbero' ||
+                u.charge_id == 'Tecnico' ||
+                u.charge_id == 'Barbero y Encargado' ||
+                u.charge_id == 'Encargado') {
+              professionalList.add(u);
+            }
+          } else if (u.charge_id == 'Barbero' || u.charge_id == 'Tecnico') {
             professionalList.add(u);
           }
-          //asi esra como estaba antes pero me devolvia a los Barberos responsables
-          //  if ((u.charge_id == 'Barbero' ||
-          //         u.charge_id == 'Tecnico' ||
-          //         u.charge_id == 'Barbero y Encargado') &&
-          //     (u.id != controllerLogin.idProfessionalLoggedIn)) {
-          //   //charge_id=1 es un BARBERO
-          //   //charge_id=7 es un TECNICO
-          //   professionalList.add(u);
-          // }
-          //asi esra como estaba antes pero me devolvia a los Barberos responsables
         }
         print('*************coexistenceList.length*************');
         print(professionalList.length);
@@ -309,6 +306,15 @@ class CoexistenceRepository extends GetConnect {
 //   }
 
 //TODO METODO NUEVO CON 3 REINTENTOS
+  int parseToInt(dynamic value) {
+    if (value is int) {
+      return value;
+    } else if (value is double) {
+      return value.toInt();
+    } else {
+      throw Exception('Invalid type for int conversion');
+    }
+  }
 
   Future<Map<String, dynamic>> fetchEstadistPagos(
       professional_id, branch_id, charge) async {
@@ -336,22 +342,40 @@ class CoexistenceRepository extends GetConnect {
         final List<dynamic> payments = response.body['payments'];
 
 // Ejemplo: acceder a las demás variables
-        final int pendiente = jsonResponse['pendiente'];
-        final int pagado = jsonResponse['pagado'];
-        final int clientAtended = jsonResponse['clientAtended'];
-        final int servCant = jsonResponse['servCant'];
-        final int amountGenerate = jsonResponse['amountGenerate'];
-        final int propina80 = jsonResponse['propina80'];
-        final int metaCant = jsonResponse['metaCant'];
-        final int metaAmount = jsonResponse['metaAmount'];
-        final int retention = jsonResponse['retention'];
-        final int winnerRetention = jsonResponse['winnerRetention'];
-        final int winnerAmount = jsonResponse['winnerAmount'];
-        final int productCant = jsonResponse['productCant'];
-        final int productAmount = jsonResponse['productAmount'];
-        final int productBonoCant = jsonResponse['productBonoCant'];
-        final int servAmount = jsonResponse['servAmount'];
-        final int servBonoCant = jsonResponse['servBonoCant'];
+        // final int pendiente = jsonResponse['pendiente'];
+        // final int pagado = jsonResponse['pagado'];
+        // final int clientAtended = jsonResponse['clientAtended'];
+        // final int servCant = jsonResponse['servCant'];
+        // final int amountGenerate = jsonResponse['amountGenerate'];
+        // final int propina80 = jsonResponse['propina80'];
+        // final int metaCant = jsonResponse['metaCant'];
+        // final int metaAmount = jsonResponse['metaAmount'];
+        // final int retention = jsonResponse['retention'];
+        // final int winnerRetention = jsonResponse['winnerRetention'];
+        // final int winnerAmount = jsonResponse['winnerAmount'];
+        // final int productCant = jsonResponse['productCant'];
+        // final int productAmount = jsonResponse['productAmount'];
+        // final int productBonoCant = jsonResponse['productBonoCant'];
+        // final int servAmount = jsonResponse['servAmount'];
+        // final int servBonoCant = jsonResponse['servBonoCant'];
+        // Asignaciones con conversión
+        final int pendiente = parseToInt(jsonResponse['pendiente']);
+        final int pagado = parseToInt(jsonResponse['pagado']);
+        final int clientAtended = parseToInt(jsonResponse['clientAtended']);
+        final int servCant = parseToInt(jsonResponse['servCant']);
+        final int amountGenerate = parseToInt(jsonResponse['amountGenerate']);
+        final int propina80 = parseToInt(jsonResponse['propina80']);
+        final int metaCant = parseToInt(jsonResponse['metaCant']);
+        final int metaAmount = parseToInt(jsonResponse['metaAmount']);
+        final int retention = parseToInt(jsonResponse['retention']);
+        final int winnerRetention = parseToInt(jsonResponse['winnerRetention']);
+        final int winnerAmount = parseToInt(jsonResponse['winnerAmount']);
+        final int productCant = parseToInt(jsonResponse['productCant']);
+        final int productAmount = parseToInt(jsonResponse['productAmount']);
+        final int productBonoCant = parseToInt(jsonResponse['productBonoCant']);
+        final int servAmount = parseToInt(jsonResponse['servAmount']);
+        final int servBonoCant = parseToInt(jsonResponse['servBonoCant']);
+
         for (int i = 0; i < payments.length; i++) {
           final Map<String, dynamic> branch = payments[i];
           print(
@@ -361,10 +385,10 @@ class CoexistenceRepository extends GetConnect {
           PaymentModel u = PaymentModel.fromJson(branch);
 
           // Agregar la instancia a la lista branchProf
-          if (u.type == 'Adelanto') {
-            //solamnete mostrar que sea adelando(Pedido por el cliente)
-            branchProf.add(u);
-          }
+          // if (u.type == 'Adelanto') {
+          //solamnete mostrar que sea adelando(Pedido por el cliente)
+          branchProf.add(u);
+          //}
         }
 
         print(

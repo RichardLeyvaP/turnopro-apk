@@ -1099,6 +1099,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                       children: [
                                         CircleAvatar(
                                           radius: 25,
+                                          backgroundColor:
+                                              Colors.white, //fondo de la imagen
                                           child: ClipOval(
                                             child: Image.network(
                                               '${Env.apiEndpoint}/images/$imageClient',
@@ -1288,6 +1290,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                 .clientsAttendedTechnical!
                                                 .reservation_id,
                                             11);
+                                    //aqui limpiar la variable que no deja cojer doble al cliente
+                                    loginController.pressedButtonIdsTec.clear();
                                     //reseteo y lo dejo en punta para el proximo cliente
                                     _animationTechnicalController1!.stop();
                                     _animationTechnicalController1!.reset();

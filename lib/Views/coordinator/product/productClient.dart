@@ -219,6 +219,7 @@ class _ProductClientState extends State<ProductClient> {
                         padding: const EdgeInsets.all(8.0),
                         child: CircleAvatar(
                           radius: 25,
+                          backgroundColor: Colors.white, //fondo de la imagen
                           child: CachedNetworkImage(
                             maxHeightDiskCache: 100,
                             maxWidthDiskCache: 100,

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/Utility/textTruncate.dart';
 import 'package:turnopro_apk/Utility/utils.dart';
 import 'package:turnopro_apk/Views/common/topPage.dart';
 import 'package:turnopro_apk/env.dart';
@@ -260,9 +261,10 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                             crossAxisAlignment:
                                                                                 CrossAxisAlignment.start,
                                                                             children: [
-                                                                              Text(
-                                                                                _.estadist1[index].clientName.toString(),
-                                                                                style: const TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w700),
+                                                                              TruncatedText(
+                                                                                text: _.estadist1[index].clientName.toString(),
+                                                                                maxLength: 17,
+                                                                                styleText: const TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w700),
                                                                               ),
                                                                               Text(
                                                                                 _.estadist1[index].date.toString(),
@@ -395,7 +397,7 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                               height: (MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  (0.58 +
+                                                  (0.514 +
                                                       (0.03 *
                                                           textLines))), //aqui por cada linea que tenga le aumento 0.03 de tamaño
                                               width: (MediaQuery.of(context)
@@ -476,6 +478,7 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                             child:
                                                                                 CircleAvatar(
                                                                               radius: 20,
+                                                                              backgroundColor: Colors.white, //fondo de la imagen
                                                                               child: ClipOval(
                                                                                 child: Image.network(
                                                                                   '${Env.apiEndpoint}/images/${_.estadist1[index].client_image}',
@@ -540,9 +543,10 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                             crossAxisAlignment:
                                                                                 CrossAxisAlignment.start,
                                                                             children: [
-                                                                              Text(
-                                                                                _.estadist1[index].clientName.toString(),
-                                                                                style: const TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w700),
+                                                                              TruncatedText(
+                                                                                text: _.estadist1[index].clientName.toString(),
+                                                                                maxLength: 17,
+                                                                                styleText: const TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w700),
                                                                               ),
                                                                               Text(
                                                                                 _.estadist1[index].date.toString(),
@@ -822,65 +826,6 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                         formatNumber(_
                                                                             .estadist1[index]
                                                                             .totalServices
-                                                                            .toString()),
-
-                                                                        maxLines:
-                                                                            2, // Limita el texto a 2 líneas
-                                                                        overflow:
-                                                                            TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                16,
-                                                                            color: Color.fromARGB(
-                                                                                148,
-                                                                                0,
-                                                                                0,
-                                                                                0),
-                                                                            fontWeight:
-                                                                                FontWeight.w700),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    children: [
-                                                                      Text(
-                                                                          'Total en productos'),
-                                                                      Text(
-                                                                        formatNumber(_
-                                                                            .estadist1[index]
-                                                                            .totalProducts
-                                                                            .toString()),
-                                                                        maxLines:
-                                                                            2, // Limita el texto a 2 líneas
-                                                                        overflow:
-                                                                            TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                16,
-                                                                            color: Color.fromARGB(
-                                                                                148,
-                                                                                0,
-                                                                                0,
-                                                                                0),
-                                                                            fontWeight:
-                                                                                FontWeight.w700),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    children: [
-                                                                      Text(
-                                                                          'Total General'),
-                                                                      Text(
-                                                                        formatNumber(_
-                                                                            .estadist1[index]
-                                                                            .totalGeneral
                                                                             .toString()),
 
                                                                         maxLines:

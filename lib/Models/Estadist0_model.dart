@@ -16,8 +16,8 @@ class Estadist0Model {
   final int? amountGenerate;
   final int? totalRetention;
   final int? metacant;
-  final int? metaamount; //duda si es entero o double
-  final int? winPay; //duda si es entero o double
+  final int? metaamount;
+  final int? winPay;
 
   Estadist0Model({
     required this.professional_id,
@@ -47,17 +47,35 @@ class Estadist0Model {
       day_of_week: json['day_of_week'],
       attendedClient: json['attendedClient'],
       services: json['services'],
-      totalGeneral: json['totalGeneral'],
-      totalServices: json['totalServices'],
-      totalProducts: json['totalProducts'],
-      tips: json['tips'],
-      tips80: json['tips80'],
+      totalGeneral: (json['totalGeneral'] is int)
+          ? json['totalGeneral']
+          : (json['totalGeneral'] as double?)?.toInt(),
+      totalServices: (json['totalServices'] is int)
+          ? json['totalServices']
+          : (json['totalServices'] as double?)?.toInt(),
+      totalProducts: (json['totalProducts'] is int)
+          ? json['totalProducts']
+          : (json['totalProducts'] as double?)?.toInt(),
+      tips: (json['tips'] is int)
+          ? json['tips']
+          : (json['tips'] as double?)?.toInt(),
+      tips80: (json['tips80'] is int)
+          ? json['tips80']
+          : (json['tips80'] as double?)?.toInt(),
       clientAleator: json['clientAleator'],
-      amountGenerate: json['amountGenerate'],
-      totalRetention: json['totalRetention'],
+      amountGenerate: (json['amountGenerate'] is int)
+          ? json['amountGenerate']
+          : (json['amountGenerate'] as double?)?.toInt(),
+      totalRetention: (json['totalRetention'] is int)
+          ? json['totalRetention']
+          : (json['totalRetention'] as double?)?.toInt(),
       metacant: json['metaCant'],
-      metaamount: json['metaamount'],
-      winPay: json['winPay'],
+      metaamount: (json['metaamount'] is int)
+          ? json['metaamount']
+          : (json['metaamount'] as double?)?.toInt(),
+      winPay: (json['winPay'] is int)
+          ? json['winPay']
+          : (json['winPay'] as double?)?.toInt(),
     );
   }
 

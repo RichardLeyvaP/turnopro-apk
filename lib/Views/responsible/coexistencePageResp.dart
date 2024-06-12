@@ -123,6 +123,8 @@ class _CoexistencePageResponsibleState
                                   children: [
                                     CircleAvatar(
                                       radius: 20,
+                                      backgroundColor:
+                                          Colors.white, //fondo de la imagen
                                       child: ClipOval(
                                         child: Image.network(
                                           '${Env.apiEndpoint}/images/${profesional.image_url}',

@@ -469,6 +469,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                         padding: const EdgeInsets.all(12.0),
                         child: CircleAvatar(
                           radius: 25,
+                          backgroundColor: Colors.white, //fondo de la imagen
                           child: ClipOval(
                             child: Image.network(
                               '${Env.apiEndpoint}/images/${controllerclient.clientsScheduledListBranch[index].client_image}',

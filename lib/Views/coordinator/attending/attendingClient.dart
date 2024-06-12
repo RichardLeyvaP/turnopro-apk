@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
+import 'package:turnopro_apk/Utility/textTruncate.dart';
 import 'package:turnopro_apk/Views/common/topPage.dart';
 import 'package:turnopro_apk/env.dart';
 import 'package:intl/intl.dart';
@@ -186,6 +187,7 @@ class _AttendingClientState extends State<AttendingClient> {
                             left: 8, top: 8, bottom: 8, right: 4),
                         child: CircleAvatar(
                           radius: 25,
+                          backgroundColor: Colors.white, //fondo de la imagen
                           child: ClipOval(
                             child: Image.network(
                               '${Env.apiEndpoint}/images/${controllerclient.clientsColacionBranch[index].client_image}',
@@ -347,6 +349,7 @@ class _AttendingClientState extends State<AttendingClient> {
                             left: 8, top: 8, bottom: 8, right: 4),
                         child: CircleAvatar(
                           radius: 25,
+                          backgroundColor: Colors.white, //fondo de la imagen
                           child: ClipOval(
                             child: Image.network(
                               '${Env.apiEndpoint}/images/${controllerclient.clientAttendBranch[index].client_image}',
@@ -445,7 +448,17 @@ class _AttendingClientState extends State<AttendingClient> {
                                                 255, 43, 44, 49),
                                             size: 22,
                                           ),
-                                          Text(
+                                          TruncatedText(
+                                            text: controllerclient
+                                                .clientAttendBranch[index]
+                                                .client_name!,
+                                            maxLength: 17,
+                                            styleText: const TextStyle(
+                                                fontSize: 15,
+                                                height: 1,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          /*  Text(
                                             controllerclient
                                                 .clientAttendBranch[index]
                                                 .client_name!,
@@ -454,7 +467,7 @@ class _AttendingClientState extends State<AttendingClient> {
                                                 fontSize: 15,
                                                 height: 1,
                                                 fontWeight: FontWeight.w500),
-                                          ),
+                                          ),*/
                                         ],
                                       ),
                                       Padding(
@@ -481,7 +494,17 @@ class _AttendingClientState extends State<AttendingClient> {
                                             255, 43, 44, 49),
                                         size: 22,
                                       ),
-                                      Text(
+                                      TruncatedText(
+                                        text: controllerclient
+                                            .clientAttendBranch[index]
+                                            .professional_name!,
+                                        maxLength: 25,
+                                        styleText: const TextStyle(
+                                            fontSize: 15,
+                                            height: 1,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      /* Text(
                                         controllerclient
                                             .clientAttendBranch[index]
                                             .professional_name!,
@@ -490,7 +513,7 @@ class _AttendingClientState extends State<AttendingClient> {
                                             fontSize: 15,
                                             height: 1,
                                             fontWeight: FontWeight.w500),
-                                      ),
+                                      ),*/
                                     ],
                                   ),
                                 ],

@@ -188,85 +188,101 @@ class ShoppingCartPage extends StatelessWidget {
                                                               MainAxisAlignment
                                                                   .start,
                                                           children: [
-                                                            CircleAvatar(
-                                                              radius: 30,
-                                                              child: ClipOval(
-                                                                child: Image
-                                                                    .network(
-                                                                  '${Env.apiEndpoint}/images/${controllerShoppingCart.selectserviceCart[index].image_service}',
-                                                                  fit: BoxFit
-                                                                      .cover, // Ajusta la imagen para cubrir completamente el área
+                                                            Container(
+                                                              width:
+                                                                  50, // Diameter of the CircleAvatar
+                                                              height:
+                                                                  50, // Diameter of the CircleAvatar
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                border:
+                                                                    Border.all(
+                                                                  color: Colors
+                                                                      .grey, // Border color
                                                                   width:
-                                                                      50, // Ancho deseado de la imagen dentro del círculo
-                                                                  height: 50,
-                                                                  loadingBuilder: (BuildContext
-                                                                          context,
-                                                                      Widget
-                                                                          child,
-                                                                      ImageChunkEvent?
-                                                                          loadingProgress) {
-                                                                    if (loadingProgress ==
-                                                                        null) {
-                                                                      // Si la imagen se carga correctamente, mostramos la imagen
-                                                                      return child;
-                                                                    } else {
-                                                                      // Si la imagen aún se está cargando, mostramos un indicador de progreso
-                                                                      return const CircularProgressIndicator(
-                                                                        color: Color(
-                                                                            0xFFFDAE2A),
-                                                                      );
-                                                                    }
-                                                                  },
-                                                                  errorBuilder: (BuildContext
-                                                                          context,
-                                                                      Object
-                                                                          error,
-                                                                      StackTrace?
-                                                                          stackTrace) {
-                                                                    // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
-                                                                    if (kDebugMode) {
-                                                                      return CircleAvatar(
-                                                                        radius:
-                                                                            30,
-                                                                        backgroundColor:
-                                                                            Colors.transparent, // Fondo transparente para que el borde sea visible
-                                                                        child:
-                                                                            ClipOval(
+                                                                      1.0, // Border width
+                                                                ),
+                                                              ),
+                                                              child:
+                                                                  CircleAvatar(
+                                                                radius: 28,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white, //fondo de la imagen
+                                                                child: ClipOval(
+                                                                  child: Image
+                                                                      .network(
+                                                                    '${Env.apiEndpoint}/images/${controllerShoppingCart.selectserviceCart[index].image_service}',
+                                                                    fit: BoxFit
+                                                                        .cover, // Ajusta la imagen para cubrir completamente el área
+                                                                    width:
+                                                                        50, // Ancho deseado de la imagen dentro del círculo
+                                                                    height: 50,
+                                                                    loadingBuilder: (BuildContext
+                                                                            context,
+                                                                        Widget
+                                                                            child,
+                                                                        ImageChunkEvent?
+                                                                            loadingProgress) {
+                                                                      if (loadingProgress ==
+                                                                          null) {
+                                                                        // Si la imagen se carga correctamente, mostramos la imagen
+                                                                        return child;
+                                                                      } else {
+                                                                        // Si la imagen aún se está cargando, mostramos un indicador de progreso
+                                                                        return const CircularProgressIndicator(
+                                                                          color:
+                                                                              Color(0xFFFDAE2A),
+                                                                        );
+                                                                      }
+                                                                    },
+                                                                    errorBuilder: (BuildContext
+                                                                            context,
+                                                                        Object
+                                                                            error,
+                                                                        StackTrace?
+                                                                            stackTrace) {
+                                                                      // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
+                                                                      if (kDebugMode) {
+                                                                        return CircleAvatar(
+                                                                          radius:
+                                                                              30,
+                                                                          backgroundColor:
+                                                                              Colors.transparent, // Fondo transparente para que el borde sea visible
                                                                           child:
-                                                                              Image.asset(
-                                                                            'assets/images/service-default.png',
-                                                                            fit:
-                                                                                BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
-                                                                            width:
-                                                                                50, // Ancho deseado de la imagen dentro del círculo
-                                                                            height:
-                                                                                50, // Alto deseado de la imagen dentro del círculo
+                                                                              ClipOval(
+                                                                            child:
+                                                                                Image.asset(
+                                                                              'assets/images/service-default.png',
+                                                                              fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                                                              width: 50, // Ancho deseado de la imagen dentro del círculo
+                                                                              height: 50, // Alto deseado de la imagen dentro del círculo
+                                                                            ),
                                                                           ),
-                                                                        ),
-                                                                      );
-                                                                    } else {
-                                                                      // Si no estamos en modo de depuración, mostramos un texto de error
-                                                                      return CircleAvatar(
-                                                                        radius:
-                                                                            30,
-                                                                        backgroundColor:
-                                                                            Colors.transparent, // Fondo transparente para que el borde sea visible
-                                                                        child:
-                                                                            ClipOval(
+                                                                        );
+                                                                      } else {
+                                                                        // Si no estamos en modo de depuración, mostramos un texto de error
+                                                                        return CircleAvatar(
+                                                                          radius:
+                                                                              30,
+                                                                          backgroundColor:
+                                                                              Colors.transparent, // Fondo transparente para que el borde sea visible
                                                                           child:
-                                                                              Image.asset(
-                                                                            'assets/images/service-default.png',
-                                                                            fit:
-                                                                                BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
-                                                                            width:
-                                                                                50, // Ancho deseado de la imagen dentro del círculo
-                                                                            height:
-                                                                                50, // Alto deseado de la imagen dentro del círculo
+                                                                              ClipOval(
+                                                                            child:
+                                                                                Image.asset(
+                                                                              'assets/images/service-default.png',
+                                                                              fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                                                              width: 50, // Ancho deseado de la imagen dentro del círculo
+                                                                              height: 50, // Alto deseado de la imagen dentro del círculo
+                                                                            ),
                                                                           ),
-                                                                        ),
-                                                                      );
-                                                                    }
-                                                                  },
+                                                                        );
+                                                                      }
+                                                                    },
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),
@@ -329,6 +345,40 @@ class ShoppingCartPage extends StatelessWidget {
                                                                   if (controllerLogin
                                                                           .codigoQrValid() ==
                                                                       true) {
+                                                                    //aqui voy controlando que no pueda elimira tds los servicios
+                                                                    //todo aqui controlar que no pueda mandara eliminar tds los servicios
+                                                                    /*  if ((controllerShoppingCart.serviceListLengthCant +
+                                                                            1) ==
+                                                                        controllerShoppingCart
+                                                                            .serviceListLength) {
+                                                                      Get.snackbar(
+                                                                        'Mensaje',
+                                                                        'Todos los servicios no pueden ser eliminados',
+                                                                        duration:
+                                                                            const Duration(milliseconds: 2500),
+                                                                        backgroundColor: const Color.fromARGB(
+                                                                            118,
+                                                                            255,
+                                                                            255,
+                                                                            255),
+                                                                        showProgressIndicator:
+                                                                            true,
+                                                                        progressIndicatorBackgroundColor: const Color.fromARGB(
+                                                                            255,
+                                                                            203,
+                                                                            205,
+                                                                            209),
+                                                                        progressIndicatorValueColor:
+                                                                            const AlwaysStoppedAnimation(Color(0xFFF18254)),
+                                                                        overlayBlur:
+                                                                            3,
+                                                                      );
+                                                                    } else {*/
+                                                                    //aqui voy controlando que no pueda elimira tds los servicios
+                                                                    controllerShoppingCart
+                                                                        .setServiceSelectCant(
+                                                                            1);
+
                                                                     controllerShoppingCart.requestDelete(
                                                                         controllerShoppingCart
                                                                             .selectserviceCart[index]
@@ -342,6 +392,7 @@ class ShoppingCartPage extends StatelessWidget {
                                                                             .idProfessionalLoggedIn,
                                                                         'EL servicio "${controllerShoppingCart.selectserviceCart[index].nameService}" fue enviado a eliminar',
                                                                         'Ambos'); //esto es para quele llegue a coordinador y encargado
+                                                                    // }
                                                                   } else {
                                                                     Get.snackbar(
                                                                       'Mensaje',
@@ -501,85 +552,101 @@ class ShoppingCartPage extends StatelessWidget {
                                                               MainAxisAlignment
                                                                   .start,
                                                           children: [
-                                                            CircleAvatar(
-                                                              radius: 30,
-                                                              child: ClipOval(
-                                                                child: Image
-                                                                    .network(
-                                                                  '${Env.apiEndpoint}/images/${controllerShoppingCart.selectproduct[index].image_product}',
-                                                                  fit: BoxFit
-                                                                      .cover, // Ajusta la imagen para cubrir completamente el área
+                                                            Container(
+                                                              width:
+                                                                  50, // Diameter of the CircleAvatar
+                                                              height:
+                                                                  50, // Diameter of the CircleAvatar
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                border:
+                                                                    Border.all(
+                                                                  color: Colors
+                                                                      .grey, // Border color
                                                                   width:
-                                                                      50, // Ancho deseado de la imagen dentro del círculo
-                                                                  height: 50,
-                                                                  loadingBuilder: (BuildContext
-                                                                          context,
-                                                                      Widget
-                                                                          child,
-                                                                      ImageChunkEvent?
-                                                                          loadingProgress) {
-                                                                    if (loadingProgress ==
-                                                                        null) {
-                                                                      // Si la imagen se carga correctamente, mostramos la imagen
-                                                                      return child;
-                                                                    } else {
-                                                                      // Si la imagen aún se está cargando, mostramos un indicador de progreso
-                                                                      return const CircularProgressIndicator(
-                                                                        color: Color(
-                                                                            0xFFFDAE2A),
-                                                                      );
-                                                                    }
-                                                                  },
-                                                                  errorBuilder: (BuildContext
-                                                                          context,
-                                                                      Object
-                                                                          error,
-                                                                      StackTrace?
-                                                                          stackTrace) {
-                                                                    // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
-                                                                    if (kDebugMode) {
-                                                                      return CircleAvatar(
-                                                                        radius:
-                                                                            30,
-                                                                        backgroundColor:
-                                                                            Colors.transparent, // Fondo transparente para que el borde sea visible
-                                                                        child:
-                                                                            ClipOval(
+                                                                      1.0, // Border width
+                                                                ),
+                                                              ),
+                                                              child:
+                                                                  CircleAvatar(
+                                                                radius: 28,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white, //fondo de la imagen
+                                                                child: ClipOval(
+                                                                  child: Image
+                                                                      .network(
+                                                                    '${Env.apiEndpoint}/images/${controllerShoppingCart.selectproduct[index].image_product}',
+                                                                    fit: BoxFit
+                                                                        .cover, // Ajusta la imagen para cubrir completamente el área
+                                                                    width:
+                                                                        50, // Ancho deseado de la imagen dentro del círculo
+                                                                    height: 50,
+                                                                    loadingBuilder: (BuildContext
+                                                                            context,
+                                                                        Widget
+                                                                            child,
+                                                                        ImageChunkEvent?
+                                                                            loadingProgress) {
+                                                                      if (loadingProgress ==
+                                                                          null) {
+                                                                        // Si la imagen se carga correctamente, mostramos la imagen
+                                                                        return child;
+                                                                      } else {
+                                                                        // Si la imagen aún se está cargando, mostramos un indicador de progreso
+                                                                        return const CircularProgressIndicator(
+                                                                          color:
+                                                                              Color(0xFFFDAE2A),
+                                                                        );
+                                                                      }
+                                                                    },
+                                                                    errorBuilder: (BuildContext
+                                                                            context,
+                                                                        Object
+                                                                            error,
+                                                                        StackTrace?
+                                                                            stackTrace) {
+                                                                      // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
+                                                                      if (kDebugMode) {
+                                                                        return CircleAvatar(
+                                                                          radius:
+                                                                              30,
+                                                                          backgroundColor:
+                                                                              Colors.transparent, // Fondo transparente para que el borde sea visible
                                                                           child:
-                                                                              Image.asset(
-                                                                            'assets/images/product-default.png',
-                                                                            fit:
-                                                                                BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
-                                                                            width:
-                                                                                50, // Ancho deseado de la imagen dentro del círculo
-                                                                            height:
-                                                                                50, // Alto deseado de la imagen dentro del círculo
+                                                                              ClipOval(
+                                                                            child:
+                                                                                Image.asset(
+                                                                              'assets/images/product-default.png',
+                                                                              fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                                                              width: 50, // Ancho deseado de la imagen dentro del círculo
+                                                                              height: 50, // Alto deseado de la imagen dentro del círculo
+                                                                            ),
                                                                           ),
-                                                                        ),
-                                                                      );
-                                                                    } else {
-                                                                      // Si no estamos en modo de depuración, mostramos un texto de error
-                                                                      return CircleAvatar(
-                                                                        radius:
-                                                                            30,
-                                                                        backgroundColor:
-                                                                            Colors.transparent, // Fondo transparente para que el borde sea visible
-                                                                        child:
-                                                                            ClipOval(
+                                                                        );
+                                                                      } else {
+                                                                        // Si no estamos en modo de depuración, mostramos un texto de error
+                                                                        return CircleAvatar(
+                                                                          radius:
+                                                                              30,
+                                                                          backgroundColor:
+                                                                              Colors.transparent, // Fondo transparente para que el borde sea visible
                                                                           child:
-                                                                              Image.asset(
-                                                                            'assets/images/product-default.png',
-                                                                            fit:
-                                                                                BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
-                                                                            width:
-                                                                                50, // Ancho deseado de la imagen dentro del círculo
-                                                                            height:
-                                                                                50, // Alto deseado de la imagen dentro del círculo
+                                                                              ClipOval(
+                                                                            child:
+                                                                                Image.asset(
+                                                                              'assets/images/product-default.png',
+                                                                              fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                                                              width: 50, // Ancho deseado de la imagen dentro del círculo
+                                                                              height: 50, // Alto deseado de la imagen dentro del círculo
+                                                                            ),
                                                                           ),
-                                                                        ),
-                                                                      );
-                                                                    }
-                                                                  },
+                                                                        );
+                                                                      }
+                                                                    },
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),

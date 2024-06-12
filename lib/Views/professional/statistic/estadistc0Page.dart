@@ -304,7 +304,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                   context)
                                                               .size
                                                               .height *
-                                                          0.445),
+                                                          0.4),
                                                       width: (MediaQuery.of(
                                                                   context)
                                                               .size
@@ -470,40 +470,6 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                               Text('Total en servicios'),
                                                                               Text(
                                                                                 formatNumber(_.estadist0[index].totalServices.toString()),
-                                                                                maxLines: 2, // Limita el texto a 2 líneas
-                                                                                overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
-                                                                                style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                          Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.spaceBetween,
-                                                                            children: [
-                                                                              const Text(
-                                                                                'Total en productos',
-                                                                                style: TextStyle(
-                                                                                  fontSize: 16,
-                                                                                ),
-                                                                              ),
-                                                                              Text(
-                                                                                formatNumber(_.estadist0[index].totalProducts.toString()),
-                                                                                maxLines: 2, // Limita el texto a 2 líneas
-                                                                                overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
-                                                                                style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                          Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.spaceBetween,
-                                                                            children: [
-                                                                              const Text('Total General',
-                                                                                  style: TextStyle(
-                                                                                    fontSize: 16,
-                                                                                  )),
-                                                                              Text(
-                                                                                formatNumber(_.estadist0[index].totalGeneral.toString()),
                                                                                 maxLines: 2, // Limita el texto a 2 líneas
                                                                                 overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
                                                                                 style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),

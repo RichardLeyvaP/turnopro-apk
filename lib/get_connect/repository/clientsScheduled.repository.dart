@@ -484,18 +484,22 @@ class ClientsScheduledRepository extends GetConnect {
   Future sendWhatsappNotificationRepos(String telefone) async {
     print('estoy en repositorio en - 5');
     try {
-      var url = '${Env.apiEndpoint}/whatsapp-notification';
+      var url =
+          '${Env.apiEndpoint}/whatsapp-notification?telefone_client=$telefone';
 
-      final Map<String, dynamic> body = {'telefone_client': telefone};
-
-      final response = await post(url, body);
+      final response = await get(url);
       if (response.statusCode == 200) {
         print(
+            'cargando aqui-8-sendWhatsappNotificationRepos-TELEFONO:$telefone');
+        print(
             'EL mensaje de whatassapp se ha enviado  correctamente :${response.statusCode}');
+      } else {
+        print(
+            'cargando aqui-8-codigo:${response.statusCode} -sendWhatsappNotificationRepos-TELEFONO:$telefone');
       }
     } catch (e) {
       print(e);
-      print('ERROR AL ENVIAR eL mensaje de whatassapp:$e');
+      print('cargando aqui-8 - ERROR AL ENVIAR eL mensaje de whatassapp:$e');
     }
   }
 

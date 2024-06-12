@@ -1,5 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, unused_element, unrelated_type_equality_checks
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -452,7 +454,7 @@ class ClientsScheduledController extends GetxController {
       int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended1!);
       //aqu hace analisis y guarda en memoria del telefono
       //cuando falta 3 minu para acabar
-      controllerLogin.getUpdateTime(timeMinutes, 1);
+      controllerLogin.getUpdateTime(timeMinutes, 1, 'newClientAttended-1');
       //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
       busyClock = 0;
     }
@@ -462,7 +464,7 @@ class ClientsScheduledController extends GetxController {
       int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended2!);
       //aqu hace analisis y guarda en memoria del telefono
       //cuando falta 3 minu para acabar
-      controllerLogin.getUpdateTime(timeMinutes, 2);
+      controllerLogin.getUpdateTime(timeMinutes, 2, 'newClientAttended-2');
       //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
       busyClock = 1;
     }
@@ -472,7 +474,7 @@ class ClientsScheduledController extends GetxController {
       int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended3!);
       //aqu hace analisis y guarda en memoria del telefono
       //cuando falta 3 minu para acabar
-      controllerLogin.getUpdateTime(timeMinutes, 3);
+      controllerLogin.getUpdateTime(timeMinutes, 3, 'newClientAttended-3');
       //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
       busyClock = 2;
     }
@@ -482,7 +484,7 @@ class ClientsScheduledController extends GetxController {
       int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended4!);
       //aqu hace analisis y guarda en memoria del telefono
       //cuando falta 3 minu para acabar
-      controllerLogin.getUpdateTime(timeMinutes, 4);
+      controllerLogin.getUpdateTime(timeMinutes, 4, 'newClientAttended-4');
       //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
       busyClock = 3;
     }
@@ -1036,10 +1038,7 @@ class ClientsScheduledController extends GetxController {
 
       bool resultTypeService =
           await repository.typeOfService(idProfessional, idBranch);
-      if (resultTypeService) {
-        print('************** true');
-        boolFilterShowNext = true;
-      }
+      boolFilterShowNext = resultTypeService;
       update();
     } catch (e) {
       print(
@@ -1320,8 +1319,7 @@ class ClientsScheduledController extends GetxController {
       print(
           'Dio error en Future<void> fetchClientsScheduled que se encuentra en el controlador del Login:$e');
     } finally {
-      print(
-          'Error al obtener la lista de notificaciones: noUpdate == click $noUpdate');
+      print('Obtener la lista de notificaciones: noUpdate == click $noUpdate');
       if (noUpdate == false) {
         update();
       }
@@ -1330,7 +1328,7 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<void> fetchClientsScheduled(idProfessional, idBranch, msj) async {
-    print('entrando aqui para mandar notificacion al barbero2222');
+    print('entrando aqui para mandar notificacion desde:$msj');
     try {
       List<ClientsScheduledModel> clientsAux = [];
 
@@ -1458,7 +1456,8 @@ class ClientsScheduledController extends GetxController {
                 controllerLogin.secondsToMinutes(timeClientsAttended1!);
             //aqu hace analisis y guarda en memoria del telefono
             //cuando falta 3 minu para acabar
-            controllerLogin.getUpdateTime(timeMinutes, 1);
+            controllerLogin.getUpdateTime(
+                timeMinutes, 1, 'logicaInesperadaQuitarTiempo-1');
             //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
             print(
                 'clientes asistiendo hora timeClock***********timeClock*****:$timeClock');
@@ -1471,7 +1470,8 @@ class ClientsScheduledController extends GetxController {
                 controllerLogin.secondsToMinutes(timeClientsAttended2!);
             //aqu hace analisis y guarda en memoria del telefono
             //cuando falta 3 minu para acabar
-            controllerLogin.getUpdateTime(timeMinutes, 2);
+            controllerLogin.getUpdateTime(
+                timeMinutes, 2, 'logicaInesperadaQuitarTiempo-2');
             //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
           } else if (clock == 3 && detached == 99) {
             print('clientes asistiendo entre a :$clock');
@@ -1482,7 +1482,8 @@ class ClientsScheduledController extends GetxController {
                 controllerLogin.secondsToMinutes(timeClientsAttended3!);
             //aqu hace analisis y guarda en memoria del telefono
             //cuando falta 3 minu para acabar
-            controllerLogin.getUpdateTime(timeMinutes, 3);
+            controllerLogin.getUpdateTime(
+                timeMinutes, 3, 'logicaInesperadaQuitarTiempo-3');
             //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
           } else if (clock == 4 && detached == 99) {
             print('clientes asistiendo entre a :$clock');
@@ -1493,7 +1494,8 @@ class ClientsScheduledController extends GetxController {
                 controllerLogin.secondsToMinutes(timeClientsAttended4!);
             //aqu hace analisis y guarda en memoria del telefono
             //cuando falta 3 minu para acabar
-            controllerLogin.getUpdateTime(timeMinutes, 4);
+            controllerLogin.getUpdateTime(
+                timeMinutes, 4, 'logicaInesperadaQuitarTiempo-4');
             //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
           }
           // Puedes agregar más condiciones según sea necesario para otros valores de clock
@@ -1598,7 +1600,8 @@ class ClientsScheduledController extends GetxController {
                   controllerLogin.secondsToMinutes(timeClientsAttended1!);
               //aqu hace analisis y guarda en memoria del telefono
               //cuando falta 3 minu para acabar
-              controllerLogin.getUpdateTime(timeMinutes, 1);
+              controllerLogin.getUpdateTime(
+                  timeMinutes, 1, 'logicaInesperada-1');
               //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
             }
           } else if (clock == 2) {
@@ -1616,7 +1619,8 @@ class ClientsScheduledController extends GetxController {
                   controllerLogin.secondsToMinutes(timeClientsAttended2!);
               //aqu hace analisis y guarda en memoria del telefono
               //cuando falta 3 minu para acabar
-              controllerLogin.getUpdateTime(timeMinutes, 2);
+              controllerLogin.getUpdateTime(
+                  timeMinutes, 2, 'logicaInesperada-2');
               //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
             }
           } else if (clock == 3) {
@@ -1634,7 +1638,8 @@ class ClientsScheduledController extends GetxController {
                   controllerLogin.secondsToMinutes(timeClientsAttended3!);
               //aqu hace analisis y guarda en memoria del telefono
               //cuando falta 3 minu para acabar
-              controllerLogin.getUpdateTime(timeMinutes, 3);
+              controllerLogin.getUpdateTime(
+                  timeMinutes, 3, 'logicaInesperada-3');
               //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
             }
           } else if (clock == 4) {
@@ -1652,7 +1657,8 @@ class ClientsScheduledController extends GetxController {
                   controllerLogin.secondsToMinutes(timeClientsAttended4!);
               //aqu hace analisis y guarda en memoria del telefono
               //cuando falta 3 minu para acabar
-              controllerLogin.getUpdateTime(timeMinutes, 4);
+              controllerLogin.getUpdateTime(
+                  timeMinutes, 4, 'logicaInesperada-4');
               //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
             }
           }
