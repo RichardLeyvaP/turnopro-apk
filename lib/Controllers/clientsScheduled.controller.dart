@@ -103,6 +103,7 @@ class ClientsScheduledController extends GetxController {
   int totalTimeInitialT = 3 * 60; //Iniciando en 3 minutos el reloj
   bool callCliente = false; //si esta en false es que es la primera vez
   bool boolFilterShowNext = false; //si esta en false es que es la primera vez
+  bool boolControlVision = false; //si esta en false es que es la primera vez
   bool boolFilterShowNextTecnhical =
       false; //si esta en false es que es la primera vez
   bool showingServiceClients = false;
@@ -256,6 +257,12 @@ class ClientsScheduledController extends GetxController {
 
   void setBoolFilterShowNext(bool value) {
     boolFilterShowNext = value;
+
+    update();
+  }
+
+  void setBoolControlVision(bool value) {
+    boolControlVision = value;
     update();
   }
 
@@ -1029,6 +1036,9 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<void> filterShowNext() async {
+    // boolControlVision = false;
+    // update();
+    bool contVision = true;
     print('aqui estoy en filterShowNext');
     try {
       // final LoginController controllerLogin = Get.find<LoginController>();
@@ -1039,10 +1049,15 @@ class ClientsScheduledController extends GetxController {
       bool resultTypeService =
           await repository.typeOfService(idProfessional, idBranch);
       boolFilterShowNext = resultTypeService;
-      update();
+      boolControlVision = true;
     } catch (e) {
+      contVision = false;
+      update();
       print(
           'Error al obtener la lista de notificaciones: noUpdate-*********************$e');
+    } finally {
+      boolControlVision = contVision;
+      update();
     }
   }
 

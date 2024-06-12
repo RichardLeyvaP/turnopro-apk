@@ -127,14 +127,14 @@ class _LineChartSample2State extends State<LineChartSample2> {
                             ),
                             if (startDate1 != null && endDate1 != null) ...[
                               const Text(
-                                'No tiene Estadísticas en',
+                                'No tiene Estadísticas el',
                               ),
                               Text(
                                 '($startDate1 - $endDate1)',
                               ),
                             ] else ...[
                               Text(
-                                'No tiene Estadísticas en',
+                                'No tiene Estadísticas el',
                               ),
                               Text(
                                 ' $dateAct',

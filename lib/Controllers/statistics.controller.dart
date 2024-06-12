@@ -201,7 +201,6 @@ class StatisticController extends GetxController {
         } else if (page == 3) {
           statisticsGeneralRespon3 = responStad;
         }
-        update();
       } else {
         if (page == 1) {
           statisticsGeneralRespon1 = {};

@@ -26,12 +26,19 @@ class WeeklyStatisticsRepository extends GetConnect {
         print(idBranch);
         print(startDate);
         print(endDate);
-        print(url);
+        print('Esta e sla url que estoy llamado:$url');
         final response = await http.get(Uri.parse(url));
         print(response.statusCode);
         if (response.statusCode == 200) {
+          Map<String, dynamic> jsonResponse = {};
           print('response.statusCode;;;;;;;;; == 200');
-          final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+          if (response.body.isNotEmpty && response.body != '[]') {
+            jsonResponse = jsonDecode(response.body);
+            // Ahora puedes usar jsonResponse
+          } else {
+            // Manejar el caso cuando response.body está vacío
+            print('El cuerpo de la respuesta está vacío');
+          }
           print('***************************....********:$jsonResponse');
           return jsonResponse;
         }

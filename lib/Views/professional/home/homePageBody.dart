@@ -171,6 +171,7 @@ class _HomePageBodyState extends State<HomePageBody>
   @override
   void initState() {
     super.initState();
+
     print('fff12 antes del channel.stream');
     /* channel.stream.listen((message) {
       // Parsear el mensaje JSON recibido
@@ -1731,37 +1732,57 @@ class _HomePageBodyState extends State<HomePageBody>
                                 height: 80,
                               ),
                   ),
-                  clientsScheduledController.boolFilterShowNext
-                      ? cardClientTails(clientsScheduledController, context,
-                          firstName, animationCont)
-                      :
+                  clientsScheduledController.boolControlVision == true
+                      ? clientsScheduledController.boolFilterShowNext == true
+                          ? cardClientTails(clientsScheduledController, context,
+                              firstName, animationCont)
+                          :
 
-                      //si hubiera algien en cola
-                      (clientsScheduledController
-                                  .clientsScheduledListLengthTail >
-                              0)
-                          ? const Column(
-                              children: [
-                                Text(
-                                  'Cliente atendiéndose',
+                          //si hubiera algien en cola
+                          (clientsScheduledController
+                                      .clientsScheduledListLengthTail >
+                                  0)
+                              ? const Column(
+                                  children: [
+                                    Text(
+                                      'Cliente atendiéndose',
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 82, 81, 81),
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Text(
+                                      'Esperando para mostrar el siguiente',
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 82, 81, 81),
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                )
+                              : const Text('No hay clientes en cola.',
                                   style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 81, 81),
-                                      fontWeight: FontWeight.w700),
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 16,
+                                    color: Color.fromARGB(255, 82, 81, 81),
+                                  ))
+                      : const Column(
+                          children: [
+                            SizedBox(
+                              height: 50,
+                            ),
+                            Center(
+                              child: SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  color: Color(0xFFFDAE2A),
+                                  strokeWidth: 3,
                                 ),
-                                Text(
-                                  'Esperando para mostrar el siguiente',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 81, 81),
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            )
-                          : const Text('No hay clientes en cola.',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16,
-                                color: Color.fromARGB(255, 82, 81, 81),
-                              )),
+                              ),
+                            ),
+                          ],
+                        ),
                 ],
               )),
           Expanded(

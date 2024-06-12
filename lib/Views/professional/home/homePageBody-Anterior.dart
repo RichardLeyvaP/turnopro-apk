@@ -412,7 +412,8 @@ class _HomePageBodyState extends State<HomePageBody>
             print('-*-*-*-**>>>> NOOO fui un sierre inesperado');
           }
           if (loginController.isLoggingInCharge == true) {
-            await loginController.setLoggingInCharge(false);
+            await loginController.setLoggingInCharge(
+                false, 'no se esta usando1');
           }
 
           clientsScheduledController.setCloseIesperado(false);
@@ -423,7 +424,7 @@ class _HomePageBodyState extends State<HomePageBody>
         clientsScheduledController.setCloseIesperadoLogin(false);
         if (loginController.isLoggingInCharge == true) {
           print('cargando aqui-15');
-          await loginController.setLoggingInCharge(false);
+          await loginController.setLoggingInCharge(false, 'no se esta usando2');
         }
 
         clientsScheduledController.setCloseIesperado(false);
@@ -1676,7 +1677,7 @@ class _HomePageBodyState extends State<HomePageBody>
                             height: 80,
                           ),
                   ),
-                  clientsScheduledController.boolFilterShowNext
+                  clientsScheduledController.boolFilterShowNext!
                       ? cardClientTails(clientsScheduledController, context,
                           firstName, animationCont)
                       :

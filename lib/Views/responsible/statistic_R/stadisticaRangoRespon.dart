@@ -121,14 +121,14 @@ class _StadisticaResponState extends State<StadisticaRespon> {
                             ),
                             if (startDate1 != null && endDate1 != null) ...[
                               const Text(
-                                'No tiene Estadísticas en',
+                                'No tiene Estadísticas el',
                               ),
                               Text(
                                 '($startDate1 - $endDate1)',
                               ),
                             ] else ...[
                               const Text(
-                                'No tiene Estadísticas en',
+                                'No tiene Estadísticas el',
                               ),
                               Text(
                                 ' $dateAct',
