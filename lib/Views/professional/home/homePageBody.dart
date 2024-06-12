@@ -61,10 +61,9 @@ class _HomePageBodyState extends State<HomePageBody>
 
   Future<void> saveData() async {
     int valueClock = getTimeRemaining();
-    int valueSave = valueClock;
-    await LocalStorage.prefs.setInt('valueClockIni', valueSave);
+    await LocalStorage.prefs.setInt('valueClockIni', valueClock);
 
-    print('--este es el value del clok... ->Value guardado:$valueSave');
+    print('--este es el value del clok... ->Value guardado:$valueClock');
   }
 
   int getTimeRemaining() {
@@ -160,7 +159,10 @@ class _HomePageBodyState extends State<HomePageBody>
     LocalStorage.prefs.setInt('valueClockIni', 180);
     clientsScheduledController.setTotalTimeInitial(180);
     LocalStorage.prefs.setBool('valueClockActiv', false);
-
+    clientsScheduledController.animationControllerInitial = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 180),
+    );
     // Reiniciar la animación
     clientsScheduledController.animationControllerInitial!.reset();
     clientsScheduledController.animationControllerInitial!.forward();
@@ -281,7 +283,12 @@ class _HomePageBodyState extends State<HomePageBody>
 //       });
 //     }
 //todo fin codigoanterior
-
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (loginController.isLoggingInCharge == true) {
+        print('cargando aqui-15');
+        await loginController.setLoggingInCharge(false, 'buildComponent-1114');
+      }
+    });
 //todo inicio codigo-nuevo
 
     // A este cargo no se le cambia la regla de convivencia del tiempo
@@ -1098,7 +1105,8 @@ class _HomePageBodyState extends State<HomePageBody>
           print('-*-*-*-**>>>> NOOO fui un sierre inesperado');
         }
         if (loginController.isLoggingInCharge == true) {
-          await loginController.setLoggingInCharge(false);
+          await loginController.setLoggingInCharge(
+              false, 'buildComponent-1103');
         }
 
         clientsScheduledController.setCloseIesperado(false);
@@ -1107,10 +1115,6 @@ class _HomePageBodyState extends State<HomePageBody>
         clientsScheduledController.modifingTimeClose();
       }
       clientsScheduledController.setCloseIesperadoLogin(false);
-      if (loginController.isLoggingInCharge == true) {
-        print('cargando aqui-15');
-        await loginController.setLoggingInCharge(false);
-      }
 
       clientsScheduledController.setCloseIesperado(false);
     });
@@ -1230,6 +1234,7 @@ class _HomePageBodyState extends State<HomePageBody>
                 'La aplicación se activeClock() {--5 ${clientsScheduledController.timeClientsAttended4!}');
           }
         }
+        //llamar aqui y poner en false
       }
 
       /*   if (loginController.segundoPlano == 3) {
@@ -1521,7 +1526,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                     null ||
                                 clientsScheduledController.boolFilterShowNext ==
                                     false) &&
-                            loginController.usserPermissionQr == null
+                            loginController.usserPermissionQr == 1
                         ? const SizedBox(
                             height: 45,
                           )
