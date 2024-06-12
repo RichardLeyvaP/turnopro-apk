@@ -1516,184 +1516,215 @@ class _HomePageBodyState extends State<HomePageBody>
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(12.0),
-                    child: (clientsScheduledController
-                                .clientsScheduledListLength >
-                            0)
-                        ? Container(
-                            decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
-                              color: Colors.white,
-                              //color: Color(0xFFFDAE2A),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                /*todo texto arriba */ Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, top: 5),
-                                  child: Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      clientsScheduledController.item.isEmpty
-                                          ? 'Cliente en espera'
-                                          : 'Atendiendo ${clientsScheduledController.item.length} cliente(s)',
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
-                                        color: Color.fromARGB(255, 82, 81, 81),
+                    child: clientsScheduledController.item.isEmpty &&
+                            (clientsScheduledController.clientsScheduledNext ==
+                                    null ||
+                                clientsScheduledController.boolFilterShowNext ==
+                                    false) &&
+                            loginController.usserPermissionQr == null
+                        ? const SizedBox(
+                            height: 45,
+                          )
+                        : (clientsScheduledController
+                                    .clientsScheduledListLength >
+                                0)
+                            ? Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)),
+                                  color: Colors.white,
+                                  //color: Color(0xFFFDAE2A),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    /*todo texto arriba */ Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8, top: 5),
+                                      child: Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Text(
+                                          clientsScheduledController
+                                                  .item.isEmpty
+                                              ? 'Cliente en espera'
+                                              : 'Atendiendo ${clientsScheduledController.item.length} cliente(s)',
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700,
+                                            color:
+                                                Color.fromARGB(255, 82, 81, 81),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
 
-                                /*CRONOMETRO*/ Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  //todo AQUI LA LOGICA AL MOSTRAR LOS TIMER
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          //AQUI MUESTRA LOS TIMER DE LOS CLIENTES QUE ESTE ATENDIENDO
-                                          if (clientsScheduledController
-                                              .item.isNotEmpty) ...[
-                                            for (int i = 0;
-                                                i <
+                                    /*CRONOMETRO*/ Padding(
+                                      padding: const EdgeInsets.all(2.0),
+                                      //todo AQUI LA LOGICA AL MOSTRAR LOS TIMER
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              //AQUI MUESTRA LOS TIMER DE LOS CLIENTES QUE ESTE ATENDIENDO
+                                              if (clientsScheduledController
+                                                  .item.isNotEmpty) ...[
+                                                for (int i = 0;
+                                                    i <
+                                                        clientsScheduledController
+                                                            .item.length;
+                                                    i++) ...[
+                                                  cardTimer(
+                                                    clientsList[
+                                                            clientsScheduledController
+                                                                .item[i]]!
+                                                        .reservation_id!,
+                                                    i,
+                                                    clientsList[
+                                                            clientsScheduledController
+                                                                .item[i]]!
+                                                        .attended!,
+                                                    clientsList[
+                                                            clientsScheduledController
+                                                                .item[i]]!
+                                                        .car_id!,
+                                                    clientsList[
+                                                            clientsScheduledController
+                                                                .item[i]]!
+                                                        .client_image!,
+                                                    UniqueKey(),
+                                                    clientsList[
+                                                            clientsScheduledController
+                                                                .item[i]]!
+                                                        .client_name!,
+                                                    clientsScheduledController,
+                                                    animationCont[
+                                                        clientsScheduledController
+                                                            .item[i]]!,
+                                                  ),
+                                                ],
+                                              ]
+                                              //SI NO ESTA ATENDIENDOA NADIE Y HAY GENTE EN LA COLA ESPERANDO CARGA EL TIMER INICIAL
+                                              else if (clientsScheduledController
+                                                      .clientsScheduledNext !=
+                                                  null) ...[
+                                                //AQUI VERIFICO SI YA ESCANEO EL CODIGO QR
+                                                if (loginController
+                                                            .codigoQrValid() ==
+                                                        true &&
                                                     clientsScheduledController
-                                                        .item.length;
-                                                i++) ...[
-                                              cardTimer(
-                                                clientsList[
-                                                        clientsScheduledController
-                                                            .item[i]]!
-                                                    .reservation_id!,
-                                                i,
-                                                clientsList[
-                                                        clientsScheduledController
-                                                            .item[i]]!
-                                                    .attended!,
-                                                clientsList[
-                                                        clientsScheduledController
-                                                            .item[i]]!
-                                                    .car_id!,
-                                                clientsList[
-                                                        clientsScheduledController
-                                                            .item[i]]!
-                                                    .client_image!,
-                                                UniqueKey(),
-                                                clientsList[
-                                                        clientsScheduledController
-                                                            .item[i]]!
-                                                    .client_name!,
-                                                clientsScheduledController,
-                                                animationCont[
+                                                        .item.isEmpty) ...[
+                                                  cardTimer2(
+                                                    UniqueKey(),
+                                                    'Esperando',
+                                                    clientsScheduledController,
                                                     clientsScheduledController
-                                                        .item[i]]!,
-                                              ),
-                                            ],
-                                          ]
-                                          //SI NO ESTA ATENDIENDOA NADIE Y HAY GENTE EN LA COLA ESPERANDO CARGA EL TIMER INICIAL
-                                          else if (clientsScheduledController
-                                                  .clientsScheduledNext !=
-                                              null) ...[
-                                            //AQUI VERIFICO SI YA ESCANEO EL CODIGO QR
-                                            if (loginController
-                                                        .codigoQrValid() ==
-                                                    true &&
-                                                clientsScheduledController
-                                                    .item.isEmpty) ...[
-                                              cardTimer2(
-                                                UniqueKey(),
-                                                'Esperando',
-                                                clientsScheduledController,
-                                                clientsScheduledController
-                                                    .animationControllerInitial!,
-                                              ),
-                                            ] else if (loginController
-                                                    .usserPermissionQr ==
-                                                2) ...[
-                                              const Center(
-                                                child: Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 35,
+                                                        .animationControllerInitial!,
+                                                  ),
+                                                ] else if (loginController
+                                                        .usserPermissionQr ==
+                                                    2) ...[
+                                                  const Center(
+                                                    child: Column(
+                                                      children: [
+                                                        SizedBox(
+                                                          height: 35,
+                                                        ),
+                                                        Text(
+                                                          'Debe de esperar la respuesta',
+                                                          style: TextStyle(
+                                                              // color: Colors.white,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      39,
+                                                                      39,
+                                                                      39),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ),
+                                                        Text(
+                                                          'a su solicitud',
+                                                          style: TextStyle(
+                                                              //color: Colors.white,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      39,
+                                                                      39,
+                                                                      39),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 45,
+                                                        ),
+                                                      ],
                                                     ),
-                                                    Text(
-                                                      'Debe de esperar la respuesta',
-                                                      style: TextStyle(
-                                                          // color: Colors.white,
-                                                          color: Color.fromARGB(
-                                                              255, 39, 39, 39),
-                                                          fontWeight:
-                                                              FontWeight.w600),
+                                                  )
+                                                ] else ...[
+                                                  const Center(
+                                                    child: Column(
+                                                      children: [
+                                                        SizedBox(
+                                                          height: 35,
+                                                        ),
+                                                        Text(
+                                                          'Debe de escanear el código Qr ',
+                                                          style: TextStyle(
+                                                              // color: Colors.white,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      39,
+                                                                      39,
+                                                                      39),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ),
+                                                        Text(
+                                                          'para atender clientes',
+                                                          style: TextStyle(
+                                                              //color: Colors.white,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      39,
+                                                                      39,
+                                                                      39),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 45,
+                                                        ),
+                                                      ],
                                                     ),
-                                                    Text(
-                                                      'a su solicitud',
-                                                      style: TextStyle(
-                                                          //color: Colors.white,
-                                                          color: Color.fromARGB(
-                                                              255, 39, 39, 39),
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 45,
-                                                    ),
-                                                  ],
+                                                  )
+                                                ]
+                                              ] else ...[
+                                                const SizedBox(
+                                                  height: 45,
                                                 ),
-                                              )
-                                            ] else ...[
-                                              const Center(
-                                                child: Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 35,
-                                                    ),
-                                                    Text(
-                                                      'Debe de escanear el código Qr ',
-                                                      style: TextStyle(
-                                                          // color: Colors.white,
-                                                          color: Color.fromARGB(
-                                                              255, 39, 39, 39),
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                    Text(
-                                                      'para atender clientes',
-                                                      style: TextStyle(
-                                                          //color: Colors.white,
-                                                          color: Color.fromARGB(
-                                                              255, 39, 39, 39),
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 45,
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ]
-                                          ] else ...[
-                                            const SizedBox(
-                                              height: 45,
-                                            ),
-                                          ]
-                                        ]),
-                                  ),
-                                  //FIN CLIENTES QUE ESTAN EN COLA
-                                ),
-                                //todo CLIENTES QUE ESTAN EN COLA
+                                              ]
+                                            ]),
+                                      ),
+                                      //FIN CLIENTES QUE ESTAN EN COLA
+                                    ),
+                                    //todo CLIENTES QUE ESTAN EN COLA
 
-                                //FIN CLIENTES QUE ESTAN EN COLA
-                              ],
-                            ),
-                          )
-                        : SizedBox(
-                            height: 80,
-                          ),
+                                    //FIN CLIENTES QUE ESTAN EN COLA
+                                  ],
+                                ),
+                              )
+                            : SizedBox(
+                                height: 80,
+                              ),
                   ),
                   clientsScheduledController.boolFilterShowNext
                       ? cardClientTails(clientsScheduledController, context,
