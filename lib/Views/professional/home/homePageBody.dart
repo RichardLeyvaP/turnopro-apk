@@ -159,11 +159,10 @@ class _HomePageBodyState extends State<HomePageBody>
     LocalStorage.prefs.setInt('valueClockIni', 180);
     clientsScheduledController.setTotalTimeInitial(180);
     LocalStorage.prefs.setBool('valueClockActiv', false);
-    clientsScheduledController.animationControllerInitial = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 180),
-    );
+
     // Reiniciar la animación
+    //todo puese esto nuevo
+
     clientsScheduledController.animationControllerInitial!.reset();
     clientsScheduledController.animationControllerInitial!.forward();
   }
@@ -224,42 +223,6 @@ class _HomePageBodyState extends State<HomePageBody>
 //           //ver si hay primero profesionales disponible
 //           // si no hay no llamar al metodo
 //           // aqui llamar al metodo
-//           if (clientsScheduledController.clientsScheduledNext != null) {
-//             print('se hacompletado los 3 min-HAY CLIENTE POR ATENDER');
-//             int reservationId = clientsScheduledController
-//                 .clientsScheduledNext!.reservation_id!;
-//             int clientId =
-//                 clientsScheduledController.clientsScheduledNext!.client_id!;
-//             reasigClient(reservationId, clientId);
-//           }
-
-//           // reasigClient(int reservationId, int clientId);
-
-//           if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
-//                   0 &&
-//               loginController.usserPermissionQr == 1 &&
-//               clientsScheduledController.clientsScheduledListLength > 0) {
-//             print('--este es el value del clok-FINALIZANDO*****22');
-//             print(
-//                 'inserto correctamente ********** .noncomplianceProfessional[]');
-//             //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
-//             String type = 'Tiempo';
-//             int branchId = loginController.branchIdLoggedIn!;
-//             int professionalId = loginController.idProfessionalLoggedIn!;
-//             int estado = 0; //es que incumplió
-//             clientsScheduledController.changeNoncomplianceP(
-//                 type, branchId, professionalId, estado);
-//             //aqui llamar e insertar en las notificacione sque incumplio esta convivencia
-//             notiController.storeNotification(
-//                 'Incumplimiento de convivencia',
-//                 branchId,
-//                 professionalId,
-//                 'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado',
-//                 'Barbero');
-// //todo notificate
-//             // scheduleNotification('Incumplimiento de convivencia',
-//             //     'Tu tiempo de espera de 3 minutos');
-//           }
 
 //           // LocalStorage.prefs.setBool('convivenciaIncumplida', true);
 //           LocalStorage.prefs.setInt('valueClockIni', 180);
@@ -284,57 +247,21 @@ class _HomePageBodyState extends State<HomePageBody>
 //       });
 //     }
 //todo fin codigoanterior
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (loginController.isLoggingInCharge == true) {
-        print('cargando aqui-15');
-        await loginController.setLoggingInCharge(false, 'buildComponent-1114');
-      }
-    });
-//todo inicio codigo-nuevo
-
-    // A este cargo no se le cambia la regla de convivencia del tiempo
-
     clientsScheduledController.animationControllerInitial = AnimationController(
       vsync: this,
       duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
     );
 
+    // Agregar listener solo una vez
     clientsScheduledController.animationControllerInitial!
         .addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        print('Se ha completado los 3 minutos');
+        print('Se ha completado los 3-La animación se ha completado-SIIIII');
+        reiniciateClock();
 
-        if (loginController.chargeUserLoggedIn != "Barbero y Encargado") {
-          //esta convivencia para el Barbero y Encargado no va incluida
-
-          if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
-                  0 &&
-              loginController.usserPermissionQr == 1 &&
-              clientsScheduledController.clientsScheduledListLength > 0) {
-            print('--Este es el value del clock - FINALIZANDO*****22');
-            print(
-                'Inserto correctamente ********** .noncomplianceProfessional[]');
-
-            // Cada vez que entre aquí incumplió con el tiempo de llamar al cliente antes de 3 minutos
-            String type = 'Tiempo';
-            int branchId = loginController.branchIdLoggedIn!;
-            int professionalId = loginController.idProfessionalLoggedIn!;
-            int estado = 0; // Es que incumplió
-            clientsScheduledController.changeNoncomplianceP(
-                type, branchId, professionalId, estado);
-
-            // Aquí llamar e insertar en las notificaciones que incumplió esta convivencia
-            notiController.storeNotification(
-                'Incumplimiento de convivencia',
-                branchId,
-                professionalId,
-                'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado',
-                'Barbero');
-          }
-        }
-        // Verificar si hay alguien en cola para reasignarlo
+        //AQUI SI HAY QUE REASIGNAR SE REASIGNA
         if (clientsScheduledController.clientsScheduledNext != null) {
-          print('Se ha completado los 3 minutos - HAY CLIENTE POR ATENDER');
+          print('se hacompletado los 3 min-HAY CLIENTE POR ATENDER');
           int reservationId =
               clientsScheduledController.clientsScheduledNext!.reservation_id!;
           int clientId =
@@ -342,11 +269,112 @@ class _HomePageBodyState extends State<HomePageBody>
           reasigClient(reservationId, clientId);
         }
 
-        reiniciateClock();
-        print(
-            '--Este es el value del clock - FINALIZANDO*****33: ${clientsScheduledController.totalTimeInitial}');
+        // reasigClient(int reservationId, int clientId);
+        if (loginController.chargeUserLoggedIn != "Barbero y Encargado") {
+          if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
+                  0 &&
+              loginController.usserPermissionQr == 1 &&
+              clientsScheduledController.clientsScheduledListLength > 0) {
+            print('--este es el value del clok-FINALIZANDO*****22');
+            print(
+                'inserto correctamente ********** .noncomplianceProfessional[]');
+            //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
+            String type = 'Tiempo';
+            int branchId = loginController.branchIdLoggedIn!;
+            int professionalId = loginController.idProfessionalLoggedIn!;
+            int estado = 0; //es que incumplió
+            clientsScheduledController.changeNoncomplianceP(
+                type, branchId, professionalId, estado);
+            //aqui llamar e insertar en las notificacione sque incumplio esta convivencia
+            notiController.storeNotification(
+                'Incumplimiento de convivencia',
+                branchId,
+                professionalId,
+                'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado',
+                'Barbero');
+//todo notificate
+
+            LocalStorage.prefs.setInt('valueClockIni', 180);
+            clientsScheduledController.setTotalTimeInitial(180);
+            LocalStorage.prefs.setBool('valueClockActiv', false);
+            // La animación ha llegado al final, reiniciar
+
+            clientsScheduledController.animationControllerInitial!.reset();
+            clientsScheduledController.animationControllerInitial!.forward();
+          }
+        } //FIN DEL IF DE BARBERO ENCARGADO
       }
     });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      print('Se ha completado los 3-Renderizado de la pagina');
+
+      _timer3 = Timer.periodic(Duration(seconds: 2), (timer) async {
+        print('Se ha completado los 3 minutos-Timer-Chequeando');
+        if (clientsScheduledController.animationControllerInitial != null &&
+            clientsScheduledController
+                .animationControllerInitial!.isAnimating) {
+          // Aquí puedes realizar alguna acción periódica si es necesario
+          print('Se ha completado los 3 minutos-esta activo el reloj');
+        }
+        /*
+
+          if (loginController.chargeUserLoggedIn != "Barbero y Encargado") {
+            //esta convivencia para el Barbero y Encargado no va incluida
+
+            if (clientsScheduledController
+                        .noncomplianceProfessional['Tiempo'] !=
+                    0 &&
+                loginController.usserPermissionQr == 1 &&
+                clientsScheduledController.clientsScheduledListLength > 0) {
+              print('--Este es el value del clock - FINALIZANDO*****22');
+              print(
+                  'Inserto correctamente ********** .noncomplianceProfessional[]');
+
+              // Cada vez que entre aquí incumplió con el tiempo de llamar al cliente antes de 3 minutos
+              String type = 'Tiempo';
+              int branchId = loginController.branchIdLoggedIn!;
+              int professionalId = loginController.idProfessionalLoggedIn!;
+              int estado = 0; // Es que incumplió
+              clientsScheduledController.changeNoncomplianceP(
+                  type, branchId, professionalId, estado);
+
+              // Aquí llamar e insertar en las notificaciones que incumplió esta convivencia
+              notiController.storeNotification(
+                  'Incumplimiento de convivencia',
+                  branchId,
+                  professionalId,
+                  'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado',
+                  'Barbero');
+            }
+          }
+          // Verificar si hay alguien en cola para reasignarlo
+          if (clientsScheduledController.clientsScheduledNext != null) {
+            print('Se ha completado los 3 minutos - HAY CLIENTE POR ATENDER');
+            int reservationId = clientsScheduledController
+                .clientsScheduledNext!.reservation_id!;
+            int clientId =
+                clientsScheduledController.clientsScheduledNext!.client_id!;
+            reasigClient(reservationId, clientId);
+            print(
+                'Se ha completado los 3 minutos-Entrando a if (clientsScheduledController.clientsScheduledNext != null)');
+          }
+
+
+*/
+      });
+      clientsScheduledController.animationControllerInitial!.forward();
+
+      if (loginController.isLoggingInCharge == true) {
+        print('cargando aqui-15');
+        await loginController.setLoggingInCharge(false, 'buildComponent-1114');
+      }
+    });
+//todo inicio codigo-nuevo
+    // clientsScheduledController.animationControllerInitial = AnimationController(
+    //   vsync: this,
+    //   duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
+    // );
+    // A este cargo no se le cambia la regla de convivencia del tiempo
 
 //todo fin codigo-nuevo
 
@@ -386,6 +414,8 @@ class _HomePageBodyState extends State<HomePageBody>
     // channel.sink.close();
     _isMounted = false;
     _timer1?.cancel();
+    _timer2?.cancel();
+    _timer3?.cancel();
 
     super.dispose();
   }
@@ -866,6 +896,7 @@ class _HomePageBodyState extends State<HomePageBody>
 
   Timer? _timer1;
   Timer? _timer2;
+  Timer? _timer3;
   int initialValue = 10;
   llamadasTimer1() {
     _timer1 = //notificaciones
@@ -1500,6 +1531,7 @@ class _HomePageBodyState extends State<HomePageBody>
 
       // print('clientes asistiendo Antes de addPostFrameCallback');
 
+      // //todo IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
       // //todo IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
       // WidgetsBinding.instance.addPostFrameCallback((_) async {
       //   //   print('cargando aqui-10');

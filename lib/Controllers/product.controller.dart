@@ -163,6 +163,7 @@ class ProductController extends GetxController {
     } catch (e) {
       productListLength = -99;
     } finally {
+      await Future.delayed(const Duration(milliseconds: 500));
       Get.back(); //esta aqui garantizando que si da error o no igual cierre el cargando
       update();
     }

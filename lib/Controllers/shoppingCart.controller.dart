@@ -60,6 +60,7 @@ class ShoppingCartController extends GetxController {
   }
 
   Future<void> loadCart() async {
+    await Future.delayed(const Duration(seconds: 1));
     final ServiceController serviceControll = Get.find<ServiceController>();
     idServiceCart.clear();
     requestDeleteOrder.clear();
@@ -99,6 +100,8 @@ class ShoppingCartController extends GetxController {
       update();
     } catch (e) {
       //print('DIO ERROR:$e');
+    } finally {
+      await Future.delayed(const Duration(seconds: 1));
     }
   }
 
@@ -282,6 +285,7 @@ class ShoppingCartController extends GetxController {
     } catch (e) {
       print('error:$e');
     } finally {
+      await Future.delayed(const Duration(seconds: 1));
       update();
     }
   }

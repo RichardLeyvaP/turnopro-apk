@@ -315,7 +315,7 @@ class ClientsCoordinatorController extends GetxController {
     } else if (resultList['result'] == true) {
       correctConnection = true;
       update();
-      print('Cliente reasignado correctamente');
+      print('Cliente reasignado correctamente-totem');
       return true;
       //
     } else {
