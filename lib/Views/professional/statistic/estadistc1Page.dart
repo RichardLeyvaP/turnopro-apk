@@ -794,10 +794,9 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                       Text(
                                                                           'Ganancia Especial'),
                                                                       Text(
-                                                                        formatNumber(_
-                                                                            .estadist1[index]
+                                                                        _.estadist1[index]
                                                                             .SpecialAmount
-                                                                            .toString()),
+                                                                            .toString(),
                                                                         maxLines:
                                                                             2, // Limita el texto a 2 líneas
                                                                         overflow:
@@ -823,10 +822,9 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                       Text(
                                                                           'Total en servicios'),
                                                                       Text(
-                                                                        formatNumber(_
-                                                                            .estadist1[index]
+                                                                        _.estadist1[index]
                                                                             .totalServices
-                                                                            .toString()),
+                                                                            .toString(),
 
                                                                         maxLines:
                                                                             2, // Limita el texto a 2 líneas
@@ -853,10 +851,9 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                       Text(
                                                                           'Propina'),
                                                                       Text(
-                                                                        formatNumber(_
-                                                                            .estadist1[index]
+                                                                        _.estadist1[index]
                                                                             .tips
-                                                                            .toString()),
+                                                                            .toString(),
                                                                         maxLines:
                                                                             2, // Limita el texto a 2 líneas
                                                                         overflow:
@@ -882,10 +879,9 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                       Text(
                                                                           'Propina 80%'),
                                                                       Text(
-                                                                        formatNumber(_
-                                                                            .estadist1[index]
+                                                                        _.estadist1[index]
                                                                             .tips80
-                                                                            .toString()),
+                                                                            .toString(),
 
                                                                         maxLines:
                                                                             2, // Limita el texto a 2 líneas
@@ -912,10 +908,9 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                       Text(
                                                                           'Retención'),
                                                                       Text(
-                                                                        formatNumber(_
-                                                                            .estadist1[index]
+                                                                        _.estadist1[index]
                                                                             .totalRetention
-                                                                            .toString()),
+                                                                            .toString(),
                                                                         maxLines:
                                                                             2, // Limita el texto a 2 líneas
                                                                         overflow:
@@ -987,10 +982,9 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                                 FontWeight.w700),
                                                                       ),
                                                                       Text(
-                                                                        formatNumber(_
-                                                                            .estadist1[index]
+                                                                        _.estadist1[index]
                                                                             .winPay
-                                                                            .toString()),
+                                                                            .toString(),
                                                                         maxLines:
                                                                             2, // Limita el texto a 2 líneas
                                                                         overflow:
@@ -1006,6 +1000,26 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                             fontWeight:
                                                                                 FontWeight.w700),
                                                                       ),
+                                                                      // Text(
+                                                                      //   formatNumber(_
+                                                                      //       .estadist1[index]
+                                                                      //       .winPay
+                                                                      //       .toString()),
+                                                                      //   maxLines:
+                                                                      //       2, // Limita el texto a 2 líneas
+                                                                      //   overflow:
+                                                                      //       TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
+                                                                      //   style: const TextStyle(
+                                                                      //       fontSize:
+                                                                      //           16,
+                                                                      //       color: Color.fromARGB(
+                                                                      //           220,
+                                                                      //           0,
+                                                                      //           0,
+                                                                      //           0),
+                                                                      //       fontWeight:
+                                                                      //           FontWeight.w700),
+                                                                      // ),
                                                                     ],
                                                                   ),
                                                                 ],

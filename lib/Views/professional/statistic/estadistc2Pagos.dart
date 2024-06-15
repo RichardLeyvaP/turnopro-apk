@@ -67,7 +67,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
             : Column(
                 children: [
                   Expanded(
-                    flex: 4,
+                    flex: loginCont.chargeUserLoggedIn == 'Tecnico' ? 6 : 4,
                     child: topPage(
                         panddCont: panddCont,
                         colorCont: colorCont,

@@ -203,8 +203,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
                                           Text(
                                             entry.value == null
                                                 ? '0'
-                                                : formatNumber(
-                                                    (entry.value).toString()),
+                                                : entry.value.toString(),
                                             style: const TextStyle(
                                                 fontSize: 14,
                                                 color: Color.fromARGB(

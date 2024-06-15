@@ -73,7 +73,7 @@ class _StadisticaMensualPageNuevaState
                                           fontSize: 16,
                                           color: Colors.white),
                                     ),
-                                    Text(formatNumber(_.averageEarnings),
+                                    Text(_.averageEarnings,
                                         style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.white,
@@ -98,12 +98,12 @@ class _StadisticaMensualPageNuevaState
                                 padding: const EdgeInsets.all(2.0),
                                 child: Column(
                                   children: [
-                                    const Text('Total',
+                                    const Text('Total Pagado',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             fontSize: 16,
                                             color: Colors.white)),
-                                    Text(formatNumber(_.totalEarnings),
+                                    Text(_.totalEarnings,
                                         style: const TextStyle(
                                             fontSize: 16,
                                             color: Colors.white,

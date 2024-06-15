@@ -172,7 +172,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                                     width: 5,
                                                                                   ),
                                                                                   Text(
-                                                                                    formatNumber(_.estadist0[index].day_of_week.toString()),
+                                                                                    _.estadist0[index].day_of_week.toString(),
                                                                                     maxLines: 2, // Limita el texto a 2 líneas
                                                                                     overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
                                                                                     style: const TextStyle(fontSize: 18, color: Color(0xFFFDAE2A), fontWeight: FontWeight.w700),
@@ -180,7 +180,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                                 ],
                                                                               ),
                                                                               Text(
-                                                                                formatNumber(_.estadist0[index].data.toString()),
+                                                                                _.estadist0[index].data.toString(),
                                                                                 maxLines: 2, // Limita el texto a 2 líneas
                                                                                 overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
                                                                                 style: const TextStyle(fontSize: 18, color: Color(0xFFFDAE2A), fontWeight: FontWeight.w700),
@@ -289,6 +289,9 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                               ); //Get.back();
                                               await _.fetchEstadist1(
                                                   _.estadist0[index].data);
+                                              await Future.delayed(
+                                                  const Duration(
+                                                      milliseconds: 500));
                                               Get.back();
                                               Get.toNamed('/Estadistc1Page');
                                             },
@@ -469,7 +472,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                             children: [
                                                                               Text('Total en servicios'),
                                                                               Text(
-                                                                                formatNumber(_.estadist0[index].totalServices.toString()),
+                                                                                _.estadist0[index].totalServices.toString(),
                                                                                 maxLines: 2, // Limita el texto a 2 líneas
                                                                                 overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
                                                                                 style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
@@ -486,7 +489,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                                   fontSize: 16,
                                                                                 ),
                                                                               ),
-                                                                              Text(formatNumber(_.estadist0[index].tips.toString()),
+                                                                              Text(_.estadist0[index].tips.toString(),
                                                                                   maxLines: 2, // Limita el texto a 2 líneas
                                                                                   overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
                                                                                   style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700)),
@@ -503,7 +506,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                                 ),
                                                                               ),
                                                                               Text(
-                                                                                _.estadist0[index].tips80 == null ? '0' : formatNumber(_.estadist0[index].tips80.toString()),
+                                                                                _.estadist0[index].tips80 == null ? '0.00' : _.estadist0[index].tips80.toString(),
                                                                                 maxLines: 2, // Limita el texto a 2 líneas
                                                                                 overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
                                                                                 style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
@@ -516,7 +519,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                             children: [
                                                                               Text('Retención'),
                                                                               Text(
-                                                                                formatNumber(_.estadist0[index].totalRetention.toString()),
+                                                                                _.estadist0[index].totalRetention.toString(),
                                                                                 maxLines: 2, // Limita el texto a 2 líneas
                                                                                 overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
                                                                                 style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
@@ -534,7 +537,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                                 ),
                                                                               ),
                                                                               Text(
-                                                                                formatNumber(_.estadist0[index].metaamount.toString()),
+                                                                                _.estadist0[index].metaamount.toString(),
                                                                                 maxLines: 2, // Limita el texto a 2 líneas
                                                                                 overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
                                                                                 style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
@@ -552,7 +555,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                                 ),
                                                                               ),
                                                                               Text(
-                                                                                formatNumber(_.estadist0[index].amountGenerate.toString()),
+                                                                                _.estadist0[index].amountGenerate.toString(),
                                                                                 maxLines: 2, // Limita el texto a 2 líneas
                                                                                 overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
                                                                                 style: const TextStyle(fontSize: 16, color: Color.fromARGB(148, 0, 0, 0), fontWeight: FontWeight.w700),
@@ -568,7 +571,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                                 style: TextStyle(fontSize: 16, color: Color.fromARGB(220, 0, 0, 0), fontWeight: FontWeight.w700),
                                                                               ),
                                                                               Text(
-                                                                                formatNumber(_.estadist0[index].winPay.toString()),
+                                                                                _.estadist0[index].winPay.toString(),
                                                                                 maxLines: 2, // Limita el texto a 2 líneas
                                                                                 overflow: TextOverflow.ellipsis, // Agrega los tres puntos suspensivos
                                                                                 style: const TextStyle(fontSize: 16, color: Color.fromARGB(220, 0, 0, 0), fontWeight: FontWeight.w700),

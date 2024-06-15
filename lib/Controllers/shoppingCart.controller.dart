@@ -75,12 +75,12 @@ class ShoppingCartController extends GetxController {
       //print('1111111');
       selectproduct = (resultList['products'] ?? []).cast<ProductModel>();
       selectserviceCart = (resultList['services'] ?? []).cast<ServiceModel>();
-      if (totalPrice == 0.0) {
-        //Este condicional controlando que solo entrela primera vez
-        totalPrice = resultList['PriceTotal'];
-        getTotalServices = resultList['PriceService'];
-        getTotalProduct = resultList['PriceProduct'];
-      }
+      // if (totalPrice == 0.0) {
+      //Este condicional controlando que solo entrela primera vez
+      totalPrice = resultList['PriceTotal'];
+      getTotalServices = resultList['PriceService'];
+      getTotalProduct = resultList['PriceProduct'];
+      //}
       print(
           '**** 11111111 **** *** ESTE ES EL getTotalServices ACTUALMENTE:$getTotalServices');
       productListLength = selectproduct.length;

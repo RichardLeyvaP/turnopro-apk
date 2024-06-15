@@ -7,17 +7,17 @@ class Estadist0Model {
   final String day_of_week;
   final int? attendedClient;
   final int? services;
-  final int? totalGeneral;
-  final int? totalServices;
-  final int? totalProducts;
-  final int? tips;
-  final int? tips80;
+  final String? totalGeneral;
+  final String? totalServices;
+  final String? totalProducts;
+  final String? tips;
+  final String? tips80;
   final int? clientAleator;
-  final int? amountGenerate;
-  final int? totalRetention;
+  final String? amountGenerate;
+  final String? totalRetention;
   final int? metacant;
-  final int? metaamount;
-  final int? winPay;
+  final String? metaamount;
+  final String? winPay;
 
   Estadist0Model({
     required this.professional_id,
@@ -47,35 +47,17 @@ class Estadist0Model {
       day_of_week: json['day_of_week'],
       attendedClient: json['attendedClient'],
       services: json['services'],
-      totalGeneral: (json['totalGeneral'] is int)
-          ? json['totalGeneral']
-          : (json['totalGeneral'] as double?)?.toInt(),
-      totalServices: (json['totalServices'] is int)
-          ? json['totalServices']
-          : (json['totalServices'] as double?)?.toInt(),
-      totalProducts: (json['totalProducts'] is int)
-          ? json['totalProducts']
-          : (json['totalProducts'] as double?)?.toInt(),
-      tips: (json['tips'] is int)
-          ? json['tips']
-          : (json['tips'] as double?)?.toInt(),
-      tips80: (json['tips80'] is int)
-          ? json['tips80']
-          : (json['tips80'] as double?)?.toInt(),
+      totalGeneral: json['totalGeneral'],
+      totalServices: json['totalServices'],
+      totalProducts: json['totalProducts'],
+      tips: json['tips'],
+      tips80: json['tips80'],
       clientAleator: json['clientAleator'],
-      amountGenerate: (json['amountGenerate'] is int)
-          ? json['amountGenerate']
-          : (json['amountGenerate'] as double?)?.toInt(),
-      totalRetention: (json['totalRetention'] is int)
-          ? json['totalRetention']
-          : (json['totalRetention'] as double?)?.toInt(),
+      amountGenerate: json['amountGenerate'],
+      totalRetention: json['totalRetention'],
       metacant: json['metaCant'],
-      metaamount: (json['metaamount'] is int)
-          ? json['metaamount']
-          : (json['metaamount'] as double?)?.toInt(),
-      winPay: (json['winPay'] is int)
-          ? json['winPay']
-          : (json['winPay'] as double?)?.toInt(),
+      metaamount: json['metaamount'],
+      winPay: json['winPay'],
     );
   }
 

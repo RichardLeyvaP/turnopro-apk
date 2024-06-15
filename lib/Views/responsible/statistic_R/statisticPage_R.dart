@@ -42,7 +42,7 @@ class _StatisticPageResponState extends State<StatisticPageRespon>
 
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     super.initState();
 
     // Get.back();
@@ -143,7 +143,7 @@ class _StatisticPageResponState extends State<StatisticPageRespon>
                                   // Tab(text: 'Día'),
                                   Tab(text: 'Rango'),
                                   Tab(text: 'Sem.'),
-                                  Tab(text: 'Mens.'),
+                                  //Tab(text: 'Mens.'),
                                 ],
                               ),
                             ),
@@ -166,7 +166,7 @@ class _StatisticPageResponState extends State<StatisticPageRespon>
                           // const LineChartSample2(),
                           /**sssss */ // StadisticaSemanalPageNueva(),
                           //const LineChartSample5(),
-                          StadisticaMensualPageNueva(),
+                          //  StadisticaMensualPageNueva(),
                         ],
                       );
                     }),

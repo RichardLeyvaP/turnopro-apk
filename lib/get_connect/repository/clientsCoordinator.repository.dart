@@ -326,7 +326,8 @@ class ClientsCoordinatorRepository extends GetConnect {
       print('hay coneccion getClientsScheduledListBranch');
     if (response.statusCode == 200) {
       print('ya tengo la cola de la api getClientsScheduledListBranch');
-      final customers = response.body['tail'];
+      // final customers = response.body['tail'];
+      final customers = response.body['attended'];
       for (Map service in customers) {
         ClientsScheduledModel client =
             ClientsScheduledModel.fromJson(jsonEncode(service));

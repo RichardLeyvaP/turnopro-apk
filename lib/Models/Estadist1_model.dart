@@ -8,23 +8,23 @@ class Estadist1Model {
   final String? time; // Make it nullable
   final String? servicesRealizated; // Make it nullable
   final String? choice; // Make it nullable
-  final int? tips;
-  final int? tips80;
+  final String? tips;
+  final String? tips80;
   final int? Services;
-  final int? totalServices;
+  final String? totalServices;
   final int? Products;
   final int? totalProducts;
   final int? serviceSpecial;
-  final int? SpecialAmount;
+  final String? SpecialAmount;
   final int? serviceRegular;
   final int? pay;
-  final int? totalRetention;
+  final String? totalRetention;
   final int? totalGeneral;
   final int? amountGenerate;
   final int? metacant;
   final int? metaamount;
-  final int? amountTotal;
-  final int? winPay;
+  final String? amountTotal;
+  final String? winPay;
 
   Estadist1Model({
     required this.id,
@@ -62,29 +62,19 @@ class Estadist1Model {
       time: json['time'],
       servicesRealizated: json['servicesRealizated'],
       choice: json['choice'],
-      tips: (json['tips'] is int)
-          ? json['tips']
-          : (json['tips'] as double?)?.toInt(),
-      tips80: (json['tips80'] is int)
-          ? json['tips80']
-          : (json['tips80'] as double?)?.toInt(),
+      tips: json['tips'],
+      tips80: json['tips80'],
       Services: json['Services'],
-      totalServices: (json['totalServices'] is int)
-          ? json['totalServices']
-          : (json['totalServices'] as double?)?.toInt(),
+      totalServices: json['totalServices'],
       Products: json['Products'],
       totalProducts: (json['totalProducts'] is int)
           ? json['totalProducts']
           : (json['totalProducts'] as double?)?.toInt(),
       serviceSpecial: json['serviceSpecial'],
-      SpecialAmount: (json['SpecialAmount'] is int)
-          ? json['SpecialAmount']
-          : (json['SpecialAmount'] as double?)?.toInt(),
+      SpecialAmount: json['SpecialAmount'],
       serviceRegular: json['serviceRegular'],
       pay: json['pay'],
-      totalRetention: (json['totalRetention'] is int)
-          ? json['totalRetention']
-          : (json['totalRetention'] as double?)?.toInt(),
+      totalRetention: json['totalRetention'],
       totalGeneral: (json['totalGeneral'] is int)
           ? json['totalGeneral']
           : (json['totalGeneral'] as double?)?.toInt(),
@@ -96,9 +86,7 @@ class Estadist1Model {
           ? json['metaAmount']
           : (json['metaAmount'] as double?)?.toInt(),
       amountTotal: json['amountTotal'],
-      winPay: (json['winPay'] is int)
-          ? json['winPay']
-          : (json['winPay'] as double?)?.toInt(),
+      winPay: json['winPay'],
     );
   }
 

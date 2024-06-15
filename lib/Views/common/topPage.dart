@@ -165,6 +165,8 @@ class topPage extends StatelessWidget {
                               ); //Get.back();s
                               if (textButton == 'MIS PAGOS') {
                                 await coexContro.fetchEstadistPagos();
+                                await Future.delayed(
+                                    const Duration(milliseconds: 500));
                               }
                               //AQUI PONER OTRAS CONDICIONES SI ES POSIBLE
 

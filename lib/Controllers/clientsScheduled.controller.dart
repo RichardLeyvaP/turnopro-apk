@@ -1286,6 +1286,7 @@ class ClientsScheduledController extends GetxController {
 
       Map<String, dynamic> resultList =
           await repository.getClientsScheduledListNew(idProfessional, idBranch);
+      setBoolControlVision(false);
       print(resultList);
       //verificando , si entra al if es problemas de coneccion
       if (resultList.containsKey('ConnectionIssues') &&
@@ -1336,6 +1337,7 @@ class ClientsScheduledController extends GetxController {
     } finally {
       print('Obtener la lista de notificaciones: noUpdate == click $noUpdate');
       if (noUpdate == false) {
+        setBoolControlVision(true);
         update();
       }
       controllerLogin.setIsLoadingFor(false);

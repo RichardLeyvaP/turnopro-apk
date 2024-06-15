@@ -72,7 +72,8 @@ class CoexistenceRepository extends GetConnect {
           '${Env.apiEndpoint}/professional-win-year?professional_id=$idProfessional&branch_id=$idBranch&year=$year'));
       // var url =
       //     '${Env.apiEndpoint}/professional-win-year?professional_id=$idProfessional&branch_id=$idBranch&year=$year';
-      //  print('url de grafico:$url');
+      print(
+          'url de grafico:${Env.apiEndpoint}/professional-win-year?professional_id=$idProfessional&branch_id=$idBranch&year=$year');
 
       // final response = await get(url);
       if (response.statusCode == 200) {
@@ -359,23 +360,23 @@ class CoexistenceRepository extends GetConnect {
         // final int servAmount = jsonResponse['servAmount'];
         // final int servBonoCant = jsonResponse['servBonoCant'];
         // Asignaciones con conversión
-        final int pendiente = parseToInt(jsonResponse['pendiente']);
-        final int pagado = parseToInt(jsonResponse['pagado']);
+        final String pendiente = jsonResponse['pendiente'];
+        final String pagado = jsonResponse['pagado'];
         final int clientAtended = parseToInt(jsonResponse['clientAtended']);
         final int servCant = parseToInt(jsonResponse['servCant']);
-        final int amountGenerate = parseToInt(jsonResponse['amountGenerate']);
-        final int propina80 = parseToInt(jsonResponse['propina80']);
+        final String amountGenerate = jsonResponse['amountGenerate'];
+        final String propina80 = jsonResponse['propina80'];
         final int metaCant = parseToInt(jsonResponse['metaCant']);
-        final int metaAmount = parseToInt(jsonResponse['metaAmount']);
-        final int retention = parseToInt(jsonResponse['retention']);
-        final int winnerRetention = parseToInt(jsonResponse['winnerRetention']);
-        final int winnerAmount = parseToInt(jsonResponse['winnerAmount']);
-        final int productCant = parseToInt(jsonResponse['productCant']);
-        final int productAmount = parseToInt(jsonResponse['productAmount']);
+        final String metaAmount = jsonResponse['metaAmount'];
+        final String retention = jsonResponse['retention'];
+        final String winnerRetention = jsonResponse['winnerRetention'];
+        final String winnerAmount = jsonResponse['winnerAmount'];
+        final String productCant = jsonResponse['productCant'];
+        final String productAmount = jsonResponse['productAmount'];
         final int productBonoCant = parseToInt(jsonResponse['productBonoCant']);
-        final int servAmount = parseToInt(jsonResponse['servAmount']);
+        final String servAmount = jsonResponse['servAmount'];
         final int servBonoCant = parseToInt(jsonResponse['servBonoCant']);
-
+        double sum_pyment = 0;
         for (int i = 0; i < payments.length; i++) {
           final Map<String, dynamic> branch = payments[i];
           print(
@@ -383,7 +384,7 @@ class CoexistenceRepository extends GetConnect {
 
           // Crear una instancia de Estadist1Model
           PaymentModel u = PaymentModel.fromJson(branch);
-
+          sum_pyment += u.amount;
           // Agregar la instancia a la lista branchProf
           // if (u.type == 'Adelanto') {
           //solamnete mostrar que sea adelando(Pedido por el cliente)
@@ -396,7 +397,7 @@ class CoexistenceRepository extends GetConnect {
         return {
           'branchProf': branchProf,
           'pendiente': pendiente,
-          'pagado': pagado,
+          'pagado': sum_pyment,
           'clientAtended': clientAtended,
           'servCant': servCant,
           'amountGenerate': amountGenerate,

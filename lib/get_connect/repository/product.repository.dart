@@ -21,7 +21,9 @@ class ProductRepository extends GetConnect {
       List<ServiceModel> serviceListCar = [];
       final ShoppingCartController shoppingCartController =
           Get.find<ShoppingCartController>();
-
+      PriceT = 0.0;
+      PriceProduct = 0.0;
+      PriceService = 0.0;
       int carId = shoppingCartController.carIdClienteSelect!;
       var url =
           '${Env.apiEndpoint}/car_orders?id=$carId'; //todo REVISAR aqui enviar el id del carro correspondiente al cliente-profesional

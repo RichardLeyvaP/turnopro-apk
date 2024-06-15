@@ -36,7 +36,7 @@ class _StatisticPageCordinState extends State<StatisticPageCordin>
 
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     super.initState();
 
     // Get.back();
@@ -137,7 +137,7 @@ class _StatisticPageCordinState extends State<StatisticPageCordin>
                                   // Tab(text: 'Día'),
                                   Tab(text: 'Rango'),
                                   Tab(text: 'Sem.'),
-                                  Tab(text: 'Mens.'),
+                                  // Tab(text: 'Mens.'),
                                 ],
                               ),
                             ),
@@ -160,7 +160,7 @@ class _StatisticPageCordinState extends State<StatisticPageCordin>
                           // const LineChartSample2(),
                           /**sssss */ // StadisticaSemanalPageNueva(),
                           //const LineChartSample5(),
-                          StadisticaMensualPageNueva(),
+                          //  StadisticaMensualPageNueva(),
                         ],
                       );
                     }),

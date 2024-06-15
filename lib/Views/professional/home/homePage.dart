@@ -128,6 +128,8 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                             barrierDismissible: false,
                           ); //Get.back();
                           await coexistenceController.fetchCoexistenceList();
+                          await Future.delayed(
+                              const Duration(milliseconds: 500));
                           Get.back();
                         } else if (index == 1) {
                           //loginController.setIsLoadingFor(true);
@@ -144,6 +146,8 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                               loginController.idProfessionalLoggedIn,
                               loginController.branchIdLoggedIn,
                               'if (index == 1)');
+                          await Future.delayed(
+                              const Duration(milliseconds: 500));
                           Get.back();
                         } else if (index == 2) {
                           Get.dialog(
@@ -173,6 +177,8 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                               loginController.idProfessionalLoggedIn,
                               typeEnv,
                               'Barra de navegacion');
+                          await Future.delayed(
+                              const Duration(milliseconds: 500));
                           Get.back();
                           /* await notiCont.fetchNotificationList(
                               loginController.branchIdLoggedIn,
@@ -187,6 +193,8 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                             barrierDismissible: false,
                           );
                           await coexistenceController.fetchEstadist0();
+                          await Future.delayed(
+                              const Duration(milliseconds: 500));
                           Get.back();
                         }
                         pagesConfigController.onTabTapped(index);
