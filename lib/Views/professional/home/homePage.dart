@@ -52,13 +52,15 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
     print('La aplicación se está pausando (yendo a segundo plano111)');
     if (state == AppLifecycleState.paused) {
-      clientController.setCloseIesperado(true);
       clientController.setBoolControlVision(false);
+      clientController.setCloseIesperado(true);
+
       // La aplicación se está pausando (puede ir a segundo plano)
       loginController.getSegundoPlano(0);
       print('..segundoPlano....${clientController.timeClientsActAttended1}');
       print('La aplicación se está pausando (yendo a segundo plano)');
     } else if (state == AppLifecycleState.resumed) {
+      clientController.setBoolControlVision(false);
       // La aplicación se cierra completamente
       print('La aplicación se está Reaunudandose nuevamente');
       print(
@@ -66,7 +68,6 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
       clientController.setCloseIesperado(false);
       loginController.getSegundoPlano(3); //es que regresó
       // Agrega tu lógica para guardar en la base de datos aquí.
-      clientController.setBoolControlVision(false);
     } else if (state == AppLifecycleState.detached) {
       // La aplicación se cierra completamente
       print('La aplicación se está cerrando completamente');

@@ -366,7 +366,9 @@ class ClientsScheduledRepository extends GetConnect {
         final data = response.body['clientHistory'];
         print('ertyu - clientHistory $data');
         String professionalNameBarber = data[0]['professionalName'];
-        String imageUrlBarber = data[0]['image_url'];
+        String imageUrlBarber = data[0]['image_url'] == ''
+            ? 'comments/default_profile.jpg'
+            : data[0]['image_url'];
         String imageLookBarber = data[0]['imageLook'];
         int cantVisitBarber = data[0]['cantVisit'];
         String endLookBarber = data[0]['endLook'] ?? '';
@@ -756,7 +758,9 @@ class ClientsScheduledRepository extends GetConnect {
         return false;
       }
     } catch (e) {
-      print(e);
+      print(
+          'mensaje al querer hacer esta accion:error al querer finalizar un servicio:$e');
+      return false;
     }
   }
 

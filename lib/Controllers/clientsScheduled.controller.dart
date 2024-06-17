@@ -901,12 +901,13 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
-  Future<void> acceptOrRejectClient(reservationId, attended) async {
+  Future<int> acceptOrRejectClient(reservationId, attended) async {
     // final LoginController controllerLogin = Get.find<LoginController>();
 
     bool value = await repository.acceptOrRejectClient(reservationId, attended);
     //si lo que devuelve es true actualizo la cola
     if (value == true) {
+      print('mensaje al querer hacer esta accion:mando bien-value:$value');
       int? idBranch = controllerLogin.branchIdLoggedIn;
       int? idProfessional = controllerLogin.idProfessionalLoggedIn;
       //aqui actualizo la cola
@@ -1030,8 +1031,10 @@ class ClientsScheduledController extends GetxController {
       if (attended == 1) {
         callCliente = true;
       }
+      return 1;
     } else {
       print('Dio error al mandar a aceptar o rechazar al cliente');
+      return 0;
     }
   }
 
@@ -1337,7 +1340,7 @@ class ClientsScheduledController extends GetxController {
     } finally {
       print('Obtener la lista de notificaciones: noUpdate == click $noUpdate');
       if (noUpdate == false) {
-        setBoolControlVision(true);
+        boolControlVision = true;
         update();
       }
       controllerLogin.setIsLoadingFor(false);

@@ -628,8 +628,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                             height: 1.2),
                       ),
                       TruncatedText(
-                        text:
-                            'endLook sdasd sad sdasd asd asd sad sa d sad sad sa d sad asd sa d asdasdasd sadsad asdasd asd sadasd ',
+                        text: endLook.toString(),
                         maxLength: 35,
                         styleText: const TextStyle(
                             fontSize: 13,

@@ -307,7 +307,7 @@ class NotificationRepository extends GetConnect {
       }
     } catch (e) {
       print(
-          'mandar alguna variable para la vista Error en Future getNotificationList:e');
+          'mandar alguna variable para la vista Error en Future getNotificationList:$e');
       return {
         'Erroor': true
       }; //si retorna null es que dio error deve ser de conexion

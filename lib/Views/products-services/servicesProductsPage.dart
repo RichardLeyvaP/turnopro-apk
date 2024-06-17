@@ -649,71 +649,103 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                           }
 
                                                           // Lógica para enviar el comentario
-                                                          await clientsController
+                                                          int resul = await clientsController
                                                               .acceptOrRejectClient(
                                                                   clientsController
                                                                       .idClientTemporary,
                                                                   2);
-                                                          clientsController //todo cambioHOY /estaba antes fetchClientsScheduled
-                                                              .fetchClientsScheduledNew(
-                                                                  loginController
-                                                                      .idProfessionalLoggedIn,
-                                                                  loginController
-                                                                      .branchIdLoggedIn,
-                                                                  'Text(ENVIAR)');
-                                                          Get.back(); //aqui cierro el cargando
-                                                          Get.snackbar(
-                                                            'Mensaje',
-                                                            'Finalizando servicio',
-                                                            duration:
-                                                                const Duration(
-                                                                    milliseconds:
-                                                                        2500),
-                                                            backgroundColor:
-                                                                const Color
-                                                                        .fromARGB(
-                                                                    118,
-                                                                    255,
-                                                                    255,
-                                                                    255),
-                                                            showProgressIndicator:
-                                                                true,
-                                                            progressIndicatorBackgroundColor:
-                                                                const Color
-                                                                        .fromARGB(
-                                                                    255,
-                                                                    203,
-                                                                    205,
-                                                                    209),
-                                                            progressIndicatorValueColor:
-                                                                const AlwaysStoppedAnimation(
-                                                                    Color(
-                                                                        0xFFFDAE2A)),
-                                                            overlayBlur: 3,
-                                                          );
-                                                          final ClientsScheduledController
-                                                              cliCont =
-                                                              Get.find<
-                                                                  ClientsScheduledController>();
-                                                          loginController
-                                                              .setCodigoQrValid(
-                                                                  1);
-                                                          cliCont.setImagePath(
-                                                              null);
-                                                          Future.delayed(
-                                                              const Duration(
-                                                                  seconds: 2),
-                                                              () {
-                                                            // Aquí dentro puedes poner la acción que deseas realizar después de esperar 2 segundos
-                                                            loginController
-                                                                .inTheClock(
-                                                                    false);
-                                                            pagesConfigC.back();
-                                                            // Llama a cualquier función o realiza alguna tarea aquí
-                                                          });
 
-                                                          print(
-                                                              'Comentario enviado - $commentText ');
+                                                          if (resul ==
+                                                              1) //es que finalizó bien
+                                                          {
+                                                            clientsController //todo cambioHOY /estaba antes fetchClientsScheduled
+                                                                .fetchClientsScheduledNew(
+                                                                    loginController
+                                                                        .idProfessionalLoggedIn,
+                                                                    loginController
+                                                                        .branchIdLoggedIn,
+                                                                    'Text(ENVIAR)');
+                                                            Get.back(); //aqui cierro el cargando
+                                                            Get.snackbar(
+                                                              'Mensaje',
+                                                              'Finalizando servicio',
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          2500),
+                                                              backgroundColor:
+                                                                  const Color
+                                                                          .fromARGB(
+                                                                      118,
+                                                                      255,
+                                                                      255,
+                                                                      255),
+                                                              showProgressIndicator:
+                                                                  true,
+                                                              progressIndicatorBackgroundColor:
+                                                                  const Color
+                                                                          .fromARGB(
+                                                                      255,
+                                                                      203,
+                                                                      205,
+                                                                      209),
+                                                              progressIndicatorValueColor:
+                                                                  const AlwaysStoppedAnimation(
+                                                                      Color(
+                                                                          0xFFFDAE2A)),
+                                                              overlayBlur: 3,
+                                                            );
+                                                            final ClientsScheduledController
+                                                                cliCont =
+                                                                Get.find<
+                                                                    ClientsScheduledController>();
+                                                            loginController
+                                                                .setCodigoQrValid(
+                                                                    1);
+                                                            cliCont
+                                                                .setImagePath(
+                                                                    null);
+                                                            Future.delayed(
+                                                                const Duration(
+                                                                    seconds: 2),
+                                                                () {
+                                                              // Aquí dentro puedes poner la acción que deseas realizar después de esperar 2 segundos
+                                                              loginController
+                                                                  .inTheClock(
+                                                                      false);
+                                                              pagesConfigC
+                                                                  .back();
+                                                              // Llama a cualquier función o realiza alguna tarea aquí
+                                                            });
+
+                                                            print(
+                                                                'Comentario enviado - $commentText ');
+                                                          } else //fallo la
+                                                          {
+                                                            Get.back(); //aqui cierro el cargando
+                                                            Get.snackbar(
+                                                              '!Alerta',
+                                                              'No finalizó el servicio correctamente, vuelva a intentarlo',
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          3000),
+                                                              showProgressIndicator:
+                                                                  true,
+                                                              progressIndicatorBackgroundColor:
+                                                                  const Color
+                                                                          .fromARGB(
+                                                                      255,
+                                                                      146,
+                                                                      99,
+                                                                      19),
+                                                              progressIndicatorValueColor:
+                                                                  const AlwaysStoppedAnimation(
+                                                                      Color(
+                                                                          0xFFFDAE2A)),
+                                                              overlayBlur: 3,
+                                                            );
+                                                          }
                                                         } else {
                                                           Get.snackbar(
                                                             'Mensaje',

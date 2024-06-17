@@ -1175,7 +1175,14 @@ class _HomePageBodyState extends State<HomePageBody>
           if (clientsScheduledController.item[i] == 0) {
             animationCont[0]!.duration =
                 Duration(seconds: animationCont[0]!.duration!.inSeconds);
+            //ver si esta con el tecnico ponerlo parado sin descontar
             animationCont[0]!.forward();
+            //verificar si esta con el tecnico y detenerlo
+            if (clientsScheduledController.clientsAttended1!.attended == 4 ||
+                clientsScheduledController.clientsAttended1!.attended == 5 ||
+                clientsScheduledController.clientsAttended1!.attended == 33) {
+              animationCont[0]!.stop();
+            }
 
             print(
                 'La aplicación se activeClock() {--1 ${animationCont[0]!.duration!.inSeconds}');
@@ -1183,18 +1190,36 @@ class _HomePageBodyState extends State<HomePageBody>
             animationCont[1]!.duration =
                 Duration(seconds: animationCont[1]!.duration!.inSeconds);
             animationCont[1]!.forward();
+            //verificar si esta con el tecnico y detenerlo
+            if (clientsScheduledController.clientsAttended2!.attended == 4 ||
+                clientsScheduledController.clientsAttended2!.attended == 5 ||
+                clientsScheduledController.clientsAttended2!.attended == 33) {
+              animationCont[1]!.stop();
+            }
             print(
                 'La aplicación se activeClock() {--2 ${animationCont[1]!.duration!.inSeconds}');
           } else if (clientsScheduledController.item[i] == 2) {
             animationCont[2]!.duration =
                 Duration(seconds: animationCont[2]!.duration!.inSeconds);
             animationCont[2]!.forward();
+            //verificar si esta con el tecnico y detenerlo
+            if (clientsScheduledController.clientsAttended3!.attended == 4 ||
+                clientsScheduledController.clientsAttended3!.attended == 5 ||
+                clientsScheduledController.clientsAttended3!.attended == 33) {
+              animationCont[2]!.stop();
+            }
             print(
                 'La aplicación se activeClock() {--3 ${animationCont[2]!.duration!.inSeconds}');
           } else if (clientsScheduledController.item[i] == 3) {
             animationCont[3]!.duration =
                 Duration(seconds: animationCont[3]!.duration!.inSeconds);
             animationCont[3]!.forward();
+            //verificar si esta con el tecnico y detenerlo
+            if (clientsScheduledController.clientsAttended4!.attended == 4 ||
+                clientsScheduledController.clientsAttended4!.attended == 5 ||
+                clientsScheduledController.clientsAttended4!.attended == 33) {
+              animationCont[3]!.stop();
+            }
             print(
                 'La aplicación se activeClock() {--4 ${animationCont[3]!.duration!.inSeconds}');
           }
@@ -2186,10 +2211,11 @@ class _HomePageBodyState extends State<HomePageBody>
                                           .reservation_id! >
                                       0) {
                                 clientsScheduledControllerE
+                                    .setBoolControlVision(false);
+                                clientsScheduledControllerE
                                     .setBoolFilterShowNext(false);
                                 //aqui poner que muestre un cargando
-                                clientsScheduledControllerE
-                                    .setBoolControlVision(false);
+
                                 int resulButton = 0;
                                 resulButton = loginController.handleButtonClick(
                                     clientsScheduledControllerE

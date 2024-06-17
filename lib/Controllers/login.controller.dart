@@ -762,12 +762,12 @@ class LoginController extends GetxController {
       if (diferSeg > 0) {
         //aun no s eacabaron los 3 minutos
         // asigno el tiempo
-        timeAsig = diferSeg;
+        timeAsig = diferSeg > 180 ? 180 : diferSeg;
       } else //es que se acaboron los 3 min
       {
         // ya una vez en el dia esto cumplido ya no importa el reloj de espera
         //al salir del sistema esta variable debe tomar false
-        timeAsig = 1;
+        timeAsig = 180;
       }
       LocalStorage.prefs.setInt('valueClockIni', timeAsig);
 
@@ -794,7 +794,7 @@ class LoginController extends GetxController {
         if (diferSeg > 0) {
           //aun no s eacabaron los 3 minutos
           // asigno el tiempo
-          timeAsig = diferSeg;
+          timeAsig = diferSeg > 300 ? 300 : diferSeg;
         } else //es que se acaboron los 3 min
         {
           // ya una vez en el dia esto cumplido ya no importa el reloj de espera

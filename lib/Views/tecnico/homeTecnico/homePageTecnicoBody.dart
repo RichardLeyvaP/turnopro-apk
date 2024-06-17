@@ -84,12 +84,12 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
         LocalStorage.prefs.setInt('valueClockIni', 180);
         clientsScheduledController.setTotalTimeInitialTec(180);
         LocalStorage.prefs.setBool('valueClockActivT', false);
-        clientsScheduledController.animationControllerInitialT =
-            AnimationController(
-          vsync: this,
-          duration:
-              Duration(seconds: clientsScheduledController.totalTimeInitial),
-        );
+        // clientsScheduledController.animationControllerInitialT =
+        //     AnimationController(
+        //   vsync: this,
+        //   duration:
+        //       Duration(seconds: clientsScheduledController.totalTimeInitial),
+        // );
         // La animación ha llegado al final, reiniciar
         clientsScheduledController.animationControllerInitialT!.reset();
         clientsScheduledController.animationControllerInitialT!.forward();

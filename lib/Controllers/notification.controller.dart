@@ -470,7 +470,7 @@ class NotificationController extends GetxController {
     } catch (e) {
       // Manejo de errores
       noUpdate = true;
-      print('Error al obtener la lista de notificaciones: $e');
+      print('Error al obtener la lista de notificaciones:este: $e');
     } finally {
       print(
           'Obtener la lista de notificaciones: noUpdate == Timer10segun $noUpdate');
@@ -657,7 +657,7 @@ class NotificationController extends GetxController {
     } catch (e) {
       controllerLogin.setIsLoadingFor(false);
       // Manejo de errores
-      print('Error al obtener la lista de notificaciones: $e');
+      print('Error al obtener la lista de notificaciones:aqui: $e');
     }
   }
 
