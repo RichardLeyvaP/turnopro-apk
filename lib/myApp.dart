@@ -21,6 +21,7 @@ import 'package:turnopro_apk/Views/responsible/homeResponsiblePage.dart';
 import 'package:turnopro_apk/Views/professional/shoppingCartPage.dart';
 import 'package:turnopro_apk/Views/responsible/statistic_R/statisticPage_R.dart';
 import 'package:turnopro_apk/Views/tecnico/homeTecnico/homePageTecnico.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 //todo este es el que me falta optimizar
 class Myapp extends StatelessWidget {
@@ -47,20 +48,23 @@ class Myapp extends StatelessWidget {
   @override
   Widget build(Object context) {
     return GetBuilder<LoginController>(builder: (_) {
-      return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: _.pagina == '/Professional'
-            ? themeDataProfessional()
-            : (_.pagina == '/HomeResponsible' || _.pagina == '/HomeCordinador')
-                ? themeDataResponsible()
-                : themeDataProfessional(), //themeDataTecnico(), //es tecnico
-        initialRoute: '/SplashPage',
-        //initialRoute: '/SplashPage',
-        unknownRoute: GetPage(
-          name: '/Error', // Nombre de la ruta de error
-          page: () => const Page404(), // Página de error
+      return OverlaySupport(
+        child: GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: _.pagina == '/Professional'
+              ? themeDataProfessional()
+              : (_.pagina == '/HomeResponsible' ||
+                      _.pagina == '/HomeCordinador')
+                  ? themeDataResponsible()
+                  : themeDataProfessional(), //themeDataTecnico(), //es tecnico
+          initialRoute: '/SplashPage',
+          //initialRoute: '/SplashPage',
+          unknownRoute: GetPage(
+            name: '/Error', // Nombre de la ruta de error
+            page: () => const Page404(), // Página de error
+          ),
+          getPages: routes,
         ),
-        getPages: routes,
       );
     });
   }

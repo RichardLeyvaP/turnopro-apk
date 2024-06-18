@@ -12,6 +12,7 @@ import 'package:turnopro_apk/Models/professional_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/get_connect/repository/clientsScheduled.repository.dart';
 import 'package:turnopro_apk/get_connect/repository/user.repository.dart';
 
@@ -904,9 +905,9 @@ class ClientsScheduledController extends GetxController {
   Future<int> acceptOrRejectClient(reservationId, attended) async {
     // final LoginController controllerLogin = Get.find<LoginController>();
 
-    bool value = await repository.acceptOrRejectClient(reservationId, attended);
+    int value = await repository.acceptOrRejectClient(reservationId, attended);
     //si lo que devuelve es true actualizo la cola
-    if (value == true) {
+    if (value == 1) {
       print('mensaje al querer hacer esta accion:mando bien-value:$value');
       int? idBranch = controllerLogin.branchIdLoggedIn;
       int? idProfessional = controllerLogin.idProfessionalLoggedIn;
@@ -1032,6 +1033,11 @@ class ClientsScheduledController extends GetxController {
         callCliente = true;
       }
       return 1;
+    } else if (value == -99) {
+      loginController.showConnectionError();
+      print(
+          'Dio error al mandar a aceptar o rechazar al cliente.Status = null');
+      return -99;
     } else {
       print('Dio error al mandar a aceptar o rechazar al cliente');
       return 0;

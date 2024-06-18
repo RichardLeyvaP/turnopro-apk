@@ -8,6 +8,7 @@ import 'package:turnopro_apk/Controllers/service.controller.dart';
 import 'package:turnopro_apk/Models/orderDelete_model.dart';
 import 'package:turnopro_apk/Models/product_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/get_connect/repository/product.repository.dart';
 import 'package:turnopro_apk/get_connect/repository/services.repository.dart';
 //todo REVISAR REVISAR este controlador y que  funcione correctamente,no lo he revisado me refiero funcionalmente
@@ -73,31 +74,38 @@ class ShoppingCartController extends GetxController {
       Map<String, dynamic> resultList =
           await productRepository.getCartProductService(); //todo aqui revisando
       //print('1111111');
-      selectproduct = (resultList['products'] ?? []).cast<ProductModel>();
-      selectserviceCart = (resultList['services'] ?? []).cast<ServiceModel>();
-      // if (totalPrice == 0.0) {
-      //Este condicional controlando que solo entrela primera vez
-      totalPrice = resultList['PriceTotal'];
-      getTotalServices = resultList['PriceService'];
-      getTotalProduct = resultList['PriceProduct'];
-      //}
-      print(
-          '**** 11111111 **** *** ESTE ES EL getTotalServices ACTUALMENTE:$getTotalServices');
-      productListLength = selectproduct.length;
-      serviceListLength = selectserviceCart.length;
-      //aqui asigno los servicios que ya tiene sekeccionados
-      serviceControll.asigSelectService(selectserviceCart);
-      print(
-          'LISTA2 _fetchServiceList Limpiando**** *** ESTE ES EL getTotalServices ACTUALMENTE:${selectserviceCart.length}');
-      print(
-          'LISTA2 _fetchServiceList Limpiando**** *** ESTE ES EL getTotalServices ACTUALMENTE:${selectserviceCart}');
 
-      for (int i = 0; i < selectserviceCart.length; i++) {
-        idServiceCart.add(selectserviceCart[i].nameService!);
+      //primero veo que no halla dado null la llamada
+      if (resultList.containsKey('statusCode') &&
+          resultList['statusCode'] == null) {
+        loginController.showConnectionError();
+      } else {
+        selectproduct = (resultList['products'] ?? []).cast<ProductModel>();
+        selectserviceCart = (resultList['services'] ?? []).cast<ServiceModel>();
+        // if (totalPrice == 0.0) {
+        //Este condicional controlando que solo entrela primera vez
+        totalPrice = resultList['PriceTotal'];
+        getTotalServices = resultList['PriceService'];
+        getTotalProduct = resultList['PriceProduct'];
+        //}
+        print(
+            '**** 11111111 **** *** ESTE ES EL getTotalServices ACTUALMENTE:$getTotalServices');
+        productListLength = selectproduct.length;
+        serviceListLength = selectserviceCart.length;
+        //aqui asigno los servicios que ya tiene sekeccionados
+        serviceControll.asigSelectService(selectserviceCart);
+        print(
+            'LISTA2 _fetchServiceList Limpiando**** *** ESTE ES EL getTotalServices ACTUALMENTE:${selectserviceCart.length}');
+        print(
+            'LISTA2 _fetchServiceList Limpiando**** *** ESTE ES EL getTotalServices ACTUALMENTE:${selectserviceCart}');
+
+        for (int i = 0; i < selectserviceCart.length; i++) {
+          idServiceCart.add(selectserviceCart[i].nameService!);
+        }
+        shoppingCart = productListLength + serviceListLength;
+
+        update();
       }
-      shoppingCart = productListLength + serviceListLength;
-
-      update();
     } catch (e) {
       //print('DIO ERROR:$e');
     } finally {

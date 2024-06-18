@@ -740,7 +740,6 @@ class ClientsScheduledRepository extends GetConnect {
   Future acceptOrRejectClient(reservationId, attended) async {
     print('estoy en repositorio en - 11');
     try {
-      bool value = false;
       var url =
           '${Env.apiEndpoint}/tail_attended?reservation_id=$reservationId&attended=$attended';
       print(
@@ -749,18 +748,18 @@ class ClientsScheduledRepository extends GetConnect {
       final response = await get(url);
       if (response.statusCode == 200) {
         print('acceptOrRejectClient1 value = true');
-        value = true;
-        return value;
+
+        return 1;
       } else {
         print(
             'ERROR:acceptOrRejectClient1 value = false- response.statusCode2${response.statusCode}');
 
-        return false;
+        return -99;
       }
     } catch (e) {
       print(
           'mensaje al querer hacer esta accion:error al querer finalizar un servicio:$e');
-      return false;
+      return 0;
     }
   }
 

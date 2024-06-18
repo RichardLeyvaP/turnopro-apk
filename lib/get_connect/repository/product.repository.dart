@@ -60,6 +60,10 @@ class ProductRepository extends GetConnect {
           'PriceService': PriceService,
           'PriceProduct': PriceProduct,
         };
+      } else if (response.statusCode == null) {
+        print(
+            'estoy cargando el carro de id car services leght response.statusCode:${response.statusCode}');
+        return {'statusCode': null};
       }
     } catch (e) {
       // print('eroor:$e,NO RETORNO LAS DOS LISTAS ');

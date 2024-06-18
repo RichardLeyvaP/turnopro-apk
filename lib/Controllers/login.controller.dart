@@ -8,6 +8,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
@@ -42,6 +43,19 @@ class LoginController extends GetxController {
     String formattedTime = DateFormat('HH:mm:ss').format(now);
 
     return formattedTime;
+  }
+
+  void showConnectionError() {
+    showSimpleNotification(
+      Text(
+        'Problemas de conexión',
+        style: TextStyle(color: Colors.white),
+      ),
+      background: Colors.red,
+      // position: NotificationPosition.top,
+      position: NotificationPosition.bottom,
+      slideDismiss: true, // para que se pueda deslizar para cerrar
+    );
   }
 
   //optener la hora actual

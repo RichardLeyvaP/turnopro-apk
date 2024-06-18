@@ -654,8 +654,11 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                                   clientsController
                                                                       .idClientTemporary,
                                                                   2);
-
                                                           if (resul ==
+                                                              -99) //es que finalizó bien y dio status.code = null
+                                                          {
+                                                            Get.back(); //aqui cierro el cargando
+                                                          } else if (resul ==
                                                               1) //es que finalizó bien
                                                           {
                                                             clientsController //todo cambioHOY /estaba antes fetchClientsScheduled
