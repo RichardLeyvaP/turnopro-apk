@@ -108,7 +108,8 @@ class CoexistenceController extends GetxController {
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
     int? idBranch = controllerLogin.branchIdLoggedIn;
-    coexistence = await repository.getCoexistenceList(idProfessional, idBranch);
+    coexistence = await repository.getCoexistenceList(
+        idProfessional, idBranch, controllerLogin.tokenUserLoggedIn);
     print(coexistence.length);
     coexistenceListLength = coexistence.length;
     print('a15627 coexistenceListLength:${coexistenceListLength}');
@@ -124,8 +125,8 @@ class CoexistenceController extends GetxController {
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
     int? idBranch = controllerLogin.branchIdLoggedIn;
-    Map<String, dynamic> resultList =
-        await repository.getAnoStadist(idProfessional, idBranch, ano);
+    Map<String, dynamic> resultList = await repository.getAnoStadist(
+        idProfessional, idBranch, ano, controllerLogin.tokenUserLoggedIn);
     meses[0] = double.parse(resultList['stadist']['enero'].toString());
     print('resultadosssssss 4');
     meses[1] = double.parse(resultList['stadist']['febrero'].toString());
@@ -241,7 +242,8 @@ class CoexistenceController extends GetxController {
   Future<void> specificCoexistenceList(idProfessional) async {
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idBranch = controllerLogin.branchIdLoggedIn;
-    coexistence = await repository.getCoexistenceList(idProfessional, idBranch);
+    coexistence = await repository.getCoexistenceList(
+        idProfessional, idBranch, controllerLogin.tokenUserLoggedIn);
     print(coexistence.length);
     coexistenceListLength = coexistence.length;
     update();

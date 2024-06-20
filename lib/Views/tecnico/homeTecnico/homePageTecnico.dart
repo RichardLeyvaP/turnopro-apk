@@ -102,7 +102,8 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                                 loginController.branchIdLoggedIn,
                                 loginController.idProfessionalLoggedIn,
                                 'Tecnico',
-                                'Navigator-abajo');
+                                'Navigator-abajo',
+                                loginController.tokenUserLoggedIn);
                           }
                           Get.back();
                         }

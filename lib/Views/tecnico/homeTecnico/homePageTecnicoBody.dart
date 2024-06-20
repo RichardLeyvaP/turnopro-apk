@@ -58,6 +58,10 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
       vsync: this,
       duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
     );
+    _animationTechnicalController1 = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: clientsScheduledController.totalTimeClient),
+    );
 
 // Inicia la animación
     clientsScheduledController.animationControllerInitialT!
@@ -114,15 +118,9 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
         //si es false simplemente creo e inicializo el control para ser utilizado proximamente
         _animationTechnicalController1 = AnimationController(
           vsync: this,
-          duration: const Duration(seconds: 10),
+          duration: const Duration(seconds: 300),
         );
       }
-    } else {
-      //si es null simplemente creo e inicializo el control para ser utilizado proximamente
-      _animationTechnicalController1 = AnimationController(
-        vsync: this,
-        duration: const Duration(seconds: 10),
-      );
     }
   }
 
@@ -138,8 +136,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
 //si el clock de cliente atendido esta activo
     if (LocalStorage.prefs.getBool('valueClockTec1ActivT') == true) {
       int valueClock = getTimeRemainingAten();
-      int valueSave = valueClock;
-      await LocalStorage.prefs.setInt('valueClockTec1', valueSave);
+      clientsScheduledController.setTotalTimeClientec(valueClock);
+      await LocalStorage.prefs.setInt('valueClockTec1', valueClock);
     }
   }
 
@@ -160,7 +158,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
       return (timeAct - (_animationTechnicalController1!.value * timeAct))
           .round();
     } else {
-      return 180;
+      return 300; // 5 minutos
     }
   }
 
@@ -189,7 +187,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     // Cancela cualquier temporizador existente para evitar duplicaciones
 
     // Establece un temporizador que llama a la función cada 20 segundos
-    _timer = Timer.periodic(const Duration(seconds: 15), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 13), (Timer timer) {
       print('callTimerTec1');
       if (clientsScheduledController.boolFilterShowNextTecnhical == true &&
           clientsScheduledController.listClientReal > 0 &&
@@ -221,12 +219,17 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
 
       if (loginController.idProfessionalLoggedIn != null &&
           loginController.branchIdLoggedIn != null &&
-          (loginController.chargeUserLoggedIn == "Tecnico")) {
+          (loginController.chargeUserLoggedIn == "Tecnico" &&
+              (loginController.codigoQrValid() == true))) {
         //await Future.delayed(Duration(seconds: 1));
         //Buscar notificaciones
         print('callTimerTec 4-callTimerTecNotification');
-        notiController.fetchNotificationList(loginController.branchIdLoggedIn,
-            loginController.idProfessionalLoggedIn, 'Tecnico', 'callTimerTec');
+        notiController.fetchNotificationList(
+            loginController.branchIdLoggedIn,
+            loginController.idProfessionalLoggedIn,
+            'Tecnico',
+            'callTimerTec',
+            loginController.tokenUserLoggedIn);
       }
     });
   }
@@ -240,7 +243,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
       // actualizo la cola
       if (clientsScheduledController.showingServiceClientsTechnical == false &&
           loginController.branchIdLoggedIn != null &&
-          loginController.chargeUserLoggedIn == "Tecnico") {
+          loginController.chargeUserLoggedIn == "Tecnico" &&
+          (loginController.codigoQrValid() == true)) {
         //actualizo la cola del técnico
         clientsScheduledController
             .fetchClientsTechnical(loginController.branchIdLoggedIn);
@@ -744,52 +748,65 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                                   .reservation_id!);
                                                       if (resulButton == 1) {
                                                         //aqui inicia el tmer de cliente atendido
-                                                        LocalStorage.prefs.setBool(
-                                                            'valueClockTec1ActivT',
-                                                            true);
-                                                        LocalStorage.prefs
-                                                            .setInt(
-                                                                'valueClockTec1',
-                                                                300);
-
-                                                        _animationTechnicalController1!
-                                                            .stop();
-                                                        _animationTechnicalController1!
-                                                            .reset();
-
-                                                        //
-                                                        //todo FALTA QUE SE MUESTRE EL RELOJ
-                                                        //
-
                                                         //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
-                                                        await controllerclient
+                                                        int result = await controllerclient
                                                             .acceptClientTechnical(
                                                                 controllerclient
                                                                     .clientsNextTechnical!
                                                                     .reservation_id,
                                                                 5);
-                                                        _animationTechnicalController1!
-                                                                .duration =
-                                                            const Duration(
-                                                                seconds:
-                                                                    300); //por ahora 5min
 
-                                                        _animationTechnicalController1!
-                                                            .forward();
-                                                        // detengo todos los timers que deben detenerse
-                                                        LocalStorage.prefs.setBool(
-                                                            'valueClockActivT',
-                                                            false);
-                                                        LocalStorage.prefs
-                                                            .setInt(
-                                                                'valueClockIni',
-                                                                180);
-                                                        clientsScheduledController
-                                                            .animationControllerInitialT!
-                                                            .stop();
-                                                        clientsScheduledController
-                                                            .animationControllerInitialT!
-                                                            .reset();
+                                                        if (result == 1) {
+                                                          LocalStorage.prefs
+                                                              .setBool(
+                                                                  'valueClockTec1ActivT',
+                                                                  true);
+                                                          LocalStorage.prefs
+                                                              .setInt(
+                                                                  'valueClockTec1',
+                                                                  300);
+
+                                                          _animationTechnicalController1!
+                                                              .stop();
+                                                          _animationTechnicalController1!
+                                                              .reset();
+
+                                                          //
+                                                          //todo FALTA QUE SE MUESTRE EL RELOJ
+                                                          //
+
+                                                          _animationTechnicalController1!
+                                                                  .duration =
+                                                              const Duration(
+                                                                  seconds:
+                                                                      300); //por ahora 5min
+
+                                                          _animationTechnicalController1!
+                                                              .forward();
+                                                          // detengo todos los timers que deben detenerse
+                                                          LocalStorage.prefs
+                                                              .setBool(
+                                                                  'valueClockActivT',
+                                                                  false);
+                                                          LocalStorage.prefs
+                                                              .setInt(
+                                                                  'valueClockIni',
+                                                                  180);
+                                                          clientsScheduledController
+                                                              .animationControllerInitialT!
+                                                              .stop();
+                                                          clientsScheduledController
+                                                              .animationControllerInitialT!
+                                                              .reset();
+                                                        } else //no lo cogio por algun problema-vuelve a tomar el valor
+                                                        //la variable para que pueda volver a cogerlo
+                                                        {
+                                                          loginController
+                                                              .removeButtonIdTec(
+                                                                  controllerclient
+                                                                      .clientsNextTechnical!
+                                                                      .reservation_id!);
+                                                        }
                                                       }
                                                     } else if (loginController
                                                             .usserPermissionQr ==
@@ -1784,7 +1801,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                   loginController.branchIdLoggedIn,
                   loginController.idProfessionalLoggedIn,
                   'Tecnico',
-                  'Cart-home');
+                  'Cart-home',
+                  loginController.tokenUserLoggedIn);
             }
             pagesConfigC.onTabTapped(2); //index = 1 -> /Clients
             Get.back();

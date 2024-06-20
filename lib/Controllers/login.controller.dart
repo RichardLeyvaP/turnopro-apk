@@ -266,6 +266,14 @@ class LoginController extends GetxController {
   int? usserPermissionQr;
   int usserPermissionQrAntes = 1;
   int usserMssQr = -99;
+  int contLlamClient = 0;
+  void setContLlamClient(int value) {
+    if (value == 1) {
+      contLlamClient += value;
+    } else {
+      contLlamClient = value;
+    }
+  }
 
   //variables para el encargado
 
@@ -349,6 +357,18 @@ class LoginController extends GetxController {
       // Aquí puedes poner el código que deseas ejecutar solo una vez
       print('Botón $buttonId presionado return 1');
       return 1;
+    }
+  }
+
+  void removeButtonIdTec(int buttonId) {
+    // Verificar si el ID del botón ya ha sido presionado
+    if (pressedButtonIdsTec.contains(buttonId)) {
+      // Si el ID ya ha sido presionado, eliminarlo de la lista
+      pressedButtonIdsTec.remove(buttonId);
+      update(); // Llamar a update() para reflejar el cambio en la interfaz de usuario si es necesario
+      print('Botón $buttonId eliminado de la lista');
+    } else {
+      print('Botón $buttonId no está en la lista');
     }
   }
 
@@ -572,7 +592,8 @@ class LoginController extends GetxController {
   }
 
   Future<bool> saveDataQr(int idBranch, int professionalId) async {
-    bool resultList = await usuarioLg.generateQr(idBranch, professionalId);
+    bool resultList =
+        await usuarioLg.generateQr(idBranch, professionalId, tokenUserLoggedIn);
     return resultList;
   }
 
@@ -859,8 +880,8 @@ class LoginController extends GetxController {
         print('ssssssssssss branchIdLoggedIn${result['branchIdLoggedIn']}');
         //*******Asignando Valores*****/
         print(
-            'a.......... branchIdLoggedIn***************************: $branchIdLoggedIn');
-        print('TOKEN***************************: $tokenUserLoggedIn');
+            'T123456789-a.......... branchIdLoggedIn***************************: $branchIdLoggedIn');
+        print('T123456789-OKEN***************************: $tokenUserLoggedIn');
         print('ID-Profess***************************: $idProfessionalLoggedIn');
 
         if (tokenUserLoggedIn != '' &&
@@ -1012,8 +1033,8 @@ class LoginController extends GetxController {
 
   Future<void> insertPuesto(professional_id, workplace_id, places) async {
     try {
-      var result =
-          await usuarioLg.insertPuesto(professional_id, workplace_id, places);
+      var result = await usuarioLg.insertPuesto(
+          professional_id, workplace_id, places, tokenUserLoggedIn);
       if (result == 1) {
         print('esto es lo que INSERTO EN EL PUESTO DE TRABAJO');
       } else {
@@ -1026,8 +1047,8 @@ class LoginController extends GetxController {
 
   Future<void> insertHoraEntrada(professional_id, branch_id) async {
     try {
-      var result =
-          await usuarioLg.insertHoraEntrada(professional_id, branch_id);
+      var result = await usuarioLg.insertHoraEntrada(
+          professional_id, branch_id, tokenUserLoggedIn);
       if (result == 1) {
         print('esto es lo que INSERTO LA HORA D EENTRADA');
       } else {
@@ -1052,7 +1073,7 @@ class LoginController extends GetxController {
           if (result == true) {
             await ColacionProfessional(idProfessionalLoggedIn, tipe, 0);
             bool exit = await usuarioLg.exitHours(
-                branchIdLoggedIn, idProfessionalLoggedIn);
+                branchIdLoggedIn, idProfessionalLoggedIn, tokenUserLoggedIn);
             if (exit) {
               print('YA registra la hora de salida del barbero o tecnico');
             } else {
@@ -1064,8 +1085,8 @@ class LoginController extends GetxController {
           }
         }
       } else if (tipe == 'Admin') {
-        bool exit =
-            await usuarioLg.exitHours(branchIdLoggedIn, idProfessionalLoggedIn);
+        bool exit = await usuarioLg.exitHours(
+            branchIdLoggedIn, idProfessionalLoggedIn, tokenUserLoggedIn);
         if (exit) {
           print('YA registra la hora de salida del encargado o coordinador');
         } else {
@@ -1079,8 +1100,8 @@ class LoginController extends GetxController {
 
   Future<int> ColacionProfessional(idProfe, type, state) async {
     try {
-      int exit =
-          await usuarioLg.solitColacion(branchIdLoggedIn, idProfe, type, state);
+      int exit = await usuarioLg.solitColacion(
+          branchIdLoggedIn, idProfe, type, state, tokenUserLoggedIn);
 
       if (state == 2) //es solicitud a enviar
       {

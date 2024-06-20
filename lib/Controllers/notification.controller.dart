@@ -7,6 +7,7 @@ import 'package:soundpool/soundpool.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/notification_model.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/get_connect/repository/notification.repository.dart';
 import 'package:turnopro_apk/services/localNotification.dart';
 
@@ -65,8 +66,8 @@ class NotificationController extends GetxController {
       description,
       type) async {
     //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
-    bool result = await repository.storeNotification2(
-        tittle, branchId, professionalId, description, type);
+    bool result = await repository.storeNotification2(tittle, branchId,
+        professionalId, description, type, controllerLogin.tokenUserLoggedIn);
     if (result) {
       print('CORRECTO inserto una nueva notificacion ');
     }
@@ -81,8 +82,8 @@ class NotificationController extends GetxController {
       description,
       type) async {
     //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
-    bool result = await repository.storeNotification(
-        tittle, branchId, professionalId, description, type);
+    bool result = await repository.storeNotification(tittle, branchId,
+        professionalId, description, type, controllerLogin.tokenUserLoggedIn);
     if (result) {
       print('CORRECTO inserto una nueva notificacion ');
     }
@@ -164,7 +165,7 @@ class NotificationController extends GetxController {
   //todo/****AQUI LO DE LAS NOTIFICACIONES LOCALES****/
 
   Future<void> professionalBranchNotifQueque(
-      idBranch, idProfe, type, msj) async {
+      idBranch, idProfe, type, msj, token) async {
     print('entrando aqui para mandar notificacion al-234');
     bool noUpdate = false;
     final ClientsScheduledController clientCon =
@@ -176,10 +177,13 @@ class NotificationController extends GetxController {
         'llamada timer ...tipo:$type......idSucursal:$idBranch......iProf:$idProfe');
     try {
       Map<String, dynamic> resultList = await repository
-          .professionalBranchNotifQueque(idBranch, idProfe, type);
+          .professionalBranchNotifQueque(idBranch, idProfe, type, token);
       bool siHayEliminarService = false;
-
-      if (resultList.containsKey('Erroor') && resultList['Erroor'] == true) {
+      if (resultList.containsKey('Erroor') && resultList['Erroor'] == -99) {
+        //llamar aqui el metodo del login que muestra error de conexion
+        loginController.showConnectionError();
+      } else if (resultList.containsKey('Erroor') &&
+          resultList['Erroor'] == true) {
         print(
             'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor, el error fue en Future<void> fetchNotificationList');
       } else if (resultList.containsKey('notificationList') &&
@@ -416,7 +420,8 @@ class NotificationController extends GetxController {
 
           if (clientCon.clientsScheduledNext != null) {
             int idCar = clientCon.clientsScheduledNext!.car_id!;
-            await clientCon.searchForCustomerServices(idCar);
+            await clientCon.searchForCustomerServices(
+                idCar, controllerLogin.tokenUserLoggedIn);
             await clientCon.filterShowNext();
             //  setValueClock(true);
           } else {
@@ -487,14 +492,15 @@ class NotificationController extends GetxController {
   //
 //todo/****AQUI LO DE LAS NOTIFICACIONES LOCALES****/
 //tecnicooooooo
-  Future<void> fetchNotificationList(idBranch, idProfe, type, msj) async {
+  Future<void> fetchNotificationList(
+      idBranch, idProfe, type, msj, token) async {
     print('qwerc SII mandar ->NOTIFICACIONES-$msj');
     print('12345llamada timer estoy en CAntidad de Notificaciones-$type');
     print(
         'llamada timer ...tipo:$type......idSucursal:$idBranch......iProf:$idProfe');
     try {
       Map<String, dynamic> result =
-          await repository.getNotificationList(idBranch, idProfe, type);
+          await repository.getNotificationList(idBranch, idProfe, type, token);
       bool siHayEliminarService = false;
 
       if (result.containsKey('Erroor') && result['Erroor'] == true) {
@@ -663,7 +669,8 @@ class NotificationController extends GetxController {
 
   Future<void> updateNotifications(idBranch, idProf, type) async {
     try {
-      int result = await repository.updateNotifications(idBranch, idProf, type);
+      int result = await repository.updateNotifications(
+          idBranch, idProf, type, controllerLogin.tokenUserLoggedIn);
       if (result == 1) {
         print('Las notificaciones fueron vistas');
       } else {
@@ -676,7 +683,8 @@ class NotificationController extends GetxController {
 
   Future<void> updateNotifications2(idBranch, idProf, id) async {
     try {
-      int result = await repository.updateNotifications2(idBranch, idProf, id);
+      int result = await repository.updateNotifications2(
+          idBranch, idProf, id, controllerLogin.tokenUserLoggedIn);
       if (result == 1) {
         print('Las notificaciones fueron cambiada a 3 estas de id:$id');
       } else {

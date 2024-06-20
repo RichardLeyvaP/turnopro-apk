@@ -22,7 +22,7 @@ class CoexistenceRepository extends GetConnect {
   final LoginController controllerLogin = Get.find<LoginController>();
 
   Future<List<CoexistenceModel>> getCoexistenceList(
-      idProfessional, idBranch) async {
+      idProfessional, idBranch, token) async {
     print('actualizando las convivencias iniciales.RLP- getCoexistenceList');
     List<CoexistenceModel> coexistenceList = [];
     try {
@@ -30,7 +30,11 @@ class CoexistenceRepository extends GetConnect {
       var url =
           '${Env.apiEndpoint}/rules_professional?professional_id=$idProfessional&branch_id=$idBranch';
       print('a15627 siiiiiiii 0');
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         print('a15627 siiiiiiii 1');
         final coexistences = response.body['rules'];
@@ -65,17 +69,21 @@ class CoexistenceRepository extends GetConnect {
 
   final client = http.Client();
   //todo nuevaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-  Future getAnoStadist(idProfessional, idBranch, year) async {
+  Future getAnoStadist(idProfessional, idBranch, year, token) async {
     List<CoexistenceModel> coexistenceList = [];
     try {
-      final response = await client.get(Uri.parse(
-          '${Env.apiEndpoint}/professional-win-year?professional_id=$idProfessional&branch_id=$idBranch&year=$year'));
+      final url =
+          '${Env.apiEndpoint}/professional-win-year?professional_id=$idProfessional&branch_id=$idBranch&year=$year';
       // var url =
       //     '${Env.apiEndpoint}/professional-win-year?professional_id=$idProfessional&branch_id=$idBranch&year=$year';
       print(
           'url de grafico:${Env.apiEndpoint}/professional-win-year?professional_id=$idProfessional&branch_id=$idBranch&year=$year');
 
-      // final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         // La respuesta fue exitosa
         final Map<String, dynamic> responseBody = json.decode(response.body);
@@ -109,8 +117,12 @@ class CoexistenceRepository extends GetConnect {
     print('estoy en getBranchProfessionals');
     try {
       var url = '${Env.apiEndpoint}/branch_professionals?branch_id=$idBranch';
-
-      final response = await get(url).timeout(Duration(seconds: 10));
+      String token = controllerLogin.tokenUserLoggedIn;
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15));
       if (response.statusCode == 200) {
         final professionals = response.body['professionals'];
         print(
@@ -170,7 +182,12 @@ class CoexistenceRepository extends GetConnect {
         print('soy tecnico siii');
       }
 
-      final response = await get(url).timeout(Duration(seconds: 10));
+      String token = controllerLogin.tokenUserLoggedIn;
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15));
       print(
           'werya tengo repositorio22 estoy en getBranchProfessionals url:$url');
       if (response.statusCode == 200) {
@@ -326,7 +343,12 @@ class CoexistenceRepository extends GetConnect {
     try {
       var url =
           '${Env.apiEndpoint}/professional-payment-show-apk?branch_id=$branch_id&professional_id=$professional_id&charge=$charge';
-      final response = await get(url).timeout(Duration(seconds: 10));
+      String token = controllerLogin.tokenUserLoggedIn;
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15));
 
       if (response.statusCode == 200) {
         attempts = 10;
@@ -479,7 +501,12 @@ class CoexistenceRepository extends GetConnect {
             '${Env.apiEndpoint}/tecnico-car?branch_id=$branch_id&professional_id=$professional_id';
       }
 
-      final response = await get(url).timeout(Duration(seconds: 10));
+      String token = controllerLogin.tokenUserLoggedIn;
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15));
       print('werya tengo repositorio22 estoy en getBranchProfessionals');
       if (response.statusCode == 200) {
         print(
@@ -525,7 +552,12 @@ class CoexistenceRepository extends GetConnect {
       var url =
           '${Env.apiEndpoint}/login-phone-get-branch?email=$email&password=$password';
 
-      final response = await get(url).timeout(Duration(seconds: 10));
+      String token = controllerLogin.tokenUserLoggedIn;
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15));
       print(
           'ya tengo la cola de la api es response.statusCode : ${response.statusCode}');
       if (response.statusCode == 200) {

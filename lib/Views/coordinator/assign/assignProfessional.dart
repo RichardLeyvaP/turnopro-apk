@@ -536,7 +536,10 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                         //todo falta poner un cargando
                         clientCord.setLoading(true);
                         bool result = await clientCord.reasignedClient(
-                            reservationId, clientIdCORD, idProfess);
+                            reservationId,
+                            clientIdCORD,
+                            idProfess,
+                            loginController.tokenUserLoggedIn);
                         if (result == true) {
                           Get.snackbar(
                             'Mensaje',

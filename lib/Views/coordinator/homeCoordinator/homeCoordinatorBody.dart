@@ -74,8 +74,12 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     await controllerShoppingCart
         .loadOrderDeleteCar(loginController.branchIdLoggedIn!);
 
-    await notiController.fetchNotificationList(loginController.branchIdLoggedIn,
-        loginController.idProfessionalLoggedIn, 'Coordinador', 'callFirts');
+    await notiController.fetchNotificationList(
+        loginController.branchIdLoggedIn,
+        loginController.idProfessionalLoggedIn,
+        'Coordinador',
+        'callFirts',
+        loginController.tokenUserLoggedIn);
 
     await clientsScheduledController
         .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
@@ -99,30 +103,30 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
         Timer.periodic(const Duration(seconds: 13), (Timer timer) async {
       print('hola entrando en 10 min;');
       if (loginController.branchIdLoggedIn != null &&
-          loginController.chargeUserLoggedIn == "Coordinador") {
-        if (loginController.branchIdLoggedIn != null) {
-          // actualizo la cola
-          notiController.fetchNotificationList(
-              loginController.branchIdLoggedIn,
-              loginController.idProfessionalLoggedIn,
-              'Coordinador',
-              'callTimerCoord');
+          loginController.chargeUserLoggedIn == "Coordinador" &&
+          loginController.usserPermissionQr != null) {
+        // actualizo la cola
+        notiController.fetchNotificationList(
+            loginController.branchIdLoggedIn,
+            loginController.idProfessionalLoggedIn,
+            'Coordinador',
+            'callTimerCoord',
+            loginController.tokenUserLoggedIn);
 
-          await clientsScheduledController
-              .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
-          await clientsScheduledController
-              .fetchClientsRechazBranch(loginController.branchIdLoggedIn);
-          clientsScheduledController.setLoading(false);
-          if (loginController.branchIdLoggedIn != null) {
-            await controllerShoppingCart
-                .loadOrderDeleteCar(loginController.branchIdLoggedIn);
-          }
-          await clientsScheduledController.ColacionRequestBranch(
-              loginController.branchIdLoggedIn);
-          await clientsScheduledController
-              .outRequestBranch(loginController.branchIdLoggedIn);
-          controllerShoppingCart.setLoading(false);
+        await clientsScheduledController
+            .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
+        await clientsScheduledController
+            .fetchClientsRechazBranch(loginController.branchIdLoggedIn);
+        clientsScheduledController.setLoading(false);
+        if (loginController.branchIdLoggedIn != null) {
+          await controllerShoppingCart
+              .loadOrderDeleteCar(loginController.branchIdLoggedIn);
         }
+        await clientsScheduledController.ColacionRequestBranch(
+            loginController.branchIdLoggedIn);
+        await clientsScheduledController
+            .outRequestBranch(loginController.branchIdLoggedIn);
+        controllerShoppingCart.setLoading(false);
       }
     });
   }

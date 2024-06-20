@@ -38,7 +38,7 @@ class ShoppingCartController extends GetxController {
   bool load_request = false;
   bool isLoading = true;
   int? carIdClienteSelect;
-
+  final LoginController controllerLogin = Get.find<LoginController>();
   void setLoading(value) {
     isLoading = value;
     update();
@@ -132,8 +132,8 @@ class ShoppingCartController extends GetxController {
   Future<int> requestDelete(int id, int request_delete) async {
     //todooooooooo
     try {
-      int result =
-          await productRepository.awaitRequestDelete(id, request_delete);
+      int result = await productRepository.awaitRequestDelete(
+          id, request_delete, controllerLogin.tokenUserLoggedIn);
       if (result == 1) {
         requestDeleteOrder.add(id);
         internetError = 0;
@@ -151,7 +151,7 @@ class ShoppingCartController extends GetxController {
     //todooooooooo
     try {
       orderDeleteCar = await productRepository.awaitRequestDelete2(
-          id, request_delete, idBranch);
+          id, request_delete, idBranch, controllerLogin.tokenUserLoggedIn);
       if (orderDeleteCar.isNotEmpty) {
         requestDeleteOrder.add(id);
         internetError = 0;
@@ -203,7 +203,6 @@ class ShoppingCartController extends GetxController {
     //TODO REVISAR ESTA FUNCION BIEN CONEXION INTERNET
     try {
       final ServiceController controllerService = Get.find<ServiceController>();
-      final LoginController controllerLogin = Get.find<LoginController>();
 
       await controllerService.loadListService();
       print('************* onReady:****serviceCart:${serviceCart.length}');

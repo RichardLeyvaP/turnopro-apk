@@ -601,7 +601,8 @@ class _ProfileClientState extends State<ProfileClient> {
                                   await clientSchedControl
                                       .getProfessionalState2(
                                           loginControl.branchIdLoggedIn,
-                                          clientCoordControl.idReservCORD);
+                                          clientCoordControl.idReservCORD,
+                                          loginControl.tokenUserLoggedIn);
 
                                   await pagesConfigCont.showAppBar(false);
                                   pagesConfigCont.goToPage(

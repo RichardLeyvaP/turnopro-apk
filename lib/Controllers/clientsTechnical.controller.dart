@@ -6,6 +6,7 @@ import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/get_connect/repository/clientsScheduled.repository.dart';
 
 class ClientsTechnicalController extends GetxController {
@@ -45,6 +46,7 @@ class ClientsTechnicalController extends GetxController {
 
   double sizeClockTechnical = 130;
   int totalTimeInitial = 3 * 60; //Iniciando en 3 minutos el reloj
+  int totalTimeClient = 5 * 60; //Iniciando en 3 minutos el reloj
   bool callCliente = false; //si esta en false es que es la primera vez
   bool boolFilterShowNext = false; //si esta en false es que es la primera vez
   bool boolFilterShowNextTecnhical =
@@ -88,6 +90,11 @@ class ClientsTechnicalController extends GetxController {
     update();
   }
 
+  void setTotalTimeClientec(value) {
+    totalTimeClient = value;
+    update();
+  }
+
   bool verificateValueTimersTec() {
     bool hasClient1 = clientsAttendedTechnical != null;
     if (hasClient1) {
@@ -97,15 +104,16 @@ class ClientsTechnicalController extends GetxController {
     }
   }
 
-  Future<void> acceptClientTechnical(reservationId, attended) async {
+  Future<int> acceptClientTechnical(reservationId, attended) async {
     final ClientsScheduledController controllerSche =
         Get.find<ClientsScheduledController>();
 //     quantityClientAttendedTechnical = 1;
 //     boolFilterShowNextTecnhical = false;
 // update();
-    bool value = await repository.acceptOrRejectClient(reservationId, attended);
+    int value = await repository.acceptOrRejectClient(
+        reservationId, attended, loginController.tokenUserLoggedIn);
     //si lo que devuelve es true actualizo la cola
-    if (value == true) {
+    if (value == 1) {
       //para decir que en ese momento no hay nadie atendiendose
       clientAten = null;
       // quantityClientAttendedTechnical = 1;
@@ -115,12 +123,17 @@ class ClientsTechnicalController extends GetxController {
       int clock = await controllerSche.getValueClockDb(reservationId);
       controllerSche.pauseResumeClock((clock - 1), 1);
       update();
+    } else if (value == -99) //fallo de internet codeStatus == null
+    {
+      controllerLogin.showConnectionError();
     }
+    return value;
   }
 
   Future<void> returnClientStatus(int reservationId) async {
     try {
-      int result = await repository.returnClientStatus(reservationId);
+      int result = await repository.returnClientStatus(
+          reservationId, loginController.tokenUserLoggedIn);
       statusClientTemporary = result;
       update();
     } catch (e) {
@@ -138,7 +151,8 @@ class ClientsTechnicalController extends GetxController {
   }
 
   Future<void> searchForCustomerServices(idCar) async {
-    serviceCustomerSelected = await repository.getCustomerServicesList(idCar);
+    serviceCustomerSelected = await repository.getCustomerServicesList(
+        idCar, loginController.tokenUserLoggedIn);
     update();
   }
 
@@ -188,8 +202,8 @@ class ClientsTechnicalController extends GetxController {
     bool noUpdate = false;
     try {
       List<int> clientsAux = [];
-      Map<String, dynamic> resultList =
-          await repository.getClientsTechnicalList(idBranch);
+      Map<String, dynamic> resultList = await repository
+          .getClientsTechnicalList(idBranch, loginController.tokenUserLoggedIn);
       print('111ya entre a buscar inicialmente los clientes del tecnico');
       print(resultList);
       //verificando , si entra al if es problemas de coneccion
@@ -275,8 +289,8 @@ class ClientsTechnicalController extends GetxController {
       professionalId,
       estado) async {
     //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
-    bool result =
-        await repository.storeByType(type, branchId, professionalId, estado);
+    bool result = await repository.storeByType(type, branchId, professionalId,
+        estado, loginController.tokenUserLoggedIn);
     if (result) {
       print('CORRECTO actualizo el estado correctamente');
       //AQUI ES PÓRQUE INCUMPLIO CON ALGO

@@ -1,10 +1,11 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/env.dart';
 
 class UserRepository extends GetConnect {
-  Future generateQr(branchId, professionalId) async {
+  Future generateQr(branchId, professionalId, token) async {
     try {
       var url = '${Env.apiEndpoint}/record';
       final Map<String, dynamic> body = {
@@ -12,7 +13,10 @@ class UserRepository extends GetConnect {
         'professional_id': professionalId,
       };
 
-      final response = await post(url, body);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await post(headers: headers, url, body);
       print(url);
       print(response.statusCode);
       if ((response.statusCode == 200)) {
@@ -27,7 +31,7 @@ class UserRepository extends GetConnect {
     }
   }
 
-  Future exitHours(branchId, professionalId) async {
+  Future exitHours(branchId, professionalId, token) async {
     try {
       var url = '${Env.apiEndpoint}/record';
       final Map<String, dynamic> body = {
@@ -35,7 +39,10 @@ class UserRepository extends GetConnect {
         'professional_id': professionalId,
       };
 
-      final response = await put(url, body);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await put(headers: headers, url, body);
       print(url);
       print('NO sali - code :${response.statusCode}');
       if ((response.statusCode == 200)) {
@@ -50,7 +57,7 @@ class UserRepository extends GetConnect {
     }
   }
 
-  Future solitColacion(branchId, professionalId, type, state) async {
+  Future solitColacion(branchId, professionalId, type, state, token) async {
     try {
       var url = '${Env.apiEndpoint}/request_location_professional';
       final Map<String, dynamic> body = {
@@ -60,7 +67,10 @@ class UserRepository extends GetConnect {
         'state': state,
       };
 
-      final response = await put(url, body);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await put(headers: headers, url, body);
       print(url);
       print('NO sali - code :${response.statusCode}');
       if ((response.statusCode == 200)) {
@@ -77,10 +87,15 @@ class UserRepository extends GetConnect {
 
   Future getUserLoggedBranch(String email, String password) async {
     try {
+      String token = loginController.tokenUserLoggedIn;
       var url =
           '${Env.apiEndpoint}/login-phone-get-branch?email=$email&password=$password';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       print('devolviendo de url:$url');
       print(response.statusCode);
       if (response.statusCode == 200) {
@@ -112,6 +127,7 @@ class UserRepository extends GetConnect {
 
       print('a..........$url');
       print('a..........$body');
+      //esta no manda el token porque aqui es el login , aqui es donde se crea
       final response = await post(url, body);
       print(url);
       print(response.statusCode);
@@ -168,7 +184,7 @@ class UserRepository extends GetConnect {
   }
 
   // ignore: non_constant_identifier_names
-  Future<int> insertPuesto(professional_id, workplace_id, places) async {
+  Future<int> insertPuesto(professional_id, workplace_id, places, token) async {
     try {
       var url = '${Env.apiEndpoint}/professionalworkplace';
 
@@ -180,7 +196,10 @@ class UserRepository extends GetConnect {
       };
 
       // Realizar la solicitud POST
-      final response = await post(url, body);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await post(headers: headers, url, body);
       if (response.statusCode == 200) {
         return 1;
       } else {
@@ -192,7 +211,7 @@ class UserRepository extends GetConnect {
   }
 
   // ignore: non_constant_identifier_names
-  Future<int> insertHoraEntrada(professional_id, branch_id) async {
+  Future<int> insertHoraEntrada(professional_id, branch_id, token) async {
     try {
       var url = '${Env.apiEndpoint}/record';
 
@@ -203,7 +222,10 @@ class UserRepository extends GetConnect {
       };
 
       // Realizar la solicitud POST
-      final response = await post(url, body);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await post(headers: headers, url, body);
       if (response.statusCode == 200) {
         return 1;
       } else {
@@ -217,6 +239,7 @@ class UserRepository extends GetConnect {
   Future<bool> exitPostworking(int id, String type, int idProf) async {
     try {
       var url = '';
+      String token = loginController.tokenUserLoggedIn;
       if (type == "Barbero") {
         url =
             '${Env.apiEndpoint}/update-state-prof-workplace?id=$id&busy=0&professional_id=$idProf';
@@ -226,7 +249,11 @@ class UserRepository extends GetConnect {
       }
       print('este es el id del puesto url:$url');
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       print('este es el id del puesto url:${response.statusCode}');
 
       //print(response.body);
@@ -243,11 +270,16 @@ class UserRepository extends GetConnect {
 
   Future getIdPuestoRepo(int idProfessional, String charge) async {
     try {
+      String token = loginController.tokenUserLoggedIn;
       print('este es el id del puesto222-idProfessional:$idProfessional');
       var url =
           '${Env.apiEndpoint}/workplace-show-professional?professional_id=$idProfessional&charge=$charge';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       print('este es el id del puesto333-response:$response');
       print(
           'este es el id del puesto333-response.statusCode:${response.statusCode}');
@@ -273,11 +305,16 @@ class UserRepository extends GetConnect {
 
   Future<int> getEntradaPuestoRepo(int idProfessional, int idBanch) async {
     try {
+      String token = loginController.tokenUserLoggedIn;
       print('este es el id del puesto222-idProfessional:$idProfessional');
       var url =
           '${Env.apiEndpoint}/record-show-professional?professional_id=$idProfessional&branch_id=$idBanch';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       print('este es el id del puesto333-response:$response');
       print(
           'este es el id del puesto333-response.statusCode:${response.statusCode}');
@@ -299,11 +336,16 @@ class UserRepository extends GetConnect {
 
   Future<int> getStateProfessional(int idProfessional) async {
     try {
+      String token = loginController.tokenUserLoggedIn;
       print('este es el id del puesto222-idProfessional:$idProfessional');
       var url = '${Env.apiEndpoint}/professional-show-apk?id=$idProfessional';
       print('este es el id del var url:$url');
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       print('este es el id del puesto333-response:$response');
       print(
           'este es el id del puesto333-response.statusCode:${response.statusCode}');

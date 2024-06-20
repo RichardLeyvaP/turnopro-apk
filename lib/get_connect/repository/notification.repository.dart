@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/notification_model.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/env.dart';
 //todo REVISAR aqui se esta cargando una API de ejemplo no la de SIMPLIFI
 
@@ -12,7 +13,7 @@ class NotificationRepository extends GetConnect {
   final LoginController controllerLogin = Get.find<LoginController>();
 //insertar notificaciones
   Future<bool> storeNotification2(
-      tittle, branchId, professionalId, description, type) async {
+      tittle, branchId, professionalId, description, type, token) async {
     try {
       var url =
           '${Env.apiEndpoint}/notification2'; //esta inserta la notificacion con state = 3
@@ -25,7 +26,10 @@ class NotificationRepository extends GetConnect {
         'type': type,
       };
 
-      final response = await post(url, body);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await post(headers: headers, url, body);
       print(tittle);
       print(branchId);
       print(professionalId);
@@ -46,7 +50,7 @@ class NotificationRepository extends GetConnect {
   }
 
   Future<bool> storeNotification(
-      tittle, branchId, professionalId, description, type) async {
+      tittle, branchId, professionalId, description, type, token) async {
     try {
       var url = '${Env.apiEndpoint}/notification';
       print('inserto correctamente ********** la notificacio:$tittle');
@@ -58,7 +62,10 @@ class NotificationRepository extends GetConnect {
         'type': type,
       };
 
-      final response = await post(url, body);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await post(headers: headers, url, body);
       print(tittle);
       print(branchId);
       print(professionalId);
@@ -88,7 +95,7 @@ class NotificationRepository extends GetConnect {
 //
 //
 //
-  Future professionalBranchNotifQueque(idBranch, idProf, type) async {
+  Future professionalBranchNotifQueque(idBranch, idProf, type, token) async {
     int? varStatusCode;
     try {
       print(
@@ -107,7 +114,11 @@ class NotificationRepository extends GetConnect {
       var url =
           '${Env.apiEndpoint}/professional-branch-notif-queque?branch_id=$idBranch&professional_id=$idProf'; //cambiar aqui por servicios en la api
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       varStatusCode = response.statusCode;
       if (response.statusCode == 200) {
         // final jsonResponse = jsonDecode(response.body);
@@ -234,6 +245,8 @@ class NotificationRepository extends GetConnect {
             "notificationListNew": notificationListNew,
           };
         }
+      } else if (response.statusCode == null) {
+        return {'Erroor': -99};
       }
     } catch (e) {
       print('llamada timer en 10 segundos DI ERROR EN :$e');
@@ -248,7 +261,7 @@ class NotificationRepository extends GetConnect {
     // }
   }
 
-  Future getNotificationList(idBranch, idProf, type) async {
+  Future getNotificationList(idBranch, idProf, type, token) async {
     try {
       print('estoy aqui en getNotificationList');
       List<NotificationModel> notificationList = [];
@@ -256,7 +269,11 @@ class NotificationRepository extends GetConnect {
       var url =
           '${Env.apiEndpoint}/notification-professional?branch_id=$idBranch&professional_id=$idProf'; //cambiar aqui por servicios en la api
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         final notifications = response.body['notifications'];
         for (Map notification in notifications) {
@@ -314,7 +331,7 @@ class NotificationRepository extends GetConnect {
     }
   }
 
-  Future<int> updateNotifications(idBranch, idProf, type) async {
+  Future<int> updateNotifications(idBranch, idProf, type, token) async {
     try {
       var url = '${Env.apiEndpoint}/notification';
 
@@ -325,7 +342,10 @@ class NotificationRepository extends GetConnect {
         'type': type,
       };
 
-      final response = await put(url, body);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await put(headers: headers, url, body);
       //print('MANDE A ELIMINAR:$body');
       if (response.statusCode == 200) {
         return 1;
@@ -337,7 +357,7 @@ class NotificationRepository extends GetConnect {
     }
   }
 
-  Future<int> updateNotifications2(idBranch, idProf, id) async {
+  Future<int> updateNotifications2(idBranch, idProf, id, token) async {
     try {
       var url =
           '${Env.apiEndpoint}/notification2'; //pone de es estate del mensaje en 0
@@ -349,7 +369,10 @@ class NotificationRepository extends GetConnect {
         'id': id,
       };
 
-      final response = await put(url, body);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await put(headers: headers, url, body);
       //print('MANDE A ELIMINAR:$body');
       if (response.statusCode == 200) {
         return 1;

@@ -361,7 +361,9 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                 //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
                                 await clientsController.acceptOrRejectClient(
                                     clientsController.idClientTemporary,
-                                    4); // Cierra el modal
+                                    4,
+                                    loginController
+                                        .tokenUserLoggedIn); // Cierra el modal
                                 pagesConfigC.back();
                                 Get.back();
                               },
@@ -653,7 +655,9 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                               .acceptOrRejectClient(
                                                                   clientsController
                                                                       .idClientTemporary,
-                                                                  2);
+                                                                  2,
+                                                                  loginController
+                                                                      .tokenUserLoggedIn);
                                                           if (resul ==
                                                               -99) //es que finalizó bien y dio status.code = null
                                                           {
@@ -667,7 +671,9 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                                         .idProfessionalLoggedIn,
                                                                     loginController
                                                                         .branchIdLoggedIn,
-                                                                    'Text(ENVIAR)');
+                                                                    'Text(ENVIAR)',
+                                                                    loginController
+                                                                        .tokenUserLoggedIn);
                                                             Get.back(); //aqui cierro el cargando
                                                             Get.snackbar(
                                                               'Mensaje',

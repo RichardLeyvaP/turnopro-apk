@@ -146,7 +146,8 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                           await clientController.fetchClientsScheduledNew(
                               loginController.idProfessionalLoggedIn,
                               loginController.branchIdLoggedIn,
-                              'if (index == 1)');
+                              'if (index == 1)',
+                              loginController.tokenUserLoggedIn);
                           await Future.delayed(
                               const Duration(milliseconds: 500));
                           Get.back();
@@ -177,7 +178,8 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                               loginController.branchIdLoggedIn,
                               loginController.idProfessionalLoggedIn,
                               typeEnv,
-                              'Barra de navegacion');
+                              'Barra de navegacion',
+                              loginController.tokenUserLoggedIn);
                           await Future.delayed(
                               const Duration(milliseconds: 500));
                           Get.back();

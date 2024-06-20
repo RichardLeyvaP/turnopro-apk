@@ -11,13 +11,17 @@ class ServiceRepository extends GetConnect {
   Future<List<ServiceModel>> getServiceList(idProfessional, idBranch) async {
     List<ServiceModel> serviceList = [];
     int serviceTimeAux = 0;
-
+    String token = loginCont.tokenUserLoggedIn;
     try {
       if (idProfessional != null) {
         var url =
             '${Env.apiEndpoint}/professional_services?professional_id=$idProfessional&branch_id=$idBranch';
 
-        final response = await get(url);
+        final headers = {
+          "Authorization": "Bearer $token", // Agrega el token a los encabezados
+        };
+        final response = await get(url, headers: headers).timeout(
+            Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
         if (response.statusCode == 200) {
           final services = response.body['professional_services'];
           for (Map service in services) {

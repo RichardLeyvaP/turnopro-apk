@@ -16,6 +16,7 @@ import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/env.dart';
 import 'package:intl/intl.dart';
 
@@ -72,11 +73,21 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
         'llamada timer encargado idProfessionalLoggedIn: ${controllerLogin.idProfessionalLoggedIn}');
 
     if (controllerLogin.branchIdLoggedIn != null &&
-        controllerLogin.idProfessionalLoggedIn != null) {
-      notiController.fetchNotificationList(controllerLogin.branchIdLoggedIn,
-          controllerLogin.idProfessionalLoggedIn, 'Encargado', 'loadDataFirt');
-      notiController.fetchNotificationList(controllerLogin.branchIdLoggedIn,
-          controllerLogin.idProfessionalLoggedIn, 'Barbero', 'loadDataFirt');
+        controllerLogin.idProfessionalLoggedIn != null &&
+        (controllerLogin.usserPermissionQr == 1 ||
+            controllerLogin.usserPermissionQr == 2)) {
+      notiController.fetchNotificationList(
+          controllerLogin.branchIdLoggedIn,
+          controllerLogin.idProfessionalLoggedIn,
+          'Encargado',
+          'loadDataFirt',
+          loginController.tokenUserLoggedIn);
+      notiController.fetchNotificationList(
+          controllerLogin.branchIdLoggedIn,
+          controllerLogin.idProfessionalLoggedIn,
+          'Barbero',
+          'loadDataFirt',
+          loginController.tokenUserLoggedIn);
       await controllerShoppingCart
           .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
       print('llamada timer encargado loadOrderDeleteCar completed');
@@ -105,14 +116,20 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
       //estoy entrando cada 8 segundos
       print('llamada timer - l callTimer1 9segundos');
       if (controllerLogin.branchIdLoggedIn != null &&
-          controllerLogin.idProfessionalLoggedIn != null) {
+          controllerLogin.idProfessionalLoggedIn != null &&
+          controllerLogin.usserPermissionQr != null) {
         notiController.fetchNotificationList(
             controllerLogin.branchIdLoggedIn,
             controllerLogin.idProfessionalLoggedIn,
             'Encargado',
-            'loadDataFirt');
-        notiController.fetchNotificationList(controllerLogin.branchIdLoggedIn,
-            controllerLogin.idProfessionalLoggedIn, 'Barbero', 'loadDataFirt');
+            'loadDataFirt',
+            loginController.tokenUserLoggedIn);
+        notiController.fetchNotificationList(
+            controllerLogin.branchIdLoggedIn,
+            controllerLogin.idProfessionalLoggedIn,
+            'Barbero',
+            'loadDataFirt',
+            loginController.tokenUserLoggedIn);
         await controllerShoppingCart
             .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
         print('llamada timer encargado loadOrderDeleteCar completed');

@@ -426,12 +426,13 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                         //AQUI MANDO EL ID DE RESERVACION Y ME DEVUELVE EL ESTADO DEL CLIENTE,
                                                         //SI SE ESTA ATENDINEDO O NO , PARA ASI SABER CUANDO MOSTRAR LOS BOTONES DE ATENDIDO Y
                                                         //SELECCIONAR SERVICIO Y PRODUCTOS
-                                                        controllerClient
-                                                            .returnClientStatus(
-                                                                controllerClient
-                                                                    .clientsScheduledList[
-                                                                        index]
-                                                                    .reservation_id!);
+                                                        controllerClient.returnClientStatus(
+                                                            controllerClient
+                                                                .clientsScheduledList[
+                                                                    index]
+                                                                .reservation_id!,
+                                                            controllerLogin
+                                                                .tokenUserLoggedIn);
                                                         //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
                                                         controllerClient.returnClientName(
                                                             (controllerClient
@@ -451,7 +452,9 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                 controllerClient
                                                                     .clientsScheduledList[
                                                                         index]
-                                                                    .car_id)
+                                                                    .car_id,
+                                                                controllerLogin
+                                                                    .tokenUserLoggedIn)
                                                             .then((_) {
                                                           String clientName =
                                                               controllerClient

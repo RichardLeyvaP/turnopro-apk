@@ -8,6 +8,7 @@ import 'package:turnopro_apk/Models/category_model.dart';
 import 'package:turnopro_apk/Models/orderDelete_model.dart';
 import 'package:turnopro_apk/Models/product_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/env.dart';
 
 class ProductRepository extends GetConnect {
@@ -25,10 +26,15 @@ class ProductRepository extends GetConnect {
       PriceProduct = 0.0;
       PriceService = 0.0;
       int carId = shoppingCartController.carIdClienteSelect!;
+      String token = loginCont.tokenUserLoggedIn;
       var url =
           '${Env.apiEndpoint}/car_orders?id=$carId'; //todo REVISAR aqui enviar el id del carro correspondiente al cliente-profesional
       print('estoy cargando el carro de id car :$url');
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         // print('codigo 200000000000000000');
         final products = response.body['productscar'];
@@ -72,11 +78,16 @@ class ProductRepository extends GetConnect {
 
   Future serviceRequestProductDelete(int branchId) async {
     try {
+      String token = loginCont.tokenUserLoggedIn;
       List<OrderDeleteModel> orderDEL = [];
       var url =
           '${Env.apiEndpoint}/car_order_delete_branch?branch_id=$branchId'; //AHORA MISMO EL QUE TIENE ES EL ID=6
       // category_branch?branch_id=10
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         print(
             'tambien llegue aqui response.statusCode == :${response.statusCode}');
@@ -109,13 +120,18 @@ class ProductRepository extends GetConnect {
 
 //*ESTE METODO ME DEVUELVE LOS PRODUCTOS ASOCIADO A UNA CATEGORIA LA CUAL LA SABEMOS PORQUE MANDAMOS EL ID Y ID_BRANCH
   Future getProductCategoryList(id, branchId) async {
+    String token = loginCont.tokenUserLoggedIn;
     List<ProductModel> productList = [];
     print('este es el id: $id');
     print('este es el branchId: $branchId');
     try {
       var url =
           '${Env.apiEndpoint}/category_products?id=$id&branch_id=$branchId';
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         print('response.statusCode == 200');
         final products = response.body['category_products'];
@@ -139,10 +155,15 @@ class ProductRepository extends GetConnect {
   Future getProductList(branchId) async {
     //todo 1 REVISAR aqui devuelve los productos
     try {
+      String token = loginCont.tokenUserLoggedIn;
       List<ProductModel> productList = [];
       var url = '${Env.apiEndpoint}/product_branch?branch_id=$branchId';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         final products = response.body['branch_products'];
         if (products != null) {
@@ -179,7 +200,11 @@ class ProductRepository extends GetConnect {
       print('Nuevo metodo para productos - categoryId:$categoryId');
       print('Nuevo metodo para productos - branchId:$branchId');
       // Realizar la solicitud POST
-      final response = await post(url, body);
+      String token = loginController.tokenUserLoggedIn;
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await post(headers: headers, url, body);
       print(
           'Nuevo metodo para productos - response.statusCode:${response.statusCode}');
 
@@ -227,8 +252,12 @@ class ProductRepository extends GetConnect {
         'service_id': service_id,
         'type': type
       };
+      String token = loginController.tokenUserLoggedIn;
       // Realizar la solicitud POST
-      final response = await post(url, body);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await post(headers: headers, url, body);
       if (response.statusCode == 200) {
         //print('addOrderCartList response:$response');
         final id_order = response.body['order_id'];
@@ -247,7 +276,7 @@ class ProductRepository extends GetConnect {
     }
   }
 
-  Future<int> awaitRequestDelete(id, request_delete) async {
+  Future<int> awaitRequestDelete(id, request_delete, token) async {
     try {
       var url = '${Env.apiEndpoint}/order';
 
@@ -257,7 +286,10 @@ class ProductRepository extends GetConnect {
         'request_delete': request_delete,
       };
 
-      final response = await put(url, body);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await put(headers: headers, url, body);
       //print('MANDE A ELIMINAR:$body');
       if (response.statusCode == 200) {
         return 1;
@@ -269,7 +301,7 @@ class ProductRepository extends GetConnect {
     }
   }
 
-  Future awaitRequestDelete2(id, request_delete, idBranch) async {
+  Future awaitRequestDelete2(id, request_delete, idBranch, token) async {
     List<OrderDeleteModel> orderDEL = [];
     try {
       var url = '${Env.apiEndpoint}/order2';
@@ -281,7 +313,10 @@ class ProductRepository extends GetConnect {
         'id_branch': idBranch,
       };
 
-      final response = await put(url, body);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await put(headers: headers, url, body);
       //print('MANDE A ELIMINAR:$body');
       if (response.statusCode == 200) {
         print('tambien llegue aqui response.statusCode == 200');
@@ -322,9 +357,12 @@ class ProductRepository extends GetConnect {
       final Map<String, dynamic> body = {
         'id': id,
       };
-
+      String token = loginController.tokenUserLoggedIn;
       // Realizar la solicitud POST
-      final response = await post(url, body);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await post(headers: headers, url, body);
       if (response.statusCode == 200) {
         return 1;
       } else {
@@ -336,14 +374,17 @@ class ProductRepository extends GetConnect {
   }
 
 //todo BIEN getCategoryList(branchIdLoggedIn)
-  Future<List<CategoryModel>> getCategoryList(branchIdLoggedIn) async {
+  Future<List<CategoryModel>> getCategoryList(branchIdLoggedIn, token) async {
     List<CategoryModel> categoryList = [];
-
     try {
       var url =
           '${Env.apiEndpoint}/category_branch?branch_id=$branchIdLoggedIn';
 //todo aqui van las categorias de los productos para el tab
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         final categorys = response.body['category_products'];
         if (categorys != null) {
@@ -391,7 +432,7 @@ class ProductRepository extends GetConnect {
 
 //todo BIEN getCategoryList(branchIdLoggedIn)
   Future metdNewServiceProductRepository(
-      branch_id, professional_id, car_id) async {
+      branch_id, professional_id, car_id, token) async {
     List<CategoryModel> categoryList = [];
     List<ProductModel> products = [];
 
@@ -399,7 +440,11 @@ class ProductRepository extends GetConnect {
       var url =
           '${Env.apiEndpoint}/category-products-branch?branch_id=$branch_id&professional_id=$professional_id&car_id=$car_id';
 //todo aqui van las categorias de los productos para el tab
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       print('category.length.new.statusCode:${response.statusCode}');
       print('category.length.new.-url:$url');
       if (response.statusCode == 200) {

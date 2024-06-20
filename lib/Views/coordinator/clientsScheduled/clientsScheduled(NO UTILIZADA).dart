@@ -197,7 +197,8 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                                         controllerClient.returnClientStatus(
                                             controllerClient
                                                 .clientsScheduledList[index]
-                                                .reservation_id!);
+                                                .reservation_id!,
+                                            controllerLogin.tokenUserLoggedIn);
                                         //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
                                         controllerClient.returnClientName(
                                             (controllerClient
@@ -209,7 +210,9 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                                             .searchForCustomerServices(
                                                 controllerClient
                                                     .clientsScheduledList[index]
-                                                    .car_id)
+                                                    .car_id,
+                                                controllerLogin
+                                                    .tokenUserLoggedIn)
                                             .then((_) {
                                           /*  ModalHelper.showModal(
                                                 context,

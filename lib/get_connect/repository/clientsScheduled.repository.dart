@@ -6,13 +6,14 @@ import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/professional_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/env.dart';
 import 'package:intl/intl.dart';
 import 'package:dio/dio.dart' as dio;
 
 class ClientsScheduledRepository extends GetConnect {
   final LoginController controllerLogin = Get.find<LoginController>();
-  Future getClientsTechnicalList(idBranch) async {
+  Future getClientsTechnicalList(idBranch, token) async {
     print('estoy en repositorio en - 1');
     try {
       List<ClientsScheduledModel> clientList = [];
@@ -26,7 +27,11 @@ class ClientsScheduledRepository extends GetConnect {
       var url =
           '${Env.apiEndpoint}/cola_branch_tecnico?branch_id=$idBranch&professional_id=$idTecn';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
       if (response.statusCode == null) {
         print('response.statusCode tecnico:${response.statusCode}');
@@ -84,7 +89,7 @@ class ClientsScheduledRepository extends GetConnect {
   //
   //
 
-  Future getClientsScheduledListNew(idProfessional, idBranch) async {
+  Future getClientsScheduledListNew(idProfessional, idBranch, token) async {
     print('estoy en repositorio en - 2');
 
     try {
@@ -96,22 +101,30 @@ class ClientsScheduledRepository extends GetConnect {
       int quantityClientAttended = 0;
       bool varclientswaiting = false;
 
+      //final response = await get(url, headers: headers);
       var url =
           '${Env.apiEndpoint}/cola_branch_professional_new?professional_id=$idProfessional&branch_id=$idBranch';
       print('a.......... getClientsScheduledList:url:$url');
 
-      final response = await get(url).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 30 segundos
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
 
       //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
       if (response.statusCode == null) {
+        print('Primer ruta protegida-response.statusCode == null');
         print('response.statusCode:${response.statusCode}');
         return {
           "ConnectionIssues": true,
         };
       } else
         print('hay coneccion');
+      print(
+          'Primer ruta protegida-response.statusCode :${response.statusCode}');
       if (response.statusCode == 200) {
+        print('Primer ruta protegida-response.statusCode == 200');
         // print('ya tengo la cola de la api es estaa *****************');
         final customers = response.body['tail'];
         // print('ya tengo la cola de la api es estaa${customers}');
@@ -186,6 +199,10 @@ class ClientsScheduledRepository extends GetConnect {
           }
         }
       }
+      if (response.statusCode == null) {
+        //llamar aqui el metodo del login que muestra error de conexion
+        loginController.showConnectionError();
+      }
 
       return {
         "clientList": clientList,
@@ -197,7 +214,7 @@ class ClientsScheduledRepository extends GetConnect {
             varclientswaiting, //este me dice si hay que mandar alguna notificacion recordando que hay cliente esperando en cola por ser atendido
       };
     } catch (e) {
-      print(e);
+      print('Primer ruta protegida-Dio error:$e');
     }
   }
 //
@@ -214,13 +231,16 @@ class ClientsScheduledRepository extends GetConnect {
       bool hasNextClient = false;
       int quantityClientAttended = 0;
       bool varclientswaiting = false;
-
+      String token = controllerLogin.tokenUserLoggedIn;
       var url =
           '${Env.apiEndpoint}/cola_branch_professional?professional_id=$idProfessional&branch_id=$idBranch';
       print('a.......... getClientsScheduledList:url:$url');
-
-      final response = await get(url).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 30 segundos
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15));
+      // Aumenta el tiempo de espera a 30 segundos
 
       //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
       if (response.statusCode == null) {
@@ -341,14 +361,18 @@ class ClientsScheduledRepository extends GetConnect {
     return minutes;
   }
 
-  Future getCustomerServicesList2(idCar) async {
+  Future getCustomerServicesList2(idCar, token) async {
     print('estoy en repositorio en - 3');
     print('ertyu - idCar $idCar');
     try {
       List<ServiceModel> serviceCustomer = [];
       var url = '${Env.apiEndpoint}/car_services2?car_id=$idCar';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         print('ya tengo los servicios');
         final customers = response.body['services'];
@@ -399,14 +423,18 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
-  Future getCustomerServicesList(idCar) async {
+  Future getCustomerServicesList(idCar, token) async {
     print('estoy en repositorio en - 3');
 
     try {
       List<ServiceModel> serviceCustomer = [];
       var url = '${Env.apiEndpoint}/car_services?car_id=$idCar';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         print('ya tengo los servicios');
         final customers = response.body['services'];
@@ -439,12 +467,16 @@ class ClientsScheduledRepository extends GetConnect {
 //
 //
 //
-  Future sentValueClockDb(id, clock) async {
+  Future sentValueClockDb(id, clock, token) async {
     print('estoy en repositorio en - 4');
     try {
       var url = '${Env.apiEndpoint}/set_clock?reservation_id=$id&clock=$clock';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         print('ya guardo el reloj que esta utilizando');
         return true;
@@ -463,12 +495,16 @@ class ClientsScheduledRepository extends GetConnect {
 //
 //
 //
-  Future getValueClockDb(id) async {
+  Future getValueClockDb(id, token) async {
     print('estoy en repositorio en - 5');
     try {
       var url = '${Env.apiEndpoint}/get_clock?reservation_id=$id';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         final result = response.body;
         print('EL RELOJ DEVUELTO ES :$result');
@@ -483,13 +519,17 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
 //
-  Future sendWhatsappNotificationRepos(String telefone) async {
+  Future sendWhatsappNotificationRepos(String telefone, token) async {
     print('estoy en repositorio en - 5');
     try {
       var url =
           '${Env.apiEndpoint}/whatsapp-notification?telefone_client=$telefone';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         print(
             'cargando aqui-8-sendWhatsappNotificationRepos-TELEFONO:$telefone');
@@ -509,7 +549,11 @@ class ClientsScheduledRepository extends GetConnect {
     var url =
         '${Env.apiEndpoint}/car_services?car_id=$idCar'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
 
-    final response = await get(url);
+    final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
     if (response.statusCode == 200) {
       final customers = response.body['services'];
       for (Map service in customers) {
@@ -526,13 +570,17 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }*/
 
-  Future typeOfService(idProfessional, idBranch) async {
+  Future typeOfService(idProfessional, idBranch, token) async {
     print('estoy en repositorio en - 6');
     try {
       var url =
           '${Env.apiEndpoint}/type_of_service?professional_id=$idProfessional&branch_id=$idBranch';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         final typeService = response.body;
         print('typeOfService(idProfessional, idBranch) async:$typeService');
@@ -545,7 +593,7 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
-  Future setTimeClock(reservationId, timeClock, detached, clock) async {
+  Future setTimeClock(reservationId, timeClock, detached, clock, token) async {
     print('estoy en repositorio en - 7');
     try {
       print('EL TIEMPO ACTUAL reservationId->$reservationId');
@@ -556,7 +604,11 @@ class ClientsScheduledRepository extends GetConnect {
         var url =
             '${Env.apiEndpoint}/set_timeClock?reservation_id=$reservationId&timeClock=$timeClock&detached=$detached&clock=$clock';
 
-        final response = await get(url);
+        final headers = {
+          "Authorization": "Bearer $token", // Agrega el token a los encabezados
+        };
+        final response = await get(url, headers: headers).timeout(
+            Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
         if (response.statusCode == 200) {
           return true;
         } else {
@@ -571,7 +623,7 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   //AQUI HACE LA LLAMADA PARA LOS INCUMPLIMIENTOS, 0 ES QUE INCUMPLIO Y 1 QUE CUMPLIO
-  Future storeByType(type, branchId, professionalId, estado) async {
+  Future storeByType(type, branchId, professionalId, estado, token) async {
     print('estoy en repositorio en - 8');
     try {
       var url = '${Env.apiEndpoint}/storeByType';
@@ -583,7 +635,10 @@ class ClientsScheduledRepository extends GetConnect {
         'estado': estado,
       };
 
-      final response = await post(url, body);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await post(headers: headers, url, body);
       print(type);
       print(branchId);
       print(professionalId);
@@ -602,13 +657,17 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
-  Future returnClientStatus(reservationId) async {
+  Future returnClientStatus(reservationId, token) async {
     print('estoy en repositorio en - 9');
     try {
       var url =
           '${Env.apiEndpoint}/return_client_status?reservation_id=$reservationId'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         final statusClient = response.body;
         print(
@@ -624,13 +683,17 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
-  Future getProfessionalState(idBranch) async {
+  Future getProfessionalState(idBranch, token) async {
     print('estoy en repositorio en - 10');
     try {
       List<ProfessionalModel> professionalList = [];
       var url = '${Env.apiEndpoint}/professional-state?branch_id=$idBranch';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       print(
           'getProfessionalState(idBranch) async getProfessionalState(idBranch) url:$url');
       print(
@@ -660,15 +723,19 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
-  Future getProfessionalState2First(idBranch, idReserv, idBarberAct) async {
+  Future getProfessionalState2First(
+      idBranch, idReserv, idBarberAct, token) async {
     print('estoy en repositorio en - 10');
     try {
       List<ProfessionalModel> professionalList = [];
       int cant = 0;
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
       var url =
           '${Env.apiEndpoint}/professional-state?branch_id=$idBranch&reservation_id=$idReserv';
 
-      final response = await get(url);
+      final response = await get(url, headers: headers);
       print(
           'getProfessionalState(idBranch) async getProfessionalState(idBranch) url:$url');
       print(
@@ -700,14 +767,18 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
-  Future getProfessionalState2(idBranch, idReserv) async {
+  Future getProfessionalState2(idBranch, idReserv, token) async {
     print('estoy en repositorio en - 10');
     try {
       List<ProfessionalModel> professionalList = [];
       var url =
           '${Env.apiEndpoint}/professional-state?branch_id=$idBranch&reservation_id=$idReserv';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       print(
           'getProfessionalState(idBranch) async getProfessionalState(idBranch) url:$url');
       print(
@@ -737,7 +808,7 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
-  Future acceptOrRejectClient(reservationId, attended) async {
+  Future acceptOrRejectClient(reservationId, attended, token) async {
     print('estoy en repositorio en - 11');
     try {
       var url =
@@ -745,15 +816,18 @@ class ClientsScheduledRepository extends GetConnect {
       print(
           'ERROR:acceptOrRejectClient1 value = false- reservationId:$reservationId');
       print('ERROR:acceptOrRejectClient1 value = false- attended:$attended');
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         print('acceptOrRejectClient1 value = true');
 
         return 1;
-      } else {
+      } else if (response.statusCode == null) {
         print(
             'ERROR:acceptOrRejectClient1 value = false- response.statusCode2${response.statusCode}');
-
         return -99;
       }
     } catch (e) {
@@ -763,7 +837,7 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
-  Future<bool> deleteReservationClient(reservationId, cause) async {
+  Future<bool> deleteReservationClient(reservationId, cause, token) async {
     print('estoy en repositorio en - 12');
     try {
       bool value = false;
@@ -774,7 +848,10 @@ class ClientsScheduledRepository extends GetConnect {
         'id': reservationId,
         'cause': cause,
       };
-      final response = await post(url, body);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await post(headers: headers, url, body);
       print(
           'deleteReservationClient value response.statusCode :${response.statusCode}');
       if (response.statusCode == 200) {
@@ -822,7 +899,10 @@ class ClientsScheduledRepository extends GetConnect {
       'client_look': image,
     };
     // Realizar la solicitud POST
-    final response = await post(url, body);
+    final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+    final response = await post(headers:headers,url, body);
     if (response.statusCode == 200) {
       print('storeByReservationId value = true');
       value = true;

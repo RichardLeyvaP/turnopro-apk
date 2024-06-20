@@ -12,7 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:dio/dio.dart' as dio;
 
 class ClientsCoordinatorRepository extends GetConnect {
-  Future getClientsTechnicalList(idBranch) async {
+  Future getClientsTechnicalList(idBranch, token) async {
     List<ClientsScheduledModel> clientList = [];
     ClientsScheduledModel? nextClient;
     bool hasNextClient = false;
@@ -20,7 +20,11 @@ class ClientsCoordinatorRepository extends GetConnect {
 
     var url = '${Env.apiEndpoint}/cola_branch_capilar?branch_id=$idBranch';
 
-    final response = await get(url);
+    final headers = {
+      "Authorization": "Bearer $token", // Agrega el token a los encabezados
+    };
+    final response = await get(url, headers: headers).timeout(
+        Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
     //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
     if (response.statusCode == null) {
       print('response.statusCode tecnico:${response.statusCode}');
@@ -65,13 +69,17 @@ class ClientsCoordinatorRepository extends GetConnect {
   //
   //
   //
-  Future reasignedClientTotem(branchId, professionalId) async {
+  Future reasignedClientTotem(branchId, professionalId, token) async {
     List<ClientsScheduledModel> clientList = [];
     try {
       var url =
           '${Env.apiEndpoint}/reasigned-client-totem?branch_id=$branchId&professional_id=$professionalId';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
 
       print('url que viene en reasignedClientTotem:$url');
       if (response.statusCode == null) {
@@ -102,13 +110,17 @@ class ClientsCoordinatorRepository extends GetConnect {
   //
   //
   //
-  Future reasignedClient(reservationId, clientId, professionalId) async {
+  Future reasignedClient(reservationId, clientId, professionalId, token) async {
     List<ClientsScheduledModel> clientList = [];
     try {
       var url =
           '${Env.apiEndpoint}/reasigned_client?reservation_id=$reservationId&client_id=$clientId&professional_id=$professionalId';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
       print('response.statusCode reservationId:${reservationId}');
       print('response.statusCode clientId:${clientId}');
@@ -139,12 +151,16 @@ class ClientsCoordinatorRepository extends GetConnect {
   //
   //
   //
-  Future getClientsScheduledListBranch(idBranch) async {
+  Future getClientsScheduledListBranch(idBranch, token) async {
     List<ClientsScheduledModel> clientList = [];
     try {
       var url = '${Env.apiEndpoint}/cola_branch_data?branch_id=$idBranch';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
       if (response.statusCode == null) {
         print('response.statusCode:${response.statusCode}');
@@ -172,13 +188,17 @@ class ClientsCoordinatorRepository extends GetConnect {
 
   //
   //
-  Future getClientsRechazBranch(idBranch) async {
+  Future getClientsRechazBranch(idBranch, token) async {
     List<ClientsScheduledModel> clientListDel = [];
     try {
       //esta me muestra los que estan rechazados
       var url = '${Env.apiEndpoint}/cola_branch_data2?branch_id=$idBranch';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
       if (response.statusCode == null) {
         print('response.statusCode:${response.statusCode}');
@@ -212,13 +232,17 @@ class ClientsCoordinatorRepository extends GetConnect {
   //
   //
   //
-  Future clientsColacionBranch(idBranch) async {
+  Future clientsColacionBranch(idBranch, token) async {
     //clientes que se estan atendiendo de una branch
     List<ClientsScheduledModel> clientList = [];
 
     var url = '${Env.apiEndpoint}/branch_colacion?branch_id=$idBranch';
 
-    final response = await get(url);
+    final headers = {
+      "Authorization": "Bearer $token", // Agrega el token a los encabezados
+    };
+    final response = await get(url, headers: headers).timeout(
+        Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
     //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
     if (response.statusCode == null) {
       print('response.statusCode:${response.statusCode}');
@@ -245,13 +269,17 @@ class ClientsCoordinatorRepository extends GetConnect {
 
   //
   //
-  Future clientsColacionRequestBranch(idBranch) async {
+  Future clientsColacionRequestBranch(idBranch, token) async {
     //clientes que se estan atendiendo de una branch
     List<ClientsScheduledModel> clientList = [];
 
     var url = '${Env.apiEndpoint}/branch_colacion3?branch_id=$idBranch';
 
-    final response = await get(url);
+    final headers = {
+      "Authorization": "Bearer $token", // Agrega el token a los encabezados
+    };
+    final response = await get(url, headers: headers).timeout(
+        Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
     //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
     if (response.statusCode == null) {
       print('response.statusCode:${response.statusCode}');
@@ -278,13 +306,17 @@ class ClientsCoordinatorRepository extends GetConnect {
 
   //
   //
-  Future profOutRequestBranch(idBranch) async {
+  Future profOutRequestBranch(idBranch, token) async {
     //clientes que se estan atendiendo de una branch
     List<ClientsScheduledModel> clientList = [];
 
     var url = '${Env.apiEndpoint}/branch_colacion4?branch_id=$idBranch';
 
-    final response = await get(url);
+    final headers = {
+      "Authorization": "Bearer $token", // Agrega el token a los encabezados
+    };
+    final response = await get(url, headers: headers).timeout(
+        Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
     //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
     if (response.statusCode == null) {
       print('response.statusCode:${response.statusCode}');
@@ -309,13 +341,17 @@ class ClientsCoordinatorRepository extends GetConnect {
     return {"clientAttendList": clientList};
   } //
 
-  Future clientsAttendBranch(idBranch) async {
+  Future clientsAttendBranch(idBranch, token) async {
     //clientes que se estan atendiendo de una branch
     List<ClientsScheduledModel> clientList = [];
 
     var url = '${Env.apiEndpoint}/tail_branch_attended?branch_id=$idBranch';
 
-    final response = await get(url);
+    final headers = {
+      "Authorization": "Bearer $token", // Agrega el token a los encabezados
+    };
+    final response = await get(url, headers: headers).timeout(
+        Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
     //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
     if (response.statusCode == null) {
       print('response.statusCode:${response.statusCode}');
@@ -344,7 +380,7 @@ class ClientsCoordinatorRepository extends GetConnect {
   //
   //
   //
-  Future getClientHistory(idClient, idBranch) async {
+  Future getClientHistory(idClient, idBranch, token) async {
     try {
       List<ServiceModel> serviceCustomer = [];
       List<ProductModel> productCustomer = [];
@@ -357,7 +393,11 @@ class ClientsCoordinatorRepository extends GetConnect {
       var url =
           '${Env.apiEndpoint}/client-history?client_id=$idClient&branch_id=$idBranch';
 
-      final response = await get(url);
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       print('llamando _fetchCoexistenceList(); --- getClientHistory2');
       // Verifica si hubo algún problema de conexión.
       if (response.statusCode != 200) {
@@ -455,7 +495,7 @@ class ClientsCoordinatorRepository extends GetConnect {
 //
   //
   //
-  Future getClientsScheduledList(idProfessional, idBranch) async {
+  Future getClientsScheduledList(idProfessional, idBranch, token) async {
     List<ClientsScheduledModel> clientList = [];
     List<Map> attendingClientList = [];
     ClientsScheduledModel? nextClient;
@@ -465,7 +505,11 @@ class ClientsCoordinatorRepository extends GetConnect {
     var url =
         '${Env.apiEndpoint}/cola_branch_professional?professional_id=$idProfessional&branch_id=$idBranch';
 
-    final response = await get(url);
+    final headers = {
+      "Authorization": "Bearer $token", // Agrega el token a los encabezados
+    };
+    final response = await get(url, headers: headers).timeout(
+        Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
     //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
     if (response.statusCode == null) {
       print('response.statusCode:${response.statusCode}');
@@ -541,12 +585,16 @@ class ClientsCoordinatorRepository extends GetConnect {
     return minutes;
   }
 
-  Future<List<ServiceModel>> getCustomerServicesList(idCar) async {
+  Future<List<ServiceModel>> getCustomerServicesList(idCar, token) async {
     print('estoy en repositorio en - 3-getCustomerServicesList');
     List<ServiceModel> serviceCustomer = [];
     var url = '${Env.apiEndpoint}/car_services?car_id=$idCar';
 
-    final response = await get(url);
+    final headers = {
+      "Authorization": "Bearer $token", // Agrega el token a los encabezados
+    };
+    final response = await get(url, headers: headers).timeout(
+        Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
     if (response.statusCode == 200) {
       print('ya tengo los servicios');
       final customers = response.body['services'];
@@ -574,10 +622,14 @@ class ClientsCoordinatorRepository extends GetConnect {
 //
 //
 //
-  Future sentValueClockDb(id, clock) async {
+  Future sentValueClockDb(id, clock, token) async {
     var url = '${Env.apiEndpoint}/set_clock?reservation_id=$id&clock=$clock';
 
-    final response = await get(url);
+    final headers = {
+      "Authorization": "Bearer $token", // Agrega el token a los encabezados
+    };
+    final response = await get(url, headers: headers).timeout(
+        Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
     if (response.statusCode == 200) {
       print('ya guardo el reloj que esta utilizando');
       return true;
@@ -593,10 +645,14 @@ class ClientsCoordinatorRepository extends GetConnect {
 //
 //
 //
-  Future getValueClockDb(id) async {
+  Future getValueClockDb(id, token) async {
     var url = '${Env.apiEndpoint}/get_clock?reservation_id=$id';
 
-    final response = await get(url);
+    final headers = {
+      "Authorization": "Bearer $token", // Agrega el token a los encabezados
+    };
+    final response = await get(url, headers: headers).timeout(
+        Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
     if (response.statusCode == 200) {
       final result = response.body;
       print('EL RELOJ DEVUELTO ES :$result');
@@ -612,7 +668,11 @@ class ClientsCoordinatorRepository extends GetConnect {
     var url =
         '${Env.apiEndpoint}/car_services?car_id=$idCar'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
 
-    final response = await get(url);
+    final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
     if (response.statusCode == 200) {
       final customers = response.body['services'];
       for (Map service in customers) {
@@ -629,12 +689,16 @@ class ClientsCoordinatorRepository extends GetConnect {
     }
   }*/
 
-  Future<bool> typeOfService(idProfessional, idBranch) async {
+  Future<bool> typeOfService(idProfessional, idBranch, token) async {
     print('estoy en repositorio en - 6-2');
     var url =
         '${Env.apiEndpoint}/type_of_service?professional_id=$idProfessional&branch_id=$idBranch';
 
-    final response = await get(url);
+    final headers = {
+      "Authorization": "Bearer $token", // Agrega el token a los encabezados
+    };
+    final response = await get(url, headers: headers).timeout(
+        Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
     if (response.statusCode == 200) {
       final typeService = response.body;
       print('typeOfService(idProfessional, idBranch) async:$typeService');
@@ -644,11 +708,16 @@ class ClientsCoordinatorRepository extends GetConnect {
     }
   }
 
-  Future<bool> setTimeClock(reservationId, timeClock, detached, clock) async {
+  Future<bool> setTimeClock(
+      reservationId, timeClock, detached, clock, token) async {
     var url =
         '${Env.apiEndpoint}/set_timeClock?reservation_id=$reservationId&timeClock=$timeClock&detached=$detached&clock=$clock';
 
-    final response = await get(url);
+    final headers = {
+      "Authorization": "Bearer $token", // Agrega el token a los encabezados
+    };
+    final response = await get(url, headers: headers).timeout(
+        Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
     if (response.statusCode == 200) {
       return true;
     } else {
@@ -657,7 +726,8 @@ class ClientsCoordinatorRepository extends GetConnect {
   }
 
   //AQUI HACE LA LLAMADA PARA LOS INCUMPLIMIENTOS, 0 ES QUE INCUMPLIO Y 1 QUE CUMPLIO
-  Future<bool> storeByType(type, branchId, professionalId, estado) async {
+  Future<bool> storeByType(
+      type, branchId, professionalId, estado, token) async {
     var url = '${Env.apiEndpoint}/storeByType';
 
     final Map<String, dynamic> body = {
@@ -667,7 +737,10 @@ class ClientsCoordinatorRepository extends GetConnect {
       'estado': estado,
     };
 
-    final response = await post(url, body);
+    final headers = {
+      "Authorization": "Bearer $token", // Agrega el token a los encabezados
+    };
+    final response = await post(headers: headers, url, body);
     print(type);
     print(branchId);
     print(professionalId);
@@ -683,11 +756,15 @@ class ClientsCoordinatorRepository extends GetConnect {
     }
   }
 
-  Future<int> returnClientStatus(reservationId) async {
+  Future<int> returnClientStatus(reservationId, token) async {
     var url =
         '${Env.apiEndpoint}/return_client_status?reservation_id=$reservationId'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
 
-    final response = await get(url);
+    final headers = {
+      "Authorization": "Bearer $token", // Agrega el token a los encabezados
+    };
+    final response = await get(url, headers: headers).timeout(
+        Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
     if (response.statusCode == 200) {
       final statusClient = response.body;
       print(
@@ -700,12 +777,16 @@ class ClientsCoordinatorRepository extends GetConnect {
     }
   }
 
-  Future<bool> acceptOrRejectClient(reservationId, attended) async {
+  Future<bool> acceptOrRejectClient(reservationId, attended, token) async {
     bool value = false;
     var url =
         '${Env.apiEndpoint}/tail_attended?reservation_id=$reservationId&attended=$attended';
 
-    final response = await get(url);
+    final headers = {
+      "Authorization": "Bearer $token", // Agrega el token a los encabezados
+    };
+    final response = await get(url, headers: headers).timeout(
+        Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
     if (response.statusCode == 200) {
       print('acceptOrRejectClient1 value = true');
       value = true;
@@ -729,10 +810,8 @@ class ClientsCoordinatorRepository extends GetConnect {
     });
 
     try {
-      dio.Response response = await dioClient.post(
-        '${Env.apiEndpoint}/storeByReservationId',
-        data: formData,
-      );
+      dio.Response response = await dioClient
+          .post('${Env.apiEndpoint}/storeByReservationId', data: formData);
       print('++++++++++++++++++++');
       print(response.data);
       return true;
@@ -750,7 +829,10 @@ class ClientsCoordinatorRepository extends GetConnect {
       'client_look': image,
     };
     // Realizar la solicitud POST
-    final response = await post(url, body);
+    final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+    final response = await post(headers:headers,url, body);
     if (response.statusCode == 200) {
       print('storeByReservationId value = true');
       value = true;

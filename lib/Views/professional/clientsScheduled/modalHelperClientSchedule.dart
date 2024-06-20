@@ -343,7 +343,9 @@ class ModalHelper {
                             onPressed: () async {
                               //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
                               await controllClient.acceptOrRejectClient(
-                                  reservationId, 4);
+                                  reservationId,
+                                  4,
+                                  loginController.tokenUserLoggedIn);
                               Navigator.pop(context); // Cierra el modal
                             },
                             child: Row(
@@ -621,7 +623,9 @@ class ModalHelper {
                                                         await controllClient
                                                             .acceptOrRejectClient(
                                                                 reservationId,
-                                                                2);
+                                                                2,
+                                                                loginController
+                                                                    .tokenUserLoggedIn);
                                                         controllClient
                                                             .fetchClientsScheduled(
                                                                 loginController

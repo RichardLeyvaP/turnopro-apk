@@ -9,6 +9,7 @@ import 'package:turnopro_apk/Models/category_model.dart';
 import 'package:turnopro_apk/Models/product_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/get_connect/repository/product.repository.dart';
 
 class ProductController extends GetxController {
@@ -208,7 +209,9 @@ class ProductController extends GetxController {
       final result = await repository.metdNewServiceProductRepository(
           branch_id,
           professional_id,
-          car_id); //todo aqui llama a pedir las categorias de los productos por almacen-branch ala que pertenece el profesional
+          car_id,
+          loginController
+              .tokenUserLoggedIn); //todo aqui llama a pedir las categorias de los productos por almacen-branch ala que pertenece el profesional
 
       //aqui viendo si hay categorias de productos
       if (result.containsKey('categoryList')) {
@@ -269,8 +272,10 @@ class ProductController extends GetxController {
     try {
       final LoginController controllerLogin = Get.find<LoginController>();
       if (controllerLogin.branchIdLoggedIn != null) {
-        category = await repository.getCategoryList(controllerLogin
-            .branchIdLoggedIn); //todo aqui llama a pedir las categorias de los productos por almacen-branch ala que pertenece el profesional
+        category = await repository.getCategoryList(
+            controllerLogin.branchIdLoggedIn,
+            loginController
+                .tokenUserLoggedIn); //todo aqui llama a pedir las categorias de los productos por almacen-branch ala que pertenece el profesional
 
         // Verifica que la lista de categorías no esté vacía antes de acceder a sus elementos
         if (category.isNotEmpty) {

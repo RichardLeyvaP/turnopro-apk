@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/env.dart';
 
 class ModalHelper {
@@ -245,7 +246,10 @@ class ModalHelper {
                                                   // Lógica para enviar el comentario
                                                   await controllClient
                                                       .acceptOrRejectClient(
-                                                          reservationId, 2);
+                                                          reservationId,
+                                                          2,
+                                                          loginController
+                                                              .tokenUserLoggedIn);
 
                                                   print(
                                                       'Comentario enviado - $commentText ');
@@ -295,7 +299,9 @@ class ModalHelper {
                                 onPressed: () async {
                                   //llamo al controlador y lo paso attended = 4 que significa que va para el tecnico capilar
                                   await controllClient.acceptOrRejectClient(
-                                      reservationId, 4);
+                                      reservationId,
+                                      4,
+                                      loginController.tokenUserLoggedIn);
                                   Navigator.pop(context); // Cierra el modal
                                 },
                                 child: const Text(

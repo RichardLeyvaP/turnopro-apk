@@ -108,13 +108,14 @@ class _HomePageBodyState extends State<HomePageBody>
         ),
         barrierDismissible: false,
       ); //Get.back();
-      bool result =
-          await clientCord.reasignedClient(reservationId, clientId, idProfDisp);
+      bool result = await clientCord.reasignedClient(reservationId, clientId,
+          idProfDisp, loginController.tokenUserLoggedIn);
       if (result == true) {
         await clientsScheduledController.fetchClientsScheduledNew(
             loginController.idProfessionalLoggedIn,
             loginController.branchIdLoggedIn,
-            'Home-reasignedClient');
+            'Home-reasignedClient',
+            loginController.tokenUserLoggedIn);
         Get.back();
         loginController.setCodigoQrValidAnt(1);
       } else {
@@ -145,7 +146,10 @@ class _HomePageBodyState extends State<HomePageBody>
     int idBarberAct = loginController.idProfessionalLoggedIn!;
     List<ProfessionalModel> profDisp;
     profDisp = await clientsScheduledController.getFirstProfessional(
-        loginController.branchIdLoggedIn, idReserv, idBarberAct);
+        loginController.branchIdLoggedIn,
+        idReserv,
+        idBarberAct,
+        loginController.tokenUserLoggedIn);
     if (profDisp.isNotEmpty) {
       print('hay profesional libre para reasignar');
       return profDisp[0].id;
@@ -952,7 +956,7 @@ class _HomePageBodyState extends State<HomePageBody>
         String msj = 'llamadasTimer1';
 
         notiController.professionalBranchNotifQueque(
-            idBranch, idProfe, type, msj);
+            idBranch, idProfe, type, msj, loginController.tokenUserLoggedIn);
 
         //lo que llamaba el timer 2
         print('llamada timer 2 - 11segundos');
@@ -981,28 +985,28 @@ class _HomePageBodyState extends State<HomePageBody>
                 print('activando el Clock - 1');
                 clientsScheduledController.animationController1!.forward();
                 clientsScheduledController.acceptOrRejectClient(
-                    reservationId, 111);
+                    reservationId, 111, loginController.tokenUserLoggedIn);
                 clientsScheduledController.pauseResumeClock((clock - 1), -99);
               }
               if (clock == 2) {
                 print('activando el Clock - 2');
                 clientsScheduledController.animationController2!.forward();
                 clientsScheduledController.acceptOrRejectClient(
-                    reservationId, 111);
+                    reservationId, 111, loginController.tokenUserLoggedIn);
                 clientsScheduledController.pauseResumeClock((clock - 1), -99);
               }
               if (clock == 3) {
                 print('activando el Clock - 3');
                 clientsScheduledController.animationController3!.forward();
                 clientsScheduledController.acceptOrRejectClient(
-                    reservationId, 111);
+                    reservationId, 111, loginController.tokenUserLoggedIn);
                 clientsScheduledController.pauseResumeClock((clock - 1), -99);
               }
               if (clock == 4) {
                 print('activando el Clock - 4');
                 clientsScheduledController.animationController4!.forward();
                 clientsScheduledController.acceptOrRejectClient(
-                    reservationId, 111);
+                    reservationId, 111, loginController.tokenUserLoggedIn);
                 clientsScheduledController.pauseResumeClock((clock - 1), -99);
               }
             } //fin del if
@@ -1896,7 +1900,8 @@ class _HomePageBodyState extends State<HomePageBody>
                               clientsScheduledControllerE.acceptOrRejectClient(
                                   clientsScheduledControllerE
                                       .clientsScheduledNext!.reservation_id,
-                                  3);
+                                  3,
+                                  loginController.tokenUserLoggedIn);
 
                               //}
                             } else if (loginController.usserPermissionQr == 2) {
@@ -2141,7 +2146,8 @@ class _HomePageBodyState extends State<HomePageBody>
                                         clientsScheduledControllerE
                                             .clientsScheduledNext!
                                             .reservation_id,
-                                        1);
+                                        1,
+                                        loginController.tokenUserLoggedIn);
                               }
                             } else if (loginController.usserPermissionQr == 2) {
                               Get.snackbar(
@@ -2767,7 +2773,8 @@ class _HomePageBodyState extends State<HomePageBody>
             await clientsScheduledController.fetchClientsScheduledNew(
                 loginController.idProfessionalLoggedIn,
                 loginController.branchIdLoggedIn,
-                'Agenda-Card');
+                'Agenda-Card',
+                loginController.tokenUserLoggedIn);
             Get.back();
             pagesConfigC.onTabTapped(1); //index = 4 -> /CoexistencePage
           }
@@ -2824,7 +2831,8 @@ class _HomePageBodyState extends State<HomePageBody>
                 loginController.branchIdLoggedIn,
                 loginController.idProfessionalLoggedIn,
                 typeEnv,
-                'Cart home');
+                'Cart home',
+                loginController.tokenUserLoggedIn);
 
             pagesConfigC.onTabTapped(2); //index = 2 -> /NotificationsPageProf
             Get.back();
