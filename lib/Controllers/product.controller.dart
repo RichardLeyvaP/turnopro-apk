@@ -16,6 +16,7 @@ class ProductController extends GetxController {
 //DECLARACION DE VARIABLES
   ProductRepository repository = ProductRepository();
   final ServiceController controllerServ = Get.find<ServiceController>();
+  final LoginController controllerLogin = Get.find<LoginController>();
   int shoppingCart = 0;
   int idInicial = 0;
   int productListLength = 0;
@@ -201,7 +202,7 @@ class ProductController extends GetxController {
 */
   final ShoppingCartController shoppingCartController =
       Get.find<ShoppingCartController>();
-  Future<void> metdNewServiceProduct(branch_id, professional_id, car_id) async {
+  Future<int> metdNewServiceProduct(branch_id, professional_id, car_id) async {
     // Obtén la lista de categorías
     try {
       pestana = 0;
@@ -214,63 +215,72 @@ class ProductController extends GetxController {
               .tokenUserLoggedIn); //todo aqui llama a pedir las categorias de los productos por almacen-branch ala que pertenece el profesional
 
       //aqui viendo si hay categorias de productos
-      if (result.containsKey('categoryList')) {
-        category = result['categoryList'];
-        // Verifica que la lista de categorías no esté vacía antes de acceder a sus elementos
-        if (category.isNotEmpty) {
-          categoryListLength = category.length;
-          idInicial = category[0].id;
-          print(
-              'La lista de categorías está categoriasProductos:idInicial:${idInicial}');
-          //aqui gusrdo los id de las categorias
-          for (int i = 0; i < categoryListLength; i++) {
-            agregarCategoria(category[i].id);
-          }
-        } else {
-          // Manejo de caso en el que la lista de categorías está vacía
-          print('La lista de categorías está vacía.');
-          categoryListLength = 0;
+
+      if (result.containsKey('errorInternet')) {
+        if (result['errorInternet'] == true) {
+          controllerLogin.showConnectionError();
         }
-      }
-
-      //asignar los productos (en este caso la idea es crear la cantidad de objetos == long de categorias, es decir product1 va a tener tds los productos de l acategoria 1 y asi)
-      if (result.containsKey('productCategory')) {
-        product = result['productCategory'];
-        print('category.length.new-ya---product:$product');
-        productListLength = product.length;
+        return -99;
       } else {
-        print('NO tiene productos :$product');
-      }
+        if (result.containsKey('categoryList')) {
+          category = result['categoryList'];
+          // Verifica que la lista de categorías no esté vacía antes de acceder a sus elementos
+          if (category.isNotEmpty) {
+            categoryListLength = category.length;
+            idInicial = category[0].id;
+            print(
+                'La lista de categorías está categoriasProductos:idInicial:${idInicial}');
+            //aqui gusrdo los id de las categorias
+            for (int i = 0; i < categoryListLength; i++) {
+              agregarCategoria(category[i].id);
+            }
+          } else {
+            // Manejo de caso en el que la lista de categorías está vacía
+            print('La lista de categorías está vacía.');
+            categoryListLength = 0;
+          }
+        }
 
-      //aqui asignar los servicios
-      if (result.containsKey('servicesList')) {
-        controllerServ.services = result['servicesList'];
+        //asignar los productos (en este caso la idea es crear la cantidad de objetos == long de categorias, es decir product1 va a tener tds los productos de l acategoria 1 y asi)
+        if (result.containsKey('productCategory')) {
+          product = result['productCategory'];
+          print('category.length.new-ya---product:$product');
+          productListLength = product.length;
+        } else {
+          print('NO tiene productos :$product');
+        }
 
-        controllerServ.serviceListLength = controllerServ.services.length;
-        controllerServ.selectService = result['selectServ'];
-        //aqui tengo los servicios seleccionados
-        //  int cantServSelect = controllerServ.selectService.length;
-        shoppingCartController.shoppingCart = result['shoppingCart'];
+        //aqui asignar los servicios
+        if (result.containsKey('servicesList')) {
+          controllerServ.services = result['servicesList'];
 
-        /* productListLength = selectproduct.length;
+          controllerServ.serviceListLength = controllerServ.services.length;
+          controllerServ.selectService = result['selectServ'];
+          //aqui tengo los servicios seleccionados
+          //  int cantServSelect = controllerServ.selectService.length;
+          shoppingCartController.shoppingCart = result['shoppingCart'];
+
+          /* productListLength = selectproduct.length;
       serviceListLength = selectserviceCart.length;
       shoppingCart = productListLength + serviceListLength;*/
 
-        print('category.length.new-ya---services:${controllerServ.services}');
-        print(
-            'category.length.new-ya---services-length:${controllerServ.serviceListLength}');
-        //aqui la logica de los servicios
+          print('category.length.new-ya---services:${controllerServ.services}');
+          print(
+              'category.length.new-ya---services-length:${controllerServ.serviceListLength}');
+          //aqui la logica de los servicios
+        }
+        update();
+        return 1;
       }
-      update();
     } catch (e) {
       print('FALLO LA CONEXION: $e');
+      return 0;
     }
   }
 
   Future<void> _fetchcategoryList() async {
     // Obtén la lista de categorías
     try {
-      final LoginController controllerLogin = Get.find<LoginController>();
       if (controllerLogin.branchIdLoggedIn != null) {
         category = await repository.getCategoryList(
             controllerLogin.branchIdLoggedIn,

@@ -136,7 +136,7 @@ class UserRepository extends GetConnect {
         print('1dentro del code:200');
         print('final users:$users');
         if (users != null) {
-          print('2dentro del code:200 y tiene usuarios');
+          print('2dentro del code:200 y tiene usuarios-users:$users');
           print(users);
           return users;
         } else {
@@ -206,7 +206,7 @@ class UserRepository extends GetConnect {
         return -99;
       }
     } catch (e) {
-      return -999;
+      return 0;
     }
   }
 
@@ -232,7 +232,7 @@ class UserRepository extends GetConnect {
         return -99;
       }
     } catch (e) {
-      return -999;
+      return 0;
     }
   }
 

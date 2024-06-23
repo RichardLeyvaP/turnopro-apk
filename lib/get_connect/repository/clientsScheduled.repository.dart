@@ -176,9 +176,11 @@ class ClientsScheduledRepository extends GetConnect {
             clientListSig.add(client);
           }
           //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
-
+          print(
+              'gggclientes asistiendo entre a if (client.confirmation :2${client.confirmation}) {');
           if (hasNextClient == false) {
-            if (client.attended == 0) {
+            if (client.attended == 0 && client.confirmation == 4) {
+              //todo aqui poner que el siguiente sea solo si está anunciado
               nextClient = client;
               hasNextClient = true;
             }
@@ -304,9 +306,13 @@ class ClientsScheduledRepository extends GetConnect {
             clientListSig.add(client);
           }
           //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
-
+          print(
+              'gggclientes asistiendo entre a if (client.confirmation :3${client.confirmation}) {');
+          print(
+              'gggclientes asistiendo entre a if (client.length :3${client}) {');
+          print('gggclientes asistiendo entre a if (token :3${token}) {');
           if (hasNextClient == false) {
-            if (client.attended == 0) {
+            if (client.attended == 0 && client.confirmation == 4) {
               nextClient = client;
               hasNextClient = true;
             }
@@ -866,7 +872,7 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   Future storeByReservationId(
-      imag, reservationId, commentText, dioClient) async {
+      imag, reservationId, commentText, dioClient, token) async {
     print('estoy en repositorio en - 13');
     try {
       // Crear FormData y agregar la imagen
@@ -881,12 +887,24 @@ class ClientsScheduledRepository extends GetConnect {
         dio.Response response = await dioClient.post(
           '${Env.apiEndpoint}/storeByReservationId',
           data: formData,
+          options: dio.Options(
+            headers: {
+              'Authorization':
+                  'Bearer $token', // Agregar el token en el encabezado
+              'Content-Type': 'multipart/form-data', // Tipo de contenido
+            },
+          ),
         );
-        print('++++++++++++++++++++');
         print(response.data);
+        print(
+            'esta es la subida de la imagen.Dio este resultado response.statusCode: ${response.statusCode}');
+        print(
+            'esta es la subida de la imagen.Dio este resultado response.data: ${response.data}');
+        print(
+            'esta es la subida de la imagen.Dio este resultado token: $token');
         return true;
       } catch (e) {
-        print('Error al subir la imagen: $e');
+        print('esta es la subida de la imagen.Error al subir la imagen: $e');
         return false;
       }
 

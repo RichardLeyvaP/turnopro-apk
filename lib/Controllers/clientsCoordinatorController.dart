@@ -9,6 +9,7 @@ import 'package:turnopro_apk/Models/coexistence_model.dart';
 import 'package:turnopro_apk/Models/product_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/Views/coordinator/coexistencePageCoordinator.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/get_connect/repository/clientsCoordinator.repository.dart';
 
@@ -706,8 +707,8 @@ class ClientsCoordinatorController extends GetxController {
 
   Future<void> storeByReservationId(
       imag, reservationId, commentText, dioClient) async {
-    bool value = await repository.storeByReservationId(
-        imag, reservationId, commentText, dioClient);
+    bool value = await repository.storeByReservationId(imag, reservationId,
+        commentText, dioClient, controllerLogin.tokenUserLoggedIn);
     print('si es - $value - ha o no enviado el comentario');
   }
 

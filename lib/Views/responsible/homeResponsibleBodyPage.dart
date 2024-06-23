@@ -147,6 +147,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
             .outRequestBranch(controllerLogin.branchIdLoggedIn);
         print('llamada timer encargado outRequestBranch completed');
         controllerShoppingCart.setLoading(false);
+      } else {
+        controllerShoppingCart.setLoading(false);
       }
     });
   }

@@ -372,7 +372,7 @@ class ClientsScheduledController extends GetxController {
           detached,
           clock,
           true,
-          loginController
+          controllerLogin
               .tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended1 reservation_id : $reservationId -  clock : $clock - detached :$detached');
@@ -397,7 +397,7 @@ class ClientsScheduledController extends GetxController {
           detached,
           clock,
           true,
-          loginController
+          controllerLogin
               .tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended2 reservation_id : $reservationId -  clock : $clock - detached :$detached');
@@ -422,7 +422,7 @@ class ClientsScheduledController extends GetxController {
           detached,
           clock,
           true,
-          loginController
+          controllerLogin
               .tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended3 reservation_id : $reservationId -  clock : $clock - detached :$detached');
@@ -447,7 +447,7 @@ class ClientsScheduledController extends GetxController {
           detached,
           clock,
           true,
-          loginController
+          controllerLogin
               .tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended4 reservation_id : $reservationId -  clock : $clock - detached :$detached');
@@ -865,7 +865,7 @@ class ClientsScheduledController extends GetxController {
   Future<void> deleteReservationClient(reservationId, cause) async {
     try {
       bool value = await repository.deleteReservationClient(
-          reservationId, cause, loginController.tokenUserLoggedIn);
+          reservationId, cause, controllerLogin.tokenUserLoggedIn);
       //si lo que devuelve es true actualizo la cola
       if (value == true) {
         print(
@@ -883,19 +883,19 @@ class ClientsScheduledController extends GetxController {
     bool value = false;
     try {
       value = await repository.deleteReservationClient(
-          reservationId, cause, loginController.tokenUserLoggedIn);
+          reservationId, cause, controllerLogin.tokenUserLoggedIn);
       //si lo que devuelve es true actualizo la cola
       return value;
     } catch (e) {
-      return value;
       print('deleteReservationClient value e:$e');
+      return value;
     }
   }
 
   Future<void> storeByReservationId(
       imag, reservationId, commentText, dioClient) async {
-    bool value = await repository.storeByReservationId(
-        imag, reservationId, commentText, dioClient);
+    bool value = await repository.storeByReservationId(imag, reservationId,
+        commentText, dioClient, controllerLogin.tokenUserLoggedIn);
     print('si es - $value - ha o no enviado el comentario');
   }
 
@@ -945,7 +945,7 @@ class ClientsScheduledController extends GetxController {
                 0,
                 1,
                 false,
-                loginController
+                controllerLogin
                     .tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min //el ultimo campo es el reloj
           }
         }
@@ -967,7 +967,7 @@ class ClientsScheduledController extends GetxController {
                 0,
                 2,
                 false,
-                loginController
+                controllerLogin
                     .tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min //el ultimo campo es el reloj
           }
         }
@@ -989,7 +989,7 @@ class ClientsScheduledController extends GetxController {
                 0,
                 3,
                 false,
-                loginController
+                controllerLogin
                     .tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min //el ultimo campo es el reloj
           }
         }
@@ -1011,7 +1011,7 @@ class ClientsScheduledController extends GetxController {
                 0,
                 4,
                 false,
-                loginController
+                controllerLogin
                     .tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min //el ultimo campo es el reloj
           }
         }
@@ -1069,7 +1069,7 @@ class ClientsScheduledController extends GetxController {
       }
       return 1;
     } else if (value == -99) {
-      loginController.showConnectionError();
+      controllerLogin.showConnectionError();
       print(
           'Dio error al mandar a aceptar o rechazar al cliente.Status = null');
       return -99;
@@ -1240,7 +1240,7 @@ class ClientsScheduledController extends GetxController {
       estado) async {
     //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
     bool result = await repository.storeByType(type, branchId, professionalId,
-        estado, loginController.tokenUserLoggedIn);
+        estado, controllerLogin.tokenUserLoggedIn);
     if (result) {
       print('CORRECTO actualizo el estado correctamente');
       //AQUI ES PÓRQUE INCUMPLIO CON ALGO
@@ -1463,7 +1463,7 @@ class ClientsScheduledController extends GetxController {
           if (clientsScheduledNext != null) {
             int idCar = clientsScheduledNext!.car_id!;
             await searchForCustomerServices(
-                idCar, loginController.tokenUserLoggedIn);
+                idCar, controllerLogin.tokenUserLoggedIn);
             await filterShowNext();
             //  setValueClock(true);
           } else {
@@ -1744,7 +1744,7 @@ class ClientsScheduledController extends GetxController {
 
   Future<void> fetchClientsTechnical(idBranch) async {
     Map<String, dynamic> resultList = await repository.getClientsTechnicalList(
-        idBranch, loginController.tokenUserLoggedIn);
+        idBranch, controllerLogin.tokenUserLoggedIn);
     print('111ya entre a buscar inicialmente los clientes del tecnico');
     print(resultList);
     //verificando , si entra al if es problemas de coneccion
@@ -1824,7 +1824,7 @@ class ClientsScheduledController extends GetxController {
   Future<bool> sentValueClockDb(int id, int clock) async {
     //si return = false es que no se inserto en la Db
     return await repository.sentValueClockDb(
-        id, clock, loginController.tokenUserLoggedIn);
+        id, clock, controllerLogin.tokenUserLoggedIn);
   }
 
 //
@@ -1835,7 +1835,7 @@ class ClientsScheduledController extends GetxController {
   Future<int> getValueClockDb(int id) async {
     try {
       return await repository.getValueClockDb(
-          id, loginController.tokenUserLoggedIn);
+          id, controllerLogin.tokenUserLoggedIn);
     } catch (e) {
       print(e);
       return -99;
@@ -1848,7 +1848,7 @@ class ClientsScheduledController extends GetxController {
   ) async {
     try {
       await repository.sendWhatsappNotificationRepos(
-          telefone, loginController.tokenUserLoggedIn);
+          telefone, controllerLogin.tokenUserLoggedIn);
       print('enviado el mensaje de whatsap correctamente');
     } catch (e) {
       print('ERROR enviando el mensaje de whatsap correctamente$e');

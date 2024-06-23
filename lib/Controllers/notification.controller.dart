@@ -494,6 +494,8 @@ class NotificationController extends GetxController {
 //tecnicooooooo
   Future<void> fetchNotificationList(
       idBranch, idProfe, type, msj, token) async {
+    print(
+        'callTimerTec 4-callTimerTecNotification-controlador-fetchNotificationList');
     print('qwerc SII mandar ->NOTIFICACIONES-$msj');
     print('12345llamada timer estoy en CAntidad de Notificaciones-$type');
     print(
@@ -521,6 +523,8 @@ class NotificationController extends GetxController {
             []; // Lista de Notificaciones
         for (final element in notificationListNew) {
           if (element.state == 0 || element.state == 3) {
+            print(
+                'callTimerTec 4-callTimerTecNotification -if-element.state :${element.state}');
             if (!notificationListNewSounded.contains(element.id)) {
               notificationListNewSounded.add(element.id);
 
@@ -534,22 +538,22 @@ class NotificationController extends GetxController {
               element.tittle ==
                   'Aceptada su solicitud de Colación') //pongo a null el qr
           {
-            updateNotifications2(idBranch, idProfe, element.id);
             controllerLogin.setCodigoQrValid(null);
+            updateNotifications2(idBranch, idProfe, element.id);
           }
           if (element.state == 3 &&
               element.tittle ==
                   'Rechazada su solicitud de Colación') //pongo a 1 el qr
           {
-            updateNotifications2(idBranch, idProfe, element.id);
             controllerLogin.setCodigoQrValid(1);
+            updateNotifications2(idBranch, idProfe, element.id);
           }
           if (element.state == 3 &&
               element.tittle ==
                   'Rechazada su solicitud de Salida') //pongo a 1 el qr
           {
-            updateNotifications2(idBranch, idProfe, element.id);
             controllerLogin.setCodigoQrValid(1);
+            updateNotifications2(idBranch, idProfe, element.id);
           }
           if (element.state == 3 &&
               element.tittle ==
@@ -563,20 +567,24 @@ class NotificationController extends GetxController {
               element.tittle ==
                   'Solicitud de Eliminación Rechazada') //pongo a null el qr
           {
-            updateNotifications2(idBranch, idProfe, element.id);
+            print(
+                'callTimerTec 4-callTimerTecNotification -if-element.tittle :${element.tittle}');
             controllerLogin.setCodigoQrValid(1);
+            updateNotifications2(idBranch, idProfe, element.id);
           }
           if (element.state == 3 &&
               element.tittle ==
                   'Aceptada Eliminación de Cliente') //pongo a null el qr
           {
-            updateNotifications2(idBranch, idProfe, element.id);
             controllerLogin.setCodigoQrValid(1);
+            updateNotifications2(idBranch, idProfe, element.id);
           }
         }
 
 //aqui veo y voy mandando las notificaciones locales
         for (final result in notificationListNewAux) {
+          print(
+              'callTimerTec 4-callTimerTecNotification -if-notificaciones locales :sii');
           // Llama a la función localNotificationsSimplifies después del retraso
           localNotificationsSimplifies(result.tittle, result.description);
           print('aqui llamando las notificaciones nuevas');

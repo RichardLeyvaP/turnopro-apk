@@ -104,12 +104,17 @@ class ClientsTechnicalController extends GetxController {
     }
   }
 
+  setShowNextTecnhical(bool value) {
+    boolFilterShowNextTecnhical = value;
+    update();
+  }
+
   Future<int> acceptClientTechnical(reservationId, attended) async {
     final ClientsScheduledController controllerSche =
         Get.find<ClientsScheduledController>();
 //     quantityClientAttendedTechnical = 1;
-//     boolFilterShowNextTecnhical = false;
-// update();
+    //boolFilterShowNextTecnhical = false;
+    //update();
     int value = await repository.acceptOrRejectClient(
         reservationId, attended, loginController.tokenUserLoggedIn);
     //si lo que devuelve es true actualizo la cola

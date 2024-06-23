@@ -33,6 +33,10 @@ class PagesConfigController extends GetxController {
   int pages31Index = 0;
   int colacionNotification = 0; //0 notification y 1 colacion
 
+  PagesConfigController() {
+    selectedIndex = 0;
+    print('mostrando aqui selectedIndex:$selectedIndex');
+  }
   //
   //todo **************** CONFIGURACIONES PARA HOME-PROFESIONAL ************************
   //

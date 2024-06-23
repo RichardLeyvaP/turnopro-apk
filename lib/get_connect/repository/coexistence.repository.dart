@@ -84,9 +84,14 @@ class CoexistenceRepository extends GetConnect {
       };
       final response = await get(url, headers: headers).timeout(
           Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      print('esta ruta dice:response.statusCode>${response.statusCode}');
+      print('esta ruta dice:response.statusCode>${response.statusCode == 200}');
+      print('esta ruta dice:response.statusCode>${response.body}');
+
       if (response.statusCode == 200) {
         // La respuesta fue exitosa
-        final Map<String, dynamic> responseBody = json.decode(response.body);
+
+        final Map<String, dynamic> responseBody = response.body;
         final stadist = responseBody['monthlyEarnings'];
         final stadistVar = responseBody;
 
@@ -102,11 +107,11 @@ class CoexistenceRepository extends GetConnect {
           'totalEarnings': stadistVar['totalEarnings']
         };
       } else {
-        return coexistenceList;
+        return {};
       }
     } catch (e) {
       print('Error:$e');
-      return coexistenceList;
+      return {};
     }
   }
 

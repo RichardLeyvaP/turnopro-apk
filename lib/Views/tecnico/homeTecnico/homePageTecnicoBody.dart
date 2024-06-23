@@ -125,7 +125,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
   }
 
   Future<void> saveData() async {
-    if (LocalStorage.prefs.getBool('valueClockActivT') == true) {
+    if (LocalStorage.prefs.getBool('valueClockActivT') != null &&
+        LocalStorage.prefs.getBool('valueClockActivT') == true) {
       int valueClock = getTimeRemaining();
       int valueSave = valueClock;
       await LocalStorage.prefs.setInt('valueClockIni', valueSave);
@@ -134,7 +135,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     }
 
 //si el clock de cliente atendido esta activo
-    if (LocalStorage.prefs.getBool('valueClockTec1ActivT') == true) {
+    if (LocalStorage.prefs.getBool('valueClockTec1ActivT') != null &&
+        LocalStorage.prefs.getBool('valueClockTec1ActivT') == true) {
       int valueClock = getTimeRemainingAten();
       clientsScheduledController.setTotalTimeClientec(valueClock);
       await LocalStorage.prefs.setInt('valueClockTec1', valueClock);
@@ -187,11 +189,11 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     // Cancela cualquier temporizador existente para evitar duplicaciones
 
     // Establece un temporizador que llama a la función cada 20 segundos
-    _timer = Timer.periodic(const Duration(seconds: 13), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 11), (Timer timer) {
       print('callTimerTec1');
       if (clientsScheduledController.boolFilterShowNextTecnhical == true &&
           clientsScheduledController.listClientReal > 0 &&
-          (loginController.codigoQrValid() == true) &&
+          (loginController.usserPermissionQr != null) &&
           !clientsScheduledController.idClientsEspera.contains(
               clientsScheduledController.clientsAttendedTechnical!.client_id)) {
         notiController.storeNotification(
@@ -213,17 +215,17 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     // Cancela cualquier temporizador existente para evitar duplicaciones
 
     // Establece un temporizador que llama a la función cada 20 segundos
-    _timer3 = Timer.periodic(const Duration(seconds: 9), (Timer timer) {
+    _timer3 = Timer.periodic(const Duration(seconds: 8), (Timer timer) {
       saveData();
       print('callTimerTec4');
 
       if (loginController.idProfessionalLoggedIn != null &&
           loginController.branchIdLoggedIn != null &&
           (loginController.chargeUserLoggedIn == "Tecnico" &&
-              (loginController.codigoQrValid() == true))) {
+              (loginController.usserPermissionQr != null))) {
         //await Future.delayed(Duration(seconds: 1));
         //Buscar notificaciones
-        print('callTimerTec 4-callTimerTecNotification');
+        print('callTimerTec 4-callTimerTecNotification-llamada 8 seg');
         notiController.fetchNotificationList(
             loginController.branchIdLoggedIn,
             loginController.idProfessionalLoggedIn,
@@ -238,13 +240,13 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     // Cancela cualquier temporizador existente para evitar duplicaciones
 
     // Establece un temporizador que llama a la función cada 20 segundos
-    _timer2 = Timer.periodic(const Duration(seconds: 11), (Timer timer) {
+    _timer2 = Timer.periodic(const Duration(seconds: 10), (Timer timer) {
       print('callTimerTec2');
       // actualizo la cola
       if (clientsScheduledController.showingServiceClientsTechnical == false &&
           loginController.branchIdLoggedIn != null &&
           loginController.chargeUserLoggedIn == "Tecnico" &&
-          (loginController.codigoQrValid() == true)) {
+          (loginController.usserPermissionQr != null)) {
         //actualizo la cola del técnico
         clientsScheduledController
             .fetchClientsTechnical(loginController.branchIdLoggedIn);
@@ -505,10 +507,13 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                           Radius.circular(18)),
                                                 ),
                                                 child: IconButton(
-                                                  onPressed: () {
+                                                  onPressed: () async {
                                                     if (loginController
                                                             .codigoQrValid() ==
                                                         true) {
+                                                      controllerclient
+                                                          .setShowNextTecnhical(
+                                                              false);
                                                       /*  int resulButton = 0;
                                                     resulButton = loginController
                                                         .handleButtonClickTec(
@@ -516,38 +521,51 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                                 .clientsNextTechnical!
                                                                 .reservation_id);
                                                     if (resulButton == 1) {*/
-                                                      notiController.storeNotification(
-                                                          'Solicitud de rechazo',
-                                                          loginController
-                                                              .branchIdLoggedIn,
-                                                          loginController
-                                                              .idProfessionalLoggedIn,
-                                                          'EL Técnico "${loginController.nameUserLoggedIn}" está rechazando al cliente "${clientsScheduledController.clientsNextTechnical!.client_name}"',
-                                                          'Ambos'); //esto es para quele llegue a coordinador y encargado
-                                                      //necesito un metodo igual que este pero que sea para el tecnico
-                                                      loginController
-                                                          .setCodigoQrValid(2);
-                                                      controllerclient
+                                                      String? nameClient =
+                                                          clientsScheduledController
+                                                              .clientsNextTechnical!
+                                                              .client_name;
+
+                                                      int result = await controllerclient
                                                           .acceptClientTechnical(
                                                               controllerclient
                                                                   .clientsNextTechnical!
                                                                   .reservation_id,
                                                               33);
-                                                      clientsScheduledController
-                                                              .animationControllerInitialT =
-                                                          AnimationController(
-                                                        vsync: this,
-                                                        duration: Duration(
-                                                            seconds: 180),
-                                                      );
-                                                      // La animación ha llegado al final, reiniciar
-                                                      clientsScheduledController
-                                                          .animationControllerInitialT!
-                                                          .reset();
-                                                      clientsScheduledController
-                                                          .animationControllerInitialT!
-                                                          .stop();
-                                                      // }
+                                                      if (result == 1) //td bien
+                                                      {
+                                                        loginController
+                                                            .setCodigoQrValid(
+                                                                2);
+                                                        notiController.storeNotification(
+                                                            'Solicitud de rechazo',
+                                                            loginController
+                                                                .branchIdLoggedIn,
+                                                            loginController
+                                                                .idProfessionalLoggedIn,
+                                                            'EL Técnico "${loginController.nameUserLoggedIn}" está rechazando al cliente "$nameClient"',
+                                                            'Ambos'); //esto es para quele llegue a coordinador y encargado
+
+                                                        clientsScheduledController
+                                                                .animationControllerInitialT =
+                                                            AnimationController(
+                                                          vsync: this,
+                                                          duration: Duration(
+                                                              seconds: 180),
+                                                        );
+                                                        // La animación ha llegado al final, reiniciar
+                                                        clientsScheduledController
+                                                            .animationControllerInitialT!
+                                                            .reset();
+                                                        clientsScheduledController
+                                                            .animationControllerInitialT!
+                                                            .stop();
+                                                        // }
+                                                      } else // falló
+                                                      {
+                                                        print(
+                                                            'No mando por alguna razón aqui - result = $result ');
+                                                      }
                                                     } else if (loginController
                                                             .usserPermissionQr ==
                                                         2) {
@@ -740,12 +758,16 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                     if (loginController
                                                             .codigoQrValid() ==
                                                         true) {
+                                                      controllerclient
+                                                          .setShowNextTecnhical(
+                                                              false);
                                                       int resulButton = 0;
                                                       resulButton = loginController
                                                           .handleButtonClickTec(
                                                               controllerclient
                                                                   .clientsNextTechnical!
                                                                   .reservation_id!);
+                                                      //todo-1
                                                       if (resulButton == 1) {
                                                         //aqui inicia el tmer de cliente atendido
                                                         //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
@@ -1336,6 +1358,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                     clientsScheduledController
                                         .animationControllerInitialT!
                                         .reset();
+                                    //ver si hay mas en cola iniciarlo
+                                    //sino reiniciarlo pero que quede detenido
                                     clientsScheduledController
                                         .animationControllerInitialT!
                                         .forward();
@@ -1559,6 +1583,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     bool isPaused =
         clientsScheduledController.animationControllerInitialT!.isAnimating;
     if (!isPaused) {
+      LocalStorage.prefs.setBool('valueClockActivT', true);
       clientsScheduledController.animationControllerInitialT!.forward();
     }
     return Padding(
@@ -1605,6 +1630,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                         duration: Duration(seconds: 180),
                       );
                       // La animación ha llegado al final, reiniciar
+                      LocalStorage.prefs.setBool('valueClockActivT', true);
                       clientsScheduledController.animationControllerInitialT!
                           .reset();
                       clientsScheduledController.animationControllerInitialT!

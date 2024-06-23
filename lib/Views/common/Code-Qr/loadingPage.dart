@@ -27,112 +27,155 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (controllerLogin.usserMssQr == 1) {
-        Timer(Duration(seconds: 3), () async {
-          Get.snackbar(
-            '',
-            'Hola, ${controllerLogin.userNameQR} puede prestar servicios,hora de entrada: ${controllerLogin.horaQR}',
-            colorText: const Color.fromARGB(255, 43, 44, 49),
-            titleText: const Text('Mensaje'),
-            duration: const Duration(seconds: 4),
-            showProgressIndicator: true,
-            progressIndicatorBackgroundColor: const Color(0xFF4470F3),
-            progressIndicatorValueColor:
-                const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
-            overlayBlur: 3,
-          );
-          controllerLogin.setUsserMssQr(-99);
-        });
-      } else if (controllerLogin.usserMssQr == 0) {
-        Timer(Duration(seconds: 3), () async {
-          Get.snackbar(
-            '',
-            'Hola, ${controllerLogin.userNameQR} No coincide el código Qr con la Sucursal que entraste en la aplicación',
-            colorText: const Color.fromARGB(255, 43, 44, 49),
-            titleText: const Text('Error'),
-            duration: const Duration(seconds: 4),
-            showProgressIndicator: true,
-            progressIndicatorBackgroundColor: const Color(0xFF4470F3),
-            progressIndicatorValueColor:
-                const AlwaysStoppedAnimation(Color.fromARGB(255, 241, 11, 3)),
-            overlayBlur: 3,
-          );
-        });
+      void mensjeOk() {
+        Get.snackbar(
+          '',
+          'Hola, ${controllerLogin.userNameQR} puede prestar servicios,hora de entrada: ${controllerLogin.horaQR}',
+          colorText: const Color.fromARGB(255, 43, 44, 49),
+          titleText: const Text('Mensaje'),
+          duration: const Duration(seconds: 4),
+          showProgressIndicator: true,
+          progressIndicatorBackgroundColor: const Color(0xFF4470F3),
+          progressIndicatorValueColor:
+              const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
+          overlayBlur: 3,
+        );
         controllerLogin.setUsserMssQr(-99);
       }
-      // Iniciar un temporizador de 2 segundos
-      Timer(Duration(seconds: 2), () async {
-//VERIFICAR QUE ESTE TODO BIEN
 
-        // print(
-        //     'esto es lo que object-professionalsQR:${controllerLogin.professionalsQR}');
-        // print('esto es lo que object-placesQR:${controllerLogin.placesQR}');
-        // print(
-        //     'esto es lo que object-workplaceidQR:${controllerLogin.workplaceidQR}');
-        // if (controllerLogin.usserMssQr == 1) {
-        if (controllerLogin.chargeUserLoggedIn == "Barbero" ||
-            (controllerLogin.chargeUserLoggedIn == "Barbero y Encargado" &&
-                controllerLogin.switchValue == false)) {
-          // Navegar a la nueva página
-          //LLAMAR AL CONTROLADOR PARA INSERTARLO EN EL PUESTO DE TRABAJO
-          if (controllerLogin.usserMssQr == 1) {
-            await controllerLogin.insertPuesto(controllerLogin.professionalsQR,
-                controllerLogin.workplaceidQR, 0);
-            await controllerLogin.insertHoraEntrada(
-                controllerLogin.professionalsQR,
-                controllerLogin.branchIdLoggedIn);
-          }
-          Get.offAllNamed('/Professional');
-        } else if (controllerLogin.chargeUserLoggedIn == "Encargado") {
-          await controllerLogin.insertHoraEntrada(
+      void mensjeError() {
+        Get.snackbar(
+          '',
+          'Hola, ${controllerLogin.userNameQR} hubo problema de conexión al leer el Qr,inténtalo nuevamente',
+          colorText: const Color.fromARGB(255, 43, 44, 49),
+          titleText: const Text('Error'),
+          duration: const Duration(seconds: 4),
+          showProgressIndicator: true,
+          progressIndicatorBackgroundColor: const Color(0xFF4470F3),
+          progressIndicatorValueColor:
+              const AlwaysStoppedAnimation(Color.fromARGB(255, 241, 11, 3)),
+          overlayBlur: 3,
+        );
+        controllerLogin.setUsserMssQr(-99);
+      }
+
+      void mensjeNot() {
+        Get.snackbar(
+          '',
+          'Hola, ${controllerLogin.userNameQR} No coincide el código Qr con la Sucursal que entraste en la aplicación',
+          colorText: const Color.fromARGB(255, 43, 44, 49),
+          titleText: const Text('Error'),
+          duration: const Duration(seconds: 4),
+          showProgressIndicator: true,
+          progressIndicatorBackgroundColor: const Color(0xFF4470F3),
+          progressIndicatorValueColor:
+              const AlwaysStoppedAnimation(Color.fromARGB(255, 241, 11, 3)),
+          overlayBlur: 3,
+        );
+        controllerLogin.setUsserMssQr(-99);
+      }
+      //
+      //
+      //
+      //
+      //
+      //
+
+      if (controllerLogin.chargeUserLoggedIn == "Barbero" ||
+          (controllerLogin.chargeUserLoggedIn == "Barbero y Encargado" &&
+              controllerLogin.switchValue == false)) {
+        // Navegar a la nueva página
+        //LLAMAR AL CONTROLADOR PARA INSERTARLO EN EL PUESTO DE TRABAJO
+        //     usserPermissionQr = 1; //SE CREO CORRECTAMENTE EL QR
+        // usserMssQr = 1; //SE CREO CORRECTAMENTE EL QR
+        if (controllerLogin.usserMssQr == 1) {
+          int resultP = await controllerLogin.insertPuesto(
+              controllerLogin.professionalsQR,
+              controllerLogin.workplaceidQR,
+              0);
+          int resultH = await controllerLogin.insertHoraEntrada(
               controllerLogin.professionalsQR,
               controllerLogin.branchIdLoggedIn);
-          Get.offAllNamed('/HomeResponsible');
-        } else if (controllerLogin.chargeUserLoggedIn == "Tecnico") {
-          //LLAMAR AL CONTROLADOR PARA INSERTARLO EN EL PUESTO DE TRABAJO
-          if (controllerLogin.usserMssQr == 1) {
-            await controllerLogin.insertPuesto(controllerLogin.professionalsQR,
-                controllerLogin.workplaceidQR, controllerLogin.placesQR);
-            await controllerLogin.insertHoraEntrada(
-                controllerLogin.professionalsQR,
-                controllerLogin.branchIdLoggedIn);
+
+          if (resultP == 1 &&
+              resultH == 1) //td inserto correctamente la entrada
+          {
+            //mandar mensaje que td esta bien
+            mensjeOk();
+          } else {
+            //hubo problema al registrar la entrada
+            mensjeError();
+            controllerLogin.inputError();
           }
-          Get.offAllNamed('/HomeTecnico');
-        } else if (controllerLogin.chargeUserLoggedIn == "Coordinador") {
-          await controllerLogin.insertHoraEntrada(
-              controllerLogin.professionalsQR,
-              controllerLogin.branchIdLoggedIn);
-          Get.offAllNamed('/HomeCordinador');
-        } else {
-          Get.offAllNamed('/LoginFormPage');
+        } else if (controllerLogin.usserMssQr == 0) {
+          mensjeNot(); //no coincide el Qr
         }
-        // } else {
-        //   Get.offAllNamed('/LoginFormPage');
-        // }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-      });
+        Get.offAllNamed('/Professional');
+      } else if (controllerLogin.chargeUserLoggedIn == "Encargado") {
+        if (controllerLogin.usserMssQr == 1) {
+          int resultH = await controllerLogin.insertHoraEntrada(
+              controllerLogin.professionalsQR,
+              controllerLogin.branchIdLoggedIn);
+
+          if (resultH == 1) //td inserto correctamente la entrada
+          {
+            //mandar mensaje que td esta bien
+            mensjeOk();
+          } else {
+            //hubo problema al registrar la entrada
+            mensjeError();
+            controllerLogin.inputError();
+          }
+        } else if (controllerLogin.usserMssQr == 0) {
+          mensjeNot(); //no coincide el Qr
+        }
+        Get.offAllNamed('/HomeResponsible');
+      } else if (controllerLogin.chargeUserLoggedIn == "Tecnico") {
+        //LLAMAR AL CONTROLADOR PARA INSERTARLO EN EL PUESTO DE TRABAJO
+        if (controllerLogin.usserMssQr == 1) {
+          int resultP = await controllerLogin.insertPuesto(
+              controllerLogin.professionalsQR,
+              controllerLogin.workplaceidQR,
+              controllerLogin.placesQR);
+          int resultH = await controllerLogin.insertHoraEntrada(
+              controllerLogin.professionalsQR,
+              controllerLogin.branchIdLoggedIn);
+          if (resultP == 1 &&
+              resultH == 1) //td inserto correctamente la entrada
+          {
+            //mandar mensaje que td esta bien
+            mensjeOk();
+          } else {
+            //hubo problema al registrar la entrada
+            mensjeError();
+            controllerLogin.inputError();
+          }
+        } else if (controllerLogin.usserMssQr == 0) {
+          mensjeNot(); //no coincide el Qr
+        }
+        Get.offAllNamed('/HomeTecnico');
+      } else if (controllerLogin.chargeUserLoggedIn == "Coordinador") {
+        int resultH = await controllerLogin.insertHoraEntrada(
+            controllerLogin.professionalsQR, controllerLogin.branchIdLoggedIn);
+        if (controllerLogin.usserMssQr == 1) {
+          if (resultH == 1) //td inserto correctamente la entrada
+          {
+            //mandar mensaje que td esta bien
+            mensjeOk();
+          } else {
+            //hubo problema al registrar la entrada
+            mensjeError();
+            controllerLogin.inputError();
+          }
+        } else if (controllerLogin.usserMssQr == 0) {
+          mensjeNot(); //no coincide el Qr
+        }
+        Get.offAllNamed('/HomeCordinador');
+      } else {
+        Get.offAllNamed('/LoginFormPage');
+      }
     });
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
     //
     //
     //

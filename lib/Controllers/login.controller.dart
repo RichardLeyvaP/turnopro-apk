@@ -269,7 +269,7 @@ class LoginController extends GetxController {
   int contLlamClient = 0;
   void setContLlamClient(int value) {
     if (value == 1) {
-      contLlamClient += value;
+      contLlamClient++;
     } else {
       contLlamClient = value;
     }
@@ -501,6 +501,12 @@ class LoginController extends GetxController {
     update();
   }
 
+  inputError() {
+    usserMssQr = -99;
+    usserPermissionQr = null;
+    update();
+  }
+
   int parseWorkplaceId(dynamic value) {
     if (value is String) {
       return int.parse(value);
@@ -646,7 +652,7 @@ class LoginController extends GetxController {
         branchTecnicLoggedIn = result['useTechnical'];
         print('ssssssssssss ${result['useTechnical'].runtimeType}');
         print('ssssssssssss ${result['useTechnical']}');
-        print('ssssssssssss branchIdLoggedIn${result['branchIdLoggedIn']}');
+        print('ssssssssssss branchIdLoggedIn:$branchIdLoggedIn');
         //*******Asignando Valores*****/
         print(
             'a.......... branchIdLoggedIn***************************: $branchIdLoggedIn');
@@ -746,38 +752,42 @@ class LoginController extends GetxController {
     int hAs = obtenerHoraActualEnSegundos();
     LocalStorage.prefs.setInt('valueHoraAct', hAs);
     print('--este es el value del clok-valueHoraAct-LOGIN:$hAs');
-    if (LocalStorage.prefs.getBool('valueClockActiv') == true) {
-      int timeAsig = 180;
-      //obtengo la hora anterior y actual en segundos
-      int hourAnt = LocalStorage.prefs.getInt('valueHoraAnt')!;
-      int hourAct = LocalStorage.prefs.getInt('valueHoraAct')!;
-      int segundExit = hourAct - hourAnt;
-      //resto los segundos que estuvo fuera
-      int valueAntClock = LocalStorage.prefs.getInt('valueClockIni')!;
-      int diferSeg = valueAntClock - segundExit;
-      if (diferSeg > 0) {
-        //aun no s eacabaron los 3 minutos
-        // asigno el tiempo
-        if (diferSeg > 180) {
-          timeAsig = 180;
-        } else {
-          timeAsig = diferSeg;
+    if (LocalStorage.prefs.getBool('valueClockActiv') != null &&
+        LocalStorage.prefs.getBool('valueClockActiv') == true) {
+      if (LocalStorage.prefs.getInt('valueHoraAnt') != null &&
+          LocalStorage.prefs.getInt('valueHoraAct') != null) {
+        int timeAsig = 180;
+        //obtengo la hora anterior y actual en segundos
+        int hourAnt = LocalStorage.prefs.getInt('valueHoraAnt')!;
+        int hourAct = LocalStorage.prefs.getInt('valueHoraAct')!;
+        int segundExit = hourAct - hourAnt;
+        //resto los segundos que estuvo fuera
+        int valueAntClock = LocalStorage.prefs.getInt('valueClockIni')!;
+        int diferSeg = valueAntClock - segundExit;
+        if (diferSeg > 0) {
+          //aun no s eacabaron los 3 minutos
+          // asigno el tiempo
+          if (diferSeg > 180) {
+            timeAsig = 180;
+          } else {
+            timeAsig = diferSeg;
+          }
+        } else //es que se acaboron los 3 min
+        {
+          // ya una vez en el dia esto cumplido ya no importa el reloj de espera
+          //al salir del sistema esta variable debe tomar false
+          timeAsig = 0;
         }
-      } else //es que se acaboron los 3 min
-      {
-        // ya una vez en el dia esto cumplido ya no importa el reloj de espera
-        //al salir del sistema esta variable debe tomar false
-        timeAsig = 0;
+        LocalStorage.prefs.setInt('valueClockIni', timeAsig);
+
+        print('--este es el value del clok-hourAnt:$hourAnt');
+        print('--este es el value del clok-hourAct:$hourAct');
+        print('--este es el value del clok-segundExit:$segundExit');
+        print('--este es el value del clok-valueAntClock:$valueAntClock');
+        print('--este es el value del clok-diferSeg:$diferSeg');
+
+        clientsScheduledController.setTotalTimeInitial(timeAsig);
       }
-      LocalStorage.prefs.setInt('valueClockIni', timeAsig);
-
-      print('--este es el value del clok-hourAnt:$hourAnt');
-      print('--este es el value del clok-hourAct:$hourAct');
-      print('--este es el value del clok-segundExit:$segundExit');
-      print('--este es el value del clok-valueAntClock:$valueAntClock');
-      print('--este es el value del clok-diferSeg:$diferSeg');
-
-      clientsScheduledController.setTotalTimeInitial(timeAsig);
     }
   }
 
@@ -785,66 +795,73 @@ class LoginController extends GetxController {
       ClientsTechnicalController clientsScheduledController, String tyype) {
     //aqui obtengo la hora actual para comparar con la anterior si es posible
 
-    if (LocalStorage.prefs.getBool('valueClockActivT') == true) {
+    if (LocalStorage.prefs.getBool('valueClockActivT') != null &&
+        LocalStorage.prefs.getBool('valueClockActivT') == true) {
       int timeAsig = 180;
-      //obtengo la hora anterior y actual en segundos
-      int hourAnt = LocalStorage.prefs.getInt('valueHoraAnt')!;
-      int hourAct = obtenerHoraActualEnSegundos();
-      int segundExit = hourAct - hourAnt;
-      //resto los segundos que estuvo fuera
-      int valueAntClock = LocalStorage.prefs.getInt('valueClockIni')!;
-      int diferSeg = valueAntClock - segundExit;
-      if (diferSeg > 0) {
-        //aun no s eacabaron los 3 minutos
-        // asigno el tiempo
-        timeAsig = diferSeg > 180 ? 180 : diferSeg;
-      } else //es que se acaboron los 3 min
-      {
-        // ya una vez en el dia esto cumplido ya no importa el reloj de espera
-        //al salir del sistema esta variable debe tomar false
-        timeAsig = 180;
-      }
-      LocalStorage.prefs.setInt('valueClockIni', timeAsig);
-
-      print('--este es el value del clok-hourAnt:$hourAnt');
-      print('--este es el value del clok-hourAct:$hourAct');
-      print('--este es el value del clok-segundExit:$segundExit');
-      print('--este es el value del clok-valueAntClock:$valueAntClock');
-      print('--este es el value del clok-diferSeg:$diferSeg');
-
-      clientsScheduledController.setTotalTimeInitialTec(timeAsig);
-    }
-
-    if (LocalStorage.prefs.getBool('valueClockTec1ActivT') != null) {
-      bool activeClock = LocalStorage.prefs.getBool('valueClockTec1ActivT')!;
-      if (activeClock) {
-        int timeAsig = 180;
+      if (LocalStorage.prefs.getInt('valueHoraAnt') != null &&
+          LocalStorage.prefs.getInt('valueClockIni') != null) {
         //obtengo la hora anterior y actual en segundos
         int hourAnt = LocalStorage.prefs.getInt('valueHoraAnt')!;
         int hourAct = obtenerHoraActualEnSegundos();
         int segundExit = hourAct - hourAnt;
         //resto los segundos que estuvo fuera
-        int valueAntClock = LocalStorage.prefs.getInt('valueClockTec1')!;
+        int valueAntClock = LocalStorage.prefs.getInt('valueClockIni')!;
         int diferSeg = valueAntClock - segundExit;
         if (diferSeg > 0) {
           //aun no s eacabaron los 3 minutos
           // asigno el tiempo
-          timeAsig = diferSeg > 300 ? 300 : diferSeg;
+          timeAsig = diferSeg > 180 ? 180 : diferSeg;
         } else //es que se acaboron los 3 min
         {
           // ya una vez en el dia esto cumplido ya no importa el reloj de espera
           //al salir del sistema esta variable debe tomar false
-          timeAsig = 1;
+          timeAsig = 180;
         }
-        LocalStorage.prefs.setInt('valueClockTec1', timeAsig);
+        LocalStorage.prefs.setInt('valueClockIni', timeAsig);
 
-        print('--este es el value del clok-hourAnt-T:$hourAnt');
-        print('--este es el value del clok-hourAct-T:$hourAct');
-        print('--este es el value del clok-segundExit-T:$segundExit');
-        print('--este es el value del clok-valueAntClock-T:$valueAntClock');
-        print('--este es el value del clok-diferSeg-T:$diferSeg');
+        print('--este es el value del clok-hourAnt:$hourAnt');
+        print('--este es el value del clok-hourAct:$hourAct');
+        print('--este es el value del clok-segundExit:$segundExit');
+        print('--este es el value del clok-valueAntClock:$valueAntClock');
+        print('--este es el value del clok-diferSeg:$diferSeg');
 
-        // clientsScheduledController.setTotalTimeInitialTec(timeAsig);
+        clientsScheduledController.setTotalTimeInitialTec(timeAsig);
+      }
+    }
+
+    if (LocalStorage.prefs.getBool('valueClockTec1ActivT') != null) {
+      bool activeClock = LocalStorage.prefs.getBool('valueClockTec1ActivT')!;
+      if (activeClock) {
+        if (LocalStorage.prefs.getInt('valueHoraAnt') != null &&
+            LocalStorage.prefs.getInt('valueClockTec1') != null) {
+          int timeAsig = 180;
+          //obtengo la hora anterior y actual en segundos
+          int hourAnt = LocalStorage.prefs.getInt('valueHoraAnt')!;
+          int hourAct = obtenerHoraActualEnSegundos();
+          int segundExit = hourAct - hourAnt;
+          //resto los segundos que estuvo fuera
+          int valueAntClock = LocalStorage.prefs.getInt('valueClockTec1')!;
+          int diferSeg = valueAntClock - segundExit;
+          if (diferSeg > 0) {
+            //aun no s eacabaron los 3 minutos
+            // asigno el tiempo
+            timeAsig = diferSeg > 300 ? 300 : diferSeg;
+          } else //es que se acaboron los 3 min
+          {
+            // ya una vez en el dia esto cumplido ya no importa el reloj de espera
+            //al salir del sistema esta variable debe tomar false
+            timeAsig = 1;
+          }
+          LocalStorage.prefs.setInt('valueClockTec1', timeAsig);
+
+          print('--este es el value del clok-hourAnt-T:$hourAnt');
+          print('--este es el value del clok-hourAct-T:$hourAct');
+          print('--este es el value del clok-segundExit-T:$segundExit');
+          print('--este es el value del clok-valueAntClock-T:$valueAntClock');
+          print('--este es el value del clok-diferSeg-T:$diferSeg');
+
+          // clientsScheduledController.setTotalTimeInitialTec(timeAsig);
+        }
       }
     }
   }
@@ -877,7 +894,8 @@ class LoginController extends GetxController {
         branchTecnicLoggedIn = result['useTechnical'];
         print('ssssssssssss ${result['useTechnical'].runtimeType}');
         print('ssssssssssss ${result['useTechnical']}');
-        print('ssssssssssss branchIdLoggedIn${result['branchIdLoggedIn']}');
+        print('ssssssssssss branchIdLoggedIn:login:$branchIdLoggedIn');
+        print('ssssssssssss chargeUserLoggedIn:login:$chargeUserLoggedIn');
         //*******Asignando Valores*****/
         print(
             'T123456789-a.......... branchIdLoggedIn***************************: $branchIdLoggedIn');
@@ -1031,7 +1049,7 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<void> insertPuesto(professional_id, workplace_id, places) async {
+  Future<int> insertPuesto(professional_id, workplace_id, places) async {
     try {
       var result = await usuarioLg.insertPuesto(
           professional_id, workplace_id, places, tokenUserLoggedIn);
@@ -1040,12 +1058,14 @@ class LoginController extends GetxController {
       } else {
         print('esto es lo que NOO INSERTO EN EL PUESTO DE TRABAJO');
       }
+      return result;
     } catch (e) {
       print('esto es lo que Erroor:$e');
+      return 0;
     }
   }
 
-  Future<void> insertHoraEntrada(professional_id, branch_id) async {
+  Future<int> insertHoraEntrada(professional_id, branch_id) async {
     try {
       var result = await usuarioLg.insertHoraEntrada(
           professional_id, branch_id, tokenUserLoggedIn);
@@ -1054,8 +1074,10 @@ class LoginController extends GetxController {
       } else {
         print('esto es lo que NOO INSERTO LA HORA D EENTRADA');
       }
+      return result;
     } catch (e) {
       print('esto es lo que Erroor:$e');
+      return 0;
     }
   }
 

@@ -75,7 +75,8 @@ class StatisticController extends GetxController {
           controllerLogin.branchIdLoggedIn,
           startDateIn,
           endDateIn,
-          controllerLogin.chargeUserLoggedIn);
+          controllerLogin.chargeUserLoggedIn,
+          controllerLogin.tokenUserLoggedIn);
       print('respuest getDayStatisticsList----$responseId');
 
       if (responseId['Monto Generado'] != 0) {
@@ -87,7 +88,7 @@ class StatisticController extends GetxController {
       }
       update();
     } catch (e) {
-      print('Error StatisticController en getDataStatistic nueva :$e');
+      print('Error StatisticController en getDataStatistic nueva :1111$e');
     }
   }
 
@@ -116,7 +117,8 @@ class StatisticController extends GetxController {
           controllerLogin.branchIdLoggedIn,
           startDateIn,
           endDateIn,
-          controllerLogin.chargeUserLoggedIn);
+          controllerLogin.chargeUserLoggedIn,
+          controllerLogin.tokenUserLoggedIn);
       print('respuest getDayStatisticsList----$responseId');
 
       if (responseId['Monto Generado'] != 0) {
@@ -128,7 +130,7 @@ class StatisticController extends GetxController {
       }
       update();
     } catch (e) {
-      print('Error StatisticController en getDataStatistic nueva :$e');
+      print('Error StatisticController en getDataStatistic nueva :222:$e');
     }
   }
 
@@ -147,7 +149,8 @@ class StatisticController extends GetxController {
           controllerLogin.idProfessionalLoggedIn,
           controllerLogin.branchIdLoggedIn,
           mes,
-          year);
+          year,
+          controllerLogin.tokenUserLoggedIn);
       print('respuest getDayStatisticsList----$responseId');
 
       if (responseId['Monto Generado'] != 0) {
@@ -190,7 +193,12 @@ class StatisticController extends GetxController {
 
     try {
       var responStad = await weeklyStatisticsRepository.getDayStatisticsRespon(
-          controllerLogin.branchIdLoggedIn, startDateIn, endDateIn, mes, year);
+          controllerLogin.branchIdLoggedIn,
+          startDateIn,
+          endDateIn,
+          mes,
+          year,
+          controllerLogin.tokenUserLoggedIn);
       print('respuest getDataStatisticRespon----$responStad');
 
       if (responStad['Monto Generado'] != 0) {
@@ -278,7 +286,8 @@ class StatisticController extends GetxController {
               controllerLogin.branchIdLoggedIn,
               startDateIn,
               endDateIn,
-              numberdayWeekIn);
+              numberdayWeekIn,
+              controllerLogin.tokenUserLoggedIn);
 
       if (responseId.averageEarnings != null) {
         numberdayWeek = -99099;

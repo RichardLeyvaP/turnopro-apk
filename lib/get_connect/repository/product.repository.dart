@@ -518,8 +518,9 @@ class ProductRepository extends GetConnect {
           'selectServ': selectServ,
           'shoppingCart': shoppingCart,
         };
-      } else {
-        return categoryList;
+      } else if (response.statusCode == null) {
+        //fallo internet
+        return {'errorInternet': true};
       }
     } catch (e) {
       print('ERROR getCategoryList:$e');

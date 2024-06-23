@@ -188,12 +188,18 @@ class NotificationRepository extends GetConnect {
             clientListSig.add(client);
           }
           //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
+          print(
+              'gggclientes asistiendo entre a if (client.confirmation :${client.confirmation}) {');
 
           if (hasNextClient == false) {
-            if (client.attended == 0) {
+            if (client.attended == 0 && client.confirmation == 4) {
               nextClient = client;
               hasNextClient = true;
             }
+            //  if (client.attended == 0 ) {
+            //   cantCola++;
+
+            // }
           }
           //AQUI PARA SABER CUANTOS ESTA ATENDIENDO
           if (client.attended == 1 ||

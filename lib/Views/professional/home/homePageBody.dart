@@ -926,18 +926,22 @@ class _HomePageBodyState extends State<HomePageBody>
         //voy a ver si hay alguno para reasignarlo
         print(
             'Cliente reasignado correctamente ->ANTES DEL IF clientsScheduledListLengthTail:${clientsScheduledController.clientsScheduledListLength})');
+        print(
+            'Cliente reasignado correctamente ->ANTES DEL IF contLlamClient:${loginController.contLlamClient})');
         if (clientsScheduledController.clientsScheduledListLength == 0 &&
-            loginController.contLlamClient == 2) {
-          loginController.setContLlamClient(
-              1); //aqui suma 1**controlar que se llame despues de 18 segundos
+            loginController.contLlamClient == 4) {
           print(
               'Cliente reasignado correctamente -> (clientsScheduledController.clientsScheduledListLengthTail > 0)');
           clientCord.reasignedClientTottem(loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn);
-          if (loginController.contLlamClient == 3) {
+          if (loginController.contLlamClient == 4) {
             loginController.setContLlamClient(0);
           }
         } else {
+          loginController.setContLlamClient(
+              1); //aqui suma 1**controlar que se llame despues de 18 segundos
+        }
+        if (clientsScheduledController.clientsScheduledListLength != 0) {
           loginController.setContLlamClient(0);
         }
 
@@ -2122,7 +2126,8 @@ class _HomePageBodyState extends State<HomePageBody>
                                           size: 22,
                                         ),
                                         Text(
-                                          firstName,
+                                          clientCord.truncateText(
+                                              firstName, 13),
                                           softWrap: true,
                                           style: const TextStyle(
                                               height: 1.0,
@@ -2456,21 +2461,23 @@ class _HomePageBodyState extends State<HomePageBody>
                 await controllerProduct
                     .metdNewServiceProduct(loginController.branchIdLoggedIn,
                         loginController.idProfessionalLoggedIn, carrId)
-                    .then((_) async {
-                  print('ya páse por aqui-2');
-                  loginController.setHandleButtonClickModal();
-                  String clientName = name;
-                  String urlImage = imag;
-                  int reservationId = idreservation;
-                  int carId = carrId;
-                  //   _mostrarBottomSheet(          context);
-                  //  showMyDialog(context);
-                  print(
-                      'LISTA2 _fetchServiceList Limpiando clientName:$clientName...reservationId:$reservationId....carId:$carId....urlImage:$urlImage');
-                  await Future.delayed(const Duration(milliseconds: 500));
-                  Get.back();
-                  //Get.toNamed('/servicesProductsPage');
-                  pagesConfigC.onTabTapped(1); //index = 1 -> /Clients
+                    .then((result1) async {
+                  if (result1 == 1) {
+                    print('ya páse por aqui-2');
+                    loginController.setHandleButtonClickModal();
+                    String clientName = name;
+                    String urlImage = imag;
+                    int reservationId = idreservation;
+                    int carId = carrId;
+                    //   _mostrarBottomSheet(          context);
+                    //  showMyDialog(context);
+                    print(
+                        'LISTA2 _fetchServiceList Limpiando clientName:$clientName...reservationId:$reservationId....carId:$carId....urlImage:$urlImage');
+                    await Future.delayed(const Duration(milliseconds: 500));
+                    Get.back();
+                    //Get.toNamed('/servicesProductsPage');
+                    pagesConfigC.onTabTapped(1); //index = 1 -> /Clients
+                  }
                 });
               }
             } //cierre del if de comprobacion que no lo llame vairas veces

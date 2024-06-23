@@ -67,6 +67,8 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                       currentIndex: pagesConfigController.selectedIndex,
                       type: BottomNavigationBarType.fixed,
                       onTap: (index) async {
+                        print(
+                            'mostrando aqui selectedIndex:${pagesConfigController.selectedIndex}');
                         if (index == 1) //Agenda->clientes
                         {
                           Get.dialog(

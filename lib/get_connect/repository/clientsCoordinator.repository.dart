@@ -800,7 +800,7 @@ class ClientsCoordinatorRepository extends GetConnect {
   }
 
   Future<bool> storeByReservationId(
-      imag, reservationId, commentText, dioClient) async {
+      imag, reservationId, commentText, dioClient, token) async {
     // Crear FormData y agregar la imagen
     dio.FormData formData = dio.FormData.fromMap({
       'client_look':
@@ -810,8 +810,17 @@ class ClientsCoordinatorRepository extends GetConnect {
     });
 
     try {
-      dio.Response response = await dioClient
-          .post('${Env.apiEndpoint}/storeByReservationId', data: formData);
+      dio.Response response = await dioClient.post(
+        '${Env.apiEndpoint}/storeByReservationId',
+        data: formData,
+        options: dio.Options(
+          headers: {
+            'Authorization':
+                'Bearer $token', // Agregar el token en el encabezado
+            'Content-Type': 'multipart/form-data', // Tipo de contenido
+          },
+        ),
+      );
       print('++++++++++++++++++++');
       print(response.data);
       return true;

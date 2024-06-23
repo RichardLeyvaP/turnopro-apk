@@ -8,7 +8,8 @@ import 'package:turnopro_apk/env.dart';
 import 'package:http/http.dart' as http; // Asegúrate de importar http
 
 class WeeklyStatisticsRepository extends GetConnect {
-  Future getDayStatisticsRespon(idBranch, startDate, endDate, mes, year) async {
+  Future getDayStatisticsRespon(
+      idBranch, startDate, endDate, mes, year, token) async {
     // 2, startDate1, endDate1, 1, 7, mes, year)
     try {
       if (idBranch != null) {
@@ -27,7 +28,14 @@ class WeeklyStatisticsRepository extends GetConnect {
         print(startDate);
         print(endDate);
         print('Esta e sla url que estoy llamado:$url');
-        final response = await http.get(Uri.parse(url));
+        final response = await http.get(
+          Uri.parse(url),
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type':
+                'application/json', // Esto es opcional, según lo que necesites
+          },
+        );
         print(response.statusCode);
         if (response.statusCode == 200) {
           Map<String, dynamic> jsonResponse = {};
@@ -51,7 +59,7 @@ class WeeklyStatisticsRepository extends GetConnect {
   }
 
   Future getDayStatisticsList(
-      idProfessional, idBranch, startDate, endDate, charge) async {
+      idProfessional, idBranch, startDate, endDate, charge, token) async {
     try {
       if (idProfessional != null) {
         var url =
@@ -60,7 +68,14 @@ class WeeklyStatisticsRepository extends GetConnect {
         print(idBranch);
         print(startDate);
         print(endDate);
-        final response = await http.get(Uri.parse(url));
+        final response = await http.get(
+          Uri.parse(url),
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type':
+                'application/json', // Esto es opcional, según lo que necesites
+          },
+        );
         print(response.statusCode);
         if (response.statusCode == 200) {
           print('response.statusCode == Future getDayStatisticsList 200');
@@ -77,7 +92,8 @@ class WeeklyStatisticsRepository extends GetConnect {
     }
   }
 
-  Future getDayStatisticsListMen(idProfessional, idBranch, mes, year) async {
+  Future getDayStatisticsListMen(
+      idProfessional, idBranch, mes, year, token) async {
     try {
       if (idProfessional != null) {
         var url =
@@ -86,7 +102,14 @@ class WeeklyStatisticsRepository extends GetConnect {
         print(idBranch);
         print(mes);
         print(year);
-        final response = await http.get(Uri.parse(url));
+        final response = await http.get(
+          Uri.parse(url),
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type':
+                'application/json', // Esto es opcional, según lo que necesites
+          },
+        );
         print(response.statusCode);
         if (response.statusCode == 200) {
           print('response.statusCode == Future getDayStatisticsList 200');
@@ -104,7 +127,7 @@ class WeeklyStatisticsRepository extends GetConnect {
   }
 
   Future getWeeklyStatisticsList(
-      idProfessional, idBranch, startDate, endDate, day) async {
+      idProfessional, idBranch, startDate, endDate, day, token) async {
     List<EarningByDay> weeklyStatisticsList = [];
     double totalEarnings = 0.0;
     double? averageEarnings = 0.0;
@@ -114,7 +137,14 @@ class WeeklyStatisticsRepository extends GetConnect {
         var url =
             '${Env.apiEndpoint}/professionals_ganancias?professional_id=$idProfessional&branch_id=$idBranch&startDate=$startDate&endDate=$endDate&day=$day';
 
-        final response = await http.get(Uri.parse(url));
+        final response = await http.get(
+          Uri.parse(url),
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type':
+                'application/json', // Esto es opcional, según lo que necesites
+          },
+        );
         if (response.statusCode == 200) {
           final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
           print(jsonResponse);

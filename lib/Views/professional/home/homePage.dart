@@ -60,7 +60,14 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
       print('..segundoPlano....${clientController.timeClientsActAttended1}');
       print('La aplicación se está pausando (yendo a segundo plano)');
     } else if (state == AppLifecycleState.resumed) {
-      clientController.setBoolControlVision(false);
+      if (loginController.usserPermissionQr ==
+          null) //si esta logueado que lo ponga en false
+      {
+        clientController.setBoolControlVision(true);
+      } else {
+        clientController.setBoolControlVision(false);
+      }
+
       // La aplicación se cierra completamente
       print('La aplicación se está Reaunudandose nuevamente');
       print(
