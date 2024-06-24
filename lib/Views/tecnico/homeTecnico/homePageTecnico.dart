@@ -29,6 +29,16 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
       Get.put(CoexistenceController());
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (pagesConfigC.selectedIndex != 0) {
+        pagesConfigC.setSelectedIndex(0);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FadeIn(
       duration: const Duration(seconds: 2),

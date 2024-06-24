@@ -150,6 +150,7 @@ class UserRepository extends GetConnect {
       }
     } catch (e) {
       print('5Error estoy en el catch (e) y este es el error:$e');
+      return null;
     }
   }
 
@@ -226,6 +227,12 @@ class UserRepository extends GetConnect {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
       final response = await post(headers: headers, url, body);
+      print('registrar hora d entrada-:ruta: $url');
+
+      print(
+          'registrar hora d entrada-:response.statusCode ${response.statusCode}');
+      print(
+          'registrar hora d entrada-:professional_id y branch_id $professional_id y $branch_id');
       if (response.statusCode == 200) {
         return 1;
       } else {

@@ -1002,7 +1002,10 @@ class LoginController extends GetxController {
 
         update();
       } //cierre if (result != null) {
-      else {
+      else if (result == null) {
+        showConnectionError();
+        Get.back();
+      } else {
         incorrectFields = true;
         await loadingValue(false);
         update();
@@ -1010,6 +1013,7 @@ class LoginController extends GetxController {
         Get.back();
       }
     } catch (e) {
+      showConnectionError();
       Get.back();
       print('errorrrrrreeeeeeeeeeeeeeeee:$e');
     }

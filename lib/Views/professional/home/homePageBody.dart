@@ -87,7 +87,7 @@ class _HomePageBodyState extends State<HomePageBody>
     print('se hacompletado los 3 min-ESTOY EN reasigClient');
     int idProfDisp = await professionalDisp(reservationId);
     if (idProfDisp != 0) {
-      // entonces reasigno
+      // entonces reasignoP
       Get.dialog(
         const Center(
           child: Material(

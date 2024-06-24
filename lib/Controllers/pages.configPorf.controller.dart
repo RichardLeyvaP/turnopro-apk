@@ -37,6 +37,12 @@ class PagesConfigController extends GetxController {
     selectedIndex = 0;
     print('mostrando aqui selectedIndex:$selectedIndex');
   }
+
+  setSelectedIndex(value) {
+    selectedIndex = value;
+    update();
+  }
+
   //
   //todo **************** CONFIGURACIONES PARA HOME-PROFESIONAL ************************
   //

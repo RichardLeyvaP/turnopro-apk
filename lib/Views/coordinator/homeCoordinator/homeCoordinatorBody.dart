@@ -1573,7 +1573,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                               print('return resul: IconButton $result');
                               if (result == true) {
                                 if (charge == 'Barbero') {
-                                  notiController.storeNotification(
+                                  notiController.storeNotification2(
                                       'Solicitud de Eliminación Rechazada',
                                       controllerLogin.branchIdLoggedIn,
                                       controllerclient
@@ -1582,7 +1582,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       '!Atención..El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} no fue rechazado.',
                                       'Barbero');
                                 } else if (charge == 'Tecnico') {
-                                  notiController.storeNotification(
+                                  notiController.storeNotification2(
                                       'Solicitud de Eliminación Rechazada',
                                       controllerLogin.branchIdLoggedIn,
                                       controllerclient
