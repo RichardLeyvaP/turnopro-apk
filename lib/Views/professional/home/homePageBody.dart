@@ -62,6 +62,8 @@ class _HomePageBodyState extends State<HomePageBody>
   Future<void> saveData() async {
     int valueClock = getTimeRemaining();
     await LocalStorage.prefs.setInt('valueClockIni', valueClock);
+    int hAs = obtenerHoraActualEnSegundos();
+    LocalStorage.prefs.setInt('valueHoraAnt', hAs);
 
     print('--este es el value del clok... ->Value guardado:$valueClock');
   }
@@ -159,16 +161,21 @@ class _HomePageBodyState extends State<HomePageBody>
   }
 
   reiniciateClock() {
+    print('verificando si esta activo:Aqui reiniciateClock()');
     LocalStorage.prefs.setBool('convivenciaIncumplida', true);
     LocalStorage.prefs.setInt('valueClockIni', 180);
     clientsScheduledController.setTotalTimeInitial(180);
     LocalStorage.prefs.setBool('valueClockActiv', false);
 
     // Reiniciar la animación
-    //todo puese esto nuevo
+    // Reiniciar y avanzar la animación existente
+    clientsScheduledController.animationControllerInitial!
+      ..duration = Duration(seconds: 180)
+      ..reset()
+      ..forward();
 
-    clientsScheduledController.animationControllerInitial!.reset();
-    clientsScheduledController.animationControllerInitial!.forward();
+    // clientsScheduledController.animationControllerInitial!.reset();
+    // clientsScheduledController.animationControllerInitial!.forward();
   }
 
   @override
@@ -1107,9 +1114,10 @@ class _HomePageBodyState extends State<HomePageBody>
 
     super.build(context);
 
-    _timer2 = Timer.periodic(Duration(seconds: 2), (timer) async {
+    _timer2 = Timer.periodic(Duration(seconds: 5), (timer) async {
       print(
           'Esto se ejecuta 2 segundos después de renderizar el cuadro--nuevo');
+
       if (getTimeRemaining() < 3) {
         // aaqui cancelar hasta que vea si rasigna o no
         loginController.setCodigoQrValidAnt(0); //10 es en espera
@@ -2730,7 +2738,7 @@ class _HomePageBodyState extends State<HomePageBody>
         name.split(" "); // Tomar los primeros dos nombres (si existen)
     String firstName = partsName.isNotEmpty ? partsName[0] : "";
     // String secondName = partsName.length > 1 ? partsName[1] : "";
-
+    LocalStorage.prefs.setBool('valueClockActiv', true);
     return Padding(
       padding: const EdgeInsets.only(left: 6, right: 6),
       child: Column(

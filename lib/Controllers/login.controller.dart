@@ -750,12 +750,15 @@ class LoginController extends GetxController {
       ClientsScheduledController clientsScheduledController, String tyype) {
     //aqui obtengo la hora actual para comparar con la anterior si es posible
     int hAs = obtenerHoraActualEnSegundos();
+    print('verificando si esta activo:');
     LocalStorage.prefs.setInt('valueHoraAct', hAs);
     print('--este es el value del clok-valueHoraAct-LOGIN:$hAs');
     if (LocalStorage.prefs.getBool('valueClockActiv') != null &&
         LocalStorage.prefs.getBool('valueClockActiv') == true) {
+      print('verificando si esta activo:Si entre al if-1');
       if (LocalStorage.prefs.getInt('valueHoraAnt') != null &&
           LocalStorage.prefs.getInt('valueHoraAct') != null) {
+        print('verificando si esta activo:Si entre al if-2');
         int timeAsig = 180;
         //obtengo la hora anterior y actual en segundos
         int hourAnt = LocalStorage.prefs.getInt('valueHoraAnt')!;
@@ -787,7 +790,11 @@ class LoginController extends GetxController {
         print('--este es el value del clok-diferSeg:$diferSeg');
 
         clientsScheduledController.setTotalTimeInitial(timeAsig);
+      } else {
+        print('verificando si esta activo:NO entre al if-de adentro');
       }
+    } else {
+      print('verificando si esta activo:NO entre al if-de afuera');
     }
   }
 
