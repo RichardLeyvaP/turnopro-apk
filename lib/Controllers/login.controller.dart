@@ -267,6 +267,17 @@ class LoginController extends GetxController {
   int usserPermissionQrAntes = 1;
   int usserMssQr = -99;
   int contLlamClient = 0;
+  bool makeCall = true;
+  bool makeCallT = true;
+
+  setMakeCall(value) {
+    makeCall = value;
+  }
+
+  setMakeCallT(value) {
+    makeCallT = value;
+  }
+
   void setContLlamClient(int value) {
     if (value == 1) {
       contLlamClient++;
@@ -838,9 +849,14 @@ class LoginController extends GetxController {
 
     if (LocalStorage.prefs.getBool('valueClockTec1ActivT') != null) {
       bool activeClock = LocalStorage.prefs.getBool('valueClockTec1ActivT')!;
+      print('entrando porque esta el atendiendo cliente:CONTROLADOR-INI');
       if (activeClock) {
+        print(
+            'entrando porque esta el atendiendo cliente:CONTROLADOR-activeClock:$activeClock');
         if (LocalStorage.prefs.getInt('valueHoraAnt') != null &&
             LocalStorage.prefs.getInt('valueClockTec1') != null) {
+          print(
+              'entrando porque esta el atendiendo cliente:CONTROLADOR-dentro del if:si');
           int timeAsig = 180;
           //obtengo la hora anterior y actual en segundos
           int hourAnt = LocalStorage.prefs.getInt('valueHoraAnt')!;
@@ -867,7 +883,9 @@ class LoginController extends GetxController {
           print('--este es el value del clok-valueAntClock-T:$valueAntClock');
           print('--este es el value del clok-diferSeg-T:$diferSeg');
 
-          // clientsScheduledController.setTotalTimeInitialTec(timeAsig);
+          clientsScheduledController.setTotalTimeClientec(timeAsig);
+          print(
+              'entrando porque esta el atendiendo cliente:CONTROLADOR-dentro del if-FINAL:timeAsig:$timeAsig');
         }
       }
     }

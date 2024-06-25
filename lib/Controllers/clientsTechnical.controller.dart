@@ -19,6 +19,7 @@ class ClientsTechnicalController extends GetxController {
   int listClientReal = 0;
 
   AnimationController? animationControllerInitialT;
+  AnimationController? animationTechnicalController1;
 
   List<ClientsScheduledModel> selectclientsScheduledListTechnical = [];
   ClientsScheduledModel? clientsScheduledNext; // Cliente en espera
@@ -264,6 +265,7 @@ class ClientsTechnicalController extends GetxController {
     } finally {
       print(
           'Error al obtener la cola del tecnico: noUpdate == click $noUpdate');
+
       if (noUpdate == false) {
         update();
       }

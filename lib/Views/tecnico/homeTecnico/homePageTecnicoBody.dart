@@ -22,8 +22,6 @@ class HomePageTecnicoBody extends StatefulWidget {
 
 class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
-  AnimationController? _animationTechnicalController1;
-
   final ClientsTechnicalController clientsScheduledController =
       Get.find<ClientsTechnicalController>();
 
@@ -36,13 +34,30 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
   final CoexistenceController coexistenceController =
       Get.put(CoexistenceController());
 
+  reiniciateClock() {
+    LocalStorage.prefs.setBool('convivenciaIncumplidaT', true);
+    LocalStorage.prefs.setInt('valueClockIni', 180);
+    clientsScheduledController.setTotalTimeInitialTec(180);
+    LocalStorage.prefs.setBool('valueClockActivT', false);
+
+    // Reiniciar la animación
+    // Reiniciar y avanzar la animación existente
+    clientsScheduledController.animationControllerInitialT!
+      ..duration = Duration(seconds: 180)
+      ..reset()
+      ..forward();
+
+    // clientsScheduledController.animationControllerInitial!.reset();
+    // clientsScheduledController.animationControllerInitial!.forward();
+  }
+
   @override
   bool get wantKeepAlive => true;
 
   @override
   void initState() {
     super.initState();
-
+//mandar a poner un cargando y al tener resultados quitarlos
     clientsScheduledController
         .fetchClientsTechnical(loginController.branchIdLoggedIn);
 
@@ -58,7 +73,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
       vsync: this,
       duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
     );
-    _animationTechnicalController1 = AnimationController(
+    clientsScheduledController.animationTechnicalController1 =
+        AnimationController(
       vsync: this,
       duration: Duration(seconds: clientsScheduledController.totalTimeClient),
     );
@@ -67,6 +83,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     clientsScheduledController.animationControllerInitialT!
         .addStatusListener((status) {
       if (status == AnimationStatus.completed) {
+        reiniciateClock();
         if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
             0) {
           //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
@@ -84,61 +101,77 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
               'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado.',
               'Tecnico');
         }
-        LocalStorage.prefs.setBool('convivenciaIncumplidaT', true);
-        LocalStorage.prefs.setInt('valueClockIni', 180);
-        clientsScheduledController.setTotalTimeInitialTec(180);
-        LocalStorage.prefs.setBool('valueClockActivT', false);
-        // clientsScheduledController.animationControllerInitialT =
-        //     AnimationController(
-        //   vsync: this,
-        //   duration:
-        //       Duration(seconds: clientsScheduledController.totalTimeInitial),
-        // );
-        // La animación ha llegado al final, reiniciar
-        clientsScheduledController.animationControllerInitialT!.reset();
-        clientsScheduledController.animationControllerInitialT!.forward();
+        // LocalStorage.prefs.setBool('convivenciaIncumplidaT', true);
+        // LocalStorage.prefs.setInt('valueClockIni', 180);
+        // clientsScheduledController.setTotalTimeInitialTec(180);
+        // LocalStorage.prefs.setBool('valueClockActivT', false);
+
+        // // clientsScheduledController.animationControllerInitialT =
+        // //     AnimationController(
+        // //   vsync: this,
+        // //   duration:
+        // //       Duration(seconds: clientsScheduledController.totalTimeInitial),
+        // // );
+        // // La animación ha llegado al final, reiniciar
+        // clientsScheduledController.animationControllerInitialT!.reset();
+        // clientsScheduledController.animationControllerInitialT!.forward();
       }
     });
 
     if (LocalStorage.prefs.getBool('valueClockTec1ActivT') != null) {
+      print(
+          'entrando porque esta el atendiendo cliente:SOY DIFERENTE DE NULL SI');
       bool activeClock = LocalStorage.prefs.getBool('valueClockTec1ActivT')!;
       if (activeClock) {
+        print(
+            'entrando porque esta el atendiendo cliente:si estoy iniciando :$activeClock');
         //si es true hay clientes atendiendose
 //obtengo el tiempo en el que esta
         int timeAct = LocalStorage.prefs.getInt('valueClockTec1')!;
         if (timeAct < 0) {
           timeAct = 2;
         }
-        _animationTechnicalController1 = AnimationController(
-          vsync: this,
-          duration: Duration(seconds: timeAct),
-        );
-        _animationTechnicalController1!.forward();
+        // clientsScheduledController.animationTechnicalController1 = AnimationController(
+        //   vsync: this,
+        //   duration: Duration(seconds: timeAct),
+        // );
+
+        clientsScheduledController.animationTechnicalController1!
+          ..duration = Duration(seconds: timeAct)
+          ..reset()
+          ..forward();
       } else {
-        //si es false simplemente creo e inicializo el control para ser utilizado proximamente
-        _animationTechnicalController1 = AnimationController(
-          vsync: this,
-          duration: const Duration(seconds: 300),
-        );
+        print(
+            'entrando porque esta el atendiendo cliente:NOOO estoy iniciando :$activeClock');
       }
+      // else {
+      //   //si es false simplemente creo e inicializo el control para ser utilizado proximamente
+      //   clientsScheduledController.animationTechnicalController1!
+      // ..duration = Duration(seconds: 300)
+      // ..reset()
+      // ..forward();
+      // }
+    } else {
+      print('entrando porque esta el atendiendo cliente:SOY NULL SI');
     }
   }
 
   Future<void> saveData() async {
-    if (LocalStorage.prefs.getBool('valueClockActivT') != null &&
-        LocalStorage.prefs.getBool('valueClockActivT') == true) {
-      int valueClock = getTimeRemaining();
-      int valueSave = valueClock;
-      await LocalStorage.prefs.setInt('valueClockIni', valueSave);
+    int valueClock = getTimeRemaining();
+    await LocalStorage.prefs.setInt('valueClockIni', valueClock);
+    int hAs = obtenerHoraActualEnSegundos();
+    LocalStorage.prefs.setInt('valueHoraAnt', hAs);
 
-      print('--este es el value del clok... ->Value guardado:$valueSave');
-    }
+    print('--este es el value del clok... ->Value guardado:$valueClock');
 
 //si el clock de cliente atendido esta activo
     if (LocalStorage.prefs.getBool('valueClockTec1ActivT') != null &&
         LocalStorage.prefs.getBool('valueClockTec1ActivT') == true) {
+      print('entrando porque esta el atendiendo cliente: 1');
       int valueClock = getTimeRemainingAten();
-      clientsScheduledController.setTotalTimeClientec(valueClock);
+      print(
+          'entrando porque esta el atendiendo cliente:valueClock: $valueClock');
+      // clientsScheduledController.setTotalTimeClientec(valueClock);
       await LocalStorage.prefs.setInt('valueClockTec1', valueClock);
     }
   }
@@ -155,9 +188,18 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
   }
 
   int getTimeRemainingAten() {
-    int timeAct = LocalStorage.prefs.getInt('valueClockTec1')!;
-    if (_animationTechnicalController1 != null) {
-      return (timeAct - (_animationTechnicalController1!.value * timeAct))
+    if (clientsScheduledController.animationTechnicalController1 != null) {
+      // return (timeAct - (clientsScheduledController.animationTechnicalController1!.value * timeAct))
+      //     .round();
+      print(
+          'entrando porque esta el atendiendo cliente:***************************************************** ');
+      print(
+          'entrando porque esta el atendiendo cliente:totalTimeClient = ${clientsScheduledController.totalTimeClient} ');
+      print(
+          'entrando porque esta el atendiendo cliente:clientsScheduledController.animationTechnicalController1!.value = ${clientsScheduledController.animationTechnicalController1!.value} ');
+      return (clientsScheduledController.totalTimeClient -
+              (clientsScheduledController.animationTechnicalController1!.value *
+                  clientsScheduledController.totalTimeClient))
           .round();
     } else {
       return 300; // 5 minutos
@@ -173,7 +215,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
   @override
   void dispose() {
     clientsScheduledController.animationControllerInitialT!.dispose();
-    _animationTechnicalController1!.dispose();
+    clientsScheduledController.animationTechnicalController1!.dispose();
     // Asegúrate de cancelar el temporizador al eliminar el widget
     _timer?.cancel();
     _timer2?.cancel();
@@ -191,21 +233,25 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     // Establece un temporizador que llama a la función cada 20 segundos
     _timer = Timer.periodic(const Duration(seconds: 11), (Timer timer) {
       print('callTimerTec1');
-      if (clientsScheduledController.boolFilterShowNextTecnhical == true &&
-          clientsScheduledController.listClientReal > 0 &&
-          (loginController.usserPermissionQr != null) &&
-          !clientsScheduledController.idClientsEspera.contains(
-              clientsScheduledController.clientsAttendedTechnical!.client_id)) {
-        notiController.storeNotification(
-            'Clientes en cola',
-            loginController.branchIdLoggedIn,
-            loginController.idProfessionalLoggedIn,
-            'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!',
-            'Tecnico');
-        //agregar el id de ese cliente en un array para no mandar mas ese mensaje con ese cliente en espera
-        if (clientsScheduledController.clientsAttendedTechnical != null) {
-          clientsScheduledController.setNotificateClient(
-              clientsScheduledController.clientsAttendedTechnical!.client_id!);
+      if (loginController.makeCallT == true) {
+        if (clientsScheduledController.boolFilterShowNextTecnhical == true &&
+            clientsScheduledController.listClientReal > 0 &&
+            (loginController.usserPermissionQr != null) &&
+            !clientsScheduledController.idClientsEspera.contains(
+                clientsScheduledController
+                    .clientsAttendedTechnical!.client_id)) {
+          notiController.storeNotification(
+              'Clientes en cola',
+              loginController.branchIdLoggedIn,
+              loginController.idProfessionalLoggedIn,
+              'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!',
+              'Tecnico');
+          //agregar el id de ese cliente en un array para no mandar mas ese mensaje con ese cliente en espera
+          if (clientsScheduledController.clientsAttendedTechnical != null) {
+            clientsScheduledController.setNotificateClient(
+                clientsScheduledController
+                    .clientsAttendedTechnical!.client_id!);
+          }
         }
       }
     });
@@ -218,20 +264,21 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     _timer3 = Timer.periodic(const Duration(seconds: 8), (Timer timer) {
       saveData();
       print('callTimerTec4');
-
-      if (loginController.idProfessionalLoggedIn != null &&
-          loginController.branchIdLoggedIn != null &&
-          (loginController.chargeUserLoggedIn == "Tecnico" &&
-              (loginController.usserPermissionQr != null))) {
-        //await Future.delayed(Duration(seconds: 1));
-        //Buscar notificaciones
-        print('callTimerTec 4-callTimerTecNotification-llamada 8 seg');
-        notiController.fetchNotificationList(
-            loginController.branchIdLoggedIn,
-            loginController.idProfessionalLoggedIn,
-            'Tecnico',
-            'callTimerTec',
-            loginController.tokenUserLoggedIn);
+      if (loginController.makeCallT == true) {
+        if (loginController.idProfessionalLoggedIn != null &&
+            loginController.branchIdLoggedIn != null &&
+            (loginController.chargeUserLoggedIn == "Tecnico" &&
+                (loginController.usserPermissionQr != null))) {
+          //await Future.delayed(Duration(seconds: 1));
+          //Buscar notificaciones
+          print('callTimerTec 4-callTimerTecNotification-llamada 8 seg');
+          notiController.fetchNotificationList(
+              loginController.branchIdLoggedIn,
+              loginController.idProfessionalLoggedIn,
+              'Tecnico',
+              'callTimerTec',
+              loginController.tokenUserLoggedIn);
+        }
       }
     });
   }
@@ -243,13 +290,16 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     _timer2 = Timer.periodic(const Duration(seconds: 10), (Timer timer) {
       print('callTimerTec2');
       // actualizo la cola
-      if (clientsScheduledController.showingServiceClientsTechnical == false &&
-          loginController.branchIdLoggedIn != null &&
-          loginController.chargeUserLoggedIn == "Tecnico" &&
-          (loginController.usserPermissionQr != null)) {
-        //actualizo la cola del técnico
-        clientsScheduledController
-            .fetchClientsTechnical(loginController.branchIdLoggedIn);
+      if (loginController.makeCallT == true) {
+        if (clientsScheduledController.showingServiceClientsTechnical ==
+                false &&
+            loginController.branchIdLoggedIn != null &&
+            loginController.chargeUserLoggedIn == "Tecnico" &&
+            (loginController.usserPermissionQr != null)) {
+          //actualizo la cola del técnico
+          clientsScheduledController
+              .fetchClientsTechnical(loginController.branchIdLoggedIn);
+        }
       }
     });
   }
@@ -344,7 +394,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                     .clientsAttendedTechnical!
                                                     .client_name!,
                                                 controllerclient,
-                                                _animationTechnicalController1!,
+                                                clientsScheduledController
+                                                    .animationTechnicalController1!,
                                                 controllerclient
                                                     .clientsAttendedTechnical!
                                                     .client_image!),
@@ -511,6 +562,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                     if (loginController
                                                             .codigoQrValid() ==
                                                         true) {
+                                                      loginController
+                                                          .setMakeCallT(false);
                                                       controllerclient
                                                           .setShowNextTecnhical(
                                                               false);
@@ -532,6 +585,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                                   .clientsNextTechnical!
                                                                   .reservation_id,
                                                               33);
+
                                                       if (result == 1) //td bien
                                                       {
                                                         loginController
@@ -566,6 +620,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                         print(
                                                             'No mando por alguna razón aqui - result = $result ');
                                                       }
+                                                      loginController
+                                                          .setMakeCallT(true);
                                                     } else if (loginController
                                                             .usserPermissionQr ==
                                                         2) {
@@ -758,6 +814,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                     if (loginController
                                                             .codigoQrValid() ==
                                                         true) {
+                                                      loginController
+                                                          .setMakeCallT(false);
                                                       controllerclient
                                                           .setShowNextTecnhical(
                                                               false);
@@ -788,22 +846,26 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                                   'valueClockTec1',
                                                                   300);
 
-                                                          _animationTechnicalController1!
+                                                          clientsScheduledController
+                                                              .animationTechnicalController1!
                                                               .stop();
-                                                          _animationTechnicalController1!
+                                                          clientsScheduledController
+                                                              .animationTechnicalController1!
                                                               .reset();
 
                                                           //
                                                           //todo FALTA QUE SE MUESTRE EL RELOJ
                                                           //
 
-                                                          _animationTechnicalController1!
+                                                          clientsScheduledController
+                                                                  .animationTechnicalController1!
                                                                   .duration =
                                                               const Duration(
                                                                   seconds:
                                                                       300); //por ahora 5min
 
-                                                          _animationTechnicalController1!
+                                                          clientsScheduledController
+                                                              .animationTechnicalController1!
                                                               .forward();
                                                           // detengo todos los timers que deben detenerse
                                                           LocalStorage.prefs
@@ -829,6 +891,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                                       .clientsNextTechnical!
                                                                       .reservation_id!);
                                                         }
+                                                        loginController
+                                                            .setMakeCallT(true);
                                                       }
                                                     } else if (loginController
                                                             .usserPermissionQr ==
@@ -1332,14 +1396,16 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                     //aqui limpiar la variable que no deja cojer doble al cliente
                                     loginController.pressedButtonIdsTec.clear();
                                     //reseteo y lo dejo en punta para el proximo cliente
-                                    _animationTechnicalController1!.stop();
-                                    _animationTechnicalController1!.reset();
+                                    clientsScheduledController
+                                        .animationTechnicalController1!
+                                        .stop();
+                                    clientsScheduledController
+                                        .animationTechnicalController1!
+                                        .reset();
 
                                     //ponemos afalse la variable que nos indica que hay cliente atendiendose
                                     LocalStorage.prefs
                                         .setBool('valueClockTec1ActivT', false);
-                                    LocalStorage.prefs
-                                        .setBool('valueClockActivT', true);
                                     //y dejamos inicializada en 5 min para el nuevo cliente por atender
                                     LocalStorage.prefs
                                         .setInt('valueClockTec1', 300);
