@@ -122,6 +122,7 @@ class ClientsCoordinatorController extends GetxController {
   List<ProductModel> productCORD = [];
   List<ServiceModel> serviceCORD = [];
   List<ClientsScheduledModel> clientAttenCORD = [];
+  final LoginController controllerLogin = Get.find<LoginController>();
 
   //
   //
@@ -156,7 +157,7 @@ class ClientsCoordinatorController extends GetxController {
     try {
       Map<String, dynamic> resultList =
           await repository.getClientsScheduledListBranch(
-              idBranch, loginController.tokenUserLoggedIn);
+              idBranch, controllerLogin.tokenUserLoggedIn);
       print(resultList);
       //verificando , si entra al if es problemas de coneccion
       if (resultList.containsKey('ConnectionIssues') &&
@@ -186,7 +187,7 @@ class ClientsCoordinatorController extends GetxController {
   Future<void> fetchClientsRechazBranch(idBranch) async {
     try {
       Map<String, dynamic> resultList = await repository.getClientsRechazBranch(
-          idBranch, loginController.tokenUserLoggedIn);
+          idBranch, controllerLogin.tokenUserLoggedIn);
       print(resultList);
       //verificando , si entra al if es problemas de coneccion
       if (resultList.containsKey('ConnectionIssues') &&
@@ -208,12 +209,15 @@ class ClientsCoordinatorController extends GetxController {
       update();
     } catch (e) {
       print(e);
+    } finally {
+      loginController.setMakeCallC(true); //avilite las llamadas del timer
+      controllerLogin.setMakeCallE(true);
     }
   } //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
 
   Future<void> clientsAttendBranch(idBranch) async {
     Map<String, dynamic> resultList = await repository.clientsAttendBranch(
-        idBranch, loginController.tokenUserLoggedIn);
+        idBranch, controllerLogin.tokenUserLoggedIn);
     print(resultList);
     //verificando , si entra al if es problemas de coneccion
     if (resultList.containsKey('ConnectionIssues') &&
@@ -236,7 +240,7 @@ class ClientsCoordinatorController extends GetxController {
 
   Future<void> ClientsColacionBranch(idBranch) async {
     Map<String, dynamic> resultList = await repository.clientsColacionBranch(
-        idBranch, loginController.tokenUserLoggedIn);
+        idBranch, controllerLogin.tokenUserLoggedIn);
     print(resultList);
     //verificando , si entra al if es problemas de coneccion
     if (resultList.containsKey('ConnectionIssues') &&
@@ -258,50 +262,65 @@ class ClientsCoordinatorController extends GetxController {
   }
 
   Future<void> ColacionRequestBranch(idBranch) async {
-    Map<String, dynamic> resultList =
-        await repository.clientsColacionRequestBranch(
-            idBranch, loginController.tokenUserLoggedIn);
-    print(resultList);
-    //verificando , si entra al if es problemas de coneccion
-    if (resultList.containsKey('ConnectionIssues') &&
-        resultList['ConnectionIssues'] == true) {
-      correctConnection = false;
-      print(
-          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor(ClientsColacionBranch)');
-    } else {
-      correctConnection = true;
-      //aqui estoy guardando la cola del dia de hoy del profesional
-      clientsColacionRequestBranch =
-          (resultList['clientAttendList'] ?? []).cast<ClientsScheduledModel>();
-      clientsColacionRequestLength = clientsColacionRequestBranch.length;
-      print(
-          '-******-ColacionRequestBranch-****-* $clientsColacionRequestLength -****-************-* ');
-      //
+    try {
+      Map<String, dynamic> resultList =
+          await repository.clientsColacionRequestBranch(
+              idBranch, controllerLogin.tokenUserLoggedIn);
+      print(resultList);
+      //verificando , si entra al if es problemas de coneccion
+      if (resultList.containsKey('ConnectionIssues') &&
+          resultList['ConnectionIssues'] == true) {
+        correctConnection = false;
+        print(
+            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor(ClientsColacionBranch)');
+      } else {
+        correctConnection = true;
+        //aqui estoy guardando la cola del dia de hoy del profesional
+        clientsColacionRequestBranch = (resultList['clientAttendList'] ?? [])
+            .cast<ClientsScheduledModel>();
+        clientsColacionRequestLength = clientsColacionRequestBranch.length;
+        print(
+            '-******-ColacionRequestBranch-****-* $clientsColacionRequestLength -****-************-* ');
+        //
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      update();
+      controllerLogin.setMakeCallC(true); //avilite las llamadas del timer
+      controllerLogin.setMakeCallE(true);
     }
-    update();
   }
 
   Future<void> outRequestBranch(idBranch) async {
     Map<String, dynamic> resultList = await repository.profOutRequestBranch(
-        idBranch, loginController.tokenUserLoggedIn);
-    print(resultList);
-    //verificando , si entra al if es problemas de coneccion
-    if (resultList.containsKey('ConnectionIssues') &&
-        resultList['ConnectionIssues'] == true) {
-      correctConnection = false;
-      print(
-          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor(outRequestBranch)');
-    } else {
-      correctConnection = true;
-      //aqui estoy guardando la cola del dia de hoy del profesional
-      pOutRequestBranch =
-          (resultList['clientAttendList'] ?? []).cast<ClientsScheduledModel>();
-      pOutRequestLength = pOutRequestBranch.length;
-      print(
-          'zz-******-pOutRequestLength-****-* $pOutRequestLength -****-************-* ');
-      //
+        idBranch, controllerLogin.tokenUserLoggedIn);
+    try {
+      //verificando , si entra al if es problemas de coneccion
+      if (resultList.containsKey('ConnectionIssues') &&
+          resultList['ConnectionIssues'] == true) {
+        correctConnection = false;
+        print(
+            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor(outRequestBranch)');
+      } else {
+        correctConnection = true;
+        //aqui estoy guardando la cola del dia de hoy del profesional
+        pOutRequestBranch = (resultList['clientAttendList'] ?? [])
+            .cast<ClientsScheduledModel>();
+        pOutRequestLength = pOutRequestBranch.length;
+        print(
+            'zz-******-pOutRequestLength-****-* $pOutRequestLength -****-************-* ');
+        //
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      update();
+      controllerLogin.setMakeCallC(true);
+      controllerLogin.setMakeCallE(true);
     }
-    update();
+
+    print(resultList);
   }
 
   Future<bool> reasignedClient(
@@ -332,7 +351,7 @@ class ClientsCoordinatorController extends GetxController {
     print(
         'Cliente reasignado correctamente ->Entrando al método ---> reasignedClientTottem');
     Map<String, dynamic> resultList = await repository.reasignedClientTotem(
-        branchId, professionalId, loginController.tokenUserLoggedIn);
+        branchId, professionalId, controllerLogin.tokenUserLoggedIn);
     print(resultList);
     //verificando , si entra al if es problemas de coneccion
     if (resultList.containsKey('ConnectionIssues') &&
@@ -691,12 +710,11 @@ class ClientsCoordinatorController extends GetxController {
   }
 
   Future<void> acceptClientTechnical(reservationId, attended) async {
-    final LoginController controllerLogin = Get.find<LoginController>();
     quantityClientAttendedTechnical = 1;
     boolFilterShowNextTecnhical = false;
     update();
     bool value = await repository.acceptOrRejectClient(
-        reservationId, attended, loginController.tokenUserLoggedIn);
+        reservationId, attended, controllerLogin.tokenUserLoggedIn);
     //si lo que devuelve es true actualizo la cola
     if (value == true) {
       quantityClientAttendedTechnical = 1;
@@ -727,12 +745,12 @@ class ClientsCoordinatorController extends GetxController {
 
   Future<bool> acceptOrRejectClientCoord(reservationId, attended) async {
     bool value = await repository.acceptOrRejectClient(
-        reservationId, attended, loginController.tokenUserLoggedIn);
+        reservationId, attended, controllerLogin.tokenUserLoggedIn);
     return value;
   }
 
   // Future<void> acceptOrRejectClient(reservationId, attended) async {
-  //   final LoginController controllerLogin = Get.find<LoginController>();
+  //   final controllerLogin controllerLogin = Get.find<controllerLogin>();
 
   //   bool value = await repository.acceptOrRejectClient(reservationId, attended);
   //   //si lo que devuelve es true actualizo la cola
@@ -857,7 +875,7 @@ class ClientsCoordinatorController extends GetxController {
 
   // Future<void> filterShowNext() async {
   //   try {
-  //     final LoginController controllerLogin = Get.find<LoginController>();
+  //     final controllerLogin controllerLogin = Get.find<controllerLogin>();
   //     int? idBranch = controllerLogin.branchIdLoggedIn;
   //     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
 
@@ -879,7 +897,7 @@ class ClientsCoordinatorController extends GetxController {
   Future<void> setTimeClock(reservationId, timeClock, detached, clock) async {
     try {
       bool result = await repository.setTimeClock(reservationId, timeClock,
-          detached, clock, loginController.tokenUserLoggedIn);
+          detached, clock, controllerLogin.tokenUserLoggedIn);
       if (result) {
         print('************** true');
         print(
@@ -895,7 +913,7 @@ class ClientsCoordinatorController extends GetxController {
   Future<void> returnClientStatus(int reservationId) async {
     try {
       int result = await repository.returnClientStatus(
-          reservationId, loginController.tokenUserLoggedIn);
+          reservationId, controllerLogin.tokenUserLoggedIn);
       statusClientTemporary = result;
       update();
     } catch (e) {
@@ -914,7 +932,7 @@ class ClientsCoordinatorController extends GetxController {
 
   Future<void> searchForCustomerServices(idCar) async {
     serviceCustomerSelected = await repository.getCustomerServicesList(
-        idCar, loginController.tokenUserLoggedIn);
+        idCar, controllerLogin.tokenUserLoggedIn);
     if (showingServiceClients == false) {
       serviceCustomerSelectedForm = serviceCustomerSelected;
     }
@@ -929,7 +947,7 @@ class ClientsCoordinatorController extends GetxController {
       estado) async {
     //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
     bool result = await repository.storeByType(type, branchId, professionalId,
-        estado, loginController.tokenUserLoggedIn);
+        estado, controllerLogin.tokenUserLoggedIn);
     if (result) {
       print('CORRECTO actualizo el estado correctamente');
       //AQUI ES PÓRQUE INCUMPLIO CON ALGO
@@ -997,7 +1015,7 @@ class ClientsCoordinatorController extends GetxController {
     try {
       print('estoy en :Controller getClientHistory(idClient, idBranch)');
       Map<String, dynamic> resultList = await repository.getClientHistory(
-          idClient, idBranch, loginController.tokenUserLoggedIn);
+          idClient, idBranch, controllerLogin.tokenUserLoggedIn);
       print(resultList);
       //verificando , si entra al if es problemas de coneccion
       if (resultList.containsKey('ConnectionIssues') &&
@@ -1192,7 +1210,7 @@ class ClientsCoordinatorController extends GetxController {
 //
   Future<void> fetchClientsTechnical(idBranch) async {
     Map<String, dynamic> resultList = await repository.getClientsTechnicalList(
-        idBranch, loginController.tokenUserLoggedIn);
+        idBranch, controllerLogin.tokenUserLoggedIn);
     print('111ya entre a buscar inicialmente los clientes del tecnico');
     print(resultList);
     //verificando , si entra al if es problemas de coneccion
@@ -1259,7 +1277,7 @@ class ClientsCoordinatorController extends GetxController {
   Future<bool> sentValueClockDb(int id, int clock) async {
     //si return = false es que no se inserto en la Db
     return await repository.sentValueClockDb(
-        id, clock, loginController.tokenUserLoggedIn);
+        id, clock, controllerLogin.tokenUserLoggedIn);
   }
 
 //
@@ -1270,6 +1288,6 @@ class ClientsCoordinatorController extends GetxController {
   Future<int> getValueClockDb(int id) async {
     //si return = false es que no se inserto en la Db
     return await repository.getValueClockDb(
-        id, loginController.tokenUserLoggedIn);
+        id, controllerLogin.tokenUserLoggedIn);
   }
 }

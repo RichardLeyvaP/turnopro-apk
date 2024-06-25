@@ -1369,6 +1369,7 @@ class ClientsScheduledController extends GetxController {
 
           //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
           clientsScheduledNext = resultList['nextClient'];
+          //si hay un siguiente mandar verificarle si es aleatorio o
           quantityClientAttended = resultList['quantityClientAttended'];
           varClientsWaiting = resultList['varclientswaiting'];
           if (quantityClientAttended == 0) {

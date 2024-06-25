@@ -78,7 +78,7 @@ class ShoppingCartController extends GetxController {
       //primero veo que no halla dado null la llamada
       if (resultList.containsKey('statusCode') &&
           resultList['statusCode'] == null) {
-        loginController.showConnectionError();
+        controllerLogin.showConnectionError();
       } else {
         selectproduct = (resultList['products'] ?? []).cast<ProductModel>();
         selectserviceCart = (resultList['services'] ?? []).cast<ServiceModel>();
@@ -126,6 +126,9 @@ class ShoppingCartController extends GetxController {
       update();
     } catch (e) {
       print('DIO ERROR loadOrderDeleteCar:$e');
+    } finally {
+      controllerLogin.setMakeCallC(true); //avilite las llamadas del timer
+      controllerLogin.setMakeCallE(true);
     }
   }
 

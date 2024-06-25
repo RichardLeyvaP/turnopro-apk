@@ -268,10 +268,20 @@ class LoginController extends GetxController {
   int usserMssQr = -99;
   int contLlamClient = 0;
   bool makeCall = true;
+  bool makeCallC = true;
+  bool makeCallE = true;
   bool makeCallT = true;
 
   setMakeCall(value) {
     makeCall = value;
+  }
+
+  setMakeCallC(value) {
+    makeCallC = value;
+  }
+
+  setMakeCallE(value) {
+    makeCallE = value;
   }
 
   setMakeCallT(value) {

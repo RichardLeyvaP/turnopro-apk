@@ -125,6 +125,8 @@ class _HomePageBodyState extends State<HomePageBody>
       }
     } else //No hay barberos disponibles
     {
+      //aqui mandar el cliente a verificar si es aleatori y cambiar el valor
+      //y poner valor aleatore = 3 diciendo que puede ser llamado por alguien aunque este de primero
       loginController.setCodigoQrValidAnt(1);
       Get.back();
       Get.snackbar(
@@ -934,23 +936,12 @@ class _HomePageBodyState extends State<HomePageBody>
           //voy a ver si hay alguno para reasignarlo
           print(
               'Cliente reasignado correctamente ->ANTES DEL IF clientsScheduledListLengthTail:${clientsScheduledController.clientsScheduledListLength})');
-          print(
-              'Cliente reasignado correctamente ->ANTES DEL IF contLlamClient:${loginController.contLlamClient})');
-          if (clientsScheduledController.clientsScheduledListLength == 0 &&
-              loginController.contLlamClient == 4) {
+
+          if (clientsScheduledController.clientsScheduledListLength == 0) {
             print(
                 'Cliente reasignado correctamente -> (clientsScheduledController.clientsScheduledListLengthTail > 0)');
             clientCord.reasignedClientTottem(loginController.branchIdLoggedIn,
                 loginController.idProfessionalLoggedIn);
-            if (loginController.contLlamClient == 4) {
-              loginController.setContLlamClient(0);
-            }
-          } else {
-            loginController.setContLlamClient(
-                1); //aqui suma 1**controlar que se llame despues de 18 segundos
-          }
-          if (clientsScheduledController.clientsScheduledListLength != 0) {
-            loginController.setContLlamClient(0);
           }
 
           //await Future.delayed(Duration(seconds: 1));
@@ -2331,8 +2322,8 @@ class _HomePageBodyState extends State<HomePageBody>
                                               .reservation_id,
                                           1,
                                           loginController.tokenUserLoggedIn);
-                                  loginController.setMakeCall(true);
                                 }
+                                loginController.setMakeCall(true);
                               } else if (loginController.usserPermissionQr ==
                                   2) {
                                 Get.snackbar(

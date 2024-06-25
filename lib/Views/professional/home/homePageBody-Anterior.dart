@@ -54,17 +54,18 @@ class _HomePageBodyState extends State<HomePageBody>
   bool get wantKeepAlive => true;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-
+  bool _isMounted = true;
 /*
   WebSocketChannel channel = IOWebSocketChannel.connect(
       'wss://api2.simplifies.cl/api/notification-professional?branch_id=15&professional_id=76');*/
 
   Future<void> saveData() async {
     int valueClock = getTimeRemaining();
-    int valueSave = valueClock;
-    await LocalStorage.prefs.setInt('valueClockIni', valueSave);
+    await LocalStorage.prefs.setInt('valueClockIni', valueClock);
+    int hAs = obtenerHoraActualEnSegundos();
+    LocalStorage.prefs.setInt('valueHoraAnt', hAs);
 
-    print('--este es el value del clok... ->Value guardado:$valueSave');
+    print('--este es el value del clok... ->Value guardado:$valueClock');
   }
 
   int getTimeRemaining() {
@@ -88,7 +89,7 @@ class _HomePageBodyState extends State<HomePageBody>
     print('se hacompletado los 3 min-ESTOY EN reasigClient');
     int idProfDisp = await professionalDisp(reservationId);
     if (idProfDisp != 0) {
-      // entonces reasigno
+      // entonces reasignoP
       Get.dialog(
         const Center(
           child: Material(
@@ -124,6 +125,8 @@ class _HomePageBodyState extends State<HomePageBody>
       }
     } else //No hay barberos disponibles
     {
+      //aqui mandar el cliente a verificar si es aleatori y cambiar el valor
+      //y poner valor aleatore = 3 diciendo que puede ser llamado por alguien aunque este de primero
       loginController.setCodigoQrValidAnt(1);
       Get.back();
       Get.snackbar(
@@ -160,19 +163,27 @@ class _HomePageBodyState extends State<HomePageBody>
   }
 
   reiniciateClock() {
+    print('verificando si esta activo:Aqui reiniciateClock()');
     LocalStorage.prefs.setBool('convivenciaIncumplida', true);
     LocalStorage.prefs.setInt('valueClockIni', 180);
     clientsScheduledController.setTotalTimeInitial(180);
     LocalStorage.prefs.setBool('valueClockActiv', false);
 
     // Reiniciar la animación
-    clientsScheduledController.animationControllerInitial!.reset();
-    clientsScheduledController.animationControllerInitial!.forward();
+    // Reiniciar y avanzar la animación existente
+    clientsScheduledController.animationControllerInitial!
+      ..duration = Duration(seconds: 180)
+      ..reset()
+      ..forward();
+
+    // clientsScheduledController.animationControllerInitial!.reset();
+    // clientsScheduledController.animationControllerInitial!.forward();
   }
 
   @override
   void initState() {
     super.initState();
+
     print('fff12 antes del channel.stream');
     /* channel.stream.listen((message) {
       // Parsear el mensaje JSON recibido
@@ -203,10 +214,10 @@ class _HomePageBodyState extends State<HomePageBody>
 
     //INICIALIZANDO CONTROLES DE LOS RELOJES
 
-    clientsScheduledController.animationControllerInitial = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
-    );
+    // clientsScheduledController.animationControllerInitial = AnimationController(
+    //   vsync: this,
+    //   duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
+    // );
 
     //clientsScheduledController.animationControllerInitial!.forward();
     //clientsScheduledController.animationControllerInitial!.forward();
@@ -225,42 +236,6 @@ class _HomePageBodyState extends State<HomePageBody>
 //           //ver si hay primero profesionales disponible
 //           // si no hay no llamar al metodo
 //           // aqui llamar al metodo
-//           if (clientsScheduledController.clientsScheduledNext != null) {
-//             print('se hacompletado los 3 min-HAY CLIENTE POR ATENDER');
-//             int reservationId = clientsScheduledController
-//                 .clientsScheduledNext!.reservation_id!;
-//             int clientId =
-//                 clientsScheduledController.clientsScheduledNext!.client_id!;
-//             reasigClient(reservationId, clientId);
-//           }
-
-//           // reasigClient(int reservationId, int clientId);
-
-//           if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
-//                   0 &&
-//               loginController.usserPermissionQr == 1 &&
-//               clientsScheduledController.clientsScheduledListLength > 0) {
-//             print('--este es el value del clok-FINALIZANDO*****22');
-//             print(
-//                 'inserto correctamente ********** .noncomplianceProfessional[]');
-//             //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
-//             String type = 'Tiempo';
-//             int branchId = loginController.branchIdLoggedIn!;
-//             int professionalId = loginController.idProfessionalLoggedIn!;
-//             int estado = 0; //es que incumplió
-//             clientsScheduledController.changeNoncomplianceP(
-//                 type, branchId, professionalId, estado);
-//             //aqui llamar e insertar en las notificacione sque incumplio esta convivencia
-//             notiController.storeNotification(
-//                 'Incumplimiento de convivencia',
-//                 branchId,
-//                 professionalId,
-//                 'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado',
-//                 'Barbero');
-// //todo notificate
-//             // scheduleNotification('Incumplimiento de convivencia',
-//             //     'Tu tiempo de espera de 3 minutos');
-//           }
 
 //           // LocalStorage.prefs.setBool('convivenciaIncumplida', true);
 //           LocalStorage.prefs.setInt('valueClockIni', 180);
@@ -285,52 +260,21 @@ class _HomePageBodyState extends State<HomePageBody>
 //       });
 //     }
 //todo fin codigoanterior
-
-//todo inicio codigo-nuevo
-
-    // A este cargo no se le cambia la regla de convivencia del tiempo
-
     clientsScheduledController.animationControllerInitial = AnimationController(
       vsync: this,
       duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
     );
 
+    // Agregar listener solo una vez
     clientsScheduledController.animationControllerInitial!
         .addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        print('Se ha completado los 3 minutos');
+        print('Se ha completado los 3-La animación se ha completado-SIIIII');
+        reiniciateClock();
 
-        if (loginController.chargeUserLoggedIn != "Barbero y Encargado") {
-          //esta convivencia para el Barbero y Encargado no va incluida
-
-          if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
-                  0 &&
-              loginController.usserPermissionQr == 1 &&
-              clientsScheduledController.clientsScheduledListLength > 0) {
-            print('--Este es el value del clock - FINALIZANDO*****22');
-            print(
-                'Inserto correctamente ********** .noncomplianceProfessional[]');
-
-            // Cada vez que entre aquí incumplió con el tiempo de llamar al cliente antes de 3 minutos
-            String type = 'Tiempo';
-            int branchId = loginController.branchIdLoggedIn!;
-            int professionalId = loginController.idProfessionalLoggedIn!;
-            int estado = 0; // Es que incumplió
-            clientsScheduledController.changeNoncomplianceP(
-                type, branchId, professionalId, estado);
-
-            // Aquí llamar e insertar en las notificaciones que incumplió esta convivencia
-            notiController.storeNotification(
-                'Incumplimiento de convivencia',
-                branchId,
-                professionalId,
-                'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado',
-                'Barbero');
-          }
-        }
-        // Verificar si hay alguien en cola para reasignarlo
+        //AQUI SI HAY QUE REASIGNAR SE REASIGNA
         if (clientsScheduledController.clientsScheduledNext != null) {
-          print('Se ha completado los 3 minutos - HAY CLIENTE POR ATENDER');
+          print('se hacompletado los 3 min-HAY CLIENTE POR ATENDER');
           int reservationId =
               clientsScheduledController.clientsScheduledNext!.reservation_id!;
           int clientId =
@@ -338,17 +282,118 @@ class _HomePageBodyState extends State<HomePageBody>
           reasigClient(reservationId, clientId);
         }
 
-        reiniciateClock();
-        print(
-            '--Este es el value del clock - FINALIZANDO*****33: ${clientsScheduledController.totalTimeInitial}');
+        // reasigClient(int reservationId, int clientId);
+        if (loginController.chargeUserLoggedIn != "Barbero y Encargado") {
+          if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
+                  0 &&
+              loginController.usserPermissionQr == 1 &&
+              clientsScheduledController.clientsScheduledListLength > 0) {
+            print('--este es el value del clok-FINALIZANDO*****22');
+            print(
+                'inserto correctamente ********** .noncomplianceProfessional[]');
+            //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
+            String type = 'Tiempo';
+            int branchId = loginController.branchIdLoggedIn!;
+            int professionalId = loginController.idProfessionalLoggedIn!;
+            int estado = 0; //es que incumplió
+            clientsScheduledController.changeNoncomplianceP(
+                type, branchId, professionalId, estado);
+            //aqui llamar e insertar en las notificacione sque incumplio esta convivencia
+            notiController.storeNotification(
+                'Incumplimiento de convivencia',
+                branchId,
+                professionalId,
+                'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado',
+                'Barbero');
+//todo notificate
+
+            LocalStorage.prefs.setInt('valueClockIni', 180);
+            clientsScheduledController.setTotalTimeInitial(180);
+            LocalStorage.prefs.setBool('valueClockActiv', false);
+            // La animación ha llegado al final, reiniciar
+
+            clientsScheduledController.animationControllerInitial!.reset();
+            clientsScheduledController.animationControllerInitial!.forward();
+          }
+        } //FIN DEL IF DE BARBERO ENCARGADO
       }
     });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      print('Se ha completado los 3-Renderizado de la pagina');
+
+      _timer3 = Timer.periodic(Duration(seconds: 2), (timer) async {
+        print('Se ha completado los 3 minutos-Timer-Chequeando');
+        if (clientsScheduledController.animationControllerInitial != null &&
+            clientsScheduledController
+                .animationControllerInitial!.isAnimating) {
+          // Aquí puedes realizar alguna acción periódica si es necesario
+          print('Se ha completado los 3 minutos-esta activo el reloj');
+        }
+        /*
+
+          if (loginController.chargeUserLoggedIn != "Barbero y Encargado") {
+            //esta convivencia para el Barbero y Encargado no va incluida
+
+            if (clientsScheduledController
+                        .noncomplianceProfessional['Tiempo'] !=
+                    0 &&
+                loginController.usserPermissionQr == 1 &&
+                clientsScheduledController.clientsScheduledListLength > 0) {
+              print('--Este es el value del clock - FINALIZANDO*****22');
+              print(
+                  'Inserto correctamente ********** .noncomplianceProfessional[]');
+
+              // Cada vez que entre aquí incumplió con el tiempo de llamar al cliente antes de 3 minutos
+              String type = 'Tiempo';
+              int branchId = loginController.branchIdLoggedIn!;
+              int professionalId = loginController.idProfessionalLoggedIn!;
+              int estado = 0; // Es que incumplió
+              clientsScheduledController.changeNoncomplianceP(
+                  type, branchId, professionalId, estado);
+
+              // Aquí llamar e insertar en las notificaciones que incumplió esta convivencia
+              notiController.storeNotification(
+                  'Incumplimiento de convivencia',
+                  branchId,
+                  professionalId,
+                  'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado',
+                  'Barbero');
+            }
+          }
+          // Verificar si hay alguien en cola para reasignarlo
+          if (clientsScheduledController.clientsScheduledNext != null) {
+            print('Se ha completado los 3 minutos - HAY CLIENTE POR ATENDER');
+            int reservationId = clientsScheduledController
+                .clientsScheduledNext!.reservation_id!;
+            int clientId =
+                clientsScheduledController.clientsScheduledNext!.client_id!;
+            reasigClient(reservationId, clientId);
+            print(
+                'Se ha completado los 3 minutos-Entrando a if (clientsScheduledController.clientsScheduledNext != null)');
+          }
+
+
+*/
+      });
+      clientsScheduledController.animationControllerInitial!.forward();
+
+      if (loginController.isLoggingInCharge == true) {
+        print('cargando aqui-15');
+        await loginController.setLoggingInCharge(false, 'buildComponent-1114');
+      }
+    });
+//todo inicio codigo-nuevo
+    // clientsScheduledController.animationControllerInitial = AnimationController(
+    //   vsync: this,
+    //   duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
+    // );
+    // A este cargo no se le cambia la regla de convivencia del tiempo
 
 //todo fin codigo-nuevo
 
     clientsScheduledController.animationController1 = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 10),
+      duration: const Duration(seconds: 50),
     );
     clientsScheduledController.animationController2 = AnimationController(
       vsync: this,
@@ -366,73 +411,6 @@ class _HomePageBodyState extends State<HomePageBody>
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       llamadasTimer1();
-      _timer2 = Timer.periodic(Duration(seconds: 2), (timer) async {
-        print(
-            'Esto se ejecuta 2 segundos después de renderizar el cuadro--nuevo');
-        if (getTimeRemaining() < 3) {
-          // aaqui cancelar hasta que vea si rasigna o no
-          loginController.setCodigoQrValidAnt(0); //10 es en espera
-        }
-        if (loginController.idProfessionalLoggedIn != null &&
-            loginController.branchIdLoggedIn != null &&
-            (loginController.chargeUserLoggedIn == "Barbero" ||
-                (loginController.chargeUserLoggedIn ==
-                    "Barbero y Encargado"))) {
-          verifyingClockTimeActive();
-        }
-        if (loginController.segundoPlano == 3) {
-          print('cargando aqui-11');
-          print('..segundoPlano siii APAGANDO LLAMADA');
-          loginController.getSegundoPlano(1);
-        }
-        if (clientsScheduledController.activeModifyTime == true) {
-          print('cargando aqui-12');
-          //AQUI GARANTIZO QUE AUMENTE EL VALOR DEL RELOJ UNA SOLA VEZ Y QUE INSERTE EN LA DB 1 SOLA VEZ
-          clientsScheduledController.setActiveModifyTime(false);
-        }
-        if (clientsScheduledController.activeModifyTimeRest == true) {
-          print('cargando aqui-13');
-          //AQUI GARANTIZO QUE disminuya EL VALOR DEL RELOJ UNA SOLA VEZ Y QUE INSERTE EN LA DB 1 SOLA VEZ
-          clientsScheduledController.setActiveModifyTimeRest(false);
-          clientsScheduledController.clearModifyTimeSpecificRest();
-        }
-
-        if (loginController.ejecutadoEvent == false) {
-          print('cargando aqui-14');
-          // Se ejecutará después de que se haya construido el widget
-          //define que tipo de saludo dar dependiendo de la hora
-
-          if (clientsScheduledController.closeIesperado == true) {
-            print('-*-*-*-**>>>> si fui un sierre inesperado');
-            if (clientsScheduledController.item.isNotEmpty) {
-              loginController.setCodigoQrValid(1);
-            } else if (loginController.usserPermissionQr == -99 &&
-                loginController.usserPermissionQr == 0) {
-              loginController.setCodigoQrValid(null);
-              print(
-                  'id de mi puesto de trabajo 1 no esta en ningun puesto:null');
-            }
-          } else {
-            print('-*-*-*-**>>>> NOOO fui un sierre inesperado');
-          }
-          if (loginController.isLoggingInCharge == true) {
-            await loginController.setLoggingInCharge(
-                false, 'no se esta usando1');
-          }
-
-          clientsScheduledController.setCloseIesperado(false);
-          clientsScheduledController.clockChanges(false);
-          loginController.ejecutado_(true);
-          clientsScheduledController.modifingTimeClose();
-        }
-        clientsScheduledController.setCloseIesperadoLogin(false);
-        if (loginController.isLoggingInCharge == true) {
-          print('cargando aqui-15');
-          await loginController.setLoggingInCharge(false, 'no se esta usando2');
-        }
-
-        clientsScheduledController.setCloseIesperado(false);
-      });
 
       // print(
     });
@@ -447,8 +425,10 @@ class _HomePageBodyState extends State<HomePageBody>
     clientsScheduledController.animationController3!.dispose();
     clientsScheduledController.animationController4!.dispose();
     // channel.sink.close();
-
+    _isMounted = false;
     _timer1?.cancel();
+    _timer2?.cancel();
+    _timer3?.cancel();
 
     super.dispose();
   }
@@ -467,7 +447,9 @@ class _HomePageBodyState extends State<HomePageBody>
       print('estoy reiniciando el reloj inicial');
       bool isAnimating =
           clientsScheduledController.animationControllerInitial!.isAnimating;
-      if (!isAnimating) {
+      if (!isAnimating &&
+          clientsScheduledController.animationControllerInitial != null &&
+          _isMounted) {
         print('estoy reiniciando el reloj inicial--NO ESTABA ANIMADO');
 
         clientsScheduledController.animationControllerInitial!.reset();
@@ -606,7 +588,7 @@ class _HomePageBodyState extends State<HomePageBody>
                     //     'El tiempo de servicio del cliente $nameClient se agotará');
                   } else {
                     print(
-                        'Mandar notificacionq ue el tiempo -***hrActua:$currentTime y acaba a :$hrAcaba3min***-');
+                        'Mandar notificacionq ue el tiempo -***hrActua:-(1):$currentTime y acaba a :$hrAcaba3min***-');
                   }
                 } else {
                   print(
@@ -744,7 +726,7 @@ class _HomePageBodyState extends State<HomePageBody>
             }
           }
         } else {
-          print('object-2 reloj 2');
+          print('object-2 reloj 2**');
         }
       } else {
         clientsScheduledController.animationController2!.stop();
@@ -852,7 +834,7 @@ class _HomePageBodyState extends State<HomePageBody>
               if (clientsScheduledController.animationController4 != null) {
                 // Obtener la hora actual
                 String currentTime = getCurrentTime();
-                print('La hora actual es: $currentTime');
+                print('La hora actual es: 4: $currentTime');
                 int tiempoMin = loginController.secondsToMinutes(
                     clientsScheduledController.timeClientsAttended4!);
 
@@ -927,166 +909,201 @@ class _HomePageBodyState extends State<HomePageBody>
 
   Timer? _timer1;
   Timer? _timer2;
+  Timer? _timer3;
   int initialValue = 10;
+
   llamadasTimer1() {
     _timer1 = //notificaciones
         Timer.periodic(const Duration(seconds: 9), (Timer timer) async {
       saveData();
-      clientsScheduledController.filterShowNext();
-      String teleClient = '';
-      if (clientsScheduledController.clientsScheduledNext != null) {
-        teleClient =
-            clientsScheduledController.clientsScheduledNext!.telefone_client!;
-        print(
-            'EL telefono del que le sigue en la cola es:TELEFONO:$teleClient');
-      }
-
-      print('llamada timer en 10 segundos obtenerHoraActualEnSegundos:');
-      if (loginController.usserPermissionQr != null &&
-          loginController.idProfessionalLoggedIn != null &&
-          loginController.branchIdLoggedIn != null &&
-          (loginController.chargeUserLoggedIn == "Barbero" ||
-              (loginController.chargeUserLoggedIn == "Barbero y Encargado"))) {
-        //await Future.delayed(Duration(seconds: 1));
-        //Buscar notificaciones
-        //variables
-        int idBranch = loginController.branchIdLoggedIn!;
-        int idProfe = loginController.idProfessionalLoggedIn!;
-        String type = 'Barbero';
-        String msj = 'llamadasTimer1';
-
-        notiController.professionalBranchNotifQueque(
-            idBranch, idProfe, type, msj, loginController.tokenUserLoggedIn);
-
-        //lo que llamaba el timer 2
-        print('llamada timer 2 - 11segundos');
-        if (loginController.idProfessionalLoggedIn != null &&
+      if (loginController.makeCall == true) {
+        print('llamada timer en 10 segundos obtenerHoraActualEnSegundos:');
+        if (loginController.usserPermissionQr != null &&
+            loginController.idProfessionalLoggedIn != null &&
             loginController.branchIdLoggedIn != null &&
             (loginController.chargeUserLoggedIn == "Barbero" ||
                 (loginController.chargeUserLoggedIn ==
                     "Barbero y Encargado"))) {
-          //guardar datos de los relojes en la db
-          await clientsScheduledController.upadateVariablesValueTimers();
-          //aqui en este actualiza los tiempos de los relojes
-
-          print(
-              'activando el Clock - 1 lenght - clientsScheduledList:${clientsScheduledController.clientsScheduledList.length}');
-          for (var i = 0;
-              i < clientsScheduledController.clientsScheduledList.length;
-              i++) {
-            int clock = 0;
-            if (clientsScheduledController.clientsScheduledList[i].attended ==
-                11) {
-              int reservationId = clientsScheduledController
-                  .clientsScheduledList[i].reservation_id!;
-              clock = await clientsScheduledController
-                  .getValueClockDb(reservationId);
-              if (clock == 1) {
-                print('activando el Clock - 1');
-                clientsScheduledController.animationController1!.forward();
-                clientsScheduledController.acceptOrRejectClient(
-                    reservationId, 111, loginController.tokenUserLoggedIn);
-                clientsScheduledController.pauseResumeClock((clock - 1), -99);
-              }
-              if (clock == 2) {
-                print('activando el Clock - 2');
-                clientsScheduledController.animationController2!.forward();
-                clientsScheduledController.acceptOrRejectClient(
-                    reservationId, 111, loginController.tokenUserLoggedIn);
-                clientsScheduledController.pauseResumeClock((clock - 1), -99);
-              }
-              if (clock == 3) {
-                print('activando el Clock - 3');
-                clientsScheduledController.animationController3!.forward();
-                clientsScheduledController.acceptOrRejectClient(
-                    reservationId, 111, loginController.tokenUserLoggedIn);
-                clientsScheduledController.pauseResumeClock((clock - 1), -99);
-              }
-              if (clock == 4) {
-                print('activando el Clock - 4');
-                clientsScheduledController.animationController4!.forward();
-                clientsScheduledController.acceptOrRejectClient(
-                    reservationId, 111, loginController.tokenUserLoggedIn);
-                clientsScheduledController.pauseResumeClock((clock - 1), -99);
-              }
-            } //fin del if
+          clientsScheduledController.filterShowNext();
+          String teleClient = '';
+          if (clientsScheduledController.clientsScheduledNext != null) {
+            teleClient = clientsScheduledController
+                .clientsScheduledNext!.telefone_client!;
+            print(
+                'EL telefono del que le sigue en la cola es:TELEFONO:$teleClient');
           }
-        }
-        //lo que llamaba el timer 2
+          //pregunto si no tinee a nadie en cola
+          //voy a ver si hay alguno para reasignarlo
+          print(
+              'Cliente reasignado correctamente ->ANTES DEL IF clientsScheduledListLengthTail:${clientsScheduledController.clientsScheduledListLength})');
+          print(
+              'Cliente reasignado correctamente ->ANTES DEL IF contLlamClient:${loginController.contLlamClient})');
+          if (clientsScheduledController.clientsScheduledListLength == 0 &&
+              loginController.contLlamClient == 4) {
+            print(
+                'Cliente reasignado correctamente -> (clientsScheduledController.clientsScheduledListLengthTail > 0)');
+            clientCord.reasignedClientTottem(loginController.branchIdLoggedIn,
+                loginController.idProfessionalLoggedIn);
+            if (loginController.contLlamClient == 4) {
+              loginController.setContLlamClient(0);
+            }
+          } else {
+            loginController.setContLlamClient(
+                1); //aqui suma 1**controlar que se llame despues de 18 segundos
+          }
+          if (clientsScheduledController.clientsScheduledListLength != 0) {
+            loginController.setContLlamClient(0);
+          }
 
-        //ESTO ES LO QUE LLAMABA EL TIMER
-        if (loginController.idProfessionalLoggedIn != null &&
-            loginController.branchIdLoggedIn != null &&
-            (loginController.chargeUserLoggedIn == "Barbero" ||
-                (loginController.chargeUserLoggedIn ==
-                    "Barbero y Encargado"))) {
-          //en este caso son 3 minutos que esta definido en el controlador
-          //aqui verifico si se esta acabando algun servico para mandar una notificacion
-          //  await Future.delayed(Duration(seconds: 1));
-          verifyingClockTime(clientsScheduledController,
-              clientsScheduledController.endingTime);
-        }
-        //ESTO ES LO QUE LLAMABA EL TIMER
+          //await Future.delayed(Duration(seconds: 1));
+          //Buscar notificaciones
+          //variables
+          int idBranch = loginController.branchIdLoggedIn!;
+          int idProfe = loginController.idProfessionalLoggedIn!;
+          String type = 'Barbero';
+          String msj = 'llamadasTimer1';
 
-        //ESTO ES LO QUE LLAMABA EL TIMER 3
-        if (loginController.idProfessionalLoggedIn != null &&
-            loginController.branchIdLoggedIn != null &&
-            (loginController.chargeUserLoggedIn == "Barbero" ||
-                (loginController.chargeUserLoggedIn ==
-                    "Barbero y Encargado"))) {
-          //en este caso son 3 minutos que esta definido en el controlador
-          //aqui verifico si se esta acabando algun servico para mandar una notificacion
-          //
-          // await Future.delayed(Duration(seconds: 2));
+          notiController.professionalBranchNotifQueque(
+              idBranch, idProfe, type, msj, loginController.tokenUserLoggedIn);
+          if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
+            await notiController.fetchNotificationList(
+                loginController.branchIdLoggedIn,
+                loginController.idProfessionalLoggedIn,
+                'Encargado',
+                'Cart home',
+                loginController.tokenUserLoggedIn);
+          }
 
-          if ((clientsScheduledController.varClientsWaiting == true) &&
-              (loginController.usserPermissionQr == 1)) {
-            print('esteeeeee se cumplio que puede atender ..aqui entrandoya');
-            if (clientsScheduledController
-                    .animationControllerInitial!.isAnimating &&
-                clientsScheduledController.cantClientWait !=
-                    clientsScheduledController.clientsScheduledListLength) {
-              // La animación está activa (en progreso)
-              if (clientsScheduledController.contClientsWaiting == 10) {
-                print('esteeeeee varClientsWaiting Mande la notificacion ya');
-                //aqui llamar e insertar en las notificaciones
-                notiController.storeNotification(
-                    'Clientes en cola',
-                    loginController.branchIdLoggedIn,
-                    loginController.idProfessionalLoggedIn,
-                    'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!',
-                    'Barbero');
-                //todo notificate
-                // scheduleNotification(
-                //     '!Alerta', 'Recuerda que tienes clientes en cola');
-                //para controlar que con este cliente solo le avise una vez
-                clientsScheduledController.setContClientsWaiting(20);
-                clientsScheduledController.setcantClientWait(
-                    clientsScheduledController.clientsScheduledListLength);
-              }
-              if (clientsScheduledController.contClientsWaiting == 10) {
-                print(
-                    'entando en 10 segundos aqui para insertar el tiempo si hubiera reloj activo');
-              } else if (clientsScheduledController.contClientsWaiting ==
-                  100) //si llega a 100 mando que sea 20 de nuevo para q no pase de los valores del entero y tener un control mejor de el
-              {
-                clientsScheduledController.setContClientsWaiting(20);
+          //lo que llamaba el timer 2
+          print('llamada timer 2 - 11segundos');
+          if (loginController.idProfessionalLoggedIn != null &&
+              loginController.branchIdLoggedIn != null &&
+              (loginController.chargeUserLoggedIn == "Barbero" ||
+                  (loginController.chargeUserLoggedIn ==
+                      "Barbero y Encargado"))) {
+            //guardar datos de los relojes en la db
+            await clientsScheduledController.upadateVariablesValueTimers();
+            //aqui en este actualiza los tiempos de los relojes
+
+            print(
+                'activando el Clock - 1 lenght - clientsScheduledList:${clientsScheduledController.clientsScheduledList.length}');
+            for (var i = 0;
+                i < clientsScheduledController.clientsScheduledList.length;
+                i++) {
+              int clock = 0;
+              if (clientsScheduledController.clientsScheduledList[i].attended ==
+                  11) {
+                int reservationId = clientsScheduledController
+                    .clientsScheduledList[i].reservation_id!;
+                clock = await clientsScheduledController
+                    .getValueClockDb(reservationId);
+                if (clock == 1) {
+                  print('activando el Clock - 1');
+                  clientsScheduledController.animationController1!.forward();
+                  clientsScheduledController.acceptOrRejectClient(
+                      reservationId, 111, loginController.tokenUserLoggedIn);
+                  clientsScheduledController.pauseResumeClock((clock - 1), -99);
+                }
+                if (clock == 2) {
+                  print('activando el Clock - 2');
+                  clientsScheduledController.animationController2!.forward();
+                  clientsScheduledController.acceptOrRejectClient(
+                      reservationId, 111, loginController.tokenUserLoggedIn);
+                  clientsScheduledController.pauseResumeClock((clock - 1), -99);
+                }
+                if (clock == 3) {
+                  print('activando el Clock - 3');
+                  clientsScheduledController.animationController3!.forward();
+                  clientsScheduledController.acceptOrRejectClient(
+                      reservationId, 111, loginController.tokenUserLoggedIn);
+                  clientsScheduledController.pauseResumeClock((clock - 1), -99);
+                }
+                if (clock == 4) {
+                  print('activando el Clock - 4');
+                  clientsScheduledController.animationController4!.forward();
+                  clientsScheduledController.acceptOrRejectClient(
+                      reservationId, 111, loginController.tokenUserLoggedIn);
+                  clientsScheduledController.pauseResumeClock((clock - 1), -99);
+                }
+              } //fin del if
+            }
+          }
+          //lo que llamaba el timer 2
+
+          //ESTO ES LO QUE LLAMABA EL TIMER
+          if (loginController.idProfessionalLoggedIn != null &&
+              loginController.branchIdLoggedIn != null &&
+              (loginController.chargeUserLoggedIn == "Barbero" ||
+                  (loginController.chargeUserLoggedIn ==
+                      "Barbero y Encargado"))) {
+            //en este caso son 3 minutos que esta definido en el controlador
+            //aqui verifico si se esta acabando algun servico para mandar una notificacion
+            //  await Future.delayed(Duration(seconds: 1));
+            verifyingClockTime(clientsScheduledController,
+                clientsScheduledController.endingTime);
+          }
+          //ESTO ES LO QUE LLAMABA EL TIMER
+
+          //ESTO ES LO QUE LLAMABA EL TIMER 3
+          if (loginController.idProfessionalLoggedIn != null &&
+              loginController.branchIdLoggedIn != null &&
+              (loginController.chargeUserLoggedIn == "Barbero" ||
+                  (loginController.chargeUserLoggedIn ==
+                      "Barbero y Encargado"))) {
+            //en este caso son 3 minutos que esta definido en el controlador
+            //aqui verifico si se esta acabando algun servico para mandar una notificacion
+            //
+            // await Future.delayed(Duration(seconds: 2));
+
+            if ((clientsScheduledController.varClientsWaiting == true) &&
+                (loginController.usserPermissionQr == 1)) {
+              print('esteeeeee se cumplio que puede atender ..aqui entrandoya');
+              if (clientsScheduledController
+                      .animationControllerInitial!.isAnimating &&
+                  clientsScheduledController.cantClientWait !=
+                      clientsScheduledController.clientsScheduledListLength) {
+                // La animación está activa (en progreso)
+                if (clientsScheduledController.contClientsWaiting == 10) {
+                  print('esteeeeee varClientsWaiting Mande la notificacion ya');
+                  //aqui llamar e insertar en las notificaciones
+                  notiController.storeNotification(
+                      'Clientes en cola',
+                      loginController.branchIdLoggedIn,
+                      loginController.idProfessionalLoggedIn,
+                      'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!',
+                      'Barbero');
+                  //todo notificate
+                  // scheduleNotification(
+                  //     '!Alerta', 'Recuerda que tienes clientes en cola');
+                  //para controlar que con este cliente solo le avise una vez
+                  clientsScheduledController.setContClientsWaiting(20);
+                  clientsScheduledController.setcantClientWait(
+                      clientsScheduledController.clientsScheduledListLength);
+                }
+                if (clientsScheduledController.contClientsWaiting == 10) {
+                  print(
+                      'entando en 10 segundos aqui para insertar el tiempo si hubiera reloj activo');
+                } else if (clientsScheduledController.contClientsWaiting ==
+                    100) //si llega a 100 mando que sea 20 de nuevo para q no pase de los valores del entero y tener un control mejor de el
+                {
+                  clientsScheduledController.setContClientsWaiting(20);
+                } else {
+                  clientsScheduledController
+                      .setContClientsWaiting(-91119); //sumo 1
+                }
               } else {
                 clientsScheduledController
-                    .setContClientsWaiting(-91119); //sumo 1
+                    .setContClientsWaiting(-90009); //inicializo nuevamente a 0
+                // La animación está detenida
               }
             } else {
               clientsScheduledController
                   .setContClientsWaiting(-90009); //inicializo nuevamente a 0
-              // La animación está detenida
             }
-          } else {
-            clientsScheduledController
-                .setContClientsWaiting(-90009); //inicializo nuevamente a 0
+            //
           }
-          //
+          //ESTO ES LO QUE LLAMABA EL TIMER 3
         }
-        //ESTO ES LO QUE LLAMABA EL TIMER 3
       }
     });
   }
@@ -1100,6 +1117,69 @@ class _HomePageBodyState extends State<HomePageBody>
     //AQUI REVISO SI HAY ALGUNO POR ACTIVAR LO ACTIVO
 
     super.build(context);
+
+    _timer2 = Timer.periodic(Duration(seconds: 5), (timer) async {
+      print(
+          'Esto se ejecuta 2 segundos después de renderizar el cuadro--nuevo');
+
+      if (getTimeRemaining() < 3) {
+        // aaqui cancelar hasta que vea si rasigna o no
+        loginController.setCodigoQrValidAnt(0); //10 es en espera
+      }
+      if (loginController.idProfessionalLoggedIn != null &&
+          loginController.branchIdLoggedIn != null &&
+          (loginController.chargeUserLoggedIn == "Barbero" ||
+              (loginController.chargeUserLoggedIn == "Barbero y Encargado"))) {
+        verifyingClockTimeActive();
+      }
+      if (loginController.segundoPlano == 3) {
+        print('cargando aqui-11');
+        print('..segundoPlano siii APAGANDO LLAMADA');
+        loginController.getSegundoPlano(1);
+      }
+      if (clientsScheduledController.activeModifyTime == true) {
+        print('cargando aqui-12');
+        //AQUI GARANTIZO QUE AUMENTE EL VALOR DEL RELOJ UNA SOLA VEZ Y QUE INSERTE EN LA DB 1 SOLA VEZ
+        clientsScheduledController.setActiveModifyTime(false);
+      }
+      if (clientsScheduledController.activeModifyTimeRest == true) {
+        print('cargando aqui-13');
+        //AQUI GARANTIZO QUE disminuya EL VALOR DEL RELOJ UNA SOLA VEZ Y QUE INSERTE EN LA DB 1 SOLA VEZ
+        clientsScheduledController.setActiveModifyTimeRest(false);
+        clientsScheduledController.clearModifyTimeSpecificRest();
+      }
+
+      if (loginController.ejecutadoEvent == false) {
+        print('cargando aqui-14');
+        // Se ejecutará después de que se haya construido el widget
+        //define que tipo de saludo dar dependiendo de la hora
+
+        if (clientsScheduledController.closeIesperado == true) {
+          print('-*-*-*-**>>>> si fui un sierre inesperado');
+          if (clientsScheduledController.item.isNotEmpty) {
+            loginController.setCodigoQrValid(1);
+          } else if (loginController.usserPermissionQr == -99 &&
+              loginController.usserPermissionQr == 0) {
+            loginController.setCodigoQrValid(null);
+            print('id de mi puesto de trabajo 1 no esta en ningun puesto:null');
+          }
+        } else {
+          print('-*-*-*-**>>>> NOOO fui un sierre inesperado');
+        }
+        if (loginController.isLoggingInCharge == true) {
+          await loginController.setLoggingInCharge(
+              false, 'buildComponent-1103');
+        }
+
+        clientsScheduledController.setCloseIesperado(false);
+        clientsScheduledController.clockChanges(false);
+        loginController.ejecutado_(true);
+        clientsScheduledController.modifingTimeClose();
+      }
+      clientsScheduledController.setCloseIesperadoLogin(false);
+
+      clientsScheduledController.setCloseIesperado(false);
+    });
 
     return GetBuilder<ClientsScheduledController>(
         builder: (clientsScheduledController) {
@@ -1125,7 +1205,14 @@ class _HomePageBodyState extends State<HomePageBody>
           if (clientsScheduledController.item[i] == 0) {
             animationCont[0]!.duration =
                 Duration(seconds: animationCont[0]!.duration!.inSeconds);
+            //ver si esta con el tecnico ponerlo parado sin descontar
             animationCont[0]!.forward();
+            //verificar si esta con el tecnico y detenerlo
+            if (clientsScheduledController.clientsAttended1!.attended == 4 ||
+                clientsScheduledController.clientsAttended1!.attended == 5 ||
+                clientsScheduledController.clientsAttended1!.attended == 33) {
+              animationCont[0]!.stop();
+            }
 
             print(
                 'La aplicación se activeClock() {--1 ${animationCont[0]!.duration!.inSeconds}');
@@ -1133,18 +1220,36 @@ class _HomePageBodyState extends State<HomePageBody>
             animationCont[1]!.duration =
                 Duration(seconds: animationCont[1]!.duration!.inSeconds);
             animationCont[1]!.forward();
+            //verificar si esta con el tecnico y detenerlo
+            if (clientsScheduledController.clientsAttended2!.attended == 4 ||
+                clientsScheduledController.clientsAttended2!.attended == 5 ||
+                clientsScheduledController.clientsAttended2!.attended == 33) {
+              animationCont[1]!.stop();
+            }
             print(
                 'La aplicación se activeClock() {--2 ${animationCont[1]!.duration!.inSeconds}');
           } else if (clientsScheduledController.item[i] == 2) {
             animationCont[2]!.duration =
                 Duration(seconds: animationCont[2]!.duration!.inSeconds);
             animationCont[2]!.forward();
+            //verificar si esta con el tecnico y detenerlo
+            if (clientsScheduledController.clientsAttended3!.attended == 4 ||
+                clientsScheduledController.clientsAttended3!.attended == 5 ||
+                clientsScheduledController.clientsAttended3!.attended == 33) {
+              animationCont[2]!.stop();
+            }
             print(
                 'La aplicación se activeClock() {--3 ${animationCont[2]!.duration!.inSeconds}');
           } else if (clientsScheduledController.item[i] == 3) {
             animationCont[3]!.duration =
                 Duration(seconds: animationCont[3]!.duration!.inSeconds);
             animationCont[3]!.forward();
+            //verificar si esta con el tecnico y detenerlo
+            if (clientsScheduledController.clientsAttended4!.attended == 4 ||
+                clientsScheduledController.clientsAttended4!.attended == 5 ||
+                clientsScheduledController.clientsAttended4!.attended == 33) {
+              animationCont[3]!.stop();
+            }
             print(
                 'La aplicación se activeClock() {--4 ${animationCont[3]!.duration!.inSeconds}');
           }
@@ -1216,6 +1321,7 @@ class _HomePageBodyState extends State<HomePageBody>
                 'La aplicación se activeClock() {--5 ${clientsScheduledController.timeClientsAttended4!}');
           }
         }
+        //llamar aqui y poner en false
       }
 
       /*   if (loginController.segundoPlano == 3) {
@@ -1481,6 +1587,7 @@ class _HomePageBodyState extends State<HomePageBody>
       // print('clientes asistiendo Antes de addPostFrameCallback');
 
       // //todo IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
+      // //todo IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
       // WidgetsBinding.instance.addPostFrameCallback((_) async {
       //   //   print('cargando aqui-10');
       //   // print(
@@ -1502,216 +1609,267 @@ class _HomePageBodyState extends State<HomePageBody>
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(12.0),
-                    child: (clientsScheduledController
-                                .clientsScheduledListLength >
-                            0)
-                        ? Container(
-                            decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
-                              color: Colors.white,
-                              //color: Color(0xFFFDAE2A),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                /*todo texto arriba */ Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, top: 5),
-                                  child: Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      clientsScheduledController.item.isEmpty
-                                          ? 'Cliente en espera'
-                                          : 'Atendiendo ${clientsScheduledController.item.length} cliente(s)',
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
-                                        color: Color.fromARGB(255, 82, 81, 81),
+                    child: clientsScheduledController.item.isEmpty &&
+                            (clientsScheduledController.clientsScheduledNext ==
+                                    null ||
+                                clientsScheduledController.boolFilterShowNext ==
+                                    false) &&
+                            loginController.usserPermissionQr == 1
+                        ? const SizedBox(
+                            height: 45,
+                          )
+                        : (clientsScheduledController
+                                    .clientsScheduledListLength >
+                                0)
+                            ? Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)),
+                                  color: Colors.white,
+                                  //color: Color(0xFFFDAE2A),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    /*todo texto arriba */ Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8, top: 5),
+                                      child: Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Text(
+                                          clientsScheduledController
+                                                  .item.isEmpty
+                                              ? 'Cliente en espera'
+                                              : 'Atendiendo ${clientsScheduledController.item.length} cliente(s)',
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700,
+                                            color:
+                                                Color.fromARGB(255, 82, 81, 81),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
 
-                                /*CRONOMETRO*/ Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  //todo AQUI LA LOGICA AL MOSTRAR LOS TIMER
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          //AQUI MUESTRA LOS TIMER DE LOS CLIENTES QUE ESTE ATENDIENDO
-                                          if (clientsScheduledController
-                                              .item.isNotEmpty) ...[
-                                            for (int i = 0;
-                                                i <
+                                    /*CRONOMETRO*/ Padding(
+                                      padding: const EdgeInsets.all(2.0),
+                                      //todo AQUI LA LOGICA AL MOSTRAR LOS TIMER
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              //AQUI MUESTRA LOS TIMER DE LOS CLIENTES QUE ESTE ATENDIENDO
+                                              if (clientsScheduledController
+                                                  .item.isNotEmpty) ...[
+                                                for (int i = 0;
+                                                    i <
+                                                        clientsScheduledController
+                                                            .item.length;
+                                                    i++) ...[
+                                                  cardTimer(
+                                                    clientsList[
+                                                            clientsScheduledController
+                                                                .item[i]]!
+                                                        .reservation_id!,
+                                                    i,
+                                                    clientsList[
+                                                            clientsScheduledController
+                                                                .item[i]]!
+                                                        .attended!,
+                                                    clientsList[
+                                                            clientsScheduledController
+                                                                .item[i]]!
+                                                        .car_id!,
+                                                    clientsList[
+                                                            clientsScheduledController
+                                                                .item[i]]!
+                                                        .client_image!,
+                                                    UniqueKey(),
+                                                    clientsList[
+                                                            clientsScheduledController
+                                                                .item[i]]!
+                                                        .client_name!,
+                                                    clientsScheduledController,
+                                                    animationCont[
+                                                        clientsScheduledController
+                                                            .item[i]]!,
+                                                  ),
+                                                ],
+                                              ]
+                                              //SI NO ESTA ATENDIENDOA NADIE Y HAY GENTE EN LA COLA ESPERANDO CARGA EL TIMER INICIAL
+                                              else if (clientsScheduledController
+                                                      .clientsScheduledNext !=
+                                                  null) ...[
+                                                //AQUI VERIFICO SI YA ESCANEO EL CODIGO QR
+                                                if (loginController
+                                                            .codigoQrValid() ==
+                                                        true &&
                                                     clientsScheduledController
-                                                        .item.length;
-                                                i++) ...[
-                                              cardTimer(
-                                                clientsList[
-                                                        clientsScheduledController
-                                                            .item[i]]!
-                                                    .reservation_id!,
-                                                i,
-                                                clientsList[
-                                                        clientsScheduledController
-                                                            .item[i]]!
-                                                    .attended!,
-                                                clientsList[
-                                                        clientsScheduledController
-                                                            .item[i]]!
-                                                    .car_id!,
-                                                clientsList[
-                                                        clientsScheduledController
-                                                            .item[i]]!
-                                                    .client_image!,
-                                                UniqueKey(),
-                                                clientsList[
-                                                        clientsScheduledController
-                                                            .item[i]]!
-                                                    .client_name!,
-                                                clientsScheduledController,
-                                                animationCont[
+                                                        .item.isEmpty) ...[
+                                                  cardTimer2(
+                                                    UniqueKey(),
+                                                    'Esperando',
+                                                    clientsScheduledController,
                                                     clientsScheduledController
-                                                        .item[i]]!,
-                                              ),
-                                            ],
-                                          ]
-                                          //SI NO ESTA ATENDIENDOA NADIE Y HAY GENTE EN LA COLA ESPERANDO CARGA EL TIMER INICIAL
-                                          else if (clientsScheduledController
-                                                  .clientsScheduledNext !=
-                                              null) ...[
-                                            //AQUI VERIFICO SI YA ESCANEO EL CODIGO QR
-                                            if (loginController
-                                                        .codigoQrValid() ==
-                                                    true &&
-                                                clientsScheduledController
-                                                    .item.isEmpty) ...[
-                                              cardTimer2(
-                                                UniqueKey(),
-                                                'Esperando',
-                                                clientsScheduledController,
-                                                clientsScheduledController
-                                                    .animationControllerInitial!,
-                                              ),
-                                            ] else if (loginController
-                                                    .usserPermissionQr ==
-                                                2) ...[
-                                              const Center(
-                                                child: Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 35,
+                                                        .animationControllerInitial!,
+                                                  ),
+                                                ] else if (loginController
+                                                        .usserPermissionQr ==
+                                                    2) ...[
+                                                  const Center(
+                                                    child: Column(
+                                                      children: [
+                                                        SizedBox(
+                                                          height: 35,
+                                                        ),
+                                                        Text(
+                                                          'Debe de esperar la respuesta',
+                                                          style: TextStyle(
+                                                              // color: Colors.white,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      39,
+                                                                      39,
+                                                                      39),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ),
+                                                        Text(
+                                                          'a su solicitud',
+                                                          style: TextStyle(
+                                                              //color: Colors.white,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      39,
+                                                                      39,
+                                                                      39),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 45,
+                                                        ),
+                                                      ],
                                                     ),
-                                                    Text(
-                                                      'Debe de esperar la respuesta',
-                                                      style: TextStyle(
-                                                          // color: Colors.white,
-                                                          color: Color.fromARGB(
-                                                              255, 39, 39, 39),
-                                                          fontWeight:
-                                                              FontWeight.w600),
+                                                  )
+                                                ] else ...[
+                                                  const Center(
+                                                    child: Column(
+                                                      children: [
+                                                        SizedBox(
+                                                          height: 35,
+                                                        ),
+                                                        Text(
+                                                          'Debe de escanear el código Qr ',
+                                                          style: TextStyle(
+                                                              // color: Colors.white,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      39,
+                                                                      39,
+                                                                      39),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ),
+                                                        Text(
+                                                          'para atender clientes',
+                                                          style: TextStyle(
+                                                              //color: Colors.white,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      39,
+                                                                      39,
+                                                                      39),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 45,
+                                                        ),
+                                                      ],
                                                     ),
-                                                    Text(
-                                                      'a su solicitud',
-                                                      style: TextStyle(
-                                                          //color: Colors.white,
-                                                          color: Color.fromARGB(
-                                                              255, 39, 39, 39),
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 45,
-                                                    ),
-                                                  ],
+                                                  )
+                                                ]
+                                              ] else ...[
+                                                const SizedBox(
+                                                  height: 45,
                                                 ),
-                                              )
-                                            ] else ...[
-                                              const Center(
-                                                child: Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 35,
-                                                    ),
-                                                    Text(
-                                                      'Debe de escanear el código Qr ',
-                                                      style: TextStyle(
-                                                          // color: Colors.white,
-                                                          color: Color.fromARGB(
-                                                              255, 39, 39, 39),
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                    Text(
-                                                      'para atender clientes',
-                                                      style: TextStyle(
-                                                          //color: Colors.white,
-                                                          color: Color.fromARGB(
-                                                              255, 39, 39, 39),
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 45,
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ]
-                                          ] else ...[
-                                            const SizedBox(
-                                              height: 45,
-                                            ),
-                                          ]
-                                        ]),
-                                  ),
-                                  //FIN CLIENTES QUE ESTAN EN COLA
-                                ),
-                                //todo CLIENTES QUE ESTAN EN COLA
+                                              ]
+                                            ]),
+                                      ),
+                                      //FIN CLIENTES QUE ESTAN EN COLA
+                                    ),
+                                    //todo CLIENTES QUE ESTAN EN COLA
 
-                                //FIN CLIENTES QUE ESTAN EN COLA
-                              ],
-                            ),
-                          )
-                        : SizedBox(
-                            height: 80,
-                          ),
+                                    //FIN CLIENTES QUE ESTAN EN COLA
+                                  ],
+                                ),
+                              )
+                            : SizedBox(
+                                height: 80,
+                              ),
                   ),
-                  clientsScheduledController.boolFilterShowNext!
-                      ? cardClientTails(clientsScheduledController, context,
-                          firstName, animationCont)
-                      :
+                  clientsScheduledController.boolControlVision == true
+                      ? clientsScheduledController.boolFilterShowNext == true
+                          ? cardClientTails(clientsScheduledController, context,
+                              firstName, animationCont)
+                          :
 
-                      //si hubiera algien en cola
-                      (clientsScheduledController
-                                  .clientsScheduledListLengthTail >
-                              0)
-                          ? const Column(
-                              children: [
-                                Text(
-                                  'Cliente atendiéndose',
+                          //si hubiera algien en cola
+                          (clientsScheduledController
+                                      .clientsScheduledListLengthTail >
+                                  0)
+                              ? const Column(
+                                  children: [
+                                    Text(
+                                      'Cliente atendiéndose',
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 82, 81, 81),
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Text(
+                                      'Esperando para mostrar el siguiente',
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 82, 81, 81),
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                )
+                              : const Text('No hay clientes en cola.',
                                   style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 81, 81),
-                                      fontWeight: FontWeight.w700),
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 16,
+                                    color: Color.fromARGB(255, 82, 81, 81),
+                                  ))
+                      : const Column(
+                          children: [
+                            SizedBox(
+                              height: 50,
+                            ),
+                            Center(
+                              child: SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  color: Color(0xFFFDAE2A),
+                                  strokeWidth: 3,
                                 ),
-                                Text(
-                                  'Esperando para mostrar el siguiente',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 82, 81, 81),
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            )
-                          : const Text('No hay clientes en cola',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16,
-                                color: Color.fromARGB(255, 82, 81, 81),
-                              )),
+                              ),
+                            ),
+                          ],
+                        ),
                 ],
               )),
           Expanded(
@@ -1852,362 +2010,388 @@ class _HomePageBodyState extends State<HomePageBody>
           right: 8,
         ),
         child: FittedBox(
-          fit: BoxFit.contain,
-          child: clientsScheduledControllerE.clientsScheduledNext != null
-              ? Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(18)),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: (MediaQuery.of(context).size.height * 0.115),
-                        width: (MediaQuery.of(context).size.width * 0.20),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.white, // Color blanco para el borde
-                            width:
-                                1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                          ),
-                          color: Color(0xFFFF6750),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(18)),
-                        ),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: const Color(
-                                0xFFFF6750), // Color de fondo en verde
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  16.0), // Ajusta el radio según tus necesidades
-                            ),
-                          ),
-                          onPressed: () {
-                            if (loginController.codigoQrValid() == true &&
-                                loginController.usserPermissionQrAntes == 1) {
-                              // int resulButton = 0;
-                              // resulButton = loginController.handleButtonClick(
-                              //     clientsScheduledController
-                              //         .clientsScheduledNext!.reservation_id);
-                              // if (resulButton == 1) {
-                              notiController.storeNotification(
-                                  'Solicitud de rechazo',
-                                  controllerLogin.branchIdLoggedIn,
-                                  controllerLogin.idProfessionalLoggedIn,
-                                  'EL profesional "${loginController.nameUserLoggedIn}" está rechazando a "${clientsScheduledControllerE.clientsScheduledNext!.client_name}"',
-                                  'Ambos'); //esto es para quele llegue a coordinador y encargado
-                              clientsScheduledControllerE.acceptOrRejectClient(
-                                  clientsScheduledControllerE
-                                      .clientsScheduledNext!.reservation_id,
-                                  3,
-                                  loginController.tokenUserLoggedIn);
-
-                              //}
-                            } else if (loginController.usserPermissionQr == 2) {
-                              Get.snackbar(
-                                'Mensaje',
-                                'Debe de esperar la respuesta a su solicitud',
-                                duration: const Duration(milliseconds: 2500),
-                                backgroundColor:
-                                    const Color.fromARGB(118, 255, 255, 255),
-                                showProgressIndicator: true,
-                                progressIndicatorBackgroundColor:
-                                    const Color.fromARGB(255, 203, 205, 209),
-                                progressIndicatorValueColor:
-                                    const AlwaysStoppedAnimation(
-                                        Color(0xFFFDAE2A)),
-                                overlayBlur: 3,
-                              );
-                            } else {
-                              Get.snackbar(
-                                'Mensaje',
-                                'Debe de escanear el código Qr de entrada',
-                                duration: const Duration(milliseconds: 2500),
-                                backgroundColor:
-                                    const Color.fromARGB(118, 255, 255, 255),
-                                showProgressIndicator: true,
-                                progressIndicatorBackgroundColor:
-                                    const Color.fromARGB(255, 203, 205, 209),
-                                progressIndicatorValueColor:
-                                    const AlwaysStoppedAnimation(
-                                        Color(0xFFFDAE2A)),
-                                overlayBlur: 3,
-                              );
-                            }
-                          },
-                          child: Icon(
-                            MdiIcons.thumbDownOutline,
-                            color: Colors.white,
-                            size: (MediaQuery.of(context).size.height * 0.04),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: (MediaQuery.of(context).size.height * 0.115),
-                        width: (MediaQuery.of(context).size.width * 0.8),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 15, top: 8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      const Icon(
-                                        Icons.person,
-                                        color: const Color.fromARGB(
-                                            255, 43, 44, 49),
-                                        size: 22,
-                                      ),
-                                      Text(
-                                        firstName,
-                                        softWrap: true,
-                                        style: const TextStyle(
-                                            height: 1.0,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 20),
-                                      ),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: Text(
-                                        //AQUI ETSA EL TIEMPO TOTAL DEL SERVICIO
-                                        (clientsScheduledControllerE
-                                            .clientsScheduledNext!.total_time!),
-                                        style: const TextStyle(
-                                          height: 1.2,
-                                          fontSize: 16,
-                                          color: Color.fromARGB(180, 0, 0, 0),
-                                        )),
-                                  ),
-                                ],
-                              ),
-                              Expanded(
-                                child: ListView.builder(
-                                  itemCount: clientsScheduledControllerE
-                                              .serviceCustomerSelected.length >
-                                          2
-                                      ? 2
-                                      : clientsScheduledControllerE
-                                          .serviceCustomerSelected.length,
-                                  itemBuilder: (context, index) => Row(
-                                    children: [
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                MdiIcons.menu,
-                                              ),
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-                                              Text(
-                                                clientsScheduledControllerE
-                                                    .serviceCustomerSelected[
-                                                        index]
-                                                    .name,
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: (MediaQuery.of(context).size.height * 0.115),
-                        width: (MediaQuery.of(context).size.width * 0.20),
-                        decoration: BoxDecoration(
+            fit: BoxFit.contain,
+            child: clientsScheduledControllerE.clientsScheduledNext != null
+                ? Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(18)),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          height: (MediaQuery.of(context).size.height * 0.115),
+                          width: (MediaQuery.of(context).size.width * 0.20),
+                          decoration: BoxDecoration(
                             border: Border.all(
                               color: Colors.white, // Color blanco para el borde
                               width:
                                   1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                             ),
-                            color: const Color(0xFF19CF9E),
+                            color: Color(0xFFFF6750),
                             borderRadius:
-                                const BorderRadius.all(Radius.circular(18))),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: const Color(
-                                0xFF19CF9E), // Color de fondo en verde
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  16.0), // Ajusta el radio según tus necesidades
-                            ),
+                                const BorderRadius.all(Radius.circular(18)),
                           ),
-                          onPressed: () async {
-                            //AQUI VEO SI YA ESCANEO EL CODIGO QR Y ESTA EN EL LOCAL
-                            if (loginController.codigoQrValid() == true &&
-                                loginController.usserPermissionQrAntes == 1) {
-                              int resulButton = 0;
-                              resulButton = loginController.handleButtonClick(
-                                  clientsScheduledControllerE
-                                      .clientsScheduledNext!.reservation_id!);
-                              if (resulButton == 1) {
-                                //aqui manda aceptar, es decir atender este cliente
-                                //aqui intento hacer que cuando acepte no ce vea el siguiente en la lista
-                                // nunca a no ser que luego lo ponga en true porque tenga services simultaneos
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: const Color(
+                                  0xFFFF6750), // Color de fondo en verde
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    16.0), // Ajusta el radio según tus necesidades
+                              ),
+                            ),
+                            onPressed: () {
+                              if (loginController.codigoQrValid() == true &&
+                                  loginController.usserPermissionQrAntes == 1) {
                                 clientsScheduledControllerE
                                     .setBoolFilterShowNext(false);
-                                //
                                 clientsScheduledControllerE
-                                    .clientsWaiting(false);
-                                // detengo el timer de 2 minutos
+                                    .setBoolControlVision(false);
+                                // int resulButton = 0;
+                                // resulButton = loginController.handleButtonClick(
+                                //     clientsScheduledController
+                                //         .clientsScheduledNext!.reservation_id);
+                                // if (resulButton == 1) {
+                                notiController.storeNotification(
+                                    'Solicitud de rechazo',
+                                    controllerLogin.branchIdLoggedIn,
+                                    controllerLogin.idProfessionalLoggedIn,
+                                    'EL profesional "${loginController.nameUserLoggedIn}" está rechazando a "${clientsScheduledControllerE.clientsScheduledNext!.client_name}"',
+                                    'Ambos'); //esto es para quele llegue a coordinador y encargado
                                 clientsScheduledControllerE
-                                    .animationControllerInitial!
-                                    .stop();
-                                clientsScheduledControllerE
-                                    .animationControllerInitial!
-                                    .reset();
-                                LocalStorage.prefs
-                                    .setBool('valueClockActiv', false);
-                                LocalStorage.prefs.setInt('valueClockIni', 180);
-                                // detengo todos los timers que deben detenerse
-                                for (int j = 0;
-                                    j <
-                                        clientsScheduledControllerE
-                                            .itemDel.length;
-                                    j++) {
-                                  animationCont[clientsScheduledControllerE
-                                          .itemDel[j]]!
-                                      .stop();
-                                  animationCont[clientsScheduledControllerE
-                                          .itemDel[j]]!
-                                      .reset();
-                                }
-                                await clientsScheduledControllerE
-                                    .newClientAttended(
-                                        clientsScheduledControllerE
-                                            .clientsScheduledNext!,
-                                        clientsScheduledControllerE
-                                            .availability);
-
-                                //
-                                //
-                                //
-                                //HACE LAS VERIFICACIONES NECESARIAS PARA ACTIVAR LOS RELOJES QUE NECESITEN SER ACTIVADOS
-                                if (clientsScheduledControllerE.busyClock ==
-                                    0) {
-                                  animationCont[0]!.duration = Duration(
-                                      seconds: clientsScheduledControllerE
-                                          .timeClientsAttended1!);
-                                  animationCont[0]!.forward();
-                                } else if (clientsScheduledControllerE
-                                        .busyClock ==
-                                    1) {
-                                  animationCont[1]!.duration = Duration(
-                                      seconds: clientsScheduledControllerE
-                                          .timeClientsAttended2!);
-                                  animationCont[1]!.forward();
-                                } else if (clientsScheduledControllerE
-                                        .busyClock ==
-                                    2) {
-                                  animationCont[2]!.duration = Duration(
-                                      seconds: clientsScheduledControllerE
-                                          .timeClientsAttended3!);
-                                  animationCont[2]!.forward();
-                                } else if (clientsScheduledControllerE
-                                        .busyClock ==
-                                    3) {
-                                  animationCont[3]!.duration = Duration(
-                                      seconds: clientsScheduledControllerE
-                                          .timeClientsAttended4!);
-                                  animationCont[3]!.forward();
-                                }
-
-                                //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
-                                await clientsScheduledControllerE
                                     .acceptOrRejectClient(
                                         clientsScheduledControllerE
                                             .clientsScheduledNext!
                                             .reservation_id,
-                                        1,
+                                        3,
                                         loginController.tokenUserLoggedIn);
+
+                                //}
+                              } else if (loginController.usserPermissionQr ==
+                                  2) {
+                                Get.snackbar(
+                                  'Mensaje',
+                                  'Debe de esperar la respuesta a su solicitud',
+                                  duration: const Duration(milliseconds: 2500),
+                                  backgroundColor:
+                                      const Color.fromARGB(118, 255, 255, 255),
+                                  showProgressIndicator: true,
+                                  progressIndicatorBackgroundColor:
+                                      const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor:
+                                      const AlwaysStoppedAnimation(
+                                          Color(0xFFFDAE2A)),
+                                  overlayBlur: 3,
+                                );
+                              } else {
+                                Get.snackbar(
+                                  'Mensaje',
+                                  'Debe de escanear el código Qr de entrada',
+                                  duration: const Duration(milliseconds: 2500),
+                                  backgroundColor:
+                                      const Color.fromARGB(118, 255, 255, 255),
+                                  showProgressIndicator: true,
+                                  progressIndicatorBackgroundColor:
+                                      const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor:
+                                      const AlwaysStoppedAnimation(
+                                          Color(0xFFFDAE2A)),
+                                  overlayBlur: 3,
+                                );
                               }
-                            } else if (loginController.usserPermissionQr == 2) {
-                              Get.snackbar(
-                                'Mensaje',
-                                'Debe de esperar la respuesta a su solicitud',
-                                duration: const Duration(milliseconds: 2500),
-                                backgroundColor:
-                                    const Color.fromARGB(118, 255, 255, 255),
-                                showProgressIndicator: true,
-                                progressIndicatorBackgroundColor:
-                                    const Color.fromARGB(255, 203, 205, 209),
-                                progressIndicatorValueColor:
-                                    const AlwaysStoppedAnimation(
-                                        Color(0xFFFDAE2A)),
-                                overlayBlur: 3,
-                              );
-                            } else {
-                              Get.snackbar(
-                                'Mensaje',
-                                'Debe de escanear el código Qr de entrada',
-                                duration: const Duration(milliseconds: 2500),
-                                backgroundColor:
-                                    const Color.fromARGB(118, 255, 255, 255),
-                                showProgressIndicator: true,
-                                progressIndicatorBackgroundColor:
-                                    const Color.fromARGB(255, 203, 205, 209),
-                                progressIndicatorValueColor:
-                                    const AlwaysStoppedAnimation(
-                                        Color(0xFFFDAE2A)),
-                                overlayBlur: 3,
-                              );
-                            }
-                          },
-                          child: Icon(
-                            MdiIcons.thumbUpOutline,
-                            color: Colors.white,
-                            size: (MediaQuery.of(context).size.height * 0.04),
+                            },
+                            child: Icon(
+                              MdiIcons.thumbDownOutline,
+                              color: Colors.white,
+                              size: (MediaQuery.of(context).size.height * 0.04),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                )
-              : Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child:
-                      GetBuilder<LoginController>(builder: (controllerLogin) {
-                    return const Row(
-                      children: [
-                        Text('No hay clientes en cola',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16,
-                              color: Color.fromARGB(255, 82, 81, 81),
-                            )),
+                        Container(
+                          height: (MediaQuery.of(context).size.height * 0.115),
+                          width: (MediaQuery.of(context).size.width * 0.8),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 15, top: 8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        const Icon(
+                                          Icons.person,
+                                          color: const Color.fromARGB(
+                                              255, 43, 44, 49),
+                                          size: 22,
+                                        ),
+                                        Text(
+                                          clientCord.truncateText(
+                                              firstName, 13),
+                                          softWrap: true,
+                                          style: const TextStyle(
+                                              height: 1.0,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 20),
+                                        ),
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Text(
+                                          //AQUI ETSA EL TIEMPO TOTAL DEL SERVICIO
+                                          (clientsScheduledControllerE
+                                              .clientsScheduledNext!
+                                              .total_time!),
+                                          style: const TextStyle(
+                                            height: 1.2,
+                                            fontSize: 16,
+                                            color: Color.fromARGB(180, 0, 0, 0),
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: clientsScheduledControllerE
+                                                .serviceCustomerSelected
+                                                .length >
+                                            2
+                                        ? 2
+                                        : clientsScheduledControllerE
+                                            .serviceCustomerSelected.length,
+                                    itemBuilder: (context, index) => Row(
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  MdiIcons.menu,
+                                                ),
+                                                const SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text(
+                                                  clientsScheduledControllerE
+                                                      .serviceCustomerSelected[
+                                                          index]
+                                                      .name,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: (MediaQuery.of(context).size.height * 0.115),
+                          width: (MediaQuery.of(context).size.width * 0.20),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color:
+                                    Colors.white, // Color blanco para el borde
+                                width:
+                                    1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                              ),
+                              color: const Color(0xFF19CF9E),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(18))),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: const Color(
+                                  0xFF19CF9E), // Color de fondo en verde
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    16.0), // Ajusta el radio según tus necesidades
+                              ),
+                            ),
+                            onPressed: () async {
+                              //AQUI VEO SI YA ESCANEO EL CODIGO QR Y ESTA EN EL LOCAL
+                              if (loginController.codigoQrValid() == true &&
+                                  loginController.usserPermissionQrAntes == 1 &&
+                                  clientsScheduledControllerE
+                                          .clientsScheduledNext !=
+                                      null &&
+                                  clientsScheduledControllerE
+                                          .clientsScheduledNext!
+                                          .reservation_id! >
+                                      0) {
+                                loginController.setMakeCall(false);
+                                clientsScheduledControllerE
+                                    .setBoolControlVision(false);
+                                clientsScheduledControllerE
+                                    .setBoolFilterShowNext(false);
+                                //aqui poner que muestre un cargando
+
+                                int resulButton = 0;
+                                resulButton = loginController.handleButtonClick(
+                                    clientsScheduledControllerE
+                                        .clientsScheduledNext!.reservation_id!);
+                                if (resulButton == 1) {
+                                  //aqui manda aceptar, es decir atender este cliente
+                                  //aqui intento hacer que cuando acepte no ce vea el siguiente en la lista
+                                  // nunca a no ser que luego lo ponga en true porque tenga services simultaneos
+
+                                  //
+                                  clientsScheduledControllerE.clientsWaiting(
+                                      false); //este es para saber si hay algun cliente esperando para mandar la notificación
+                                  // detengo el timer de 2 minutos
+                                  clientsScheduledControllerE
+                                      .animationControllerInitial!
+                                      .stop();
+                                  clientsScheduledControllerE
+                                      .animationControllerInitial!
+                                      .reset();
+                                  LocalStorage.prefs
+                                      .setBool('valueClockActiv', false);
+                                  LocalStorage.prefs
+                                      .setInt('valueClockIni', 180);
+                                  // detengo todos los timers que deben detenerse
+                                  for (int j = 0;
+                                      j <
+                                          clientsScheduledControllerE
+                                              .itemDel.length;
+                                      j++) {
+                                    animationCont[clientsScheduledControllerE
+                                            .itemDel[j]]!
+                                        .stop();
+                                    animationCont[clientsScheduledControllerE
+                                            .itemDel[j]]!
+                                        .reset();
+                                  }
+                                  await clientsScheduledControllerE
+                                      .newClientAttended(
+                                          clientsScheduledControllerE
+                                              .clientsScheduledNext!,
+                                          clientsScheduledControllerE
+                                              .availability);
+
+                                  //
+                                  //
+                                  //
+                                  //HACE LAS VERIFICACIONES NECESARIAS PARA ACTIVAR LOS RELOJES QUE NECESITEN SER ACTIVADOS
+                                  if (clientsScheduledControllerE.busyClock ==
+                                      0) {
+                                    animationCont[0]!.duration = Duration(
+                                        seconds: clientsScheduledControllerE
+                                            .timeClientsAttended1!);
+                                    animationCont[0]!.forward();
+                                  } else if (clientsScheduledControllerE
+                                          .busyClock ==
+                                      1) {
+                                    animationCont[1]!.duration = Duration(
+                                        seconds: clientsScheduledControllerE
+                                            .timeClientsAttended2!);
+                                    animationCont[1]!.forward();
+                                  } else if (clientsScheduledControllerE
+                                          .busyClock ==
+                                      2) {
+                                    animationCont[2]!.duration = Duration(
+                                        seconds: clientsScheduledControllerE
+                                            .timeClientsAttended3!);
+                                    animationCont[2]!.forward();
+                                  } else if (clientsScheduledControllerE
+                                          .busyClock ==
+                                      3) {
+                                    animationCont[3]!.duration = Duration(
+                                        seconds: clientsScheduledControllerE
+                                            .timeClientsAttended4!);
+                                    animationCont[3]!.forward();
+                                  }
+
+                                  //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
+                                  await clientsScheduledControllerE
+                                      .acceptOrRejectClient(
+                                          clientsScheduledControllerE
+                                              .clientsScheduledNext!
+                                              .reservation_id,
+                                          1,
+                                          loginController.tokenUserLoggedIn);
+                                }
+                                loginController.setMakeCall(true);
+                              } else if (loginController.usserPermissionQr ==
+                                  2) {
+                                Get.snackbar(
+                                  'Mensaje',
+                                  'Debe de esperar la respuesta a su solicitud',
+                                  duration: const Duration(milliseconds: 2500),
+                                  backgroundColor:
+                                      const Color.fromARGB(118, 255, 255, 255),
+                                  showProgressIndicator: true,
+                                  progressIndicatorBackgroundColor:
+                                      const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor:
+                                      const AlwaysStoppedAnimation(
+                                          Color(0xFFFDAE2A)),
+                                  overlayBlur: 3,
+                                );
+                              } else {
+                                Get.snackbar(
+                                  'Mensaje',
+                                  'Debe de escanear el código Qr de entrada',
+                                  duration: const Duration(milliseconds: 2500),
+                                  backgroundColor:
+                                      const Color.fromARGB(118, 255, 255, 255),
+                                  showProgressIndicator: true,
+                                  progressIndicatorBackgroundColor:
+                                      const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor:
+                                      const AlwaysStoppedAnimation(
+                                          Color(0xFFFDAE2A)),
+                                  overlayBlur: 3,
+                                );
+                              }
+                            },
+                            child: Icon(
+                              MdiIcons.thumbUpOutline,
+                              color: Colors.white,
+                              size: (MediaQuery.of(context).size.height * 0.04),
+                            ),
+                          ),
+                        ),
                       ],
-                    );
-                  }),
-                ),
-        ),
+                    ),
+                  )
+                : (clientsScheduledController.clientsScheduledListLengthTail ==
+                        0)
+                    ? const SizedBox(
+                        height: 100,
+                        child: Center(
+                          child: Text('No hay clientes en cola',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16,
+                                color: Color.fromARGB(255, 82, 81, 81),
+                              )),
+                        ),
+                      )
+                    : SizedBox(width: 100, height: 100, child: Text(''))),
       );
     });
   }
@@ -2247,13 +2431,15 @@ class _HomePageBodyState extends State<HomePageBody>
       onTap: () async {
         {
           // Comprobar si la animación está en pausa
-          bool isPaused = _animationController.isAnimating &&
-              !_animationController.isCompleted;
+          // bool isPaused = _animationController.isAnimating && !_animationController.isCompleted;
+
+          bool isPaused = _animationController.isAnimating;
           // Comprobar si la animación ha completado su duración
           bool isCompleted = _animationController.isCompleted;
           print('este relojo esta en:$isPaused');
 
-          if (isPaused == true || isCompleted == true) {
+          // if (isPaused == true || isCompleted == true) {
+          if (isPaused == true || isCompleted) {
             //aqui llamar un metodo que me diga que attend es, y verificar
             //VA A EJECUTARSE SI NO ESTA CON EL TECNICO
             int resulButton = 0;
@@ -2289,20 +2475,23 @@ class _HomePageBodyState extends State<HomePageBody>
                 await controllerProduct
                     .metdNewServiceProduct(loginController.branchIdLoggedIn,
                         loginController.idProfessionalLoggedIn, carrId)
-                    .then((_) async {
-                  print('ya páse por aqui-2');
-                  loginController.setHandleButtonClickModal();
-                  String clientName = name;
-                  String urlImage = imag;
-                  int reservationId = idreservation;
-                  int carId = carrId;
-                  //   _mostrarBottomSheet(          context);
-                  //  showMyDialog(context);
-                  print(
-                      'LISTA2 _fetchServiceList Limpiando clientName:$clientName...reservationId:$reservationId....carId:$carId....urlImage:$urlImage');
-                  Get.back();
-                  //Get.toNamed('/servicesProductsPage');
-                  pagesConfigC.onTabTapped(1); //index = 1 -> /Clients
+                    .then((result1) async {
+                  if (result1 == 1) {
+                    print('ya páse por aqui-2');
+                    loginController.setHandleButtonClickModal();
+                    String clientName = name;
+                    String urlImage = imag;
+                    int reservationId = idreservation;
+                    int carId = carrId;
+                    //   _mostrarBottomSheet(          context);
+                    //  showMyDialog(context);
+                    print(
+                        'LISTA2 _fetchServiceList Limpiando clientName:$clientName...reservationId:$reservationId....carId:$carId....urlImage:$urlImage');
+                    await Future.delayed(const Duration(milliseconds: 500));
+                    Get.back();
+                    //Get.toNamed('/servicesProductsPage');
+                    pagesConfigC.onTabTapped(1); //index = 1 -> /Clients
+                  }
                 });
               }
             } //cierre del if de comprobacion que no lo llame vairas veces
@@ -2524,7 +2713,7 @@ class _HomePageBodyState extends State<HomePageBody>
               alignment: Alignment.center,
               child: Text(
                 firstName,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 18,
                     height: 1.3,
                     color: Color(0xFFFDAE2A),
@@ -2555,7 +2744,7 @@ class _HomePageBodyState extends State<HomePageBody>
         name.split(" "); // Tomar los primeros dos nombres (si existen)
     String firstName = partsName.isNotEmpty ? partsName[0] : "";
     // String secondName = partsName.length > 1 ? partsName[1] : "";
-
+    LocalStorage.prefs.setBool('valueClockActiv', true);
     return Padding(
       padding: const EdgeInsets.only(left: 6, right: 6),
       child: Column(
@@ -2708,7 +2897,7 @@ class _HomePageBodyState extends State<HomePageBody>
                       padding: const EdgeInsets.all(6.0),
                       child: Text(
                         '$firstName...',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 10,
                             height: 1.3,
                             color: Color(0xFFFDAE2A),
@@ -2719,7 +2908,7 @@ class _HomePageBodyState extends State<HomePageBody>
                       padding: const EdgeInsets.all(4.0),
                       child: Text(
                         firstName,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 18,
                             height: 1.3,
                             color: Color(0xFFFDAE2A),
@@ -2759,7 +2948,6 @@ class _HomePageBodyState extends State<HomePageBody>
         ),
         onPressed: () async {
           if (titleCart == 'Agenda') {
-            //  getData();
             Get.dialog(
               const Center(
                 child: CircularProgressIndicator(
@@ -2775,6 +2963,7 @@ class _HomePageBodyState extends State<HomePageBody>
                 loginController.branchIdLoggedIn,
                 'Agenda-Card',
                 loginController.tokenUserLoggedIn);
+            await Future.delayed(const Duration(milliseconds: 500));
             Get.back();
             pagesConfigC.onTabTapped(1); //index = 4 -> /CoexistencePage
           }
@@ -2789,6 +2978,7 @@ class _HomePageBodyState extends State<HomePageBody>
             ); //Get.back();
             // controllerLogin.setIsLoadingFor(true);
             await coexistenceController.fetchCoexistenceList();
+            await Future.delayed(const Duration(milliseconds: 500));
             Get.back();
             pagesConfigC.onTabTapped(4); //index = 4 -> /CoexistencePage
           }
@@ -2802,6 +2992,7 @@ class _HomePageBodyState extends State<HomePageBody>
               barrierDismissible: false,
             ); //Get.back();
             await coexCont.fetchEstadist0();
+            await Future.delayed(const Duration(milliseconds: 500));
             Get.back();
             pagesConfigC.onTabTapped(3); //index = 3 -> /StatisticPage
           }
@@ -2833,7 +3024,7 @@ class _HomePageBodyState extends State<HomePageBody>
                 typeEnv,
                 'Cart home',
                 loginController.tokenUserLoggedIn);
-
+            await Future.delayed(const Duration(milliseconds: 500));
             pagesConfigC.onTabTapped(2); //index = 2 -> /NotificationsPageProf
             Get.back();
           }

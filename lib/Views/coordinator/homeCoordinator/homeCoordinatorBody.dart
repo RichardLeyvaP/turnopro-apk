@@ -102,31 +102,34 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     _timerCoord =
         Timer.periodic(const Duration(seconds: 13), (Timer timer) async {
       print('hola entrando en 10 min;');
-      if (loginController.branchIdLoggedIn != null &&
-          loginController.chargeUserLoggedIn == "Coordinador" &&
-          loginController.usserPermissionQr != null) {
-        // actualizo la cola
-        notiController.fetchNotificationList(
-            loginController.branchIdLoggedIn,
-            loginController.idProfessionalLoggedIn,
-            'Coordinador',
-            'callTimerCoord',
-            loginController.tokenUserLoggedIn);
+      if (loginController.makeCallC == true) {
+        print('hola entrando en 10 min-makeCallC == true');
+        if (loginController.branchIdLoggedIn != null &&
+            loginController.chargeUserLoggedIn == "Coordinador" &&
+            loginController.usserPermissionQr != null) {
+          // actualizo la cola
+          notiController.fetchNotificationList(
+              loginController.branchIdLoggedIn,
+              loginController.idProfessionalLoggedIn,
+              'Coordinador',
+              'callTimerCoord',
+              loginController.tokenUserLoggedIn);
 
-        await clientsScheduledController
-            .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
-        await clientsScheduledController
-            .fetchClientsRechazBranch(loginController.branchIdLoggedIn);
-        clientsScheduledController.setLoading(false);
-        if (loginController.branchIdLoggedIn != null) {
-          await controllerShoppingCart
-              .loadOrderDeleteCar(loginController.branchIdLoggedIn);
+          await clientsScheduledController
+              .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
+          await clientsScheduledController
+              .fetchClientsRechazBranch(loginController.branchIdLoggedIn);
+          clientsScheduledController.setLoading(false);
+          if (loginController.branchIdLoggedIn != null) {
+            await controllerShoppingCart
+                .loadOrderDeleteCar(loginController.branchIdLoggedIn);
+          }
+          await clientsScheduledController.ColacionRequestBranch(
+              loginController.branchIdLoggedIn);
+          await clientsScheduledController
+              .outRequestBranch(loginController.branchIdLoggedIn);
+          controllerShoppingCart.setLoading(false);
         }
-        await clientsScheduledController.ColacionRequestBranch(
-            loginController.branchIdLoggedIn);
-        await clientsScheduledController
-            .outRequestBranch(loginController.branchIdLoggedIn);
-        controllerShoppingCart.setLoading(false);
       }
     });
   }
@@ -947,6 +950,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                             //  if (controllerLogin.codigoQrValid() == true) {
                             if (controllerLogin.usserPermissionQr == 1 ||
                                 controllerLogin.usserPermissionQr == 2) {
+                              loginController.setMakeCallC(
+                                  false); //se pone a false para que el timer no haga llamadas
                               controllerShoppingCart.setLoading(true);
                               int idProf = controllerclient
                                   .pOutRequestBranch[i].professional_id!;
@@ -988,10 +993,13 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 );
                               }
                               if (controllerLogin.branchIdLoggedIn != null) {
+                                //loginController.setMakeCallC(true);//se pone a true dentro de la funcion cuando finaliza
                                 await controllerclient.outRequestBranch(
                                     controllerLogin.branchIdLoggedIn);
                                 controllerShoppingCart.setLoading(false);
                               }
+                              loginController.setMakeCallC(
+                                  true); //por si no entrara al metodo,que avilite las llamadas del timer
                             } else {
                               Get.snackbar(
                                 'Mensaje',
@@ -1107,6 +1115,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                           onPressed: () async {
                             if (controllerLogin.usserPermissionQr == 1 ||
                                 controllerLogin.usserPermissionQr == 2) {
+                              loginController.setMakeCallC(
+                                  false); //desavilite las llamadas del timer
                               controllerShoppingCart.setLoading(true);
                               int idProf = controllerclient
                                   .pOutRequestBranch[i].professional_id!;
@@ -1156,10 +1166,14 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 );
                               }
                               if (controllerLogin.branchIdLoggedIn != null) {
+                                // loginController.setMakeCallC(
+                                //   true); //avilite las llamadas del timer
                                 await controllerclient.outRequestBranch(
                                     controllerLogin.branchIdLoggedIn);
                                 controllerShoppingCart.setLoading(false);
                               }
+                              loginController.setMakeCallC(
+                                  true); //avilite las llamadas del timer
                             } else {
                               Get.snackbar(
                                 'Mensaje',
@@ -1241,6 +1255,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                             //  if (controllerLogin.codigoQrValid() == true) {
                             if (controllerLogin.usserPermissionQr == 1 ||
                                 controllerLogin.usserPermissionQr == 2) {
+                              loginController.setMakeCallC(
+                                  false); //de-avilite las llamadas del timer
                               controllerShoppingCart.setLoading(true);
                               int idProf = controllerclient
                                   .clientsColacionRequestBranch[i]
@@ -1284,11 +1300,15 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 );
                               }
                               if (controllerLogin.branchIdLoggedIn != null) {
+                                // loginController.setMakeCallC(
+                                //   true); //avilite las llamadas del timer
                                 await clientsScheduledController
                                     .ColacionRequestBranch(
                                         controllerLogin.branchIdLoggedIn);
                                 controllerShoppingCart.setLoading(false);
                               }
+                              loginController.setMakeCallC(
+                                  true); //avilite las llamadas del timer
                             } else {
                               Get.snackbar(
                                 'Mensaje',
@@ -1406,6 +1426,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                           onPressed: () async {
                             if (controllerLogin.usserPermissionQr == 1 ||
                                 controllerLogin.usserPermissionQr == 2) {
+                              loginController.setMakeCallC(
+                                  false); //avilite las llamadas del timer
                               controllerShoppingCart.setLoading(true);
                               int idProf = controllerclient
                                   .clientsColacionRequestBranch[i]
@@ -1463,6 +1485,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                         controllerLogin.branchIdLoggedIn);
                                 controllerShoppingCart.setLoading(false);
                               }
+                              loginController.setMakeCallC(
+                                  true); //avilite las llamadas del timer
                             } else {
                               Get.snackbar(
                                 'Mensaje',
@@ -1542,6 +1566,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                           onPressed: () async {
                             if (controllerLogin.usserPermissionQr == 1 ||
                                 controllerLogin.usserPermissionQr == 2) {
+                              loginController.setMakeCallC(
+                                  false); //de-avilite las llamadas del timer
                               //rechazar la Eliminación
                               controllerShoppingCart.setLoading(true);
                               print('rechazando la solicitud');
@@ -1592,6 +1618,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       'Tecnico');
                                 }
                                 if (controllerLogin.branchIdLoggedIn != null) {
+                                  // loginController.setMakeCallC(true); //avilite las llamadas del timer
                                   await controllerclient
                                       .fetchClientsRechazBranch(
                                           controllerLogin.branchIdLoggedIn!);
@@ -1616,6 +1643,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 );
                                 controllerShoppingCart.setLoading(false);
                               }
+                              loginController.setMakeCallC(
+                                  true); //avilite las llamadas del timer
                             } else {
                               Get.snackbar(
                                 'Mensaje',
@@ -1721,7 +1750,10 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                     MdiIcons.accountTie,
                                   ),
                                   Text(
-                                    '${controllerclient.clientsScheduledListBranchClient[i].professional_name.toString()}',
+                                    controllerclient
+                                        .clientsScheduledListBranchClient[i]
+                                        .professional_name
+                                        .toString(),
                                     style: TextStyle(
                                         fontSize: (MediaQuery.of(context)
                                                 .size
@@ -1755,6 +1787,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                           onPressed: () async {
                             if (controllerLogin.usserPermissionQr == 1 ||
                                 controllerLogin.usserPermissionQr == 2) {
+                              loginController.setMakeCallC(
+                                  false); //de-avilite las llamadas del timer
                               controllerShoppingCart.setLoading(true);
                               String charge = controllerclient
                                   .clientsScheduledListBranchClient[i].charge!;
@@ -1817,12 +1851,15 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 }
                               }
                               if (controllerLogin.branchIdLoggedIn != null) {
+                                //  loginController.setMakeCallC(true); //de-avilite las llamadas del timer
                                 await controllerclient.fetchClientsRechazBranch(
                                     controllerLogin.branchIdLoggedIn!);
                                 await contShopp.loadOrderDeleteCar(
                                     controllerLogin.branchIdLoggedIn!);
                                 controllerShoppingCart.setLoading(false);
                               }
+                              loginController.setMakeCallC(
+                                  true); //avilite las llamadas del timer
                             } else {
                               Get.snackbar(
                                 'Mensaje',
@@ -1906,8 +1943,11 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                             // Ajusta el radio según tus necesidades
                           ),
                           onPressed: () async {
-                            if (controllerLogin.codigoQrValid() == true) {
+                            if (controllerLogin.usserPermissionQr == 1 ||
+                                controllerLogin.usserPermissionQr == 2) {
                               //rechazar la Eliminación
+                              loginController.setMakeCallC(
+                                  false); //de-avilite las llamadas del timer
                               controllerShoppingCart.setLoading(true);
                               int result = await contShopp.requestDelete(
                                   contShopp.orderDeleteCar[i].id, 0);
@@ -1935,6 +1975,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                     controllerLogin.branchIdLoggedIn!);
                                 controllerShoppingCart.setLoading(false);
                               }
+                              loginController.setMakeCallC(
+                                  true); //avilite las llamadas del timer
                             } else {
                               Get.snackbar(
                                 'Mensaje',
@@ -2087,10 +2129,12 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                             ),
                           ),
                           onPressed: () async {
-                            if (controllerLogin.codigoQrValid() == true) {
+                            if (controllerLogin.usserPermissionQr == 1 ||
+                                controllerLogin.usserPermissionQr == 2) {
                               if (contShopp.buttonPress == false) {
                                 contShopp.setButtonPress(true);
-
+                                loginController.setMakeCallC(
+                                    false); //avilite las llamadas del timer
                                 controllerShoppingCart.setLoading(true);
                                 int result = await contShopp.orderDelete(
                                     contShopp.orderDeleteCar[i].id);
@@ -2133,12 +2177,18 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   }
                                 }
                                 if (controllerLogin.branchIdLoggedIn != null) {
+                                  // loginController.setMakeCallC(
+                                  // true); //avilite las llamadas del timer
                                   await contShopp.loadOrderDeleteCar(
                                       controllerLogin.branchIdLoggedIn!);
                                   controllerShoppingCart.setLoading(false);
                                   contShopp.setButtonPress(false);
                                 }
                               }
+                              controllerShoppingCart.setLoading(false);
+                              contShopp.setButtonPress(false);
+                              loginController.setMakeCallC(
+                                  true); //avilite las llamadas del timer
                             } else {
                               Get.snackbar(
                                 'Mensaje',
