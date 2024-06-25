@@ -847,7 +847,8 @@ class LoginController extends GetxController {
       }
     }
 
-    if (LocalStorage.prefs.getBool('valueClockTec1ActivT') != null) {
+    if (LocalStorage.prefs.getBool('valueClockTec1ActivT') != null &&
+        LocalStorage.prefs.getBool('valueClockTec1ActivT') == true) {
       bool activeClock = LocalStorage.prefs.getBool('valueClockTec1ActivT')!;
       print('entrando porque esta el atendiendo cliente:CONTROLADOR-INI');
       if (activeClock) {

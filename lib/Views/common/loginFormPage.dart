@@ -74,57 +74,92 @@ class LoginFormPage extends StatelessWidget {
                     child: GetBuilder<LoginController>(builder: (_) {
                       return Column(
                         children: [
+                          // TextField(
+                          //   controller: _usserController,
+                          //   decoration: InputDecoration(
+                          //     hintText: 'Usuario',
+                          //     border: OutlineInputBorder(
+                          //       borderRadius: BorderRadius.circular(
+                          //           15.0), // Color del borde
+                          //     ),
+                          //     prefixIcon: const Icon(
+                          //       Icons.person,
+                          //       color: Color.fromARGB(90, 0, 0, 0),
+                          //     ),
+                          //     focusedBorder: OutlineInputBorder(
+                          //       borderSide: const BorderSide(
+                          //           color: const Color(0xFFFDAE2A), width: 1.0),
+                          //       borderRadius: BorderRadius.circular(10.0),
+                          //     ),
+                          //     enabledBorder: OutlineInputBorder(
+                          //       borderSide: const BorderSide(
+                          //           color: const Color(0xFFFDAE2A), width: 1.0),
+                          //       borderRadius: BorderRadius.circular(10.0),
+                          //     ),
+                          //   ),
+                          // ),
                           TextField(
                             controller: _usserController,
                             decoration: InputDecoration(
                               hintText: 'Usuario',
+                              hintStyle: TextStyle(
+                                  color:
+                                      Colors.grey[400]), // Estilo del hint text
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(
-                                    15.0), // Color del borde
+                                    15.0), // Radio del borde
+                                borderSide: BorderSide(
+                                    color: Colors.grey[300]!,
+                                    width: 1.0), // Borde gris claro
                               ),
                               prefixIcon: const Icon(
                                 Icons.person,
                                 color: Color.fromARGB(90, 0, 0, 0),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: const Color(0xFFFDAE2A), width: 1.0),
+                                borderSide: BorderSide(
+                                    color: Color(0xFFFDAE2A), width: 1.0),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: const Color(0xFFFDAE2A), width: 1.0),
+                                borderSide: BorderSide(
+                                    color: Colors.grey[300]!,
+                                    width: 1.0), // Borde gris claro
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
                           ),
+
                           const SizedBox(
                             height: 20,
                           ),
                           TextField(
                             obscureText: _.obscureText,
                             controller: _passController,
-                            //maxLines: 3,
                             decoration: InputDecoration(
-                              //labelText: 'Pass',
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(
-                                    15.0), // Color del borde
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide: BorderSide(
+                                    color: Colors.grey[300]!,
+                                    width: 1.0), // Borde gris claro
                               ),
-
                               hintText: 'Contraseña', // Este es el placeholder
+                              hintStyle: TextStyle(
+                                  color:
+                                      Colors.grey[400]), // Estilo del hint text
                               prefixIcon: const Icon(
                                 Icons.lock,
                                 color: Color.fromARGB(90, 0, 0, 0),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: const Color(0xFFFDAE2A), width: 1.0),
+                                borderSide: BorderSide(
+                                    color: Color(0xFFFDAE2A), width: 1.0),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: const Color(0xFFFDAE2A), width: 1.0),
+                                borderSide: BorderSide(
+                                    color: Colors.grey[300]!,
+                                    width: 1.0), // Borde gris claro
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               suffixIcon: IconButton(
@@ -132,19 +167,64 @@ class LoginFormPage extends StatelessWidget {
                                   _.obscureText
                                       ? Icons.visibility
                                       : Icons.visibility_off,
-                                  color: Colors.grey,
+                                  color: Colors.grey[400],
                                 ),
                                 onPressed: _.togglePasswordVisibility,
                               ),
                               fillColor: const Color.fromARGB(14, 96, 125, 139),
                               filled: true,
-
                               labelStyle: const TextStyle(
                                 color: Color.fromARGB(176, 0, 0,
                                     0), // Cambia el color del texto aquí
                               ),
                             ),
                           ),
+
+                          // TextField(
+                          //   obscureText: _.obscureText,
+                          //   controller: _passController,
+                          //   //maxLines: 3,
+                          //   decoration: InputDecoration(
+                          //     //labelText: 'Pass',
+                          //     border: OutlineInputBorder(
+                          //       borderRadius: BorderRadius.circular(
+                          //           15.0), // Color del borde
+                          //     ),
+
+                          //     hintText: 'Contraseña', // Este es el placeholder
+                          //     prefixIcon: const Icon(
+                          //       Icons.lock,
+                          //       color: Color.fromARGB(90, 0, 0, 0),
+                          //     ),
+                          //     focusedBorder: OutlineInputBorder(
+                          //       borderSide: const BorderSide(
+                          //           color: const Color(0xFFFDAE2A), width: 1.0),
+                          //       borderRadius: BorderRadius.circular(10.0),
+                          //     ),
+                          //     enabledBorder: OutlineInputBorder(
+                          //       borderSide: const BorderSide(
+                          //           color: const Color(0xFFFDAE2A), width: 1.0),
+                          //       borderRadius: BorderRadius.circular(10.0),
+                          //     ),
+                          //     suffixIcon: IconButton(
+                          //       icon: Icon(
+                          //         _.obscureText
+                          //             ? Icons.visibility
+                          //             : Icons.visibility_off,
+                          //         color: Colors.grey,
+                          //       ),
+                          //       onPressed: _.togglePasswordVisibility,
+                          //     ),
+                          //     fillColor: const Color.fromARGB(14, 96, 125, 139),
+                          //     filled: true,
+
+                          //     labelStyle: const TextStyle(
+                          //       color: Color.fromARGB(176, 0, 0,
+                          //           0), // Cambia el color del texto aquí
+                          //     ),
+                          //   ),
+                          // ),
+
                           const SizedBox(
                             height: 10,
                           ),

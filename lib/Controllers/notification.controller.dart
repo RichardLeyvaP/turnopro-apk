@@ -505,7 +505,10 @@ class NotificationController extends GetxController {
           await repository.getNotificationList(idBranch, idProfe, type, token);
       bool siHayEliminarService = false;
 
-      if (result.containsKey('Erroor') && result['Erroor'] == true) {
+      if (result.containsKey('notificationListError') &&
+          result.containsKey('notificationListError') == true) {
+        controllerLogin.showConnectionError();
+      } else if (result.containsKey('Erroor') && result['Erroor'] == true) {
         print(
             'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor, el error fue en Future<void> fetchNotificationList');
       } else if (result.containsKey('notificationList') &&

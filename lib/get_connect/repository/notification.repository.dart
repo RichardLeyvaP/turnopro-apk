@@ -326,7 +326,9 @@ class NotificationRepository extends GetConnect {
           };
         }
       } else {
-        return notificationList;
+        return {
+          "notificationListError": true,
+        };
       }
     } catch (e) {
       print(

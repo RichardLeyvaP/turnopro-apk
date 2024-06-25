@@ -58,6 +58,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
   void initState() {
     super.initState();
 //mandar a poner un cargando y al tener resultados quitarlos
+
     clientsScheduledController
         .fetchClientsTechnical(loginController.branchIdLoggedIn);
 
