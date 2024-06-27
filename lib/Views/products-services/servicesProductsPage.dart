@@ -621,17 +621,36 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                           // Cerrar el primer modal
                                                           Navigator.pop(
                                                               context);
+
                                                           Get.dialog(
                                                             const Center(
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                color: Color(
-                                                                    0xFFFDAE2A),
+                                                              child: Material(
+                                                                color: Colors
+                                                                    .transparent,
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    CircularProgressIndicator(
+                                                                      color: Color(
+                                                                          0xFFFDAE2A),
+                                                                    ),
+                                                                    SizedBox(
+                                                                        height:
+                                                                            16),
+                                                                    Text(
+                                                                        'Espere...',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.white)),
+                                                                  ],
+                                                                ),
                                                               ),
                                                             ),
                                                             barrierDismissible:
                                                                 false,
-                                                          );
+                                                          ); //Get.back();
 
                                                           if (_.pickedFile !=
                                                               null) {

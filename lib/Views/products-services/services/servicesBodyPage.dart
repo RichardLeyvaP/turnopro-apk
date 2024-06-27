@@ -505,27 +505,27 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                     ),
                                     onPressed: () async {
                                       String s = '';
-                                      Get.dialog(
-                                        const Center(
-                                          child: Material(
-                                            color: Colors.transparent,
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                CircularProgressIndicator(
-                                                  color: Color(0xFFFDAE2A),
-                                                ),
-                                                SizedBox(height: 16),
-                                                Text('Agregando servicios...',
-                                                    style: TextStyle(
-                                                        color: Colors.white)),
-                                              ],
+                                      if (_.selectServiceNew.isNotEmpty) {
+                                        Get.dialog(
+                                          const Center(
+                                            child: Material(
+                                              color: Colors.transparent,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  CircularProgressIndicator(
+                                                    color: Color(0xFFFDAE2A),
+                                                  ),
+                                                  SizedBox(height: 16),
+                                                  Text('Agregando servicios...',
+                                                      style: TextStyle(
+                                                          color: Colors.white)),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        barrierDismissible: false,
-                                      ); //Get.back();
-                                      if (_.selectServiceNew.isNotEmpty) {
+                                          barrierDismissible: false,
+                                        ); //Get.back();
                                         int resp = await shpCont
                                             .updateShoppingCartValueSerNew(
                                                 _.selectServiceNew);
@@ -553,6 +553,7 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                           );
                                         } else if (resp < 0 &&
                                             resp != -990099) {
+                                          controllerLogin.showConnectionError();
                                           Get.snackbar(
                                             'Mensaje',
                                             'Conexión lenta al agregarse (${resp * -1}) servicios',
@@ -574,6 +575,7 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                           loginController.inTheClock(false);
                                           pagesConfigC.back();
                                         } else if (resp == -990099) {
+                                          controllerLogin.showConnectionError();
                                           Get.snackbar(
                                             '!Alerta',
                                             'Problema al agregar los servicios,inténtelo de nuevo',

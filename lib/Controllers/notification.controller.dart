@@ -176,301 +176,314 @@ class NotificationController extends GetxController {
     print(
         'llamada timer ...tipo:$type......idSucursal:$idBranch......iProf:$idProfe');
     try {
-      Map<String, dynamic> resultList = await repository
-          .professionalBranchNotifQueque(idBranch, idProfe, type, token);
+      final resultList = await repository.professionalBranchNotifQueque(
+          idBranch, idProfe, type, token);
       bool siHayEliminarService = false;
-      if (resultList.containsKey('Erroor') && resultList['Erroor'] == -99) {
-        //llamar aqui el metodo del login que muestra error de conexion
-        loginController.showConnectionError();
-      } else if (resultList.containsKey('Erroor') &&
-          resultList['Erroor'] == true) {
-        print(
-            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor, el error fue en Future<void> fetchNotificationList');
-      } else if (resultList.containsKey('notificationList') &&
-          resultList.containsKey('notificationListNew')) {
-        notification =
-            resultList['notificationList']; //busca aqui las notificaciones
-
-        notificationListLength = notification.length;
-
-        notificationListNew = resultList['notificationListNew'];
-        notificationListNewLength = notificationListNew.length;
-        List<NotificationModel> notificationListNewAux1 = [];
-        notificationListNew.forEach((element) async {
-          if (element.state == 0 || element.state == 3) {
-            if (!notificationListNewSounded.contains(element.id)) {
-              notificationListNewSounded.add(element.id);
-              // localNotificationsSimplifies(element.tittle, element.description);
-
-              notificationListNewAux1.add(element);
-            }
-          }
-
-          //SI HAY QUE ELIMINAR TIEMPO DEL RELOJ
-          if (element.state == 3 &&
-              element.tittle == 'Aceptada Eliminación de Servicio') {
-            print('modificar time de mm 1 estoy aqui en el forEach');
-            String textoCompleto = element.description;
-            // String descripcion =
-            //     textoCompleto.split('.')[0]; // Obtener la descripción
-            // Obtener el segundo número (999)
-            String numeroOcultoString = textoCompleto
-                .split('.')[1]
-                .trim(); // Obtener la parte después del punto y eliminar espacios en blanco
-            int idReservation =
-                int.parse(numeroOcultoString); // Convertir a entero
-            controllerclient.watchModifyTimeRest(idReservation,
-                textoCompleto); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
-            updateNotifications2(idBranch, idProfe,
-                element.id); //aqui es para no repetir esto y lo pongo en 0
-
-            //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
-            //DESCONTAR EL TIEMPO AL RELOJ
-            //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
-            siHayEliminarService = true;
-          }
-          //esto es para saber que valor darle al qr si aceptan o rechazan la colación
-          if (element.state == 3 &&
-              element.tittle ==
-                  'Aceptada su solicitud de Colación') //pongo a null el qr
-          {
-            updateNotifications2(idBranch, idProfe, element.id);
-            controllerLogin.setCodigoQrValid(null);
-          }
-          if (element.state == 3 &&
-              element.tittle ==
-                  'Solicitud de Eliminación Rechazada') //pongo a null el qr
-          {
-            updateNotifications2(idBranch, idProfe, element.id);
-            controllerLogin.setCodigoQrValid(1);
-          }
-          if (element.state == 3 &&
-              element.tittle ==
-                  'Aceptada Eliminación de Cliente') //pongo a null el qr
-          {
-            updateNotifications2(idBranch, idProfe, element.id);
-            controllerLogin.setCodigoQrValid(1);
-          }
-          if (element.state == 3 &&
-              element.tittle ==
-                  'Rechazada su solicitud de Colación') //pongo a 1 el qr
-          {
-            updateNotifications2(idBranch, idProfe, element.id);
-            controllerLogin.setCodigoQrValid(1);
-          }
-          if (element.state == 3 &&
-              element.tittle ==
-                  'Rechazada su solicitud de Salida') //pongo a 1 el qr
-          {
-            updateNotifications2(idBranch, idProfe, element.id);
-            controllerLogin.setCodigoQrValid(1);
-          }
-          if (element.state == 3 &&
-              element.tittle ==
-                  'Aceptada su solicitud de Salida') //pongo a 1 el qr
-          {
-            print('cargando aqui-16 para sacar del puesto y la apk-1');
-
-            updateOutAcept(element.id);
-          }
-        });
-
-//aqui veo y voy mandando las notificaciones locales
-        for (final result1 in notificationListNewAux1) {
-          // Llama a la función localNotificationsSimplifies después del retraso
-          localNotificationsSimplifies(result1.tittle, result1.description);
-          print('aqui llamando las notificaciones nuevas1');
+      if (resultList != null && resultList is Map<String, dynamic>) {
+        // Manejar la respuesta normalmente
+        //todo **************************************************************
+        if (resultList.containsKey('Erroor') && resultList['Erroor'] == -99) {
+          //llamar aqui el metodo del login que muestra error de conexion
+          loginController.showConnectionError();
+        } else if (resultList.containsKey('Erroor') &&
+            resultList['Erroor'] == true) {
           print(
-              'aqui llamando las notificaciones nuevas1:result1.tittle : ${result1.tittle}');
-          await Future.delayed(const Duration(seconds: 2)); // Espera 2 segundos
-        }
+              'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor, el error fue en Future<void> fetchNotificationList');
+        } else if (resultList.containsKey('notificationList') &&
+            resultList.containsKey('notificationListNew')) {
+          notification =
+              resultList['notificationList']; //busca aqui las notificaciones
 
-        if (siHayEliminarService ==
-            true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
-        {
-          controllerclient.setActiveModifyTimeRest(true);
-        }
-        print(
-            'cargando aqui-16 para sacar del puesto y la apk-1Salir=$outAcept');
-        if (outAcept !=
-            0) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
-        {
-          Get.snackbar(
-            'Mensaje',
-            'Cerrando aplicación.',
-            duration: const Duration(milliseconds: 2500),
-            backgroundColor: const Color.fromARGB(118, 255, 255, 255),
-            showProgressIndicator: true,
-            progressIndicatorBackgroundColor:
-                const Color.fromARGB(255, 203, 205, 209),
-            progressIndicatorValueColor:
-                const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
-            overlayBlur: 3,
-          );
-          Get.dialog(
-            const Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFFFDAE2A),
-              ),
-            ),
-            barrierDismissible: false,
-          ); //Get.back();
-          await updateNotifications2(idBranch, idProfe, outAcept);
-          await controllerLogin.exitPostworking("Barbero");
-          controllerLogin.exit(controllerLogin.tokenUserLoggedIn);
-          updateOutAcept(0);
-          Get.back();
-          print('cargando aqui-16 para sacar del puesto y la apk-2');
-        }
-//fin de trabajo de notificaciones
-//aqui empiza la asignacion de la cola
+          notificationListLength = notification.length;
 
-        clientCon.correctConnection = true;
-        //aqui estoy guardando la cola del dia de hoy del profesional
-        List<ClientsScheduledModel>? clientsScheduledListAUX = [];
-        List<ClientsScheduledModel>? clientsScheduledListAUX2 = [];
+          notificationListNew = resultList['notificationListNew'];
+          notificationListNewLength = notificationListNew.length;
+          List<NotificationModel> notificationListNewAux1 = [];
+          notificationListNew.forEach((element) async {
+            if (element.state == 0 || element.state == 3) {
+              if (!notificationListNewSounded.contains(element.id)) {
+                notificationListNewSounded.add(element.id);
+                // localNotificationsSimplifies(element.tittle, element.description);
 
-        clientsScheduledListAUX = (resultList['clientList'] ?? []).cast<
-            ClientsScheduledModel>(); //aqui estoy guardando la cola del dia de hoy del profesional
-        clientsScheduledListAUX2 =
-            (resultList['clientListSig'] ?? []).cast<ClientsScheduledModel>();
-        if (clientsScheduledListAUX != null &&
-            clientsScheduledListAUX2 != null) {
-          clientCon.clientsScheduledList = clientsScheduledListAUX;
-
-          clientCon.clientsScheduledListLength =
-              clientCon.clientsScheduledList.length;
-          print(
-              'llamada timer Cantidad de Clientes-3 :${clientCon.clientsScheduledListLength}');
-          clientsAux = clientsScheduledListAUX2;
-          clientCon.clientsScheduledListLengthTail = clientsAux.length;
-          print(
-              'llamando a buscar clientes - BIEN4-clientsScheduledList.length:${clientCon.clientsScheduledList.length}');
-
-          //
-          //  if (closeIesperado == true) //es que cerró inesperadamente
-          {
-            if (resultList.containsKey('attendingClient')) {
-              List<Map>? attendingClientList = resultList['attendingClient'];
-              //aqui es donde tiene que entrar solamente si se loguea
-              if (controllerLogin.isLoggingIn == true) {
-                print(
-                    'EL TIEMPO clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn}) { entre poque vine del login ');
-
-                clientCon.logicaInesperada(attendingClientList);
-                controllerLogin.setIsLoggingIn(false);
-              } else {
-                print(
-                    'clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn})  NOOO ');
+                notificationListNewAux1.add(element);
               }
-            } else {
-              // La clave 'attendingClient' no está presente en el mapa
-              print(
-                  '!!!!!!!!!!!!!!!!!!!!La clave "attendingClient" no está presente en el mapa.');
             }
-          }
 
-          //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
-          clientCon.clientsScheduledNext = resultList['nextClient'];
-          int clientNewAux = 0;
-//aqui verifico si entra un cliente nuevo
-          //************************************* */
-          if (clientCon.clientsScheduledListId.isNotEmpty) {
-            clientNewAux = clientCon.clientsScheduledListId.length;
-          }
+            //SI HAY QUE ELIMINAR TIEMPO DEL RELOJ
+            if (element.state == 3 &&
+                element.tittle == 'Aceptada Eliminación de Servicio') {
+              print('modificar time de mm 1 estoy aqui en el forEach');
+              String textoCompleto = element.description;
+              // String descripcion =
+              //     textoCompleto.split('.')[0]; // Obtener la descripción
+              // Obtener el segundo número (999)
+              String numeroOcultoString = textoCompleto
+                  .split('.')[1]
+                  .trim(); // Obtener la parte después del punto y eliminar espacios en blanco
+              int idReservation =
+                  int.parse(numeroOcultoString); // Convertir a entero
+              controllerclient.watchModifyTimeRest(idReservation,
+                  textoCompleto); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
+              updateNotifications2(idBranch, idProfe,
+                  element.id); //aqui es para no repetir esto y lo pongo en 0
 
-          clientCon.clientsScheduledList.forEach((element) async {
-            if (!clientCon.clientsScheduledListId
-                .contains(element.reservation_id)) {
-              clientCon.clientsScheduledListId.add(element.reservation_id!);
+              //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
+              //DESCONTAR EL TIEMPO AL RELOJ
+              //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
+              siHayEliminarService = true;
+            }
+            //esto es para saber que valor darle al qr si aceptan o rechazan la colación
+            if (element.state == 3 &&
+                element.tittle ==
+                    'Aceptada su solicitud de Colación') //pongo a null el qr
+            {
+              updateNotifications2(idBranch, idProfe, element.id);
+              controllerLogin.setCodigoQrValid(null);
+            }
+            if (element.state == 3 &&
+                element.tittle ==
+                    'Solicitud de Eliminación Rechazada') //pongo a null el qr
+            {
+              updateNotifications2(idBranch, idProfe, element.id);
+              controllerLogin.setCodigoQrValid(1);
+            }
+            if (element.state == 3 &&
+                element.tittle ==
+                    'Aceptada Eliminación de Cliente') //pongo a null el qr
+            {
+              updateNotifications2(idBranch, idProfe, element.id);
+              controllerLogin.setCodigoQrValid(1);
+            }
+            if (element.state == 3 &&
+                element.tittle ==
+                    'Rechazada su solicitud de Colación') //pongo a 1 el qr
+            {
+              updateNotifications2(idBranch, idProfe, element.id);
+              controllerLogin.setCodigoQrValid(1);
+            }
+            if (element.state == 3 &&
+                element.tittle ==
+                    'Rechazada su solicitud de Salida') //pongo a 1 el qr
+            {
+              updateNotifications2(idBranch, idProfe, element.id);
+              controllerLogin.setCodigoQrValid(1);
+            }
+            if (element.state == 3 &&
+                element.tittle ==
+                    'Aceptada su solicitud de Salida') //pongo a 1 el qr
+            {
+              print('cargando aqui-16 para sacar del puesto y la apk-1');
+
+              updateOutAcept(element.id);
             }
           });
 
-          if (clientNewAux != 0) {
-            if (clientCon.clientsScheduledListId.length > clientNewAux) {
-              clientCon.setclientNew(
-                  clientCon.clientsScheduledListId.length - clientNewAux);
-            }
+//aqui veo y voy mandando las notificaciones locales
+          for (final result1 in notificationListNewAux1) {
+            // Llama a la función localNotificationsSimplifies después del retraso
+            localNotificationsSimplifies(result1.tittle, result1.description);
+            print('aqui llamando las notificaciones nuevas1');
+            print(
+                'aqui llamando las notificaciones nuevas1:result1.tittle : ${result1.tittle}');
+            await Future.delayed(
+                const Duration(seconds: 2)); // Espera 2 segundos
           }
 
-          if (clientCon.clientNew > 0) {
-            String s = '';
-            if (clientCon.clientNew > 1) {
-              s = 's';
-            }
-
-            //mando notificacion al barbero
-            storeNotification(
-                'Nuevo cliente en cola',
-                controllerLogin.branchIdLoggedIn,
-                controllerLogin.idProfessionalLoggedIn,
-                'Tienes ${clientCon.clientNew} cliente$s nuevo$s en cola',
-                'Barbero');
-
-            clientCon.setclientNew(0);
-            //************************************* */
+          if (siHayEliminarService ==
+              true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+          {
+            controllerclient.setActiveModifyTimeRest(true);
           }
-
-          clientCon.quantityClientAttended =
-              resultList['quantityClientAttended'];
-          clientCon.varClientsWaiting = resultList['varclientswaiting'];
-          if (clientCon.quantityClientAttended == 0) {
-            clientCon.clientsAttended = 'nobody';
+          print(
+              'cargando aqui-16 para sacar del puesto y la apk-1Salir=$outAcept');
+          if (outAcept !=
+              0) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+          {
+            Get.snackbar(
+              'Mensaje',
+              'Cerrando aplicación.',
+              duration: const Duration(milliseconds: 2500),
+              backgroundColor: const Color.fromARGB(118, 255, 255, 255),
+              showProgressIndicator: true,
+              progressIndicatorBackgroundColor:
+                  const Color.fromARGB(255, 203, 205, 209),
+              progressIndicatorValueColor:
+                  const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
+              overlayBlur: 3,
+            );
+            Get.dialog(
+              const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFDAE2A),
+                ),
+              ),
+              barrierDismissible: false,
+            ); //Get.back();
+            await updateNotifications2(idBranch, idProfe, outAcept);
+            await controllerLogin.exitPostworking("Barbero");
+            controllerLogin.exit(controllerLogin.tokenUserLoggedIn);
+            updateOutAcept(0);
+            Get.back();
+            print('cargando aqui-16 para sacar del puesto y la apk-2');
           }
-
-          if (clientCon.clientsScheduledNext != null) {
-            int idCar = clientCon.clientsScheduledNext!.car_id!;
-            await clientCon.searchForCustomerServices(
-                idCar, controllerLogin.tokenUserLoggedIn);
-            await clientCon.filterShowNext();
-            //  setValueClock(true);
-          } else {
-            print('if (clientsScheduledNext != null) ESTOY DANDO null');
-            //  setValueClock(false);
-          }
-        }
+//fin de trabajo de notificaciones
 //aqui empiza la asignacion de la cola
-      } else if (resultList.containsKey('notificationListEncarg') &&
-          resultList.containsKey('notificationListNewEncarg')) {
-        print('ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador');
-        notificationEncarg = resultList['notificationListEncarg'];
 
-        notificationListLengthEncarg = notificationEncarg.length;
+          clientCon.correctConnection = true;
+          //aqui estoy guardando la cola del dia de hoy del profesional
+          List<ClientsScheduledModel>? clientsScheduledListAUX = [];
+          List<ClientsScheduledModel>? clientsScheduledListAUX2 = [];
 
-        notificationListNewEncarg = resultList['notificationListNewEncarg'];
-        notificationListNewLengthEncarg = notificationListNewEncarg.length;
-        print(
-            'ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador - notificationListNewLengthEncarg:${notificationEncarg.length}');
+          clientsScheduledListAUX = (resultList['clientList'] ?? []).cast<
+              ClientsScheduledModel>(); //aqui estoy guardando la cola del dia de hoy del profesional
+          clientsScheduledListAUX2 =
+              (resultList['clientListSig'] ?? []).cast<ClientsScheduledModel>();
+          if (clientsScheduledListAUX != null &&
+              clientsScheduledListAUX2 != null) {
+            clientCon.clientsScheduledList = clientsScheduledListAUX;
 
-        notificationListNewEncarg.forEach((element) async {
-          if (element.state == 3 &&
-              element.tittle == 'Aceptada Eliminación de Servicio') {
-            print('modificar time de mm 1 estoy aqui en el forEach');
-            String textoCompleto = element.description;
-            // String descripcion =
-            //     textoCompleto.split('.')[0]; // Obtener la descripción
-            // Obtener el segundo número (999)
-            String numeroOcultoString = textoCompleto
-                .split('.')[1]
-                .trim(); // Obtener la parte después del punto y eliminar espacios en blanco
-            int idReservation =
-                int.parse(numeroOcultoString); // Convertir a entero
-            controllerclient.watchModifyTimeRest(idReservation,
-                textoCompleto); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
-            updateNotifications2(idBranch, idProfe,
-                element.id); //aqui es para no repetir esto y lo pongo en 0
+            clientCon.clientsScheduledListLength =
+                clientCon.clientsScheduledList.length;
+            print(
+                'llamada timer Cantidad de Clientes-3 :${clientCon.clientsScheduledListLength}');
+            clientsAux = clientsScheduledListAUX2;
+            clientCon.clientsScheduledListLengthTail = clientsAux.length;
+            print(
+                'llamando a buscar clientes - BIEN4-clientsScheduledList.length:${clientCon.clientsScheduledList.length}');
 
-            //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
-            //DESCONTAR EL TIEMPO AL RELOJ
-            //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
-            siHayEliminarService = true;
+            //
+            //  if (closeIesperado == true) //es que cerró inesperadamente
+            {
+              if (resultList.containsKey('attendingClient')) {
+                List<Map>? attendingClientList = resultList['attendingClient'];
+                //aqui es donde tiene que entrar solamente si se loguea
+                if (controllerLogin.isLoggingIn == true) {
+                  print(
+                      'EL TIEMPO clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn}) { entre poque vine del login ');
+
+                  clientCon.logicaInesperada(attendingClientList);
+                  controllerLogin.setIsLoggingIn(false);
+                } else {
+                  print(
+                      'clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn})  NOOO ');
+                }
+              } else {
+                // La clave 'attendingClient' no está presente en el mapa
+                print(
+                    '!!!!!!!!!!!!!!!!!!!!La clave "attendingClient" no está presente en el mapa.');
+              }
+            }
+
+            //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+            clientCon.clientsScheduledNext = resultList['nextClient'];
+            int clientNewAux = 0;
+//aqui verifico si entra un cliente nuevo
+            //************************************* */
+            if (clientCon.clientsScheduledListId.isNotEmpty) {
+              clientNewAux = clientCon.clientsScheduledListId.length;
+            }
+
+            clientCon.clientsScheduledList.forEach((element) async {
+              if (!clientCon.clientsScheduledListId
+                  .contains(element.reservation_id)) {
+                clientCon.clientsScheduledListId.add(element.reservation_id!);
+              }
+            });
+
+            if (clientNewAux != 0) {
+              if (clientCon.clientsScheduledListId.length > clientNewAux) {
+                clientCon.setclientNew(
+                    clientCon.clientsScheduledListId.length - clientNewAux);
+              }
+            }
+
+            if (clientCon.clientNew > 0) {
+              String s = '';
+              if (clientCon.clientNew > 1) {
+                s = 's';
+              }
+
+              //mando notificacion al barbero
+              storeNotification(
+                  'Nuevo cliente en cola',
+                  controllerLogin.branchIdLoggedIn,
+                  controllerLogin.idProfessionalLoggedIn,
+                  'Tienes ${clientCon.clientNew} cliente$s nuevo$s en cola',
+                  'Barbero');
+
+              clientCon.setclientNew(0);
+              //************************************* */
+            }
+
+            clientCon.quantityClientAttended =
+                resultList['quantityClientAttended'];
+            clientCon.varClientsWaiting = resultList['varclientswaiting'];
+            if (clientCon.quantityClientAttended == 0) {
+              clientCon.clientsAttended = 'nobody';
+            }
+
+            if (clientCon.clientsScheduledNext != null) {
+              int idCar = clientCon.clientsScheduledNext!.car_id!;
+              await clientCon.searchForCustomerServices(
+                  idCar, controllerLogin.tokenUserLoggedIn);
+              await clientCon.filterShowNext();
+              //  setValueClock(true);
+            } else {
+              print('if (clientsScheduledNext != null) ESTOY DANDO null');
+              //  setValueClock(false);
+            }
           }
-        });
-        if (siHayEliminarService ==
-            true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
-        {
-          controllerclient.setActiveModifyTimeRest(true);
+//aqui empiza la asignacion de la cola
+        } else if (resultList.containsKey('notificationListEncarg') &&
+            resultList.containsKey('notificationListNewEncarg')) {
+          print(
+              'ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador');
+          notificationEncarg = resultList['notificationListEncarg'];
+
+          notificationListLengthEncarg = notificationEncarg.length;
+
+          notificationListNewEncarg = resultList['notificationListNewEncarg'];
+          notificationListNewLengthEncarg = notificationListNewEncarg.length;
+          print(
+              'ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador - notificationListNewLengthEncarg:${notificationEncarg.length}');
+
+          notificationListNewEncarg.forEach((element) async {
+            if (element.state == 3 &&
+                element.tittle == 'Aceptada Eliminación de Servicio') {
+              print('modificar time de mm 1 estoy aqui en el forEach');
+              String textoCompleto = element.description;
+              // String descripcion =
+              //     textoCompleto.split('.')[0]; // Obtener la descripción
+              // Obtener el segundo número (999)
+              String numeroOcultoString = textoCompleto
+                  .split('.')[1]
+                  .trim(); // Obtener la parte después del punto y eliminar espacios en blanco
+              int idReservation =
+                  int.parse(numeroOcultoString); // Convertir a entero
+              controllerclient.watchModifyTimeRest(idReservation,
+                  textoCompleto); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
+              updateNotifications2(idBranch, idProfe,
+                  element.id); //aqui es para no repetir esto y lo pongo en 0
+
+              //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
+              //DESCONTAR EL TIEMPO AL RELOJ
+              //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
+              siHayEliminarService = true;
+            }
+          });
+          if (siHayEliminarService ==
+              true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+          {
+            controllerclient.setActiveModifyTimeRest(true);
+          }
         }
+//todo **************************************************************
+        controllerclient.setclientLisError(0);
+      } else {
+        // Manejar el caso cuando response es nulo o no es un mapa
+        print(
+            'Error al obtener la lista de notificaciones:este:-CONTROLADO AQUI');
+        controllerclient.setclientLisError(-99);
       }
     } catch (e) {
       // Manejo de errores

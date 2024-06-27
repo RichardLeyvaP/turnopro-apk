@@ -173,6 +173,18 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
         }
         Get.offAllNamed('/HomeCordinador');
       } else {
+        Get.snackbar(
+          '',
+          'Problemas de conexión al leer el código Qr, vuelva a intentarlo',
+          colorText: const Color.fromARGB(255, 43, 44, 49),
+          titleText: const Text('Error'),
+          duration: const Duration(seconds: 4),
+          showProgressIndicator: true,
+          progressIndicatorBackgroundColor: const Color(0xFF4470F3),
+          progressIndicatorValueColor:
+              const AlwaysStoppedAnimation(Color.fromARGB(255, 241, 11, 3)),
+          overlayBlur: 3,
+        );
         Get.offAllNamed('/LoginFormPage');
       }
     });

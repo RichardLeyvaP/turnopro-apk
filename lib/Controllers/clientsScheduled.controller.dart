@@ -89,6 +89,7 @@ class ClientsScheduledController extends GetxController {
   int professionalDisponLength = 0;
 
   int clientsScheduledListLength = 0;
+  int errorHome = 0;
   int clientsScheduledListLengthTail = 0;
   int clientsTechnicalLength = 0;
   int? carIdClientsScheduled;
@@ -162,6 +163,11 @@ class ClientsScheduledController extends GetxController {
 
   void setcantClientWait(value) {
     cantClientWait = value;
+    update();
+  }
+
+  void setclientLisError(value) {
+    errorHome = value;
     update();
   }
 
