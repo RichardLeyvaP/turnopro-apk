@@ -168,7 +168,8 @@ class UserRepository extends GetConnect {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
 
-      final response = await get(url, headers: headers);
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15));
       //print(response.body);
       if (response.statusCode == 200) {
         final users = response.body;

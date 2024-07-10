@@ -37,6 +37,7 @@ dependencies:
   cached_network_image: ^3.3.1
   flutter_charts: ^0.5.2
   overlay_support: ^2.1.0
+  flutter_dotenv: ^5.1.0
   
   
   
@@ -106,3 +107,5 @@ flutter:
      - assets/images/icons/lavado.png
      - assets/images/icons/lavado2.png
      - assets/sound/livechat-129007.mp3
+     - assets/env.prod.json
+     - assets/env.dart

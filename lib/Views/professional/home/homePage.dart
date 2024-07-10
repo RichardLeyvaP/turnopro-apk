@@ -12,6 +12,7 @@ import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/Utility/textTruncate.dart';
 import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/env.dart';
 import 'package:intl/intl.dart';
 
@@ -52,7 +53,7 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
     print('La aplicación se está pausando (yendo a segundo plano111)');
     if (state == AppLifecycleState.paused) {
-      clientController.setBoolControlVision(false);
+      //  clientController.setBoolControlVision(false);
       clientController.setCloseIesperado(true);
 
       // La aplicación se está pausando (puede ir a segundo plano)
@@ -60,13 +61,13 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
       print('..segundoPlano....${clientController.timeClientsActAttended1}');
       print('La aplicación se está pausando (yendo a segundo plano)');
     } else if (state == AppLifecycleState.resumed) {
-      if (loginController.usserPermissionQr ==
+      /*   if (loginController.usserPermissionQr ==
           null) //si esta logueado que lo ponga en false
       {
         clientController.setBoolControlVision(true);
       } else {
         clientController.setBoolControlVision(false);
-      }
+      }*/
 
       // La aplicación se cierra completamente
       print('La aplicación se está Reaunudandose nuevamente');
@@ -323,131 +324,293 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: const Color.fromARGB(255, 231, 232, 234),
       title: GetBuilder<LoginController>(//todo
           builder: (logUser) {
-        return Row(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(
-                  top: 8), // Agrega un margen en la parte superior
+        return InkWell(
+          onTap: () {
+            /*  if (loginController.userLoggedIn != '') {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return GetBuilder<LoginController>(builder: (_) {
+                    return Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ), //this right here
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Container(
+                            decoration: const BoxDecoration(
+                              color: Color(0xFFFDAE2A),
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(8),
+                                topRight: Radius.circular(8),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 12),
+                                  child: Text(
+                                    'Mensaje',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.close, color: Colors.white),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 150,
+                            child: Column(
+                              children: [
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 30,
+                                        left: 16,
+                                        right: 16,
+                                        bottom: 10),
+                                    child: Text(
+                                        'Deseas abrir la proxima vez con la huella digital, usuario:${loginController.userLoggedIn} ?                         ')),
+                                //
 
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                // border: Border.all(
-                //   color: Colors.white,
-                //   width: 2, // Ajusta el ancho del borde según tus preferencias
-                // ),
-              ),
-              child: CircleAvatar(
-                radius: 25,
-                backgroundColor: Colors.white, //fondo de la imagen
-                child: ClipOval(
-                  child: Image.network(
-                    '${Env.apiEndpoint}/images/${logUser.imageUrlLoggedIn}',
-                    fit: BoxFit
-                        .cover, // Ajusta la imagen para cubrir completamente el área
-                    width: 50, // Ancho deseado de la imagen dentro del círculo
-                    height: 50,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) {
-                        // Si la imagen se carga correctamente, mostramos la imagen
-                        return child;
-                      } else {
-                        // Si la imagen aún se está cargando, mostramos un indicador de progreso
-                        return const CircularProgressIndicator(
-                          color: Color(0xFFFDAE2A),
-                        );
-                      }
-                    },
-                    errorBuilder: (BuildContext context, Object error,
-                        StackTrace? stackTrace) {
-                      // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
-                      if (kDebugMode) {
-                        return CircleAvatar(
-                          radius: 25,
-                          backgroundColor: Colors
-                              .transparent, // Fondo transparente para que el borde sea visible
-                          child: ClipOval(
-                            child: Image.asset(
-                              'assets/images/default_profile.jpg',
-                              fit: BoxFit
-                                  .cover, // Ajusta la imagen para cubrir completamente el área
-                              width:
-                                  50, // Ancho deseado de la imagen dentro del círculo
-                              height:
-                                  50, // Alto deseado de la imagen dentro del círculo
+                                ButtonBar(
+                                  alignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    ElevatedButton(
+                                        style: ButtonStyle(
+                                            padding: MaterialStateProperty.all<
+                                                EdgeInsetsGeometry>(
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 0,
+                                                  horizontal: 18.0),
+                                            ),
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                        Color>(
+                                                    const Color(0xFF4470F3))),
+                                        onPressed: () async {
+                                          //mostrar mensaje y guardar a true variable
+                                          LocalStorage.prefs.setBool(
+                                              'EntryFootprintOpen', true);
+                                          Get.snackbar(
+                                            'Mensaje',
+                                            'Guardada correctamente su configuración',
+                                            duration: const Duration(
+                                                milliseconds: 2500),
+                                            backgroundColor:
+                                                const Color.fromARGB(
+                                                    118, 255, 255, 255),
+                                            showProgressIndicator: true,
+                                            progressIndicatorBackgroundColor:
+                                                const Color.fromARGB(
+                                                    255, 203, 205, 209),
+                                            progressIndicatorValueColor:
+                                                const AlwaysStoppedAnimation(
+                                                    Color(0xFF19CF9E)),
+                                            overlayBlur: 3,
+                                          );
+                                          Navigator.pop(context);
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              MdiIcons.check,
+                                              color: Colors.white,
+                                            ),
+                                            SizedBox(
+                                              width: 6,
+                                            ),
+                                            const Text(
+                                              'SI    ',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w800),
+                                            ),
+                                          ],
+                                        )),
+                                    ElevatedButton(
+                                      style: ButtonStyle(
+                                        padding: MaterialStateProperty.all<
+                                            EdgeInsetsGeometry>(
+                                          const EdgeInsets.symmetric(
+                                              vertical: 0, horizontal: 18.0),
+                                        ),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Color(0xFFFF6750)),
+                                      ),
+                                      onPressed: () async {
+                                        LocalStorage.prefs.setBool(
+                                            'EntryFootprintOpen', false);
+                                        // Cerrar el primer modal
+                                        Navigator.pop(context);
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            MdiIcons.close,
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(width: 6),
+                                          Text(
+                                            'NO    ',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w800),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
                             ),
-                          ),
-                        );
-                      } else {
-                        // Si no estamos en modo de depuración, mostramos un texto de error
-                        return CircleAvatar(
-                          radius: 25,
-                          backgroundColor: Colors
-                              .transparent, // Fondo transparente para que el borde sea visible
-                          child: ClipOval(
-                            child: Image.asset(
-                              'assets/images/default_profile.jpg',
-                              fit: BoxFit
-                                  .cover, // Ajusta la imagen para cubrir completamente el área
-                              width:
-                                  50, // Ancho deseado de la imagen dentro del círculo
-                              height:
-                                  50, // Alto deseado de la imagen dentro del círculo
+                          )
+                        ],
+                      ),
+                    );
+                  });
+                },
+              );
+            }*/
+          },
+          child: Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(
+                    top: 8), // Agrega un margen en la parte superior
+
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  // border: Border.all(
+                  //   color: Colors.white,
+                  //   width: 2, // Ajusta el ancho del borde según tus preferencias
+                  // ),
+                ),
+                child: CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.white, //fondo de la imagen
+                  child: ClipOval(
+                    child: Image.network(
+                      '${Env.apiEndpoint}/images/${logUser.imageUrlLoggedIn}',
+                      fit: BoxFit
+                          .cover, // Ajusta la imagen para cubrir completamente el área
+                      width:
+                          50, // Ancho deseado de la imagen dentro del círculo
+                      height: 50,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) {
+                          // Si la imagen se carga correctamente, mostramos la imagen
+                          return child;
+                        } else {
+                          // Si la imagen aún se está cargando, mostramos un indicador de progreso
+                          return const CircularProgressIndicator(
+                            color: Color(0xFFFDAE2A),
+                          );
+                        }
+                      },
+                      errorBuilder: (BuildContext context, Object error,
+                          StackTrace? stackTrace) {
+                        // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
+                        if (kDebugMode) {
+                          return CircleAvatar(
+                            radius: 25,
+                            backgroundColor: Colors
+                                .transparent, // Fondo transparente para que el borde sea visible
+                            child: ClipOval(
+                              child: Image.asset(
+                                'assets/images/default_profile.jpg',
+                                fit: BoxFit
+                                    .cover, // Ajusta la imagen para cubrir completamente el área
+                                width:
+                                    50, // Ancho deseado de la imagen dentro del círculo
+                                height:
+                                    50, // Alto deseado de la imagen dentro del círculo
+                              ),
                             ),
-                          ),
-                        );
-                      }
-                    },
+                          );
+                        } else {
+                          // Si no estamos en modo de depuración, mostramos un texto de error
+                          return CircleAvatar(
+                            radius: 25,
+                            backgroundColor: Colors
+                                .transparent, // Fondo transparente para que el borde sea visible
+                            child: ClipOval(
+                              child: Image.asset(
+                                'assets/images/default_profile.jpg',
+                                fit: BoxFit
+                                    .cover, // Ajusta la imagen para cubrir completamente el área
+                                width:
+                                    50, // Ancho deseado de la imagen dentro del círculo
+                                height:
+                                    50, // Alto deseado de la imagen dentro del círculo
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                    ),
                   ),
                 ),
-              ),
 
-              /*  NetworkImage(
-                    '${Env.apiEndpoint}/images23/${logUser.imageUrlLoggedIn}'),*/ //todo Modo de cargar la foto
-              // radius: 25, // Ajusta el tamaño del círculo aquí
-            ),
-            SizedBox(
-              width: (MediaQuery.of(context).size.width *
-                  0.02), //Espacio entre foto perfil y el saludo y el nombre
-            ), // Espacio entre la imagen y el texto
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SizedBox(
-                  height: 5,
-                ),
-                logUser.chargeUserLoggedIn == 'Barbero y Encargado'
-                    ? TruncatedText(
-                        text: logUser.nameUserLoggedIn,
-                        maxLength: 13,
-                        styleText: const TextStyle(
-                          color: const Color.fromARGB(255, 43, 44, 49),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w900,
-                          height: 1.2,
+                /*  NetworkImage(
+                      '${Env.apiEndpoint}/images23/${logUser.imageUrlLoggedIn}'),*/ //todo Modo de cargar la foto
+                // radius: 25, // Ajusta el tamaño del círculo aquí
+              ),
+              SizedBox(
+                width: (MediaQuery.of(context).size.width *
+                    0.02), //Espacio entre foto perfil y el saludo y el nombre
+              ), // Espacio entre la imagen y el texto
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    height: 5,
+                  ),
+                  logUser.chargeUserLoggedIn == 'Barbero y Encargado'
+                      ? TruncatedText(
+                          text: logUser.nameUserLoggedIn,
+                          maxLength: 13,
+                          styleText: const TextStyle(
+                            color: const Color.fromARGB(255, 43, 44, 49),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w900,
+                            height: 1.2,
+                          ),
+                        )
+                      : TruncatedText(
+                          text: logUser.nameUserLoggedIn,
+                          maxLength: 18,
+                          styleText: const TextStyle(
+                            color: const Color.fromARGB(255, 43, 44, 49),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w900,
+                            height: 1.2,
+                          ),
                         ),
-                      )
-                    : Text(
-                        logUser.nameUserLoggedIn,
-                        style: const TextStyle(
-                          color: const Color.fromARGB(255, 43, 44, 49),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w900,
-                          height: 1.2,
-                        ),
-                      ),
-                const Text(
-                  'Barbero',
-                  style: TextStyle(
-                      color: const Color.fromARGB(255, 43, 44, 49),
-                      fontSize: 12,
-                      height: 1.2,
-                      fontWeight: FontWeight.w100),
-                ),
-              ],
-            ),
-          ],
+                  const Text(
+                    'Barbero',
+                    style: TextStyle(
+                        color: const Color.fromARGB(255, 43, 44, 49),
+                        fontSize: 12,
+                        height: 1.2,
+                        fontWeight: FontWeight.w100),
+                  ),
+                ],
+              ),
+            ],
+          ),
         );
       }),
       actions: [

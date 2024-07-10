@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages, unused_element, non_constant_identifier_names
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
@@ -39,6 +40,8 @@ class ShoppingCartController extends GetxController {
   bool isLoading = true;
   int? carIdClienteSelect;
   final LoginController controllerLogin = Get.find<LoginController>();
+  final ClientsScheduledController clientScheduCont =
+      Get.find<ClientsScheduledController>();
   void setLoading(value) {
     isLoading = value;
     update();
@@ -127,8 +130,8 @@ class ShoppingCartController extends GetxController {
     } catch (e) {
       print('DIO ERROR loadOrderDeleteCar:$e');
     } finally {
-      controllerLogin.setMakeCallC(true); //avilite las llamadas del timer
-      controllerLogin.setMakeCallE(true);
+      // controllerLogin.setMakeCallC(true); //avilite las llamadas del timer
+      // controllerLogin.setMakeCallE(true);
     }
   }
 
@@ -176,15 +179,13 @@ class ShoppingCartController extends GetxController {
       if (result == 1) {
         internetError = 0;
         //  loadOrderDeleteCar(carIdClienteSelect!); //todo mandar branch_id errorrrr
-        //todo REVISAR aqui mandando el id del carro estatico YAAAA
-        update();
       }
       print('return resul: $result');
       return result;
     } catch (e) {
       print('return resul: Error desde el controlador $e');
       internetError = -99;
-      update();
+
       return -99;
     }
   }
@@ -345,6 +346,7 @@ class ShoppingCartController extends GetxController {
           shoppingCart += 1;
           serviceListLength = selectserviceCart.length;
           print('memsj Servicio guardado exitosamente: ${service.id}');
+          print('memsj durationService:en el for: ${service.duration_service}');
           durationService += service.duration_service;
         }
         // Pausa por 200 ms entre cada solicitud para evitar sobrecargar el servidor
@@ -358,8 +360,36 @@ class ShoppingCartController extends GetxController {
             'todos los servicios NO se insertaron correctamente faltaron: $cant por insertarse');
       }
       print('memsj durationService: $durationService');
+      //agregar el tiempo al reloj
+      print('memsj durationService:en el for: $durationService');
 
-      clientsController.modifingTime((durationService));
+      if (cant > 0) //si es menor o igual no insertó nada
+      {
+        if (clientScheduCont.modifyTimeSpecific == 0) //es el reloj 1
+        {
+          addDurationToTimer(clientScheduCont.animationController1!,
+              Duration(minutes: durationService));
+        } else if (clientScheduCont.modifyTimeSpecific == 1) //reloj 2
+        {
+          addDurationToTimer(clientScheduCont.animationController2!,
+              Duration(minutes: durationService));
+        } else if (clientScheduCont.modifyTimeSpecific == 2) //reloj 3
+        {
+          addDurationToTimer(clientScheduCont.animationController3!,
+              Duration(minutes: durationService));
+        } else if (clientScheduCont.modifyTimeSpecific == 3) //reloj
+        {
+          addDurationToTimer(clientScheduCont.animationController4!,
+              Duration(minutes: durationService));
+        }
+        //esta e spara actualizar las variables de memoria del telefono
+        controllerLogin.getUpdateTime(
+            durationService,
+            (clientScheduCont.modifyTimeSpecific + 1),
+            'updateShoppingCartValueSerNew-reloj=${clientScheduCont.modifyTimeSpecific + 1}');
+      }
+
+      //clientsController.modifingTime((durationService));
       return cant;
     } catch (e) {
       print('memsj Error al guardar el servicio: $e');
@@ -368,6 +398,35 @@ class ShoppingCartController extends GetxController {
     } finally {
       update();
     }
+  }
+
+  void addDurationToTimer(
+      AnimationController controller, Duration additionalDuration) {
+    // Verificar si el controlador está detenido o activo
+    int currentTime;
+    if (controller.isAnimating) {
+      // Obtener el tiempo restante en segundos del AnimationController si está activo
+      currentTime = (controller.duration!.inSeconds).round();
+    } else {
+      // Si está detenido, establecer el tiempo actual a la duración total del controlador
+      currentTime = controller.duration!.inSeconds;
+    }
+    print('memsj durationService:ESTE ES EL TIEMPO QUE TENIA:$currentTime');
+    // Convertir additionalDuration a segundos
+    int additionalTime = additionalDuration.inSeconds;
+    print('tiempoooooo : additionalTime:$additionalTime');
+
+    // Calcular el nuevo tiempo total en segundos
+    int newTotalTime = currentTime + additionalTime;
+    print('tiempoooooo : newTotalTime:$newTotalTime');
+
+    // Asignar la nueva duración al AnimationController
+    controller.duration = Duration(seconds: newTotalTime);
+
+    // Reiniciar y avanzar el AnimationController con la nueva duración
+    controller
+      ..reset()
+      ..forward();
   }
 
   void updateShoppingCartValue(priceProduct, index, car_id, type, id) async {

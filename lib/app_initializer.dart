@@ -20,6 +20,8 @@ class AppInitializer {
 
   static void _registerControllers() {
     Get.put(LoginController());
+    Get.put(ClientsScheduledController());
+    Get.put(ClientsTechnicalController());
     Get.put(ShoppingCartController());
     Get.put(ClientsScheduledController());
     Get.put(NotificationController());

@@ -217,7 +217,7 @@ class ClientsTechnicalController extends GetxController {
           resultList['ConnectionIssues'] == true) {
         correctConnection = false;
         print(
-            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
+            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor-7');
       } else {
         correctConnection = true;
         //aqui estoy guardando la cola del dia de hoy del profesional

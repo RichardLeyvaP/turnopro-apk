@@ -46,15 +46,20 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     super.initState();
     _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
     if (loginController.idProfessionalLoggedIn != null &&
-        loginController.branchIdLoggedIn != null) {
+        loginController.branchIdLoggedIn != null &&
+        loginController.usserPermissionQr != null) {
       callFirts();
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       //
       if (loginController.idProfessionalLoggedIn != null &&
-          loginController.branchIdLoggedIn != null) {
+          loginController.branchIdLoggedIn != null &&
+          loginController.usserPermissionQr != null) {
         callTimerCoord();
+      } else {
+        clientsScheduledController.setLoading(false);
+        controllerShoppingCart.setLoading(false);
       }
     });
   }
@@ -169,11 +174,15 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                 Expanded(
                   flex: 11,
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: EdgeInsets.all(12.0),
                     child: Container(
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                          color: Color(0xFF4470F3),
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(12)),
+                          color: Colors.white,
+                          border: Border.all(
+                              width: 2,
+                              color: Color.fromARGB(110, 175, 175, 175)),
                         ),
                         child: controllerclient.isLoading
                             ? const Center(
@@ -295,8 +304,10 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                                   children: [
                                                     Text(
                                                       'No hay clientes en cola',
-                                                      style: TextStyle(
-                                                          color: Colors.white),
+                                                      // style: TextStyle(
+                                                      //     color: Color.fromARGB(
+                                                      //         255, 63, 63, 63)
+                                                      //         ),
                                                     ),
                                                   ],
                                                 ),
@@ -325,17 +336,14 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                                     'SI ESTOY LLEGANDO AL OnTap');
                                                 _tabController.animateTo(index);
                                               },
-                                              labelColor: Color.fromARGB(
-                                                  255,
-                                                  26,
-                                                  50,
-                                                  82), // Color del texto
+                                              labelColor: Colors
+                                                  .white, // Color del texto
                                               unselectedLabelColor: Colors
                                                   .grey, // Color del texto cuando no está seleccionado
 
                                               indicator: BoxDecoration(
-                                                color: Colors
-                                                    .white, // Color de fondo cuando está seleccionado
+                                                color: Color(
+                                                    0xFF4470F3), // Color de fondo cuando está seleccionado
                                                 borderRadius: BorderRadius.circular(
                                                     8), // Bordes redondeados, si lo deseas
                                               ),
@@ -465,10 +473,22 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
           child: Column(
             children: [
               Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      border: Border.all(
+                          width: 2,
+                          color: controllerclient
+                                      .clientsScheduledListBranch[index]
+                                      .from_home ==
+                                  1
+                              ? const Color(0xFFFDAE2A)
+                              : controllerclient
+                                          .clientsScheduledListBranch[index]
+                                          .select_professional ==
+                                      1
+                                  ? const Color(0xFF19CF9E)
+                                  : const Color(0xFF4470F3))),
                   //AQUI CONTROLO SI HAY ALGUIEN EN COLA
                   child: Row(
                     children: [
@@ -546,7 +566,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                       Container(
                         height: (MediaQuery.of(context).size.height * 0.115),
                         width: (MediaQuery.of(context).size.width * 0.8),
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(12)),
                         ),
@@ -1626,6 +1646,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       controllerLogin.branchIdLoggedIn!);
                                   controllerShoppingCart.setLoading(false);
                                 }
+                                loginController.setMakeCallC(true);
                               } else {
                                 Get.snackbar(
                                   'Mensaje',
@@ -2236,10 +2257,10 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
         (controllerclient.pOutRequestBranch.isEmpty)) {
       widgets.add(const Center(
         child: Padding(
-          padding: EdgeInsets.only(top: 100),
+          padding: EdgeInsets.only(top: 80),
           child: Text(
             'No hay solicitudes a eliminar.',
-            style: TextStyle(color: Colors.white),
+            // style: TextStyle(color: Color.fromARGB(255, 63, 63, 63)),
           ),
         ),
       ));

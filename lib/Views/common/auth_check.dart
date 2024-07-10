@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:turnopro_apk/Components/button_custom.dart';
+import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
 import 'package:turnopro_apk/services/local_auth_service.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get.dart';
@@ -15,7 +17,7 @@ class AuthCheck extends StatefulWidget {
 
 class _AuthCheckState extends State<AuthCheck> {
   final ValueNotifier<bool> isLocalAuthFailed = ValueNotifier(false);
-
+  final LoginController controllerLogin = Get.find<LoginController>();
   @override
   void initState() {
     super.initState();
@@ -34,13 +36,24 @@ class _AuthCheckState extends State<AuthCheck> {
         isLocalAuthFailed.value = true;
       } else {
         if (!mounted) return;
-        Get.offAllNamed('/login');
+        //comprobar que tds las variables estan creadas
+        if (LocalStorage.prefs.getString('EntryFootprintUser') != null &&
+            LocalStorage.prefs.getString('EntryFootprintPass') != null &&
+            LocalStorage.prefs.getInt('EntryFootprintBranch') != null) {
+          controllerLogin.loginGetIn(
+              LocalStorage.prefs.getString('EntryFootprintUser')!,
+              LocalStorage.prefs.getString('EntryFootprintPass')!,
+              LocalStorage.prefs.getInt('EntryFootprintBranch')!);
+        }
+
+        //Get.offAllNamed('/login');
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    controllerLogin.getScreenResolution(context);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: ValueListenableBuilder<bool>(

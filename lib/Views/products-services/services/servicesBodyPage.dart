@@ -556,7 +556,8 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                           controllerLogin.showConnectionError();
                                           Get.snackbar(
                                             'Mensaje',
-                                            'Conexión lenta al agregarse (${resp * -1}) servicios',
+                                            'Problemas de conexión,inténtelo nuevamente agregar servicios',
+                                            //  'Conexión lenta al agregarse (${resp * -1}) servicios',
                                             duration: const Duration(
                                                 milliseconds: 2500),
                                             backgroundColor:

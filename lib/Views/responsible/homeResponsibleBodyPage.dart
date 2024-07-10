@@ -82,12 +82,14 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
           'Encargado',
           'loadDataFirt',
           loginController.tokenUserLoggedIn);
-      notiController.fetchNotificationList(
-          controllerLogin.branchIdLoggedIn,
-          controllerLogin.idProfessionalLoggedIn,
-          'Barbero',
-          'loadDataFirt',
-          loginController.tokenUserLoggedIn);
+      if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
+        notiController.fetchNotificationList(
+            controllerLogin.branchIdLoggedIn,
+            controllerLogin.idProfessionalLoggedIn,
+            'Barbero',
+            'loadDataFirt',
+            loginController.tokenUserLoggedIn);
+      }
       await controllerShoppingCart
           .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
       print('llamada timer encargado loadOrderDeleteCar completed');
@@ -125,12 +127,14 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
               'Encargado',
               'loadDataFirt',
               loginController.tokenUserLoggedIn);
-          notiController.fetchNotificationList(
-              controllerLogin.branchIdLoggedIn,
-              controllerLogin.idProfessionalLoggedIn,
-              'Barbero',
-              'loadDataFirt',
-              loginController.tokenUserLoggedIn);
+          if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
+            notiController.fetchNotificationList(
+                controllerLogin.branchIdLoggedIn,
+                controllerLogin.idProfessionalLoggedIn,
+                'Barbero',
+                'loadDataFirt',
+                loginController.tokenUserLoggedIn);
+          }
           await controllerShoppingCart
               .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
           print('llamada timer encargado loadOrderDeleteCar completed');
@@ -1148,6 +1152,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                       controllerLogin.branchIdLoggedIn!);
                                   controllerShoppingCart.setLoading(false);
                                 }
+                                controllerLogin.setMakeCallE(true);
                               } else {
                                 Get.snackbar(
                                   'Mensaje',
@@ -1464,7 +1469,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                           onPressed: () async {
                             if (controllerLogin.usserPermissionQr == 1 ||
                                 controllerLogin.usserPermissionQr == 2) {
-                              controllerLogin.setMakeCallE(true);
+                              controllerLogin.setMakeCallE(false);
                               //rechazar la Eliminación
                               controllerShoppingCart.setLoading(true);
                               int result = await contShopp.requestDelete(

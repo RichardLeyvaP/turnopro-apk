@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
+import 'package:intl/intl.dart';
 
 class LoadingPage extends StatelessWidget {
   @override
@@ -100,7 +102,21 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
           if (resultP == 1 &&
               resultH == 1) //td inserto correctamente la entrada
           {
+            // Obtener la fecha actual
+            /*   DateTime now = DateTime.now();
+
+            // Formatear la fecha para que solo incluya año, mes y día
+            String nowString = DateFormat('yyyy-MM-dd').format(now);
+
+            // Guardar la fecha en SharedPreferences
+            LocalStorage.prefs.setString('EntryFootprintData', nowString);
             //mandar mensaje que td esta bien
+            LocalStorage.prefs
+                .setString('EntryFootprintUser', controllerLogin.userLoggedIn);
+            LocalStorage.prefs
+                .setString('EntryFootprintPass', controllerLogin.pass);
+            LocalStorage.prefs.setInt(
+                'EntryFootprintBranch', controllerLogin.branchIdLoggedIn!);*/
             mensjeOk();
           } else {
             //hubo problema al registrar la entrada
@@ -110,7 +126,12 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
         } else if (controllerLogin.usserMssQr == 0) {
           mensjeNot(); //no coincide el Qr
         }
-
+        // print(
+        //     'datos del profesional - Usuario:${LocalStorage.prefs.getString('EntryFootprintUser')}');
+        // print(
+        //     'datos del profesional - Pass:${LocalStorage.prefs.getString('EntryFootprintPass')}');
+        // print(
+        //     'datos del profesional - Pass:${LocalStorage.prefs.getInt('EntryFootprintBranch')}');
         Get.offAllNamed('/Professional');
       } else if (controllerLogin.chargeUserLoggedIn == "Encargado") {
         if (controllerLogin.usserMssQr == 1) {

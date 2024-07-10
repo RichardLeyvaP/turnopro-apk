@@ -164,7 +164,7 @@ class ClientsCoordinatorController extends GetxController {
           resultList['ConnectionIssues'] == true) {
         correctConnection = false;
         print(
-            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
+            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor-1');
       } else {
         correctConnection = true;
         //aqui estoy guardando la cola del dia de hoy del profesional
@@ -177,7 +177,7 @@ class ClientsCoordinatorController extends GetxController {
       }
       update();
     } catch (e) {
-      print(e);
+      print('mandar alguna variable para la vista-dio este ERROR:$e');
     }
   }
 
@@ -194,7 +194,7 @@ class ClientsCoordinatorController extends GetxController {
           resultList['ConnectionIssues'] == true) {
         correctConnection = false;
         print(
-            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
+            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor-2');
       } else {
         correctConnection = true;
         //aqui estoy guardando la cola del dia de hoy del profesional
@@ -210,8 +210,8 @@ class ClientsCoordinatorController extends GetxController {
     } catch (e) {
       print(e);
     } finally {
-      loginController.setMakeCallC(true); //avilite las llamadas del timer
-      controllerLogin.setMakeCallE(true);
+      //   loginController.setMakeCallC(true); //avilite las llamadas del timer
+      //  controllerLogin.setMakeCallE(true);
     }
   } //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
 
@@ -287,8 +287,8 @@ class ClientsCoordinatorController extends GetxController {
       print(e);
     } finally {
       update();
-      controllerLogin.setMakeCallC(true); //avilite las llamadas del timer
-      controllerLogin.setMakeCallE(true);
+      // controllerLogin.setMakeCallC(true); //avilite las llamadas del timer
+      //controllerLogin.setMakeCallE(true);
     }
   }
 
@@ -316,8 +316,8 @@ class ClientsCoordinatorController extends GetxController {
       print(e);
     } finally {
       update();
-      controllerLogin.setMakeCallC(true);
-      controllerLogin.setMakeCallE(true);
+      //controllerLogin.setMakeCallC(true);
+      //controllerLogin.setMakeCallE(true);
     }
 
     print(resultList);
@@ -334,7 +334,7 @@ class ClientsCoordinatorController extends GetxController {
       correctConnection = false;
       update();
       print(
-          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
+          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor-3');
       return false;
     } else if (resultList['result'] == true) {
       correctConnection = true;
@@ -347,7 +347,7 @@ class ClientsCoordinatorController extends GetxController {
     }
   }
 
-  Future reasignedClientTottem(branchId, professionalId) async {
+  Future<int> reasignedClientTottem(branchId, professionalId) async {
     print(
         'Cliente reasignado correctamente ->Entrando al método ---> reasignedClientTottem');
     Map<String, dynamic> resultList = await repository.reasignedClientTotem(
@@ -358,18 +358,22 @@ class ClientsCoordinatorController extends GetxController {
         resultList['ConnectionIssues'] == true) {
       print(
           'Cliente reasignado correctamente ->Problemas al conectarse con el servidor');
+      return -99;
     } else if (resultList.containsKey('result') &&
         resultList['result'] == true) {
       print(
           'Cliente reasignado correctamente -> SIII desde reasignedClientTottem');
+      return 1;
       //
     } else if (resultList.containsKey('result') &&
         resultList['result'] == false) {
       print(
           'Cliente reasignado correctamente -> No habia cliente spara reasignar desde reasignedClientTottem');
+      return 0;
     } else {
       print(
           'Cliente reasignado correctamente -> NOOOO desde reasignedClientTottem');
+      return -999;
     }
   } //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
 
@@ -1022,7 +1026,7 @@ class ClientsCoordinatorController extends GetxController {
           resultList['ConnectionIssues'] == true) {
         correctConnection = false;
         print(
-            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
+            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor-4');
       } else {
         correctConnection = true;
 
@@ -1218,7 +1222,7 @@ class ClientsCoordinatorController extends GetxController {
         resultList['ConnectionIssues'] == true) {
       correctConnection = false;
       print(
-          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
+          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor-5');
     } else {
       correctConnection = true;
       //aqui estoy guardando la cola del dia de hoy del profesional

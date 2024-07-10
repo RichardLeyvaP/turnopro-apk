@@ -105,6 +105,7 @@ class NotificationRepository extends GetConnect {
       //variables de la cola
       List<ClientsScheduledModel> clientList = [];
       List<ClientsScheduledModel> clientListSig = [];
+      int clientListSalon = 0;
       List<Map> attendingClientList = [];
       ClientsScheduledModel? nextClient;
       bool hasNextClient = false;
@@ -182,11 +183,19 @@ class NotificationRepository extends GetConnect {
           }
 
           clientList.add(client);
+
           if (client.attended == 0) {
             print(
                 'llamada timer en 10 segundos A professionalBranchNotifQueque repository cliente espernado ser atendido');
             clientListSig.add(client);
           }
+          if ((client.attended != 2) &&
+              client.confirmation != 1 &&
+              client.confirmation != 2) {
+            clientListSalon++;
+            print('ver cuantas veces entro aqui ');
+          }
+
           //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
           print(
               'gggclientes asistiendo entre a if (client.confirmation :${client.confirmation}) {');
@@ -238,6 +247,7 @@ class NotificationRepository extends GetConnect {
         } else {
           return {
             //valores de la cola
+            "clientListSalon": clientListSalon,
             "clientList": clientList,
             "clientListSig": clientListSig,
             "nextClient": nextClient,

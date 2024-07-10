@@ -157,13 +157,20 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                 3
                                                         ? BoxDecoration(
                                                             border: Border.all(
-                                                                width: 0.01),
+                                                                width: 2,
+                                                                color: controllerClient.clientsScheduledList[index].from_home ==
+                                                                        1
+                                                                    ? const Color(
+                                                                        0xFFFDAE2A)
+                                                                    : controllerClient.clientsScheduledList[index].select_professional ==
+                                                                            1
+                                                                        ? const Color(
+                                                                            0xFF19CF9E)
+                                                                        : const Color(
+                                                                            0xFF4470F3)),
                                                             borderRadius:
-                                                                const BorderRadius
-                                                                        .all(
-                                                                    Radius
-                                                                        .circular(
-                                                                            12)),
+                                                                const BorderRadius.all(
+                                                                    Radius.circular(12)),
                                                             boxShadow: [
                                                               BoxShadow(
                                                                 color: Colors
@@ -177,8 +184,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                     5), // Ajusta los valores para personalizar la sombra
                                                               ),
                                                             ],
-                                                            gradient:
-                                                                const LinearGradient(
+                                                            gradient: const LinearGradient(
                                                               colors: [
                                                                 Color.fromARGB(
                                                                     255,
@@ -215,15 +221,26 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                         111
                                                                 ? Border.all(
                                                                     width: 2,
-                                                                    color: controllerClient.clientsScheduledList[index].attended ==
+                                                                    color: controllerClient.clientsScheduledList[index].from_home ==
                                                                             1
                                                                         ? const Color(
                                                                             0xFFFDAE2A)
-                                                                        : const Color(
-                                                                            0xFF19CF9E))
+                                                                        : controllerClient.clientsScheduledList[index].select_professional ==
+                                                                                1
+                                                                            ? const Color(
+                                                                                0xFF19CF9E)
+                                                                            : const Color(
+                                                                                0xFF4470F3))
                                                                 : Border.all(
-                                                                    width:
-                                                                        0.01),
+                                                                    width: 2,
+                                                                    color: controllerClient.clientsScheduledList[index].from_home ==
+                                                                            1
+                                                                        ? const Color(
+                                                                            0xFFFDAE2A)
+                                                                        : controllerClient.clientsScheduledList[index].select_professional ==
+                                                                                1
+                                                                            ? const Color(0xFF19CF9E)
+                                                                            : const Color(0xFF4470F3)),
                                                             color: Colors.white,
                                                             boxShadow: [
                                                               BoxShadow(
@@ -568,16 +585,18 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                     Text(
                                                                       controllerClient.clientsScheduledList[index].attended ==
                                                                               1
-                                                                          ? 'Atendiendose'
+                                                                          ? 'Atendiéndose'
                                                                           : 'Terminando Servicio',
                                                                       style:
                                                                           TextStyle(
                                                                         fontSize:
                                                                             14,
-                                                                        color: controllerClient.clientsScheduledList[index].attended ==
+                                                                        color: controllerClient.clientsScheduledList[index].from_home ==
                                                                                 1
                                                                             ? const Color(0xFFFDAE2A)
-                                                                            : const Color(0xFF19CF9E),
+                                                                            : controllerClient.clientsScheduledList[index].select_professional == 1
+                                                                                ? const Color(0xFF19CF9E)
+                                                                                : const Color(0xFF4470F3),
                                                                       ),
                                                                     ),
                                                                   ],

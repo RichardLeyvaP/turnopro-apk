@@ -1,6 +1,6 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=C:\src\flutter"
+export "FLUTTER_ROOT=C:\Users\Richard\fvm\versions\3.10.6"
 export "FLUTTER_APPLICATION_PATH=C:\Users\Richard\Documents\Richard No tocar\PROYECTO CHILE\apk-turnopro\new\turnopro-apk"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"

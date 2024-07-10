@@ -93,6 +93,7 @@ class ClientsScheduledRepository extends GetConnect {
     print('estoy en repositorio en - 2');
 
     try {
+      int clientListSalon = 0;
       List<ClientsScheduledModel> clientList = [];
       List<ClientsScheduledModel> clientListSig = [];
       List<Map> attendingClientList = [];
@@ -175,6 +176,12 @@ class ClientsScheduledRepository extends GetConnect {
           if (client.attended == 0) {
             clientListSig.add(client);
           }
+          if ((client.attended != 2) &&
+              client.confirmation != 1 &&
+              client.confirmation != 2) {
+            clientListSalon++;
+            print('ver cuantas veces entro aqui ');
+          }
           //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
           print(
               'gggclientes asistiendo entre a if (client.confirmation :2${client.confirmation}) {');
@@ -207,6 +214,7 @@ class ClientsScheduledRepository extends GetConnect {
       }
 
       return {
+        "clientListSalon": clientListSalon,
         "clientList": clientList,
         "clientListSig": clientListSig,
         "nextClient": nextClient,
@@ -661,6 +669,45 @@ class ClientsScheduledRepository extends GetConnect {
     } catch (e) {
       print(e);
     }
+  } //AQUI HACE LA LLAMADA PARA LOS INCUMPLIMIENTOS, 0 ES QUE INCUMPLIO Y 1 QUE CUMPLIO
+
+  Future storeByType2(type, branchId, professionalId, estado, token) async {
+    print('estoy en repositorio en - 8');
+    print('llamda a la api desde segundo plano-REPOS');
+    try {
+      var url = '${Env.apiEndpoint}/storeByType-time';
+
+      final Map<String, dynamic> body = {
+        'type': type,
+        'branch_id': branchId,
+        'professional_id': professionalId,
+        'estado': estado,
+      };
+
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await post(headers: headers, url, body);
+      print(type);
+      print(branchId);
+      print(professionalId);
+      print(estado);
+      print(response.statusCode);
+      print(
+          'llamda a la api desde segundo plano-REPOS-CODE-${response.statusCode}');
+      if (response.statusCode == 200) {
+        print('Acacba de incumplir en este type de convivencia:$type');
+        return true;
+      } else {
+        print(
+            'Intento de darle incumplimiento, pero algo salió mal y no fue posible');
+        return false;
+      }
+    } catch (e) {
+      print('llamda a la api desde segundo plano-REPOS-CATCH');
+      print(e);
+      return false;
+    }
   }
 
   Future returnClientStatus(reservationId, token) async {
@@ -732,8 +779,8 @@ class ClientsScheduledRepository extends GetConnect {
   Future getProfessionalState2First(
       idBranch, idReserv, idBarberAct, token) async {
     print('estoy en repositorio en - 10');
+    List<ProfessionalModel> professionalList = [];
     try {
-      List<ProfessionalModel> professionalList = [];
       int cant = 0;
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -741,7 +788,9 @@ class ClientsScheduledRepository extends GetConnect {
       var url =
           '${Env.apiEndpoint}/professional-state?branch_id=$idBranch&reservation_id=$idReserv';
 
-      final response = await get(url, headers: headers);
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15));
+      ;
       print(
           'getProfessionalState(idBranch) async getProfessionalState(idBranch) url:$url');
       print(
@@ -770,6 +819,7 @@ class ClientsScheduledRepository extends GetConnect {
       return professionalList;
     } catch (e) {
       print(e);
+      return professionalList;
     }
   }
 

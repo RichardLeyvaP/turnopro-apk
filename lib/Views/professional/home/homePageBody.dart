@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,10 +14,10 @@ import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/Views/coordinator/coexistencePageCoordinator.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
-import 'package:turnopro_apk/services/localNotification.dart';
 
 //import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
+import 'package:turnopro_apk/services/background_task_service.dart';
 /*
 import 'package:turnopro_apk/Models/notification_model.dart';
 import 'package:turnopro_apk/env.dart';
@@ -180,6 +181,26 @@ class _HomePageBodyState extends State<HomePageBody>
     // clientsScheduledController.animationControllerInitial!.forward();
   }
 
+  restartStopClock() {
+    print(
+        'verificando si esta activo:Aqui estoy párando el reloj reiniciateClock()');
+    LocalStorage.prefs.setBool('convivenciaIncumplida', true);
+    LocalStorage.prefs.setInt('valueClockIni', 180);
+    clientsScheduledController.setTotalTimeInitial(180);
+    LocalStorage.prefs.setBool('valueClockActiv', false);
+
+    // Reiniciar la animación
+    // Reiniciar y avanzar la animación existente
+    clientsScheduledController.animationControllerInitial!
+      ..duration = Duration(seconds: 180)
+      ..reset()
+      ..stop();
+
+    // clientsScheduledController.animationControllerInitial!.reset();
+    // clientsScheduledController.animationControllerInitial!.forward();
+  }
+
+  //BackgroundTaskService backgroundTaskService = BackgroundTaskService();
   @override
   void initState() {
     super.initState();
@@ -202,7 +223,31 @@ class _HomePageBodyState extends State<HomePageBody>
         .addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         print('Se ha completado los 3-La animación se ha completado-SIIIII');
-        reiniciateClock();
+
+        String type = 'Tiempo';
+        int estado = 0; //es que incumplió
+        //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
+        if (loginController.branchIdLoggedIn != null &&
+            loginController.idProfessionalLoggedIn != null) {
+          //acabaron los 3 minutos de espera
+          clientsScheduledController.changeNoncomplianceP2(
+              type,
+              loginController.branchIdLoggedIn!,
+              loginController.idProfessionalLoggedIn!,
+              estado);
+        }
+
+        // Aquí llamamos a BackgroundTaskService para registrar la tarea de una sola vez
+        /*  if (loginController.branchIdLoggedIn != null &&
+            loginController.idProfessionalLoggedIn != null) {
+          // Acabaron los 3 minutos de espera
+          backgroundTaskService.registerOneOffTask(
+            type,
+            loginController.branchIdLoggedIn!,
+            loginController.idProfessionalLoggedIn!,
+            estado,
+          );
+        }*/
 
         //AQUI SI HAY QUE REASIGNAR SE REASIGNA
         if (clientsScheduledController.clientsScheduledNext != null) {
@@ -219,41 +264,41 @@ class _HomePageBodyState extends State<HomePageBody>
           if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
                   0 &&
               loginController.usserPermissionQr == 1 &&
-              clientsScheduledController.clientsScheduledListLength > 0) {
+              clientsScheduledController.clientsScheSalon > 0) {
             print('--este es el value del clok-FINALIZANDO*****22');
             print(
                 'inserto correctamente ********** .noncomplianceProfessional[]');
-            //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
-            String type = 'Tiempo';
-            int branchId = loginController.branchIdLoggedIn!;
-            int professionalId = loginController.idProfessionalLoggedIn!;
-            int estado = 0; //es que incumplió
+
             clientsScheduledController.changeNoncomplianceP(
-                type, branchId, professionalId, estado);
+                type,
+                loginController.branchIdLoggedIn!,
+                loginController.idProfessionalLoggedIn!,
+                estado);
             //aqui llamar e insertar en las notificacione sque incumplio esta convivencia
             notiController.storeNotification(
                 'Incumplimiento de convivencia',
-                branchId,
-                professionalId,
+                loginController.branchIdLoggedIn!,
+                loginController.idProfessionalLoggedIn!,
                 'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado',
                 'Barbero');
 //todo notificate
-
-            LocalStorage.prefs.setInt('valueClockIni', 180);
-            clientsScheduledController.setTotalTimeInitial(180);
-            LocalStorage.prefs.setBool('valueClockActiv', false);
+            // reiniciateClock();
+            // LocalStorage.prefs.setInt('valueClockIni', 180);
+            // clientsScheduledController.setTotalTimeInitial(180);
+            // LocalStorage.prefs.setBool('valueClockActiv', false);
             // La animación ha llegado al final, reiniciar
 
-            clientsScheduledController.animationControllerInitial!.reset();
-            clientsScheduledController.animationControllerInitial!.forward();
+            // clientsScheduledController.animationControllerInitial!.reset();
+            // clientsScheduledController.animationControllerInitial!.forward();
           }
         } //FIN DEL IF DE BARBERO ENCARGADO
+        reiniciateClock();
       }
     });
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       print('Se ha completado los 3-Renderizado de la pagina');
 
-      _timer3 = Timer.periodic(Duration(seconds: 2), (timer) async {
+      _timer3 = Timer.periodic(Duration(seconds: 3), (timer) async {
         print('Se ha completado los 3 minutos-Timer-Chequeando');
         if (clientsScheduledController.animationControllerInitial != null &&
             clientsScheduledController
@@ -297,6 +342,7 @@ class _HomePageBodyState extends State<HomePageBody>
 //
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      clientsScheduledController.setBoolControlVision(true);
       llamadasTimer1();
 
       // print(
@@ -327,7 +373,7 @@ class _HomePageBodyState extends State<HomePageBody>
         clientsScheduledController.clientsAttended3 == null &&
         clientsScheduledController.clientsAttended4 == null &&
         loginController.usserPermissionQr == 1 &&
-        clientsScheduledController.clientsScheduledListLength > 0 &&
+        clientsScheduledController.clientsScheSalon > 0 &&
         clientsScheduledController.animationControllerInitial != null) {
       //SI TODOS LOS RELOS ESTAN DETENIDOS Y TIENE EL QR LEIDO Y HAY ALGIEN EN COLA QUE REINICIE EL RELOJ DE 3 MIN DE ESPERA
       //REINICIO Y ACTIVO EL RELOJ DE ESPERA
@@ -434,6 +480,7 @@ class _HomePageBodyState extends State<HomePageBody>
                       overlayBlur: 3,
                     );
                     print('Mandar notificacionq ue el tiempo acabó');
+                    // LocalStorage.prefs.setString('varSistemHr3min1', '0');
                   }
 
                   // String hrAvisar =
@@ -755,11 +802,15 @@ class _HomePageBodyState extends State<HomePageBody>
 
   llamadasTimer1() {
     _timer1 = //notificaciones
-        Timer.periodic(const Duration(seconds: 7), (Timer timer) async {
+        Timer.periodic(const Duration(seconds: 10), (Timer timer) async {
       saveData();
-
+      getTimeRemaining();
+      print(
+          'llamada timer en 10 segundos obtenerHoraActualEnSegundos: getTimeRemaining():${getTimeRemaining()} ');
       if (loginController.makeCall == true) {
         print('Error al obtener la lista de notificaciones:este:TIMER-TIMER');
+        print(
+            'Error al obtener la lista de notificaciones:este:clientsScheduledController.boolFilterShowNext:${clientsScheduledController.boolFilterShowNext}');
         print('llamada timer en 10 segundos obtenerHoraActualEnSegundos:');
         if (loginController.usserPermissionQr != null &&
             loginController.idProfessionalLoggedIn != null &&
@@ -780,17 +831,7 @@ class _HomePageBodyState extends State<HomePageBody>
           print(
               'Cliente reasignado correctamente ->ANTES DEL IF clientsScheduledListLengthTail:${clientsScheduledController.clientsScheduledListLength})');
           print(
-              'Cliente reasignado correctamente ->ANTES DEL IF clientsScheduledController.item.isNotEmpty:${clientsScheduledController.item.isEmpty})');
-
-          if (clientsScheduledController.clientsScheduledListLength == 0 &&
-              clientsScheduledController.errorHome != -99) {
-            print(
-                'Error al obtener la lista de notificaciones:este: estoy entrando a madar a reasignar aqui :${clientsScheduledController.clientsScheduledListLength}');
-            print(
-                'Cliente reasignado correctamente -> entre a buscar clientes para mi que estoy vacio');
-            clientCord.reasignedClientTottem(loginController.branchIdLoggedIn,
-                loginController.idProfessionalLoggedIn);
-          }
+              'Cliente reasignado correctamente ->ANTES DEL IF clientsScheduledController.item.isEmpty:${clientsScheduledController.item.isEmpty})');
 
           //await Future.delayed(Duration(seconds: 1));
           //Buscar notificaciones
@@ -800,8 +841,28 @@ class _HomePageBodyState extends State<HomePageBody>
           String type = 'Barbero';
           String msj = 'llamadasTimer1';
 
-          notiController.professionalBranchNotifQueque(
+          await notiController.professionalBranchNotifQueque(
               idBranch, idProfe, type, msj, loginController.tokenUserLoggedIn);
+          print(
+              'viendo si hay clientes esperando realmente::${clientsScheduledController.clientsScheSalon})');
+          print(
+              'viendo si hay clientes esperando realmente::errorHome:${clientsScheduledController.errorHome})');
+
+          /*esta era para llamar a un aleatorio si no tenia nadie en cola.ya eso lo hace la api
+           if (clientsScheduledController.clientsScheSalon == 0 &&
+              clientsScheduledController.errorHome != -99) {
+            restartStopClock();
+            print(
+                'Error al obtener la lista de notificaciones:este: estoy entrando a madar a reasignar aqui :${clientsScheduledController.clientsScheduledListLength}');
+            print(
+                'Cliente reasignado correctamente -> entre a buscar clientes para mi que estoy vacio');
+            int decisionResult = await clientCord.reasignedClientTottem(
+                loginController.branchIdLoggedIn,
+                loginController.idProfessionalLoggedIn);
+            if (decisionResult == 1) {
+              reiniciateClock();
+            }
+          }*/
           if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
             await notiController.fetchNotificationList(
                 loginController.branchIdLoggedIn,
@@ -940,6 +1001,9 @@ class _HomePageBodyState extends State<HomePageBody>
             //
           }
           //ESTO ES LO QUE LLAMABA EL TIMER 3
+        } else if (loginController.usserPermissionQr == null) {
+          //poner a false el cargando
+          clientsScheduledController.setBoolControlVision(false);
         }
       }
     });
@@ -974,6 +1038,7 @@ class _HomePageBodyState extends State<HomePageBody>
         print('..segundoPlano siii APAGANDO LLAMADA');
         loginController.getSegundoPlano(1);
       }
+      //todo este no va hacer falta si lo implemento en ShopingCart.controller
       if (clientsScheduledController.activeModifyTime == true) {
         print('cargando aqui-12');
         //AQUI GARANTIZO QUE AUMENTE EL VALOR DEL RELOJ UNA SOLA VEZ Y QUE INSERTE EN LA DB 1 SOLA VEZ
@@ -1459,9 +1524,11 @@ class _HomePageBodyState extends State<HomePageBody>
                             height: 45,
                           )
                         : (clientsScheduledController
-                                        .clientsScheduledListLength >
-                                    0 ||
-                                clientsScheduledController.errorHome == -99)
+                                            .clientsScheduledListLength >
+                                        0 ||
+                                    clientsScheduledController.errorHome ==
+                                        -99) &&
+                                loginController.usserPermissionQr == 1
                             ? Container(
                                 decoration: const BoxDecoration(
                                   borderRadius:
@@ -1483,7 +1550,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                               ? 'Cliente en espera'
                                               : 'Atendiendo ${clientsScheduledController.item.length} cliente(s)',
                                           style: const TextStyle(
-                                            fontSize: 16,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.w700,
                                             color:
                                                 Color.fromARGB(255, 82, 81, 81),
@@ -1660,7 +1727,8 @@ class _HomePageBodyState extends State<HomePageBody>
                                 height: 80,
                               ),
                   ),
-                  clientsScheduledController.boolControlVision == true
+                  clientsScheduledController.boolControlVision == true &&
+                          loginController.usserPermissionQr == 1
                       ? clientsScheduledController.boolFilterShowNext == true ||
                               clientsScheduledController.errorHome == -99
                           ? cardClientTails(clientsScheduledController, context,
@@ -1695,23 +1763,52 @@ class _HomePageBodyState extends State<HomePageBody>
                                     fontSize: 16,
                                     color: Color.fromARGB(255, 82, 81, 81),
                                   ))
-                      : const Column(
-                          children: [
-                            SizedBox(
-                              height: 50,
-                            ),
-                            Center(
-                              child: SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: CircularProgressIndicator(
-                                  color: Color(0xFFFDAE2A),
-                                  strokeWidth: 3,
-                                ),
+                      : loginController.usserPermissionQr == 2
+                          ? const Center(
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 35,
+                                  ),
+                                  Text(
+                                    'Debe de esperar la respuesta',
+                                    style: TextStyle(
+                                        // color: Colors.white,
+                                        color: Color.fromARGB(255, 39, 39, 39),
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Text(
+                                    'a su solicitud',
+                                    style: TextStyle(
+                                        //color: Colors.white,
+                                        color: Color.fromARGB(255, 39, 39, 39),
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  SizedBox(
+                                    height: 45,
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
+                            )
+                          : loginController.usserPermissionQr == null
+                              ? Text('')
+                              : const Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 50,
+                                    ),
+                                    Center(
+                                      child: SizedBox(
+                                        width: 24,
+                                        height: 24,
+                                        child: CircularProgressIndicator(
+                                          color: Color(0xFFFDAE2A),
+                                          strokeWidth: 3,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
                 ],
               )),
           Expanded(
@@ -1903,13 +2000,35 @@ class _HomePageBodyState extends State<HomePageBody>
                                       controllerLogin.idProfessionalLoggedIn,
                                       'EL profesional "${loginController.nameUserLoggedIn}" está rechazando a "${clientsScheduledControllerE.clientsScheduledNext!.client_name}"',
                                       'Ambos'); //esto es para quele llegue a coordinador y encargado
-                                  clientsScheduledControllerE
-                                      .acceptOrRejectClient(
-                                          clientsScheduledControllerE
-                                              .clientsScheduledNext!
-                                              .reservation_id,
-                                          3,
-                                          loginController.tokenUserLoggedIn);
+                                  int rest =
+                                      await clientsScheduledControllerE
+                                          .acceptOrRejectClient(
+                                              clientsScheduledControllerE
+                                                  .clientsScheduledNext!
+                                                  .reservation_id,
+                                              3,
+                                              loginController
+                                                  .tokenUserLoggedIn);
+                                  if (rest == 1) {
+                                    LocalStorage.prefs
+                                        .setInt('valueClockIni', 180);
+                                    clientsScheduledController
+                                        .setTotalTimeInitial(180);
+                                    LocalStorage.prefs
+                                        .setBool('valueClockActiv', false);
+
+                                    clientsScheduledController
+                                        .animationControllerInitial!
+                                      ..duration = Duration(seconds: 180)
+                                      ..reset()
+                                      ..stop();
+                                    loginController.setCodigoQrValid(2);
+                                  } else {
+                                    loginController.setCodigoQrValid(1);
+                                  }
+
+                                  // clientsScheduledControllerE
+                                  //     .setBoolControlVision(true);
 
                                   //}
                                 } else if (loginController.usserPermissionQr ==
@@ -2134,16 +2253,19 @@ class _HomePageBodyState extends State<HomePageBody>
                                     clientsScheduledControllerE.clientsWaiting(
                                         false); //este es para saber si hay algun cliente esperando para mandar la notificación
                                     // detengo el timer de 2 minutos
-                                    clientsScheduledControllerE
-                                        .animationControllerInitial!
-                                        .stop();
-                                    clientsScheduledControllerE
-                                        .animationControllerInitial!
-                                        .reset();
-                                    LocalStorage.prefs
-                                        .setBool('valueClockActiv', false);
+
                                     LocalStorage.prefs
                                         .setInt('valueClockIni', 180);
+                                    clientsScheduledController
+                                        .setTotalTimeInitial(180);
+                                    LocalStorage.prefs
+                                        .setBool('valueClockActiv', false);
+
+                                    clientsScheduledController
+                                        .animationControllerInitial!
+                                      ..duration = Duration(seconds: 180)
+                                      ..reset()
+                                      ..stop();
                                     // detengo todos los timers que deben detenerse
                                     for (int j = 0;
                                         j <
@@ -2207,6 +2329,8 @@ class _HomePageBodyState extends State<HomePageBody>
                                             loginController.tokenUserLoggedIn);
                                   }
                                   loginController.setMakeCall(true);
+                                  // clientsScheduledControllerE
+                                  //     .setBoolControlVision(true);
                                 } else if (loginController.usserPermissionQr ==
                                     2) {
                                   Get.snackbar(
@@ -2274,8 +2398,8 @@ class _HomePageBodyState extends State<HomePageBody>
                       ],
                     ),
                   )
-                : (clientsScheduledController.clientsScheduledListLengthTail ==
-                        0)
+                : (clientsScheduledController.clientsScheSalon == 0) &&
+                        clientsScheduledControllerE.clientsScheduledNext == null
                     ? const SizedBox(
                         height: 100,
                         child: Center(
@@ -2287,7 +2411,34 @@ class _HomePageBodyState extends State<HomePageBody>
                               )),
                         ),
                       )
-                    : SizedBox(width: 100, height: 100, child: Text(''))),
+                    : loginController.usserPermissionQr == 2
+                        ? const Center(
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 35,
+                                ),
+                                Text(
+                                  'Debe de esperar la respuesta',
+                                  style: TextStyle(
+                                      // color: Colors.white,
+                                      color: Color.fromARGB(255, 39, 39, 39),
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Text(
+                                  'a su solicitud',
+                                  style: TextStyle(
+                                      //color: Colors.white,
+                                      color: Color.fromARGB(255, 39, 39, 39),
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  height: 45,
+                                ),
+                              ],
+                            ),
+                          )
+                        : SizedBox(width: 100, height: 100, child: Text(''))),
       );
     });
   }
@@ -2349,7 +2500,6 @@ class _HomePageBodyState extends State<HomePageBody>
                 barrierDismissible: false,
               );
               //limpio la lista que controla que se de un solo click al seleccionar los servicios
-
               loginController.inTheClock(true);
               loginController.handleButtonClickServiceClear();
               serviceControll.clearSelectService();
@@ -2386,8 +2536,14 @@ class _HomePageBodyState extends State<HomePageBody>
                     Get.back();
                     //Get.toNamed('/servicesProductsPage');
                     pagesConfigC.onTabTapped(1); //index = 1 -> /Clients
+                  } else {
+                    loginController.setHandleButtonClickModal();
+                    Get.back();
                   }
                 });
+              } else {
+                loginController.setHandleButtonClickModal();
+                Get.back();
               }
             } //cierre del if de comprobacion que no lo llame vairas veces
           } else if (isPaused == false) {
@@ -2435,7 +2591,7 @@ class _HomePageBodyState extends State<HomePageBody>
                               .clientsScheduledListLengthTail ==
                           0)
                   ? 130
-                  : 110,
+                  : 130,
               height: (clientsScheduledController.boolFilterShowNext == false &&
                           clientsScheduledController
                                   .clientsScheduledListLengthTail >
@@ -2444,7 +2600,7 @@ class _HomePageBodyState extends State<HomePageBody>
                               .clientsScheduledListLengthTail ==
                           0)
                   ? 130
-                  : 110,
+                  : 130,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 // border: Border.all(
@@ -2669,7 +2825,7 @@ class _HomePageBodyState extends State<HomePageBody>
                             .clientsScheduledListLengthTail ==
                         0)
                 ? 130
-                : 110,
+                : 130,
             height: (clientsScheduledController.boolFilterShowNext == false &&
                         clientsScheduledController
                                 .clientsScheduledListLengthTail >
@@ -2678,7 +2834,7 @@ class _HomePageBodyState extends State<HomePageBody>
                             .clientsScheduledListLengthTail ==
                         0)
                 ? 130
-                : 110,
+                : 130,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               // border: Border.all(
@@ -2868,12 +3024,16 @@ class _HomePageBodyState extends State<HomePageBody>
               barrierDismissible: false,
             ); //Get.back();
 
-//todo optimización de codigo-cambio de ruta (anterior-fetchClientsScheduled)
+            //todo optimización de codigo-cambio de ruta (anterior-fetchClientsScheduled)
+            if (clientsScheduledController.errorHome == -99) {
+              await Future.delayed(const Duration(milliseconds: 2000));
+            }
             await clientsScheduledController.fetchClientsScheduledNew(
                 loginController.idProfessionalLoggedIn,
                 loginController.branchIdLoggedIn,
                 'Agenda-Card',
                 loginController.tokenUserLoggedIn);
+
             await Future.delayed(const Duration(milliseconds: 500));
             Get.back();
             pagesConfigC.onTabTapped(1); //index = 4 -> /CoexistencePage

@@ -140,27 +140,24 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                 0.006)),
                                                     child: Container(
                                                       decoration: BoxDecoration(
-                                                        border: clientsScheduledController
-                                                                    .clientsScheduledListTechnical[
-                                                                        index]
-                                                                    .attended ==
-                                                                5
-                                                            ? Border.all(
-                                                                width: 2,
-                                                                color: const Color(
-                                                                    0xFFFDAE2A))
-                                                            : clientsScheduledController
+                                                        border: Border.all(
+                                                            width: 2,
+                                                            color: clientsScheduledController
                                                                         .clientsScheduledListTechnical[
                                                                             index]
-                                                                        .attended ==
-                                                                    33
-                                                                ? Border.all(
-                                                                    width: 2,
-                                                                    color: const Color(
-                                                                        0xFFFF6750))
-                                                                : Border.all(
-                                                                    width:
-                                                                        0.01),
+                                                                        .from_home ==
+                                                                    1
+                                                                ? const Color(
+                                                                    0xFFFDAE2A)
+                                                                : clientsScheduledController
+                                                                            .clientsScheduledListTechnical[
+                                                                                index]
+                                                                            .select_professional ==
+                                                                        1
+                                                                    ? const Color(
+                                                                        0xFF19CF9E)
+                                                                    : const Color(
+                                                                        0xFF4470F3)),
                                                         color: Colors.white,
                                                         boxShadow: [
                                                           BoxShadow(

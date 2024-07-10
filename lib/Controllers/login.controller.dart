@@ -48,10 +48,10 @@ class LoginController extends GetxController {
   void showConnectionError() {
     showSimpleNotification(
       Text(
-        'Problemas de conexión',
-        style: TextStyle(color: Colors.white),
+        'Conectándose al servidor...',
+        style: TextStyle(color: Color(0xFF4470F3)),
       ),
-      background: Colors.red,
+      background: Colors.white,
       // position: NotificationPosition.top,
       position: NotificationPosition.bottom,
       slideDismiss: true, // para que se pueda deslizar para cerrar
@@ -1070,6 +1070,12 @@ class LoginController extends GetxController {
           LocalStorage.prefs.setBool('valueClockActivT', false);
           LocalStorage.prefs.setBool('convivenciaIncumplida', false);
           LocalStorage.prefs.setBool('convivenciaIncumplidaT', false);
+          //
+          // LocalStorage.prefs.remove('EntryFootprintUser');LocalStorage.prefs.setString('varSistemHr3min1', 'FIN')
+          // LocalStorage.prefs.remove('EntryFootprintPass');
+          // LocalStorage.prefs.remove('EntryFootprintBranch');
+          // LocalStorage.prefs.remove('EntryFootprintData');
+
           Get.offAllNamed('/LoginFormPage');
         } else {
           await clearSessionData();
@@ -1077,6 +1083,11 @@ class LoginController extends GetxController {
           LocalStorage.prefs.setBool('valueClockActivT', false);
           LocalStorage.prefs.setBool('convivenciaIncumplida', false);
           LocalStorage.prefs.setBool('convivenciaIncumplidaT', false);
+          //
+          // LocalStorage.prefs.remove('EntryFootprintUser');
+          // LocalStorage.prefs.remove('EntryFootprintPass');
+          // LocalStorage.prefs.remove('EntryFootprintBranch');
+          // LocalStorage.prefs.remove('EntryFootprintData');
           print('reiniciar app:$result');
           print(
               'NO CERRO SECION CORRECTAMENTE ELIMINANDO LOS DATOS DE SECCION');

@@ -335,18 +335,28 @@ class _AttendingClientState extends State<AttendingClient> {
           child: Column(
             children: [
               Container(
-                  height: 65,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                  ),
+                  height: 76,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      border: Border.all(
+                          width: 2,
+                          color: controllerclient
+                                      .clientAttendBranch[index].from_home ==
+                                  1
+                              ? const Color(0xFFFDAE2A)
+                              : controllerclient.clientAttendBranch[index]
+                                          .select_professional ==
+                                      1
+                                  ? const Color(0xFF19CF9E)
+                                  : const Color(0xFF4470F3))),
                   //AQUI CONTROLO SI HAY ALGUIEN EN COLA
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 8, top: 8, bottom: 8, right: 4),
+                            left: 8, top: 12, bottom: 8, right: 4),
                         child: CircleAvatar(
                           radius: 25,
                           backgroundColor: Colors.white, //fondo de la imagen
@@ -424,7 +434,7 @@ class _AttendingClientState extends State<AttendingClient> {
                           borderRadius: BorderRadius.all(Radius.circular(12)),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 0, top: 8),
+                          padding: const EdgeInsets.only(left: 0, top: 12),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,

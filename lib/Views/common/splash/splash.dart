@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
+import 'package:intl/intl.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -14,10 +16,27 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
+    // Obtener la fecha actual
+    // Obtener la fecha actual
+    // DateTime now = DateTime.now();
+
+    // // Formatear la fecha para que solo incluya año, mes y día
+    // String dataAct = DateFormat('yyyy-MM-dd').format(now);
     Future.delayed(const Duration(seconds: 6), () {
+      /* if (LocalStorage.prefs.getString('EntryFootprintData') != null &&
+          LocalStorage.prefs.getString('EntryFootprintData') == dataAct &&
+          LocalStorage.prefs.getBool('EntryFootprintOpen') != null &&
+          LocalStorage.prefs.getBool('EntryFootprintOpen') ==
+              true) //si essiste la variable fecha creada y coincide con la fecha de hoy abrir con huella
+      {
+        Get.offAllNamed(
+          '/AuthCheck',
+        );
+      } else {*/
       Get.offAllNamed(
         '/LoginFormPage',
       );
+      // }
     });
   }
 

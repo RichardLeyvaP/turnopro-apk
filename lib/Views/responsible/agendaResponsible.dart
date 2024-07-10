@@ -337,10 +337,22 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
           child: Column(
             children: [
               Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
+                      border: Border.all(
+                          width: 2,
+                          color: controllerclient
+                                      .clientsScheduledListBranch[index]
+                                      .from_home ==
+                                  1
+                              ? const Color(0xFFFDAE2A)
+                              : controllerclient
+                                          .clientsScheduledListBranch[index]
+                                          .select_professional ==
+                                      1
+                                  ? const Color(0xFF19CF9E)
+                                  : const Color(0xFF4470F3))),
                   //AQUI CONTROLO SI HAY ALGUIEN EN COLA
                   child: Row(
                     children: [

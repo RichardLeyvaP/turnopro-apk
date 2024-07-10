@@ -396,6 +396,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                               ),
                             ),
                             onPressed: () async {
+                              commentController.text = '';
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -597,16 +598,18 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                               horizontal: 26.0),
                                                         ),
                                                         backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all<Color>(hasText
-                                                                    ? Color(
-                                                                        0xFF19CF9E)
-                                                                    : Color
-                                                                        .fromARGB(
-                                                                            155,
-                                                                            192,
-                                                                            191,
-                                                                            191)),
+                                                            MaterialStateProperty.all<
+                                                                Color>(hasText &&
+                                                                    _.pickedFile !=
+                                                                        null
+                                                                ? Color(
+                                                                    0xFF19CF9E)
+                                                                : Color
+                                                                    .fromARGB(
+                                                                        155,
+                                                                        192,
+                                                                        191,
+                                                                        191)),
                                                       ),
                                                       onPressed: () async {
                                                         // Lógica para enviar el comentario
@@ -617,7 +620,9 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                         // Eliminar espacios en blanco al principio y al final
 
                                                         // Verificar que el campo no esté vacío
-                                                        if (hasText) {
+                                                        if (hasText &&
+                                                            _.pickedFile !=
+                                                                null) {
                                                           // Cerrar el primer modal
                                                           Navigator.pop(
                                                               context);
@@ -775,27 +780,57 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                             );
                                                           }
                                                         } else {
-                                                          Get.snackbar(
-                                                            'Mensaje',
-                                                            'Debe escribir un comentario al respecto',
-                                                            duration:
-                                                                const Duration(
-                                                                    milliseconds:
-                                                                        2500),
-                                                            showProgressIndicator:
-                                                                true,
-                                                            progressIndicatorBackgroundColor:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    146,
-                                                                    99,
-                                                                    19),
-                                                            progressIndicatorValueColor:
-                                                                const AlwaysStoppedAnimation(
-                                                                    Color(
-                                                                        0xFFFDAE2A)),
-                                                            overlayBlur: 3,
-                                                          );
+                                                          if (hasText ==
+                                                              false) {
+                                                            Get.snackbar(
+                                                              'Mensaje',
+                                                              'Debe escribir un comentario al respecto',
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          2500),
+                                                              showProgressIndicator:
+                                                                  true,
+                                                              progressIndicatorBackgroundColor:
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          146,
+                                                                          99,
+                                                                          19),
+                                                              progressIndicatorValueColor:
+                                                                  const AlwaysStoppedAnimation(
+                                                                      Color(
+                                                                          0xFFFDAE2A)),
+                                                              overlayBlur: 3,
+                                                            );
+                                                          } else if (_
+                                                                  .pickedFile ==
+                                                              null) {
+                                                            Get.snackbar(
+                                                              'Mensaje',
+                                                              'Debe de tomar una foto',
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          2500),
+                                                              showProgressIndicator:
+                                                                  true,
+                                                              progressIndicatorBackgroundColor:
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          146,
+                                                                          99,
+                                                                          19),
+                                                              progressIndicatorValueColor:
+                                                                  const AlwaysStoppedAnimation(
+                                                                      Color(
+                                                                          0xFFFDAE2A)),
+                                                              overlayBlur: 3,
+                                                            );
+                                                          }
+
                                                           // El campo de texto está vacío, puedes mostrar un mensaje o realizar alguna acción
                                                           print(
                                                               'El comentario no puede estar vacío');
