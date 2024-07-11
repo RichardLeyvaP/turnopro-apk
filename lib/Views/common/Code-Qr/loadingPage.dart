@@ -103,7 +103,7 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
               resultH == 1) //td inserto correctamente la entrada
           {
             // Obtener la fecha actual
-            /*   DateTime now = DateTime.now();
+            DateTime now = DateTime.now();
 
             // Formatear la fecha para que solo incluya año, mes y día
             String nowString = DateFormat('yyyy-MM-dd').format(now);
@@ -116,7 +116,8 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
             LocalStorage.prefs
                 .setString('EntryFootprintPass', controllerLogin.pass);
             LocalStorage.prefs.setInt(
-                'EntryFootprintBranch', controllerLogin.branchIdLoggedIn!);*/
+                'EntryFootprintBranch', controllerLogin.branchIdLoggedIn!);
+            LocalStorage.prefs.setBool('EntryFootprintOpen', true);
             mensjeOk();
           } else {
             //hubo problema al registrar la entrada

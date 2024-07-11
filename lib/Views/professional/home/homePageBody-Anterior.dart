@@ -1888,8 +1888,8 @@ class _HomePageBodyState extends State<HomePageBody>
                                 // if (resulButton == 1) {
                                 notiController.storeNotification(
                                     'Solicitud de rechazo',
-                                    controllerLogin.branchIdLoggedIn,
-                                    controllerLogin.idProfessionalLoggedIn,
+                                    loginController.branchIdLoggedIn,
+                                    loginController.idProfessionalLoggedIn,
                                     'EL profesional "${loginController.nameUserLoggedIn}" está rechazando a "${clientsScheduledControllerE.clientsScheduledNext!.client_name}"',
                                     'Ambos'); //esto es para quele llegue a coordinador y encargado
                                 clientsScheduledControllerE

@@ -40,6 +40,7 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
 
   @override
   Widget build(BuildContext context) {
+    controllerLogin.getScreenResolution(context);
     return FadeIn(
       duration: const Duration(seconds: 2),
       child:

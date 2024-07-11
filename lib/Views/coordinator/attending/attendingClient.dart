@@ -328,6 +328,15 @@ class _AttendingClientState extends State<AttendingClient> {
       index,
       PageController pageController2,
       PagesConfigController pagesConfigC) {
+    String tipo = '';
+    if (controllerclient.clientAttendBranch[index].from_home == 1) {
+      tipo = 'Reser';
+    } else if (controllerclient.clientAttendBranch[index].select_professional ==
+        1) {
+      tipo = 'Selec';
+    } else {
+      tipo = 'Aleat';
+    }
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10, top: 8),
       child: FittedBox(
@@ -484,7 +493,7 @@ class _AttendingClientState extends State<AttendingClient> {
                                         padding:
                                             const EdgeInsets.only(right: 10),
                                         child: Text(
-                                          '${controllerclient.clientAttendBranch[index].start_time} - ${controllerclient.clientAttendBranch[index].final_hour}',
+                                          '${controllerclient.clientAttendBranch[index].start_time} - ${controllerclient.clientAttendBranch[index].final_hour}  $tipo',
                                           softWrap: true,
                                           style: const TextStyle(
                                               fontSize: 12,

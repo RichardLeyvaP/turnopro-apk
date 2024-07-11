@@ -135,213 +135,224 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                     .zero, // Elimina cualquier padding del ListView
                                                 itemCount: controllerClient
                                                     .clientsScheduledListLength,
-                                                itemBuilder: (context, index) =>
-                                                    //AQUI CONTROLO DESDE LA **(API)** SI ATTEENDED=3 ES QUE FUE RECHAZADO Y NO LO MUESTRO
-                                                    //IGUAL SI ES ATTEENDED=2 ES QUE YA FUE ATENDIDO Y TAMPOCO LO MUESTRO
-                                                    Padding(
-                                                  padding: EdgeInsets.only(
-                                                    top: 10,
-                                                    left: 10,
-                                                    right: 10,
-                                                  ),
-                                                  child: Container(
-                                                    decoration: controllerClient
-                                                                    .clientsScheduledList[
-                                                                        index]
-                                                                    .attended ==
-                                                                4 ||
-                                                            controllerClient
-                                                                    .clientsScheduledList[
-                                                                        index]
-                                                                    .attended ==
-                                                                3
-                                                        ? BoxDecoration(
-                                                            border: Border.all(
-                                                                width: 2,
-                                                                color: controllerClient.clientsScheduledList[index].from_home ==
-                                                                        1
-                                                                    ? const Color(
-                                                                        0xFFFDAE2A)
-                                                                    : controllerClient.clientsScheduledList[index].select_professional ==
-                                                                            1
-                                                                        ? const Color(
-                                                                            0xFF19CF9E)
-                                                                        : const Color(
-                                                                            0xFF4470F3)),
-                                                            borderRadius:
-                                                                const BorderRadius.all(
-                                                                    Radius.circular(12)),
-                                                            boxShadow: [
-                                                              BoxShadow(
-                                                                color: Colors
-                                                                    .grey
-                                                                    .withOpacity(
-                                                                        0.7),
-                                                                spreadRadius: 1,
-                                                                blurRadius: 5,
-                                                                offset: const Offset(
-                                                                    -5,
-                                                                    5), // Ajusta los valores para personalizar la sombra
-                                                              ),
-                                                            ],
-                                                            gradient: const LinearGradient(
-                                                              colors: [
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    254,
-                                                                    254,
-                                                                    255),
-                                                                Color.fromARGB(
-                                                                    82,
-                                                                    236,
-                                                                    233,
-                                                                    233),
+                                                itemBuilder: (context, index) {
+                                                  String tipo = '';
+                                                  if (controllerClient
+                                                          .clientsScheduledList[
+                                                              index]
+                                                          .from_home ==
+                                                      1) {
+                                                    tipo = 'Reser';
+                                                  } else if (controllerClient
+                                                          .clientsScheduledList[
+                                                              index]
+                                                          .select_professional ==
+                                                      1) {
+                                                    tipo = 'Selec';
+                                                  } else {
+                                                    tipo = 'Aleat';
+                                                  }
+
+                                                  return Padding(
+                                                    padding: EdgeInsets.only(
+                                                      top: 10,
+                                                      left: 10,
+                                                      right: 10,
+                                                    ),
+                                                    child: Container(
+                                                      decoration: controllerClient
+                                                                      .clientsScheduledList[
+                                                                          index]
+                                                                      .attended ==
+                                                                  4 ||
+                                                              controllerClient
+                                                                      .clientsScheduledList[
+                                                                          index]
+                                                                      .attended ==
+                                                                  3
+                                                          ? BoxDecoration(
+                                                              border: Border.all(
+                                                                  width: 2,
+                                                                  color: controllerClient.clientsScheduledList[index].from_home == 1
+                                                                      ? const Color(0xFFFDAE2A)
+                                                                      : controllerClient.clientsScheduledList[index].select_professional == 1
+                                                                          ? const Color(0xFF19CF9E)
+                                                                          : const Color(0xFF4470F3)),
+                                                              borderRadius: const BorderRadius.all(Radius.circular(12)),
+                                                              boxShadow: [
+                                                                BoxShadow(
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .withOpacity(
+                                                                          0.7),
+                                                                  spreadRadius:
+                                                                      1,
+                                                                  blurRadius: 5,
+                                                                  offset: const Offset(
+                                                                      -5,
+                                                                      5), // Ajusta los valores para personalizar la sombra
+                                                                ),
                                                               ],
-                                                              stops: [0.0, 0.8],
-                                                              begin: FractionalOffset
-                                                                  .centerRight,
-                                                              end: FractionalOffset
-                                                                  .centerLeft,
-                                                            ))
-                                                        : BoxDecoration(
-                                                            border: controllerClient
-                                                                            .clientsScheduledList[
-                                                                                index]
-                                                                            .attended ==
-                                                                        1 ||
-                                                                    controllerClient
-                                                                            .clientsScheduledList[
-                                                                                index]
-                                                                            .attended ==
-                                                                        11 ||
-                                                                    controllerClient
-                                                                            .clientsScheduledList[
-                                                                                index]
-                                                                            .attended ==
-                                                                        111
-                                                                ? Border.all(
-                                                                    width: 2,
-                                                                    color: controllerClient.clientsScheduledList[index].from_home ==
-                                                                            1
-                                                                        ? const Color(
-                                                                            0xFFFDAE2A)
-                                                                        : controllerClient.clientsScheduledList[index].select_professional ==
-                                                                                1
-                                                                            ? const Color(
-                                                                                0xFF19CF9E)
-                                                                            : const Color(
-                                                                                0xFF4470F3))
-                                                                : Border.all(
-                                                                    width: 2,
-                                                                    color: controllerClient.clientsScheduledList[index].from_home ==
-                                                                            1
-                                                                        ? const Color(
-                                                                            0xFFFDAE2A)
-                                                                        : controllerClient.clientsScheduledList[index].select_professional ==
-                                                                                1
-                                                                            ? const Color(0xFF19CF9E)
-                                                                            : const Color(0xFF4470F3)),
-                                                            color: Colors.white,
-                                                            boxShadow: [
-                                                              BoxShadow(
-                                                                color: Colors
-                                                                    .grey
-                                                                    .withOpacity(
-                                                                        0.7),
-                                                                spreadRadius: 1,
-                                                                blurRadius: 5,
-                                                                offset: const Offset(
-                                                                    -5,
-                                                                    5), // Ajusta los valores para personalizar la sombra
+                                                              gradient: const LinearGradient(
+                                                                colors: [
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          254,
+                                                                          254,
+                                                                          255),
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          82,
+                                                                          236,
+                                                                          233,
+                                                                          233),
+                                                                ],
+                                                                stops: [
+                                                                  0.0,
+                                                                  0.8
+                                                                ],
+                                                                begin: FractionalOffset
+                                                                    .centerRight,
+                                                                end: FractionalOffset
+                                                                    .centerLeft,
+                                                              ))
+                                                          : BoxDecoration(
+                                                              border: controllerClient
+                                                                              .clientsScheduledList[
+                                                                                  index]
+                                                                              .attended ==
+                                                                          1 ||
+                                                                      controllerClient
+                                                                              .clientsScheduledList[
+                                                                                  index]
+                                                                              .attended ==
+                                                                          11 ||
+                                                                      controllerClient
+                                                                              .clientsScheduledList[
+                                                                                  index]
+                                                                              .attended ==
+                                                                          111
+                                                                  ? Border.all(
+                                                                      width: 2,
+                                                                      color: controllerClient.clientsScheduledList[index].from_home ==
+                                                                              1
+                                                                          ? const Color(
+                                                                              0xFFFDAE2A)
+                                                                          : controllerClient.clientsScheduledList[index].select_professional == 1
+                                                                              ? const Color(0xFF19CF9E)
+                                                                              : const Color(0xFF4470F3))
+                                                                  : Border.all(
+                                                                      width: 2,
+                                                                      color: controllerClient.clientsScheduledList[index].from_home == 1
+                                                                          ? const Color(0xFFFDAE2A)
+                                                                          : controllerClient.clientsScheduledList[index].select_professional == 1
+                                                                              ? const Color(0xFF19CF9E)
+                                                                              : const Color(0xFF4470F3)),
+                                                              color:
+                                                                  Colors.white,
+                                                              boxShadow: [
+                                                                BoxShadow(
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .withOpacity(
+                                                                          0.7),
+                                                                  spreadRadius:
+                                                                      1,
+                                                                  blurRadius: 5,
+                                                                  offset: const Offset(
+                                                                      -5,
+                                                                      5), // Ajusta los valores para personalizar la sombra
+                                                                ),
+                                                              ],
+                                                              borderRadius:
+                                                                  const BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    12),
                                                               ),
-                                                            ],
-                                                            borderRadius:
-                                                                const BorderRadius
-                                                                    .all(
-                                                              Radius.circular(
-                                                                  12),
                                                             ),
+                                                      child: ListTile(
+                                                        shape:
+                                                            const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                            Radius.circular(12),
                                                           ),
-                                                    child: ListTile(
-                                                      shape:
-                                                          const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                          Radius.circular(12),
                                                         ),
-                                                      ),
-                                                      onTap: () async {
-                                                        Get.dialog(
-                                                          const Center(
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              color: Color(
-                                                                  0xFFFDAE2A),
+                                                        onTap: () async {
+                                                          Get.dialog(
+                                                            const Center(
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                                color: Color(
+                                                                    0xFFFDAE2A),
+                                                              ),
                                                             ),
-                                                          ),
-                                                          barrierDismissible:
-                                                              false,
-                                                        ); //Get.back();
-                                                        String clientName =
-                                                            controllerClient
-                                                                .clientsScheduledList[
-                                                                    index]
-                                                                .client_name!;
-                                                        String urlImage = controllerClient
-                                                                    .clientsScheduledList[
-                                                                        index]
-                                                                    .client_image! ==
-                                                                ''
-                                                            ? 'comments/default_profile.jpg'
-                                                            : controllerClient
-                                                                .clientsScheduledList[
-                                                                    index]
-                                                                .client_image!;
-                                                        int reservationId =
-                                                            controllerClient
-                                                                .clientsScheduledList[
-                                                                    index]
-                                                                .reservation_id!;
-                                                        int carId = controllerClient
-                                                            .clientsScheduledList[
-                                                                index]
-                                                            .car_id!;
+                                                            barrierDismissible:
+                                                                false,
+                                                          ); //Get.back();
+                                                          String clientName =
+                                                              controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .client_name!;
+                                                          String urlImage = controllerClient
+                                                                      .clientsScheduledList[
+                                                                          index]
+                                                                      .client_image! ==
+                                                                  ''
+                                                              ? 'comments/default_profile.jpg'
+                                                              : controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .client_image!;
+                                                          int reservationId =
+                                                              controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .reservation_id!;
+                                                          int carId =
+                                                              controllerClient
+                                                                  .clientsScheduledList[
+                                                                      index]
+                                                                  .car_id!;
 
-                                                        // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
-                                                        // controllerClient
-                                                        //     .showingServiceClient(
-                                                        //         true);
-                                                        // aqui cargar los servicios que tiene
-                                                        await controllerClient
-                                                            .searchForCustomerServices3(
-                                                                controllerClient
-                                                                    .clientsScheduledList[
-                                                                        index]
-                                                                    .car_id,
-                                                                loginController
-                                                                    .tokenUserLoggedIn)
-                                                            .then((_) {
-                                                          Get.back();
-                                                          Get.toNamed(
-                                                            '/ProfileClientBarber',
-                                                            arguments: {
-                                                              'clientName':
-                                                                  clientName,
-                                                              'urlImage':
-                                                                  urlImage,
-                                                            },
-                                                          );
-                                                        });
+                                                          // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
+                                                          // controllerClient
+                                                          //     .showingServiceClient(
+                                                          //         true);
+                                                          // aqui cargar los servicios que tiene
+                                                          await controllerClient
+                                                              .searchForCustomerServices3(
+                                                                  controllerClient
+                                                                      .clientsScheduledList[
+                                                                          index]
+                                                                      .car_id,
+                                                                  loginController
+                                                                      .tokenUserLoggedIn)
+                                                              .then((_) {
+                                                            Get.back();
+                                                            Get.toNamed(
+                                                              '/ProfileClientBarber',
+                                                              arguments: {
+                                                                'clientName':
+                                                                    clientName,
+                                                                'urlImage':
+                                                                    urlImage,
+                                                              },
+                                                            );
+                                                          });
 
-                                                        //
-                                                        //
-                                                        //
-                                                        //
-                                                        //
-                                                        //
+                                                          //
+                                                          //
+                                                          //
+                                                          //
+                                                          //
+                                                          //
 
-                                                        //VA A EJECUTARSE SI NO ESTA CON EL TECNICO
-                                                        /*
+                                                          //VA A EJECUTARSE SI NO ESTA CON EL TECNICO
+                                                          /*
                                                         int resulButton = 0;
                                                         resulButton = loginController
                                                             .handleButtonClickModal(
@@ -351,7 +362,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                     .reservation_id);
                                                         if (resulButton == 1) {
                                                           //limpio la lista que controla que se de un solo click al seleccionar los servicios
-
+                                                
                                                           loginController
                                                               .handleButtonClickServiceClear();
                                                           loginController
@@ -359,7 +370,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                   true);
                                                           serviceControll
                                                               .clearSelectService();
-
+                                                
                                                           if (controllerClient
                                                                   .clientsScheduledList[
                                                                       index]
@@ -469,194 +480,183 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                             });
                                                           }
                                                         } //cierre del if de comprobacion que no lo llame vairas veces
-
+                                                
                                                         */
-                                                      },
-                                                      title: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .end,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Icon(
-                                                                    MdiIcons
-                                                                        .clockPlus,
-                                                                    color: const Color(
-                                                                        0xFF19CF9E),
-                                                                  ),
-                                                                  Text(
-                                                                    '  ${controllerClient.clientsScheduledList[index].start_time}'
-                                                                    ' - '
-                                                                    ' ${controllerClient.clientsScheduledList[index].final_hour}',
-                                                                    // '   08:10 - 09:10',
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      height:
-                                                                          1.0,
-                                                                      fontSize:
-                                                                          12,
-                                                                      color: Color
-                                                                          .fromARGB(
-                                                                              180,
-                                                                              0,
-                                                                              0,
-                                                                              0),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              Text(
-                                                                controllerClient
-                                                                    .clientsScheduledList[
-                                                                        index]
-                                                                    .client_name!,
-                                                                //AQUI EL NOMBRE DEL CLIENTE
-                                                                style: const TextStyle(
-                                                                    fontSize:
-                                                                        15,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600),
-                                                              ),
-                                                              Text(
-                                                                'Total de servicios: ${(controllerClient.clientsScheduledList[index].total_services).toString()}',
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 14,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          148,
-                                                                          0,
-                                                                          0,
-                                                                          0),
-                                                                  height: 1.0,
-                                                                ),
-                                                              ),
-                                                              const SizedBox(
-                                                                height: 12,
-                                                              )
-                                                            ],
-                                                          ),
-                                                          //SI ESTA VARIABLE ES IGUAL A 1 ES QUE SE ESTA ATENDIENDO
-                                                          controllerClient
-                                                                          .clientsScheduledList[
-                                                                              index]
-                                                                          .attended ==
-                                                                      1 ||
-                                                                  controllerClient
-                                                                          .clientsScheduledList[
-                                                                              index]
-                                                                          .attended ==
-                                                                      11 ||
-                                                                  controllerClient
-                                                                          .clientsScheduledList[
-                                                                              index]
-                                                                          .attended ==
-                                                                      111
-                                                              ? Column(
+                                                        },
+                                                        title: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .end,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
                                                                   children: [
-                                                                    const Image(
-                                                                      image:
-                                                                          AssetImage(
-                                                                        'assets/images/client-attended.png',
-                                                                      ),
-                                                                      width: 50,
-                                                                      height:
-                                                                          50,
+                                                                    Icon(
+                                                                      MdiIcons
+                                                                          .clockPlus,
+                                                                      color: const Color(
+                                                                          0xFF19CF9E),
                                                                     ),
                                                                     Text(
-                                                                      controllerClient.clientsScheduledList[index].attended ==
-                                                                              1
-                                                                          ? 'Atendiéndose'
-                                                                          : 'Terminando Servicio',
+                                                                      '  ${controllerClient.clientsScheduledList[index].start_time}'
+                                                                      ' - '
+                                                                      ' ${controllerClient.clientsScheduledList[index].final_hour}  $tipo',
+                                                                      // '   08:10 - 09:10',
                                                                       style:
-                                                                          TextStyle(
+                                                                          const TextStyle(
+                                                                        height:
+                                                                            1.0,
                                                                         fontSize:
-                                                                            14,
-                                                                        color: controllerClient.clientsScheduledList[index].from_home ==
-                                                                                1
-                                                                            ? const Color(0xFFFDAE2A)
-                                                                            : controllerClient.clientsScheduledList[index].select_professional == 1
-                                                                                ? const Color(0xFF19CF9E)
-                                                                                : const Color(0xFF4470F3),
+                                                                            12,
+                                                                        color: Color.fromARGB(
+                                                                            180,
+                                                                            0,
+                                                                            0,
+                                                                            0),
                                                                       ),
                                                                     ),
                                                                   ],
+                                                                ),
+                                                                Text(
+                                                                  controllerClient
+                                                                      .clientsScheduledList[
+                                                                          index]
+                                                                      .client_name!,
+                                                                  //AQUI EL NOMBRE DEL CLIENTE
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600),
+                                                                ),
+                                                                Text(
+                                                                  'Total de servicios: ${(controllerClient.clientsScheduledList[index].total_services).toString()}',
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    fontSize:
+                                                                        14,
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            148,
+                                                                            0,
+                                                                            0,
+                                                                            0),
+                                                                    height: 1.0,
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(
+                                                                  height: 12,
                                                                 )
-                                                              : controllerClient
-                                                                              .clientsScheduledList[
-                                                                                  index]
-                                                                              .attended ==
-                                                                          4 ||
-                                                                      controllerClient
-                                                                              .clientsScheduledList[
-                                                                                  index]
-                                                                              .attended ==
-                                                                          5
-                                                                  ? const Row(
-                                                                      //todo 999
-                                                                      children: [
-                                                                        Opacity(
-                                                                          opacity:
-                                                                              1,
-                                                                          child:
-                                                                              Image(
-                                                                            image:
-                                                                                AssetImage(
-                                                                              'assets/images/icons/lavado.png',
-                                                                            ),
-                                                                            width:
-                                                                                50,
-                                                                            height:
-                                                                                50,
-                                                                          ),
+                                                              ],
+                                                            ),
+                                                            //SI ESTA VARIABLE ES IGUAL A 1 ES QUE SE ESTA ATENDIENDO
+                                                            controllerClient
+                                                                            .clientsScheduledList[
+                                                                                index]
+                                                                            .attended ==
+                                                                        1 ||
+                                                                    controllerClient
+                                                                            .clientsScheduledList[
+                                                                                index]
+                                                                            .attended ==
+                                                                        11 ||
+                                                                    controllerClient
+                                                                            .clientsScheduledList[
+                                                                                index]
+                                                                            .attended ==
+                                                                        111
+                                                                ? Column(
+                                                                    children: [
+                                                                      const Image(
+                                                                        image:
+                                                                            AssetImage(
+                                                                          'assets/images/client-attended.png',
                                                                         ),
-                                                                      ],
-                                                                    )
-                                                                  : controllerClient
-                                                                              .clientsScheduledList[index]
-                                                                              .attended ==
-                                                                          3
-                                                                      ? const Column(
-                                                                          children: [
-                                                                            Text(
-                                                                              'Esperando',
-                                                                              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFFFF6750)),
+                                                                        width:
+                                                                            50,
+                                                                        height:
+                                                                            50,
+                                                                      ),
+                                                                      Text(
+                                                                        controllerClient.clientsScheduledList[index].attended ==
+                                                                                1
+                                                                            ? 'Atendiéndose'
+                                                                            : 'Terminando Servicio',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              14,
+                                                                          color: controllerClient.clientsScheduledList[index].from_home == 1
+                                                                              ? const Color(0xFFFDAE2A)
+                                                                              : controllerClient.clientsScheduledList[index].select_professional == 1
+                                                                                  ? const Color(0xFF19CF9E)
+                                                                                  : const Color(0xFF4470F3),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  )
+                                                                : controllerClient.clientsScheduledList[index].attended ==
+                                                                            4 ||
+                                                                        controllerClient.clientsScheduledList[index].attended ==
+                                                                            5
+                                                                    ? const Row(
+                                                                        //todo 999
+                                                                        children: [
+                                                                          Opacity(
+                                                                            opacity:
+                                                                                1,
+                                                                            child:
+                                                                                Image(
+                                                                              image: AssetImage(
+                                                                                'assets/images/icons/lavado.png',
+                                                                              ),
+                                                                              width: 50,
+                                                                              height: 50,
                                                                             ),
-                                                                            Text('confirmación de',
-                                                                                style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFFFF6750))),
-                                                                            Text('Eliminación',
-                                                                                style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFFFF6750))),
-                                                                          ],
-                                                                        )
-                                                                      : Text('')
-                                                        ],
+                                                                          ),
+                                                                        ],
+                                                                      )
+                                                                    : controllerClient.clientsScheduledList[index].attended ==
+                                                                            3
+                                                                        ? const Column(
+                                                                            children: [
+                                                                              Text(
+                                                                                'Esperando',
+                                                                                style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFFFF6750)),
+                                                                              ),
+                                                                              Text('confirmación de', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFFFF6750))),
+                                                                              Text('Eliminación', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFFFF6750))),
+                                                                            ],
+                                                                          )
+                                                                        : Text(
+                                                                            '')
+                                                          ],
+                                                        ),
+                                                        //subtitle: Text(controllerClient.users[index].username.toString()),
+                                                        selected: false,
+                                                        //selectedColor: Colors.amber,
+                                                        //selectedTileColor: Colors.blue,
                                                       ),
-                                                      //subtitle: Text(controllerClient.users[index].username.toString()),
-                                                      selected: false,
-                                                      //selectedColor: Colors.amber,
-                                                      //selectedTileColor: Colors.blue,
                                                     ),
-                                                  ),
-                                                ),
+                                                  );
+                                                },
                                               )
                                             : const Padding(
                                                 padding: EdgeInsets.all(12.0),

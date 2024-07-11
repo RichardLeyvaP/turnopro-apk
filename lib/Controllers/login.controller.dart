@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages, non_constant_identifier_names, curly_braces_in_flow_control_structures
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 import 'package:intl/intl.dart';
@@ -254,6 +255,7 @@ class LoginController extends GetxController {
   //
   String nameUserLoggedIn = '';
   String userLoggedIn = '';
+  int openSecretkey = 0;
   String tokenUserLoggedIn = '';
   int idUserLoggedIn = -2023991991;
   String emailUserLoggedIn = '';
@@ -274,6 +276,35 @@ class LoginController extends GetxController {
 
   setMakeCall(value) {
     makeCall = value;
+  }
+
+  Timer? _timer;
+  // Método para reiniciar el temporizador
+  void _restartTimer() {
+    _cancelTimer(); // Cancela el temporizador anterior si existe
+    _timer = Timer(Duration(seconds: 5), () {
+      setOpenSecretkey(0); // Restablece el valor a cero después de un minuto
+    });
+  }
+
+  // Método para cancelar el temporizador
+  void _cancelTimer() {
+    _timer?.cancel();
+  }
+
+  setOpenSecretkey(value) {
+    print('llave secreta = (setOpenSecretkey=$value)');
+    openSecretkey = value;
+    _cancelTimer();
+  }
+
+  addOpenSecretkey() {
+    openSecretkey++;
+    _restartTimer();
+  }
+
+  int getOpenSecretkey() {
+    return openSecretkey;
   }
 
   setMakeCallC(value) {
@@ -1071,10 +1102,11 @@ class LoginController extends GetxController {
           LocalStorage.prefs.setBool('convivenciaIncumplida', false);
           LocalStorage.prefs.setBool('convivenciaIncumplidaT', false);
           //
-          // LocalStorage.prefs.remove('EntryFootprintUser');LocalStorage.prefs.setString('varSistemHr3min1', 'FIN')
-          // LocalStorage.prefs.remove('EntryFootprintPass');
-          // LocalStorage.prefs.remove('EntryFootprintBranch');
-          // LocalStorage.prefs.remove('EntryFootprintData');
+          LocalStorage.prefs.remove('EntryFootprintUser');
+          LocalStorage.prefs.remove('EntryFootprintPass');
+          LocalStorage.prefs.remove('EntryFootprintBranch');
+          LocalStorage.prefs.remove('EntryFootprintData');
+          LocalStorage.prefs.remove('EntryFootprintOpen');
 
           Get.offAllNamed('/LoginFormPage');
         } else {
@@ -1084,10 +1116,11 @@ class LoginController extends GetxController {
           LocalStorage.prefs.setBool('convivenciaIncumplida', false);
           LocalStorage.prefs.setBool('convivenciaIncumplidaT', false);
           //
-          // LocalStorage.prefs.remove('EntryFootprintUser');
-          // LocalStorage.prefs.remove('EntryFootprintPass');
-          // LocalStorage.prefs.remove('EntryFootprintBranch');
-          // LocalStorage.prefs.remove('EntryFootprintData');
+          LocalStorage.prefs.remove('EntryFootprintUser');
+          LocalStorage.prefs.remove('EntryFootprintPass');
+          LocalStorage.prefs.remove('EntryFootprintBranch');
+          LocalStorage.prefs.remove('EntryFootprintData');
+          LocalStorage.prefs.remove('EntryFootprintOpen');
           print('reiniciar app:$result');
           print(
               'NO CERRO SECION CORRECTAMENTE ELIMINANDO LOS DATOS DE SECCION');

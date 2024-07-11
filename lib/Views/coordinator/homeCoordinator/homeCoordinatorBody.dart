@@ -466,6 +466,16 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
       index,
       PageController pageController2,
       PagesConfigController pagesConfigC) {
+    String tipo = '';
+    if (controllerclient.clientsScheduledListBranch[index].from_home == 1) {
+      tipo = 'Reser';
+    } else if (controllerclient
+            .clientsScheduledListBranch[index].select_professional ==
+        1) {
+      tipo = 'Selec';
+    } else {
+      tipo = 'Aleat';
+    }
     return FadeIn(
       duration: Duration(seconds: 2),
       child: FittedBox(
@@ -613,7 +623,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                         size: 22,
                                       ),
                                       Text(
-                                        '${controllerclient.clientsScheduledListBranch[index].start_time} - ${controllerclient.clientsScheduledListBranch[index].final_hour}',
+                                        '${controllerclient.clientsScheduledListBranch[index].start_time} - ${controllerclient.clientsScheduledListBranch[index].final_hour}  $tipo',
                                         softWrap: true,
                                         style: const TextStyle(
                                             height: 1.0,

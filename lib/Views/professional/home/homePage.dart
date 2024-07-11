@@ -85,6 +85,7 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    controllerLogin.getScreenResolution(context);
     final now = DateTime.now();
     final formatter = DateFormat('yyyy-MM-dd');
     final dateAct = formatter.format(now);
@@ -326,7 +327,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           builder: (logUser) {
         return InkWell(
           onTap: () {
-            /*  if (loginController.userLoggedIn != '') {
+            loginController.addOpenSecretkey();
+            print('llave secreta = ${loginController.getOpenSecretkey()}');
+            if (loginController.userLoggedIn != '' &&
+                loginController.getOpenSecretkey() == 5) {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -418,6 +422,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                     Color(0xFF19CF9E)),
                                             overlayBlur: 3,
                                           );
+                                          loginController.setOpenSecretkey(
+                                              0); //vuelve a tomar el valor inicial (0)
                                           Navigator.pop(context);
                                         },
                                         child: Row(
@@ -451,6 +457,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                       onPressed: () async {
                                         LocalStorage.prefs.setBool(
                                             'EntryFootprintOpen', false);
+                                        loginController.setOpenSecretkey(
+                                            0); //vuelve a tomar el valor inicial (0)
                                         // Cerrar el primer modal
                                         Navigator.pop(context);
                                       },
@@ -481,7 +489,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   });
                 },
               );
-            }*/
+              loginController.setOpenSecretkey(0);
+            }
           },
           child: Row(
             children: [

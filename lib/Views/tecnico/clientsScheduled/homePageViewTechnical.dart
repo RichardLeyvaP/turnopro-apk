@@ -111,82 +111,98 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                   itemCount:
                                                       clientsScheduledController
                                                           .clientsTechnicalLength,
-                                                  itemBuilder: (context,
-                                                          index) =>
-                                                      //AQUI CONTROLO DESDE LA **(API)** SI ATTEENDED=3 ES QUE FUE RECHAZADO Y NO LO MUESTRO
-                                                      //IGUAL SI ES ATTEENDED=2 ES QUE YA FUE ATENDIDO Y TAMPOCO LO MUESTRO
-                                                      Padding(
-                                                    padding:
-                                                        EdgeInsets.fromLTRB(
-                                                            (MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                0.013),
-                                                            (MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                0.006),
-                                                            (MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                0.013),
-                                                            (MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                0.006)),
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            width: 2,
-                                                            color: clientsScheduledController
-                                                                        .clientsScheduledListTechnical[
-                                                                            index]
-                                                                        .from_home ==
-                                                                    1
-                                                                ? const Color(
-                                                                    0xFFFDAE2A)
-                                                                : clientsScheduledController
-                                                                            .clientsScheduledListTechnical[
-                                                                                index]
-                                                                            .select_professional ==
-                                                                        1
-                                                                    ? const Color(
-                                                                        0xFF19CF9E)
-                                                                    : const Color(
-                                                                        0xFF4470F3)),
-                                                        color: Colors.white,
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: Colors.grey
-                                                                .withOpacity(
-                                                                    0.7),
-                                                            spreadRadius: 1,
-                                                            blurRadius: 5,
-                                                            offset: const Offset(
-                                                                -5,
-                                                                5), // Ajusta los valores para personalizar la sombra
-                                                          ),
-                                                        ],
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                .all(
-                                                          Radius.circular(12),
-                                                        ),
-                                                      ),
-                                                      child: ListTile(
-                                                        shape:
-                                                            const RoundedRectangleBorder(
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    String tipo = '';
+                                                    if (clientsScheduledController
+                                                            .clientsScheduledListTechnical[
+                                                                index]
+                                                            .from_home ==
+                                                        1) {
+                                                      tipo = 'Reser';
+                                                    } else if (clientsScheduledController
+                                                            .clientsScheduledListTechnical[
+                                                                index]
+                                                            .select_professional ==
+                                                        1) {
+                                                      tipo = 'Selec';
+                                                    } else {
+                                                      tipo = 'Aleat';
+                                                    }
+                                                    return Padding(
+                                                      padding: EdgeInsets.fromLTRB(
+                                                          (MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.013),
+                                                          (MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.006),
+                                                          (MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.013),
+                                                          (MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.006)),
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              width: 2,
+                                                              color: clientsScheduledController
+                                                                          .clientsScheduledListTechnical[
+                                                                              index]
+                                                                          .from_home ==
+                                                                      1
+                                                                  ? const Color(
+                                                                      0xFFFDAE2A)
+                                                                  : clientsScheduledController
+                                                                              .clientsScheduledListTechnical[
+                                                                                  index]
+                                                                              .select_professional ==
+                                                                          1
+                                                                      ? const Color(
+                                                                          0xFF19CF9E)
+                                                                      : const Color(
+                                                                          0xFF4470F3)),
+                                                          color: Colors.white,
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                              color: Colors.grey
+                                                                  .withOpacity(
+                                                                      0.7),
+                                                              spreadRadius: 1,
+                                                              blurRadius: 5,
+                                                              offset: const Offset(
+                                                                  -5,
+                                                                  5), // Ajusta los valores para personalizar la sombra
+                                                            ),
+                                                          ],
                                                           borderRadius:
-                                                              BorderRadius.all(
+                                                              const BorderRadius
+                                                                  .all(
                                                             Radius.circular(12),
                                                           ),
                                                         ),
-                                                        onTap: () async {
-                                                          /*
+                                                        child: ListTile(
+                                                          shape:
+                                                              const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(
+                                                              Radius.circular(
+                                                                  12),
+                                                            ),
+                                                          ),
+                                                          onTap: () async {
+                                                            /*
                                                           // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
                                                           clientsScheduledController
                                                               .showingServiceClientTechnical(
@@ -223,7 +239,7 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                           index]
                                                                       .client_name)
                                                                   .toString());
-
+                                                          
                                                           clientsScheduledController
                                                               .searchForCustomerServices(
                                                                   clientsScheduledController
@@ -254,161 +270,157 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                                             index]
                                                                         .professional_id!);
                                                           });
-
+                                                          
                                                           */
-                                                        },
-                                                        title: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .end,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    Icon(
-                                                                      MdiIcons
-                                                                          .clockPlus,
-                                                                      color: const Color
-                                                                              .fromARGB(
-                                                                          255,
-                                                                          71,
-                                                                          143,
-                                                                          43),
-                                                                    ),
-                                                                    Text(
-                                                                      '  ${clientsScheduledController.clientsScheduledListTechnical[index].start_time}'
-                                                                      ' - '
-                                                                      ' ${clientsScheduledController.clientsScheduledListTechnical[index].final_hour}',
-                                                                      // '   08:10 - 09:10',
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        height:
-                                                                            1.0,
-                                                                        fontSize:
-                                                                            12,
-                                                                        color: Color.fromARGB(
-                                                                            180,
-                                                                            0,
-                                                                            0,
-                                                                            0),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                Text(
-                                                                  clientsScheduledController
-                                                                      .clientsScheduledListTechnical[
-                                                                          index]
-                                                                      .client_name!,
-                                                                  //AQUI EL NOMBRE DEL CLIENTE
-                                                                  style: const TextStyle(
-                                                                      fontSize:
-                                                                          15,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600),
-                                                                ),
-                                                                Text(
-                                                                  clientsScheduledController
-                                                                      .clientsScheduledListTechnical[
-                                                                          index]
-                                                                      .professional_name!,
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            148,
-                                                                            0,
-                                                                            0,
-                                                                            0),
-                                                                    height: 1.0,
-                                                                  ),
-                                                                ),
-                                                                const SizedBox(
-                                                                  height: 12,
-                                                                )
-                                                              ],
-                                                            ), //SI ESTA VARIABLE ES IGUAL A 1 ES QUE SE ESTA ATENDIENDO
-                                                            clientsScheduledController
-                                                                        .clientsScheduledListTechnical[
-                                                                            index]
-                                                                        .attended ==
-                                                                    5
-                                                                ? const Column(
+                                                          },
+                                                          title: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .end,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
                                                                     children: [
-                                                                      Image(
-                                                                        image:
-                                                                            AssetImage(
-                                                                          'assets/images/icons/lavado.png',
-                                                                        ),
-                                                                        width:
-                                                                            50,
-                                                                        height:
-                                                                            50,
+                                                                      Icon(
+                                                                        MdiIcons
+                                                                            .clockPlus,
+                                                                        color: const Color.fromARGB(
+                                                                            255,
+                                                                            71,
+                                                                            143,
+                                                                            43),
                                                                       ),
                                                                       Text(
-                                                                        'Atendiendose',
+                                                                        '  ${clientsScheduledController.clientsScheduledListTechnical[index].start_time}'
+                                                                        ' - '
+                                                                        ' ${clientsScheduledController.clientsScheduledListTechnical[index].final_hour}  $tipo',
+                                                                        // '   08:10 - 09:10',
                                                                         style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Color(0xFFFDAE2A),
+                                                                            const TextStyle(
+                                                                          height:
+                                                                              1.0,
+                                                                          fontSize:
+                                                                              12,
+                                                                          color: Color.fromARGB(
+                                                                              180,
+                                                                              0,
+                                                                              0,
+                                                                              0),
                                                                         ),
                                                                       ),
                                                                     ],
+                                                                  ),
+                                                                  Text(
+                                                                    clientsScheduledController
+                                                                        .clientsScheduledListTechnical[
+                                                                            index]
+                                                                        .client_name!,
+                                                                    //AQUI EL NOMBRE DEL CLIENTE
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            15,
+                                                                        fontWeight:
+                                                                            FontWeight.w600),
+                                                                  ),
+                                                                  Text(
+                                                                    clientsScheduledController
+                                                                        .clientsScheduledListTechnical[
+                                                                            index]
+                                                                        .professional_name!,
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      fontSize:
+                                                                          14,
+                                                                      color: Color
+                                                                          .fromARGB(
+                                                                              148,
+                                                                              0,
+                                                                              0,
+                                                                              0),
+                                                                      height:
+                                                                          1.0,
+                                                                    ),
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 12,
                                                                   )
-                                                                : clientsScheduledController
-                                                                            .clientsScheduledListTechnical[index]
-                                                                            .attended ==
-                                                                        33
-                                                                    ? const Column(
-                                                                        children: [
-                                                                          Image(
-                                                                            image:
-                                                                                AssetImage(
-                                                                              'assets/images/icons/lavado.png',
-                                                                            ),
-                                                                            width:
-                                                                                50,
-                                                                            height:
-                                                                                50,
+                                                                ],
+                                                              ), //SI ESTA VARIABLE ES IGUAL A 1 ES QUE SE ESTA ATENDIENDO
+                                                              clientsScheduledController
+                                                                          .clientsScheduledListTechnical[
+                                                                              index]
+                                                                          .attended ==
+                                                                      5
+                                                                  ? const Column(
+                                                                      children: [
+                                                                        Image(
+                                                                          image:
+                                                                              AssetImage(
+                                                                            'assets/images/icons/lavado.png',
                                                                           ),
-                                                                          Text(
-                                                                            'Solicitud rechazo',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              color: Color(0xFFFF6750),
-                                                                            ),
+                                                                          width:
+                                                                              50,
+                                                                          height:
+                                                                              50,
+                                                                        ),
+                                                                        Text(
+                                                                          'Atendiendose',
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Color(0xFFFDAE2A),
                                                                           ),
-                                                                        ],
-                                                                      )
-                                                                    : Container()
-                                                          ],
+                                                                        ),
+                                                                      ],
+                                                                    )
+                                                                  : clientsScheduledController
+                                                                              .clientsScheduledListTechnical[index]
+                                                                              .attended ==
+                                                                          33
+                                                                      ? const Column(
+                                                                          children: [
+                                                                            Image(
+                                                                              image: AssetImage(
+                                                                                'assets/images/icons/lavado.png',
+                                                                              ),
+                                                                              width: 50,
+                                                                              height: 50,
+                                                                            ),
+                                                                            Text(
+                                                                              'Solicitud rechazo',
+                                                                              style: TextStyle(
+                                                                                color: Color(0xFFFF6750),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        )
+                                                                      : Container()
+                                                            ],
+                                                          ),
+                                                          //subtitle: Text(clientsScheduledController.users[index].username.toString()),
+                                                          selected: false,
+                                                          //selectedColor: Colors.amber,
+                                                          //selectedTileColor: Colors.blue,
                                                         ),
-                                                        //subtitle: Text(clientsScheduledController.users[index].username.toString()),
-                                                        selected: false,
-                                                        //selectedColor: Colors.amber,
-                                                        //selectedTileColor: Colors.blue,
                                                       ),
-                                                    ),
-                                                  ),
+                                                    );
+                                                  },
                                                 )
                                               : const Row(
                                                   mainAxisAlignment:

@@ -330,6 +330,16 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
 
   FittedBox cardClientTails(ClientsCoordinatorController controllerclient,
       BuildContext context, index) {
+    String tipo = '';
+    if (controllerclient.clientsScheduledListBranch[index].from_home == 1) {
+      tipo = 'Reser';
+    } else if (controllerclient
+            .clientsScheduledListBranch[index].select_professional ==
+        1) {
+      tipo = 'Selec';
+    } else {
+      tipo = 'Aleat';
+    }
     return FittedBox(
         fit: BoxFit.contain,
         child: Padding(
@@ -428,7 +438,7 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                         //
                       ),
                       Container(
-                        height: (MediaQuery.of(context).size.height * 0.115),
+                        height: (MediaQuery.of(context).size.height * 0.105),
                         width: (MediaQuery.of(context).size.width * 0.8),
                         decoration: const BoxDecoration(
                           color: Colors.white,
@@ -440,6 +450,29 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                           children: [
                             Column(
                               children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 4),
+                                  child: Row(
+                                    //HORARIO
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Icon(
+                                        MdiIcons.clockOutline,
+                                        size: 18,
+                                      ),
+                                      Text(
+                                        '${controllerclient.clientsScheduledListBranch[index].start_time} - ${controllerclient.clientsScheduledListBranch[index].final_hour}  $tipo',
+                                        softWrap: true,
+                                        style: const TextStyle(
+                                          height: 1.0,
+                                          fontSize: 12,
+                                          color: Color.fromARGB(180, 0, 0, 0),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                                 Row(
                                   //CLIENTE
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -456,27 +489,8 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                                           .client_name!,
                                       softWrap: true,
                                       style: const TextStyle(
-                                          height: 1.0,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  //HORARIO
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Icon(
-                                      MdiIcons.clockOutline,
-                                    ),
-                                    Text(
-                                      '${controllerclient.clientsScheduledListBranch[index].start_time} - ${controllerclient.clientsScheduledListBranch[index].final_hour}',
-                                      softWrap: true,
-                                      style: const TextStyle(
-                                          height: 1.0,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16),
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600),
                                     ),
                                   ],
                                 ),
@@ -494,9 +508,8 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                                           .professional_name!,
                                       softWrap: true,
                                       style: const TextStyle(
-                                          height: 1.0,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16),
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600),
                                     ),
                                   ],
                                 ),
