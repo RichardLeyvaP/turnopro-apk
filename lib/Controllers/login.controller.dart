@@ -974,6 +974,24 @@ class LoginController extends GetxController {
             emailUserLoggedIn != '') {
           //Define el tipo de saludo
           getGreeting();
+          //todo aqui guardo cada vez que loguea los datos para la proxima vez que no tenga que loguearse
+          // Obtener la fecha actual
+          DateTime now = DateTime.now();
+
+          // Formatear la fecha para que solo incluya año, mes y día
+          String nowString = DateFormat('yyyy-MM-dd').format(now);
+
+          // Guardar la fecha en SharedPreferences
+          LocalStorage.prefs.setString('EntryFootprintData', nowString);
+          //mandar mensaje que td esta bien
+          LocalStorage.prefs
+              .setString('EntryFootprintUser', controllerLogin.userLoggedIn);
+          LocalStorage.prefs
+              .setString('EntryFootprintPass', controllerLogin.pass);
+          LocalStorage.prefs.setInt(
+              'EntryFootprintBranch', controllerLogin.branchIdLoggedIn!);
+          LocalStorage.prefs.setBool('EntryFootprintOpen', true);
+          //todo aqui guardo cada vez que loguea los datos para la proxima vez que no tenga que loguearse
 
           int idPuesto = await getIdPuesto(idProfessionalLoggedIn!);
           if (idPuesto != -99 && idPuesto != -999) {
@@ -1071,7 +1089,10 @@ class LoginController extends GetxController {
       } //cierre if (result != null) {
       else if (result == null) {
         showConnectionError();
-        Get.back();
+        // Get.back();
+        Get.offAllNamed(
+          '/LoginFormPage',
+        );
       } else {
         incorrectFields = true;
         await loadingValue(false);

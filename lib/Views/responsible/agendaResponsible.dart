@@ -1,4 +1,5 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 import 'package:turnopro_apk/Controllers/statistics.controller.dart';
 import 'package:turnopro_apk/Views/common/topPage.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/ImageDetailScreen.dart';
 import 'package:turnopro_apk/env.dart';
 import 'package:intl/intl.dart';
 
@@ -369,69 +371,52 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                       Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: CircleAvatar(
+                          //'${Env.apiEndpoint}/images/${controllerclient.clientsScheduledListBranch[index].client_image}'
                           radius: 25,
                           backgroundColor: Colors.white, //fondo de la imagen
-                          child: ClipOval(
-                            child: Image.network(
-                              '${Env.apiEndpoint}/images/${controllerclient.clientsScheduledListBranch[index].client_image}',
-                              fit: BoxFit
-                                  .cover, // Ajusta la imagen para cubrir completamente el área
-                              width:
-                                  50, // Ancho deseado de la imagen dentro del círculo
-                              height: 50,
-                              loadingBuilder: (BuildContext context,
-                                  Widget child,
-                                  ImageChunkEvent? loadingProgress) {
-                                if (loadingProgress == null) {
-                                  // Si la imagen se carga correctamente, mostramos la imagen
-                                  return child;
-                                } else {
-                                  // Si la imagen aún se está cargando, mostramos un indicador de progreso
-                                  return const CircularProgressIndicator(
-                                    color: Color(0xFFFDAE2A),
-                                  );
-                                }
-                              },
-                              errorBuilder: (BuildContext context, Object error,
-                                  StackTrace? stackTrace) {
-                                // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
-                                if (kDebugMode) {
-                                  return CircleAvatar(
-                                    radius: 40,
-                                    backgroundColor: Colors
-                                        .transparent, // Fondo transparente para que el borde sea visible
-                                    child: ClipOval(
-                                      child: Image.asset(
-                                        'assets/images/default_profile.jpg',
-                                        fit: BoxFit
-                                            .cover, // Ajusta la imagen para cubrir completamente el área
-                                        width:
-                                            50, // Ancho deseado de la imagen dentro del círculo
-                                        height:
-                                            50, // Alto deseado de la imagen dentro del círculo
+                          child: GestureDetector(
+                            onDoubleTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ImageDetailScreen(
+                                      imageUrl:
+                                          '${Env.apiEndpoint}/images/${controllerclient.clientsScheduledListBranch[index].client_image}'),
+                                ),
+                              );
+                            },
+                            child: ClipOval(
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    '${Env.apiEndpoint}/images/${controllerclient.clientsScheduledListBranch[index].client_image}',
+                                placeholder: (context, url) => Container(
+                                  width: 50,
+                                  height: 50,
+                                  child: const Center(
+                                    child: SizedBox(
+                                      width: 50,
+                                      height: 50,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth:
+                                            2, // Personaliza el ancho del indicador como desees
+                                        valueColor: AlwaysStoppedAnimation<
+                                                Color>(
+                                            Color.fromARGB(110, 253, 176, 42)),
                                       ),
                                     ),
-                                  );
-                                } else {
-                                  // Si no estamos en modo de depuración, mostramos un texto de error
-                                  return CircleAvatar(
-                                    radius: 40,
-                                    backgroundColor: Colors
-                                        .transparent, // Fondo transparente para que el borde sea visible
-                                    child: ClipOval(
-                                      child: Image.asset(
-                                        'assets/images/default_profile.jpg',
-                                        fit: BoxFit
-                                            .cover, // Ajusta la imagen para cubrir completamente el área
-                                        width:
-                                            50, // Ancho deseado de la imagen dentro del círculo
-                                        height:
-                                            50, // Alto deseado de la imagen dentro del círculo
-                                      ),
-                                    ),
-                                  );
-                                }
-                              },
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    Image.asset(
+                                  'assets/images/default_profile.jpg',
+                                  cacheWidth: 50,
+                                  cacheHeight: 50,
+                                  fit: BoxFit.cover,
+                                ),
+                                fit: BoxFit.cover,
+                                width: 50,
+                                height: 50,
+                              ),
                             ),
                           ),
                         ),

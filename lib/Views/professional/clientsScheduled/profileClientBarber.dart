@@ -8,6 +8,7 @@ import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Utility/textTruncate.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/ImageDetailScreen.dart';
 import 'package:turnopro_apk/env.dart';
 
 import '../../../Controllers/clientsScheduled.controller.dart';
@@ -117,41 +118,55 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                                       radius: 45,
                                       child:
                                           //
-                                          ClipOval(
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                              '${Env.apiEndpoint}/images/$urlImageClient',
-                                          placeholder: (context, url) =>
-                                              Container(
-                                            width: 30,
-                                            height: 30,
-                                            child: const Center(
-                                              child: SizedBox(
-                                                width: 30,
-                                                height: 30,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  strokeWidth:
-                                                      2, // Personaliza el ancho del indicador como desees
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                              Color>(
-                                                          Color.fromARGB(110,
-                                                              253, 176, 42)),
+                                          GestureDetector(
+                                        onDoubleTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ImageDetailScreen(
+                                                      imageUrl:
+                                                          '${Env.apiEndpoint}/images/$urlImageClient'),
+                                            ),
+                                          );
+                                        },
+                                        child: ClipOval(
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                                '${Env.apiEndpoint}/images/$urlImageClient',
+                                            placeholder: (context, url) =>
+                                                Container(
+                                              width: 30,
+                                              height: 30,
+                                              child: const Center(
+                                                child: SizedBox(
+                                                  width: 30,
+                                                  height: 30,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    strokeWidth:
+                                                        2, // Personaliza el ancho del indicador como desees
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                                Color>(
+                                                            Color.fromARGB(110,
+                                                                253, 176, 42)),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          errorWidget: (context, url, error) =>
-                                              Image.asset(
-                                            'assets/images/default_profile.jpg',
-                                            cacheWidth: 30,
-                                            cacheHeight: 30,
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Image.asset(
+                                              'assets/images/default_profile.jpg',
+                                              cacheWidth: 30,
+                                              cacheHeight: 30,
+                                              fit: BoxFit.cover,
+                                            ),
                                             fit: BoxFit.cover,
+                                            width: 50,
+                                            height: 50,
                                           ),
-                                          fit: BoxFit.cover,
-                                          width: 50,
-                                          height: 50,
                                         ),
                                       ),
                                     ),
@@ -308,63 +323,68 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                                     .imageUrlBarber1, // 'CARGAR LA IMAGEN DEL BARBERO',
                               ),
                               Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Container(
-                                  decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(12))),
-                                  clipBehavior: Clip
-                                      .antiAlias, // Recorta el contenido del contenedor para que se ajuste al borde redondeado
-                                  child: Image.network(
-                                    '${Env.apiEndpoint}/images/${clientSchedControl.imageLookBarber1}',
-                                    fit: BoxFit
-                                        .cover, // Puedes ajustar el modo de ajuste según sea necesario
-                                    width: 360,
-
-                                    height: (loginControl.androidInfoHeight! *
-                                        0.260), //todo cambiadoNuevoValores
-                                    loadingBuilder: (BuildContext context,
-                                        Widget child,
-                                        ImageChunkEvent? loadingProgress) {
-                                      if (loadingProgress == null) {
-                                        // Si la imagen se carga correctamente, mostramos la imagen
-                                        return child;
-                                      } else {
-                                        // Si la imagen aún se está cargando, mostramos un indicador de progreso
-                                        return const CircularProgressIndicator(
-                                          color: Color(0xFFFDAE2A),
-                                        );
-                                      }
-                                    },
-                                    errorBuilder: (BuildContext context,
-                                        Object error, StackTrace? stackTrace) {
-                                      // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
-                                      if (kDebugMode) {
-                                        return Image.asset(
-                                          'assets/images/default_profile.jpg',
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(12)),
+                                    ),
+                                    clipBehavior: Clip
+                                        .antiAlias, // Recorta el contenido del contenedor para que se ajuste al borde redondeado
+                                    child: InteractiveViewer(
+                                      minScale: 0.1,
+                                      maxScale: 7.0,
+                                      child: GestureDetector(
+                                        onDoubleTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ImageDetailScreen(
+                                                      imageUrl:
+                                                          '${Env.apiEndpoint}/images/$urlImageClient'),
+                                            ),
+                                          );
+                                        },
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                              '${Env.apiEndpoint}/images/$urlImageClient',
                                           fit: BoxFit
-                                              .cover, // Ajusta la imagen para cubrir completamente el área
-                                          width:
-                                              50, // Ancho deseado de la imagen dentro del círculo
-                                          height:
-                                              50, // Alto deseado de la imagen dentro del círculo
-                                        );
-                                      } else {
-                                        // Si no estamos en modo de depuración, mostramos un texto de error
-                                        return Image.asset(
-                                          'assets/images/default_profile.jpg',
-                                          fit: BoxFit
-                                              .cover, // Ajusta la imagen para cubrir completamente el área
-                                          width:
-                                              50, // Ancho deseado de la imagen dentro del círculo
-                                          height:
-                                              50, // Alto deseado de la imagen dentro del círculo
-                                        );
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
+                                              .fill, // Puedes ajustar el modo de ajuste según sea necesario
+                                          width: 360,
+                                          height: loginControl
+                                                  .androidInfoHeight! *
+                                              0.260, // todo cambiadoNuevoValores
+                                          placeholder: (context, url) =>
+                                              const Center(
+                                            child: CircularProgressIndicator(
+                                              color: Color(0xFFFDAE2A),
+                                            ),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              kDebugMode
+                                                  ? Image.asset(
+                                                      'assets/images/default_profile.jpg',
+                                                      fit: BoxFit
+                                                          .cover, // Ajusta la imagen para cubrir completamente el área
+                                                      width:
+                                                          50, // Ancho deseado de la imagen dentro del círculo
+                                                      height:
+                                                          50, // Alto deseado de la imagen dentro del círculo
+                                                    )
+                                                  : Image.asset(
+                                                      'assets/images/default_profile.jpg',
+                                                      fit: BoxFit
+                                                          .cover, // Ajusta la imagen para cubrir completamente el área
+                                                      width:
+                                                          50, // Ancho deseado de la imagen dentro del círculo
+                                                      height:
+                                                          50, // Alto deseado de la imagen dentro del círculo
+                                                    ),
+                                        ),
+                                      ),
+                                    ),
+                                  )),
                               //
                               //
                               //

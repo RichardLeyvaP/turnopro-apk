@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -9,6 +10,7 @@ import 'package:turnopro_apk/Views/products-services/products/productsBody.dart'
 import 'package:turnopro_apk/Views/products-services/services/servicesBodyPage.dart';
 //import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Views/professional/clientsScheduled/ImageDetailScreen.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/env.dart';
 //
@@ -127,76 +129,56 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                     //Get.back();
                                   }, // Evento onPress
                                 ),
-                                CircleAvatar(
-                                  radius: 25,
-                                  backgroundColor:
-                                      Colors.white, //fondo de la imagen
-                                  child: ClipOval(
-                                    child: Image.network(
-                                      '${Env.apiEndpoint}/images/${clientsController.urlImageTemporary}',
-                                      fit: BoxFit
-                                          .cover, // Ajusta la imagen para cubrir completamente el área
-                                      width:
-                                          50, // Ancho deseado de la imagen dentro del círculo
-                                      height: 50,
-                                      loadingBuilder: (BuildContext context,
-                                          Widget child,
-                                          ImageChunkEvent? loadingProgress) {
-                                        if (loadingProgress == null) {
-                                          // Si la imagen se carga correctamente, mostramos la imagen
-                                          return child;
-                                        } else {
-                                          // Si la imagen aún se está cargando, mostramos un indicador de progreso
-                                          return const CircularProgressIndicator(
-                                            color: Color(0xFFFDAE2A),
-                                          );
-                                        }
-                                      },
-                                      errorBuilder: (BuildContext context,
-                                          Object error,
-                                          StackTrace? stackTrace) {
-                                        // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
-                                        if (kDebugMode) {
-                                          return CircleAvatar(
-                                            radius: 25,
-                                            backgroundColor: Colors
-                                                .transparent, // Fondo transparente para que el borde sea visible
-                                            child: ClipOval(
-                                              child: Image.asset(
-                                                'assets/images/default_profile.jpg',
-                                                fit: BoxFit
-                                                    .cover, // Ajusta la imagen para cubrir completamente el área
-                                                width:
-                                                    50, // Ancho deseado de la imagen dentro del círculo
-                                                height:
-                                                    50, // Alto deseado de la imagen dentro del círculo
-                                              ),
+                                GestureDetector(
+                                  onDoubleTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ImageDetailScreen(
+                                            imageUrl:
+                                                '${Env.apiEndpoint}/images/${clientsController.urlImageTemporary}'),
+                                      ),
+                                    );
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 25,
+                                    backgroundColor:
+                                        Colors.white, // Fondo de la imagen
+                                    child: ClipOval(
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            '${Env.apiEndpoint}/images/${clientsController.urlImageTemporary}',
+                                        fit: BoxFit
+                                            .cover, // Ajusta la imagen para cubrir completamente el área
+                                        width:
+                                            50, // Ancho deseado de la imagen dentro del círculo
+                                        height:
+                                            50, // Alto deseado de la imagen dentro del círculo
+                                        placeholder: (context, url) =>
+                                            const CircularProgressIndicator(
+                                          color: Color(0xFFFDAE2A),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            CircleAvatar(
+                                          radius: 25,
+                                          backgroundColor: Colors
+                                              .transparent, // Fondo transparente para que el borde sea visible
+                                          child: ClipOval(
+                                            child: Image.asset(
+                                              'assets/images/default_profile.jpg',
+                                              fit: BoxFit
+                                                  .cover, // Ajusta la imagen para cubrir completamente el área
+                                              width:
+                                                  50, // Ancho deseado de la imagen dentro del círculo
+                                              height:
+                                                  50, // Alto deseado de la imagen dentro del círculo
                                             ),
-                                          );
-                                        } else {
-                                          // Si no estamos en modo de depuración, mostramos un texto de error
-                                          return CircleAvatar(
-                                            radius: 25,
-                                            backgroundColor: Colors
-                                                .transparent, // Fondo transparente para que el borde sea visible
-                                            child: ClipOval(
-                                              child: Image.asset(
-                                                'assets/images/default_profile.jpg',
-                                                fit: BoxFit
-                                                    .cover, // Ajusta la imagen para cubrir completamente el área
-                                                width:
-                                                    50, // Ancho deseado de la imagen dentro del círculo
-                                                height:
-                                                    50, // Alto deseado de la imagen dentro del círculo
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                      },
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-
+                                )
                                 //
                               ],
                             ),
@@ -344,12 +326,25 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                               onPressed: () async {
                                 Get.dialog(
                                   const Center(
-                                    child: CircularProgressIndicator(
-                                      color: Color(0xFFFDAE2A),
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          CircularProgressIndicator(
+                                            color: Color(0xFFFDAE2A),
+                                          ),
+                                          SizedBox(height: 16),
+                                          Text('Enviando al técnico...',
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   barrierDismissible: false,
-                                );
+                                ); //Get.back();
+
                                 //mando a notificar al tecnico
                                 notiController.storeNotification(
                                     'Cliente llegando',
