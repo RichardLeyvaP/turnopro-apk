@@ -2905,9 +2905,9 @@ class _HomePageBodyState extends State<HomePageBody>
                           Center(
                             child: Container(
                               width:
-                                  (clientsScheduledController.sizeClock) - 40,
+                                  (clientsScheduledController.sizeClock) - 50,
                               height:
-                                  (clientsScheduledController.sizeClock) - 40,
+                                  (clientsScheduledController.sizeClock) - 50,
                               decoration: BoxDecoration(
                                   color: colorInicialCirculo,
                                   shape: BoxShape.circle),

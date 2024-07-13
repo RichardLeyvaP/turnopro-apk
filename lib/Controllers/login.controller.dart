@@ -975,22 +975,31 @@ class LoginController extends GetxController {
           //Define el tipo de saludo
           getGreeting();
           //todo aqui guardo cada vez que loguea los datos para la proxima vez que no tenga que loguearse
-          // Obtener la fecha actual
+
+// Obtener la fecha actual
           DateTime now = DateTime.now();
 
           // Formatear la fecha para que solo incluya año, mes y día
           String nowString = DateFormat('yyyy-MM-dd').format(now);
 
-          // Guardar la fecha en SharedPreferences
-          LocalStorage.prefs.setString('EntryFootprintData', nowString);
-          //mandar mensaje que td esta bien
-          LocalStorage.prefs
-              .setString('EntryFootprintUser', controllerLogin.userLoggedIn);
-          LocalStorage.prefs
-              .setString('EntryFootprintPass', controllerLogin.pass);
-          LocalStorage.prefs.setInt(
-              'EntryFootprintBranch', controllerLogin.branchIdLoggedIn!);
-          LocalStorage.prefs.setBool('EntryFootprintOpen', true);
+          if (controllerLogin.userLoggedIn != '' &&
+              controllerLogin.pass != '' &&
+              controllerLogin.branchIdLoggedIn != null) {
+            print('asignando valores de memoria:SI');
+            // Guardar la fecha en SharedPreferences
+            LocalStorage.prefs.setString('EntryFootprintData', nowString);
+            //mandar mensaje que td esta bien
+            LocalStorage.prefs
+                .setString('EntryFootprintUser', controllerLogin.userLoggedIn);
+            LocalStorage.prefs
+                .setString('EntryFootprintPass', controllerLogin.pass);
+            LocalStorage.prefs.setInt(
+                'EntryFootprintBranch', controllerLogin.branchIdLoggedIn!);
+            LocalStorage.prefs.setBool('EntryFootprintOpen', true);
+          } else {
+            print('asignando valores de memoria:NO-1');
+          }
+
           //todo aqui guardo cada vez que loguea los datos para la proxima vez que no tenga que loguearse
 
           int idPuesto = await getIdPuesto(idProfessionalLoggedIn!);
