@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 import 'package:get/get.dart';
-import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:turnopro_apk/Models/ClockModel.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/professional_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
@@ -12,8 +12,74 @@ import 'package:intl/intl.dart';
 import 'package:dio/dio.dart' as dio;
 
 class ClientsScheduledRepository extends GetConnect {
-  final LoginController controllerLogin = Get.find<LoginController>();
-  Future getClientsTechnicalList(idBranch, token) async {
+  //final LoginController controllerLogin = Get.find<LoginController>();
+
+  Future repoShowClock(int differenceInMinutes, professionalId, token) async {
+    int timeC1 = -999, timeC2 = -999, timeC3 = -999, timeC4 = -999;
+    try {
+      var url =
+          '${Env.apiEndpoint}/show-clocks?professional_id=$professionalId';
+
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15));
+      print(url);
+      print(response.statusCode);
+      print('RETORNE-- repoShowClock-.url:${response.statusCode}');
+      print(
+          'RETORNE-- repoShowClock-response.statusCode:${response.statusCode}');
+      if ((response.statusCode == 200)) {
+        print('RETORNE-- repoShowClock-repoShowClock:${response.body}');
+        // Decodifica el JSON
+        //Map<String, dynamic> jsonResponse = json.decode(response.body);
+
+        // Mapea la respuesta JSON a una instancia de TailsResponse
+        TailsResponse tailsResponse = TailsResponse.fromMap(response.body);
+        print('RETORNE-- repoShowClock-repoShowClock2:${tailsResponse}');
+        // Por ejemplo, puedes recorrer la lista de ClockModel
+        // Verifica si la lista "tails" está vacía
+        if (tailsResponse.tails.isEmpty) {
+          print('RETORNE---ESTA VACIA');
+        } else {
+          tailsResponse.tails.forEach((clock) {
+            print(
+                'RETORNE---Clock: ${clock.clock}, TimeClock: ${clock.timeClock}, Detached: ${clock.detached}');
+            if (clock.clock == 1) {
+              int calculatedTime = clock.timeClock - differenceInMinutes;
+              timeC1 = calculatedTime < 0 ? 0 : calculatedTime;
+            } else if (clock.clock == 2) {
+              int calculatedTime = clock.timeClock - differenceInMinutes;
+              timeC2 = calculatedTime < 0 ? 0 : calculatedTime;
+            } else if (clock.clock == 3) {
+              int calculatedTime = clock.timeClock - differenceInMinutes;
+              timeC3 = calculatedTime < 0 ? 0 : calculatedTime;
+            } else if (clock.clock == 4) {
+              int calculatedTime = clock.timeClock - differenceInMinutes;
+              timeC4 = calculatedTime < 0 ? 0 : calculatedTime;
+            }
+          });
+        }
+
+        return {
+          'timeC1': timeC1,
+          'timeC2': timeC2,
+          'timeC3': timeC3,
+          'timeC4': timeC4,
+        };
+      } else {
+        print('RETORNE-- repoShowClock-FALSE A LA CREACION DEL Qr');
+        return false;
+      }
+    } catch (e) {
+      print(
+          'RETORNE-- repoShowClock-ERROR DE SERVIDOR A LA CREACION DEL Qr:$e');
+      return -999;
+    }
+  }
+
+  Future getClientsTechnicalList(idBranch, idProf, token) async {
     print('estoy en repositorio en - 1');
     try {
       List<ClientsScheduledModel> clientList = [];
@@ -21,7 +87,7 @@ class ClientsScheduledRepository extends GetConnect {
       bool hasNextClient = false;
       int quantityClientAttended = 0;
       int quantityClientRechaz = 0;
-      int idTecn = controllerLogin.idProfessionalLoggedIn!;
+      int idTecn = idProf;
 
       // var url = '${Env.apiEndpoint}/cola_branch_capilar?branch_id=$idBranch';
       var url =
@@ -89,7 +155,8 @@ class ClientsScheduledRepository extends GetConnect {
   //
   //
 
-  Future getClientsScheduledListNew(idProfessional, idBranch, token) async {
+  Future getClientsScheduledListNew(
+      idProfessional, idBranch, isLoggingIn, token) async {
     print('estoy en repositorio en - 2');
 
     try {
@@ -149,7 +216,8 @@ class ClientsScheduledRepository extends GetConnect {
           // print(
           //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
           //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
-          if (controllerLogin.isLoggingIn == true) {
+          if (isLoggingIn == true) {
+            //controllerLogin.isLoggingIn
             if (client.detached == 1 && client.attended != 33) {
               //33 es que lo rechazó el tecnico
               //creo nuevo cliente
@@ -230,7 +298,8 @@ class ClientsScheduledRepository extends GetConnect {
 //
   //
 
-  Future getClientsScheduledList(idProfessional, idBranch) async {
+  Future getClientsScheduledList(
+      idProfessional, idBranch, isLoggingIn, token1) async {
     print('estoy en repositorio en - 2');
 
     try {
@@ -241,7 +310,7 @@ class ClientsScheduledRepository extends GetConnect {
       bool hasNextClient = false;
       int quantityClientAttended = 0;
       bool varclientswaiting = false;
-      String token = controllerLogin.tokenUserLoggedIn;
+      String token = token1;
       var url =
           '${Env.apiEndpoint}/cola_branch_professional?professional_id=$idProfessional&branch_id=$idBranch';
       print('a.......... getClientsScheduledList:url:$url');
@@ -284,7 +353,8 @@ class ClientsScheduledRepository extends GetConnect {
           // print(
           //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
           //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
-          if (controllerLogin.isLoggingIn == true) {
+          if (isLoggingIn == true) {
+            //controllerLogin.isLoggingIn
             if (client.detached == 1 &&
                 client.attended != 0 &&
                 client.attended != 2) {

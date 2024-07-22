@@ -1,4 +1,5 @@
 // lib/utils/utils.dart
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:intl/intl.dart';
 
 //Mascara para valores numericos separado por comas
@@ -15,6 +16,22 @@ import 'package:intl/intl.dart';
 //   // Devuelve el número formateado como String
 //   return formatter.format(parsedNumber);
 // }
+Future<void> restartService() async {
+  await stopService();
+  // Espera un momento para asegurarte de que el servicio se detiene completamente
+  await Future.delayed(Duration(seconds: 1));
+  await startService();
+}
+
+Future<void> startService() async {
+  print(
+      'notificacion desde:-:SERVICIO-notificationSimplifies()--******startService()*****');
+  await FlutterBackgroundService().startService();
+}
+
+Future<void> stopService() async {
+  FlutterBackgroundService().invoke("stopService");
+}
 
 String formatNumber(String number) {
   // Elimina cualquier coma existente en el string

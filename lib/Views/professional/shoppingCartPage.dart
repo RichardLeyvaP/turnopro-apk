@@ -341,7 +341,8 @@ class ShoppingCartPage extends StatelessWidget {
                                                                     ShoppingCartController>(
                                                                 builder: (_) {
                                                               return InkWell(
-                                                                onTap: () {
+                                                                onTap:
+                                                                    () async {
                                                                   if (controllerLogin
                                                                           .codigoQrValid() ==
                                                                       true) {
@@ -379,19 +380,49 @@ class ShoppingCartPage extends StatelessWidget {
                                                                         .setServiceSelectCant(
                                                                             1);
 
-                                                                    controllerShoppingCart.requestDelete(
+                                                                    int result = await controllerShoppingCart.requestDelete(
                                                                         controllerShoppingCart
                                                                             .selectserviceCart[index]
                                                                             .id,
                                                                         1);
-                                                                    notiController.storeNotification(
-                                                                        'Solicitud de servicio a eliminar',
+                                                                    //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+                                                                    if (result ==
+                                                                        1) {
+                                                                      // ver que reloj es?
+                                                                      if (clientsController
+                                                                              .modifyTimeSpecific ==
+                                                                          0) {
                                                                         controllerLogin
-                                                                            .branchIdLoggedIn,
+                                                                            .setCallDeleteService1(false);
+                                                                      }
+                                                                      if (clientsController
+                                                                              .modifyTimeSpecific ==
+                                                                          1) {
                                                                         controllerLogin
-                                                                            .idProfessionalLoggedIn,
-                                                                        'EL servicio "${controllerShoppingCart.selectserviceCart[index].nameService}" fue enviado a eliminar',
-                                                                        'Ambos'); //esto es para quele llegue a coordinador y encargado
+                                                                            .setCallDeleteService2(false);
+                                                                      }
+                                                                      if (clientsController
+                                                                              .modifyTimeSpecific ==
+                                                                          2) {
+                                                                        controllerLogin
+                                                                            .setCallDeleteService3(false);
+                                                                      }
+                                                                      if (clientsController
+                                                                              .modifyTimeSpecific ==
+                                                                          3) {
+                                                                        controllerLogin
+                                                                            .setCallDeleteService4(false);
+                                                                      }
+
+                                                                      notiController.storeNotification(
+                                                                          'Solicitud de servicio a eliminar',
+                                                                          controllerLogin
+                                                                              .branchIdLoggedIn,
+                                                                          controllerLogin
+                                                                              .idProfessionalLoggedIn,
+                                                                          'EL servicio "${controllerShoppingCart.selectserviceCart[index].nameService}" fue enviado a eliminar',
+                                                                          'Ambos'); //esto es para quele llegue a coordinador y encargado
+                                                                    }
                                                                     // }
                                                                   } else {
                                                                     Get.snackbar(

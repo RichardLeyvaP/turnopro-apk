@@ -8,9 +8,10 @@ import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/notification_model.dart';
+import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/get_connect/repository/notification.repository.dart';
-import 'package:turnopro_apk/services/localNotification.dart';
+import 'package:turnopro_apk/services/background_service.dart';
 
 import 'login.controller.dart';
 
@@ -87,6 +88,23 @@ class NotificationController extends GetxController {
     //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
     bool result = await repository.storeNotification(tittle, branchId,
         professionalId, description, type, controllerLogin.tokenUserLoggedIn);
+    if (result) {
+      print('CORRECTO inserto una nueva notificacion ');
+    }
+    return result;
+  }
+
+  Future<bool> storeNotificationSERVICE(
+      //todo1
+      tittle,
+      branchId,
+      professionalId,
+      description,
+      type) async {
+    //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
+    bool result = await repository.storeNotificationSERVICE(
+        tittle, branchId, professionalId, description, type);
+    print('notificacion desde :controller-storeNotificationSERVICE ');
     if (result) {
       print('CORRECTO inserto una nueva notificacion ');
     }
@@ -205,8 +223,9 @@ class NotificationController extends GetxController {
     }
   }
 
-  Future<void> professionalBranchNotifQueque(
+  Future<void> professionalBranchNotifQuequeSERV(
       idBranch, idProfe, type, msj, token) async {
+    print('entrando a actualizar la cola en - professionalBranchNotifQueque');
     print(
         'Error al obtener la lista de notificaciones:este:-CONTROLADO AQUI->entrando aqui al metodo->_retryAttempted:$_retryAttempted');
     bool noUpdate = false;
@@ -227,7 +246,7 @@ class NotificationController extends GetxController {
         //todo **************************************************************
         if (resultList.containsKey('Erroor') && resultList['Erroor'] == -99) {
           //llamar aqui el metodo del login que muestra error de conexion
-          loginController.showConnectionError();
+          controllerLogin.showConnectionError();
         } else if (resultList.containsKey('Erroor') &&
             resultList['Erroor'] == true) {
           print(
@@ -277,7 +296,7 @@ class NotificationController extends GetxController {
               //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
               //DESCONTAR EL TIEMPO AL RELOJ
               //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
-              siHayEliminarService = true;
+              //  siHayEliminarService = true;
             }
 
             //esto es para saber que valor darle al qr si aceptan o rechazan la colación
@@ -325,12 +344,12 @@ class NotificationController extends GetxController {
               updateOutAcept(element.id);
             }
           });
-          if (siHayEliminarService ==
+          /*  if (siHayEliminarService ==
               true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
           {
             controllerclient.rest();
             //controllerclient.setActiveModifyTimeRest(true);
-          }
+          }*/
 
           //aqui veo y voy mandando las notificaciones locales
           for (final result1 in notificationListNewAux1) {
@@ -461,10 +480,10 @@ class NotificationController extends GetxController {
               }
 
               //mando notificacion al barbero
-              storeNotification(
+              storeNotificationSERVICE(
                   'Nuevo cliente en cola',
-                  controllerLogin.branchIdLoggedIn,
-                  controllerLogin.idProfessionalLoggedIn,
+                  LocalStorage.prefs.getString('branch_profesional'),
+                  LocalStorage.prefs.getInt('id_profesional'),
                   'Tienes ${clientCon.clientNew} cliente$s nuevo$s en cola',
                   'Barbero');
 
@@ -531,15 +550,15 @@ class NotificationController extends GetxController {
               //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
               //DESCONTAR EL TIEMPO AL RELOJ
               //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
-              siHayEliminarService = true;
+              // siHayEliminarService = true;
             }
           });
-          if (siHayEliminarService ==
+          /*  if (siHayEliminarService ==
               true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
           {
             controllerclient.rest();
             // controllerclient.setActiveModifyTimeRest(true);
-          }
+          }*/
         }
         //todo **************************************************************
         controllerclient.setclientLisError(0);
@@ -568,6 +587,580 @@ class NotificationController extends GetxController {
       }
       controllerLogin.setIsLoadingFor(false);
       _retryAttempted = false; // Resetear la variable para futuros intentos
+    }
+  }
+
+//   Future<void> professionalBranchNotifQueque(
+//       idBranch, idProfe, type, msj, token) async {
+//     print('entrando a actualizar la cola en - professionalBranchNotifQueque');
+//     print(
+//         'Error al obtener la lista de notificaciones:este:-CONTROLADO AQUI->entrando aqui al metodo->_retryAttempted:$_retryAttempted');
+//     bool noUpdate = false;
+//     final ClientsScheduledController clientCon =
+//         Get.find<ClientsScheduledController>();
+//     List<ClientsScheduledModel> clientsAux = [];
+//     print('qwerc SII mandar ->NOTIFICACIONES-$msj');
+//     print('12345llamada timer estoy en CAntidad de Notificaciones-$type');
+//     print(
+//         'llamada timer ...tipo:$type......idSucursal:$idBranch......iProf:$idProfe');
+
+//     try {
+//       final resultList = await repository.professionalBranchNotifQueque(
+//           idBranch, idProfe, type, token);
+//       bool siHayEliminarService = false;
+//       if (resultList != null && resultList is Map<String, dynamic>) {
+//         // Manejar la respuesta normalmente
+//         //todo **************************************************************
+//         if (resultList.containsKey('Erroor') && resultList['Erroor'] == -99) {
+//           //llamar aqui el metodo del login que muestra error de conexion
+//           controllerLogin.showConnectionError();
+//         } else if (resultList.containsKey('Erroor') &&
+//             resultList['Erroor'] == true) {
+//           print(
+//               'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor, el error fue en Future<void> fetchNotificationList');
+//         } else if (resultList.containsKey('notificationList') &&
+//             resultList.containsKey('notificationListNew')) {
+//           notification =
+//               resultList['notificationList']; //busca aqui las notificaciones
+
+//           notificationListLength = notification.length;
+
+//           notificationListNew = resultList['notificationListNew'];
+//           notificationListNewLength = notificationListNew.length;
+//           List<NotificationModel> notificationListNewAux1 = [];
+//           notificationListNew.forEach((element) async {
+//             if (element.state == 0 || element.state == 3) {
+//               if (!notificationListNewSounded.contains(element.id)) {
+//                 notificationListNewSounded.add(element.id);
+//                 // localNotificationsSimplifies(element.tittle, element.description);
+
+//                 notificationListNewAux1.add(element);
+//               }
+//             }
+
+//             //SI HAY QUE ELIMINAR TIEMPO DEL RELOJ
+//             if (element.state == 3 &&
+//                 element.tittle == 'Aceptada Eliminación de Servicio') {
+//               print('modificar time de mm 1 estoy aqui en el forEach');
+//               String textoCompleto = element.description;
+//               // String descripcion =
+//               //     textoCompleto.split('.')[0]; // Obtener la descripción
+//               // Obtener el segundo número (999)
+//               // String numeroOcultoString = textoCompleto
+//               //     .split('.')[1]
+//               //     .trim(); // Obtener la parte después del punto y eliminar espacios en blanco
+//               // int idReservation =
+//               //     int.parse(numeroOcultoString); // Convertir a entero
+//               int idReservation = obtenerNumeroDespuesDelPunto(textoCompleto);
+//               print(
+//                   'modificar time de mm 1 estoy aqui en el forEach-2-idReservation:$idReservation - textoCompleto:$textoCompleto');
+//               //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+//               controllerclient.watchModifyTimeRest(idReservation,
+//                   textoCompleto); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
+//               updateNotifications2(idBranch, idProfe,
+//                   element.id); //aqui es para no repetir esto y lo pongo en 0
+
+//               //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
+//               //DESCONTAR EL TIEMPO AL RELOJ
+//               //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
+//               // siHayEliminarService = true;
+//             }
+
+//             //esto es para saber que valor darle al qr si aceptan o rechazan la colación
+//             if (element.state == 3 &&
+//                 element.tittle ==
+//                     'Aceptada su solicitud de Colación') //pongo a null el qr
+//             {
+//               updateNotifications2(idBranch, idProfe, element.id);
+//               controllerLogin.setCodigoQrValid(null);
+//             }
+//             if (element.state == 3 &&
+//                 element.tittle ==
+//                     'Solicitud de Eliminación Rechazada') //pongo a null el qr
+//             {
+//               updateNotifications2(idBranch, idProfe, element.id);
+//               controllerLogin.setCodigoQrValid(1);
+//             }
+//             if (element.state == 3 &&
+//                 element.tittle ==
+//                     'Aceptada Eliminación de Cliente') //pongo a null el qr
+//             {
+//               updateNotifications2(idBranch, idProfe, element.id);
+//               controllerLogin.setCodigoQrValid(1);
+//             }
+//             if (element.state == 3 &&
+//                 element.tittle ==
+//                     'Rechazada su solicitud de Colación') //pongo a 1 el qr
+//             {
+//               updateNotifications2(idBranch, idProfe, element.id);
+//               controllerLogin.setCodigoQrValid(1);
+//             }
+//             if (element.state == 3 &&
+//                 element.tittle ==
+//                     'Rechazada su solicitud de Salida') //pongo a 1 el qr
+//             {
+//               updateNotifications2(idBranch, idProfe, element.id);
+//               controllerLogin.setCodigoQrValid(1);
+//             }
+//             if (element.state == 3 &&
+//                 element.tittle ==
+//                     'Aceptada su solicitud de Salida') //pongo a 1 el qr
+//             {
+//               print('cargando aqui-16 para sacar del puesto y la apk-1');
+
+//               updateOutAcept(element.id);
+//             }
+//           });
+//           /*   if (siHayEliminarService ==
+//               true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+//           {
+//             controllerclient.rest();
+//             //controllerclient.setActiveModifyTimeRest(true);
+//           }*/
+
+//           //aqui veo y voy mandando las notificaciones locales
+//           //todo comentado_nuevo
+// /*
+//           for (final result1 in notificationListNewAux1) {
+//             // Llama a la función localNotificationsSimplifies después del retraso
+//             localNotificationsSimplifies(result1.tittle, result1.description);
+//             print('aqui llamando las notificaciones nuevas1');
+//             print(
+//                 'aqui llamando las notificaciones nuevas1:result1.tittle : ${result1.tittle}');
+//             await Future.delayed(
+//                 const Duration(seconds: 2)); // Espera 2 segundos
+//           }
+// */
+//           //todo comentado_nuevo
+//           print(
+//               'cargando aqui-16 para sacar del puesto y la apk-1Salir=$outAcept');
+//           if (outAcept !=
+//               0) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+//           {
+//             Get.snackbar(
+//               'Mensaje',
+//               'Cerrando aplicación.',
+//               duration: const Duration(milliseconds: 2500),
+//               backgroundColor: const Color.fromARGB(118, 255, 255, 255),
+//               showProgressIndicator: true,
+//               progressIndicatorBackgroundColor:
+//                   const Color.fromARGB(255, 203, 205, 209),
+//               progressIndicatorValueColor:
+//                   const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
+//               overlayBlur: 3,
+//             );
+//             Get.dialog(
+//               const Center(
+//                 child: CircularProgressIndicator(
+//                   color: Color(0xFFFDAE2A),
+//                 ),
+//               ),
+//               barrierDismissible: false,
+//             ); //Get.back();
+//             await updateNotifications2(idBranch, idProfe, outAcept);
+//             await controllerLogin.exitPostworking("Barbero");
+//             controllerLogin.exit(controllerLogin.tokenUserLoggedIn);
+//             updateOutAcept(0);
+//             Get.back();
+//             print('cargando aqui-16 para sacar del puesto y la apk-2');
+//           }
+//           //fin de trabajo de notificaciones
+//           //aqui empiza la asignacion de la cola
+
+//           clientCon.correctConnection = true;
+//           //aqui estoy guardando la cola del dia de hoy del profesional
+//           List<ClientsScheduledModel>? clientsScheduledListAUX = [];
+//           List<ClientsScheduledModel>? clientsScheSalonAux = [];
+//           List<ClientsScheduledModel>? clientsScheduledListAUX2 = [];
+
+//           print(
+//               'Cliente reasignado correctamente ->ANTES DEL IF clientsScheduledController.varClientsWaiting:opteniendo clientsScheSalonAux:${clientsScheSalonAux!.length}');
+
+//           clientCon.setClientsScheSalon(resultList['clientListSalon']);
+
+//           clientsScheduledListAUX = (resultList['clientList'] ?? []).cast<
+//               ClientsScheduledModel>(); //aqui estoy guardando la cola del dia de hoy del profesional
+//           clientsScheduledListAUX2 =
+//               (resultList['clientListSig'] ?? []).cast<ClientsScheduledModel>();
+//           if (clientsScheduledListAUX != null &&
+//               clientsScheduledListAUX2 != null) {
+//             clientCon.clientsScheduledList = clientsScheduledListAUX;
+//             clientCon.clientsScheduledList[0].select_professional;
+
+//             clientCon.clientsScheduledListLength =
+//                 clientCon.clientsScheduledList.length;
+//             print(
+//                 'llamada timer Cantidad de Clientes-3 :${clientCon.clientsScheduledListLength}');
+//             clientsAux = clientsScheduledListAUX2;
+//             clientCon.clientsScheduledListLengthTail = clientsAux.length;
+
+//             print(
+//                 'llamando a buscar clientes - BIEN4-clientsScheduledList.length:${clientCon.clientsScheduledList.length}');
+
+//             //
+//             //  if (closeIesperado == true) //es que cerró inesperadamente
+//             {
+//               if (resultList.containsKey('attendingClient')) {
+//                 List<Map>? attendingClientList = resultList['attendingClient'];
+//                 //aqui es donde tiene que entrar solamente si se loguea
+//                 if (controllerLogin.isLoggingIn == true) {
+//                   print(
+//                       'EL TIEMPO clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn}) { entre poque vine del login ');
+
+//                   clientCon.logicaInesperada(attendingClientList);
+//                   controllerLogin.setIsLoggingIn(false);
+//                 } else {
+//                   print(
+//                       'clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn})  NOOO ');
+//                 }
+//               } else {
+//                 // La clave 'attendingClient' no está presente en el mapa
+//                 print(
+//                     '!!!!!!!!!!!!!!!!!!!!La clave "attendingClient" no está presente en el mapa.');
+//               }
+//             }
+
+//             //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+//             clientCon.clientsScheduledNext = resultList['nextClient'];
+//             int clientNewAux = 0;
+//             //aqui verifico si entra un cliente nuevo
+//             //************************************* */
+//             if (clientCon.clientsScheduledListId.isNotEmpty) {
+//               clientNewAux = clientCon.clientsScheduledListId.length;
+//             }
+
+//             clientCon.clientsScheduledList.forEach((element) async {
+//               if (!clientCon.clientsScheduledListId
+//                   .contains(element.reservation_id)) {
+//                 clientCon.clientsScheduledListId.add(element.reservation_id!);
+//               }
+//             });
+
+//             if (clientNewAux != 0) {
+//               if (clientCon.clientsScheduledListId.length > clientNewAux) {
+//                 clientCon.setclientNew(
+//                     clientCon.clientsScheduledListId.length - clientNewAux);
+//               }
+//             }
+
+//             if (clientCon.clientNew > 0) {
+//               String s = '';
+//               if (clientCon.clientNew > 1) {
+//                 s = 's';
+//               }
+
+//               //todo comentado_nuevo
+//               /*
+//               //mando notificacion al barbero
+//               storeNotification(
+//                   'Nuevo cliente en cola',
+//                   controllerLogin.branchIdLoggedIn,
+//                   controllerLogin.idProfessionalLoggedIn,
+//                   'Tienes ${clientCon.clientNew} cliente$s nuevo$s en cola',
+//                   'Barbero');
+//                   */
+//               //todo comentado_nuevo
+
+//               clientCon.setclientNew(0);
+//               //************************************* */
+//             }
+
+//             clientCon.quantityClientAttended =
+//                 resultList['quantityClientAttended'];
+//             clientCon.varClientsWaiting = resultList['varclientswaiting'];
+//             if (clientCon.quantityClientAttended == 0) {
+//               clientCon.clientsAttended = 'nobody';
+//             }
+
+//             if (clientCon.clientsScheduledNext != null) {
+//               int idCar = clientCon.clientsScheduledNext!.car_id!;
+//               await clientCon.searchForCustomerServices(
+//                   idCar, controllerLogin.tokenUserLoggedIn);
+//               await clientCon.filterShowNext();
+//               //  setValueClock(true);
+//             } else {
+//               print('if (clientsScheduledNext != null) ESTOY DANDO null');
+//               //  setValueClock(false);
+//             }
+
+//             // clientCon.setBoolControlVision(true);
+//           }
+//           //aqui empiza la asignacion de la cola
+//         } else if (resultList.containsKey('notificationListEncarg') &&
+//             resultList.containsKey('notificationListNewEncarg')) {
+//           print(
+//               'ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador');
+//           notificationEncarg = resultList['notificationListEncarg'];
+
+//           notificationListLengthEncarg = notificationEncarg.length;
+
+//           notificationListNewEncarg = resultList['notificationListNewEncarg'];
+//           notificationListNewLengthEncarg = notificationListNewEncarg.length;
+//           print(
+//               'ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador - notificationListNewLengthEncarg:${notificationEncarg.length}');
+
+//           notificationListNewEncarg.forEach((element) async {
+//             if (element.state == 3 &&
+//                 element.tittle == 'Aceptada Eliminación de Servicio') {
+//               print('modificar time de mm 1 estoy aqui en el forEach');
+//               String textoCompleto = element.description;
+//               // String descripcion =
+//               //     textoCompleto.split('.')[0]; // Obtener la descripción
+//               // Obtener el segundo número (999)
+//               // String numeroOcultoString = textoCompleto
+//               //     .split('.')[1]
+//               //     .trim(); // Obtener la parte después del punto y eliminar espacios en blanco
+//               // int idReservation =
+//               //     int.parse(numeroOcultoString); // Convertir a entero
+//               int idReservation = obtenerNumeroDespuesDelPunto(textoCompleto);
+//               print(
+//                   'modificar time de mm 1 estoy aqui en el forEach-2-idReservation:$idReservation - textoCompleto:$textoCompleto');
+
+//               controllerclient.watchModifyTimeRest(idReservation,
+//                   textoCompleto); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
+//               updateNotifications2(idBranch, idProfe,
+//                   element.id); //aqui es para no repetir esto y lo pongo en 0
+
+//               //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
+//               //DESCONTAR EL TIEMPO AL RELOJ
+//               //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
+//               //  siHayEliminarService = true;
+//             }
+//           });
+//           /*if (siHayEliminarService ==
+//               true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+//           {
+//             controllerclient.rest();
+//             // controllerclient.setActiveModifyTimeRest(true);
+//           }*/
+//         }
+//         //todo **************************************************************
+//         controllerclient.setclientLisError(0);
+//       } else {
+//         // Manejar el caso cuando response es nulo o no es un mapa
+//         print(
+//             'Error al obtener la lista de notificaciones:este:-CONTROLADO AQUI');
+//         controllerclient.setclientLisError(-99);
+
+//         if (!_retryAttempted && controllerclient.errorHome == -99) {
+//           _retryAttempted = true;
+//           await Future.delayed(const Duration(milliseconds: 2000));
+//           await professionalBranchNotifQueque(
+//               idBranch, idProfe, type, msj, token);
+//         }
+//       }
+//     } catch (e) {
+//       // Manejo de errores
+//       noUpdate = true;
+//       print('Error al obtener la lista de notificaciones:este: $e');
+//     } finally {
+//       print(
+//           'Obtener la lista de notificaciones: noUpdate == Timer10segun $noUpdate');
+//       if (noUpdate == false) {
+//         update();
+//       }
+//       update();
+//       controllerLogin.setIsLoadingFor(false);
+//       _retryAttempted = false; // Resetear la variable para futuros intentos
+//     }
+//   }
+  Future<void> professionalBranchNotifQueque(
+      idBranch, idProfe, type, msj, token) async {
+    print('entrando a actualizar la cola en - professionalBranchNotifQueque');
+    bool noUpdate = false;
+    final ClientsScheduledController clientCon =
+        Get.find<ClientsScheduledController>();
+    List<ClientsScheduledModel> clientsAux = [];
+    print('12345llamada timer estoy en CAntidad de Notificaciones-$type');
+    print(
+        'llamada timer ...tipo:$type......idSucursal:$idBranch......iProf:$idProfe');
+
+    try {
+      final resultList = await repository.professionalBranchNotifQueque(
+          idBranch, idProfe, type, token);
+      bool siHayEliminarService = false;
+      if (resultList != null && resultList is Map<String, dynamic>) {
+        if (resultList.containsKey('notificationList') &&
+            resultList.containsKey('notificationListNew')) {
+          notification =
+              resultList['notificationList']; // busca aqui las notificaciones
+          notificationListLength = notification.length;
+          notificationListNew = resultList['notificationListNew'];
+          notificationListNewLength = notificationListNew.length;
+
+          if (notificationListNew.isNotEmpty) {
+            List<NotificationModel> notificationListNewAux1 = [];
+            notificationListNew.forEach((element) async {
+              if (element.state == 0 || element.state == 3) {
+                if (!notificationListNewSounded.contains(element.id)) {
+                  notificationListNewSounded.add(element.id);
+                  notificationListNewAux1.add(element);
+                }
+              }
+
+              if (element.state == 3 &&
+                  element.tittle == 'Aceptada Eliminación de Servicio') {
+                print('modificar time de mm 1 estoy aqui en el forEach');
+                String textoCompleto = element.description;
+                int idReservation = obtenerNumeroDespuesDelPunto(textoCompleto);
+                controllerclient.watchModifyTimeRest(
+                    idReservation, textoCompleto);
+                updateNotifications2(idBranch, idProfe, element.id);
+              }
+
+              if (element.state == 3 &&
+                  element.tittle == 'Aceptada su solicitud de Colación') {
+                updateNotifications2(idBranch, idProfe, element.id);
+                controllerLogin.setCodigoQrValid(null);
+              }
+              if (element.state == 3 &&
+                  element.tittle == 'Solicitud de Eliminación Rechazada') {
+                updateNotifications2(idBranch, idProfe, element.id);
+                controllerLogin.setCodigoQrValid(1);
+              }
+              if (element.state == 3 &&
+                  element.tittle == 'Aceptada Eliminación de Cliente') {
+                updateNotifications2(idBranch, idProfe, element.id);
+                controllerLogin.setCodigoQrValid(1);
+              }
+              if (element.state == 3 &&
+                  element.tittle == 'Rechazada su solicitud de Colación') {
+                updateNotifications2(idBranch, idProfe, element.id);
+                controllerLogin.setCodigoQrValid(1);
+              }
+              if (element.state == 3 &&
+                  element.tittle == 'Rechazada su solicitud de Salida') {
+                updateNotifications2(idBranch, idProfe, element.id);
+                controllerLogin.setCodigoQrValid(1);
+              }
+              if (element.state == 3 &&
+                  element.tittle == 'Aceptada su solicitud de Salida') {
+                updateOutAcept(element.id);
+              }
+            });
+          }
+
+          if (outAcept != 0) {
+            Get.snackbar('Mensaje', 'Cerrando aplicación.',
+                duration: const Duration(milliseconds: 2500));
+            Get.dialog(
+                const Center(
+                    child: CircularProgressIndicator(
+                  color: Color(0xFFFDAE2A),
+                )),
+                barrierDismissible: false);
+            await updateNotifications2(idBranch, idProfe, outAcept);
+            await controllerLogin.exitPostworking("Barbero");
+            controllerLogin.exit(controllerLogin.tokenUserLoggedIn);
+            updateOutAcept(0);
+            Get.back();
+          }
+
+          clientCon.correctConnection = true;
+          List<ClientsScheduledModel>? clientsScheduledListAUX = [];
+          List<ClientsScheduledModel>? clientsScheSalonAux = [];
+          List<ClientsScheduledModel>? clientsScheduledListAUX2 = [];
+
+          clientCon.setClientsScheSalon(resultList['clientListSalon']);
+          clientsScheduledListAUX =
+              (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
+          clientsScheduledListAUX2 =
+              (resultList['clientListSig'] ?? []).cast<ClientsScheduledModel>();
+
+          if (clientsScheduledListAUX != null &&
+              clientsScheduledListAUX.isNotEmpty &&
+              clientsScheduledListAUX2 != null &&
+              clientsScheduledListAUX2.isNotEmpty) {
+            clientCon.clientsScheduledList = clientsScheduledListAUX;
+            clientCon.clientsScheduledList[0].select_professional;
+            clientCon.clientsScheduledListLength =
+                clientCon.clientsScheduledList.length;
+            clientsAux = clientsScheduledListAUX2;
+            clientCon.clientsScheduledListLengthTail = clientsAux.length;
+
+            if (resultList.containsKey('attendingClient')) {
+              List<Map>? attendingClientList = resultList['attendingClient'];
+              if (controllerLogin.isLoggingIn == true) {
+                clientCon.logicaInesperada(attendingClientList);
+                controllerLogin.setIsLoggingIn(false);
+              }
+            }
+
+            clientCon.clientsScheduledNext = resultList['nextClient'];
+            int clientNewAux = 0;
+            if (clientCon.clientsScheduledListId.isNotEmpty) {
+              clientNewAux = clientCon.clientsScheduledListId.length;
+            }
+
+            clientCon.clientsScheduledList.forEach((element) async {
+              if (!clientCon.clientsScheduledListId
+                  .contains(element.reservation_id)) {
+                clientCon.clientsScheduledListId.add(element.reservation_id!);
+              }
+            });
+
+            if (clientNewAux != 0) {
+              if (clientCon.clientsScheduledListId.length > clientNewAux) {
+                clientCon.setclientNew(
+                    clientCon.clientsScheduledListId.length - clientNewAux);
+              }
+            }
+
+            if (clientCon.clientNew > 0) {
+              String s = '';
+              if (clientCon.clientNew > 1) {
+                s = 's';
+              }
+              clientCon.setclientNew(0);
+            }
+
+            clientCon.quantityClientAttended =
+                resultList['quantityClientAttended'];
+            clientCon.varClientsWaiting = resultList['varclientswaiting'];
+            if (clientCon.quantityClientAttended == 0) {
+              clientCon.clientsAttended = 'nobody';
+            }
+
+            if (clientCon.clientsScheduledNext != null) {
+              int idCar = clientCon.clientsScheduledNext!.car_id!;
+              await clientCon.searchForCustomerServices(
+                  idCar, controllerLogin.tokenUserLoggedIn);
+              await clientCon.filterShowNext();
+            }
+          }
+        } else {
+          print(
+              'Error al obtener la lista de notificaciones:este:-CONTROLADO AQUI');
+          controllerclient.setclientLisError(-99);
+          if (!_retryAttempted && controllerclient.errorHome == -99) {
+            Get.snackbar('Alerta', 'Alerta de red.',
+                duration: const Duration(milliseconds: 2500));
+            clientCon.correctConnection = false;
+            _retryAttempted = true;
+            professionalBranchNotifQueque(idBranch, idProfe, type, msj, token);
+          }
+        }
+      } else {
+        print('Error al obtener la lista de notificaciones:este:');
+        controllerclient.setclientLisError(-99);
+        if (!_retryAttempted && controllerclient.errorHome == -99) {
+          Get.snackbar('Alerta', 'Alerta de red.',
+              duration: const Duration(milliseconds: 2500));
+          clientCon.correctConnection = false;
+          _retryAttempted = true;
+          professionalBranchNotifQueque(idBranch, idProfe, type, msj, token);
+        }
+      }
+    } catch (e) {
+      print('Error de excepción al obtener la lista de notificaciones:$e');
+      controllerclient.setclientLisError(-99);
+      if (!_retryAttempted && controllerclient.errorHome == -99) {
+        Get.snackbar('Alerta', 'Alerta de red.',
+            duration: const Duration(milliseconds: 2500));
+        clientCon.correctConnection = false;
+        _retryAttempted = true;
+        professionalBranchNotifQueque(idBranch, idProfe, type, msj, token);
+      }
     }
   }
 
@@ -922,6 +1515,209 @@ class NotificationController extends GetxController {
   //
 //todo/****AQUI LO DE LAS NOTIFICACIONES LOCALES****/
 //tecnicooooooo
+  Future<void> fetchNotificationListSERV(
+      idBranch, idProfe, type, msj, token) async {
+    print(
+        'callTimerTec 4-callTimerTecNotification-controlador-fetchNotificationList');
+    print('qwerc SII mandar ->NOTIFICACIONES-$msj');
+    print('12345llamada timer estoy en CAntidad de Notificaciones-$type');
+    print(
+        'llamada timer ...tipo:$type......idSucursal:$idBranch......iProf:$idProfe');
+    try {
+      Map<String, dynamic> result =
+          await repository.getNotificationList(idBranch, idProfe, type, token);
+      bool siHayEliminarService = false;
+      print('object-${clientsTechnicalCont.clientsTechnicalLength}');
+      if (result.containsKey('notificationListError') &&
+          result.containsKey('notificationListError') == true) {
+        print('estoy entrando aqui si al error de notificacion.tec');
+
+        if (type == 'Tecnico' &&
+            clientsTechnicalCont.clientsTechnicalLength >
+                0) //es tecnico y tiene la cola vacia que ni lo muestre
+        {
+          controllerLogin.showConnectionError();
+        }
+        if (type != 'Tecnico') {
+          controllerLogin.showConnectionError();
+        }
+      } else if (result.containsKey('Erroor') && result['Erroor'] == true) {
+        print(
+            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor,-8 el error fue en Future<void> fetchNotificationList');
+      } else if (result.containsKey('notificationList') &&
+          result.containsKey('notificationListNew')) {
+        notification = result['notificationList'];
+
+        print(
+            'llamada timer estoy en CAntidad de Notificaciones fetchNotificationList :${notification.length}');
+
+        notificationListLength = notification.length;
+
+        notificationListNew = result['notificationListNew'];
+        notificationListNewLength = notificationListNew.length;
+        List<NotificationModel> notificationListNewAux =
+            []; // Lista de Notificaciones
+        for (final element in notificationListNew) {
+          if (element.state == 0 || element.state == 3) {
+            print(
+                'callTimerTec 4-callTimerTecNotification -if-element.state :${element.state}');
+            if (!notificationListNewSounded.contains(element.id)) {
+              notificationListNewSounded.add(element.id);
+
+              notificationListNewAux.add(element);
+              //localNotificationsSimplifies(element.tittle, element.description);
+            }
+          }
+
+          //esto es para saber que valor darle al qr si aceptan o rechazan la colación
+          if (element.state == 3 &&
+              element.tittle ==
+                  'Aceptada su solicitud de Colación') //pongo a null el qr
+          {
+            controllerLogin.setCodigoQrValid(null);
+            updateNotifications2(idBranch, idProfe, element.id);
+          }
+          if (element.state == 3 &&
+              element.tittle ==
+                  'Rechazada su solicitud de Colación') //pongo a 1 el qr
+          {
+            controllerLogin.setCodigoQrValid(1);
+            updateNotifications2(idBranch, idProfe, element.id);
+          }
+          if (element.state == 3 &&
+              element.tittle ==
+                  'Rechazada su solicitud de Salida') //pongo a 1 el qr
+          {
+            controllerLogin.setCodigoQrValid(1);
+            updateNotifications2(idBranch, idProfe, element.id);
+          }
+          if (element.state == 3 &&
+              element.tittle ==
+                  'Aceptada su solicitud de Salida') //pongo a 1 el qr
+          {
+            print('cargando aqui-16 para sacar del puesto y la apk-1');
+
+            updateOutAcept(element.id);
+          }
+          if (element.state == 3 &&
+              element.tittle ==
+                  'Solicitud de Eliminación Rechazada') //pongo a null el qr
+          {
+            print(
+                'callTimerTec 4-callTimerTecNotification -if-element.tittle :${element.tittle}');
+            controllerLogin.setCodigoQrValid(1);
+            updateNotifications2(idBranch, idProfe, element.id);
+          }
+          if (element.state == 3 &&
+              element.tittle ==
+                  'Aceptada Eliminación de Cliente') //pongo a null el qr
+          {
+            controllerLogin.setCodigoQrValid(1);
+            updateNotifications2(idBranch, idProfe, element.id);
+          }
+        }
+
+        //todo comentado_nuevo
+//aqui veo y voy mandando las notificaciones locales
+        for (final result in notificationListNewAux) {
+          print(
+              'callTimerTec 4-callTimerTecNotification -if-notificaciones locales :sii');
+          // Llama a la función localNotificationsSimplifies después del retraso
+          localNotificationsSimplifies(result.tittle, result.description);
+          print('aqui llamando las notificaciones nuevas');
+          await Future.delayed(const Duration(seconds: 2)); // Espera 2 segundos
+        }
+        //todo comentado_nuevo
+
+        if (outAcept !=
+            0) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+        {
+          Get.snackbar(
+            'Mensaje',
+            'Cerrando aplicación.',
+            duration: const Duration(milliseconds: 2500),
+            backgroundColor: const Color.fromARGB(118, 255, 255, 255),
+            showProgressIndicator: true,
+            progressIndicatorBackgroundColor:
+                const Color.fromARGB(255, 203, 205, 209),
+            progressIndicatorValueColor:
+                const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
+            overlayBlur: 3,
+          );
+          Get.dialog(
+            const Center(
+              child: CircularProgressIndicator(
+                color: Color(0xFFFDAE2A),
+              ),
+            ),
+            barrierDismissible: false,
+          ); //Get.back();
+          await updateNotifications2(idBranch, idProfe, outAcept);
+          await controllerLogin.exitPostworking("Tecnico");
+          controllerLogin.exit(controllerLogin.tokenUserLoggedIn);
+          updateOutAcept(0);
+          Get.back();
+          print('cargando aqui-16 para sacar del puesto y la apk-2');
+        }
+
+        update();
+      } else if (result.containsKey('notificationListEncarg') &&
+          result.containsKey('notificationListNewEncarg')) {
+        print('ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador');
+        notificationEncarg = result['notificationListEncarg'];
+
+        notificationListLengthEncarg = notificationEncarg.length;
+
+        notificationListNewEncarg = result['notificationListNewEncarg'];
+        notificationListNewLengthEncarg = notificationListNewEncarg.length;
+        print(
+            'ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador - notificationListNewLengthEncarg:${notificationEncarg.length}');
+
+        notificationListNewEncarg.forEach((element) async {
+          if (element.state == 3 &&
+              element.tittle == 'Aceptada Eliminación de Servicio') {
+            print('modificar time de mm 1 estoy aqui en el forEach');
+            String textoCompleto = element.description;
+            // String descripcion =
+            //     textoCompleto.split('.')[0]; // Obtener la descripción
+            // Obtener el segundo número (999)
+            // String numeroOcultoString = textoCompleto
+            //     .split('.')[1]
+            //     .trim(); // Obtener la parte después del punto y eliminar espacios en blanco
+            // int idReservation =
+            //     int.parse(numeroOcultoString); // Convertir a entero
+            int idReservation = obtenerNumeroDespuesDelPunto(textoCompleto);
+            print(
+                'modificar time de mm 1 estoy aqui en el forEach-2-idReservation:$idReservation - textoCompleto:$textoCompleto');
+
+            controllerclient.watchModifyTimeRest(idReservation,
+                textoCompleto); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
+            updateNotifications2(idBranch, idProfe,
+                element.id); //aqui es para no repetir esto y lo pongo en 0
+
+            //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
+            //DESCONTAR EL TIEMPO AL RELOJ
+            //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
+            //  siHayEliminarService = true;
+          }
+        });
+        /* if (siHayEliminarService ==
+            true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+        {
+          controllerclient.rest();
+          // controllerclient.setActiveModifyTimeRest(true);
+        }*/
+
+        update();
+      }
+      controllerLogin.setIsLoadingFor(false);
+    } catch (e) {
+      controllerLogin.setIsLoadingFor(false);
+      // Manejo de errores
+      print('Error al obtener la lista de notificaciones:aqui: $e');
+    }
+  }
+
   Future<void> fetchNotificationList(
       idBranch, idProfe, type, msj, token) async {
     print(
@@ -1024,15 +1820,17 @@ class NotificationController extends GetxController {
           }
         }
 
+        //todo comentado_nuevo
 //aqui veo y voy mandando las notificaciones locales
-        for (final result in notificationListNewAux) {
+        /*   for (final result in notificationListNewAux) {
           print(
               'callTimerTec 4-callTimerTecNotification -if-notificaciones locales :sii');
           // Llama a la función localNotificationsSimplifies después del retraso
           localNotificationsSimplifies(result.tittle, result.description);
           print('aqui llamando las notificaciones nuevas');
           await Future.delayed(const Duration(seconds: 2)); // Espera 2 segundos
-        }
+        }*/
+        //todo comentado_nuevo
 
         if (outAcept !=
             0) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
@@ -1103,15 +1901,15 @@ class NotificationController extends GetxController {
             //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
             //DESCONTAR EL TIEMPO AL RELOJ
             //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
-            siHayEliminarService = true;
+            //  siHayEliminarService = true;
           }
         });
-        if (siHayEliminarService ==
+        /* if (siHayEliminarService ==
             true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
         {
           controllerclient.rest();
           // controllerclient.setActiveModifyTimeRest(true);
-        }
+        }*/
 
         update();
       }

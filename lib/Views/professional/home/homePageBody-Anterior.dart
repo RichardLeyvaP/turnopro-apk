@@ -13,7 +13,7 @@ import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/Views/coordinator/coexistencePageCoordinator.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
-import 'package:turnopro_apk/services/localNotification.dart';
+//import 'package:turnopro_apk/services/localNotification.dart';
 
 //import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
@@ -52,8 +52,8 @@ class _HomePageBodyState extends State<HomePageBody>
 
   @override
   bool get wantKeepAlive => true;
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  //     FlutterLocalNotificationsPlugin();
   bool _isMounted = true;
 /*
   WebSocketChannel channel = IOWebSocketChannel.connect(

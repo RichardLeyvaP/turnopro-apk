@@ -2,15 +2,14 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:animate_do/animate_do.dart';
 //import 'package:lottie/lottie.dart';
 //import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/Utility/textTruncate.dart';
+import 'package:turnopro_apk/Utility/utils.dart';
 import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/env.dart';
@@ -51,32 +50,83 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     //await clientController.upadateVariablesValueTimers();
     super.didChangeAppLifecycleState(state);
-    print('La aplicación se está pausando (yendo a segundo plano111)');
     if (state == AppLifecycleState.paused) {
-      //  clientController.setBoolControlVision(false);
+      LocalStorage.prefs.setBool('iAmActive', false);
       clientController.setCloseIesperado(true);
-
-      // La aplicación se está pausando (puede ir a segundo plano)
       loginController.getSegundoPlano(0);
-      print('..segundoPlano....${clientController.timeClientsActAttended1}');
-      print('La aplicación se está pausando (yendo a segundo plano)');
-    } else if (state == AppLifecycleState.resumed) {
-      /*   if (loginController.usserPermissionQr ==
-          null) //si esta logueado que lo ponga en false
-      {
-        clientController.setBoolControlVision(true);
-      } else {
-        clientController.setBoolControlVision(false);
-      }*/
-
-      // La aplicación se cierra completamente
-      print('La aplicación se está Reaunudandose nuevamente');
+      await LocalStorage.prefs.setBool('state_S_plano', true);
+      // Guardar la marca de tiempo cuando la app va a segundo plano
+      await LocalStorage.prefs
+          .setString('background_time', DateTime.now().toIso8601String());
       print(
-          '..segundoPlano llegando....${clientController.timeClientsActAttended1}');
+          'La aplicación se está pausando (yendo a segundo plano)-timer 1 = ${LocalStorage.prefs.getInt('timer1')}');
+      print(
+          'La aplicación se está pausando (yendo a segundo plano)-timer 2 = ${LocalStorage.prefs.getInt('timer2')}');
+      print(
+          'La aplicación se está pausando (yendo a segundo plano)-timer 3 = ${LocalStorage.prefs.getInt('timer3')}');
+      print(
+          'La aplicación se está pausando (yendo a segundo plano)-timer 4 = ${LocalStorage.prefs.getInt('timer4')}');
+      //reinicio el servicio
+      // await restartService();
+    } else if (state == AppLifecycleState.resumed) {
+      LocalStorage.prefs.setBool('iAmActive', true);
       clientController.setCloseIesperado(false);
-      loginController.getSegundoPlano(3); //es que regresó
+      loginController.getSegundoPlano(3);
+      print('mirando: Setting state_S_plano to false');
+      bool result = await LocalStorage.prefs.setBool('state_S_plano', false);
+      print('Set state_S_plano result: $result');
+      print('La aplicación se está Reaunudandose nuevamente');
+      Get.dialog(
+        const Center(
+          child: Material(
+            color: Colors.transparent,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(
+                  color: Color(0xFFFDAE2A),
+                ),
+                SizedBox(height: 16),
+                Text('Actualizando datos...',
+                    style: TextStyle(color: Colors.white)),
+              ],
+            ),
+          ),
+        ),
+        barrierDismissible: false,
+      ); //Get.back();
+
+      // Recuperar la marca de tiempo desde SharedPreferences
+      String? backgroundTimeString =
+          LocalStorage.prefs.getString('background_time');
+      if (backgroundTimeString != null) {
+        DateTime backgroundTime = DateTime.parse(backgroundTimeString);
+        final difference = DateTime.now().difference(backgroundTime);
+        // Convierte la diferencia a minutos
+        final differenceInMinutes = difference.inMinutes;
+        print(
+            'La aplicación estuvo en segundo plano por ${difference.inSeconds} segundos.');
+        //aqui mando el tiempo que estubo fuera
+        //y ya ahi reinicio ese reloj
+        await clientController.getShowClock(
+            differenceInMinutes,
+            loginController.idProfessionalLoggedIn,
+            loginController.tokenUserLoggedIn);
+
+        // await Future.delayed(Duration(seconds: 5));
+        // loginController.setIsLoggingIn(true);
+        Get.back();
+        // Aquí puedes manejar la lógica que necesites con el tiempo en segundo plano
+      }
+      //reinicio el servicio
+      //  await restartService();
+    } else if (state == AppLifecycleState.inactive) {
+      LocalStorage.prefs.setBool('iAmActive', false);
+      // La aplicación se cierra completamente
+      print('La aplicación se está inactiva');
       // Agrega tu lógica para guardar en la base de datos aquí.
     } else if (state == AppLifecycleState.detached) {
+      LocalStorage.prefs.setBool('iAmActive', false);
       // La aplicación se cierra completamente
       print('La aplicación se está cerrando completamente');
       // Agrega tu lógica para guardar en la base de datos aquí.
@@ -151,12 +201,13 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                             ),
                             barrierDismissible: false,
                           ); //Get.back();
-
-                          await clientController.fetchClientsScheduledNew(
-                              loginController.idProfessionalLoggedIn,
-                              loginController.branchIdLoggedIn,
-                              'if (index == 1)',
-                              loginController.tokenUserLoggedIn);
+                          if (clientController.getWaitTime() == false) {
+                            await clientController.fetchClientsScheduledNew(
+                                loginController.idProfessionalLoggedIn,
+                                loginController.branchIdLoggedIn,
+                                'if (index == 1)',
+                                loginController.tokenUserLoggedIn);
+                          }
                           await Future.delayed(
                               const Duration(milliseconds: 500));
                           Get.back();

@@ -1,22 +1,23 @@
 // ignore_for_file: depend_on_referenced_packages
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
 import 'package:turnopro_apk/app_initializer.dart';
-import 'package:turnopro_apk/dependency_injection.dart';
 import 'package:turnopro_apk/myApp.dart';
 import 'package:turnopro_apk/providers.dart';
-import 'package:turnopro_apk/services/localNotification.dart';
+
+//import 'package:turnopro_apk/services/localNotification.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'services/background_service.dart';
+
 void main() async {
-  DependencyInjection.registerDependencies();
   await AppInitializer.initializeApp();
   //
   WidgetsFlutterBinding.ensureInitialized();
-  await initializeNotificationsNew();
+  //await initializeNotificationsNew2();
   await LocalStorage.configurePrefs();
 
   // Cargar variables de entorno desde env.prod.json
@@ -39,10 +40,11 @@ void main() async {
 
   //  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   //     FlutterLocalNotificationsPlugin();
-  flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()!
-      .requestNotificationsPermission();
+  // flutterLocalNotificationsPlugin2
+  //     .resolvePlatformSpecificImplementation<
+  //         AndroidFlutterLocalNotificationsPlugin>()!
+  //     .requestNotificationsPermission();
+  //await initializeService();
   runApp(
     MultiProvider(
       providers:

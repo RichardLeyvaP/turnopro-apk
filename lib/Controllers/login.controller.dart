@@ -2,20 +2,17 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ui';
 import 'package:intl/intl.dart';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';
-import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
-import 'package:turnopro_apk/env.dart';
 import 'package:turnopro_apk/get_connect/repository/user.repository.dart';
+
+import '../services/background_service.dart';
 
 class LoginController extends GetxController {
   @override
@@ -273,6 +270,45 @@ class LoginController extends GetxController {
   bool makeCallC = true;
   bool makeCallE = true;
   bool makeCallT = true;
+  bool callDeleteService1 = true; //
+  bool callDeleteService2 = true; //
+  bool callDeleteService3 = true; //
+  bool callDeleteService4 = true; //
+  //
+  setCallDeleteService1(value) {
+    callDeleteService1 = value;
+  }
+
+  bool getCallDeleteService1() {
+    return callDeleteService1;
+  }
+
+  //
+  setCallDeleteService2(value) {
+    callDeleteService2 = value;
+  }
+
+  bool getCallDeleteService2() {
+    return callDeleteService2;
+  }
+
+  //
+  setCallDeleteService3(value) {
+    callDeleteService3 = value;
+  }
+
+  bool getCallDeleteService3() {
+    return callDeleteService3;
+  }
+
+  //
+  setCallDeleteService4(value) {
+    callDeleteService4 = value;
+  }
+
+  bool getCallDeleteService4() {
+    return callDeleteService4;
+  }
 
   setMakeCall(value) {
     makeCall = value;
@@ -655,6 +691,50 @@ class LoginController extends GetxController {
     return resultList;
   }
 
+  // Future getShowClock(int differenceInMinutes) async {
+  //   final result = await usuarioLg.repoShowClock(
+  //       differenceInMinutes, idProfessionalLoggedIn, tokenUserLoggedIn);
+
+  //   if (result is Map<String, int>) {
+  //     // Manejo de una respuesta exitosa
+  //     int timeC1 = result['timeC1'] ?? -999;
+  //     int timeC2 = result['timeC2'] ?? -999;
+  //     int timeC3 = result['timeC3'] ?? -999;
+  //     int timeC4 = result['timeC4'] ?? -999;
+  //     if (timeC1 != -999) //es que esta activo
+  //     {
+  //       //lo reinicio con el nuevo tiempo
+  //       animationController1!
+  //         ..duration = Duration(minutes: timeC1)
+  //         ..reset()
+  //         ..forward();
+  //     }
+  //     if (timeC2 != -999) //es que esta activo
+  //     {
+  //       //lo reinicio con el nuevo tiempo
+  //     }
+  //     if (timeC3 != -999) //es que esta activo
+  //     {
+  //       //lo reinicio con el nuevo tiempo
+  //     }
+  //     if (timeC4 != -999) //es que esta activo
+  //     {
+  //       //lo reinicio con el nuevo tiempo
+  //     }
+  //   } else if (result == false) {
+  //     // Manejo de un caso donde la respuesta es falsa
+  //     print('No se pudo procesar la solicitud.');
+  //   } else if (result == -999) {
+  //     // Manejo de un caso de error
+  //     print('Error en la solicitud.');
+  //   } else {
+  //     // Manejo de un caso inesperado
+  //     print('Respuesta inesperada: $result');
+  //   }
+
+  //   print('RETORNE--login-controller:$result');
+  // }
+
   Future<void> getUserLoggedBranch(String u, String p) async {
     String email = u.toString(), pass = p.toString();
     incorrectFields = false;
@@ -933,6 +1013,16 @@ class LoginController extends GetxController {
     }
   }
 
+  Future<void> saveUserDataMemory(
+      String name, int branch, int id, String charge, String token) async {
+    // Guardar cada dato por separado
+    await LocalStorage.prefs.setString('name_profesional', name);
+    await LocalStorage.prefs.setInt('branch_profesional', branch);
+    await LocalStorage.prefs.setInt('id_profesional', id);
+    await LocalStorage.prefs.setString('charge_profesional', charge);
+    await LocalStorage.prefs.setString('tokenUser', token);
+  }
+
 //
   Future<void> loginGetIn(String u, String p, int idBranch) async {
     final ClientsScheduledController clientsScheduledController =
@@ -968,6 +1058,10 @@ class LoginController extends GetxController {
             'T123456789-a.......... branchIdLoggedIn***************************: $branchIdLoggedIn');
         print('T123456789-OKEN***************************: $tokenUserLoggedIn');
         print('ID-Profess***************************: $idProfessionalLoggedIn');
+        //digo que voy desde el login
+        LocalStorage.prefs.setBool('iAmActive', true);
+        //reinicio el servicio
+        // await restartService();
 
         if (tokenUserLoggedIn != '' &&
             nameUserLoggedIn != '' &&
@@ -996,9 +1090,15 @@ class LoginController extends GetxController {
             LocalStorage.prefs.setInt(
                 'EntryFootprintBranch', controllerLogin.branchIdLoggedIn!);
             LocalStorage.prefs.setBool('EntryFootprintOpen', true);
+
+            //GUARDAR EN MEMORIA D ETELEFONO LOS DATOS MAS IMPORTANTES
+            saveUserDataMemory(nameUserLoggedIn, branchIdLoggedIn!,
+                idProfessionalLoggedIn!, chargeUserLoggedIn, tokenUserLoggedIn);
+            //aqui deb reiniciar mi servicio
           } else {
             print('asignando valores de memoria:NO-1');
           }
+          await initializeService();
 
           //todo aqui guardo cada vez que loguea los datos para la proxima vez que no tenga que loguearse
 
@@ -1127,6 +1227,7 @@ class LoginController extends GetxController {
               'SI CERRO SECION CORRECTAMENTE ELIMINANDO LOS DATOS DE SECCION');
           await clearSessionData();
           print('reiniciar app mandando');
+          LocalStorage.prefs.setBool('iAmActive', false);
           LocalStorage.prefs.setBool('valueClockActiv', false);
           LocalStorage.prefs.setBool('valueClockActivT', false);
           LocalStorage.prefs.setBool('convivenciaIncumplida', false);
@@ -1140,6 +1241,7 @@ class LoginController extends GetxController {
 
           Get.offAllNamed('/LoginFormPage');
         } else {
+          LocalStorage.prefs.setBool('iAmActive', false);
           await clearSessionData();
           LocalStorage.prefs.setBool('valueClockActiv', false);
           LocalStorage.prefs.setBool('valueClockActivT', false);
@@ -1165,8 +1267,8 @@ class LoginController extends GetxController {
 
   Future<int> insertPuesto(professional_id, workplace_id, places) async {
     try {
-      var result = await usuarioLg.insertPuesto(
-          professional_id, workplace_id, places, tokenUserLoggedIn);
+      var result = await usuarioLg.insertPuesto(professional_id, workplace_id,
+          places, branchIdLoggedIn, tokenUserLoggedIn);
       if (result == 1) {
         print('esto es lo que INSERTO EN EL PUESTO DE TRABAJO');
       } else {

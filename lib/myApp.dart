@@ -48,7 +48,7 @@ class Myapp extends StatelessWidget {
   @override
   Widget build(Object context) {
     return GetBuilder<LoginController>(builder: (_) {
-      return OverlaySupport(
+      return OverlaySupport.global(
         child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
           theme: _.pagina == '/Professional'

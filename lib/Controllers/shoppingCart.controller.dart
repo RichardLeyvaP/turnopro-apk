@@ -247,6 +247,31 @@ class ShoppingCartController extends GetxController {
     }
   }*/
 
+  Future<int> _addOrderCartListNEW(car_id, product_id, service_id, type) async {
+    try {
+      int res = await productRepository.addOrderCartList(
+          car_id, product_id, service_id, type);
+      print('internetError responseId:$responseId');
+      if (res != -990099) {
+        print('agregar responseId');
+        productCarr.add(res);
+        internetError = 0;
+        update();
+        return 0;
+      } else {
+        print('internetError ');
+        internetError = -99;
+        update();
+        return -99;
+      }
+    } catch (e) {
+      internetError = -99;
+      print('error:$e');
+      update();
+      return -990099;
+    }
+  }
+
   Future<int> _addOrderCartList(car_id, product_id, service_id, type) async {
     try {
       int res = await productRepository.addOrderCartList(
@@ -336,8 +361,8 @@ class ShoppingCartController extends GetxController {
       for (ServiceModel service in selectServiceNew) {
         // Llama al método _addOrderCartList con los parámetros necesarios
         idServiceCart.add(service.name);
-        int resul = await _addOrderCartList(carIdClienteSelect, 0, service.id,
-            'service'); //todo REVISAR TIENE PROBLEMA
+        int resul = await _addOrderCartListNEW(carIdClienteSelect, 0,
+            service.id, 'service'); //todo REVISAR TIENE PROBLEMA
         //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
         if (resul == 0) //todo esta bien si retorna 0
         {

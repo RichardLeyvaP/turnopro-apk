@@ -392,6 +392,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                             ),
                             onPressed: () async {
                               commentController.text = '';
+                              clientsController.clearImage();
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -684,15 +685,12 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                           } else if (resul ==
                                                               1) //es que finalizó bien
                                                           {
-                                                            clientsController //todo cambioHOY /estaba antes fetchClientsScheduled
-                                                                .fetchClientsScheduledNew(
-                                                                    loginController
-                                                                        .idProfessionalLoggedIn,
-                                                                    loginController
-                                                                        .branchIdLoggedIn,
-                                                                    'Text(ENVIAR)',
-                                                                    loginController
-                                                                        .tokenUserLoggedIn);
+                                                            //aqui poner una variable que espere por 30 segundos para cambiar al valor por defecto
+                                                            //para con esta variable controlar que en ese tiempo no le caiga nadie en la cola
+                                                            clientsController
+                                                                .setWaitTime(
+                                                                    true);
+
                                                             Get.back(); //aqui cierro el cargando
                                                             Get.snackbar(
                                                               'Mensaje',

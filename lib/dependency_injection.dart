@@ -1,18 +1,13 @@
 import 'package:get/get.dart';
-import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
-import 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';
-import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
-import 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 
 class DependencyInjection {
   static void registerDependencies() {
-    Get.put(LoginController());
-    Get.put(ClientsScheduledController());
+    Get.put(LoginController(), permanent: true);
+    Get.put(ClientsScheduledController(), permanent: true);
     Get.put(ClientsTechnicalController());
     Get.put(ShoppingCartController());
     Get.put(StatisticController());
-    Get.put(ClientsScheduledController());
     Get.put(NotificationController());
     Get.put(ClientsCoordinatorController());
     Get.put(ClientsTechnicalController());

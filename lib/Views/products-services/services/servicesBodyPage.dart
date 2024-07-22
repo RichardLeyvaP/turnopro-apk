@@ -531,6 +531,8 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                 _.selectServiceNew);
                                         Get.back(); //quito el cargando
                                         if (resp >= 1) {
+                                          //reiniciar los relojes
+
                                           if (resp > 1) {
                                             s = 's';
                                           }

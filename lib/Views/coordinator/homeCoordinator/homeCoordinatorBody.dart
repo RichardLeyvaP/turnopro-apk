@@ -938,9 +938,13 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
             children: [
               Container(
                 height: (MediaQuery.of(context).size.height * 0.126),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(12)),
+                  border: Border.all(
+                    color: Color.fromARGB(255, 192, 191, 191),
+                    width: 1.0, // Puedes ajustar el grosor del borde aquí
+                  ),
                 ),
                 child: Row(
                   children: [
@@ -1243,9 +1247,13 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
             children: [
               Container(
                 height: (MediaQuery.of(context).size.height * 0.126),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(12)),
+                  border: Border.all(
+                    color: Color.fromARGB(255, 192, 191, 191),
+                    width: 1.0, // Puedes ajustar el grosor del borde aquí
+                  ),
                 ),
                 child: Row(
                   children: [
@@ -1555,9 +1563,13 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
             children: [
               Container(
                 height: (MediaQuery.of(context).size.height * 0.126),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(12)),
+                  border: Border.all(
+                    color: Color.fromARGB(255, 192, 191, 191),
+                    width: 1.0, // Puedes ajustar el grosor del borde aquí
+                  ),
                 ),
                 child: Row(
                   children: [
@@ -1836,7 +1848,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                               print('return resul: IconButton $result');
                               if (result == true) {
                                 if (charge == 'Barbero') {
-                                  notiController.storeNotification(
+                                  notiController.storeNotification2(
+                                      //storeNotification2 significa que hay que cambiar el Qr dependiendo de la respuesta
                                       typeDelete,
                                       controllerLogin.branchIdLoggedIn,
                                       controllerclient
@@ -1931,9 +1944,13 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
             children: [
               Container(
                 height: (MediaQuery.of(context).size.height * 0.126),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                  borderRadius: const BorderRadius.all(Radius.circular(12)),
+                  border: Border.all(
+                    color: const Color.fromARGB(255, 192, 191, 191),
+                    width: 1.0, // Puedes ajustar el grosor del borde aquí
+                  ),
                 ),
                 child: Row(
                   children: [
@@ -1978,13 +1995,14 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   nameServiceProduct =
                                       contShopp.orderDeleteCar[i].nameProduct;
                                 }
-
-                                notiController.storeNotification(
-                                    'Solicitud de Eliminación Rechazada',
-                                    controllerLogin.branchIdLoggedIn,
-                                    contShopp.orderDeleteCar[i].profesional_id,
-                                    '!Atención..El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} no fue aprobado para su eliminación.',
-                                    'Barbero');
+                                //la notificacion la crea la api
+                                //
+                                // notiController.storeNotification(
+                                //     'Solicitud de Eliminación Rechazada',
+                                //     controllerLogin.branchIdLoggedIn,
+                                //     contShopp.orderDeleteCar[i].profesional_id,
+                                //     '!Atención..El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} no fue aprobado para su eliminación.',
+                                //     'Barbero');
                               }
                               if (controllerLogin.branchIdLoggedIn != null) {
                                 await contShopp.loadOrderDeleteCar(
@@ -2175,21 +2193,25 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
 
                                   if (typeDelete ==
                                       'Aceptada Eliminación de Servicio') {
-                                    notiController.storeNotification2(
-                                        typeDelete,
-                                        controllerLogin.branchIdLoggedIn,
-                                        contShopp
-                                            .orderDeleteCar[i].profesional_id,
-                                        '$serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado con tiempo de ${contShopp.orderDeleteCar[i].duration_service} min.${contShopp.orderDeleteCar[i].reservation_id}',
-                                        'Barbero');
+                                    //esta notificación la esta haciendo el api
+                                    //
+                                    // notiController.storeNotification2(
+                                    //     typeDelete,
+                                    //     controllerLogin.branchIdLoggedIn,
+                                    //     contShopp
+                                    //         .orderDeleteCar[i].profesional_id,
+                                    //     '$serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado con tiempo de ${contShopp.orderDeleteCar[i].duration_service} min.${contShopp.orderDeleteCar[i].reservation_id}',
+                                    //     'Barbero');
                                   } else {
-                                    notiController.storeNotification(
-                                        typeDelete,
-                                        controllerLogin.branchIdLoggedIn,
-                                        contShopp
-                                            .orderDeleteCar[i].profesional_id,
-                                        'El $serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado satisfactoriamente.',
-                                        'Barbero');
+                                    //esta notificación la esta haciendo el api
+                                    //
+                                    // notiController.storeNotification(
+                                    //     typeDelete,
+                                    //     controllerLogin.branchIdLoggedIn,
+                                    //     contShopp
+                                    //         .orderDeleteCar[i].profesional_id,
+                                    //     'El $serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado satisfactoriamente.',
+                                    //     'Barbero');
                                   }
                                 }
                                 if (controllerLogin.branchIdLoggedIn != null) {
@@ -2249,6 +2271,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     if ((contShopp.orderDeleteCar.isEmpty) &&
         (controllerclient.clientsScheduledListBranchClient.isEmpty) &&
         (controllerclient.clientsScheduledListBranchClient.isEmpty) &&
+        (controllerclient.clientsColacionRequestBranch.isEmpty) &&
         (controllerclient.pOutRequestBranch.isEmpty)) {
       widgets.add(const Center(
         child: Padding(

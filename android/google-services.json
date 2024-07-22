@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "967386529739",
+    "project_id": "project-simplifies",
+    "storage_bucket": "project-simplifies.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:967386529739:android:4f99e1d879542c70adc04e",
+        "android_client_info": {
+          "package_name": "com.example.project_test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPeVEgnv5YrryHJUfwInwDQBrNzUAsV_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

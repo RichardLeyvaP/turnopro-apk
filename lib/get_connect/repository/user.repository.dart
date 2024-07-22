@@ -1,6 +1,9 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:convert';
+
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Models/ClockModel.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/env.dart';
 
@@ -30,6 +33,71 @@ class UserRepository extends GetConnect {
       print('RETORNE-- ERROR DE SERVIDOR A LA CREACION DEL Qr:$e');
     }
   }
+
+  // Future repoShowClock(int differenceInMinutes, professionalId, token) async {
+  //   int timeC1 = -999, timeC2 = -999, timeC3 = -999, timeC4 = -999;
+  //   try {
+  //     var url =
+  //         '${Env.apiEndpoint}/show-clocks?professional_id=$professionalId';
+
+  //     final headers = {
+  //       "Authorization": "Bearer $token", // Agrega el token a los encabezados
+  //     };
+  //     final response =
+  //         await get(url, headers: headers).timeout(Duration(seconds: 15));
+  //     print(url);
+  //     print(response.statusCode);
+  //     print('RETORNE-- repoShowClock-.url:${response.statusCode}');
+  //     print(
+  //         'RETORNE-- repoShowClock-response.statusCode:${response.statusCode}');
+  //     if ((response.statusCode == 200)) {
+  //       print('RETORNE-- repoShowClock-repoShowClock:${response.body}');
+  //       // Decodifica el JSON
+  //       //Map<String, dynamic> jsonResponse = json.decode(response.body);
+
+  //       // Mapea la respuesta JSON a una instancia de TailsResponse
+  //       TailsResponse tailsResponse = TailsResponse.fromMap(response.body);
+  //       print('RETORNE-- repoShowClock-repoShowClock2:${tailsResponse}');
+  //       // Por ejemplo, puedes recorrer la lista de ClockModel
+  //       // Verifica si la lista "tails" está vacía
+  //       if (tailsResponse.tails.isEmpty) {
+  //         print('RETORNE---ESTA VACIA');
+  //       } else {
+  //         tailsResponse.tails.forEach((clock) {
+  //           print(
+  //               'RETORNE---Clock: ${clock.clock}, TimeClock: ${clock.timeClock}, Detached: ${clock.detached}');
+  //           if (clock.clock == 1) {
+  //             int calculatedTime = clock.timeClock - differenceInMinutes;
+  //             timeC1 = calculatedTime < 0 ? 0 : calculatedTime;
+  //           } else if (clock.clock == 2) {
+  //             int calculatedTime = clock.timeClock - differenceInMinutes;
+  //             timeC2 = calculatedTime < 0 ? 0 : calculatedTime;
+  //           } else if (clock.clock == 3) {
+  //             int calculatedTime = clock.timeClock - differenceInMinutes;
+  //             timeC3 = calculatedTime < 0 ? 0 : calculatedTime;
+  //           } else if (clock.clock == 4) {
+  //             int calculatedTime = clock.timeClock - differenceInMinutes;
+  //             timeC4 = calculatedTime < 0 ? 0 : calculatedTime;
+  //           }
+  //         });
+  //       }
+
+  //       return {
+  //         'timeC1': timeC1,
+  //         'timeC2': timeC2,
+  //         'timeC3': timeC3,
+  //         'timeC4': timeC4,
+  //       };
+  //     } else {
+  //       print('RETORNE-- repoShowClock-FALSE A LA CREACION DEL Qr');
+  //       return false;
+  //     }
+  //   } catch (e) {
+  //     print(
+  //         'RETORNE-- repoShowClock-ERROR DE SERVIDOR A LA CREACION DEL Qr:$e');
+  //     return -999;
+  //   }
+  // }
 
   Future exitHours(branchId, professionalId, token) async {
     try {
@@ -186,7 +254,8 @@ class UserRepository extends GetConnect {
   }
 
   // ignore: non_constant_identifier_names
-  Future<int> insertPuesto(professional_id, workplace_id, places, token) async {
+  Future<int> insertPuesto(
+      professional_id, workplace_id, places, branch_id, token) async {
     try {
       var url = '${Env.apiEndpoint}/professionalworkplace';
 
@@ -195,6 +264,7 @@ class UserRepository extends GetConnect {
         'professional_id': professional_id,
         'workplace_id': workplace_id,
         'places': places,
+        'branch_id': branch_id
       };
 
       // Realizar la solicitud POST

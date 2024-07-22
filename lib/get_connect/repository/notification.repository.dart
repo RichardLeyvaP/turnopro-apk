@@ -49,6 +49,41 @@ class NotificationRepository extends GetConnect {
     }
   }
 
+  Future<bool> storeNotificationSERVICE(
+      tittle, branchId, professionalId, description, type) async {
+    try {
+      var url = '${Env.apiEndpoint}/notificationSERVICE';
+      print('inserto correctamente ********** la notificacio:$tittle');
+      final Map<String, dynamic> body = {
+        'tittle': tittle,
+        'branch_id': branchId,
+        'professional_id': professionalId,
+        'description': description,
+        'type': type,
+      };
+      print('notificacion desde :repository-storeNotificationSERVICE ');
+      final response = await post(url, body);
+      print(tittle);
+      print(branchId);
+      print(professionalId);
+      print(description);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print('inserto correctamente la notificacio:$tittle');
+        return true;
+      } else {
+        print('inserto correctamente ********** ERRORRR');
+        print(
+            'inserto correctamente ********** ERRORRR:${response.statusCode}');
+        print('ERROR no inserto la notificacio');
+        return false;
+      }
+    } catch (e) {
+      print('inserto correctamente ********** ERRORRR->:$e');
+      return false;
+    }
+  }
+
   Future<bool> storeNotification(
       tittle, branchId, professionalId, description, type, token) async {
     try {
@@ -119,14 +154,17 @@ class NotificationRepository extends GetConnect {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
       final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+          Duration(seconds: 50)); // Aumenta el tiempo de espera a 15 segundos
       varStatusCode = response.statusCode;
+      print('viendo resultado1-response.statusCode:${response.statusCode}');
+      // print('viendo resultado1-response.body:${response.body}');
       if (response.statusCode == 200) {
         // final jsonResponse = jsonDecode(response.body);
 
         //todo NOTIFICATIONS
         final notifications = response.body['notifications'];
-
+        print(
+            'viendo resultado1-response.body[notifications]:${response.body['notifications']}');
         for (Map notification in notifications) {
           NotificationModel u =
               NotificationModel.fromJson(jsonEncode(notification));
@@ -149,6 +187,7 @@ class NotificationRepository extends GetConnect {
         // final List<dynamic> tailData = jsonResponse['tail'];
         //todo  TAILS
         final customers = response.body['tail'];
+        print('viendo resultado1-response.body[tail]:${response.body['tail']}');
         print(
             'llamada timer en 10 segundos A professionalBranchNotifQueque repository-customers:$customers');
         for (Map service in customers) {
@@ -183,7 +222,9 @@ class NotificationRepository extends GetConnect {
           }
 
           clientList.add(client);
-
+          print(
+              'viendo resultado1 - Cclient-client_name:${client.client_name}');
+          print('viendo resultado1 - Cclient-attended:${client.attended}');
           if (client.attended == 0) {
             print(
                 'llamada timer en 10 segundos A professionalBranchNotifQueque repository cliente espernado ser atendido');
@@ -214,7 +255,8 @@ class NotificationRepository extends GetConnect {
           if (client.attended == 1 ||
               client.attended == 11 ||
               client.attended == 111) {
-            print('clientes asistiendo entre a if (client.attended == 1) {');
+            print(
+                'viendo resultado1-clientes asistiendo entre a if (client.attended == 1) {');
             quantityClientAttended++;
           }
           //Saber si no esta atendiendo a nadie
@@ -226,8 +268,8 @@ class NotificationRepository extends GetConnect {
           }
         }
         //aqui el trabajo con la respuesta de la cola
-        print(
-            'llamada timer en 10 segundos CANTIDAD LA COLA:${clientList.length}');
+        print('viendo resultado1 - CANTIDAD LA COLA:${clientList.length}');
+
         //todo END TAILS
 
         if (type == 'Encargado') {
@@ -265,7 +307,7 @@ class NotificationRepository extends GetConnect {
         return {'Erroor': -99};
       }
     } catch (e) {
-      print('llamada timer en 10 segundos DI ERROR EN :$e');
+      print('viendo resultado1 - DI ERROR EN :$e');
       return {
         'Erroor': true
       }; //si retorna null es que dio error deve ser de conexion

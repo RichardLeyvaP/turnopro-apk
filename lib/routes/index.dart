@@ -20,3 +20,7 @@ export 'package:turnopro_apk/Controllers/product.controller.dart';
 export 'package:turnopro_apk/Controllers/service.controller.dart';
 export 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 export 'package:turnopro_apk/Controllers/statistics.controller.dart';
+export 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
+export 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
+export 'package:turnopro_apk/Controllers/pages.configResp.controller.dart';
+export 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';

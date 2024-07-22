@@ -110,6 +110,42 @@ class ClientsCoordinatorRepository extends GetConnect {
   //
   //
   //
+  Future reasignedClientSegundoPlano(professionalId, branchId, token) async {
+    List<ClientsScheduledModel> clientList = [];
+    try {
+      var url =
+          '${Env.apiEndpoint}/reasigned-secound-plain?professional_id=$professionalId&branch_id=$branchId';
+
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
+      print('response.statusCode splano professionalId:${professionalId}');
+      print('response.statusCode splano branchId:${branchId}');
+      if (response.statusCode == null) {
+        print('response.statusCode:${response.statusCode}');
+        return {
+          "ConnectionIssues": true,
+        };
+      } else if (response.statusCode == 200) {
+        print(
+            'response.statusCode splano devuelve true,response.statusCode == 200 ');
+        return {
+          "result": true,
+        };
+      }
+
+      return {"clientList": clientList};
+    } catch (e) {
+      print('response.statusCode:${e}');
+      print(e);
+    }
+  }
+
+  //
+  //
   Future reasignedClient(reservationId, clientId, professionalId, token) async {
     List<ClientsScheduledModel> clientList = [];
     try {
@@ -125,6 +161,9 @@ class ClientsCoordinatorRepository extends GetConnect {
       print('response.statusCode reservationId:${reservationId}');
       print('response.statusCode clientId:${clientId}');
       print('response.statusCode professionalId:${professionalId}');
+      print('response.statusCode professionalId:${url}');
+      print(
+          'response.statusCode professionalId:response.statusCode${response.statusCode}');
       if (response.statusCode == null) {
         print('response.statusCode:${response.statusCode}');
         return {

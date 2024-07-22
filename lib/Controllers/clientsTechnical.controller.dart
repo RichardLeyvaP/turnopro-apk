@@ -208,8 +208,11 @@ class ClientsTechnicalController extends GetxController {
     bool noUpdate = false;
     try {
       List<int> clientsAux = [];
-      Map<String, dynamic> resultList = await repository
-          .getClientsTechnicalList(idBranch, loginController.tokenUserLoggedIn);
+      Map<String, dynamic> resultList =
+          await repository.getClientsTechnicalList(
+              idBranch,
+              loginController.idProfessionalLoggedIn,
+              loginController.tokenUserLoggedIn);
       print('111ya entre a buscar inicialmente los clientes del tecnico');
       print(resultList);
       //verificando , si entra al if es problemas de coneccion

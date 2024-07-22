@@ -339,7 +339,32 @@ class ClientsCoordinatorController extends GetxController {
     } else if (resultList['result'] == true) {
       correctConnection = true;
       update();
-      print('Cliente reasignado correctamente-totem');
+      print('Cliente reasignado correctamente-totem-homeeee');
+      return true;
+      //
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> reasignedClientSegundoPlano(
+      professionalId, branchId, token) async {
+    Map<String, dynamic> resultList = await repository
+        .reasignedClientSegundoPlano(professionalId, branchId, token);
+    print(resultList);
+    //verificando , si entra al if es problemas de coneccion
+    if (resultList.containsKey('ConnectionIssues') &&
+        resultList['ConnectionIssues'] == true) {
+      correctConnection = false;
+      update();
+      print(
+          'response.statusCode splano mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor-3');
+      return false;
+    } else if (resultList['result'] == true) {
+      correctConnection = true;
+
+      print(
+          'response.statusCode splano Cliente reasignado correctamente-totem');
       return true;
       //
     } else {
