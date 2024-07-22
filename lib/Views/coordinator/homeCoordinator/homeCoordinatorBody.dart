@@ -1150,6 +1150,10 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       idProf, charge, 0);
                               //aqui mandar notificacion
                               if (result == 1) {
+                                //aqui sacar al barbero del puesto y td
+                                // await controllerLogin.exitPostworking("Barbero");
+                                // controllerLogin.exit(controllerLogin.tokenUserLoggedIn);
+                                //todo aqui ver para sacarlo desde aca
                                 //poner a 4 para que le cierre la session el Qr
                                 // controllerLogin.setCodigoQrValid(null);
                                 //viendo a la hora que se le aceptó

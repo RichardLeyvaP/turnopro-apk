@@ -138,6 +138,8 @@ class ClientsScheduledController extends GetxController {
   int cantClientWait = 0;
   clearImage() {
     pickedFile = null;
+    imagePath = null;
+    // update();
   }
 
   //
@@ -168,71 +170,73 @@ class ClientsScheduledController extends GetxController {
   bool waitTime = false; //false es que puede hacer llamadas a buscar la cola
   int waitTimeCount = 0; //false es que puede hacer llamadas a buscar la cola
 
-  Future getShowClock(int differenceInMinutes, idProf, token) async {
-    final result =
-        await repository.repoShowClock(differenceInMinutes, idProf, token);
-    print('entré aca a cambiar el tiempo del reloj **********');
-    if (result is Map<String, int>) {
-      // Manejo de una respuesta exitosa
-      int timeC1 = result['timeC1'] ?? -999;
-      int timeC2 = result['timeC2'] ?? -999;
-      int timeC3 = result['timeC3'] ?? -999;
-      int timeC4 = result['timeC4'] ?? -999;
-      if (timeC1 != -999) //es que esta activo
-      {
-        print('entré aca a cambiar el tiempo del reloj -3:time:$timeC1');
-        //lo reinicio con el nuevo tiempo
-        animationController1!
-          ..duration = Duration(minutes: timeC1)
-          ..reset()
-          ..forward();
-        controllerLogin.getUpdateTime(timeC1, 1, 'clientSche-getShowClock');
+  Future getShowClock(int differenceInSeconds, idProf, token) async {
+    print(
+        'RETORNE---Clock: si la diferencia es:differenceInSeconds= {$differenceInSeconds}');
+    if (differenceInSeconds > 10) {
+      final result =
+          await repository.repoShowClock(differenceInSeconds, idProf, token);
+      print('entré aca a cambiar el tiempo del reloj **********');
+      if (result is Map<String, int>) {
+        // Manejo de una respuesta exitosa
+        int timeC1 = result['timeC1'] ?? -999;
+        int timeC2 = result['timeC2'] ?? -999;
+        int timeC3 = result['timeC3'] ?? -999;
+        int timeC4 = result['timeC4'] ?? -999;
+        if (timeC1 != -999) //es que esta activo
+        {
+          print('entré aca a cambiar el tiempo del reloj -3:time:$timeC1');
+          //lo reinicio con el nuevo tiempo
+          animationController1!
+            ..duration = Duration(seconds: timeC1) //todo cambiar123RLP
+            ..reset()
+            ..forward();
+          controllerLogin.getUpdateTime(timeC1, 1, 'clientSche-getShowClock');
+        }
+        if (timeC2 != -999) //es que esta activo
+        {
+          print('entré aca a cambiar el tiempo del reloj -3:time:$timeC2');
+          //lo reinicio con el nuevo tiempo
+          //lo reinicio con el nuevo tiempo
+          animationController2!
+            ..duration = Duration(seconds: timeC2) //todo cambiar123RLP
+            ..reset()
+            ..forward();
+          controllerLogin.getUpdateTime(timeC2, 2, 'clientSche-getShowClock');
+        }
+        if (timeC3 != -999) //es que esta activo
+        {
+          print('entré aca a cambiar el tiempo del reloj -3:time:$timeC3');
+          //lo reinicio con el nuevo tiempo
+          //lo reinicio con el nuevo tiempo
+          animationController3!
+            ..duration = Duration(seconds: timeC3) //todo cambiar123RLP
+            ..reset()
+            ..forward();
+          controllerLogin.getUpdateTime(timeC3, 3, 'clientSche-getShowClock');
+        }
+        if (timeC4 != -999) //es que esta activo
+        {
+          print('entré aca a cambiar el tiempo del reloj -4:time:$timeC4');
+          //lo reinicio con el nuevo tiempo
+          //lo reinicio con el nuevo tiempo
+          animationController4!
+            ..duration = Duration(seconds: timeC4) //todo cambiar123RLP
+            ..reset()
+            ..forward();
+          controllerLogin.getUpdateTime(timeC4, 4, 'clientSche-getShowClock');
+        }
+      } else if (result == false) {
+        // Manejo de un caso donde la respuesta es falsa
+        print('No se pudo procesar la solicitud.');
+      } else if (result == -999) {
+        // Manejo de un caso de error
+        print('Error en la solicitud.');
+      } else {
+        // Manejo de un caso inesperado
+        print('Respuesta inesperada: $result');
       }
-      if (timeC2 != -999) //es que esta activo
-      {
-        print('entré aca a cambiar el tiempo del reloj -3:time:$timeC2');
-        //lo reinicio con el nuevo tiempo
-        //lo reinicio con el nuevo tiempo
-        animationController2!
-          ..duration = Duration(minutes: timeC2)
-          ..reset()
-          ..forward();
-        controllerLogin.getUpdateTime(timeC2, 2, 'clientSche-getShowClock');
-      }
-      if (timeC3 != -999) //es que esta activo
-      {
-        print('entré aca a cambiar el tiempo del reloj -3:time:$timeC3');
-        //lo reinicio con el nuevo tiempo
-        //lo reinicio con el nuevo tiempo
-        animationController3!
-          ..duration = Duration(minutes: timeC3)
-          ..reset()
-          ..forward();
-        controllerLogin.getUpdateTime(timeC3, 3, 'clientSche-getShowClock');
-      }
-      if (timeC4 != -999) //es que esta activo
-      {
-        print('entré aca a cambiar el tiempo del reloj -4:time:$timeC4');
-        //lo reinicio con el nuevo tiempo
-        //lo reinicio con el nuevo tiempo
-        animationController4!
-          ..duration = Duration(minutes: timeC4)
-          ..reset()
-          ..forward();
-        controllerLogin.getUpdateTime(timeC4, 4, 'clientSche-getShowClock');
-      }
-    } else if (result == false) {
-      // Manejo de un caso donde la respuesta es falsa
-      print('No se pudo procesar la solicitud.');
-    } else if (result == -999) {
-      // Manejo de un caso de error
-      print('Error en la solicitud.');
-    } else {
-      // Manejo de un caso inesperado
-      print('Respuesta inesperada: $result');
     }
-
-    print('RETORNE--login-controller:$result');
   }
 
   void setwaitTimeCount(value) {
@@ -554,14 +558,21 @@ class ClientsScheduledController extends GetxController {
 
       // Convertir a minutos
       int remainingMinutes1 = (remainingTime1 / 60).floor(); //MINUTOS RESTANTES
-      //int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
-      timeClientsActAttended1 = remainingMinutes1; //DB - timeClock
+      int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
+      // Convierte el tiempo total restante a segundos
+      int timeSave = remainingMinutes1 * 60 + remainingSeconds1;
+
+// Guardar el valor en la base de datos
+      timeClientsActAttended1 =
+          timeSave; // Almacena en la basmpo en segune de datos el tiedos
+
+      // timeClientsActAttended1 = remainingMinutes1; //DB - timeClock
       reservationId = clientsAttended1!.reservation_id!; //DB - reservation_id
       clock = 1; //DB - clock
       detached = 1; //DB - detached
       //  await set_timeClock(reservation_id,timeClock,detached,clock);
       print(
-          'estoy entrando pa saber que relojes - timeClientsActAttended1:$timeClientsActAttended1');
+          'aqui viendo - estoy entrando pa saber que relojes - timeSave:$timeSave-----totalTimeInSeconds:$totalTimeInSeconds');
       await setTimeClock(
           reservationId,
           timeClientsActAttended1,
@@ -581,8 +592,14 @@ class ClientsScheduledController extends GetxController {
 
       // Convertir a minutos
       int remainingMinutes2 = (remainingTime2 / 60).floor(); //MINUTOS RESTANTES
-      //int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
-      timeClientsActAttended2 = remainingMinutes2; //DB - timeClock
+      int remainingSeconds2 = remainingTime2 % 60; //SEGUNDOS RESTANTES
+      // Convierte el tiempo total restante a segundos
+      int timeSave = remainingMinutes2 * 60 + remainingSeconds2;
+
+// Guardar el valor en la base de datos
+      timeClientsActAttended2 =
+          timeSave; // Almacena en la basmpo en segune de datos el tiedos
+      // timeClientsActAttended2 = remainingMinutes2; //DB - timeClock
       reservationId = clientsAttended2!.reservation_id!; //DB - reservation_id
       clock = 2; //DB - clock
       detached = 1; //DB - detached
@@ -606,8 +623,14 @@ class ClientsScheduledController extends GetxController {
 
       // Convertir a minutos
       int remainingMinutes3 = (remainingTime3 / 60).floor(); //MINUTOS RESTANTES
-      //int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
-      timeClientsActAttended3 = remainingMinutes3; //DB - timeClock
+      int remainingSeconds3 = remainingTime3 % 60; //SEGUNDOS RESTANTES
+      // Convierte el tiempo total restante a segundos
+      int timeSave = remainingMinutes3 * 60 + remainingSeconds3;
+
+// Guardar el valor en la base de datos
+      timeClientsActAttended3 =
+          timeSave; // Almacena en la basmpo en segune de datos el tiedos
+      //timeClientsActAttended3 = remainingMinutes3; //DB - timeClock
       reservationId = clientsAttended3!.reservation_id!; //DB - reservation_id
       clock = 3; //DB - clock
       detached = 1; //DB - detached
@@ -631,8 +654,14 @@ class ClientsScheduledController extends GetxController {
 
       // Convertir a minutos
       int remainingMinutes4 = (remainingTime4 / 60).floor(); //MINUTOS RESTANTES
-      //int remainingSeconds1 = remainingTime1 % 60; //SEGUNDOS RESTANTES
-      timeClientsActAttended4 = remainingMinutes4; //DB - timeClock
+      int remainingSeconds4 = remainingTime4 % 60; //SEGUNDOS RESTANTES
+      // Convierte el tiempo total restante a segundos
+      int timeSave = remainingMinutes4 * 60 + remainingSeconds4;
+
+// Guardar el valor en la base de datos
+      timeClientsActAttended4 =
+          timeSave; // Almacena en la basmpo en segune de datos el tiedos
+      //timeClientsActAttended4 = remainingMinutes4; //DB - timeClock
       reservationId = clientsAttended4!.reservation_id!; //DB - reservation_id
       clock = 4; //DB - clock
       detached = 1; //DB - detached
@@ -662,7 +691,10 @@ class ClientsScheduledController extends GetxController {
     //este nuevo cliente se le va a signar un reloj
     if (avail == 1) {
       clientsAttended1 = client;
-      timeClientsAttended1 = convertDateSecons(client.total_time!);
+      timeClientsAttended1 = convertDateSecons(
+          client.total_time!); //todo estaba antes aqui cambiar123RLP
+      print(
+          'value del reloj actual-tiempo a modificar -timeClientsAttended1:${client.total_time!}');
       int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended1!);
       //aqu hace analisis y guarda en memoria del telefono
       //cuando falta 3 minu para acabar
@@ -683,6 +715,7 @@ class ClientsScheduledController extends GetxController {
     if (avail == 3) {
       clientsAttended3 = client;
       timeClientsAttended3 = convertDateSecons(client.total_time!);
+      // timeClientsAttended3 = int.parse(client.total_time!);
       int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended3!);
       //aqu hace analisis y guarda en memoria del telefono
       //cuando falta 3 minu para acabar
@@ -693,6 +726,7 @@ class ClientsScheduledController extends GetxController {
     if (avail == 4) {
       clientsAttended4 = client;
       timeClientsAttended4 = convertDateSecons(client.total_time!);
+      // timeClientsAttended4 = int.parse(client.total_time!);
       int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended4!);
       //aqu hace analisis y guarda en memoria del telefono
       //cuando falta 3 minu para acabar
@@ -848,7 +882,7 @@ class ClientsScheduledController extends GetxController {
       //  int i = modifyTimeSpecificRest;
       int value = modifyTimeSpecificRestTIME;
       subtractDurationFromTimer(
-          animationController1!, Duration(minutes: value));
+          animationController1!, Duration(seconds: value)); //todo cambiar123RLP
       modifyTimeSpecificRest = -99;
       modifyTimeSpecificRestTIME = 0;
     }
@@ -859,7 +893,7 @@ class ClientsScheduledController extends GetxController {
       //   int i = modifyTimeSpecificRest1;
       int value = modifyTimeSpecificRestTIME1;
       subtractDurationFromTimer(
-          animationController2!, Duration(minutes: value));
+          animationController2!, Duration(seconds: value));
       modifyTimeSpecificRest1 = -99;
       modifyTimeSpecificRestTIME1 = 0;
     }
@@ -869,7 +903,7 @@ class ClientsScheduledController extends GetxController {
       //  int i = modifyTimeSpecificRest2;
       int value = modifyTimeSpecificRestTIME2;
       subtractDurationFromTimer(
-          animationController3!, Duration(minutes: value));
+          animationController3!, Duration(seconds: value));
       modifyTimeSpecificRest2 = -99;
       modifyTimeSpecificRestTIME2 = 0;
     }
@@ -880,7 +914,7 @@ class ClientsScheduledController extends GetxController {
       // int i = modifyTimeSpecificRest3;
       int value = modifyTimeSpecificRestTIME3;
       subtractDurationFromTimer(
-          animationController4!, Duration(minutes: value));
+          animationController4!, Duration(seconds: value));
       modifyTimeSpecificRest3 = -99;
       modifyTimeSpecificRestTIME3 = 0;
     }
@@ -943,7 +977,7 @@ class ClientsScheduledController extends GetxController {
         //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
         //AQUI ACTUALIZAR EL RELOJ
         animationController1!
-          ..duration = Duration(minutes: timeRest)
+          ..duration = Duration(seconds: timeRest) // todo cambiar123RLP
           ..reset()
           ..forward();
         //Y PONER LA VARIABLE A TRUE
@@ -963,7 +997,7 @@ class ClientsScheduledController extends GetxController {
         //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
         //AQUI ACTUALIZAR EL RELOJ
         animationController2!
-          ..duration = Duration(minutes: timeRest)
+          ..duration = Duration(seconds: timeRest)
           ..reset()
           ..forward();
         //Y PONER LA VARIABLE A TRUE
@@ -983,7 +1017,7 @@ class ClientsScheduledController extends GetxController {
         //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
         //AQUI ACTUALIZAR EL RELOJ
         animationController3!
-          ..duration = Duration(minutes: timeRest)
+          ..duration = Duration(seconds: timeRest)
           ..reset()
           ..forward();
         //Y PONER LA VARIABLE A TRUE
@@ -1003,7 +1037,7 @@ class ClientsScheduledController extends GetxController {
         //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
         //AQUI ACTUALIZAR EL RELOJ
         animationController4!
-          ..duration = Duration(minutes: timeRest)
+          ..duration = Duration(seconds: timeRest)
           ..reset()
           ..forward();
         //Y PONER LA VARIABLE A TRUE
@@ -1808,6 +1842,8 @@ class ClientsScheduledController extends GetxController {
           {
             if (resultList.containsKey('attendingClient')) {
               List<Map>? attendingClientList = resultList['attendingClient'];
+              print(
+                  'clientes asistiendo hora timeClock -valor de attendingClientList:${attendingClientList} ');
               //aqui es donde tiene que entrar solamente si se loguea
               if (controllerLogin.isLoggingIn == true) {
                 print(
@@ -2018,7 +2054,8 @@ class ClientsScheduledController extends GetxController {
           print('clientes asistiendo horaActual:$horaActual');
           print(
               'clientes asistiendo hora diferenciaSegundos:$diferenciaSegundos');
-          print('clientes asistiendo hora timeClock:$timeClock');
+          print(
+              'clientes asistiendo hora timeClock:$timeClock'); //value del reloj actual
           print(
               'clientes asistiendo hora timeClock:${(timeClock! - diferenciaSegundos)}');
           // Lógica adicional si es necesario con las variables asignadas
@@ -2181,14 +2218,34 @@ class ClientsScheduledController extends GetxController {
     return h2.roundToDouble();
   }
 
-  int convertDateSecons(String tiempo) {
-    List<String> partes = tiempo.split(":");
-    int horas = int.parse(partes[0]);
-    int minutos = int.parse(partes[1]);
-    int segundos = int.parse(partes[2]);
+  // int convertDateSecons(String tiempo) {
+  //   List<String> partes = tiempo.split(":");
+  //   int horas = int.parse(partes[0]);
+  //   int minutos = int.parse(partes[1]);
+  //   int segundos = int.parse(partes[2]);
 
-    int tiempoEnSegundos = horas * 3600 + minutos * 60 + segundos;
-    return tiempoEnSegundos;
+  //   int tiempoEnSegundos = horas * 3600 + minutos * 60 + segundos;
+  //   return tiempoEnSegundos;
+  // }
+  int convertDateSecons(String tiempo) {
+    try {
+      // Dividir la cadena en partes usando ":" como separador
+      List<String> partes = tiempo.split(":");
+
+      // Convertir cada parte a entero
+      int horas = int.parse(partes[0]);
+      int minutos = int.parse(partes[1]);
+      int segundos = int.parse(partes[2]);
+
+      // Calcular el tiempo total en segundos
+      int tiempoEnSegundos = horas * 3600 + minutos * 60 + segundos;
+
+      return tiempoEnSegundos;
+    } catch (e) {
+      // Manejar cualquier error en la conversión
+      print('Error al convertir el tiempo: $e');
+      return 0; // Retornar 0 en caso de error
+    }
   }
 
 //

@@ -371,8 +371,9 @@ class ShoppingCartController extends GetxController {
           shoppingCart += 1;
           serviceListLength = selectserviceCart.length;
           print('memsj Servicio guardado exitosamente: ${service.id}');
-          print('memsj durationService:en el for: ${service.duration_service}');
-          durationService += service.duration_service;
+          print(
+              'memsj durationService:en el for: ${service.duration_service * 60}');
+          durationService += service.duration_service * 60;
         }
         // Pausa por 200 ms entre cada solicitud para evitar sobrecargar el servidor
         await Future.delayed(const Duration(milliseconds: 200));
@@ -393,19 +394,19 @@ class ShoppingCartController extends GetxController {
         if (clientScheduCont.modifyTimeSpecific == 0) //es el reloj 1
         {
           addDurationToTimer(clientScheduCont.animationController1!,
-              Duration(minutes: durationService));
+              Duration(seconds: durationService)); //todo cambiar123RLP
         } else if (clientScheduCont.modifyTimeSpecific == 1) //reloj 2
         {
           addDurationToTimer(clientScheduCont.animationController2!,
-              Duration(minutes: durationService));
+              Duration(seconds: durationService));
         } else if (clientScheduCont.modifyTimeSpecific == 2) //reloj 3
         {
           addDurationToTimer(clientScheduCont.animationController3!,
-              Duration(minutes: durationService));
+              Duration(seconds: durationService));
         } else if (clientScheduCont.modifyTimeSpecific == 3) //reloj
         {
           addDurationToTimer(clientScheduCont.animationController4!,
-              Duration(minutes: durationService));
+              Duration(seconds: durationService));
         }
         //esta e spara actualizar las variables de memoria del telefono
         controllerLogin.getUpdateTime(

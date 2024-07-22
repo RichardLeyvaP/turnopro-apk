@@ -209,7 +209,7 @@ class NotificationRepository extends GetConnect {
                 //"updated_at": convertDateTimeToMinutes(client.updated_at!),
                 "updated_at": client.updated_at!,
                 "clock": client.clock!,
-                "timeClock": client.timeClock! * 60, //convirtiendolo en minutos
+                "timeClock": client.timeClock!, //todo cambiar123RLP
                 "client": client,
               };
               attendingClientList.add(newValue);

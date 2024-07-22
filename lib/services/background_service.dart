@@ -5,8 +5,6 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:http/http.dart' as http;
-import 'package:turnopro_apk/Models/professional_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
@@ -42,6 +40,10 @@ Future<void> initializeService() async {
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
+
+  // Detener cualquier instancia en ejecución antes de iniciar una nueva
+  service.invoke('stopService');
+  await Future.delayed(const Duration(seconds: 1));
 
   // Configurar el servicio
   await service.configure(
@@ -236,6 +238,13 @@ Future<void> onStart(ServiceInstance service) async {
   service.on('stopService').listen((event) {
     service.stopSelf();
   });
+  if (service is AndroidServiceInstance) {
+    service.setForegroundNotificationInfo(
+      title: "Simplifies",
+      content:
+          "Barbería Hernández-${LocalStorage.prefs.getInt('id_profesional')}",
+    );
+  }
 
   // Example of a periodic task.
   Timer.periodic(const Duration(seconds: 10), (timer) async {

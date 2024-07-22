@@ -1307,6 +1307,8 @@ class _HomePageBodyState extends State<HomePageBody>
                 'relojes activos: 1-clientsScheduledController.timeClientsAttended1!${clientsScheduledController.timeClientsAttended1!}');
             animationCont[0]!.duration = Duration(
                 seconds: clientsScheduledController.timeClientsAttended1!);
+            print(
+                'value del reloj actual-activeClockLogin()-timeClientsAttended1:${clientsScheduledController.timeClientsAttended1!}');
             animationCont[0]!.forward();
             //verificar si esta con el tecnico y detenerlo
             if (clientsScheduledController.clientsAttended1!.attended == 4 ||
@@ -1413,7 +1415,7 @@ class _HomePageBodyState extends State<HomePageBody>
 
         int valueMin = tiempoRestante.truncate() + value;
         Duration nuevaDuracion = Duration(
-          minutes: valueMin,
+          seconds: valueMin, //todo cambiar123RLP
         );
 
         animationCont[i]!.duration = nuevaDuracion;
@@ -1454,7 +1456,7 @@ class _HomePageBodyState extends State<HomePageBody>
             valueMin = 1;
           }
           Duration nuevaDuracion = Duration(
-            minutes: valueMin,
+            seconds: valueMin, //todo cambiar123RLP
           );
 
           animationCont[i]!.duration = nuevaDuracion;
@@ -1489,7 +1491,7 @@ class _HomePageBodyState extends State<HomePageBody>
             valueMin = 1;
           }
           Duration nuevaDuracion = Duration(
-            minutes: valueMin,
+            seconds: valueMin, //todo cambiar123RLP
           );
 
           animationCont[i]!.duration = nuevaDuracion;
@@ -1523,7 +1525,7 @@ class _HomePageBodyState extends State<HomePageBody>
             valueMin = 1;
           }
           Duration nuevaDuracion = Duration(
-            minutes: valueMin,
+            seconds: valueMin, //todo cambiar123RLP
           );
 
           animationCont[i]!.duration = nuevaDuracion;
@@ -1558,7 +1560,7 @@ class _HomePageBodyState extends State<HomePageBody>
             valueMin = 1;
           }
           Duration nuevaDuracion = Duration(
-            minutes: valueMin,
+            seconds: valueMin, //todo cambiar123RLP
           );
 
           animationCont[i]!.duration = nuevaDuracion;
@@ -2258,7 +2260,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                     Duration(milliseconds: 1000));
                                 Get.snackbar(
                                   'Mensaje',
-                                  'Vuelva a intentarlo, hubo problema de conexión',
+                                  'Vuelva a intentarlo, hubo problema de conexión.',
                                   duration: const Duration(milliseconds: 2500),
                                   backgroundColor:
                                       const Color.fromARGB(118, 255, 255, 255),
@@ -2558,7 +2560,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                     Duration(milliseconds: 1000));
                                 Get.snackbar(
                                   'Mensaje',
-                                  'Vuelva a intentarlo, hubo problema de conexión',
+                                  'Vuelva a intentarlo, hubo problema de conexión..',
                                   duration: const Duration(milliseconds: 2500),
                                   backgroundColor:
                                       const Color.fromARGB(118, 255, 255, 255),
@@ -2750,7 +2752,7 @@ class _HomePageBodyState extends State<HomePageBody>
           await Future.delayed(Duration(milliseconds: 1000));
           Get.snackbar(
             'Mensaje',
-            'Vuelva a intentarlo, hubo problema de conexión',
+            'Vuelva a intentarlo, hubo problema de conexión...',
             duration: const Duration(milliseconds: 2500),
             backgroundColor: const Color.fromARGB(118, 255, 255, 255),
             showProgressIndicator: true,
@@ -2800,11 +2802,16 @@ class _HomePageBodyState extends State<HomePageBody>
                     animation: _animationController,
                     builder: (context, child) {
                       final value = _animationController.value;
+                      print('value del reloj actual = $value');
                       final remainingSeconds =
                           (_animationController.duration!.inSeconds -
                                   (_animationController.duration!.inSeconds *
                                       value))
                               .ceil();
+                      print(
+                          'value del reloj actual-2-remainingSeconds = $remainingSeconds');
+                      print(
+                          'value del reloj actual-3-remainingSeconds = ${_animationController.duration!.inSeconds}');
                       int minutes = remainingSeconds ~/
                           60; // Calcula los minutos restantes
                       int seconds = remainingSeconds %

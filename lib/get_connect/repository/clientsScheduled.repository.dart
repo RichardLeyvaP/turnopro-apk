@@ -14,7 +14,7 @@ import 'package:dio/dio.dart' as dio;
 class ClientsScheduledRepository extends GetConnect {
   //final LoginController controllerLogin = Get.find<LoginController>();
 
-  Future repoShowClock(int differenceInMinutes, professionalId, token) async {
+  Future repoShowClock(int differenceInSeconds, professionalId, token) async {
     int timeC1 = -999, timeC2 = -999, timeC3 = -999, timeC4 = -999;
     try {
       var url =
@@ -47,16 +47,16 @@ class ClientsScheduledRepository extends GetConnect {
             print(
                 'RETORNE---Clock: ${clock.clock}, TimeClock: ${clock.timeClock}, Detached: ${clock.detached}');
             if (clock.clock == 1) {
-              int calculatedTime = clock.timeClock - differenceInMinutes;
+              int calculatedTime = clock.timeClock - differenceInSeconds;
               timeC1 = calculatedTime < 0 ? 0 : calculatedTime;
             } else if (clock.clock == 2) {
-              int calculatedTime = clock.timeClock - differenceInMinutes;
+              int calculatedTime = clock.timeClock - differenceInSeconds;
               timeC2 = calculatedTime < 0 ? 0 : calculatedTime;
             } else if (clock.clock == 3) {
-              int calculatedTime = clock.timeClock - differenceInMinutes;
+              int calculatedTime = clock.timeClock - differenceInSeconds;
               timeC3 = calculatedTime < 0 ? 0 : calculatedTime;
             } else if (clock.clock == 4) {
-              int calculatedTime = clock.timeClock - differenceInMinutes;
+              int calculatedTime = clock.timeClock - differenceInSeconds;
               timeC4 = calculatedTime < 0 ? 0 : calculatedTime;
             }
           });
@@ -228,7 +228,7 @@ class ClientsScheduledRepository extends GetConnect {
                 //"updated_at": convertDateTimeToMinutes(client.updated_at!),
                 "updated_at": client.updated_at!,
                 "clock": client.clock!,
-                "timeClock": client.timeClock! * 60, //convirtiendolo en minutos
+                "timeClock": client.timeClock!, //todo cambiar123RLP
                 "client": client,
               };
               attendingClientList.add(newValue);
@@ -367,7 +367,7 @@ class ClientsScheduledRepository extends GetConnect {
                 //"updated_at": convertDateTimeToMinutes(client.updated_at!),
                 "updated_at": client.updated_at!,
                 "clock": client.clock!,
-                "timeClock": client.timeClock! * 60, //convirtiendolo en minutos
+                "timeClock": client.timeClock!, //todo cambiar123RLP
                 "client": client,
               };
               attendingClientList.add(newValue);

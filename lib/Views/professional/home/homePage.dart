@@ -103,7 +103,7 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
         DateTime backgroundTime = DateTime.parse(backgroundTimeString);
         final difference = DateTime.now().difference(backgroundTime);
         // Convierte la diferencia a minutos
-        final differenceInMinutes = difference.inMinutes;
+        final differenceInMinutes = difference.inSeconds;
         print(
             'La aplicación estuvo en segundo plano por ${difference.inSeconds} segundos.');
         //aqui mando el tiempo que estubo fuera
@@ -1024,100 +1024,139 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                     'solicitud pidiendo ir a colación.');
                                                 if (_.usserPermissionQr == 1) {
                                                   //todo esto cambiarlo
-                                                  int result = await _
-                                                      .ColacionProfessional(
+                                                  if (clientCon.getWaitTime() ==
+                                                          true ||
+                                                      (clientCon.getWaitTime() ==
+                                                              false &&
+                                                          clientCon
+                                                                  .clientsScheSalon ==
+                                                              0)) //es que esta en tiempo de pedir colación
+                                                  {
+                                                    int result = await _
+                                                        .ColacionProfessional(
+                                                            _.idProfessionalLoggedIn,
+                                                            'Barbero',
+                                                            3);
+                                                    if (result ==
+                                                        1) //codigo 200
+                                                    {
+                                                      //mando notificacion al barbero
+                                                      notiController.storeNotification(
+                                                          'Solicitud de Colación',
+                                                          _.branchIdLoggedIn,
                                                           _.idProfessionalLoggedIn,
-                                                          'Barbero',
-                                                          3);
-                                                  if (result == 1) //codigo 200
-                                                  {
-                                                    //mando notificacion al barbero
-                                                    notiController.storeNotification(
-                                                        'Solicitud de Colación',
-                                                        _.branchIdLoggedIn,
-                                                        _.idProfessionalLoggedIn,
-                                                        'EL Barbero ${_.nameUserLoggedIn} esta pidiendo solicitud de colación',
-                                                        'Ambos'); //esto es para quele llegue a coordinador y encargado
-                                                    //
-                                                    _.setCodigoQrValid(
-                                                        2); //quiere decir que el qr esta bloquedo hasta que acepten o rechacen
+                                                          'EL Barbero ${_.nameUserLoggedIn} esta pidiendo solicitud de colación',
+                                                          'Ambos'); //esto es para quele llegue a coordinador y encargado
+                                                      //
+                                                      _.setCodigoQrValid(
+                                                          2); //quiere decir que el qr esta bloquedo hasta que acepten o rechacen
+                                                      Get.snackbar(
+                                                        '',
+                                                        'Solicitud de colación pedida correctamente,espere un momento...',
+                                                        colorText: const Color
+                                                                .fromARGB(
+                                                            255, 43, 44, 49),
+                                                        titleText: const Text(
+                                                            'Mensaje'),
+                                                        duration:
+                                                            const Duration(
+                                                                seconds: 4),
+                                                        showProgressIndicator:
+                                                            true,
+                                                        progressIndicatorBackgroundColor:
+                                                            const Color(
+                                                                0xFF4470F3),
+                                                        progressIndicatorValueColor:
+                                                            const AlwaysStoppedAnimation(
+                                                                Color(
+                                                                    0xFFFDAE2A)),
+                                                        overlayBlur: 3,
+                                                      );
+                                                      print(
+                                                          'solicitud enviada correctamente');
+                                                    } else if (result ==
+                                                        2) //codigo diferente de 200
+                                                    {
+                                                      Get.snackbar(
+                                                        '',
+                                                        'Inténtelo nuevamente,problemas de conexión',
+                                                        colorText: const Color
+                                                                .fromARGB(
+                                                            255, 43, 44, 49),
+                                                        titleText: const Text(
+                                                            'Alerta'),
+                                                        duration:
+                                                            const Duration(
+                                                                seconds: 4),
+                                                        showProgressIndicator:
+                                                            true,
+                                                        progressIndicatorBackgroundColor:
+                                                            const Color(
+                                                                0xFF4470F3),
+                                                        progressIndicatorValueColor:
+                                                            const AlwaysStoppedAnimation(
+                                                                Color(
+                                                                    0xFFFDAE2A)),
+                                                        overlayBlur: 3,
+                                                      );
+                                                      print(
+                                                          'problema al enviar la solicitud');
+                                                    } else if (result ==
+                                                        3) //entro a la exepcion del catch
+                                                    {
+                                                      Get.snackbar(
+                                                        '',
+                                                        'Inténtelo nuevamente,problemas de conexión...',
+                                                        colorText: const Color
+                                                                .fromARGB(
+                                                            255, 43, 44, 49),
+                                                        titleText: const Text(
+                                                            'Alerta'),
+                                                        duration:
+                                                            const Duration(
+                                                                seconds: 4),
+                                                        showProgressIndicator:
+                                                            true,
+                                                        progressIndicatorBackgroundColor:
+                                                            const Color(
+                                                                0xFF4470F3),
+                                                        progressIndicatorValueColor:
+                                                            const AlwaysStoppedAnimation(
+                                                                Color(
+                                                                    0xFFFDAE2A)),
+                                                        overlayBlur: 3,
+                                                      );
+                                                      print(
+                                                          'problema al enviar la solicitud2');
+                                                    }
+                                                    //manadar un mensaje si la solicitud se envio bien
+                                                  } else {
                                                     Get.snackbar(
-                                                      '',
-                                                      'Solicitud de colación pedida correctamente,espere un momento...',
-                                                      colorText:
-                                                          const Color.fromARGB(
-                                                              255, 43, 44, 49),
-                                                      titleText:
-                                                          const Text('Mensaje'),
+                                                      'Mensaje',
+                                                      'No es posible pedir solicitud de Colación en este momento',
                                                       duration: const Duration(
-                                                          seconds: 4),
+                                                          milliseconds: 2500),
+                                                      backgroundColor:
+                                                          const Color.fromARGB(
+                                                              118,
+                                                              255,
+                                                              255,
+                                                              255),
                                                       showProgressIndicator:
                                                           true,
                                                       progressIndicatorBackgroundColor:
-                                                          const Color(
-                                                              0xFF4470F3),
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              203,
+                                                              205,
+                                                              209),
                                                       progressIndicatorValueColor:
                                                           const AlwaysStoppedAnimation(
                                                               Color(
                                                                   0xFFFDAE2A)),
                                                       overlayBlur: 3,
                                                     );
-                                                    print(
-                                                        'solicitud enviada correctamente');
-                                                  } else if (result ==
-                                                      2) //codigo diferente de 200
-                                                  {
-                                                    Get.snackbar(
-                                                      '',
-                                                      'Inténtelo nuevamente,problemas de conexión',
-                                                      colorText:
-                                                          const Color.fromARGB(
-                                                              255, 43, 44, 49),
-                                                      titleText:
-                                                          const Text('Alerta'),
-                                                      duration: const Duration(
-                                                          seconds: 4),
-                                                      showProgressIndicator:
-                                                          true,
-                                                      progressIndicatorBackgroundColor:
-                                                          const Color(
-                                                              0xFF4470F3),
-                                                      progressIndicatorValueColor:
-                                                          const AlwaysStoppedAnimation(
-                                                              Color(
-                                                                  0xFFFDAE2A)),
-                                                      overlayBlur: 3,
-                                                    );
-                                                    print(
-                                                        'problema al enviar la solicitud');
-                                                  } else if (result ==
-                                                      3) //entro a la exepcion del catch
-                                                  {
-                                                    Get.snackbar(
-                                                      '',
-                                                      'Inténtelo nuevamente,problemas de conexión...',
-                                                      colorText:
-                                                          const Color.fromARGB(
-                                                              255, 43, 44, 49),
-                                                      titleText:
-                                                          const Text('Alerta'),
-                                                      duration: const Duration(
-                                                          seconds: 4),
-                                                      showProgressIndicator:
-                                                          true,
-                                                      progressIndicatorBackgroundColor:
-                                                          const Color(
-                                                              0xFF4470F3),
-                                                      progressIndicatorValueColor:
-                                                          const AlwaysStoppedAnimation(
-                                                              Color(
-                                                                  0xFFFDAE2A)),
-                                                      overlayBlur: 3,
-                                                    );
-                                                    print(
-                                                        'problema al enviar la solicitud2');
                                                   }
-                                                  //manadar un mensaje si la solicitud se envio bien
                                                 } else if (_
                                                         .usserPermissionQr ==
                                                     2) {
@@ -1226,6 +1265,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                 //LLAMAR AL ENPOINT PARA SACAR DEL PUESTO DE TRABAJO
                                                 if (_.usserPermissionQr == 1) {
                                                   //todo esto cambiarlo
+
                                                   int result = await _
                                                       .ColacionProfessional(
                                                           _.idProfessionalLoggedIn,

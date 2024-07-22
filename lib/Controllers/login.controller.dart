@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:intl/intl.dart';
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -76,7 +77,7 @@ class LoginController extends GetxController {
   }
 
   Duration getDurationTime(int min) {
-    return Duration(minutes: min);
+    return Duration(seconds: min); //todo cambiar123RLP
   }
 
 //sumar una duracion dada a una hora
@@ -1238,6 +1239,7 @@ class LoginController extends GetxController {
           LocalStorage.prefs.remove('EntryFootprintBranch');
           LocalStorage.prefs.remove('EntryFootprintData');
           LocalStorage.prefs.remove('EntryFootprintOpen');
+          // Detener el servicio en segundo plano
 
           Get.offAllNamed('/LoginFormPage');
         } else {
@@ -1258,8 +1260,11 @@ class LoginController extends GetxController {
               'NO CERRO SECION CORRECTAMENTE ELIMINANDO LOS DATOS DE SECCION');
           Get.offAllNamed('/LoginFormPage');
         }
+        final service = FlutterBackgroundService(); //detengo el servicio
+        service.invoke('stopService');
       } else
-        print('ERROR: -----> Revisar que el token esta llegando aqui vacio');
+        print(
+            'ERROR: -----> Revisar que el token esta llegando aqui vacio->token= $token');
     } catch (e) {
       print('Erroor:$e');
     }

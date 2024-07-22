@@ -1207,7 +1207,7 @@ class _HomePageBodyState extends State<HomePageBody>
 
         int valueMin = tiempoRestante.truncate() + value;
         Duration nuevaDuracion = Duration(
-          minutes: valueMin,
+          seconds: valueMin, //todo cambiar123RLP
         );
 
         animationCont[i]!.duration = nuevaDuracion;
@@ -1248,7 +1248,7 @@ class _HomePageBodyState extends State<HomePageBody>
             valueMin = 1;
           }
           Duration nuevaDuracion = Duration(
-            minutes: valueMin,
+            seconds: valueMin, //todo cambiar123RLP
           );
 
           animationCont[i]!.duration = nuevaDuracion;
@@ -1283,7 +1283,7 @@ class _HomePageBodyState extends State<HomePageBody>
             valueMin = 1;
           }
           Duration nuevaDuracion = Duration(
-            minutes: valueMin,
+            seconds: valueMin, //todo cambiar123RLP
           );
 
           animationCont[i]!.duration = nuevaDuracion;
@@ -1317,7 +1317,7 @@ class _HomePageBodyState extends State<HomePageBody>
             valueMin = 1;
           }
           Duration nuevaDuracion = Duration(
-            minutes: valueMin,
+            seconds: valueMin, //todo cambiar123RLP
           );
 
           animationCont[i]!.duration = nuevaDuracion;

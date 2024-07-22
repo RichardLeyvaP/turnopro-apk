@@ -1485,13 +1485,14 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                   nameServiceProduct =
                                       contShopp.orderDeleteCar[i].nameProduct;
                                 }
-
-                                notiController.storeNotification(
-                                    'Solicitud de Eliminación Rechazada',
-                                    controllerLogin.branchIdLoggedIn,
-                                    contShopp.orderDeleteCar[i].profesional_id,
-                                    '!Atención..El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} no fue aprobado para su eliminación.',
-                                    'Barbero');
+                                //la notificacion la crea la api
+                                //
+                                // notiController.storeNotification(
+                                //     'Solicitud de Eliminación Rechazada',
+                                //     controllerLogin.branchIdLoggedIn,
+                                //     contShopp.orderDeleteCar[i].profesional_id,
+                                //     '!Atención..El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} no fue aprobado para su eliminación.',
+                                //     'Barbero');
                               }
                               if (controllerLogin.branchIdLoggedIn != null) {
                                 await contShopp.loadOrderDeleteCar(
@@ -1681,21 +1682,25 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
 
                                   if (typeDelete ==
                                       'Aceptada Eliminación de Servicio') {
-                                    notiController.storeNotification2(
-                                        typeDelete,
-                                        controllerLogin.branchIdLoggedIn,
-                                        contShopp
-                                            .orderDeleteCar[i].profesional_id,
-                                        '$serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado con tiempo de ${contShopp.orderDeleteCar[i].duration_service} min.${contShopp.orderDeleteCar[i].reservation_id}',
-                                        'Barbero');
+                                    //esta notificación la esta haciendo el api
+                                    //
+                                    // notiController.storeNotification2(
+                                    //     typeDelete,
+                                    //     controllerLogin.branchIdLoggedIn,
+                                    //     contShopp
+                                    //         .orderDeleteCar[i].profesional_id,
+                                    //     '$serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado con tiempo de ${contShopp.orderDeleteCar[i].duration_service} min.${contShopp.orderDeleteCar[i].reservation_id}',
+                                    //     'Barbero');
                                   } else {
-                                    notiController.storeNotification(
-                                        typeDelete,
-                                        controllerLogin.branchIdLoggedIn,
-                                        contShopp
-                                            .orderDeleteCar[i].profesional_id,
-                                        'El $serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado satisfactoriamente.',
-                                        'Barbero');
+                                    //esta notificación la esta haciendo el api
+                                    //
+                                    // notiController.storeNotification(
+                                    //     typeDelete,
+                                    //     controllerLogin.branchIdLoggedIn,
+                                    //     contShopp
+                                    //         .orderDeleteCar[i].profesional_id,
+                                    //     'El $serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado satisfactoriamente.',
+                                    //     'Barbero');
                                   }
                                 }
                                 if (controllerLogin.branchIdLoggedIn != null) {
