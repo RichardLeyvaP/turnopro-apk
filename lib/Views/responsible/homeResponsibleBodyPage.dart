@@ -673,7 +673,9 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 //poner a 4 para que le cierre la session el Qr
                                 // controllerLogin.setCodigoQrValid(null);
                                 //viendo a la hora que se le aceptó
-                                var now = DateTime.now(); //hora actual
+                                //la notificación la inserta la api
+                                //
+                                /*  var now = DateTime.now(); //hora actual
                                 //sumo 1 hora
                                 var formatter = DateFormat('hh:mm');
                                 String formattedTime = formatter.format(now);
@@ -688,6 +690,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                     idProf,
                                     'Aceptada su solicitud de Salida, ($formattedTime).',
                                     charge);
+                                    */
                               } else {
                                 Get.snackbar(
                                   'Alerta',
@@ -976,7 +979,9 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 //poner a null el Qr
                                 // controllerLogin.setCodigoQrValid(null);
                                 //viendo a la hora que se le aceptó
-                                var now = DateTime.now(); //hora actual
+                                //la notificación la inserta la api
+                                //
+                                /*  var now = DateTime.now(); //hora actual
                                 var oneHourLater =
                                     now.add(Duration(hours: 1)); //sumo 1 hora
                                 var formatter = DateFormat('hh:mm');
@@ -993,6 +998,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                     idProf,
                                     'Aceptada su solicitud de Colación, de ($formattedTime a $formattedTime2)',
                                     charge);
+
+                                    */
                               } else {
                                 Get.snackbar(
                                   'Alerta',
