@@ -643,12 +643,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                   if (result == 1) //codigo 200
                                                   {
                                                     //mando notificacion al barbero
-                                                    notiController.storeNotification(
+                                                    //la hace la api
+                                                    /*notiController.storeNotification(
                                                         'Solicitud de Colación',
                                                         _.branchIdLoggedIn,
                                                         _.idProfessionalLoggedIn,
                                                         'EL Técnico ${_.nameUserLoggedIn} esta pidiendo solicitud de colación',
                                                         'Ambos'); //esto es para quele llegue a coordinador y encargado
+                                                        */
                                                     _.setCodigoQrValid(
                                                         2); //quiere decir que el qr esta bloquedo hasta que acepten o rechacen
                                                     Get.snackbar(
@@ -853,12 +855,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                   {
                                                     _.setCodigoQrValid(
                                                         2); //si el QR = 2 sacarlo de la app
+                                                    //lo hace la api
+                                                    /*
                                                     notiController.storeNotification(
                                                         'Solicitud de Salida',
                                                         _.branchIdLoggedIn,
                                                         _.idProfessionalLoggedIn,
                                                         'EL Técnico ${_.nameUserLoggedIn} esta pidiendo solicitud de salida',
                                                         'Ambos'); //esto es para quele llegue a coordinador y encargado
+                                                        */
                                                     Get.snackbar(
                                                       '',
                                                       'Solicitud de salida pedida correctamente,espere un momento...',

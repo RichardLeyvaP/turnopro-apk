@@ -986,7 +986,9 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                               //aqui mandar notificacion
                               if (result == 1) {
                                 //codigo 200
-                                String typeDelete =
+                                //enviado de la api
+                                //
+                                /*  String typeDelete =
                                     'Rechazada su solicitud de Salida';
 
                                 notiController.storeNotification2(
@@ -994,7 +996,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                     controllerLogin.branchIdLoggedIn,
                                     idProf,
                                     'Su solicitud de Salida fue rechazada',
-                                    charge);
+                                    charge);*/
                               } else {
                                 Get.snackbar(
                                   'Alerta',
@@ -1157,21 +1159,22 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 //poner a 4 para que le cierre la session el Qr
                                 // controllerLogin.setCodigoQrValid(null);
                                 //viendo a la hora que se le aceptó
-                                var now = DateTime.now(); //hora actual
-                                //sumo 1 hora
-                                var formatter = DateFormat('hh:mm');
-                                String formattedTime = formatter.format(now);
+                                //esto lo envia la api
+                                // var now = DateTime.now(); //hora actual
+                                // //sumo 1 hora
+                                // var formatter = DateFormat('hh:mm');
+                                // String formattedTime = formatter.format(now);
 
-                                //codigo 200
-                                String typeDelete =
-                                    'Aceptada su solicitud de Salida';
+                                // //codigo 200
+                                // String typeDelete =
+                                //     'Aceptada su solicitud de Salida';
 
-                                notiController.storeNotification2(
-                                    typeDelete,
-                                    controllerLogin.branchIdLoggedIn,
-                                    idProf,
-                                    'Aceptada su solicitud de Salida, ($formattedTime).',
-                                    charge);
+                                // notiController.storeNotification2(
+                                //     typeDelete,
+                                //     controllerLogin.branchIdLoggedIn,
+                                //     idProf,
+                                //     'Aceptada su solicitud de Salida, ($formattedTime).',
+                                //     charge);
                               } else {
                                 Get.snackbar(
                                   'Alerta',
@@ -1301,7 +1304,9 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                               //aqui mandar notificacion
                               if (result == 1) {
                                 //codigo 200
-                                String typeDelete =
+                                //esto lo manda la api
+                                //
+                                /* String typeDelete =
                                     'Rechazada su solicitud de Colación';
 
                                 notiController.storeNotification2(
@@ -1310,6 +1315,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                     idProf,
                                     'Su solicitud de Colación fue rechazada',
                                     charge);
+                                    */
                               } else {
                                 Get.snackbar(
                                   'Alerta',
@@ -1473,23 +1479,25 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 //poner a null el Qr
                                 // controllerLogin.setCodigoQrValid(null);
                                 //viendo a la hora que se le aceptó
-                                var now = DateTime.now(); //hora actual
-                                var oneHourLater =
-                                    now.add(Duration(hours: 1)); //sumo 1 hora
-                                var formatter = DateFormat('hh:mm');
-                                String formattedTime = formatter.format(now);
-                                String formattedTime2 =
-                                    formatter.format(oneHourLater);
-                                //codigo 200
-                                String typeDelete =
-                                    'Aceptada su solicitud de Colación';
+                                //esto lo manda la api
+                                //
+                                // var now = DateTime.now(); //hora actual
+                                // var oneHourLater =
+                                //     now.add(Duration(hours: 1)); //sumo 1 hora
+                                // var formatter = DateFormat('hh:mm');
+                                // String formattedTime = formatter.format(now);
+                                // String formattedTime2 =
+                                //     formatter.format(oneHourLater);
+                                // //codigo 200
+                                // String typeDelete =
+                                //     'Aceptada su solicitud de Colación';
 
-                                notiController.storeNotification2(
-                                    typeDelete,
-                                    controllerLogin.branchIdLoggedIn,
-                                    idProf,
-                                    'Aceptada su solicitud de Colación, de ($formattedTime a $formattedTime2)',
-                                    charge);
+                                // notiController.storeNotification2(
+                                //     typeDelete,
+                                //     controllerLogin.branchIdLoggedIn,
+                                //     idProf,
+                                //     'Aceptada su solicitud de Colación, de ($formattedTime a $formattedTime2)',
+                                //     charge);
                               } else {
                                 Get.snackbar(
                                   'Alerta',
@@ -1852,7 +1860,9 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                               print('return resul: IconButton $result');
                               if (result == true) {
                                 if (charge == 'Barbero') {
-                                  notiController.storeNotification2(
+                                  //esto lo hace la api
+                                  //
+                                  /*notiController.storeNotification2(
                                       //storeNotification2 significa que hay que cambiar el Qr dependiendo de la respuesta
                                       typeDelete,
                                       controllerLogin.branchIdLoggedIn,
@@ -1860,7 +1870,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                           .clientsScheduledListBranchClient[i]
                                           .professional_id,
                                       'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue eliminado de su cola',
-                                      'Barbero');
+                                      'Barbero');*/
                                 } else if (charge == 'Tecnico') {
                                   //enviar mensaje al barbero que el cliente esta regresando porque fue rechazado
 

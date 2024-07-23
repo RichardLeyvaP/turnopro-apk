@@ -2180,12 +2180,14 @@ class _HomePageBodyState extends State<HomePageBody>
                                   //     clientsScheduledController
                                   //         .clientsScheduledNext!.reservation_id);
                                   // if (resulButton == 1) {
-                                  notiController.storeNotification(
-                                      'Solicitud de rechazo',
-                                      loginController.branchIdLoggedIn,
-                                      loginController.idProfessionalLoggedIn,
-                                      'EL profesional "${loginController.nameUserLoggedIn}" está rechazando a "${clientsScheduledControllerE.clientsScheduledNext!.client_name}"',
-                                      'Ambos'); //esto es para quele llegue a coordinador y encargado
+                                  //esto lo hace la api
+                                  //
+                                  // notiController.storeNotification(
+                                  //     'Solicitud de rechazo',
+                                  //     loginController.branchIdLoggedIn,
+                                  //     loginController.idProfessionalLoggedIn,
+                                  //     'EL profesional "${loginController.nameUserLoggedIn}" está rechazando a "${clientsScheduledControllerE.clientsScheduledNext!.client_name}"',
+                                  //     'Ambos'); //esto es para quele llegue a coordinador y encargado
                                   int rest =
                                       await clientsScheduledControllerE
                                           .acceptOrRejectClient(

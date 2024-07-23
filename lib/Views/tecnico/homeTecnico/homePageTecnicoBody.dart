@@ -592,14 +592,16 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                         loginController
                                                             .setCodigoQrValid(
                                                                 2);
-                                                        notiController.storeNotification(
-                                                            'Solicitud de rechazo',
-                                                            loginController
-                                                                .branchIdLoggedIn,
-                                                            loginController
-                                                                .idProfessionalLoggedIn,
-                                                            'EL Técnico "${loginController.nameUserLoggedIn}" está rechazando al cliente "$nameClient"',
-                                                            'Ambos'); //esto es para quele llegue a coordinador y encargado
+                                                        //esto lo hace la api
+                                                        //
+                                                        // notiController.storeNotification(
+                                                        //     'Solicitud de rechazo',
+                                                        //     loginController
+                                                        //         .branchIdLoggedIn,
+                                                        //     loginController
+                                                        //         .idProfessionalLoggedIn,
+                                                        //     'EL Técnico "${loginController.nameUserLoggedIn}" está rechazando al cliente "$nameClient"',
+                                                        //     'Ambos'); //esto es para quele llegue a coordinador y encargado
 
                                                         clientsScheduledController
                                                                 .animationControllerInitialT =
@@ -987,7 +989,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                     'Esperando respuesta ',
                                                   ),
                                                   Text(
-                                                    'de la solicitud de rechazo',
+                                                    'de la solicitud',
                                                   ),
                                                 ],
                                               );

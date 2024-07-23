@@ -509,15 +509,17 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                               //aqui mandar notificacion
                               if (result == 1) {
                                 //codigo 200
-                                String typeDelete =
-                                    'Rechazada su solicitud de Salida';
+                                //esto lo manda la api
+                                //
+                                // String typeDelete =
+                                //     'Rechazada su solicitud de Salida';
 
-                                notiController.storeNotification2(
-                                    typeDelete,
-                                    controllerLogin.branchIdLoggedIn,
-                                    idProf,
-                                    'Su solicitud de Salida fue rechazada',
-                                    charge);
+                                // notiController.storeNotification2(
+                                //     typeDelete,
+                                //     controllerLogin.branchIdLoggedIn,
+                                //     idProf,
+                                //     'Su solicitud de Salida fue rechazada',
+                                //     charge);
                               } else {
                                 Get.snackbar(
                                   'Alerta',
@@ -812,15 +814,17 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                               //aqui mandar notificacion
                               if (result == 1) {
                                 //codigo 200
-                                String typeDelete =
-                                    'Rechazada su solicitud de Colación';
+                                //esto lo manda la api
+                                //
+                                // String typeDelete =
+                                //     'Rechazada su solicitud de Colación';
 
-                                notiController.storeNotification2(
-                                    typeDelete,
-                                    controllerLogin.branchIdLoggedIn,
-                                    idProf,
-                                    'Su solicitud de Colación fue rechazada',
-                                    charge);
+                                // notiController.storeNotification2(
+                                //     typeDelete,
+                                //     controllerLogin.branchIdLoggedIn,
+                                //     idProf,
+                                //     'Su solicitud de Colación fue rechazada',
+                                //     charge);
                               } else {
                                 Get.snackbar(
                                   'Alerta',
