@@ -863,7 +863,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                               );
                             },
                             child: const Text(
-                              ' FINALIZAR SERVICO ',
+                              ' FINALIZAR SERVICIO ',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 12,

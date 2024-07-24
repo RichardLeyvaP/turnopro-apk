@@ -378,6 +378,7 @@ class LoginController extends GetxController {
   bool incorrectFields = false;
   String greeting = 'Buenos días ';
   bool isLoggingIn = false;
+  bool isLoggingNotification = false; //si es true es que vino de login
   bool isLoggingInCharge = false;
 
   //******************* */
@@ -498,6 +499,10 @@ class LoginController extends GetxController {
   void setIsLoggingIn(bool value) {
     isLoggingIn = value;
     update();
+  }
+
+  void setLoggingNotification(bool value) {
+    isLoggingNotification = value;
   }
 
   Future<void> setLoggingInCharge(bool value, String place) async {
@@ -1149,6 +1154,7 @@ class LoginController extends GetxController {
             //aqui cargo la cola del barbero para poder tener en el home al siguiente de la cola inicialmente
             print('estoy aqui al cargar datos del controlador de client');
             setIsLoggingIn(true);
+            setLoggingNotification(true);
             setLoggingInCharge(true, 'loginGetIn-904');
             clientsScheduledController.setCloseIesperado(true);
             clientsScheduledController.setCloseIesperadoLogin(true);

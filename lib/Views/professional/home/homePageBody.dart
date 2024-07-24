@@ -970,8 +970,13 @@ class _HomePageBodyState extends State<HomePageBody>
                   (loginController.chargeUserLoggedIn ==
                       "Barbero y Encargado"))) {
             //guardar datos de los relojes en la db
-            await clientsScheduledController.upadateVariablesValueTimers();
-            //aqui en este actualiza los tiempos de los relojes
+            //comprobar que este en barbero
+            if (loginController.switchValue ==
+                false) //es porque está en barbero
+            {
+              await clientsScheduledController.upadateVariablesValueTimers();
+              //aqui en este actualiza los tiempos de los relojes
+            }
 
             print(
                 'activando el Clock - 1 lenght - clientsScheduledList:${clientsScheduledController.clientsScheduledList.length}');

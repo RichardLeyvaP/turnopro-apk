@@ -111,7 +111,7 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
                                   String textoCompleto =
                                       _.notification[index].description;
                                   description = textoCompleto
-                                      .split('.')[0]; // Obtener la descripción
+                                      .split(',')[0]; // Obtener la descripción
                                 }
 
                                 return Padding(

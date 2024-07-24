@@ -907,10 +907,13 @@ class ClientsScheduledController extends GetxController {
     // timeClientsActAttended4 = time4;
     if (t1 != -99 || t2 != -99 || t3 != -99 || t4 != -99) {
       verifyingClockTimeNew(t1, t2, t3, t4);
-      animationControllerInitial!
-        ..duration = Duration(seconds: 180)
-        ..reset()
-        ..stop();
+      if (animationControllerInitial != null &&
+          animationControllerInitial!.isAnimating) {
+        animationControllerInitial!
+          ..duration = Duration(seconds: 180)
+          ..reset()
+          ..stop();
+      }
     } else if (clientsScheSalon != 0 &&
         !animationControllerInitial!.isAnimating) {
       animationControllerInitial!
@@ -1197,9 +1200,10 @@ class ClientsScheduledController extends GetxController {
     loginController.getUpdateTime(newTotalTime, 1, 'build-homePage-1');
   }
 
-  Future<void> watchModifyTimeRest(reservationId, descripcion) async {
+  Future<void> watchModifyTimeRest(
+      reservationId, descripcion, placeCall) async {
     print(
-        'modificar time de mm estoy entrando ahora mismo watchModifyTimeRest');
+        'modificar time de mm estoy entrando ahora mismo watchModifyTimeRest-llamanado desde:$placeCall');
     int timeRest = obtenerDuracionServicio(descripcion);
     if (clientsAttended1 != null) {
       if (reservationId == clientsAttended1!.reservation_id) {
@@ -1365,15 +1369,15 @@ class ClientsScheduledController extends GetxController {
   //   return 0;
   // }
   int obtenerDuracionServicio(String cadena) {
-    // Definimos la expresión regular para encontrar el número de minutos después de "tiempo de "
-    RegExp regExp = RegExp(r'tiempo de (\d+) min');
+    // Definimos la expresión regular para encontrar el número de segundos después de "tiempo de "
+    RegExp regExp = RegExp(r'tiempo de (\d+) seg');
 
     // Buscamos la primera coincidencia de la expresión regular en el texto
     Match? match = regExp.firstMatch(cadena);
 
     // Verificamos si se encontró una coincidencia
     if (match != null) {
-      // Obtenemos el grupo capturado que contiene el número de minutos
+      // Obtenemos el grupo capturado que contiene el número de segundos
       String duracionTexto = match.group(1)!;
       print(
           'modificar time de mm 1 estoy aqui en el forEach-match != null:$duracionTexto');
@@ -1539,8 +1543,12 @@ class ClientsScheduledController extends GetxController {
         int? idBranch = controllerLogin.branchIdLoggedIn;
         int? idProfessional = controllerLogin.idProfessionalLoggedIn;
         //aqui actualizo la cola
-        /*await fetchClientsScheduled(
-            idProfessional, idBranch, 'acceptOrRejectClient');*/
+        if (attended == 1) //llamo al proximo cliente atender.actualizo la cola
+        {
+          await fetchClientsScheduled(
+              idProfessional, idBranch, 'acceptOrRejectClient');
+        }
+
         //verificar que reloj es el que hay que QUITAR
         if (attended == 2) {
           //si es 2 es que ya termino de atender al cliente1

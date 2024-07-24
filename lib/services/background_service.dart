@@ -99,7 +99,7 @@ Future<void> notificationSimplifies() async {
         await notiController.fetchNotificationListSERV(
             branchProfesional,
             idProfesional,
-            'Barbero y Encargado',
+            'Encargado',
             'LLamando-desde-background-service',
             tokenUser);
       } else {
@@ -245,26 +245,16 @@ Future<void> onStart(ServiceInstance service) async {
           "Barbería Hernández-${LocalStorage.prefs.getInt('id_profesional')}",
     );
   }
+  // service.invoke(
+  //   'update',
+  //   {
+  //     "current_date": DateTime.now().toIso8601String(),
+  //   },
+  // );
 
   // Example of a periodic task.
   Timer.periodic(const Duration(seconds: 10), (timer) async {
-    // if (service is AndroidServiceInstance) {
-    //   service.setForegroundNotificationInfo(
-    //     title: "Simplifies",
-    //     content:
-    //         "Barbería Hernández-${LocalStorage.prefs.getInt('id_profesional')}",
-    //   );
-    // }
-
-    print('Call your API here -1');
     notificationSimplifies();
-    print('Call your API here -3');
-    // service.invoke(
-    //   'update',
-    //   {
-    //     "current_date": DateTime.now().toIso8601String(),
-    //   },
-    // );
   });
 
   Timer.periodic(const Duration(seconds: 16), (timer) async {

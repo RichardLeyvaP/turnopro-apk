@@ -262,8 +262,13 @@ class NotificationController extends GetxController {
                 print('modificar time de mm 1 estoy aqui en el forEach');
                 String textoCompleto = element.description;
                 int idReservation = obtenerNumeroDespuesDelPunto(textoCompleto);
-                controllerclient.watchModifyTimeRest(
-                    idReservation, textoCompleto);
+                if (controllerLogin.isLoggingNotification ==
+                    false) //vino del login si es true,solo debe entrar si no viene del login
+                {
+                  controllerclient.watchModifyTimeRest(idReservation,
+                      textoCompleto, 'professionalBranchNotifQueque');
+                }
+
                 updateNotifications2(idBranch, idProfe, element.id);
               }
 
@@ -411,6 +416,7 @@ class NotificationController extends GetxController {
           professionalBranchNotifQueque(idBranch, idProfe, type, msj, token);
         }
       }
+      controllerLogin.setLoggingNotification(false);
     } catch (e) {
       print('Error de excepción al obtener la lista de notificaciones:$e');
       controllerclient.setclientLisError(-99);
@@ -604,8 +610,8 @@ class NotificationController extends GetxController {
             print(
                 'modificar time de mm 1 estoy aqui en el forEach-2-idReservation:$idReservation - textoCompleto:$textoCompleto');
 
-            controllerclient.watchModifyTimeRest(idReservation,
-                textoCompleto); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
+            controllerclient.watchModifyTimeRest(idReservation, textoCompleto,
+                'fetchNotificationListSERV'); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
             updateNotifications2(idBranch, idProfe,
                 element.id); //aqui es para no repetir esto y lo pongo en 0
 
@@ -807,8 +813,8 @@ class NotificationController extends GetxController {
             print(
                 'modificar time de mm 1 estoy aqui en el forEach-2-idReservation:$idReservation - textoCompleto:$textoCompleto');
 
-            controllerclient.watchModifyTimeRest(idReservation,
-                textoCompleto); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
+            controllerclient.watchModifyTimeRest(idReservation, textoCompleto,
+                'fetchNotificationList'); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
             updateNotifications2(idBranch, idProfe,
                 element.id); //aqui es para no repetir esto y lo pongo en 0
 
