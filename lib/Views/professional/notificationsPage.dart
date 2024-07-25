@@ -36,7 +36,7 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
     } else {
       typeEnv = logCont.chargeUserLoggedIn;
     }
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 2), () {
       notifCont.updateNotifications(
           logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn, typeEnv);
 

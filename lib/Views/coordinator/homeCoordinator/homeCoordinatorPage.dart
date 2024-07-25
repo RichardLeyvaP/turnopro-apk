@@ -168,47 +168,87 @@ class _HomeCoordinatorPagesState extends State<HomeCoordinatorPages>
                                       MediaQuery.of(context).size.width * 0.08,
                                 ),
                                 label: 'Agenda'),
-                        notiContro.notificationListNewLength > 0
-                            ? BottomNavigationBarItem(
-                                icon: Badge(
-                                  label: GetBuilder<NotificationController>(
-                                      builder: (_notiCont) {
-                                    WidgetsBinding.instance
-                                        .addPostFrameCallback((_) {
-                                      // Se ejecutará después de que se haya construido el widget
-                                      //define que tipo de saludo dar dependiendo de la hora
-                                      if (_notiCont.notificationListNewLength !=
-                                          _notiCont.notificationListBack) {
-                                        _notiCont.updateNotificationListBack(
-                                            _notiCont
-                                                .notificationListNewLength);
-                                      }
-                                    });
+                        // notiContro.notificationListNewLength > 0
+                        //     ?
+                        // BottomNavigationBarItem(
+                        //     icon: Badge(
+                        //       label: GetBuilder<NotificationController>(
+                        //           builder: (_notiCont) {
+                        //         WidgetsBinding.instance
+                        //             .addPostFrameCallback((_) {
+                        //           // Se ejecutará después de que se haya construido el widget
+                        //           //define que tipo de saludo dar dependiendo de la hora
+                        //           if (_notiCont.notificationListNewLength !=
+                        //               _notiCont.notificationListBack) {
+                        //             _notiCont.updateNotificationListBack(
+                        //                 _notiCont.notificationListNewLength);
+                        //           }
+                        //         });
 
-                                    if (_notiCont.notificationListNewLength !=
-                                            _notiCont.notificationListBack &&
-                                        _notiCont.notificationListNewLength !=
-                                            0) {
-                                      //  _notiCont.reproducirSound();
-                                    }
-                                    return Text(
-                                        (_notiCont.notificationListNewLength)
-                                            .toString());
-                                  }),
-                                  child: Icon(
-                                    Icons.notifications,
-                                    size: MediaQuery.of(context).size.width *
-                                        0.08,
-                                  ),
-                                ),
-                                label: 'Notificaciones')
-                            : BottomNavigationBarItem(
-                                icon: Icon(
-                                  Icons.notifications,
-                                  size:
-                                      MediaQuery.of(context).size.width * 0.08,
-                                ),
-                                label: 'Notificaciones'),
+                        //         if (_notiCont.notificationListNewLength !=
+                        //                 _notiCont.notificationListBack &&
+                        //             _notiCont.notificationListNewLength != 0) {
+                        //           //  _notiCont.reproducirSound();
+                        //         }
+                        //         return Text(
+                        //             (_notiCont.notificationListNewLength)
+                        //                 .toString());
+                        //       }),
+                        //       child: Icon(
+                        //         Icons.notifications,
+                        //         size: MediaQuery.of(context).size.width * 0.08,
+                        //       ),
+                        //     ),
+                        //     label: 'Notificaciones'),
+                        //
+                        //
+                        //
+                        //
+                        //
+                        BottomNavigationBarItem(
+                            icon: GetBuilder<NotificationController>(
+                                builder: (_notiCont) {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                // Se ejecutará después de que se haya construido el widget
+                                //define que tipo de saludo dar dependiendo de la hora
+                                if (_notiCont.notificationListNewLength !=
+                                    _notiCont.notificationListBack) {
+                                  _notiCont.updateNotificationListBack(
+                                      _notiCont.notificationListNewLength);
+                                }
+                              });
+
+                              if (_notiCont.notificationListNewLength !=
+                                      _notiCont.notificationListBack &&
+                                  _notiCont.notificationListNewLength != 0) {
+                                //  _notiCont.reproducirSound();
+                              }
+                              return _notiCont.notificationListNewLength > 0
+                                  ? Badge(
+                                      label: Text(
+                                          (_notiCont.notificationListNewLength)
+                                              .toString()),
+                                      child: Icon(
+                                        Icons.notifications,
+                                        size:
+                                            MediaQuery.of(context).size.width *
+                                                0.08,
+                                      ),
+                                    )
+                                  : Icon(
+                                      Icons.notifications,
+                                      size: MediaQuery.of(context).size.width *
+                                          0.08,
+                                    );
+                            }),
+                            label: 'Notificaciones'),
+                        // : BottomNavigationBarItem(
+                        //     icon: Icon(
+                        //       Icons.notifications,
+                        //       size:
+                        //           MediaQuery.of(context).size.width * 0.08,
+                        //     ),
+                        //     label: 'Notificaciones'),
                         BottomNavigationBarItem(
                             icon: Icon(
                               Icons.bar_chart,

@@ -222,6 +222,7 @@ class ClientsCoordinatorRepository extends GetConnect {
       return {"clientList": clientList};
     } catch (e) {
       print(e);
+      return {"clientList": clientList};
     }
   } //
 

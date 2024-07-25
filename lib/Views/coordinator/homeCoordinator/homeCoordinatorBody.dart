@@ -115,12 +115,6 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
             loginController.chargeUserLoggedIn == "Coordinador" &&
             loginController.usserPermissionQr != null) {
           // actualizo la cola
-          notiController.fetchNotificationList(
-              loginController.branchIdLoggedIn,
-              loginController.idProfessionalLoggedIn,
-              'Coordinador',
-              'callTimerCoord',
-              loginController.tokenUserLoggedIn);
 
           await clientsScheduledController
               .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
@@ -136,6 +130,12 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
           await clientsScheduledController
               .outRequestBranch(loginController.branchIdLoggedIn);
           controllerShoppingCart.setLoading(false);
+          await notiController.fetchNotificationList(
+              loginController.branchIdLoggedIn,
+              loginController.idProfessionalLoggedIn,
+              'Coordinador',
+              'callTimerCoord',
+              loginController.tokenUserLoggedIn);
         }
       }
     });

@@ -85,37 +85,25 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
         .addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         reiniciateClock();
-        if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
-            0) {
-          //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
-          String type = 'Tiempo';
-          int branchId = loginController.branchIdLoggedIn!;
-          int professionalId = loginController.idProfessionalLoggedIn!;
-          int estado = 0; //es que incumplió
-          clientsScheduledController.changeNoncomplianceTecnhical(
-              type, branchId, professionalId, estado);
-          //aqui llamar e insertar en las notificacione sque incumplio esta convivencia
-          notiController.storeNotification(
-              'Incumplimiento de convivencia',
-              branchId,
-              professionalId,
-              'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado.',
-              'Tecnico');
+        if (clientsScheduledController.quantityClientAttendedTechnical == 0) {
+          if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
+              0) {
+            //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
+            String type = 'Tiempo';
+            int branchId = loginController.branchIdLoggedIn!;
+            int professionalId = loginController.idProfessionalLoggedIn!;
+            int estado = 0; //es que incumplió
+            clientsScheduledController.changeNoncomplianceTecnhical(
+                type, branchId, professionalId, estado);
+            //aqui llamar e insertar en las notificacione sque incumplio esta convivencia
+            notiController.storeNotification(
+                'Incumplimiento de convivencia',
+                branchId,
+                professionalId,
+                'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado.',
+                'Tecnico');
+          }
         }
-        // LocalStorage.prefs.setBool('convivenciaIncumplidaT', true);
-        // LocalStorage.prefs.setInt('valueClockIni', 180);
-        // clientsScheduledController.setTotalTimeInitialTec(180);
-        // LocalStorage.prefs.setBool('valueClockActivT', false);
-
-        // // clientsScheduledController.animationControllerInitialT =
-        // //     AnimationController(
-        // //   vsync: this,
-        // //   duration:
-        // //       Duration(seconds: clientsScheduledController.totalTimeInitial),
-        // // );
-        // // La animación ha llegado al final, reiniciar
-        // clientsScheduledController.animationControllerInitialT!.reset();
-        // clientsScheduledController.animationControllerInitialT!.forward();
       }
     });
 
@@ -270,6 +258,20 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
             loginController.branchIdLoggedIn != null &&
             (loginController.chargeUserLoggedIn == "Tecnico" &&
                 (loginController.usserPermissionQr != null))) {
+          if (clientsScheduledController.clientsTechnicalLength <= 0 ||
+              clientsScheduledController.quantityClientAttendedTechnical > 0) {
+            if (clientsScheduledController
+                .animationControllerInitialT!.isAnimating) {
+              LocalStorage.prefs.setBool('valueClockActivT', false);
+              LocalStorage.prefs.setInt('valueClockIni', 180);
+              clientsScheduledController.animationControllerInitialT!
+                ..duration = const Duration(seconds: 180)
+                ..reset()
+                ..stop();
+            }
+          }
+          // else
+          // if()//si hubiera cliente en cola
           //await Future.delayed(Duration(seconds: 1));
           //Buscar notificaciones
           print('callTimerTec 4-callTimerTecNotification-llamada 8 seg');
@@ -849,27 +851,17 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                                   'valueClockTec1',
                                                                   300);
 
-                                                          clientsScheduledController
-                                                              .animationTechnicalController1!
-                                                              .stop();
-                                                          clientsScheduledController
-                                                              .animationTechnicalController1!
-                                                              .reset();
-
                                                           //
                                                           //todo FALTA QUE SE MUESTRE EL RELOJ
-                                                          //
-
-                                                          clientsScheduledController
-                                                                  .animationTechnicalController1!
-                                                                  .duration =
-                                                              const Duration(
-                                                                  seconds:
-                                                                      300); //por ahora 5min
 
                                                           clientsScheduledController
                                                               .animationTechnicalController1!
-                                                              .forward();
+                                                            ..duration =
+                                                                const Duration(
+                                                                    seconds:
+                                                                        300)
+                                                            ..reset()
+                                                            ..forward();
                                                           // detengo todos los timers que deben detenerse
                                                           LocalStorage.prefs
                                                               .setBool(
@@ -881,10 +873,12 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                                   180);
                                                           clientsScheduledController
                                                               .animationControllerInitialT!
-                                                              .stop();
-                                                          clientsScheduledController
-                                                              .animationControllerInitialT!
-                                                              .reset();
+                                                            ..duration =
+                                                                const Duration(
+                                                                    seconds:
+                                                                        180)
+                                                            ..reset()
+                                                            ..stop();
                                                         } else //no lo cogio por algun problema-vuelve a tomar el valor
                                                         //la variable para que pueda volver a cogerlo
                                                         {
@@ -1399,12 +1393,12 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                     //aqui limpiar la variable que no deja cojer doble al cliente
                                     loginController.pressedButtonIdsTec.clear();
                                     //reseteo y lo dejo en punta para el proximo cliente
+
                                     clientsScheduledController
                                         .animationTechnicalController1!
-                                        .stop();
-                                    clientsScheduledController
-                                        .animationTechnicalController1!
-                                        .reset();
+                                      ..duration = const Duration(seconds: 300)
+                                      ..reset()
+                                      ..stop();
 
                                     //ponemos afalse la variable que nos indica que hay cliente atendiendose
                                     LocalStorage.prefs
@@ -1417,21 +1411,14 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                         .setInt('valueClockIni', 180);
                                     clientsScheduledController
                                         .setTotalTimeInitialTec(180);
-                                    clientsScheduledController
-                                            .animationControllerInitialT =
-                                        AnimationController(
-                                      vsync: this,
-                                      duration: Duration(seconds: 180),
-                                    );
+
                                     // La animación ha llegado al final, reiniciar
+
                                     clientsScheduledController
                                         .animationControllerInitialT!
-                                        .reset();
-                                    //ver si hay mas en cola iniciarlo
-                                    //sino reiniciarlo pero que quede detenido
-                                    clientsScheduledController
-                                        .animationControllerInitialT!
-                                        .forward();
+                                      ..duration = const Duration(seconds: 180)
+                                      ..reset()
+                                      ..forward();
 
                                     //AQUI ENVIAR NOTIFICACION AL PROFESIONAL QUE YA VA EL CLIENTE DE VUELTA PARA ACABAR EL SERVICIO
 

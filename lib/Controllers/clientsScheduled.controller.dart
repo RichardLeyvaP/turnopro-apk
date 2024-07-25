@@ -187,6 +187,8 @@ class ClientsScheduledController extends GetxController {
         {
           print('entré aca a cambiar el tiempo del reloj -3:time:$timeC1');
           //lo reinicio con el nuevo tiempo
+//si
+
           animationController1!
             ..duration = Duration(seconds: timeC1) //todo cambiar123RLP
             ..reset()
@@ -477,6 +479,8 @@ class ClientsScheduledController extends GetxController {
 
       reservationId = clientsAttended1!.reservation_id!; //DB - reservation_id
       await LocalStorage.prefs.setInt('timer1', remainingTime1); //en segundos
+      await LocalStorage.prefs.setInt('timer1Attend',
+          clientsAttended1!.attended!); //saber si esta con el tecnico
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante:upadateVariablesValueTimersPreferenc = $remainingTime1 reservation_id : $reservationId ');
     } else {
@@ -493,6 +497,8 @@ class ClientsScheduledController extends GetxController {
       int remainingMinutes2 = (remainingTime2 / 60).floor(); //MINUTOS RESTANTES
       reservationId = clientsAttended2!.reservation_id!; //DB - reservation_id
       await LocalStorage.prefs.setInt('timer2', remainingTime2); //en segundos
+      await LocalStorage.prefs.setInt('timer2Attend',
+          clientsAttended2!.attended!); //saber si esta con el tecnico
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended2 reservation_id : $reservationId ');
     } else {
@@ -510,6 +516,8 @@ class ClientsScheduledController extends GetxController {
       reservationId =
           clientsAttended3!.reservation_id!; //DB - reservation_id print(
       await LocalStorage.prefs.setInt('timer3', remainingTime3); //en segundos
+      await LocalStorage.prefs.setInt('timer3Attend',
+          clientsAttended3!.attended!); //saber si esta con el tecnico
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended3 reservation_id : $reservationId ');
     } else {
@@ -527,6 +535,8 @@ class ClientsScheduledController extends GetxController {
       reservationId =
           clientsAttended4!.reservation_id!; //DB - reservation_id print(
       await LocalStorage.prefs.setInt('timer4', remainingTime4); //en segundos
+      await LocalStorage.prefs.setInt('timer4Attend',
+          clientsAttended4!.attended!); //saber si esta con el tecnico
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended4 reservation_id : $reservationId ');
     } else {
@@ -2025,6 +2035,53 @@ class ClientsScheduledController extends GetxController {
           if (quantityClientAttended == 0) {
             clientsAttended = 'nobody';
           }
+
+          //**************************************************************** */
+          //**************************************************************** */
+          print(
+              'activando el Clock - 1 lenght - clientsScheduledList:${clientsScheduledList.length}');
+          for (var i = 0; i < clientsScheduledList.length; i++) {
+            // int clock = 0;
+            if (clientsScheduledList[i].attended == 11) {
+              int reservationId = clientsScheduledList[i].reservation_id!;
+
+              int clock = clientsScheduledList[i].clock!;
+              print(
+                  'EL RELOJ DEVUELTO ES : de fetchClientsScheduledNew:$clock');
+              //REVISAR SI VIENE EL RELOJ AHI
+              // int clock = await getValueClockDb(reservationId);
+              if (clock == 1) {
+                print('activando el Clock - 1');
+                animationController1!.forward();
+                await acceptOrRejectClient(
+                    reservationId, 111, loginController.tokenUserLoggedIn);
+                pauseResumeClock((clock - 1), -99);
+              }
+              if (clock == 2) {
+                print('activando el Clock - 2');
+                animationController2!.forward();
+                await acceptOrRejectClient(
+                    reservationId, 111, loginController.tokenUserLoggedIn);
+                pauseResumeClock((clock - 1), -99);
+              }
+              if (clock == 3) {
+                print('activando el Clock - 3');
+                animationController3!.forward();
+                await acceptOrRejectClient(
+                    reservationId, 111, loginController.tokenUserLoggedIn);
+                pauseResumeClock((clock - 1), -99);
+              }
+              if (clock == 4) {
+                print('activando el Clock - 4');
+                animationController4!.forward();
+                await acceptOrRejectClient(
+                    reservationId, 111, loginController.tokenUserLoggedIn);
+                pauseResumeClock((clock - 1), -99);
+              }
+            } //fin del if
+          }
+          //**************************************************************** */
+          //**************************************************************** */
         }
       }
     } catch (e) {

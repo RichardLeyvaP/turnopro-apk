@@ -262,12 +262,20 @@ Future<void> onStart(ServiceInstance service) async {
     int? branchProfesional = LocalStorage.prefs.getInt('branch_profesional');
     int? idProfesional = LocalStorage.prefs.getInt('id_profesional');
     String? tokenUser = LocalStorage.prefs.getString('tokenUser');
+    String? chargeProfesional =
+        LocalStorage.prefs.getString('charge_profesional');
 
     if (branchProfesional != null &&
         idProfesional != null &&
         tokenUser != null) {
-      await clientCord.reasignedClientSegundoPlano(
-          idProfesional, branchProfesional, tokenUser);
+      if (chargeProfesional != null && chargeProfesional.isNotEmpty) {
+        // Verifica si el valor de 'charge_profesional' es 'Barbero y Encargado'
+        if ((chargeProfesional == 'Barbero y Encargado') ||
+            (chargeProfesional == 'Barbero')) {
+          await clientCord.reasignedClientSegundoPlano(
+              idProfesional, branchProfesional, tokenUser);
+        }
+      }
     } else {
       print(
           'Algunas claves necesarias no están presentes en LocalStorage.prefs.-reasignedClientSegundoPlano');

@@ -1147,6 +1147,28 @@ class LoginController extends GetxController {
             }
           }
 
+          if (chargeUserLoggedIn == 'Coordinador' ||
+              chargeUserLoggedIn == 'Encargado') {
+            int state = await getStateProfessionall(idProfessionalLoggedIn!);
+
+            //preguntar por el state
+            if (state == 1) //si esta 1 Qr = 1
+            {
+              print('estoy si aqui 2');
+              setCodigoQrValid(1);
+            } else if (state == 2) //si esta en colación 2 Qr = null
+            {
+              print('estoy si aqui 1');
+              setCodigoQrValid(null);
+            } else if (state == 3 || state == 4) // si esta en 3 Qr = 2
+            {
+              print('estoy si aqui 3');
+              setCodigoQrValid(2);
+            } else {
+              setCodigoQrValid(null);
+            }
+          }
+
           if (chargeUserLoggedIn == "Barbero" ||
               chargeUserLoggedIn == "Barbero y Encargado") {
             //aqui es para saber solamnete el tiempo del reloj inicial de los 3min
@@ -1225,9 +1247,14 @@ class LoginController extends GetxController {
 
   Future<void> exit(String token) async {
     try {
+      final service = FlutterBackgroundService(); //detengo el servicio
+      service.invoke('stopService');
       if (token != '') {
         Map<String, dynamic>? result; //INICIALIZANDO A NULL
-        result = await usuarioLg.userLogout(token);
+        await Future.delayed(const Duration(seconds: 1));
+        // result = await usuarioLg.userLogout(token);
+        result = await usuarioLg.userLogoutNew(
+            idProfessionalLoggedIn!, branchIdLoggedIn!, token);
 
         if (result != null) {
           print(
@@ -1266,8 +1293,6 @@ class LoginController extends GetxController {
               'NO CERRO SECION CORRECTAMENTE ELIMINANDO LOS DATOS DE SECCION');
           Get.offAllNamed('/LoginFormPage');
         }
-        final service = FlutterBackgroundService(); //detengo el servicio
-        service.invoke('stopService');
       } else
         print(
             'ERROR: -----> Revisar que el token esta llegando aqui vacio->token= $token');

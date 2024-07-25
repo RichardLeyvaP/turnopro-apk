@@ -690,6 +690,9 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                             clientsController
                                                                 .setWaitTime(
                                                                     true);
+                                                            clientsController
+                                                                .setBoolControlVision(
+                                                                    false);
 
                                                             Get.back(); //aqui cierro el cargando
                                                             Get.snackbar(

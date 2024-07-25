@@ -241,22 +241,30 @@ class _HomePageBodyState extends State<HomePageBody>
         .addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         print('Se ha completado los 3-La animación se ha completado-SIIIII');
+//  bool hasClient1 = clientsAttended1 != null;
+//     bool hasClient2 = clientsAttended2 != null;
+//     bool hasClient3 = clientsAttended3 != null;
+//     bool hasClient4 = clientsAttended4 != null;
+//ESTA CONDICIÓN E SPARA GARANTIZAR QUE SI HAY ALGÚN CLIENTE ATENDIENDOSE QUE NO HAGA NADA,POR SI ESTUVIERA EL RELOJ INITIAL TRABAJANDO
+        if (clientsScheduledController.clientsAttended1 == null &&
+            clientsScheduledController.clientsAttended2 == null &&
+            clientsScheduledController.clientsAttended3 == null &&
+            clientsScheduledController.clientsAttended4 == null) {
+          String type = 'Tiempo';
+          int estado = 0; //es que incumplió
+          //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
+          if (loginController.branchIdLoggedIn != null &&
+              loginController.idProfessionalLoggedIn != null) {
+            //acabaron los 3 minutos de espera
+            clientsScheduledController.changeNoncomplianceP2(
+                type,
+                loginController.branchIdLoggedIn!,
+                loginController.idProfessionalLoggedIn!,
+                estado);
+          }
 
-        String type = 'Tiempo';
-        int estado = 0; //es que incumplió
-        //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
-        if (loginController.branchIdLoggedIn != null &&
-            loginController.idProfessionalLoggedIn != null) {
-          //acabaron los 3 minutos de espera
-          clientsScheduledController.changeNoncomplianceP2(
-              type,
-              loginController.branchIdLoggedIn!,
-              loginController.idProfessionalLoggedIn!,
-              estado);
-        }
-
-        // Aquí llamamos a BackgroundTaskService para registrar la tarea de una sola vez
-        /*  if (loginController.branchIdLoggedIn != null &&
+          // Aquí llamamos a BackgroundTaskService para registrar la tarea de una sola vez
+          /*  if (loginController.branchIdLoggedIn != null &&
             loginController.idProfessionalLoggedIn != null) {
           // Acabaron los 3 minutos de espera
           backgroundTaskService.registerOneOffTask(
@@ -267,50 +275,52 @@ class _HomePageBodyState extends State<HomePageBody>
           );
         }*/
 
-        //AQUI SI HAY QUE REASIGNAR SE REASIGNA
-        if (clientsScheduledController.clientsScheduledNext != null) {
-          print('se hacompletado los 3 min-HAY CLIENTE POR ATENDER');
-          int reservationId =
-              clientsScheduledController.clientsScheduledNext!.reservation_id!;
-          int clientId =
-              clientsScheduledController.clientsScheduledNext!.client_id!;
-          reasigClient(reservationId, clientId);
-        }
-
-        // reasigClient(int reservationId, int clientId);
-        if (loginController.chargeUserLoggedIn != "Barbero y Encargado") {
-          if (clientsScheduledController.noncomplianceProfessional['Tiempo'] !=
-                  0 &&
-              loginController.usserPermissionQr == 1 &&
-              clientsScheduledController.clientsScheSalon > 0) {
-            print('--este es el value del clok-FINALIZANDO*****22');
-            print(
-                'inserto correctamente ********** .noncomplianceProfessional[]');
-
-            clientsScheduledController.changeNoncomplianceP(
-                type,
-                loginController.branchIdLoggedIn!,
-                loginController.idProfessionalLoggedIn!,
-                estado);
-            //aqui llamar e insertar en las notificacione sque incumplio esta convivencia
-            notiController.storeNotification(
-                'Incumplimiento de convivencia',
-                loginController.branchIdLoggedIn!,
-                loginController.idProfessionalLoggedIn!,
-                'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado',
-                'Barbero');
-//todo notificate
-            // reiniciateClock();
-            // LocalStorage.prefs.setInt('valueClockIni', 180);
-            // clientsScheduledController.setTotalTimeInitial(180);
-            // LocalStorage.prefs.setBool('valueClockActiv', false);
-            // La animación ha llegado al final, reiniciar
-
-            // clientsScheduledController.animationControllerInitial!.reset();
-            // clientsScheduledController.animationControllerInitial!.forward();
+          //AQUI SI HAY QUE REASIGNAR SE REASIGNA
+          if (clientsScheduledController.clientsScheduledNext != null) {
+            print('se hacompletado los 3 min-HAY CLIENTE POR ATENDER');
+            int reservationId = clientsScheduledController
+                .clientsScheduledNext!.reservation_id!;
+            int clientId =
+                clientsScheduledController.clientsScheduledNext!.client_id!;
+            reasigClient(reservationId, clientId);
           }
-        } //FIN DEL IF DE BARBERO ENCARGADO
-        reiniciateClock();
+
+          // reasigClient(int reservationId, int clientId);
+          if (loginController.chargeUserLoggedIn != "Barbero y Encargado") {
+            if (clientsScheduledController
+                        .noncomplianceProfessional['Tiempo'] !=
+                    0 &&
+                loginController.usserPermissionQr == 1 &&
+                clientsScheduledController.clientsScheSalon > 0) {
+              print('--este es el value del clok-FINALIZANDO*****22');
+              print(
+                  'inserto correctamente ********** .noncomplianceProfessional[]');
+
+              clientsScheduledController.changeNoncomplianceP(
+                  type,
+                  loginController.branchIdLoggedIn!,
+                  loginController.idProfessionalLoggedIn!,
+                  estado);
+              //aqui llamar e insertar en las notificacione sque incumplio esta convivencia
+              notiController.storeNotification(
+                  'Incumplimiento de convivencia',
+                  loginController.branchIdLoggedIn!,
+                  loginController.idProfessionalLoggedIn!,
+                  'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado.',
+                  'Barbero');
+//todo notificate
+              // reiniciateClock();
+              // LocalStorage.prefs.setInt('valueClockIni', 180);
+              // clientsScheduledController.setTotalTimeInitial(180);
+              // LocalStorage.prefs.setBool('valueClockActiv', false);
+              // La animación ha llegado al final, reiniciar
+
+              // clientsScheduledController.animationControllerInitial!.reset();
+              // clientsScheduledController.animationControllerInitial!.forward();
+            }
+          } //FIN DEL IF DE BARBERO ENCARGADO
+          reiniciateClock();
+        }
       }
     });
     Future<void> saveUserDataMemory(
@@ -880,7 +890,7 @@ class _HomePageBodyState extends State<HomePageBody>
     _timer1 = //notificaciones
         Timer.periodic(const Duration(seconds: 10), (Timer timer) async {
       saveData();
-      getTimeRemaining();
+      // getTimeRemaining();
       /* if (cont == 3) {
         print(
             'response.statusCode splano - Llamando aqui la funcion dentro del timer');
@@ -978,48 +988,11 @@ class _HomePageBodyState extends State<HomePageBody>
               //aqui en este actualiza los tiempos de los relojes
             }
 
-            print(
-                'activando el Clock - 1 lenght - clientsScheduledList:${clientsScheduledController.clientsScheduledList.length}');
-            for (var i = 0;
-                i < clientsScheduledController.clientsScheduledList.length;
-                i++) {
-              int clock = 0;
-              if (clientsScheduledController.clientsScheduledList[i].attended ==
-                  11) {
-                int reservationId = clientsScheduledController
-                    .clientsScheduledList[i].reservation_id!;
-                clock = await clientsScheduledController
-                    .getValueClockDb(reservationId);
-                if (clock == 1) {
-                  print('activando el Clock - 1');
-                  clientsScheduledController.animationController1!.forward();
-                  clientsScheduledController.acceptOrRejectClient(
-                      reservationId, 111, loginController.tokenUserLoggedIn);
-                  clientsScheduledController.pauseResumeClock((clock - 1), -99);
-                }
-                if (clock == 2) {
-                  print('activando el Clock - 2');
-                  clientsScheduledController.animationController2!.forward();
-                  clientsScheduledController.acceptOrRejectClient(
-                      reservationId, 111, loginController.tokenUserLoggedIn);
-                  clientsScheduledController.pauseResumeClock((clock - 1), -99);
-                }
-                if (clock == 3) {
-                  print('activando el Clock - 3');
-                  clientsScheduledController.animationController3!.forward();
-                  clientsScheduledController.acceptOrRejectClient(
-                      reservationId, 111, loginController.tokenUserLoggedIn);
-                  clientsScheduledController.pauseResumeClock((clock - 1), -99);
-                }
-                if (clock == 4) {
-                  print('activando el Clock - 4');
-                  clientsScheduledController.animationController4!.forward();
-                  clientsScheduledController.acceptOrRejectClient(
-                      reservationId, 111, loginController.tokenUserLoggedIn);
-                  clientsScheduledController.pauseResumeClock((clock - 1), -99);
-                }
-              } //fin del if
-            }
+            await clientsScheduledController.fetchClientsScheduledNew(
+                loginController.idProfessionalLoggedIn,
+                loginController.branchIdLoggedIn,
+                'if (index == 1)',
+                loginController.tokenUserLoggedIn);
           }
           //lo que llamaba el timer 2
 
@@ -1137,17 +1110,7 @@ class _HomePageBodyState extends State<HomePageBody>
           loginController.tokenUserLoggedIn);
       clientsScheduledController.setWaitTime(
           false); //sigue el funcionamiento normal haciendo llamadas
-      //     //if hay clientes
-      // LocalStorage.prefs.setInt('valueClockIni', 180);
-      // clientsScheduledController.setTotalTimeInitial(180);
-      // LocalStorage.prefs.setBool('valueClockActiv', false);
-
-      // // Reiniciar la animación
-      // // Reiniciar y avanzar la animación existente
-      // clientsScheduledController.animationControllerInitial!
-      //   ..duration = Duration(seconds: 180)
-      //   ..reset()
-      //   ..forward();
+      clientsScheduledController.setBoolControlVision(true);
     }
   }
 
@@ -2139,7 +2102,8 @@ class _HomePageBodyState extends State<HomePageBody>
         ),
         child: FittedBox(
             fit: BoxFit.contain,
-            child: clientsScheduledControllerE.clientsScheduledNext != null
+            child: clientsScheduledControllerE.clientsScheduledNext != null &&
+                    clientsScheduledControllerE.getWaitTime() == false
                 //  ||
                 //         LocalStorage.prefs.getBool('valueClockActiv') == false
                 ? Container(

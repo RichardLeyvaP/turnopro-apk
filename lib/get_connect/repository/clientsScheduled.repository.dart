@@ -16,6 +16,7 @@ class ClientsScheduledRepository extends GetConnect {
 
   Future repoShowClock(int differenceInSeconds, professionalId, token) async {
     int timeC1 = -999, timeC2 = -999, timeC3 = -999, timeC4 = -999;
+
     try {
       var url =
           '${Env.apiEndpoint}/show-clocks?professional_id=$professionalId';
@@ -46,16 +47,29 @@ class ClientsScheduledRepository extends GetConnect {
           tailsResponse.tails.forEach((clock) {
             print(
                 'RETORNE---Clock: ${clock.clock}, TimeClock: ${clock.timeClock}, Detached: ${clock.detached}');
-            if (clock.clock == 1) {
+            if (clock.clock == 1 &&
+                (clock.attended != 4 &&
+                    clock.attended != 5 &&
+                    clock.attended != 33)) {
+              //esta con el tecnco si attended tiene esos valores
               int calculatedTime = clock.timeClock - differenceInSeconds;
               timeC1 = calculatedTime < 0 ? 0 : calculatedTime;
-            } else if (clock.clock == 2) {
+            } else if (clock.clock == 2 &&
+                (clock.attended != 4 &&
+                    clock.attended != 5 &&
+                    clock.attended != 33)) {
               int calculatedTime = clock.timeClock - differenceInSeconds;
               timeC2 = calculatedTime < 0 ? 0 : calculatedTime;
-            } else if (clock.clock == 3) {
+            } else if (clock.clock == 3 &&
+                (clock.attended != 4 &&
+                    clock.attended != 5 &&
+                    clock.attended != 33)) {
               int calculatedTime = clock.timeClock - differenceInSeconds;
               timeC3 = calculatedTime < 0 ? 0 : calculatedTime;
-            } else if (clock.clock == 4) {
+            } else if (clock.clock == 4 &&
+                (clock.attended != 4 &&
+                    clock.attended != 5 &&
+                    clock.attended != 33)) {
               int calculatedTime = clock.timeClock - differenceInSeconds;
               timeC4 = calculatedTime < 0 ? 0 : calculatedTime;
             }
@@ -579,8 +593,9 @@ class ClientsScheduledRepository extends GetConnect {
 //
 //
 //
-  Future getValueClockDb(id, token) async {
+  Future<int> getValueClockDb(id, token) async {
     print('estoy en repositorio en - 5');
+    int result = -99;
     try {
       var url = '${Env.apiEndpoint}/get_clock?reservation_id=$id';
 
@@ -590,10 +605,10 @@ class ClientsScheduledRepository extends GetConnect {
       final response = await get(url, headers: headers).timeout(
           Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
-        final result = response.body;
+        result = response.body;
         print('EL RELOJ DEVUELTO ES :$result');
-        return result;
       }
+      return result;
     } catch (e) {
       print(e);
       print('NOO DEVOLVIO NINGUN RELOJ  - el codigo no fue 200');

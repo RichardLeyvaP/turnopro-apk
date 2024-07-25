@@ -334,6 +334,8 @@ class NotificationRepository extends GetConnect {
           Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         final notifications = response.body['notifications'];
+        print(
+            'llamada timer estoy en CAntidad de Notificaciones fetchNotificationList Tecn:$notifications');
         for (Map notification in notifications) {
           NotificationModel u =
               NotificationModel.fromJson(jsonEncode(notification));
@@ -378,6 +380,8 @@ class NotificationRepository extends GetConnect {
           };
         }
       } else {
+        print(
+            'mandar alguna variable para la vista Error en Future getNotificationList:${response.statusCode}');
         return {
           "notificationListError": true,
         };

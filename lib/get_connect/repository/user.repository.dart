@@ -222,6 +222,32 @@ class UserRepository extends GetConnect {
     }
   }
 
+  Future userLogoutNew(int professionalId, int branchId, String token) async {
+    try {
+      var url =
+          '${Env.apiEndpoint}/logout-phone?professional_id=$professionalId&branch_id=$branchId';
+
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15));
+      //print(response.body);
+      if (response.statusCode == 200) {
+        final resp = response.body;
+        if (resp != null) {
+          return resp;
+        }
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error de userLogoutNew:$e');
+      return null;
+    }
+  }
+
   Future userLogout(String token) async {
     try {
       var url = '${Env.apiEndpoint}/logout';
@@ -240,16 +266,16 @@ class UserRepository extends GetConnect {
           await get(url, headers: headers).timeout(Duration(seconds: 15));
       //print(response.body);
       if (response.statusCode == 200) {
-        final users = response.body;
-        if (users != null) {
-          return users;
+        final resp = response.body;
+        if (resp != null) {
+          return resp;
         }
       } else {
         return null;
       }
     } catch (e) {
-      print('Error:$e');
-      return e;
+      print('Error de userLogout:$e');
+      return null;
     }
   }
 

@@ -398,7 +398,7 @@ class NotificationController extends GetxController {
               'Error al obtener la lista de notificaciones:este:-CONTROLADO AQUI');
           controllerclient.setclientLisError(-99);
           if (!_retryAttempted && controllerclient.errorHome == -99) {
-            Get.snackbar('Alerta', 'Alerta de red.',
+            Get.snackbar('Alerta', 'Conexión débil.',
                 duration: const Duration(milliseconds: 2500));
             clientCon.correctConnection = false;
             _retryAttempted = true;
@@ -409,7 +409,7 @@ class NotificationController extends GetxController {
         print('Error al obtener la lista de notificaciones:este:');
         controllerclient.setclientLisError(-99);
         if (!_retryAttempted && controllerclient.errorHome == -99) {
-          Get.snackbar('Alerta', 'Alerta de red.',
+          Get.snackbar('Alerta', 'Conexión débil.',
               duration: const Duration(milliseconds: 2500));
           clientCon.correctConnection = false;
           _retryAttempted = true;
@@ -421,7 +421,7 @@ class NotificationController extends GetxController {
       print('Error de excepción al obtener la lista de notificaciones:$e');
       controllerclient.setclientLisError(-99);
       if (!_retryAttempted && controllerclient.errorHome == -99) {
-        Get.snackbar('Alerta', 'Alerta de red.',
+        Get.snackbar('Alerta', 'Conexión débil.',
             duration: const Duration(milliseconds: 2500));
         clientCon.correctConnection = false;
         _retryAttempted = true;
@@ -437,6 +437,7 @@ class NotificationController extends GetxController {
 //tecnicooooooo
   Future<void> fetchNotificationListSERV(
       idBranch, idProfe, type, msj, token) async {
+    print('estoy llamando ahora desde->fetchNotificationListSERV');
     print(
         'callTimerTec 4-callTimerTecNotification-controlador-fetchNotificationList');
     print('qwerc SII mandar ->NOTIFICACIONES-$msj');
@@ -490,6 +491,7 @@ class NotificationController extends GetxController {
           }
 
           //esto es para saber que valor darle al qr si aceptan o rechazan la colación
+
           if (element.state == 3 &&
               element.tittle ==
                   'Aceptada su solicitud de Colación') //pongo a null el qr
@@ -640,6 +642,7 @@ class NotificationController extends GetxController {
 
   Future<void> fetchNotificationList(
       idBranch, idProfe, type, msj, token) async {
+    print('estoy llamando ahora desde->fetchNotificationListAPK');
     print(
         'callTimerTec 4-callTimerTecNotification-controlador-fetchNotificationList');
     print('qwerc SII mandar ->NOTIFICACIONES-$msj');
@@ -693,6 +696,7 @@ class NotificationController extends GetxController {
           }
 
           //esto es para saber que valor darle al qr si aceptan o rechazan la colación
+          print('estoy llamando ahora desde->fetchNotificationList');
           if (element.state == 3 &&
               element.tittle ==
                   'Aceptada su solicitud de Colación') //pongo a null el qr

@@ -4,11 +4,13 @@ class ClockModel {
   int clock;
   int timeClock;
   int detached;
+  int attended;
 
   ClockModel({
     required this.clock,
     required this.timeClock,
     required this.detached,
+    required this.attended,
   });
 
   Map<String, dynamic> toMap() {
@@ -16,6 +18,7 @@ class ClockModel {
       'clock': clock,
       'timeClock': timeClock,
       'detached': detached,
+      'attended': attended,
     };
   }
 
@@ -24,6 +27,7 @@ class ClockModel {
       clock: map['clock'] ?? 0,
       timeClock: map['timeClock'] ?? 0,
       detached: map['detached'] ?? 0,
+      attended: map['attended'] ?? 0,
     );
   }
 
