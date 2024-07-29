@@ -76,48 +76,57 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
       bool result = await LocalStorage.prefs.setBool('state_S_plano', false);
       print('Set state_S_plano result: $result');
       print('La aplicación se está Reaunudandose nuevamente');
-      Get.dialog(
-        const Center(
-          child: Material(
-            color: Colors.transparent,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CircularProgressIndicator(
-                  color: Color(0xFFFDAE2A),
-                ),
-                SizedBox(height: 16),
-                Text('Actualizando datos...',
-                    style: TextStyle(color: Colors.white)),
-              ],
+      print(
+          'La aplicación se está LocalStorage.prefs.getBool(verificatePhoto):${LocalStorage.prefs.getBool('verificatePhoto')}');
+
+      //hacer esto solamnete si esta ya con el qr leido
+      if (loginController.usserPermissionQr == 1 &&
+          LocalStorage.prefs.getBool('verificatePhoto') == false) {
+        Get.dialog(
+          const Center(
+            child: Material(
+              color: Colors.transparent,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(
+                    color: Color(0xFFFDAE2A),
+                  ),
+                  SizedBox(height: 16),
+                  Text('Actualizando datos...',
+                      style: TextStyle(color: Colors.white)),
+                ],
+              ),
             ),
           ),
-        ),
-        barrierDismissible: false,
-      ); //Get.back();
+          barrierDismissible: false,
+        ); //Get.back();
 
-      // Recuperar la marca de tiempo desde SharedPreferences
-      String? backgroundTimeString =
-          LocalStorage.prefs.getString('background_time');
-      if (backgroundTimeString != null) {
-        DateTime backgroundTime = DateTime.parse(backgroundTimeString);
-        final difference = DateTime.now().difference(backgroundTime);
-        // Convierte la diferencia a minutos
-        final differenceInMinutes = difference.inSeconds;
-        print(
-            'La aplicación estuvo en segundo plano por ${difference.inSeconds} segundos.');
-        //aqui mando el tiempo que estubo fuera
-        //y ya ahi reinicio ese reloj
-        await clientController.getShowClock(
-            differenceInMinutes,
-            loginController.idProfessionalLoggedIn,
-            loginController.tokenUserLoggedIn);
+        // Recuperar la marca de tiempo desde SharedPreferences
+        String? backgroundTimeString =
+            LocalStorage.prefs.getString('background_time');
+        if (backgroundTimeString != null) {
+          DateTime backgroundTime = DateTime.parse(backgroundTimeString);
+          final difference = DateTime.now().difference(backgroundTime);
+          // Convierte la diferencia a minutos
+          final differenceInMinutes = difference.inSeconds;
+          print(
+              'La aplicación estuvo en segundo plano por ${difference.inSeconds} segundos.');
+          //aqui mando el tiempo que estubo fuera
+          //y ya ahi reinicio ese reloj
+          await clientController.getShowClock(
+              differenceInMinutes,
+              loginController.idProfessionalLoggedIn,
+              loginController.tokenUserLoggedIn);
 
-        // await Future.delayed(Duration(seconds: 5));
-        // loginController.setIsLoggingIn(true);
+          // await Future.delayed(Duration(seconds: 5));
+          // loginController.setIsLoggingIn(true);
+
+          // Aquí puedes manejar la lógica que necesites con el tiempo en segundo plano
+        }
         Get.back();
-        // Aquí puedes manejar la lógica que necesites con el tiempo en segundo plano
       }
+      await LocalStorage.prefs.setBool('verificatePhoto', false);
       //reinicio el servicio
       //  await restartService();
     } else if (state == AppLifecycleState.inactive) {

@@ -1104,36 +1104,45 @@ class LoginController extends GetxController {
           } else {
             print('asignando valores de memoria:NO-1');
           }
-          await initializeService();
+          if (chargeUserLoggedIn == 'Barbero' ||
+              chargeUserLoggedIn == 'Barbero y Encargado' ||
+              chargeUserLoggedIn == 'Tecnico') {
+            int idPuesto = await getIdPuesto(idProfessionalLoggedIn!);
+            if (idPuesto != -99 && idPuesto != -999) {
+              print('id de mi puesto de trabajo = $idPuesto');
+              int state = await getStateProfessionall(idProfessionalLoggedIn!);
 
-          //todo aqui guardo cada vez que loguea los datos para la proxima vez que no tenga que loguearse
-
-          int idPuesto = await getIdPuesto(idProfessionalLoggedIn!);
-          if (idPuesto != -99 && idPuesto != -999) {
-            print('id de mi puesto de trabajo = $idPuesto');
-            int state = await getStateProfessionall(idProfessionalLoggedIn!);
-
-            //preguntar por el state
-            if (state == 1) //si esta 1 Qr = 1
-            {
-              print('estoy si aqui 2');
-              setCodigoQrValid(1);
-            } else if (state == 2) //si esta en colación 2 Qr = null
-            {
-              print('estoy si aqui 1');
+              //preguntar por el state
+              if (state == 1) //si esta 1 Qr = 1
+              {
+                print('estoy si aqui 2');
+                setCodigoQrValid(1);
+              } else if (state == 2) //si esta en colación 2 Qr = null
+              {
+                print('estoy si aqui 1');
+                setCodigoQrValid(null);
+              } else if (state == 3 || state == 4) // si esta en 3 Qr = 2
+              {
+                print('estoy si aqui 3');
+                setCodigoQrValid(2);
+              }
+            } else {
+              final NotificationController notifCont =
+                  Get.find<NotificationController>();
+              //no tiene puesto de trabajo
+              await notifCont.updateNotificationsState3(
+                  branchIdLoggedIn, idProfessionalLoggedIn!);
+              print('estoy si aqui 4');
+              print('id de mi puesto de trabajo = $idPuesto');
               setCodigoQrValid(null);
-            } else if (state == 3 || state == 4) // si esta en 3 Qr = 2
-            {
-              print('estoy si aqui 3');
-              setCodigoQrValid(2);
+              print(
+                  'id de mi puesto de trabajo estoy entrando a poner el codigo1 en :null');
             }
-          } else {
-            print('estoy si aqui 4');
-            print('id de mi puesto de trabajo = $idPuesto');
-            setCodigoQrValid(null);
-            print(
-                'id de mi puesto de trabajo estoy entrando a poner el codigo1 en :null');
           }
+
+          await initializeService();
+          await LocalStorage.prefs.setBool('verificatePhoto', false);
+          //todo aqui guardo cada vez que loguea los datos para la proxima vez que no tenga que loguearse
 
           if (chargeUserLoggedIn == 'Encargado' ||
               chargeUserLoggedIn == 'Coordinador') {

@@ -165,6 +165,7 @@ Future<void> localNotificationsSimplifies(
     importance: Importance.max,
     priority: Priority.high,
     sound: RawResourceAndroidNotificationSound('livechat129007'),
+    icon: '@mipmap/launcher_icon', // Aquí se usa el ícono
     enableLights: true,
     color: Colors.blue,
     ledColor: Color(0xffffffff),
@@ -238,6 +239,11 @@ Future<void> onStart(ServiceInstance service) async {
   service.on('stopService').listen((event) {
     service.stopSelf();
   });
+
+  service.on('notificationSimplifies').listen((event) {
+    notificationSimplifies();
+  });
+
   if (service is AndroidServiceInstance) {
     service.setForegroundNotificationInfo(
       title: "Simplifies",

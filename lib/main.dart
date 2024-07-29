@@ -7,6 +7,7 @@ import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
 import 'package:turnopro_apk/app_initializer.dart';
 import 'package:turnopro_apk/myApp.dart';
 import 'package:turnopro_apk/providers.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 //import 'package:turnopro_apk/services/localNotification.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -52,4 +53,15 @@ void main() async {
       child: Myapp(),
     ),
   );
+  requestNotificationPermission();
+}
+
+Future<void> requestNotificationPermission() async {
+  PermissionStatus status = await Permission.notification.status;
+  if (status.isDenied || status.isPermanentlyDenied) {
+    PermissionStatus newStatus = await Permission.notification.request();
+    if (newStatus.isDenied || newStatus.isPermanentlyDenied) {
+      openAppSettings();
+    }
+  }
 }

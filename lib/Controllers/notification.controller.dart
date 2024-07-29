@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:get/get.dart';
 import 'package:soundpool/soundpool.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
@@ -59,7 +60,7 @@ class NotificationController extends GetxController {
 
   void updateOutAcept(int value) {
     outAcept = value;
-    update();
+    //update();
   }
 
   Future<bool> storeNotification2(
@@ -299,6 +300,8 @@ class NotificationController extends GetxController {
               }
               if (element.state == 3 &&
                   element.tittle == 'Aceptada su solicitud de Salida') {
+                FlutterBackgroundService().invoke('notificationSimplifies');
+                await Future.delayed(const Duration(seconds: 1));
                 updateOutAcept(element.id);
               }
             });
@@ -313,6 +316,7 @@ class NotificationController extends GetxController {
                   color: Color(0xFFFDAE2A),
                 )),
                 barrierDismissible: false);
+            await Future.delayed(Duration(seconds: 5));
             await updateNotifications2(idBranch, idProfe, outAcept);
             //  await controllerLogin.exitPostworking("Barbero");
             await controllerLogin.exit(controllerLogin.tokenUserLoggedIn);
@@ -554,9 +558,9 @@ class NotificationController extends GetxController {
         if (outAcept !=
             0) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
         {
-          Get.snackbar(
+          /*  Get.snackbar(
             'Mensaje',
-            'Cerrando aplicación.',
+            'Cerrando aplicación...',
             duration: const Duration(milliseconds: 2500),
             backgroundColor: const Color.fromARGB(118, 255, 255, 255),
             showProgressIndicator: true,
@@ -573,12 +577,12 @@ class NotificationController extends GetxController {
               ),
             ),
             barrierDismissible: false,
-          ); //Get.back();
+          ); //Get.back();*/
           await updateNotifications2(idBranch, idProfe, outAcept);
           //await controllerLogin.exitPostworking("Tecnico");
-          await controllerLogin.exit(controllerLogin.tokenUserLoggedIn);
+          // await controllerLogin.exit(controllerLogin.tokenUserLoggedIn);
           updateOutAcept(0);
-          Get.back();
+          //  Get.back();
           print('cargando aqui-16 para sacar del puesto y la apk-2');
         }
 
@@ -723,7 +727,8 @@ class NotificationController extends GetxController {
                   'Aceptada su solicitud de Salida') //pongo a 1 el qr
           {
             print('cargando aqui-16 para sacar del puesto y la apk-1');
-
+            FlutterBackgroundService().invoke('notificationSimplifies');
+            await Future.delayed(const Duration(seconds: 1));
             updateOutAcept(element.id);
           }
           if (element.state == 3 &&
@@ -761,7 +766,7 @@ class NotificationController extends GetxController {
         {
           Get.snackbar(
             'Mensaje',
-            'Cerrando aplicación.',
+            'Cerrando aplicación',
             duration: const Duration(milliseconds: 2500),
             backgroundColor: const Color.fromARGB(118, 255, 255, 255),
             showProgressIndicator: true,
@@ -842,6 +847,20 @@ class NotificationController extends GetxController {
       controllerLogin.setIsLoadingFor(false);
       // Manejo de errores
       print('Error al obtener la lista de notificaciones:aqui: $e');
+    }
+  }
+
+  Future<void> updateNotificationsState3(idBranch, idProf) async {
+    try {
+      int result = await repository.updateNotificationsState3(
+          idBranch, idProf, controllerLogin.tokenUserLoggedIn);
+      if (result == 1) {
+        print('Las notificaciones fueron vistas');
+      } else {
+        print('No modifico las notificaciones como vistas');
+      }
+    } catch (e) {
+      print('error de notification:$e');
     }
   }
 

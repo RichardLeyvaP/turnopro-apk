@@ -132,7 +132,8 @@ class _HomePageBodyState extends State<HomePageBody>
       //y poner valor aleatore = 3 diciendo que puede ser llamado por alguien aunque este de primero
       loginController.setCodigoQrValidAnt(1);
       Get.back();
-      Get.snackbar(
+      print('Intentó reasignar pero :No hay barberos disponibles');
+      /*  Get.snackbar(
         'Alerta',
         'No hay barberos disponibles',
         duration: const Duration(milliseconds: 2500),
@@ -143,7 +144,7 @@ class _HomePageBodyState extends State<HomePageBody>
         progressIndicatorValueColor:
             const AlwaysStoppedAnimation(Color(0xFFFF6750)),
         overlayBlur: 3,
-      );
+      );*/
     }
   }
 
@@ -207,10 +208,12 @@ class _HomePageBodyState extends State<HomePageBody>
 
     // Reiniciar la animación
     // Reiniciar y avanzar la animación existente
-    clientsScheduledController.animationControllerInitial!
-      ..duration = Duration(seconds: 180)
-      ..reset()
-      ..stop();
+    if (clientsScheduledController.animationControllerInitial!.isAnimating) {
+      clientsScheduledController.animationControllerInitial!
+        ..duration = Duration(seconds: 180)
+        ..reset()
+        ..stop();
+    }
 
     // clientsScheduledController.animationControllerInitial!.reset();
     // clientsScheduledController.animationControllerInitial!.forward();
@@ -345,11 +348,16 @@ class _HomePageBodyState extends State<HomePageBody>
 
       _timer3 = Timer.periodic(Duration(seconds: 3), (timer) async {
         //todo aqui voy guardando tds las variables que necesito para el segundo plano
-        //todo ***********************************************************************
+        //todo ********************************AQUI VER QUE SI FINALIZA NO CUARDE EN ESE MOMENTO***************************************
         //
+        /*  if()
+        {*/
         clientsScheduledController.upadateVariablesValueTimersPreferenc();
         saveUserDataMemory(loginController.usserPermissionQr,
             getTimeRemaining(), clientsScheduledController.clientsScheSalon);
+
+        //  }
+
         //
         //
         //

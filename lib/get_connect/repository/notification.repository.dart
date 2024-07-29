@@ -395,6 +395,31 @@ class NotificationRepository extends GetConnect {
     }
   }
 
+  Future<int> updateNotificationsState3(idBranch, idProf, token) async {
+    try {
+      var url = '${Env.apiEndpoint}/notification-state3';
+
+      // Parámetros que deseas enviar en la solicitud POST
+      final Map<String, dynamic> body = {
+        'branch_id': idBranch,
+        'professional_id': idProf
+      };
+
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await put(headers: headers, url, body);
+      //print('MANDE A ELIMINAR:$body');
+      if (response.statusCode == 200) {
+        return 1;
+      } else {
+        return -990099;
+      }
+    } catch (e) {
+      return -990099;
+    }
+  }
+
   Future<int> updateNotifications(idBranch, idProf, type, token) async {
     try {
       var url = '${Env.apiEndpoint}/notification';

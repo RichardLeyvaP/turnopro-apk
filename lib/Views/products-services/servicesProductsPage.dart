@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 import 'package:turnopro_apk/Utility/textTruncate.dart';
+import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
 import 'package:turnopro_apk/Views/products-services/products/productsBody.dart';
 import 'package:turnopro_apk/Views/products-services/services/servicesBodyPage.dart';
 //import 'package:animate_do/animate_do.dart';
@@ -393,6 +394,9 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                             onPressed: () async {
                               commentController.text = '';
                               clientsController.clearImage();
+                              LocalStorage.prefs
+                                  .setBool('verificatePhoto', false);
+
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -550,6 +554,10 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                           source: ImageSource
                                                               .camera,
                                                         ));
+                                                        await LocalStorage.prefs
+                                                            .setBool(
+                                                                'verificatePhoto',
+                                                                true);
 
                                                         // Verifica si pickedFile no es nulo antes de acceder a su propiedad path
                                                         if (_.pickedFile !=

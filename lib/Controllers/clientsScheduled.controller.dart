@@ -187,8 +187,6 @@ class ClientsScheduledController extends GetxController {
         {
           print('entré aca a cambiar el tiempo del reloj -3:time:$timeC1');
           //lo reinicio con el nuevo tiempo
-//si
-
           animationController1!
             ..duration = Duration(seconds: timeC1) //todo cambiar123RLP
             ..reset()
@@ -2052,30 +2050,34 @@ class ClientsScheduledController extends GetxController {
               // int clock = await getValueClockDb(reservationId);
               if (clock == 1) {
                 print('activando el Clock - 1');
-                animationController1!.forward();
+
                 await acceptOrRejectClient(
                     reservationId, 111, loginController.tokenUserLoggedIn);
+                animationController1!.forward();
                 pauseResumeClock((clock - 1), -99);
               }
               if (clock == 2) {
                 print('activando el Clock - 2');
-                animationController2!.forward();
+
                 await acceptOrRejectClient(
                     reservationId, 111, loginController.tokenUserLoggedIn);
+                animationController2!.forward();
                 pauseResumeClock((clock - 1), -99);
               }
               if (clock == 3) {
                 print('activando el Clock - 3');
-                animationController3!.forward();
+
                 await acceptOrRejectClient(
                     reservationId, 111, loginController.tokenUserLoggedIn);
+                animationController3!.forward();
                 pauseResumeClock((clock - 1), -99);
               }
               if (clock == 4) {
                 print('activando el Clock - 4');
-                animationController4!.forward();
+
                 await acceptOrRejectClient(
                     reservationId, 111, loginController.tokenUserLoggedIn);
+                animationController4!.forward();
                 pauseResumeClock((clock - 1), -99);
               }
             } //fin del if
