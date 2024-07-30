@@ -695,34 +695,11 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                           {
                                                             //aqui poner una variable que espere por 30 segundos para cambiar al valor por defecto
                                                             //para con esta variable controlar que en ese tiempo no le caiga nadie en la cola
-                                                            int? r1 = LocalStorage
-                                                                .prefs
-                                                                .getInt(
-                                                                    'timer1');
-                                                            int? r2 = LocalStorage
-                                                                .prefs
-                                                                .getInt(
-                                                                    'timer2');
-                                                            int? r3 = LocalStorage
-                                                                .prefs
-                                                                .getInt(
-                                                                    'timer3');
-                                                            int? r4 = LocalStorage
-                                                                .prefs
-                                                                .getInt(
-                                                                    'timer4');
+
                                                             bool valRActiv =
                                                                 clientsController
                                                                     .verificateValueTimers();
 
-                                                            print(
-                                                                'valores de lso clok***R1:$r1');
-                                                            print(
-                                                                'valores de lso clok***R2:$r2');
-                                                            print(
-                                                                'valores de lso clok***R3:$r3');
-                                                            print(
-                                                                'valores de lso clok***R4:$r4');
                                                             print(
                                                                 'valores de lso clok***Reloj:$valRActiv');
                                                             if (valRActiv ==
