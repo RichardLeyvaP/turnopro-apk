@@ -598,8 +598,20 @@ class NotificationController extends GetxController {
         notificationListNewLengthEncarg = notificationListNewEncarg.length;
         print(
             'ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador - notificationListNewLengthEncarg:${notificationEncarg.length}');
-
+        List<NotificationModel> notificationListNewAuxEnc =
+            []; // Lista de Notificaciones
         notificationListNewEncarg.forEach((element) async {
+          if (element.state == 0 || element.state == 3) {
+            print(
+                'callTimerTec 4-callTimerTecNotification -if-element.state :${element.state}');
+            if (!notificationListNewSounded.contains(element.id)) {
+              notificationListNewSounded.add(element.id);
+
+              notificationListNewAuxEnc.add(element);
+              //localNotificationsSimplifies(element.tittle, element.description);
+            }
+          }
+
           if (element.state == 3 &&
               element.tittle == 'Aceptada Eliminación de Servicio') {
             print('modificar time de mm 1 estoy aqui en el forEach');
@@ -627,6 +639,14 @@ class NotificationController extends GetxController {
             //  siHayEliminarService = true;
           }
         });
+        for (final result in notificationListNewAuxEnc) {
+          print(
+              'callTimerTec 4-callTimerTecNotification -if-notificaciones locales :sii');
+          // Llama a la función localNotificationsSimplifies después del retraso
+          localNotificationsSimplifies(result.tittle, result.description);
+          print('aqui llamando las notificaciones nuevas');
+          await Future.delayed(const Duration(seconds: 2)); // Espera 2 segundos
+        }
         /* if (siHayEliminarService ==
             true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
         {
@@ -713,6 +733,8 @@ class NotificationController extends GetxController {
                   'Rechazada su solicitud de Colación') //pongo a 1 el qr
           {
             controllerLogin.setCodigoQrValid(1);
+            controllerclient.setWaitTime(false);
+            clientsScheduledController.setwaitTimeCount(0);
             updateNotifications2(idBranch, idProfe, element.id);
           }
           if (element.state == 3 &&

@@ -165,7 +165,7 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
       index,
       PageController pageController2,
       PagesConfigController pagesConfigC) {
-    DateFormat formatter = DateFormat('hh:mm');
+    DateFormat formatter = DateFormat('HH:mm');
     DateTime currentTime = formatter
         .parse(controllerclient.clientsColacionBranch[index].start_time!);
 

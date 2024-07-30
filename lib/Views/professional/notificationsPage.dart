@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/notification.controller.dart';
 import 'package:get/get.dart';
@@ -36,6 +37,7 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
     } else {
       typeEnv = logCont.chargeUserLoggedIn;
     }
+    FlutterBackgroundService().invoke('clearAllNotifications');
     Future.delayed(const Duration(seconds: 2), () {
       notifCont.updateNotifications(
           logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn, typeEnv);

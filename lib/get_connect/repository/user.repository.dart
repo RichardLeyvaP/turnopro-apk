@@ -274,7 +274,7 @@ class UserRepository extends GetConnect {
         return null;
       }
     } catch (e) {
-      print('Error de userLogout:$e');
+      print('Error de userLogoutNew:$e');
       return null;
     }
   }

@@ -52,6 +52,9 @@ Future<void> initializeService() async {
       autoStart: true,
       isForegroundMode: true,
       notificationChannelId: 'my_channel_id',
+      initialNotificationTitle: 'Iniciando...',
+      initialNotificationContent: '',
+      //foregroundServiceNotificationIcon: '@mipmap/ic_service_notification',
     ),
     iosConfiguration: IosConfiguration(
       autoStart: true,
@@ -77,7 +80,10 @@ Future<void> notificationSimplifies() async {
   // Verifica si la clave 'charge_profesional' existe y no está vacía
   String? chargeProfesional =
       LocalStorage.prefs.getString('charge_profesional');
+
   if (chargeProfesional != null && chargeProfesional.isNotEmpty) {
+    print(
+        'notificacion desde:-:SERVICIO-notificationSimplifies()-chargeProfesional:$chargeProfesional');
     // Verifica si el valor de 'charge_profesional' es 'Barbero y Encargado'
     if (chargeProfesional == 'Barbero y Encargado') {
       print('notificacion desde:-:SERVICIO-notificationSimplifies()-1');
@@ -144,6 +150,7 @@ List<int> notificationIds = [];
 
 Future<void> initializeNotificationsNew() async {
   const AndroidInitializationSettings initializationSettingsAndroid =
+      //  AndroidInitializationSettings('ic_bg_service_small');
       AndroidInitializationSettings('@mipmap/launcher_icon');
 
   const InitializationSettings initializationSettings =
@@ -166,6 +173,7 @@ Future<void> localNotificationsSimplifies(
     priority: Priority.high,
     sound: RawResourceAndroidNotificationSound('livechat129007'),
     icon: '@mipmap/launcher_icon', // Aquí se usa el ícono
+    //  icon: 'ic_bg_service_small', // Asegúrate de usar el ícono correcto aquí
     enableLights: true,
     color: Colors.blue,
     ledColor: Color(0xffffffff),
@@ -203,8 +211,16 @@ Future<void> localNotificationsSimplifies(
 }
 
 // Método para limpiar todas las notificaciones
-Future<void> clearAllNotifications() async {
-  await flutterLocalNotificationsPlugin.cancelAll();
+void clearAllNotifications() {
+  // Asegúrate de que esto no cause un error si no hay notificaciones
+  try {
+    // Aquí debes tener el código que limpia todas las notificaciones
+    FlutterLocalNotificationsPlugin().cancelAll();
+
+    print('Todas las notificaciones han sido limpiadas');
+  } catch (e) {
+    print('No hay notificaciones para limpiar: $e');
+  }
 }
 
 @pragma('vm:entry-point')
@@ -243,12 +259,14 @@ Future<void> onStart(ServiceInstance service) async {
   service.on('notificationSimplifies').listen((event) {
     notificationSimplifies();
   });
+  service.on('clearAllNotifications').listen((event) {
+    clearAllNotifications();
+  });
 
   if (service is AndroidServiceInstance) {
     service.setForegroundNotificationInfo(
       title: "Simplifies",
-      content:
-          "Barbería Hernández-${LocalStorage.prefs.getInt('id_profesional')}",
+      content: "",
     );
   }
   // service.invoke(

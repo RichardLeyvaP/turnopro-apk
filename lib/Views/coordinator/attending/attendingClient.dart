@@ -159,7 +159,7 @@ class _AttendingClientState extends State<AttendingClient> {
       index,
       PageController pageController2,
       PagesConfigController pagesConfigC) {
-    DateFormat formatter = DateFormat('h:mm');
+    DateFormat formatter = DateFormat('HH:mm');
     DateTime currentTime = formatter
         .parse(controllerclient.clientsColacionBranch[index].start_time!);
 

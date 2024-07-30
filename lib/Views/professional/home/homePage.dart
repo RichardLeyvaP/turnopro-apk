@@ -278,7 +278,8 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                               size: MediaQuery.of(context).size.width * 0.08,
                             ),
                             label: 'Home'),
-                        controClient.clientsScheduledListLength > 0
+                        controClient.clientsScheduledListLength > 0 &&
+                                controClient.getWaitTime() == false
                             ? BottomNavigationBarItem(
                                 icon: Badge(
                                   backgroundColor: Color(0xFF19CF9E),

@@ -168,7 +168,7 @@ class ClientsScheduledController extends GetxController {
   String lastDateBarber1 = '';
   String frecuenciaBarber1 = '';
   bool waitTime = false; //false es que puede hacer llamadas a buscar la cola
-  int waitTimeCount = 0; //false es que puede hacer llamadas a buscar la cola
+  int waitTimeCount = 30; //false es que puede hacer llamadas a buscar la cola
 
   Future getShowClock(int differenceInSeconds, idProf, token) async {
     print(
@@ -241,13 +241,14 @@ class ClientsScheduledController extends GetxController {
 
   void setwaitTimeCount(value) {
     if (value == 1) {
-      waitTimeCount += 2;
+      waitTimeCount--;
       print(
           'entrando funcion nueva -sumando ----- waitTimeCount=$waitTimeCount');
     } else if (value == 0) {
       print('entrando funcion nueva - ---- poniendo a 0');
-      waitTimeCount = 0;
+      waitTimeCount = 30;
     }
+    update();
   }
 
   int getwaitTimeCount() {

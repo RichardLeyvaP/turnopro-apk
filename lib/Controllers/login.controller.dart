@@ -884,8 +884,8 @@ class LoginController extends GetxController {
     return segundos;
   }
 
-  clockInitialTimeB(
-      ClientsScheduledController clientsScheduledController, String tyype) {
+  clockInitialTimeB(ClientsScheduledController clientsScheduledController,
+      String tyype) async {
     //aqui obtengo la hora actual para comparar con la anterior si es posible
     int hAs = obtenerHoraActualEnSegundos();
     print('verificando si esta activo:');
@@ -932,6 +932,10 @@ class LoginController extends GetxController {
         print('verificando si esta activo:NO entre al if-de adentro');
       }
     } else {
+      //sino esta ativo el time de 3 min pues vemos si ya estaba trabajando en segundo plano
+      //llamamos a la db
+      // int restDbClok = await timeClokInitial(idProfessionalLoggedIn,branchIdLoggedIn,tokenUserLoggedIn);
+      // clientsScheduledController.setTotalTimeInitial(restDbClok);
       print('verificando si esta activo:NO entre al if-de afuera');
     }
   }
@@ -1494,4 +1498,21 @@ class LoginController extends GetxController {
     obscureText = !obscureText;
     update();
   }
+
+  /* Future<int> timeClokInitial(
+      int? idProfessionalLoggedIn, int? branchIdLoggedIn) async {
+    try {
+      //INICIALIZANDO A NULL
+      int state = -99;
+      state = await usuarioLg.getStateProfessional(
+          idProfessionalLoggedIn, branchIdLoggedIn);
+      print(
+          'este es el id del puesto idProfes despue sde llamar al state:$state');
+
+      return state;
+    } catch (e) {
+      print('Erroor:$e');
+      return -999;
+    }
+  }*/
 }

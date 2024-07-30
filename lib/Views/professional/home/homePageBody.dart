@@ -872,17 +872,17 @@ class _HomePageBodyState extends State<HomePageBody>
   int initialValue = 10;
   int aux = 0;
   timerConteo() {
-    _timer4 = Timer.periodic(Duration(seconds: 2), (timer) async {
-      print('entrando funcion nueva a timerConteo()');
+    _timer4 = Timer.periodic(Duration(seconds: 1), (timer) async {
+      print(
+          'entrando funcion nueva a timerConteo():${clientsScheduledController.getwaitTimeCount()}');
 
       // clearAllNotifications();
-      if (clientsScheduledController.getwaitTimeCount() >= 30) {
+      if (clientsScheduledController.getwaitTimeCount() <= 1) {
         clientsScheduledController.setwaitTimeCount(0);
         if (loginController.usserPermissionQr == 1) {
           _refresh();
         }
-      }
-      if (clientsScheduledController.getWaitTime() ==
+      } else if (clientsScheduledController.getWaitTime() ==
           true) //esta esperando los 30 segundos
 
       {
@@ -1119,6 +1119,7 @@ class _HomePageBodyState extends State<HomePageBody>
       clientsScheduledController.setWaitTime(
           false); //sigue el funcionamiento normal haciendo llamadas
       clientsScheduledController.setBoolControlVision(true);
+      clientsScheduledController.setwaitTimeCount(0);
     }
   }
 
@@ -1138,7 +1139,8 @@ class _HomePageBodyState extends State<HomePageBody>
 
       if (getTimeRemaining() < 3) {
         // aaqui cancelar hasta que vea si rasigna o no
-        loginController.setCodigoQrValidAnt(0); //10 es en espera
+        // comente esto aqui porque no esta funcionando bien
+        //     loginController.setCodigoQrValidAnt(0); //10 es en espera
       }
       if (loginController.idProfessionalLoggedIn != null &&
           loginController.branchIdLoggedIn != null &&
@@ -1624,332 +1626,340 @@ class _HomePageBodyState extends State<HomePageBody>
 
           child: ConstrainedBox(
             constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height * 0.75),
+                minHeight: MediaQuery.of(context).size.height * 0.1),
             child: IntrinsicHeight(
               child: Column(
                 //Cart anaranjado grande inicial que tiene el cronometro
                 children: [
-                  Expanded(
-                      flex: loginController.androidInfoDisplay! >=
-                              6.6 //propiedades de telefone
-                          ? 12
-                          : 13,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: clientsScheduledController.item.isEmpty &&
-                                    (clientsScheduledController
-                                                .clientsScheduledNext ==
-                                            null ||
+                  clientsScheduledController.getWaitTime() == true &&
+                          loginController.usserPermissionQr == 1
+                      ? Expanded(
+                          flex: loginController.androidInfoDisplay! >=
+                                  6.6 //propiedades de telefone
+                              ? 12
+                              : 13,
+                          child: Center(
+                              child: Text(
+                                  'Espera de ${clientsScheduledController.getwaitTimeCount()} segundos',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 16,
+                                    color: Color.fromARGB(255, 82, 81, 81),
+                                  ))))
+                      : Expanded(
+                          flex: loginController.androidInfoDisplay! >=
+                                  6.6 //propiedades de telefone
+                              ? 12
+                              : 13,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: clientsScheduledController
+                                            .item.isEmpty &&
                                         (clientsScheduledController
-                                                    .boolFilterShowNext ==
-                                                false &&
-                                            clientsScheduledController
-                                                    .errorHome !=
-                                                -99)) &&
-                                    loginController.usserPermissionQr == 1
-                                ? const SizedBox(
-                                    height: 45,
-                                  )
-                                : (clientsScheduledController
-                                                    .clientsScheduledListLength >
-                                                0 ||
-                                            clientsScheduledController
-                                                    .errorHome ==
-                                                -99) &&
+                                                    .clientsScheduledNext ==
+                                                null ||
+                                            (clientsScheduledController
+                                                        .boolFilterShowNext ==
+                                                    false &&
+                                                clientsScheduledController
+                                                        .errorHome !=
+                                                    -99)) &&
                                         loginController.usserPermissionQr == 1
-                                    ? Container(
-                                        decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(12)),
-                                          color: Colors.white,
-                                          //color: Color(0xFFFDAE2A),
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            /*todo texto arriba */ Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8, top: 5),
-                                              child: Align(
-                                                alignment: Alignment.topLeft,
-                                                child: Text(
-                                                  clientsScheduledController
-                                                          .item.isEmpty
-                                                      ? 'Cliente en espera'
-                                                      : 'Atendiendo ${clientsScheduledController.item.length} cliente(s)',
-                                                  style: const TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: Color.fromARGB(
-                                                        255, 82, 81, 81),
+                                    ? const SizedBox(
+                                        height: 45,
+                                      )
+                                    : (clientsScheduledController
+                                                        .clientsScheduledListLength >
+                                                    0 ||
+                                                clientsScheduledController
+                                                        .errorHome ==
+                                                    -99) &&
+                                            loginController.usserPermissionQr ==
+                                                1
+                                        ? Container(
+                                            decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(12)),
+                                              color: Colors.white,
+                                              //color: Color(0xFFFDAE2A),
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                /*todo texto arriba */ Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8, top: 5),
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.topLeft,
+                                                    child: Text(
+                                                      clientsScheduledController
+                                                              .item.isEmpty
+                                                          ? 'Cliente en espera'
+                                                          : 'Atendiendo ${clientsScheduledController.item.length} cliente(s)',
+                                                      style: const TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Color.fromARGB(
+                                                            255, 82, 81, 81),
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ),
 
-                                            /*CRONOMETRO*/ Padding(
-                                              padding:
-                                                  const EdgeInsets.all(2.0),
-                                              //todo AQUI LA LOGICA AL MOSTRAR LOS TIMER
-                                              child: SingleChildScrollView(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      //AQUI MUESTRA LOS TIMER DE LOS CLIENTES QUE ESTE ATENDIENDO
-                                                      if (clientsScheduledController
-                                                          .item.isNotEmpty) ...[
-                                                        for (int i = 0;
-                                                            i <
+                                                /*CRONOMETRO*/ Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(2.0),
+                                                  //todo AQUI LA LOGICA AL MOSTRAR LOS TIMER
+                                                  child: SingleChildScrollView(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          //AQUI MUESTRA LOS TIMER DE LOS CLIENTES QUE ESTE ATENDIENDO
+                                                          if (clientsScheduledController
+                                                              .item
+                                                              .isNotEmpty) ...[
+                                                            for (int i = 0;
+                                                                i <
+                                                                    clientsScheduledController
+                                                                        .item
+                                                                        .length;
+                                                                i++) ...[
+                                                              cardTimer(
+                                                                clientsList[clientsScheduledController
+                                                                        .item[i]]!
+                                                                    .reservation_id!,
+                                                                i,
+                                                                clientsList[clientsScheduledController
+                                                                        .item[i]]!
+                                                                    .attended!,
+                                                                clientsList[clientsScheduledController
+                                                                        .item[i]]!
+                                                                    .car_id!,
+                                                                clientsList[clientsScheduledController
+                                                                        .item[i]]!
+                                                                    .client_image!,
+                                                                UniqueKey(),
+                                                                clientsList[clientsScheduledController
+                                                                        .item[i]]!
+                                                                    .client_name!,
+                                                                clientsScheduledController,
+                                                                animationCont[
+                                                                    clientsScheduledController
+                                                                            .item[
+                                                                        i]]!,
+                                                              ),
+                                                            ],
+                                                          ]
+                                                          //SI NO ESTA ATENDIENDOA NADIE Y HAY GENTE EN LA COLA ESPERANDO CARGA EL TIMER INICIAL
+                                                          else if (clientsScheduledController
+                                                                  .clientsScheduledNext !=
+                                                              null) ...[
+                                                            //AQUI VERIFICO SI YA ESCANEO EL CODIGO QR
+                                                            if (loginController
+                                                                        .codigoQrValid() ==
+                                                                    true &&
                                                                 clientsScheduledController
                                                                     .item
-                                                                    .length;
-                                                            i++) ...[
-                                                          cardTimer(
-                                                            clientsList[
-                                                                    clientsScheduledController
-                                                                        .item[i]]!
-                                                                .reservation_id!,
-                                                            i,
-                                                            clientsList[
-                                                                    clientsScheduledController
-                                                                        .item[i]]!
-                                                                .attended!,
-                                                            clientsList[
-                                                                    clientsScheduledController
-                                                                        .item[i]]!
-                                                                .car_id!,
-                                                            clientsList[
-                                                                    clientsScheduledController
-                                                                        .item[i]]!
-                                                                .client_image!,
-                                                            UniqueKey(),
-                                                            clientsList[
-                                                                    clientsScheduledController
-                                                                        .item[i]]!
-                                                                .client_name!,
-                                                            clientsScheduledController,
-                                                            animationCont[
+                                                                    .isEmpty) ...[
+                                                              cardTimer2(
+                                                                UniqueKey(),
+                                                                'Esperando',
+                                                                clientsScheduledController,
                                                                 clientsScheduledController
-                                                                    .item[i]]!,
-                                                          ),
-                                                        ],
-                                                      ]
-                                                      //SI NO ESTA ATENDIENDOA NADIE Y HAY GENTE EN LA COLA ESPERANDO CARGA EL TIMER INICIAL
-                                                      else if (clientsScheduledController
-                                                              .clientsScheduledNext !=
-                                                          null) ...[
-                                                        //AQUI VERIFICO SI YA ESCANEO EL CODIGO QR
-                                                        if (loginController
-                                                                    .codigoQrValid() ==
-                                                                true &&
-                                                            clientsScheduledController
-                                                                .item
-                                                                .isEmpty) ...[
-                                                          cardTimer2(
-                                                            UniqueKey(),
-                                                            'Esperando',
-                                                            clientsScheduledController,
-                                                            clientsScheduledController
-                                                                .animationControllerInitial!,
-                                                          ),
-                                                        ] else if (loginController
-                                                                .usserPermissionQr ==
-                                                            2) ...[
-                                                          const Center(
-                                                            child: Column(
-                                                              children: [
-                                                                SizedBox(
-                                                                  height: 35,
-                                                                ),
-                                                                Text(
-                                                                  'Debe de esperar la respuesta',
-                                                                  style:
-                                                                      TextStyle(
+                                                                    .animationControllerInitial!,
+                                                              ),
+                                                            ] else if (loginController
+                                                                    .usserPermissionQr ==
+                                                                2) ...[
+                                                              const Center(
+                                                                child: Column(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      height:
+                                                                          35,
+                                                                    ),
+                                                                    Text(
+                                                                      'Debe de esperar la respuesta',
+                                                                      style: TextStyle(
                                                                           // color: Colors.white,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              39,
-                                                                              39,
-                                                                              39),
-                                                                          fontWeight:
-                                                                              FontWeight.w600),
-                                                                ),
-                                                                Text(
-                                                                  'a su solicitud',
-                                                                  style:
-                                                                      TextStyle(
+                                                                          color: Color.fromARGB(255, 39, 39, 39),
+                                                                          fontWeight: FontWeight.w600),
+                                                                    ),
+                                                                    Text(
+                                                                      'a su solicitud',
+                                                                      style: TextStyle(
                                                                           //color: Colors.white,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              39,
-                                                                              39,
-                                                                              39),
-                                                                          fontWeight:
-                                                                              FontWeight.w600),
+                                                                          color: Color.fromARGB(255, 39, 39, 39),
+                                                                          fontWeight: FontWeight.w600),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          45,
+                                                                    ),
+                                                                  ],
                                                                 ),
-                                                                SizedBox(
-                                                                  height: 45,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          )
-                                                        ] else ...[
-                                                          const Center(
-                                                            child: Column(
-                                                              children: [
-                                                                SizedBox(
-                                                                  height: 35,
-                                                                ),
-                                                                Text(
-                                                                  'Debe de escanear el código Qr ',
-                                                                  style:
-                                                                      TextStyle(
+                                                              )
+                                                            ] else ...[
+                                                              const Center(
+                                                                child: Column(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      height:
+                                                                          35,
+                                                                    ),
+                                                                    Text(
+                                                                      'Debe de escanear el código Qr ',
+                                                                      style: TextStyle(
                                                                           // color: Colors.white,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              39,
-                                                                              39,
-                                                                              39),
-                                                                          fontWeight:
-                                                                              FontWeight.w600),
-                                                                ),
-                                                                Text(
-                                                                  'para atender clientes',
-                                                                  style:
-                                                                      TextStyle(
+                                                                          color: Color.fromARGB(255, 39, 39, 39),
+                                                                          fontWeight: FontWeight.w600),
+                                                                    ),
+                                                                    Text(
+                                                                      'para atender clientes',
+                                                                      style: TextStyle(
                                                                           //color: Colors.white,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              39,
-                                                                              39,
-                                                                              39),
-                                                                          fontWeight:
-                                                                              FontWeight.w600),
+                                                                          color: Color.fromARGB(255, 39, 39, 39),
+                                                                          fontWeight: FontWeight.w600),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          45,
+                                                                    ),
+                                                                  ],
                                                                 ),
-                                                                SizedBox(
-                                                                  height: 45,
-                                                                ),
-                                                              ],
+                                                              )
+                                                            ]
+                                                          ] else ...[
+                                                            const SizedBox(
+                                                              height: 45,
                                                             ),
-                                                          )
-                                                        ]
-                                                      ] else ...[
-                                                        const SizedBox(
-                                                          height: 45,
-                                                        ),
-                                                      ]
-                                                    ]),
-                                              ),
-                                              //FIN CLIENTES QUE ESTAN EN COLA
-                                            ),
-                                            //todo CLIENTES QUE ESTAN EN COLA
-
-                                            //FIN CLIENTES QUE ESTAN EN COLA
-                                          ],
-                                        ),
-                                      )
-                                    : SizedBox(
-                                        height: 80,
-                                      ),
-                          ),
-                          clientsScheduledController.boolControlVision ==
-                                      true &&
-                                  loginController.usserPermissionQr == 1
-                              ? clientsScheduledController.boolFilterShowNext ==
-                                          true ||
-                                      clientsScheduledController.errorHome ==
-                                          -99
-                                  ? cardClientTails(clientsScheduledController,
-                                      context, firstName, animationCont)
-                                  :
-
-                                  //si hubiera algien en cola
-                                  (clientsScheduledController
-                                              .clientsScheduledListLengthTail >
-                                          0)
-                                      ? const Column(
-                                          children: [
-                                            Text(
-                                              'Cliente atendiéndose',
-                                              style: TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 82, 81, 81),
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                            Text(
-                                              'Esperando para mostrar el siguiente',
-                                              style: TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 82, 81, 81),
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ],
-                                        )
-                                      : const Text('No hay clientes en cola.',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 16,
-                                            color:
-                                                Color.fromARGB(255, 82, 81, 81),
-                                          ))
-                              : loginController.usserPermissionQr == 2
-                                  ? const Center(
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 35,
-                                          ),
-                                          Text(
-                                            'Debe de esperar la respuesta',
-                                            style: TextStyle(
-                                                // color: Colors.white,
-                                                color: Color.fromARGB(
-                                                    255, 39, 39, 39),
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          Text(
-                                            'a su solicitud',
-                                            style: TextStyle(
-                                                //color: Colors.white,
-                                                color: Color.fromARGB(
-                                                    255, 39, 39, 39),
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          SizedBox(
-                                            height: 45,
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  : loginController.usserPermissionQr == null
-                                      ? Text('')
-                                      : const Column(
-                                          children: [
-                                            SizedBox(
-                                              height: 50,
-                                            ),
-                                            Center(
-                                              child: SizedBox(
-                                                width: 24,
-                                                height: 24,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: Color(0xFFFDAE2A),
-                                                  strokeWidth: 3,
+                                                          ]
+                                                        ]),
+                                                  ),
+                                                  //FIN CLIENTES QUE ESTAN EN COLA
                                                 ),
-                                              ),
+                                                //todo CLIENTES QUE ESTAN EN COLA
+
+                                                //FIN CLIENTES QUE ESTAN EN COLA
+                                              ],
                                             ),
-                                          ],
+                                          )
+                                        : SizedBox(
+                                            height: 80,
+                                          ),
+                              ),
+                              clientsScheduledController.boolControlVision ==
+                                          true &&
+                                      loginController.usserPermissionQr == 1
+                                  ? clientsScheduledController
+                                                  .boolFilterShowNext ==
+                                              true ||
+                                          clientsScheduledController
+                                                  .errorHome ==
+                                              -99
+                                      ? cardClientTails(
+                                          clientsScheduledController,
+                                          context,
+                                          firstName,
+                                          animationCont)
+                                      :
+
+                                      //si hubiera algien en cola
+                                      (clientsScheduledController
+                                                  .clientsScheduledListLengthTail >
+                                              0)
+                                          ? const Column(
+                                              children: [
+                                                Text(
+                                                  'Cliente atendiéndose',
+                                                  style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 82, 81, 81),
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                                Text(
+                                                  'Esperando para mostrar el siguiente',
+                                                  style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 82, 81, 81),
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                              ],
+                                            )
+                                          : const Text(
+                                              'No hay clientes en cola.',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 16,
+                                                color: Color.fromARGB(
+                                                    255, 82, 81, 81),
+                                              ))
+                                  : loginController.usserPermissionQr == 2
+                                      ? const Center(
+                                          child: Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 35,
+                                              ),
+                                              Text(
+                                                'Debe de esperar la respuesta',
+                                                style: TextStyle(
+                                                    // color: Colors.white,
+                                                    color: Color.fromARGB(
+                                                        255, 39, 39, 39),
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                              Text(
+                                                'a su solicitud',
+                                                style: TextStyle(
+                                                    //color: Colors.white,
+                                                    color: Color.fromARGB(
+                                                        255, 39, 39, 39),
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                              SizedBox(
+                                                height: 45,
+                                              ),
+                                            ],
+                                          ),
                                         )
-                        ],
-                      )),
+                                      : loginController.usserPermissionQr ==
+                                              null
+                                          ? Text('')
+                                          : const Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: 50,
+                                                ),
+                                                Center(
+                                                  child: SizedBox(
+                                                    width: 24,
+                                                    height: 24,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color: Color(0xFFFDAE2A),
+                                                      strokeWidth: 3,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                            ],
+                          )),
                   Expanded(
                       flex: 13, // 85% del espacio disponible para esta parte
                       child: Padding(
