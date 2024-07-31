@@ -407,6 +407,35 @@ class UserRepository extends GetConnect {
     }
   }
 
+  Future gettimeClokInitial(int idProfessional, int branch) async {
+    try {
+      String token = loginController.tokenUserLoggedIn;
+      print('este es el id del puesto222-idProfessional:$idProfessional');
+      var url =
+          '${Env.apiEndpoint}/time-clock-reservation?professional_id=$idProfessional&branch_id=$branch';
+
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      print('este es el id del puesto333-response:$response');
+      print(
+          'este es el id del puesto333-response.statusCode de gettimeClokInitial:${response.statusCode}');
+      //print(response.body);
+      if (response.statusCode == 200) {
+        final intValue = int.parse(response.body);
+
+        return intValue;
+      } else {
+        return -99;
+      }
+    } catch (e) {
+      print('Error:$e');
+      return -999;
+    }
+  }
+
   Future<int> getEntradaPuestoRepo(int idProfessional, int idBanch) async {
     try {
       String token = loginController.tokenUserLoggedIn;

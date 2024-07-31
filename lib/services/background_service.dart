@@ -297,7 +297,7 @@ Future<void> onStart(ServiceInstance service) async {
         if ((chargeProfesional == 'Barbero y Encargado') ||
             (chargeProfesional == 'Barbero')) {
           await clientCord.reasignedClientSegundoPlano(
-              idProfesional, branchProfesional, tokenUser);
+              idProfesional, branchProfesional, tokenUser, 1); //
         }
       }
     } else {

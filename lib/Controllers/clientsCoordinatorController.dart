@@ -348,9 +348,9 @@ class ClientsCoordinatorController extends GetxController {
   }
 
   Future<bool> reasignedClientSegundoPlano(
-      professionalId, branchId, token) async {
+      professionalId, branchId, token, place) async {
     Map<String, dynamic> resultList = await repository
-        .reasignedClientSegundoPlano(professionalId, branchId, token);
+        .reasignedClientSegundoPlano(professionalId, branchId, token, place);
     print(resultList);
     //verificando , si entra al if es problemas de coneccion
     if (resultList.containsKey('ConnectionIssues') &&

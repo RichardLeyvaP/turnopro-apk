@@ -932,11 +932,34 @@ class LoginController extends GetxController {
         print('verificando si esta activo:NO entre al if-de adentro');
       }
     } else {
-      //sino esta ativo el time de 3 min pues vemos si ya estaba trabajando en segundo plano
-      //llamamos a la db
-      // int restDbClok = await timeClokInitial(idProfessionalLoggedIn,branchIdLoggedIn,tokenUserLoggedIn);
-      // clientsScheduledController.setTotalTimeInitial(restDbClok);
-      print('verificando si esta activo:NO entre al if-de afuera');
+      //todo aqui llamar para ver que tiempo tiene el timerClockInitial
+      /* int timeInit =
+          await gettimeClokInitial(idProfessionalLoggedIn!, branchIdLoggedIn!);
+      print('el tiempo devuelto inicial es:$timeInit');
+      if (timeInit != -99 && timeInit != -999) {
+        timeInit += 20;
+        int tiempClock = 180 - timeInit;
+        if (tiempClock < 0) {
+          //reasigno y pongo el reloj en 180
+          await clientCord.reasignedClientSegundoPlano(
+              idProfessionalLoggedIn!,
+              branchIdLoggedIn,
+              tokenUserLoggedIn,
+              0); //0 significa que es desde el login
+          tiempClock = 180;
+        }
+        //  await Future.delayed(
+        //   Duration(milliseconds: 500));
+        //se mantiene el valor
+        clientsScheduledController.setTotalTimeInitial(tiempClock);
+        //sino esta ativo el time de 3 min pues vemos si ya estaba trabajando en segundo plano
+        //llamamos a la db
+      } else {
+        clientsScheduledController
+            .setTotalTimeInitial(181); //solo para saber que algo dio mal
+        print(
+            'el tiempo inicial del reloj inicio en 181 segundos porque dio un error');
+      }*/
     }
   }
 
@@ -1414,6 +1437,20 @@ class LoginController extends GetxController {
     } catch (e) {
       print('Erroor:$e');
       return 3;
+    }
+  }
+
+  Future<int> gettimeClokInitial(int idProfes, int branch) async {
+    try {
+      //INICIALIZANDO A NULL
+      int clock = -99;
+      clock = await usuarioLg.gettimeClokInitial(idProfes, branch);
+      print('este s es el id del clock devuelto-time:$clock');
+
+      return clock;
+    } catch (e) {
+      print('Erroor:$e');
+      return -999;
     }
   }
 

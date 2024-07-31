@@ -110,11 +110,14 @@ class ClientsCoordinatorRepository extends GetConnect {
   //
   //
   //
-  Future reasignedClientSegundoPlano(professionalId, branchId, token) async {
+  Future reasignedClientSegundoPlano(
+      professionalId, branchId, token, place) async {
     List<ClientsScheduledModel> clientList = [];
+    //si place = 0 es para que reasigne ahi sin comprobar horas
+    //si es 1 es normal la llamada con verificacion desde el servicio
     try {
       var url =
-          '${Env.apiEndpoint}/reasigned-secound-plain?professional_id=$professionalId&branch_id=$branchId';
+          '${Env.apiEndpoint}/reasigned-secound-plain?professional_id=$professionalId&branch_id=$branchId&place=$place';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
