@@ -19,10 +19,10 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
+
     // Obtener la fecha actual
     // Obtener la fecha actual
     DateTime now = DateTime.now();
-
     // Formatear la fecha para que solo incluya año, mes y día
     String dataAct = DateFormat('yyyy-MM-dd').format(now);
     Future.delayed(const Duration(seconds: 6), () async {

@@ -220,7 +220,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     // Cancela cualquier temporizador existente para evitar duplicaciones
 
     // Establece un temporizador que llama a la función cada 20 segundos
-    _timer = Timer.periodic(const Duration(seconds: 11), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 11), (Timer timer) async {
+      await loginController.checkConnection();
       print('callTimerTec1');
       if (loginController.makeCallT == true) {
         if (clientsScheduledController.boolFilterShowNextTecnhical == true &&

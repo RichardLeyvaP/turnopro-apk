@@ -12,8 +12,6 @@ import 'package:permission_handler/permission_handler.dart';
 //import 'package:turnopro_apk/services/localNotification.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'services/background_service.dart';
-
 void main() async {
   await AppInitializer.initializeApp();
   //
@@ -46,6 +44,7 @@ void main() async {
   //         AndroidFlutterLocalNotificationsPlugin>()!
   //     .requestNotificationsPermission();
   //await initializeService();
+
   runApp(
     MultiProvider(
       providers:

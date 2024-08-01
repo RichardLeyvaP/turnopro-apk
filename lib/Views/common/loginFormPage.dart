@@ -21,7 +21,7 @@ class LoginFormPage extends StatelessWidget {
   Widget build(BuildContext context) {
     //todo IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       // _passController.text = '';
       // _usserController.text = '';
       // Se ejecutará después de que se haya construido el widget
@@ -29,6 +29,8 @@ class LoginFormPage extends StatelessWidget {
 
       clientContro.setValueClockDinamic(
           clientContro.calcularH(controllerLogin.androidInfoHeight!));
+      await Future.delayed(const Duration(seconds: 1));
+      await loginController.checkConnection();
       // print(
       //     'clientes asistiendo ENTRE A DESTRUIR LAS VARIABLES DEL TIEMPO ASIGNADO activeModifyTime SOY = ${controllerclient.activeModifyTime}');
     });
@@ -269,6 +271,32 @@ class LoginFormPage extends StatelessWidget {
                                               const Color(0xFF4470F3)),
                                     ),
                                     onPressed: () async {
+                                      Get.dialog(
+                                        const Center(
+                                          child: Material(
+                                            color: Colors.transparent,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                CircularProgressIndicator(
+                                                  color: Color(0xFFFDAE2A),
+                                                ),
+                                                SizedBox(height: 16),
+                                                Text('Verificando...',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        barrierDismissible: false,
+                                      );
+                                      await loginController
+                                          .checkConnection(); //saber si tiene wifi o los datos puestos
+
+                                      // await Future.delayed(
+                                      //     Duration(milliseconds: 500));
+
                                       if (_usserController.text.isEmpty ||
                                           _passController.text.isEmpty) {
                                         _passController.text = '';
@@ -290,19 +318,35 @@ class LoginFormPage extends StatelessWidget {
                                           overlayBlur: 3,
                                         );
                                       } else {
-                                        await _.loadingValue(true);
+                                        //Get.back();
+                                        // await _.loadingValue(true);
                                         // await _.loginGetIn(
                                         //     _usserController.text,
                                         //     _passController.text);
 
-                                        await cControll.getBranchProfessionals(
-                                            _usserController.text,
-                                            _passController.text);
-                                        if (cControll
-                                                .branchProfessionalListLength ==
-                                            0) {
+                                        int resServidor = await cControll
+                                            .getBranchProfessionals(
+                                                _usserController.text,
+                                                _passController.text);
+                                        if (resServidor == -99 ||
+                                            resServidor == -999) {
+                                          Get.back();
+                                          //llamar error de conección
+                                          loginController
+                                              .showConnectionErrorLogin();
+                                        } else if (resServidor == 1) {
+                                          Get.back();
+                                          Get.toNamed('/LoginFormPage2');
+                                        } else if (resServidor == 0 &&
+                                            cControll
+                                                    .branchProfessionalListLength ==
+                                                0) {
+                                          Get.back();
                                           _passController.text = '';
                                           _usserController.text = '';
+                                          await Future.delayed(const Duration(
+                                              milliseconds: 300));
+
                                           Get.snackbar(
                                             '',
                                             'Usuario o Contraseña Incorrectos.',
@@ -320,8 +364,9 @@ class LoginFormPage extends StatelessWidget {
                                                     const Color(0xFFFDAE2A)),
                                             overlayBlur: 3,
                                           );
-                                          await _.loadingValue(false);
                                         }
+
+                                        // await _.loadingValue(false);
                                       }
                                     },
                                     child: _.isLoading

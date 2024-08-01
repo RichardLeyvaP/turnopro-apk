@@ -268,25 +268,33 @@ class CoexistenceController extends GetxController {
     update();
   }
 
-  Future<void> getBranchProfessionals(String email, String password) async {
+  Future<int> getBranchProfessionals(String email, String password) async {
     final LoginController controllerLogin = Get.find<LoginController>();
     controllerLogin.uss = email;
     controllerLogin.pass = password;
 
-    branchProfessional =
-        await repository.getBranchProfessionals2(email, password);
-    print('aqui estoy devFuture<void> getBranchProfessionals');
-    print(branchProfessional.length);
-    branchProfessionalListLength = branchProfessional.length;
-    if (branchProfessionalListLength > 0) {
-      controllerLogin.loadingValue(false);
-      Get.toNamed('/LoginFormPage2');
-    } else {
-      print(
-          'ya tengo la cola de la api es estaa Tipos de dato No hay sucursales');
+    final result = await repository.getBranchProfessionals2(email, password);
+
+    if (result == null) {
+      print('Result is null');
+      return -99;
     }
-    print(
-        'aqui estoy devFuture<void> branchProfessionalListLength:$branchProfessionalListLength');
-    update();
+    // Verifica si result es de tipo List<BranchModel>
+    else if (result is List<BranchModel>) {
+      branchProfessional = result;
+      print('Result is a List<BranchModel>');
+      print(branchProfessional.length);
+      branchProfessionalListLength = branchProfessional.length;
+      if (branchProfessionalListLength > 0) {
+        return 1;
+      } else {
+        print(
+            'ya tengo la cola de la api es estaa Tipos de dato No hay sucursales');
+        return 0;
+      }
+    } else {
+      print('Result is of an unexpected type: ${result.runtimeType}');
+      return -999;
+    }
   }
 }

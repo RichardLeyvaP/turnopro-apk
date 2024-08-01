@@ -31,6 +31,9 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await loginController.checkConnection();
+    });
     return FadeIn(
       duration: const Duration(seconds: 2),
       child: Scaffold(
@@ -256,6 +259,7 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                                               const Color(0xFF4470F3)),
                                     ),
                                     onPressed: () async {
+                                      loginController.checkConnection();
                                       if (branchIdLoggedIn != -99) {
                                         Get.dialog(
                                           const Center(
@@ -287,19 +291,7 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                                             email, password, branchIdLoggedIn);
                                       }
                                     },
-                                    child:
-                                        // contLog.isLoading
-                                        //     ? Container(
-                                        //         width: 22,
-                                        //         height: 22,
-                                        //         child:
-                                        //             const CircularProgressIndicator(
-                                        //           color: const Color(0xFFFDAE2A),
-                                        //           strokeWidth: 3,
-                                        //         ),
-                                        //       )
-                                        //     :
-                                        Text(
+                                    child: Text(
                                       ' ENTRAR',
                                       style: const TextStyle(
                                           fontSize: 12,

@@ -552,7 +552,7 @@ class CoexistenceRepository extends GetConnect {
 
 //
 //
-  Future<List<BranchModel>> getBranchProfessionals2(email, password) async {
+  Future getBranchProfessionals2(email, password) async {
     // todo esta es la que carga a los profesionales y a los tecnicos
     List<BranchModel> branchProf = [];
     print('estoy en getBranchProfessionals');
@@ -568,7 +568,9 @@ class CoexistenceRepository extends GetConnect {
           await get(url, headers: headers).timeout(Duration(seconds: 15));
       print(
           'ya tengo la cola de la api es response.statusCode : ${response.statusCode}');
-      if (response.statusCode == 200) {
+      if (response.statusCode == null || response.statusCode != 200) {
+        return null;
+      } else if (response.statusCode == 200) {
         final barnchP = response.body['branches'];
         for (int i = 0; i < barnchP.length; i++) {
           print(

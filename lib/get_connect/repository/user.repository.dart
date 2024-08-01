@@ -407,9 +407,9 @@ class UserRepository extends GetConnect {
     }
   }
 
-  Future gettimeClokInitial(int idProfessional, int branch) async {
+  Future gettimeClokInitial(
+      int idProfessional, int branch, String token) async {
     try {
-      String token = loginController.tokenUserLoggedIn;
       print('este es el id del puesto222-idProfessional:$idProfessional');
       var url =
           '${Env.apiEndpoint}/time-clock-reservation?professional_id=$idProfessional&branch_id=$branch';
@@ -420,12 +420,13 @@ class UserRepository extends GetConnect {
       final response = await get(url, headers: headers).timeout(
           Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       print('este es el id del puesto333-response:$response');
+      print('este es el id del puesto333-response-url:$url');
       print(
           'este es el id del puesto333-response.statusCode de gettimeClokInitial:${response.statusCode}');
       //print(response.body);
       if (response.statusCode == 200) {
-        final intValue = int.parse(response.body);
-
+        final intValue = response.body;
+        print('este es el id del puesto333-response-intValue:$intValue');
         return intValue;
       } else {
         return -99;

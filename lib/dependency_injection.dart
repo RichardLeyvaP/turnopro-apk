@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Routes/index.dart';
+import 'package:turnopro_apk/services/connectivity_service.dart';
 
 class DependencyInjection {
   static void registerDependencies() {
+    Get.put(ConnectivityService());
     Get.put(LoginController(), permanent: true);
     Get.put(ClientsScheduledController(), permanent: true);
     Get.put(ClientsTechnicalController());

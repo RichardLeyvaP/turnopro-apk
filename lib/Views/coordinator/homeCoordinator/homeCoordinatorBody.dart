@@ -108,6 +108,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     // Establece un temporizador que llama a la función cada 20 segundos
     _timerCoord =
         Timer.periodic(const Duration(seconds: 13), (Timer timer) async {
+      await loginController.checkConnection();
       print('hola entrando en 10 min;');
       if (loginController.makeCallC == true) {
         print('hola entrando en 10 min-makeCallC == true');

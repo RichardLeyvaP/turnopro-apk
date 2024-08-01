@@ -12,6 +12,7 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:turnopro_apk/Routes/index.dart';
 import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
 import 'package:turnopro_apk/get_connect/repository/user.repository.dart';
+import 'package:turnopro_apk/services/connectivity_service.dart';
 
 import '../services/background_service.dart';
 
@@ -34,6 +35,13 @@ class LoginController extends GetxController {
   bool switchValue = false; //false es barbero y true Encargado
 
   //optener la hora actual
+  Future<void> checkConnection() async {
+    final ConnectivityService connectivityService =
+        Get.find<ConnectivityService>();
+    await connectivityService.fetchData();
+  }
+
+  //optener la hora actual
   String getCurrentTime() {
     // Obtener la hora actual
     DateTime now = DateTime.now();
@@ -48,6 +56,19 @@ class LoginController extends GetxController {
     showSimpleNotification(
       Text(
         'Conectándose al servidor...',
+        style: TextStyle(color: Color(0xFF4470F3)),
+      ),
+      background: Colors.white,
+      // position: NotificationPosition.top,
+      position: NotificationPosition.bottom,
+      slideDismiss: true, // para que se pueda deslizar para cerrar
+    );
+  }
+
+  void showConnectionErrorLogin() {
+    showSimpleNotification(
+      Text(
+        'No tiene conexión a internet',
         style: TextStyle(color: Color(0xFF4470F3)),
       ),
       background: Colors.white,
@@ -963,6 +984,54 @@ class LoginController extends GetxController {
     }
   }
 
+  verificateClockInit2() async {
+    if (LocalStorage.prefs.getBool('valueClockActiv') != null &&
+        LocalStorage.prefs.getBool('valueClockActiv') == true) {
+      print(
+          'el tiempo devuelto inicial es-0:${LocalStorage.prefs.getBool('valueClockActiv')}');
+    } else {
+      int timeInit = await loginController.gettimeClokInitial(
+          loginController.idProfessionalLoggedIn!,
+          loginController.branchIdLoggedIn!,
+          loginController.tokenUserLoggedIn);
+      print('el tiempo devuelto inicial es-1:$timeInit');
+      int tiempClock = 180;
+      if (timeInit != -99 && timeInit != -999) {
+        if (timeInit == 180) {
+          tiempClock = 180;
+        } else {
+          print('el tiempo devuelto inicial es-2:ENTRE AL IF');
+          timeInit += 20;
+          tiempClock = 180 - timeInit;
+          if (tiempClock < 0) {
+            print('el tiempo devuelto inicial es-3-REASIGNANDO:$tiempClock');
+            //reasigno y pongo el reloj en 180
+            await clientCord.reasignedClientSegundoPlano(
+                loginController.idProfessionalLoggedIn!,
+                loginController.branchIdLoggedIn,
+                loginController.tokenUserLoggedIn,
+                0); //0 significa que es desde el login
+            tiempClock = 180;
+          }
+        }
+        //  await Future.delayed(
+        //   Duration(milliseconds: 500));
+        //se mantiene el valor
+        print(
+            'el tiempo devuelto inicial es-3-Inicializando clock inicial en:$tiempClock');
+        clientsScheduledController.setTotalTimeInitial(tiempClock);
+        //sino esta ativo el time de 3 min pues vemos si ya estaba trabajando en segundo plano
+        //llamamos a la db
+      } else {
+        print('el tiempo devuelto inicial es-4-No entre al if');
+        clientsScheduledController
+            .setTotalTimeInitial(181); //solo para saber que algo dio mal
+        print(
+            'el tiempo inicial del reloj inicio en 181 segundos porque dio un error');
+      }
+    }
+  }
+
   clockInitialTimeT(
       ClientsTechnicalController clientsScheduledController, String tyype) {
     //aqui obtengo la hora actual para comparar con la anterior si es posible
@@ -1262,7 +1331,7 @@ class LoginController extends GetxController {
         update();
       } //cierre if (result != null) {
       else if (result == null) {
-        showConnectionError();
+        showConnectionErrorLogin();
         // Get.back();
         Get.offAllNamed(
           '/LoginFormPage',
@@ -1285,6 +1354,10 @@ class LoginController extends GetxController {
     try {
       final service = FlutterBackgroundService(); //detengo el servicio
       service.invoke('stopService');
+      //cuando ya de salir que valla eliminar el token que ponga a uno todas las notificaciones
+      //y las limpie de alla arriba del servicio
+      /* notifCont.updateNotifications(
+          logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn, typeEnv);*/
       if (token != '') {
         Map<String, dynamic>? result; //INICIALIZANDO A NULL
         await Future.delayed(const Duration(seconds: 1));
@@ -1440,11 +1513,11 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<int> gettimeClokInitial(int idProfes, int branch) async {
+  Future<int> gettimeClokInitial(int idProfes, int branch, String token) async {
     try {
       //INICIALIZANDO A NULL
       int clock = -99;
-      clock = await usuarioLg.gettimeClokInitial(idProfes, branch);
+      clock = await usuarioLg.gettimeClokInitial(idProfes, branch, token);
       print('este s es el id del clock devuelto-time:$clock');
 
       return clock;

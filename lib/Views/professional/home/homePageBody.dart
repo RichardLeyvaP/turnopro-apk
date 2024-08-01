@@ -220,10 +220,58 @@ class _HomePageBodyState extends State<HomePageBody>
   }
 
   //BackgroundTaskService backgroundTaskService = BackgroundTaskService();
+  verificateClockInit() async {
+    if (LocalStorage.prefs.getBool('valueClockActiv') != null &&
+        LocalStorage.prefs.getBool('valueClockActiv') == true) {
+      print(
+          'el tiempo devuelto inicial es-0:${LocalStorage.prefs.getBool('valueClockActiv')}');
+    } else {
+      int timeInit = await loginController.gettimeClokInitial(
+          loginController.idProfessionalLoggedIn!,
+          loginController.branchIdLoggedIn!,
+          loginController.tokenUserLoggedIn);
+      print('el tiempo devuelto inicial es-1:$timeInit');
+      int tiempClock = 180;
+      if (timeInit != -99 && timeInit != -999) {
+        if (timeInit == 180) {
+          tiempClock = 180;
+        } else {
+          print('el tiempo devuelto inicial es-2:ENTRE AL IF');
+          timeInit += 20;
+          tiempClock = 180 - timeInit;
+          if (tiempClock < 0) {
+            print('el tiempo devuelto inicial es-3-REASIGNANDO:$tiempClock');
+            //reasigno y pongo el reloj en 180
+            await clientCord.reasignedClientSegundoPlano(
+                loginController.idProfessionalLoggedIn!,
+                loginController.branchIdLoggedIn,
+                loginController.tokenUserLoggedIn,
+                0); //0 significa que es desde el login
+            tiempClock = 180;
+          }
+        }
+        //  await Future.delayed(
+        //   Duration(milliseconds: 500));
+        //se mantiene el valor
+        print(
+            'el tiempo devuelto inicial es-3-Inicializando clock inicial en:$tiempClock');
+        clientsScheduledController.setTotalTimeInitial(tiempClock);
+        //sino esta ativo el time de 3 min pues vemos si ya estaba trabajando en segundo plano
+        //llamamos a la db
+      } else {
+        print('el tiempo devuelto inicial es-4-No entre al if');
+        clientsScheduledController
+            .setTotalTimeInitial(181); //solo para saber que algo dio mal
+        print(
+            'el tiempo inicial del reloj inicio en 181 segundos porque dio un error');
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-
+    //verificateClockInit();
     print('fff12 antes del channel.stream');
 
     print('cargando aqui-3');
@@ -406,6 +454,7 @@ class _HomePageBodyState extends State<HomePageBody>
 //
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // verificateClockInit();
       clientsScheduledController.setBoolControlVision(true);
       llamadasTimer1();
 
@@ -898,6 +947,7 @@ class _HomePageBodyState extends State<HomePageBody>
     _timer1 = //notificaciones
         Timer.periodic(const Duration(seconds: 10), (Timer timer) async {
       saveData();
+      await loginController.checkConnection();
       // getTimeRemaining();
       /* if (cont == 3) {
         print(
@@ -3195,6 +3245,11 @@ class _HomePageBodyState extends State<HomePageBody>
         ),
         onPressed: () async {
           if (titleCart == 'Agenda') {
+            int timeInit = await loginController.gettimeClokInitial(
+                loginController.idProfessionalLoggedIn!,
+                loginController.branchIdLoggedIn!,
+                loginController.tokenUserLoggedIn);
+            print('el tiempo devuelto inicial es-desde el home:$timeInit');
             Get.dialog(
               const Center(
                 child: CircularProgressIndicator(

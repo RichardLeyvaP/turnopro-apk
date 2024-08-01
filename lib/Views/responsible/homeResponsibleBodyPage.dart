@@ -115,6 +115,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
     // Establece un temporizador que llama a la función cada 20 segundos
     _timerResp =
         Timer.periodic(const Duration(seconds: 13), (Timer timer) async {
+      await controllerLogin.checkConnection();
       //estoy entrando cada 8 segundos
       print('llamada timer - l callTimer1 9segundos');
       if (loginController.makeCallE == true) {
