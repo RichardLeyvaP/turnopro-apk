@@ -232,8 +232,11 @@ class ClientsScheduledRepository extends GetConnect {
           //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
           if (isLoggingIn == true) {
             //controllerLogin.isLoggingIn
-            if (client.detached == 1 && client.attended != 33) {
+            if (client.detached == 1 &&
+                client.attended != 33 &&
+                client.attended != 2) {
               //33 es que lo rechazó el tecnico
+              //2 es que ya fue atendido y por alguna razón quedo attendened 1
               //creo nuevo cliente
               print(
                   'clientes asistiendo entre a if (client.detached == 1) {//creo nuevo cliente');
@@ -905,6 +908,48 @@ class ClientsScheduledRepository extends GetConnect {
     } catch (e) {
       print(e);
       return professionalList;
+    }
+  }
+
+  Future getProfessionalState2Coord(idBranch, idReserv, token) async {
+    print('estoy en repositorio en - 10');
+    try {
+      List<ProfessionalModel> professionalList = [];
+      var url =
+          '${Env.apiEndpoint}/professional-state-coordinador?branch_id=$idBranch&reservation_id=$idReserv';
+
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      print(
+          'getProfessionalState(idBranch) async getProfessionalState(idBranch) url:$url');
+      print(
+          'getProfessionalState(idBranch) async getProfessionalState(idBranch) response.statusCode-desde coordinador:${response.statusCode}');
+      if (response.statusCode == 200) {
+        final professionals = response.body['professionals'];
+        for (Map professional in professionals) {
+          ProfessionalModel u =
+              ProfessionalModel.fromJson(jsonEncode(professional));
+          //AQUI SOLO COJO QUE NO SEAN RESPONSABLES
+          if (u.name != 'Encargado' && u.name != 'Coordinador') {
+            //charge_id=3 es un responsable
+            professionalList.add(u);
+          }
+        }
+        print(
+            'getProfessionalState(idBranch) async getProfessionalState(idBranch) async');
+        print(professionalList.length);
+        print(
+            'getProfessionalState(idBranch) async getProfessionalState(idBranch) async professionalList.length:${professionalList.length}');
+        return professionalList;
+      }
+
+      return professionalList;
+    } catch (e) {
+      print(
+          'getProfessionalState(idBranch) async getProfessionalState(idBranch) url:ERRORRRR:$e');
     }
   }
 

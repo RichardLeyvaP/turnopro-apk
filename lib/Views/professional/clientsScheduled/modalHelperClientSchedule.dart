@@ -341,12 +341,33 @@ class ModalHelper {
                                   Color(0xFF19CF9E)),
                             ),
                             onPressed: () async {
-                              //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
-                              await controllClient.acceptOrRejectClient(
-                                  reservationId,
-                                  4,
-                                  loginController.tokenUserLoggedIn);
-                              Navigator.pop(context); // Cierra el modal
+                              if (loginController.usserPermissionQr == 1) {
+                                //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
+                                await controllClient.acceptOrRejectClient(
+                                    reservationId,
+                                    4,
+                                    loginController.tokenUserLoggedIn);
+                                Navigator.pop(context);
+                              } else if (loginController.usserPermissionQr ==
+                                  2) {
+                                Get.snackbar(
+                                  'Mensaje',
+                                  'Debe de esperar la respuesta a su solicitud',
+                                  duration: const Duration(milliseconds: 2500),
+                                  backgroundColor:
+                                      const Color.fromARGB(118, 255, 255, 255),
+                                  showProgressIndicator: true,
+                                  progressIndicatorBackgroundColor:
+                                      const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor:
+                                      const AlwaysStoppedAnimation(
+                                          Color(0xFFFDAE2A)),
+                                  overlayBlur: 3,
+                                );
+                                Navigator.pop(context);
+                              }
+
+                              // Cierra el modal
                             },
                             child: Row(
                               children: [

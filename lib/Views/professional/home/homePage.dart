@@ -82,6 +82,7 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
       //hacer esto solamnete si esta ya con el qr leido
       if (loginController.usserPermissionQr == 1 &&
           LocalStorage.prefs.getBool('verificatePhoto') == false) {
+        // Mostrar diálogo de carga
         Get.dialog(
           const Center(
             child: Material(
@@ -100,32 +101,35 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
             ),
           ),
           barrierDismissible: false,
-        ); //Get.back();
+        );
 
-        // Recuperar la marca de tiempo desde SharedPreferences
-        String? backgroundTimeString =
-            LocalStorage.prefs.getString('background_time');
-        if (backgroundTimeString != null) {
-          DateTime backgroundTime = DateTime.parse(backgroundTimeString);
-          final difference = DateTime.now().difference(backgroundTime);
-          // Convierte la diferencia a minutos
-          final differenceInMinutes = difference.inSeconds;
-          print(
-              'La aplicación estuvo en segundo plano por ${difference.inSeconds} segundos.');
-          //aqui mando el tiempo que estubo fuera
-          //y ya ahi reinicio ese reloj
-          await clientController.getShowClock(
-              differenceInMinutes,
-              loginController.idProfessionalLoggedIn,
-              loginController.tokenUserLoggedIn);
+        try {
+          // Recuperar la marca de tiempo desde SharedPreferences
+          String? backgroundTimeString =
+              LocalStorage.prefs.getString('background_time');
+          if (backgroundTimeString != null) {
+            DateTime backgroundTime = DateTime.parse(backgroundTimeString);
+            final difference = DateTime.now().difference(backgroundTime);
+            // Convierte la diferencia a segundos
+            final differenceInSeconds = difference.inSeconds;
+            print(
+                'La aplicación estuvo en segundo plano por $differenceInSeconds segundos.');
+            // Enviar el tiempo transcurrido a la API
+            await clientController.getShowClock(
+                differenceInSeconds,
+                loginController.idProfessionalLoggedIn,
+                loginController.tokenUserLoggedIn);
 
-          // await Future.delayed(Duration(seconds: 5));
-          // loginController.setIsLoggingIn(true);
-
-          // Aquí puedes manejar la lógica que necesites con el tiempo en segundo plano
+            // Aquí puedes manejar la lógica que necesites con el tiempo en segundo plano
+          }
+        } catch (e) {
+          print('Error actualizando datos: $e');
+        } finally {
+          // Cerrar diálogo de carga
+          Get.back();
         }
-        Get.back();
       }
+
       await LocalStorage.prefs.setBool('verificatePhoto', false);
       //reinicio el servicio
       //  await restartService();
@@ -1050,15 +1054,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                     if (result ==
                                                         1) //codigo 200
                                                     {
-                                                      //mando notificacion al barbero
-                                                      //esta la manda la api
-                                                      // notiController.storeNotification(
-                                                      //     'Solicitud de Colación',
-                                                      //     _.branchIdLoggedIn,
-                                                      //     _.idProfessionalLoggedIn,
-                                                      //     'EL Barbero ${_.nameUserLoggedIn} esta pidiendo solicitud de colación',
-                                                      //     'Ambos'); //esto es para quele llegue a coordinador y encargado
-                                                      //
+                                                      clientCon
+                                                          .setWaitTime(false);
+
+                                                      clientCon
+                                                          .setBoolControlVision(
+                                                              true);
+                                                      clientCon
+                                                          .setwaitTimeCount(0);
+
                                                       _.setCodigoQrValid(
                                                           2); //quiere decir que el qr esta bloquedo hasta que acepten o rechacen
                                                       Get.snackbar(
@@ -1284,16 +1288,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                           4); //solicitud de salida
                                                   if (result == 1) //codigo 200
                                                   {
+                                                    clientCon
+                                                        .setWaitTime(false);
+
+                                                    clientCon
+                                                        .setBoolControlVision(
+                                                            true);
+                                                    clientCon
+                                                        .setwaitTimeCount(0);
                                                     _.setCodigoQrValid(
                                                         2); //si el QR = 2 sacarlo de la app
 
-                                                    //esta la manda la api
-                                                    // notiController.storeNotification(
-                                                    //     'Solicitud de Salida',
-                                                    //     _.branchIdLoggedIn,
-                                                    //     _.idProfessionalLoggedIn,
-                                                    //     'EL Barbero ${_.nameUserLoggedIn} esta pidiendo solicitud de salida',
-                                                    //     'Ambos'); //esto es para quele llegue a coordinador y encargado
                                                     Get.snackbar(
                                                       '',
                                                       'Solicitud de salida pedida correctamente,espere un momento...',

@@ -153,8 +153,11 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                   ),
                                                   onTap: () async {
                                                     if (controllerLogin
-                                                            .codigoQrValid() ==
-                                                        true) {
+                                                                .codigoQrValid() ==
+                                                            true ||
+                                                        (loginController
+                                                                .usserPermissionQr ==
+                                                            2)) {
                                                       if (!_.selectService
                                                               .contains(
                                                                   _.services[

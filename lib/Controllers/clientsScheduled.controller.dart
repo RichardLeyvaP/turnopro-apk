@@ -468,6 +468,8 @@ class ClientsScheduledController extends GetxController {
         reservationId;
 
     if (hasClient1) {
+      //todo haciendo aqui un ultimo cambio de verificacion
+      ClientsScheduledModel? Aux = clientsAttended1;
       double currentTimeDouble = animationController1!.value *
           animationController1!.duration!.inSeconds.toDouble();
       int totalTimeInSeconds = animationController1!.duration!.inSeconds;
@@ -476,10 +478,13 @@ class ClientsScheduledController extends GetxController {
       // Convertir a minutos
       int remainingMinutes1 = (remainingTime1 / 60).floor(); //MINUTOS RESTANTES
 
-      reservationId = clientsAttended1!.reservation_id!; //DB - reservation_id
+      reservationId = Aux!.reservation_id!; //DB - reservation_id
       await LocalStorage.prefs.setInt('timer1', remainingTime1); //en segundos
-      await LocalStorage.prefs.setInt('timer1Attend',
-          clientsAttended1!.attended!); //saber si esta con el tecnico
+      await LocalStorage.prefs
+          .setInt('timer1Attend', Aux.attended!); //saber si esta con el tecnico
+      if (clientsAttended1 == null) {
+        await LocalStorage.prefs.setInt('timer1', -999); //en segundos
+      }
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante:upadateVariablesValueTimersPreferenc = $remainingTime1 reservation_id : $reservationId ');
     } else {
@@ -487,6 +492,7 @@ class ClientsScheduledController extends GetxController {
       //poner la variable en -999
     }
     if (hasClient2) {
+      ClientsScheduledModel? aux2 = clientsAttended2;
       double currentTimeDouble = animationController2!.value *
           animationController2!.duration!.inSeconds.toDouble();
       int totalTimeInSeconds = animationController2!.duration!.inSeconds;
@@ -494,10 +500,13 @@ class ClientsScheduledController extends GetxController {
           totalTimeInSeconds - currentTimeDouble.toInt(); //segundos
       // Convertir a minutos
       int remainingMinutes2 = (remainingTime2 / 60).floor(); //MINUTOS RESTANTES
-      reservationId = clientsAttended2!.reservation_id!; //DB - reservation_id
+      reservationId = aux2!.reservation_id!; //DB - reservation_id
       await LocalStorage.prefs.setInt('timer2', remainingTime2); //en segundos
-      await LocalStorage.prefs.setInt('timer2Attend',
-          clientsAttended2!.attended!); //saber si esta con el tecnico
+      await LocalStorage.prefs.setInt(
+          'timer2Attend', aux2.attended!); //saber si esta con el tecnico
+      if (clientsAttended2 == null) {
+        await LocalStorage.prefs.setInt('timer2', -999); //en segundos
+      }
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended2 reservation_id : $reservationId ');
     } else {
@@ -505,6 +514,7 @@ class ClientsScheduledController extends GetxController {
       await LocalStorage.prefs.setInt('timer2', -999); //en segundos
     }
     if (hasClient3) {
+      ClientsScheduledModel? aux3 = clientsAttended3;
       double currentTimeDouble = animationController3!.value *
           animationController3!.duration!.inSeconds.toDouble();
       int totalTimeInSeconds = animationController3!.duration!.inSeconds;
@@ -512,11 +522,13 @@ class ClientsScheduledController extends GetxController {
           totalTimeInSeconds - currentTimeDouble.toInt(); //segundos
       // Convertir a minutos
       int remainingMinutes3 = (remainingTime3 / 60).floor(); //MINUTOS RESTANTES
-      reservationId =
-          clientsAttended3!.reservation_id!; //DB - reservation_id print(
+      reservationId = aux3!.reservation_id!; //DB - reservation_id print(
       await LocalStorage.prefs.setInt('timer3', remainingTime3); //en segundos
-      await LocalStorage.prefs.setInt('timer3Attend',
-          clientsAttended3!.attended!); //saber si esta con el tecnico
+      await LocalStorage.prefs.setInt(
+          'timer3Attend', aux3.attended!); //saber si esta con el tecnico
+      if (clientsAttended3 == null) {
+        await LocalStorage.prefs.setInt('timer3', -999); //en segundos
+      }
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended3 reservation_id : $reservationId ');
     } else {
@@ -524,6 +536,7 @@ class ClientsScheduledController extends GetxController {
       await LocalStorage.prefs.setInt('timer3', -999); //en segundos
     }
     if (hasClient4) {
+      ClientsScheduledModel? aux4 = clientsAttended4;
       double currentTimeDouble = animationController4!.value *
           animationController4!.duration!.inSeconds.toDouble();
       int totalTimeInSeconds = animationController4!.duration!.inSeconds;
@@ -531,11 +544,13 @@ class ClientsScheduledController extends GetxController {
           totalTimeInSeconds - currentTimeDouble.toInt(); //segundos
       // Convertir a minutos
       int remainingMinutes4 = (remainingTime4 / 60).floor(); //MINUTOS RESTANTES
-      reservationId =
-          clientsAttended4!.reservation_id!; //DB - reservation_id print(
+      reservationId = aux4!.reservation_id!; //DB - reservation_id print(
       await LocalStorage.prefs.setInt('timer4', remainingTime4); //en segundos
-      await LocalStorage.prefs.setInt('timer4Attend',
-          clientsAttended4!.attended!); //saber si esta con el tecnico
+      await LocalStorage.prefs.setInt(
+          'timer4Attend', aux4.attended!); //saber si esta con el tecnico
+      if (clientsAttended4 == null) {
+        await LocalStorage.prefs.setInt('timer4', -999); //en segundos
+      }
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 1 ES Tiempo restante: $timeClientsActAttended4 reservation_id : $reservationId ');
     } else {
@@ -579,6 +594,7 @@ class ClientsScheduledController extends GetxController {
                       branchId,
                       professionalId,
                       'El tiempo de servicio del cliente $nameClient se agotará en los próximos 3 minutos',
+                      'no',
                       'Barbero');
 
                   //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
@@ -632,6 +648,7 @@ class ClientsScheduledController extends GetxController {
                       branchId,
                       professionalId,
                       'El tiempo de servicio del cliente $nameClient se agotará en los próximos 3 minutos',
+                      'no',
                       'Barbero');
 
                   if ((idClient == clientsAttended2?.client_id)) {
@@ -678,6 +695,7 @@ class ClientsScheduledController extends GetxController {
                       branchId,
                       professionalId,
                       'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos',
+                      'no',
                       'Barbero');
 
                   if ((idClient == clientsAttended3?.client_id)) {
@@ -727,6 +745,7 @@ class ClientsScheduledController extends GetxController {
                       branchId,
                       professionalId,
                       'El tiempo de servicio del cliente $nameClient se agotará en los próximos $endingTime minutos',
+                      'no',
                       'Barbero');
 
                   if ((idClient == clientsAttended4?.client_id)) {
@@ -1210,90 +1229,128 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<void> watchModifyTimeRest(
-      reservationId, descripcion, placeCall) async {
+      reservationId, descripcion, placeCall, option) async {
     print(
         'modificar time de mm estoy entrando ahora mismo watchModifyTimeRest-llamanado desde:$placeCall');
-    int timeRest = obtenerDuracionServicio(descripcion);
-    if (clientsAttended1 != null) {
-      if (reservationId == clientsAttended1!.reservation_id) {
-        print('modificar time de mm 1');
+    if (option == 'rechazada') {}
+    if (option == 'aceptada') {
+      int timeRest = obtenerDuracionServicio(descripcion);
+      if (clientsAttended1 != null) {
+        if (reservationId == clientsAttended1!.reservation_id) {
+          controllerLogin.setCallDeleteService1(false);
+          print('modificar time de mm 1');
 
-        modifyTimeSpecificRest = 0;
-        modifyTimeSpecificRestTIME += timeRest;
-        print(
-            'modificar time de mm modifyTimeSpecificRestTIME = $modifyTimeSpecificRestTIME');
-        print('modificar time de mm timeRest = $timeRest');
-        //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
-        //AQUI ACTUALIZAR EL RELOJ
-        animationController1!
-          ..duration = Duration(seconds: timeRest) // todo cambiar123RLP
-          ..reset()
-          ..forward();
-        //Y PONER LA VARIABLE A TRUE
-        controllerLogin.setCallDeleteService1(
-            true); //autorizado a guardar cada 10 segundo el valor del relosj
+          modifyTimeSpecificRest = 0;
+          modifyTimeSpecificRestTIME += timeRest;
+          print(
+              'modificar time de mm modifyTimeSpecificRestTIME = $modifyTimeSpecificRestTIME');
+          print('modificar time de mm timeRest = $timeRest');
+          //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+          //AQUI ACTUALIZAR EL RELOJ
+          animationController1!
+            ..duration = Duration(seconds: timeRest) // todo cambiar123RLP
+            ..reset()
+            ..forward();
+          await Future.delayed(const Duration(milliseconds: 500));
+          await setTimeClock(reservationId, timeRest, 1, 1, true,
+              controllerLogin.tokenUserLoggedIn);
+          //Y PONER LA VARIABLE A TRUE
+          controllerLogin.setCallDeleteService1(
+              true); //autorizado a guardar cada 10 segundo el valor del relosj
+        }
+      }
+      if (clientsAttended2 != null) {
+        //si es 2 es que ya termino de atender al cliente2
+        if (reservationId == clientsAttended2!.reservation_id) {
+          controllerLogin.setCallDeleteService2(false);
+          print('modificar time de mm 2');
+          modifyTimeSpecificRest1 = 1;
+          modifyTimeSpecificRestTIME1 += timeRest;
+          print(
+              'modificar time de mm modifyTimeSpecificRestTIME = $modifyTimeSpecificRestTIME');
+          print('modificar time de mm timeRest = $timeRest');
+          //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+          //AQUI ACTUALIZAR EL RELOJ
+          animationController2!
+            ..duration = Duration(seconds: timeRest)
+            ..reset()
+            ..forward();
+          //Y PONER LA VARIABLE A TRUE
+          await Future.delayed(const Duration(milliseconds: 500));
+          await setTimeClock(
+              //reservationId, timeClock, detached, clock, actVarTelef, token)
+              reservationId,
+              timeRest,
+              1, //detached
+              2, //clock
+              true,
+              controllerLogin.tokenUserLoggedIn);
+          controllerLogin.setCallDeleteService2(
+              true); //autorizado a guardar cada 10 segundo el valor del relosj
+        }
+      }
+      if (clientsAttended3 != null) {
+        //si es 2 es que ya termino de atender al cliente3
+        if (reservationId == clientsAttended3!.reservation_id) {
+          controllerLogin.setCallDeleteService3(false);
+          print('modificar time de mm 3');
+          modifyTimeSpecificRest2 = 2;
+          modifyTimeSpecificRestTIME2 += timeRest;
+          print(
+              'modificar time de mm modifyTimeSpecificRestTIME = $modifyTimeSpecificRestTIME');
+          print('modificar time de mm timeRest = $timeRest');
+          //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+          //AQUI ACTUALIZAR EL RELOJ
+          animationController3!
+            ..duration = Duration(seconds: timeRest)
+            ..reset()
+            ..forward();
+          //Y PONER LA VARIABLE A TRUE
+          await Future.delayed(const Duration(milliseconds: 500));
+          await setTimeClock(
+              //reservationId, timeClock, detached, clock, actVarTelef, token)
+              reservationId,
+              timeRest,
+              1, //detached
+              3, //clock
+              true,
+              controllerLogin.tokenUserLoggedIn);
+          controllerLogin.setCallDeleteService3(
+              true); //autorizado a guardar cada 10 segundo el valor del relosj
+        }
+      }
+      if (clientsAttended4 != null) {
+        //si es 2 es que ya termino de atender al cliente4
+        if (reservationId == clientsAttended4!.reservation_id) {
+          controllerLogin.setCallDeleteService4(false);
+          print('modificar time de mm 4');
+          modifyTimeSpecificRest3 = 3;
+          modifyTimeSpecificRestTIME3 += timeRest;
+          print(
+              'modificar time de mm modifyTimeSpecificRestTIME = $modifyTimeSpecificRestTIME');
+          print('modificar time de mm timeRest = $timeRest');
+          //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+          //AQUI ACTUALIZAR EL RELOJ
+          animationController4!
+            ..duration = Duration(seconds: timeRest)
+            ..reset()
+            ..forward();
+          //Y PONER LA VARIABLE A TRUE
+          await Future.delayed(const Duration(milliseconds: 500));
+          await setTimeClock(
+              //reservationId, timeClock, detached, clock, actVarTelef, token)
+              reservationId,
+              timeRest,
+              1, //detached
+              4, //clock
+              true,
+              controllerLogin.tokenUserLoggedIn);
+          controllerLogin.setCallDeleteService4(
+              true); //autorizado a guardar cada 10 segundo el valor del relosj
+        }
       }
     }
-    if (clientsAttended2 != null) {
-      //si es 2 es que ya termino de atender al cliente2
-      if (reservationId == clientsAttended2!.reservation_id) {
-        print('modificar time de mm 2');
-        modifyTimeSpecificRest1 = 1;
-        modifyTimeSpecificRestTIME1 += timeRest;
-        print(
-            'modificar time de mm modifyTimeSpecificRestTIME = $modifyTimeSpecificRestTIME');
-        print('modificar time de mm timeRest = $timeRest');
-        //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
-        //AQUI ACTUALIZAR EL RELOJ
-        animationController2!
-          ..duration = Duration(seconds: timeRest)
-          ..reset()
-          ..forward();
-        //Y PONER LA VARIABLE A TRUE
-        controllerLogin.setCallDeleteService2(
-            true); //autorizado a guardar cada 10 segundo el valor del relosj
-      }
-    }
-    if (clientsAttended3 != null) {
-      //si es 2 es que ya termino de atender al cliente3
-      if (reservationId == clientsAttended3!.reservation_id) {
-        print('modificar time de mm 3');
-        modifyTimeSpecificRest2 = 2;
-        modifyTimeSpecificRestTIME2 += timeRest;
-        print(
-            'modificar time de mm modifyTimeSpecificRestTIME = $modifyTimeSpecificRestTIME');
-        print('modificar time de mm timeRest = $timeRest');
-        //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
-        //AQUI ACTUALIZAR EL RELOJ
-        animationController3!
-          ..duration = Duration(seconds: timeRest)
-          ..reset()
-          ..forward();
-        //Y PONER LA VARIABLE A TRUE
-        controllerLogin.setCallDeleteService3(
-            true); //autorizado a guardar cada 10 segundo el valor del relosj
-      }
-    }
-    if (clientsAttended4 != null) {
-      //si es 2 es que ya termino de atender al cliente4
-      if (reservationId == clientsAttended4!.reservation_id) {
-        print('modificar time de mm 4');
-        modifyTimeSpecificRest3 = 3;
-        modifyTimeSpecificRestTIME3 += timeRest;
-        print(
-            'modificar time de mm modifyTimeSpecificRestTIME = $modifyTimeSpecificRestTIME');
-        print('modificar time de mm timeRest = $timeRest');
-        //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
-        //AQUI ACTUALIZAR EL RELOJ
-        animationController4!
-          ..duration = Duration(seconds: timeRest)
-          ..reset()
-          ..forward();
-        //Y PONER LA VARIABLE A TRUE
-        controllerLogin.setCallDeleteService4(
-            true); //autorizado a guardar cada 10 segundo el valor del relosj
-      }
-    }
+
     //update();
   }
 
@@ -1463,6 +1520,17 @@ class ClientsScheduledController extends GetxController {
         idBranch, idReserv, idBarberAct, token);
 
     return profDisp;
+  }
+
+  Future getProfessionalState2Coord(idBranch, idReserv, token) async {
+    print('getProfessionalState(idBranch) async 11');
+    //todo nuevo
+    professionalDispon =
+        await repository.getProfessionalState2Coord(idBranch, idReserv, token);
+    professionalDisponLength = professionalDispon.length;
+    print(
+        'getProfessionalState(idBranch) async 22 professionalDisponLength:$professionalDisponLength');
+    update();
   }
 
   Future getProfessionalState2(idBranch, idReserv, token) async {

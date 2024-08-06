@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, no_leading_underscores_for_local_identifiers, depend_on_referenced_packages
 
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -76,13 +77,14 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
         controllerLogin.idProfessionalLoggedIn != null &&
         (controllerLogin.usserPermissionQr == 1 ||
             controllerLogin.usserPermissionQr == 2)) {
-      notiController.fetchNotificationList(
-          controllerLogin.branchIdLoggedIn,
-          controllerLogin.idProfessionalLoggedIn,
-          'Encargado',
-          'loadDataFirt',
-          loginController.tokenUserLoggedIn);
+      //todo la nueva
+      await Future.delayed(const Duration(seconds: 1));
+      await clientCorControl.notification_tail_colation(
+          loginController.branchIdLoggedIn,
+          loginController.idProfessionalLoggedIn,
+          'Encargado');
       if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
+        await Future.delayed(const Duration(milliseconds: 1000));
         notiController.fetchNotificationList(
             controllerLogin.branchIdLoggedIn,
             controllerLogin.idProfessionalLoggedIn,
@@ -90,21 +92,50 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
             'loadDataFirt',
             loginController.tokenUserLoggedIn);
       }
+      controllerShoppingCart.setLoading(false);
+      //todo la nueva
+      /*
+      await Future.delayed(const Duration(milliseconds: 200));
+      notiController.fetchNotificationList(
+          controllerLogin.branchIdLoggedIn,
+          controllerLogin.idProfessionalLoggedIn,
+          'Encargado',
+          'loadDataFirt',
+          loginController.tokenUserLoggedIn);
+      if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
+        await Future.delayed(const Duration(milliseconds: 500));
+        notiController.fetchNotificationList(
+            controllerLogin.branchIdLoggedIn,
+            controllerLogin.idProfessionalLoggedIn,
+            'Barbero',
+            'loadDataFirt',
+            loginController.tokenUserLoggedIn);
+      }
+      await Future.delayed(const Duration(milliseconds: 200));
       await controllerShoppingCart
           .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
       print('llamada timer encargado loadOrderDeleteCar completed');
-
+      await Future.delayed(const Duration(milliseconds: 200));
       await clientCorControl
           .fetchClientsScheduledBranch(controllerLogin.branchIdLoggedIn);
       print('llamada timer encargado fetchClientsScheduledBranch completed');
+
+      await Future.delayed(const Duration(milliseconds: 200));
       await clientCorControl
           .fetchClientsRechazBranch(controllerLogin.branchIdLoggedIn);
       print('llamada timer encargado fetchClientsRechazBranch completed');
+
+      await Future.delayed(const Duration(milliseconds: 200));
       await clientCorControl.ColacionRequestBranch(
           controllerLogin.branchIdLoggedIn);
       print('llamada timer encargado ColacionRequestBranch completed');
+
+      await Future.delayed(const Duration(milliseconds: 200));
       await clientCorControl.outRequestBranch(controllerLogin.branchIdLoggedIn);
       print('llamada timer encargado outRequestBranch completed');
+      controllerShoppingCart.setLoading(false);
+      */
+    } else {
       controllerShoppingCart.setLoading(false);
     }
   }
@@ -119,9 +150,26 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
       //estoy entrando cada 8 segundos
       print('llamada timer - l callTimer1 9segundos');
       if (loginController.makeCallE == true) {
-        if (controllerLogin.branchIdLoggedIn != null &&
+        //todo la nueva
+        await clientCorControl.notification_tail_colation(
+            loginController.branchIdLoggedIn,
+            loginController.idProfessionalLoggedIn,
+            'Encargado');
+        if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
+          await Future.delayed(const Duration(seconds: 1));
+          notiController.fetchNotificationList(
+              controllerLogin.branchIdLoggedIn,
+              controllerLogin.idProfessionalLoggedIn,
+              'Barbero',
+              'loadDataFirt',
+              loginController.tokenUserLoggedIn);
+        }
+        //todo la nueva
+
+        /*  if (controllerLogin.branchIdLoggedIn != null &&
             controllerLogin.idProfessionalLoggedIn != null &&
             controllerLogin.usserPermissionQr != null) {
+          await Future.delayed(const Duration(milliseconds: 1000));
           notiController.fetchNotificationList(
               controllerLogin.branchIdLoggedIn,
               controllerLogin.idProfessionalLoggedIn,
@@ -129,6 +177,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
               'loadDataFirt',
               loginController.tokenUserLoggedIn);
           if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
+            await Future.delayed(const Duration(milliseconds: 1000));
             notiController.fetchNotificationList(
                 controllerLogin.branchIdLoggedIn,
                 controllerLogin.idProfessionalLoggedIn,
@@ -136,20 +185,24 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                 'loadDataFirt',
                 loginController.tokenUserLoggedIn);
           }
+          await Future.delayed(const Duration(milliseconds: 300));
           await controllerShoppingCart
               .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
           print('llamada timer encargado loadOrderDeleteCar completed');
-
+          await Future.delayed(const Duration(milliseconds: 300));
           await clientCorControl
               .fetchClientsScheduledBranch(controllerLogin.branchIdLoggedIn);
           print(
               'llamada timer encargado fetchClientsScheduledBranch completed');
+          await Future.delayed(const Duration(milliseconds: 300));
           await clientCorControl
               .fetchClientsRechazBranch(controllerLogin.branchIdLoggedIn);
           print('llamada timer encargado fetchClientsRechazBranch completed');
+          await Future.delayed(const Duration(milliseconds: 300));
           await clientCorControl.ColacionRequestBranch(
               controllerLogin.branchIdLoggedIn);
           print('llamada timer encargado ColacionRequestBranch completed');
+          await Future.delayed(const Duration(milliseconds: 300));
           await clientCorControl
               .outRequestBranch(controllerLogin.branchIdLoggedIn);
           print('llamada timer encargado outRequestBranch completed');
@@ -157,6 +210,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
         } else {
           controllerShoppingCart.setLoading(false);
         }
+        */
       }
     });
   }
@@ -1372,6 +1426,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                           .clientsScheduledListBranchClient[i]
                                           .idBarber,
                                       'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue rechazado por el Técnico ${controllerclient.clientsScheduledListBranchClient[i].professional_name}',
+                                      'no',
                                       'Barbero');
                                   //enviar notificacion al propio tecnico que fue aceptada
                                   notiController.storeNotification2(

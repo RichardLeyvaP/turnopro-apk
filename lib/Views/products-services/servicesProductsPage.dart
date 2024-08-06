@@ -325,43 +325,47 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                 ),
                               ),
                               onPressed: () async {
-                                Get.dialog(
-                                  const Center(
-                                    child: Material(
-                                      color: Colors.transparent,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          CircularProgressIndicator(
-                                            color: Color(0xFFFDAE2A),
-                                          ),
-                                          SizedBox(height: 16),
-                                          Text('Enviando al técnico...',
-                                              style: TextStyle(
-                                                  color: Colors.white)),
-                                        ],
+                                if (controllerLog.usserPermissionQr == 1 ||
+                                    (controllerLog.usserPermissionQr == 2)) {
+                                  Get.dialog(
+                                    const Center(
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            CircularProgressIndicator(
+                                              color: Color(0xFFFDAE2A),
+                                            ),
+                                            SizedBox(height: 16),
+                                            Text('Enviando al técnico...',
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  barrierDismissible: false,
-                                ); //Get.back();
+                                    barrierDismissible: false,
+                                  ); //Get.back();
 
-                                //mando a notificar al tecnico
-                                notiController.storeNotification(
-                                    'Cliente llegando',
-                                    loginController.branchIdLoggedIn,
-                                    loginController.idProfessionalLoggedIn,
-                                    'EL cliente "${clientsController.nameClientTemporary}" fue enviado por el barbero ${loginController.nameUserLoggedIn}',
-                                    'Tecnico'); //esto es para quele llegue a coordinador y encargado
+                                  //mando a notificar al tecnico
+                                  notiController.storeNotification(
+                                      'Cliente llegando',
+                                      loginController.branchIdLoggedIn,
+                                      loginController.idProfessionalLoggedIn,
+                                      'EL cliente "${clientsController.nameClientTemporary}" fue enviado por el barbero ${loginController.nameUserLoggedIn}',
+                                      'no',
+                                      'Tecnico'); //esto es para quele llegue a coordinador y encargado
 
-                                //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
-                                await clientsController.acceptOrRejectClient(
-                                    clientsController.idClientTemporary,
-                                    4,
-                                    loginController
-                                        .tokenUserLoggedIn); // Cierra el modal
-                                pagesConfigC.back();
-                                Get.back();
+                                  //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
+                                  await clientsController.acceptOrRejectClient(
+                                      clientsController.idClientTemporary,
+                                      4,
+                                      loginController
+                                          .tokenUserLoggedIn); // Cierra el modal
+                                  pagesConfigC.back();
+                                  Get.back();
+                                }
                               },
                               child: const Text(
                                 ' ENVIAR AL TÉCNICO ',
@@ -392,503 +396,532 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                               ),
                             ),
                             onPressed: () async {
-                              commentController.text = '';
-                              clientsController.clearImage();
-                              LocalStorage.prefs
-                                  .setBool('verificatePhoto', false);
+                              if (controllerLog.usserPermissionQr == 1) {
+                                commentController.text = '';
+                                clientsController.clearImage();
+                                LocalStorage.prefs
+                                    .setBool('verificatePhoto', false);
 
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return GetBuilder<ClientsScheduledController>(
-                                      builder: (_) {
-                                    return Dialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ), //this right here
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          Container(
-                                            decoration: const BoxDecoration(
-                                              color: Color(0xFFFDAE2A),
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(8),
-                                                topRight: Radius.circular(8),
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return GetBuilder<
+                                            ClientsScheduledController>(
+                                        builder: (_) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ), //this right here
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Container(
+                                              decoration: const BoxDecoration(
+                                                color: Color(0xFFFDAE2A),
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(8),
+                                                  topRight: Radius.circular(8),
+                                                ),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  const Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 12),
+                                                    child: Text(
+                                                      'Comentario',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
+                                                  ),
+                                                  IconButton(
+                                                    icon: Icon(Icons.close,
+                                                        color: Colors.white),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  )
+                                                ],
                                               ),
                                             ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: <Widget>[
-                                                const Padding(
-                                                  padding:
-                                                      EdgeInsets.only(left: 12),
-                                                  child: Text(
-                                                    'Comentario',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                                  ),
-                                                ),
-                                                IconButton(
-                                                  icon: Icon(Icons.close,
-                                                      color: Colors.white),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            height: (_.imagePath == null)
-                                                ? 240
-                                                : 300,
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    left: 16,
-                                                    right: 16,
-                                                  ),
-                                                  child: TextFormField(
-                                                    onChanged: (value) {
-                                                      _checkText();
-                                                    },
-                                                    controller:
-                                                        commentController,
-                                                    maxLines: 5,
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      border: InputBorder.none,
-                                                      hintText:
-                                                          'Escribe tu comentario aquí...',
-                                                      hintStyle: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            120, 241, 131, 84),
-                                                      ), // Cambiar el color del hintText
+                                            Container(
+                                              height: (_.imagePath == null)
+                                                  ? 240
+                                                  : 300,
+                                              child: Column(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      left: 16,
+                                                      right: 16,
                                                     ),
-                                                  ),
-                                                ),
-                                                //
-                                                //
-                                                //
-
-                                                (_.imagePath == null)
-                                                    ? const Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Icon(Icons
-                                                              .image_outlined),
-                                                          Text(
-                                                            'Cargar foto del cliente',
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700),
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : Container(
-                                                        width:
-                                                            70, // Establece el ancho deseado
-                                                        height:
-                                                            70, // Establece la altura deseada
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                  10), // Establece el radio de borde deseado
-                                                        ),
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                  10), // Asegúrate de que este radio sea igual al radio del borde del BoxDecoration
-                                                          child: Image.file(
-                                                            File(_.imagePath!),
-                                                            fit: BoxFit
-                                                                .cover, // Puedes ajustar el modo de ajuste según tus necesidades
-                                                          ),
-                                                        ),
-                                                      ),
-
-                                                //
-                                                //
-                                                //
-                                                //
-                                                ButtonBar(
-                                                  alignment: MainAxisAlignment
-                                                      .spaceEvenly,
-                                                  children: <Widget>[
-                                                    ElevatedButton(
-                                                      style: ButtonStyle(
-                                                        padding:
-                                                            MaterialStateProperty
-                                                                .all<
-                                                                    EdgeInsetsGeometry>(
-                                                          const EdgeInsets
-                                                                  .symmetric(
-                                                              vertical: 0,
-                                                              horizontal: 26.0),
-                                                        ),
-                                                        backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all<Color>(Color(
-                                                                    0xFF4470F3)),
-                                                      ),
-                                                      onPressed: () async {
-                                                        final ImagePicker
-                                                            _picker =
-                                                            ImagePicker();
-                                                        _.setPickedFile(
-                                                            await _picker
-                                                                .pickImage(
-                                                          source: ImageSource
-                                                              .camera,
-                                                        ));
-                                                        await LocalStorage.prefs
-                                                            .setBool(
-                                                                'verificatePhoto',
-                                                                true);
-
-                                                        // Verifica si pickedFile no es nulo antes de acceder a su propiedad path
-                                                        if (_.pickedFile !=
-                                                            null) {
-                                                          _.setImagePath(_
-                                                              .pickedFile!
-                                                              .path);
-                                                        }
-                                                        print(
-                                                            'DIRECCIONDELAIMAGEN : ${_.imagePath}');
+                                                    child: TextFormField(
+                                                      onChanged: (value) {
+                                                        _checkText();
                                                       },
-                                                      child: Row(
-                                                        children: [
-                                                          Icon(
-                                                            MdiIcons.camera,
-                                                            color: Colors.white,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 6,
-                                                          ),
-                                                          const Text(
-                                                            'FOTO',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w800),
-                                                          ),
-                                                        ],
+                                                      controller:
+                                                          commentController,
+                                                      maxLines: 5,
+                                                      decoration:
+                                                          const InputDecoration(
+                                                        border:
+                                                            InputBorder.none,
+                                                        hintText:
+                                                            'Escribe tu comentario aquí...',
+                                                        hintStyle: TextStyle(
+                                                          color: Color.fromARGB(
+                                                              120,
+                                                              241,
+                                                              131,
+                                                              84),
+                                                        ), // Cambiar el color del hintText
                                                       ),
                                                     ),
-                                                    ElevatedButton(
-                                                      style: ButtonStyle(
-                                                        padding:
-                                                            MaterialStateProperty
-                                                                .all<
-                                                                    EdgeInsetsGeometry>(
-                                                          const EdgeInsets
-                                                                  .symmetric(
-                                                              vertical: 0,
-                                                              horizontal: 26.0),
-                                                        ),
-                                                        backgroundColor:
-                                                            MaterialStateProperty.all<
-                                                                Color>(hasText &&
-                                                                    _.pickedFile !=
-                                                                        null
-                                                                ? Color(
-                                                                    0xFF19CF9E)
-                                                                : Color
-                                                                    .fromARGB(
-                                                                        155,
-                                                                        192,
-                                                                        191,
-                                                                        191)),
-                                                      ),
-                                                      onPressed: () async {
-                                                        // Lógica para enviar el comentario
-                                                        // Obtener el valor del campo de texto
-                                                        String commentText =
-                                                            commentController
-                                                                .text;
-                                                        // Eliminar espacios en blanco al principio y al final
+                                                  ),
+                                                  //
+                                                  //
+                                                  //
 
-                                                        // Verificar que el campo no esté vacío
-                                                        if (hasText &&
-                                                            _.pickedFile !=
-                                                                null) {
-                                                          // Cerrar el primer modal
-                                                          Navigator.pop(
-                                                              context);
-
-                                                          Get.dialog(
-                                                            const Center(
-                                                              child: Material(
-                                                                color: Colors
-                                                                    .transparent,
-                                                                child: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
-                                                                  children: [
-                                                                    CircularProgressIndicator(
-                                                                      color: Color(
-                                                                          0xFFFDAE2A),
-                                                                    ),
-                                                                    SizedBox(
-                                                                        height:
-                                                                            16),
-                                                                    Text(
-                                                                        'Espere...',
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                Colors.white)),
-                                                                  ],
-                                                                ),
-                                                              ),
+                                                  (_.imagePath == null)
+                                                      ? const Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Icon(Icons
+                                                                .image_outlined),
+                                                            Text(
+                                                              'Cargar foto del cliente',
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700),
                                                             ),
-                                                            barrierDismissible:
-                                                                false,
-                                                          ); //Get.back();
+                                                          ],
+                                                        )
+                                                      : Container(
+                                                          width:
+                                                              70, // Establece el ancho deseado
+                                                          height:
+                                                              70, // Establece la altura deseada
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10), // Establece el radio de borde deseado
+                                                          ),
+                                                          child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10), // Asegúrate de que este radio sea igual al radio del borde del BoxDecoration
+                                                            child: Image.file(
+                                                              File(
+                                                                  _.imagePath!),
+                                                              fit: BoxFit
+                                                                  .cover, // Puedes ajustar el modo de ajuste según tus necesidades
+                                                            ),
+                                                          ),
+                                                        ),
 
+                                                  //
+                                                  //
+                                                  //
+                                                  //
+                                                  ButtonBar(
+                                                    alignment: MainAxisAlignment
+                                                        .spaceEvenly,
+                                                    children: <Widget>[
+                                                      ElevatedButton(
+                                                        style: ButtonStyle(
+                                                          padding:
+                                                              MaterialStateProperty
+                                                                  .all<
+                                                                      EdgeInsetsGeometry>(
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                vertical: 0,
+                                                                horizontal:
+                                                                    26.0),
+                                                          ),
+                                                          backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all<Color>(Color(
+                                                                      0xFF4470F3)),
+                                                        ),
+                                                        onPressed: () async {
+                                                          final ImagePicker
+                                                              _picker =
+                                                              ImagePicker();
+                                                          _.setPickedFile(
+                                                              await _picker
+                                                                  .pickImage(
+                                                            source: ImageSource
+                                                                .camera,
+                                                          ));
+                                                          await LocalStorage
+                                                              .prefs
+                                                              .setBool(
+                                                                  'verificatePhoto',
+                                                                  true);
+
+                                                          // Verifica si pickedFile no es nulo antes de acceder a su propiedad path
                                                           if (_.pickedFile !=
                                                               null) {
-                                                            dio.Dio dioClient =
-                                                                dio.Dio();
-                                                            String imag = _
+                                                            _.setImagePath(_
                                                                 .pickedFile!
-                                                                .path;
-
-                                                            clientsController
-                                                                .storeByReservationId(
-                                                                    imag,
-                                                                    clientsController
-                                                                        .idClientTemporary,
-                                                                    commentText,
-                                                                    dioClient);
+                                                                .path);
                                                           }
-
+                                                          print(
+                                                              'DIRECCIONDELAIMAGEN : ${_.imagePath}');
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            Icon(
+                                                              MdiIcons.camera,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            SizedBox(
+                                                              width: 6,
+                                                            ),
+                                                            const Text(
+                                                              'FOTO',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      ElevatedButton(
+                                                        style: ButtonStyle(
+                                                          padding:
+                                                              MaterialStateProperty
+                                                                  .all<
+                                                                      EdgeInsetsGeometry>(
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                vertical: 0,
+                                                                horizontal:
+                                                                    26.0),
+                                                          ),
+                                                          backgroundColor:
+                                                              MaterialStateProperty.all<
+                                                                  Color>(hasText &&
+                                                                      _.pickedFile !=
+                                                                          null
+                                                                  ? Color(
+                                                                      0xFF19CF9E)
+                                                                  : Color
+                                                                      .fromARGB(
+                                                                          155,
+                                                                          192,
+                                                                          191,
+                                                                          191)),
+                                                        ),
+                                                        onPressed: () async {
                                                           // Lógica para enviar el comentario
-                                                          int resul = await clientsController
-                                                              .acceptOrRejectClient(
-                                                                  clientsController
-                                                                      .idClientTemporary,
-                                                                  2,
-                                                                  loginController
-                                                                      .tokenUserLoggedIn);
-                                                          if (resul ==
-                                                              -99) //es que finalizó bien y dio status.code = null
-                                                          {
-                                                            Get.back(); //aqui cierro el cargando
-                                                          } else if (resul ==
-                                                              1) //es que finalizó bien
-                                                          {
-                                                            //aqui poner una variable que espere por 30 segundos para cambiar al valor por defecto
-                                                            //para con esta variable controlar que en ese tiempo no le caiga nadie en la cola
+                                                          // Obtener el valor del campo de texto
+                                                          String commentText =
+                                                              commentController
+                                                                  .text;
+                                                          // Eliminar espacios en blanco al principio y al final
 
-                                                            bool valRActiv =
-                                                                clientsController
-                                                                    .verificateValueTimers();
+                                                          // Verificar que el campo no esté vacío
+                                                          if (hasText &&
+                                                              _.pickedFile !=
+                                                                  null) {
+                                                            // Cerrar el primer modal
+                                                            Navigator.pop(
+                                                                context);
 
-                                                            print(
-                                                                'valores de lso clok***Reloj:$valRActiv');
-                                                            if (valRActiv ==
-                                                                false) {
+                                                            Get.dialog(
+                                                              const Center(
+                                                                child: Material(
+                                                                  color: Colors
+                                                                      .transparent,
+                                                                  child: Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
+                                                                    children: [
+                                                                      CircularProgressIndicator(
+                                                                        color: Color(
+                                                                            0xFFFDAE2A),
+                                                                      ),
+                                                                      SizedBox(
+                                                                          height:
+                                                                              16),
+                                                                      Text(
+                                                                          'Espere...',
+                                                                          style:
+                                                                              TextStyle(color: Colors.white)),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              barrierDismissible:
+                                                                  false,
+                                                            ); //Get.back();
+
+                                                            if (_.pickedFile !=
+                                                                null) {
+                                                              dio.Dio
+                                                                  dioClient =
+                                                                  dio.Dio();
+                                                              String imag = _
+                                                                  .pickedFile!
+                                                                  .path;
+
                                                               clientsController
-                                                                  .setWaitTime(
-                                                                      true);
-                                                              clientsController
-                                                                  .setBoolControlVision(
-                                                                      false);
-                                                            } else {
-                                                              clientsController
-                                                                  .setWaitTime(
-                                                                      false);
-                                                              clientsController
-                                                                  .setBoolControlVision(
-                                                                      true);
+                                                                  .storeByReservationId(
+                                                                      imag,
+                                                                      clientsController
+                                                                          .idClientTemporary,
+                                                                      commentText,
+                                                                      dioClient);
                                                             }
 
-                                                            Get.back(); //aqui cierro el cargando
-                                                            Get.snackbar(
-                                                              'Mensaje',
-                                                              'Finalizando servicio',
-                                                              duration:
-                                                                  const Duration(
-                                                                      milliseconds:
-                                                                          2500),
-                                                              backgroundColor:
-                                                                  const Color
-                                                                          .fromARGB(
-                                                                      118,
-                                                                      255,
-                                                                      255,
-                                                                      255),
-                                                              showProgressIndicator:
-                                                                  true,
-                                                              progressIndicatorBackgroundColor:
-                                                                  const Color
-                                                                          .fromARGB(
-                                                                      255,
-                                                                      203,
-                                                                      205,
-                                                                      209),
-                                                              progressIndicatorValueColor:
-                                                                  const AlwaysStoppedAnimation(
-                                                                      Color(
-                                                                          0xFFFDAE2A)),
-                                                              overlayBlur: 3,
-                                                            );
-                                                            final ClientsScheduledController
-                                                                cliCont =
-                                                                Get.find<
-                                                                    ClientsScheduledController>();
-                                                            loginController
-                                                                .setCodigoQrValid(
-                                                                    1);
-                                                            cliCont
-                                                                .setImagePath(
-                                                                    null);
-                                                            Future.delayed(
-                                                                const Duration(
-                                                                    seconds: 2),
-                                                                () {
-                                                              // Aquí dentro puedes poner la acción que deseas realizar después de esperar 2 segundos
+                                                            // Lógica para enviar el comentario
+                                                            int resul = await clientsController
+                                                                .acceptOrRejectClient(
+                                                                    clientsController
+                                                                        .idClientTemporary,
+                                                                    2,
+                                                                    loginController
+                                                                        .tokenUserLoggedIn);
+                                                            if (resul ==
+                                                                -99) //es que finalizó bien y dio status.code = null
+                                                            {
+                                                              Get.back(); //aqui cierro el cargando
+                                                            } else if (resul ==
+                                                                1) //es que finalizó bien
+                                                            {
+                                                              //aqui poner una variable que espere por 30 segundos para cambiar al valor por defecto
+                                                              //para con esta variable controlar que en ese tiempo no le caiga nadie en la cola
+
+                                                              bool valRActiv =
+                                                                  clientsController
+                                                                      .verificateValueTimers();
+
+                                                              print(
+                                                                  'valores de lso clok***Reloj:$valRActiv');
+                                                              if (valRActiv ==
+                                                                  false) {
+                                                                clientsController
+                                                                    .setWaitTime(
+                                                                        true);
+                                                                clientsController
+                                                                    .setBoolControlVision(
+                                                                        false);
+                                                              } else {
+                                                                clientsController
+                                                                    .setWaitTime(
+                                                                        false);
+                                                                clientsController
+                                                                    .setBoolControlVision(
+                                                                        true);
+                                                              }
+
+                                                              Get.back(); //aqui cierro el cargando
+                                                              Get.snackbar(
+                                                                'Mensaje',
+                                                                'Finalizando servicio',
+                                                                duration: const Duration(
+                                                                    milliseconds:
+                                                                        2500),
+                                                                backgroundColor:
+                                                                    const Color
+                                                                            .fromARGB(
+                                                                        118,
+                                                                        255,
+                                                                        255,
+                                                                        255),
+                                                                showProgressIndicator:
+                                                                    true,
+                                                                progressIndicatorBackgroundColor:
+                                                                    const Color
+                                                                            .fromARGB(
+                                                                        255,
+                                                                        203,
+                                                                        205,
+                                                                        209),
+                                                                progressIndicatorValueColor:
+                                                                    const AlwaysStoppedAnimation(
+                                                                        Color(
+                                                                            0xFFFDAE2A)),
+                                                                overlayBlur: 3,
+                                                              );
+                                                              final ClientsScheduledController
+                                                                  cliCont =
+                                                                  Get.find<
+                                                                      ClientsScheduledController>();
                                                               loginController
-                                                                  .inTheClock(
-                                                                      false);
-                                                              pagesConfigC
-                                                                  .back();
-                                                              // Llama a cualquier función o realiza alguna tarea aquí
-                                                            });
+                                                                  .setCodigoQrValid(
+                                                                      1);
+                                                              cliCont
+                                                                  .setImagePath(
+                                                                      null);
+                                                              Future.delayed(
+                                                                  const Duration(
+                                                                      seconds:
+                                                                          2),
+                                                                  () {
+                                                                // Aquí dentro puedes poner la acción que deseas realizar después de esperar 2 segundos
+                                                                loginController
+                                                                    .inTheClock(
+                                                                        false);
+                                                                pagesConfigC
+                                                                    .back();
+                                                                // Llama a cualquier función o realiza alguna tarea aquí
+                                                              });
 
+                                                              print(
+                                                                  'Comentario enviado - $commentText ');
+                                                            } else //fallo la
+                                                            {
+                                                              Get.back(); //aqui cierro el cargando
+                                                              Get.snackbar(
+                                                                '!Alerta',
+                                                                'No finalizó el servicio correctamente, vuelva a intentarlo',
+                                                                duration: const Duration(
+                                                                    milliseconds:
+                                                                        3000),
+                                                                showProgressIndicator:
+                                                                    true,
+                                                                progressIndicatorBackgroundColor:
+                                                                    const Color
+                                                                            .fromARGB(
+                                                                        255,
+                                                                        146,
+                                                                        99,
+                                                                        19),
+                                                                progressIndicatorValueColor:
+                                                                    const AlwaysStoppedAnimation(
+                                                                        Color(
+                                                                            0xFFFDAE2A)),
+                                                                overlayBlur: 3,
+                                                              );
+                                                            }
+                                                          } else {
+                                                            if (hasText ==
+                                                                false) {
+                                                              Get.snackbar(
+                                                                'Mensaje',
+                                                                'Debe escribir un comentario al respecto',
+                                                                duration: const Duration(
+                                                                    milliseconds:
+                                                                        2500),
+                                                                showProgressIndicator:
+                                                                    true,
+                                                                progressIndicatorBackgroundColor:
+                                                                    Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            146,
+                                                                            99,
+                                                                            19),
+                                                                progressIndicatorValueColor:
+                                                                    const AlwaysStoppedAnimation(
+                                                                        Color(
+                                                                            0xFFFDAE2A)),
+                                                                overlayBlur: 3,
+                                                              );
+                                                            } else if (_
+                                                                    .pickedFile ==
+                                                                null) {
+                                                              Get.snackbar(
+                                                                'Mensaje',
+                                                                'Debe de tomar una foto',
+                                                                duration: const Duration(
+                                                                    milliseconds:
+                                                                        2500),
+                                                                showProgressIndicator:
+                                                                    true,
+                                                                progressIndicatorBackgroundColor:
+                                                                    Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            146,
+                                                                            99,
+                                                                            19),
+                                                                progressIndicatorValueColor:
+                                                                    const AlwaysStoppedAnimation(
+                                                                        Color(
+                                                                            0xFFFDAE2A)),
+                                                                overlayBlur: 3,
+                                                              );
+                                                            }
+
+                                                            // El campo de texto está vacío, puedes mostrar un mensaje o realizar alguna acción
                                                             print(
-                                                                'Comentario enviado - $commentText ');
-                                                          } else //fallo la
-                                                          {
-                                                            Get.back(); //aqui cierro el cargando
-                                                            Get.snackbar(
-                                                              '!Alerta',
-                                                              'No finalizó el servicio correctamente, vuelva a intentarlo',
-                                                              duration:
-                                                                  const Duration(
-                                                                      milliseconds:
-                                                                          3000),
-                                                              showProgressIndicator:
-                                                                  true,
-                                                              progressIndicatorBackgroundColor:
-                                                                  const Color
-                                                                          .fromARGB(
-                                                                      255,
-                                                                      146,
-                                                                      99,
-                                                                      19),
-                                                              progressIndicatorValueColor:
-                                                                  const AlwaysStoppedAnimation(
-                                                                      Color(
-                                                                          0xFFFDAE2A)),
-                                                              overlayBlur: 3,
-                                                            );
+                                                                'El comentario no puede estar vacío');
                                                           }
-                                                        } else {
-                                                          if (hasText ==
-                                                              false) {
-                                                            Get.snackbar(
-                                                              'Mensaje',
-                                                              'Debe escribir un comentario al respecto',
-                                                              duration:
-                                                                  const Duration(
-                                                                      milliseconds:
-                                                                          2500),
-                                                              showProgressIndicator:
-                                                                  true,
-                                                              progressIndicatorBackgroundColor:
-                                                                  Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          146,
-                                                                          99,
-                                                                          19),
-                                                              progressIndicatorValueColor:
-                                                                  const AlwaysStoppedAnimation(
-                                                                      Color(
-                                                                          0xFFFDAE2A)),
-                                                              overlayBlur: 3,
-                                                            );
-                                                          } else if (_
-                                                                  .pickedFile ==
-                                                              null) {
-                                                            Get.snackbar(
-                                                              'Mensaje',
-                                                              'Debe de tomar una foto',
-                                                              duration:
-                                                                  const Duration(
-                                                                      milliseconds:
-                                                                          2500),
-                                                              showProgressIndicator:
-                                                                  true,
-                                                              progressIndicatorBackgroundColor:
-                                                                  Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          146,
-                                                                          99,
-                                                                          19),
-                                                              progressIndicatorValueColor:
-                                                                  const AlwaysStoppedAnimation(
-                                                                      Color(
-                                                                          0xFFFDAE2A)),
-                                                              overlayBlur: 3,
-                                                            );
-                                                          }
-
-                                                          // El campo de texto está vacío, puedes mostrar un mensaje o realizar alguna acción
-                                                          print(
-                                                              'El comentario no puede estar vacío');
-                                                        }
-                                                      },
-                                                      child: Row(
-                                                        children: [
-                                                          Icon(
-                                                            MdiIcons.send,
-                                                            color: Colors.white,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 6,
-                                                          ),
-                                                          const Text(
-                                                            'ENVIAR',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w800),
-                                                          ),
-                                                        ],
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            Icon(
+                                                              MdiIcons.send,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            SizedBox(
+                                                              width: 6,
+                                                            ),
+                                                            const Text(
+                                                              'ENVIAR',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  });
-                                },
-                              );
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    });
+                                  },
+                                );
+                              } //ciere de if para saver si qr = 1
+                              else if (controllerLog.usserPermissionQr == 2) {
+                                Get.snackbar(
+                                  'Mensaje',
+                                  'Debe de esperar la respuesta a su solicitud',
+                                  duration: const Duration(milliseconds: 2500),
+                                  backgroundColor:
+                                      const Color.fromARGB(118, 255, 255, 255),
+                                  showProgressIndicator: true,
+                                  progressIndicatorBackgroundColor:
+                                      const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor:
+                                      const AlwaysStoppedAnimation(
+                                          Color(0xFFFDAE2A)),
+                                  overlayBlur: 3,
+                                );
+                              }
                             },
                             child: const Text(
                               ' FINALIZAR SERVICIO ',

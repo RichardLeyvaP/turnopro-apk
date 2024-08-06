@@ -16,30 +16,49 @@ import 'package:turnopro_apk/Views/common/topPage.dart';
 import 'package:turnopro_apk/env.dart';
 import 'package:http/http.dart' as http;
 
-class ShoppingCartPage extends StatelessWidget {
-  ShoppingCartPage({super.key});
+class ShoppingCartPage extends StatefulWidget {
+  const ShoppingCartPage({super.key});
+
+  @override
+  State<ShoppingCartPage> createState() => _ShoppingCartPageState();
+}
+
+class _ShoppingCartPageState extends State<ShoppingCartPage> {
   final double valuePadding = 12;
+
   final String imageDirection = 'assets/images/image_perfil.jpg';
 
   final ShoppingCartController controllerShoppingCart =
       Get.find<ShoppingCartController>();
+
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
+
   final ClientsScheduledController clientsController =
       Get.find<ClientsScheduledController>();
+
   final LoginController controllerLogin = Get.find<LoginController>();
+
   final ShoppingCartController shoppingCar = Get.find<ShoppingCartController>();
+
   NotificationController notiController = Get.find<NotificationController>();
 
   /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
   final IconnsBack = Icons.arrow_back;
+
   final IconnsP = MdiIcons.shoppingOutline;
 
   String title = 'Carro de Compra';
+
   String subTitle = 'Carro de Compra';
+
   final colorCont = Colors.white;
+
   double panddCont = 8;
+
   double borderCont = 12;
+
   final colorIcon = Color(0xFF19CF9E);
+
   /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
 
   @override
@@ -421,9 +440,39 @@ class ShoppingCartPage extends StatelessWidget {
                                                                           controllerLogin
                                                                               .idProfessionalLoggedIn,
                                                                           'EL servicio "${controllerShoppingCart.selectserviceCart[index].nameService}" fue enviado a eliminar',
+                                                                          'orden${controllerShoppingCart.selectserviceCart[index].id}',
                                                                           'Ambos'); //esto es para quele llegue a coordinador y encargado
                                                                     }
                                                                     // }
+                                                                  } else if (controllerLogin
+                                                                          .usserPermissionQr ==
+                                                                      2) {
+                                                                    Get.snackbar(
+                                                                      'Mensaje',
+                                                                      'Debe de esperar la respuesta a su solicitud',
+                                                                      duration: const Duration(
+                                                                          milliseconds:
+                                                                              2500),
+                                                                      backgroundColor: const Color
+                                                                              .fromARGB(
+                                                                          118,
+                                                                          255,
+                                                                          255,
+                                                                          255),
+                                                                      showProgressIndicator:
+                                                                          true,
+                                                                      progressIndicatorBackgroundColor: const Color
+                                                                              .fromARGB(
+                                                                          255,
+                                                                          203,
+                                                                          205,
+                                                                          209),
+                                                                      progressIndicatorValueColor:
+                                                                          const AlwaysStoppedAnimation(
+                                                                              Color(0xFFFDAE2A)),
+                                                                      overlayBlur:
+                                                                          3,
+                                                                    );
                                                                   } else {
                                                                     Get.snackbar(
                                                                       'Mensaje',
@@ -743,6 +792,7 @@ class ShoppingCartPage extends StatelessWidget {
                                                                     controllerLogin
                                                                         .idProfessionalLoggedIn,
                                                                     'EL producto "${controllerShoppingCart.selectproduct[index].name}" fue enviado a eliminar',
+                                                                    'orden${controllerShoppingCart.selectproduct[index].id}',
                                                                     'Ambos'); //esto es para quele llegue a coordinador y encargado
                                                                 controllerShoppingCart
                                                                     .requestDelete(
@@ -750,6 +800,38 @@ class ShoppingCartPage extends StatelessWidget {
                                                                             .selectproduct[index]
                                                                             .id,
                                                                         1);
+                                                              } else if (controllerLogin
+                                                                      .usserPermissionQr ==
+                                                                  2) {
+                                                                Get.snackbar(
+                                                                  'Mensaje',
+                                                                  'Debe de esperar la respuesta a su solicitud',
+                                                                  duration: const Duration(
+                                                                      milliseconds:
+                                                                          2500),
+                                                                  backgroundColor:
+                                                                      const Color
+                                                                              .fromARGB(
+                                                                          118,
+                                                                          255,
+                                                                          255,
+                                                                          255),
+                                                                  showProgressIndicator:
+                                                                      true,
+                                                                  progressIndicatorBackgroundColor:
+                                                                      const Color
+                                                                              .fromARGB(
+                                                                          255,
+                                                                          203,
+                                                                          205,
+                                                                          209),
+                                                                  progressIndicatorValueColor:
+                                                                      const AlwaysStoppedAnimation(
+                                                                          Color(
+                                                                              0xFFFDAE2A)),
+                                                                  overlayBlur:
+                                                                      3,
+                                                                );
                                                               } else {
                                                                 Get.snackbar(
                                                                   'Mensaje',

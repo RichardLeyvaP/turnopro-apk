@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/coexistence_model.dart';
+import 'package:turnopro_apk/Models/notification_model.dart';
+import 'package:turnopro_apk/Models/orderDelete_model.dart';
 import 'package:turnopro_apk/Models/product_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/Views/coordinator/coexistencePageCoordinator.dart';
@@ -127,6 +129,48 @@ class ClientsCoordinatorRepository extends GetConnect {
       //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
       print('response.statusCode splano professionalId:${professionalId}');
       print('response.statusCode splano branchId:${branchId}');
+      if (response.statusCode == 200) {
+        print(
+            'response.statusCode splano devuelve true,response.statusCode == 200 ');
+        return {
+          "result": true,
+        };
+      }
+      if (response.statusCode == null) {
+        print('response.statusCode:${response.statusCode}');
+        return {
+          "ConnectionIssues": true,
+        };
+      }
+
+      return {"clientList": clientList};
+    } catch (e) {
+      print('response.statusCode:${e}');
+      print(e);
+    }
+  }
+
+  //
+  //
+  Future reasignedClientCoord(
+      reservationId, clientId, professionalId, token) async {
+    List<ClientsScheduledModel> clientList = [];
+    try {
+      var url =
+          '${Env.apiEndpoint}/reasigned_client_coordinador?reservation_id=$reservationId&client_id=$clientId&professional_id=$professionalId';
+
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
+      print('response.statusCode reservationId:${reservationId}');
+      print('response.statusCode clientId:${clientId}');
+      print('response.statusCode professionalId:${professionalId}');
+      print('response.statusCode professionalId:${url}');
+      print(
+          'response.statusCode professionalId:response.statusCode${response.statusCode}');
       if (response.statusCode == null) {
         print('response.statusCode:${response.statusCode}');
         return {
@@ -134,7 +178,7 @@ class ClientsCoordinatorRepository extends GetConnect {
         };
       } else if (response.statusCode == 200) {
         print(
-            'response.statusCode splano devuelve true,response.statusCode == 200 ');
+            'hay coneccion reasignedClient devuelve true,response.statusCode == 200 ');
         return {
           "result": true,
         };
@@ -147,7 +191,6 @@ class ClientsCoordinatorRepository extends GetConnect {
     }
   }
 
-  //
   //
   Future reasignedClient(reservationId, clientId, professionalId, token) async {
     List<ClientsScheduledModel> clientList = [];
@@ -191,6 +234,177 @@ class ClientsCoordinatorRepository extends GetConnect {
   //
   //
   //
+  //
+  //
+  Future notification_tail_colationR(idBranch, idProf, type, token) async {
+    List<ClientsScheduledModel> clientList = [];
+    List<ClientsScheduledModel> professionals3 = [];
+    List<ClientsScheduledModel> professionals4 = [];
+    List<NotificationModel> notificationList = [];
+    List<NotificationModel> notificationListNew = [];
+    List<OrderDeleteModel> orderDEL = [];
+    List<ClientsScheduledModel> clientListDel = [];
+    try {
+      var url =
+          '${Env.apiEndpoint}/notification-tail-colation?branch_id=$idBranch&professional_id=$idProf';
+
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
+
+      print('hay coneccion getClientsScheduledListBranch');
+      if (response.statusCode == 200) {
+        //aqui evaluar tds las respuestas
+        //todo-1
+        //cola_branch_data
+        final customers = response.body['tail'];
+        for (Map service in customers) {
+          ClientsScheduledModel client =
+              ClientsScheduledModel.fromJson(jsonEncode(service));
+          clientList.add(client);
+        }
+        //todo-1
+        //
+        //todo-2 notifications
+        final notifications = response.body['notifications'];
+        print(
+            'llamada timer estoy en CAntidad de Notificaciones fetchNotificationList Tecn:$notifications');
+        for (Map notification in notifications) {
+          NotificationModel u =
+              NotificationModel.fromJson(jsonEncode(notification));
+
+          if (type == 'Coordinador' || type == 'Encargado') {
+            if (u.type == type ||
+                u.type == 'Ambos' ||
+                u.type == 'Barbero y Encargado') {
+              notificationList.add(u);
+            }
+            if (u.state == 0 || u.state == 3) {
+              //si esta en estos estados es que no se ha visto
+              //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
+              if (u.type == type ||
+                  u.type == 'Ambos' ||
+                  u.type == 'Barbero y Encargado') {
+                notificationListNew.add(u); //barbero
+              }
+            }
+          } else {
+            if (u.type == type || u.type == 'Barbero y Encargado') {
+              notificationList.add(u);
+            }
+            if (u.state == 0 || u.state == 3) {
+              //si esta en estos estados es que no se ha visto
+              //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
+              if (u.type == type || u.type == 'Barbero y Encargado') {
+                notificationListNew.add(u); //barbero
+              }
+            }
+          }
+        }
+
+        //todo-2 notifications
+        //
+        //
+        //todo-3 Cola
+        final orders = response.body['carOrderDelete'];
+        print(orders);
+        if (orders != null) {
+          for (int i = 0; i < orders.length; i++) {
+            print(
+                'ordya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
+            orders[i].forEach((key, value) {
+              print(
+                  'ordya tengo la cola de la api es estaa $key: ${value.runtimeType}');
+            });
+          }
+          for (Map order in orders) {
+            print('DIO ERROR loadOrderDeleteCarv aqui mapeandooooo');
+            OrderDeleteModel u = OrderDeleteModel.fromJson(jsonEncode(order));
+            orderDEL.add(u);
+            print('DIO ERROR loadOrderDeleteCarv aqui mapeandooooo2222');
+          }
+        }
+        //retornando dos listas
+
+        //todo-3 Cola
+        //
+        //
+        //todo-4 Cola1
+        final customers2 = response.body['tail1']; //cola_branch_data2
+        print(
+            'ya tengo la cola de la api getClientsRechazBranch:${customers2}');
+        for (Map service in customers2) {
+          print('ya tengo la cola de la api getClientsRechazBranch222222222');
+          ClientsScheduledModel client =
+              ClientsScheduledModel.fromJson(jsonEncode(service));
+          clientListDel.add(client);
+          print('ya tengo la cola de la api getClientsRechazBranch333333333');
+          //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
+        }
+        //todo-4 Cola1
+        //
+        //
+        //todo-5 Cola1
+        final customers3 = response.body['professionals3'];
+        for (Map service in customers3) {
+          ClientsScheduledModel client2 =
+              ClientsScheduledModel.fromJson(jsonEncode(service));
+
+          professionals3.add(client2);
+        }
+        //todo-5 Cola1
+        //
+        //todo-6 Cola1
+        final customers4 = response.body['professionals4'];
+        for (Map service in customers4) {
+          ClientsScheduledModel client4 =
+              ClientsScheduledModel.fromJson(jsonEncode(service));
+
+          professionals4.add(client4);
+          print(
+              'yccca tengo la cola de la api profOutRequestBranch:${clientList.length}');
+        }
+        //todo-6 Cola1
+        //
+        //
+      } else if (response.statusCode == null) {
+        print(
+            'response.statusCode al ser diferente de 200:${response.statusCode}');
+        return {
+          "ConnectionIssues": true,
+        };
+      }
+
+      if (type == 'Encargado') {
+        return {
+          "tail": clientList,
+          "orderDEL": orderDEL,
+          "clientListDel": clientListDel,
+          "professionals3": professionals3,
+          "professionals4": professionals4,
+          "notificationListEncarg": notificationList,
+          "notificationListNewEncarg": notificationListNew,
+        };
+      } else {
+        return {
+          "tail": clientList,
+          "orderDEL": orderDEL,
+          "clientListDel": clientListDel,
+          "professionals3": professionals3,
+          "professionals4": professionals4,
+          "notificationList": notificationList,
+          "notificationListNew": notificationListNew,
+        };
+      }
+    } catch (e) {
+      print('estoy dando este error ...:$e');
+      return {"clientList": clientList};
+    }
+  } //
+
   //
   //
   Future getClientsScheduledListBranch(idBranch, token) async {

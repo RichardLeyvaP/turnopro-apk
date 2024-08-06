@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
 import 'package:intl/intl.dart';
 import 'package:turnopro_apk/app_initializer.dart';
-//import 'package:turnopro_apk/services/localNotification.dart';
 import 'package:uuid/uuid.dart';
 
 final LoginController loginController = Get.find<LoginController>();
@@ -20,7 +19,8 @@ final ClientsCoordinatorController clientCord =
 final ClientsScheduledController clientsScheduledController =
     Get.find<ClientsScheduledController>();
 
-const notificationChannelId = 'my_channel_id';
+const notificationChannelIdSilent = 'silent_channel_id';
+const notificationChannelIdNormal = 'normal_channel_id';
 const notificationId = 888;
 
 Future<void> initializeService() async {
@@ -28,18 +28,35 @@ Future<void> initializeService() async {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  // Crear el canal de notificaciones
-  const AndroidNotificationChannel channel = AndroidNotificationChannel(
-    notificationChannelId,
-    'SERVICIO DE SIMPLIFIES',
-    description: 'Este canal es usado para las notificaciones',
+  // Crear el canal de notificaciones sin sonido
+  const AndroidNotificationChannel silentChannel = AndroidNotificationChannel(
+    notificationChannelIdSilent,
+    'Silent Channel',
+    description: 'Canal para notificaciones sin sonido',
+    importance: Importance.low,
+    playSound: false,
+  );
+
+  // Crear el canal de notificaciones con sonido
+  const AndroidNotificationChannel normalChannel = AndroidNotificationChannel(
+    notificationChannelIdNormal,
+    'Normal Channel',
+    description: 'Canal para notificaciones con sonido',
     importance: Importance.high,
+    playSound: true,
+    sound: RawResourceAndroidNotificationSound(
+        'livechat129007'), // Reemplaza con el sonido que desees       notificationIcon:'ic_new_service_icon',
   );
 
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
+      ?.createNotificationChannel(silentChannel);
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(normalChannel);
 
   // Detener cualquier instancia en ejecución antes de iniciar una nueva
   service.invoke('stopService');
@@ -51,10 +68,10 @@ Future<void> initializeService() async {
       onStart: onStart,
       autoStart: true,
       isForegroundMode: true,
-      notificationChannelId: 'my_channel_id',
-      initialNotificationTitle: 'Iniciando...',
+      // isForegroundMode: true,
+      notificationChannelId: notificationChannelIdSilent,
+      initialNotificationTitle: 'Simplifies v1.0',
       initialNotificationContent: '',
-      //foregroundServiceNotificationIcon: '@mipmap/ic_service_notification',
     ),
     iosConfiguration: IosConfiguration(
       autoStart: true,
@@ -62,6 +79,30 @@ Future<void> initializeService() async {
       onBackground: onIosBackground,
     ),
   );
+  // Configurar el servicio
+  /* await service.configure(
+    androidConfiguration: AndroidConfiguration(
+      onStart: onStart,
+      autoStart: true,
+      isForegroundMode: true,
+      notificationChannelId: notificationChannelIdSilent,
+      initialNotificationTitle: 'Simplifies 1.0',
+      initialNotificationContent: '',
+      // Añadir configuración del icono aquí
+      foregroundServiceNotificationId: 888,
+      foregroundServiceType: AndroidForegroundType.location,
+
+      // foreground ServiceNotificationContent: () async {
+      //   final details = await _notificationDetails();
+      //   return details;
+      // },
+    ),
+    iosConfiguration: IosConfiguration(
+      autoStart: true,
+      onForeground: onStart,
+      onBackground: onIosBackground,
+    ),
+  );*/
 
   service.startService();
 }
@@ -102,6 +143,7 @@ Future<void> notificationSimplifies() async {
             'Barbero',
             'LLamando-desde-background-service',
             tokenUser);
+        await Future.delayed(const Duration(milliseconds: 600));
         await notiController.fetchNotificationListSERV(
             branchProfesional,
             idProfesional,
@@ -150,8 +192,7 @@ List<int> notificationIds = [];
 
 Future<void> initializeNotificationsNew() async {
   const AndroidInitializationSettings initializationSettingsAndroid =
-      //  AndroidInitializationSettings('ic_bg_service_small');
-      AndroidInitializationSettings('@mipmap/launcher_icon');
+      AndroidInitializationSettings('ic_bg_service_small');
 
   const InitializationSettings initializationSettings =
       InitializationSettings(android: initializationSettingsAndroid);
@@ -161,7 +202,8 @@ Future<void> initializeNotificationsNew() async {
 
 Future<void> localNotificationsSimplifies(
     String title, String description) async {
-  const channelId = 'my_channel_id'; // Usa un canal de notificación constante
+  const channelId =
+      notificationChannelIdNormal; // Usa un canal de notificación constante
 
   // Configuración específica de Android para el canal
   const AndroidNotificationDetails androidPlatformChannelSpecifics =
@@ -172,14 +214,14 @@ Future<void> localNotificationsSimplifies(
     importance: Importance.max,
     priority: Priority.high,
     sound: RawResourceAndroidNotificationSound('livechat129007'),
-    icon: '@mipmap/launcher_icon', // Aquí se usa el ícono
-    //  icon: 'ic_bg_service_small', // Asegúrate de usar el ícono correcto aquí
+    icon: 'ic_bg_service_small',
     enableLights: true,
     color: Colors.blue,
     ledColor: Color(0xffffffff),
     ledOnMs: 1000,
     ledOffMs: 500,
     fullScreenIntent: true,
+    ongoing: true,
   );
 
   // Detalles de la notificación para la plataforma
@@ -191,11 +233,7 @@ Future<void> localNotificationsSimplifies(
 
   // Muestra la notificación
   await flutterLocalNotificationsPlugin.show(
-    notificationId,
-    title,
-    description,
-    platformChannelSpecifics,
-  );
+      notificationId, title, description, platformChannelSpecifics);
 
   // Añadir el ID de la notificación a la lista
   notificationIds.add(notificationId);
@@ -215,7 +253,7 @@ void clearAllNotifications() {
   // Asegúrate de que esto no cause un error si no hay notificaciones
   try {
     // Aquí debes tener el código que limpia todas las notificaciones
-    FlutterLocalNotificationsPlugin().cancelAll();
+    flutterLocalNotificationsPlugin.cancelAll();
 
     print('Todas las notificaciones han sido limpiadas');
   } catch (e) {
@@ -263,18 +301,12 @@ Future<void> onStart(ServiceInstance service) async {
     clearAllNotifications();
   });
 
-  if (service is AndroidServiceInstance) {
-    service.setForegroundNotificationInfo(
-      title: "Simplifies",
-      content: "",
-    );
-  }
-  // service.invoke(
-  //   'update',
-  //   {
-  //     "current_date": DateTime.now().toIso8601String(),
-  //   },
-  // );
+  // if (service is AndroidServiceInstance) {
+  //   service.setForegroundNotificationInfo(
+  //     title: "Simplifies",
+  //     content: "",
+  //   );
+  // }
 
   // Example of a periodic task.
   Timer.periodic(const Duration(seconds: 10), (timer) async {
@@ -297,19 +329,12 @@ Future<void> onStart(ServiceInstance service) async {
         if ((chargeProfesional == 'Barbero y Encargado') ||
             (chargeProfesional == 'Barbero')) {
           await clientCord.reasignedClientSegundoPlano(
-              idProfesional, branchProfesional, tokenUser, 1); //
+              idProfesional, branchProfesional, tokenUser, 1);
         }
       }
     } else {
       print(
           'Algunas claves necesarias no están presentes en LocalStorage.prefs.-reasignedClientSegundoPlano');
     }
-    //
-    //
-    //
-    //
-
-    print(
-        'notificacion desde:-:SERVICIO-notificationSimplifies()-*****var_timerInitial=${LocalStorage.prefs.getInt('var_timerInitial')}');
   });
 }

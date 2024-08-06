@@ -84,8 +84,8 @@ class NotificationRepository extends GetConnect {
     }
   }
 
-  Future<bool> storeNotification(
-      tittle, branchId, professionalId, description, type, token) async {
+  Future<bool> storeNotification(tittle, branchId, professionalId, description,
+      type, stateApk, token) async {
     try {
       var url = '${Env.apiEndpoint}/notification';
       print('inserto correctamente ********** la notificacio:$tittle');
@@ -95,6 +95,7 @@ class NotificationRepository extends GetConnect {
         'professional_id': professionalId,
         'description': description,
         'type': type,
+        'stateApk': stateApk
       };
 
       final headers = {
@@ -199,8 +200,11 @@ class NotificationRepository extends GetConnect {
           //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
           //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
           if (controllerLogin.isLoggingIn == true) {
-            if (client.detached == 1 && client.attended != 33) {
+            if (client.detached == 1 &&
+                client.attended != 33 &&
+                client.attended != 2) {
               //33 es que lo rechazó el tecnico
+              //2 es que lo finalizaron y por alguna razon attended quedo en 1
               //creo nuevo cliente
               print(
                   'clientes asistiendo entre a if (client.detached == 1) {//creo nuevo cliente');
@@ -319,9 +323,9 @@ class NotificationRepository extends GetConnect {
     // }
   }
 
-  Future getNotificationList(idBranch, idProf, type, token) async {
+  Future getNotificationList(idBranch, idProf, type, token, place) async {
     try {
-      print('estoy aqui en getNotificationList');
+      print('estoy aqui en getNotificationList llamando desde:$place');
       List<NotificationModel> notificationList = [];
       List<NotificationModel> notificationListNew = [];
       var url =

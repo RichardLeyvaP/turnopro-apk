@@ -526,7 +526,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                         int reservationId = clientCord.idReservCORD;
                         //todo falta poner un cargando
                         clientCord.setLoading(true);
-                        bool result = await clientCord.reasignedClient(
+                        bool result = await clientCord.reasignedClientCoord(
                             reservationId,
                             clientIdCORD,
                             idProfess,

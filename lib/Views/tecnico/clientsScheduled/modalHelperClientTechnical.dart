@@ -167,6 +167,7 @@ class ModalHelperTecnical {
                                 loginController.branchIdLoggedIn,
                                 idProf,
                                 ' El cliente $cliente ya está disponible para que continúes con el servicio',
+                                'no',
                                 'Barbero');
                             Navigator.pop(context); // Cierra el modal
                           },

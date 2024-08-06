@@ -135,6 +135,23 @@ class ShoppingCartController extends GetxController {
     }
   }
 
+  Future<void> readUpdateDeleteCar(dynamic orderDel) async {
+    print('Estoy en loadOrderDeleteCar');
+    try {
+      if (orderDel != null && orderDel is List<OrderDeleteModel>) {
+        orderDeleteCar = orderDel;
+        update();
+      } else {
+        print('El resultado no es una lista de OrderDeleteModel o es null');
+      }
+    } catch (e) {
+      print('DIO ERROR readUpdateDeleteCar: $e');
+    } finally {
+      // controllerLogin.setMakeCallC(true); //habilitar las llamadas del timer
+      // controllerLogin.setMakeCallE(true);
+    }
+  }
+
   Future<int> requestDelete(int id, int request_delete) async {
     //todooooooooo
     try {

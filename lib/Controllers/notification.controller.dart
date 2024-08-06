@@ -85,10 +85,17 @@ class NotificationController extends GetxController {
       branchId,
       professionalId,
       description,
+      stateApk,
       type) async {
     //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
-    bool result = await repository.storeNotification(tittle, branchId,
-        professionalId, description, type, controllerLogin.tokenUserLoggedIn);
+    bool result = await repository.storeNotification(
+        tittle,
+        branchId,
+        professionalId,
+        description,
+        type,
+        stateApk,
+        controllerLogin.tokenUserLoggedIn);
     if (result) {
       print('CORRECTO inserto una nueva notificacion ');
     }
@@ -266,8 +273,11 @@ class NotificationController extends GetxController {
                 if (controllerLogin.isLoggingNotification ==
                     false) //vino del login si es true,solo debe entrar si no viene del login
                 {
-                  controllerclient.watchModifyTimeRest(idReservation,
-                      textoCompleto, 'professionalBranchNotifQueque');
+                  controllerclient.watchModifyTimeRest(
+                      idReservation,
+                      textoCompleto,
+                      'professionalBranchNotifQueque',
+                      'aceptada');
                 }
 
                 updateNotifications2(idBranch, idProfe, element.id);
@@ -280,6 +290,20 @@ class NotificationController extends GetxController {
               }
               if (element.state == 3 &&
                   element.tittle == 'Solicitud de Eliminación Rechazada') {
+                //ver si es un servicio
+                /*   String textoCompleto = element.description;
+                int idReservation = obtenerNumeroDespuesDelPunto(textoCompleto);
+                if (controllerLogin.isLoggingNotification == false &&
+                    idReservation !=
+                        0) //vino del login si es true,solo debe entrar si no viene del login
+                {
+                  controllerclient.watchModifyTimeRest(
+                      idReservation,
+                      textoCompleto,
+                      'professionalBranchNotifQueque',
+                      'rechazada');
+                }*/
+
                 updateNotifications2(idBranch, idProfe, element.id);
                 controllerLogin.setCodigoQrValid(1);
               }
@@ -449,13 +473,14 @@ class NotificationController extends GetxController {
     print(
         'llamada timer ...tipo:$type......idSucursal:$idBranch......iProf:$idProfe');
     try {
-      Map<String, dynamic> result =
-          await repository.getNotificationList(idBranch, idProfe, type, token);
+      Map<String, dynamic> result = await repository.getNotificationList(
+          idBranch, idProfe, type, token, 'fetchNotificationListSERV');
       bool siHayEliminarService = false;
       print('object-${clientsTechnicalCont.clientsTechnicalLength}');
       if (result.containsKey('notificationListError') &&
           result.containsKey('notificationListError') == true) {
-        print('estoy entrando aqui si al error de notificacion.tec');
+        print(
+            'estoy entrando aqui si al error de notificacion.tec-del serviciooooo---*********');
 
         if (type == 'Tecnico' &&
             clientsTechnicalCont.clientsTechnicalLength >
@@ -628,8 +653,11 @@ class NotificationController extends GetxController {
             print(
                 'modificar time de mm 1 estoy aqui en el forEach-2-idReservation:$idReservation - textoCompleto:$textoCompleto');
 
-            controllerclient.watchModifyTimeRest(idReservation, textoCompleto,
-                'fetchNotificationListSERV'); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
+            controllerclient.watchModifyTimeRest(
+                idReservation,
+                textoCompleto,
+                'fetchNotificationListSERV',
+                'aceptada'); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
             updateNotifications2(idBranch, idProfe,
                 element.id); //aqui es para no repetir esto y lo pongo en 0
 
@@ -674,13 +702,14 @@ class NotificationController extends GetxController {
     print(
         'llamada timer ...tipo:$type......idSucursal:$idBranch......iProf:$idProfe');
     try {
-      Map<String, dynamic> result =
-          await repository.getNotificationList(idBranch, idProfe, type, token);
+      Map<String, dynamic> result = await repository.getNotificationList(
+          idBranch, idProfe, type, token, 'fetchNotificationListSERV');
       bool siHayEliminarService = false;
       print('object-${clientsTechnicalCont.clientsTechnicalLength}');
       if (result.containsKey('notificationListError') &&
           result.containsKey('notificationListError') == true) {
-        print('estoy entrando aqui si al error de notificacion.tec');
+        print(
+            'estoy entrando aqui si al error de notificacion.tec-fetchNotificationList-fetchNotificationList');
 
         if (type == 'Tecnico' &&
             clientsTechnicalCont.clientsTechnicalLength >
@@ -844,8 +873,11 @@ class NotificationController extends GetxController {
             print(
                 'modificar time de mm 1 estoy aqui en el forEach-2-idReservation:$idReservation - textoCompleto:$textoCompleto');
 
-            controllerclient.watchModifyTimeRest(idReservation, textoCompleto,
-                'fetchNotificationList'); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
+            controllerclient.watchModifyTimeRest(
+                idReservation,
+                textoCompleto,
+                'fetchNotificationList',
+                'aceptada'); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
             updateNotifications2(idBranch, idProfe,
                 element.id); //aqui es para no repetir esto y lo pongo en 0
 
@@ -872,6 +904,170 @@ class NotificationController extends GetxController {
     }
   }
 
+  Future readUpdateNotifications(idBranch, idProfe, type, result) async {
+    bool siHayEliminarService = false;
+    print('object-${clientsTechnicalCont.clientsTechnicalLength}');
+    if (result.containsKey('notificationListError') &&
+        result.containsKey('notificationListError') == true) {
+      print(
+          'estoy entrando aqui si al error de notificacion.tec-fetchNotificationList-readUpdateNotifications');
+
+      if (type == 'Tecnico' &&
+          clientsTechnicalCont.clientsTechnicalLength >
+              0) //es tecnico y tiene la cola vacia que ni lo muestre
+      {
+        controllerLogin.showConnectionError();
+      }
+      if (type != 'Tecnico') {
+        controllerLogin.showConnectionError();
+      }
+    } else if (result.containsKey('Erroor') && result['Erroor'] == true) {
+      print(
+          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor,-8 el error fue en Future<void> fetchNotificationList');
+    } else if (result.containsKey('notificationList') &&
+        result.containsKey('notificationListNew')) {
+      notification = result['notificationList'];
+
+      print(
+          'llamada timer estoy en CAntidad de Notificaciones fetchNotificationList :${notification.length}');
+
+      notificationListLength = notification.length;
+
+      notificationListNew = result['notificationListNew'];
+      notificationListNewLength = notificationListNew.length;
+      List<NotificationModel> notificationListNewAux =
+          []; // Lista de Notificaciones
+      for (final element in notificationListNew) {
+        if (element.state == 0 || element.state == 3) {
+          print(
+              'callTimerTec 4-callTimerTecNotification -if-element.state :${element.state}');
+          if (!notificationListNewSounded.contains(element.id)) {
+            notificationListNewSounded.add(element.id);
+
+            notificationListNewAux.add(element);
+            //localNotificationsSimplifies(element.tittle, element.description);
+          }
+        }
+
+        //esto es para saber que valor darle al qr si aceptan o rechazan la colación
+        print('estoy llamando ahora desde->fetchNotificationList');
+        if (element.state == 3 &&
+            element.tittle ==
+                'Aceptada su solicitud de Colación') //pongo a null el qr
+        {
+          controllerLogin.setCodigoQrValid(null);
+          updateNotifications2(idBranch, idProfe, element.id);
+        }
+        if (element.state == 3 &&
+            element.tittle ==
+                'Rechazada su solicitud de Colación') //pongo a 1 el qr
+        {
+          controllerLogin.setCodigoQrValid(1);
+          controllerclient.setWaitTime(false);
+          clientsScheduledController.setwaitTimeCount(0);
+          updateNotifications2(idBranch, idProfe, element.id);
+        }
+        if (element.state == 3 &&
+            element.tittle ==
+                'Rechazada su solicitud de Salida') //pongo a 1 el qr
+        {
+          controllerLogin.setCodigoQrValid(1);
+          updateNotifications2(idBranch, idProfe, element.id);
+        }
+        if (element.state == 3 &&
+            element.tittle ==
+                'Aceptada su solicitud de Salida') //pongo a 1 el qr
+        {
+          print('cargando aqui-16 para sacar del puesto y la apk-1');
+          FlutterBackgroundService().invoke('notificationSimplifies');
+          await Future.delayed(const Duration(seconds: 1));
+          updateOutAcept(element.id);
+        }
+        if (element.state == 3 &&
+            element.tittle ==
+                'Solicitud de Eliminación Rechazada') //pongo a null el qr
+        {
+          print(
+              'callTimerTec 4-callTimerTecNotification -if-element.tittle :${element.tittle}');
+          controllerLogin.setCodigoQrValid(1);
+          updateNotifications2(idBranch, idProfe, element.id);
+        }
+        if (element.state == 3 &&
+            element.tittle ==
+                'Aceptada Eliminación de Cliente') //pongo a null el qr
+        {
+          controllerLogin.setCodigoQrValid(1);
+          updateNotifications2(idBranch, idProfe, element.id);
+        }
+      }
+
+      if (outAcept !=
+          0) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+      {
+        Get.snackbar(
+          'Mensaje',
+          'Cerrando aplicación',
+          duration: const Duration(milliseconds: 2500),
+          backgroundColor: const Color.fromARGB(118, 255, 255, 255),
+          showProgressIndicator: true,
+          progressIndicatorBackgroundColor:
+              const Color.fromARGB(255, 203, 205, 209),
+          progressIndicatorValueColor:
+              const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
+          overlayBlur: 3,
+        );
+        Get.dialog(
+          const Center(
+            child: CircularProgressIndicator(
+              color: Color(0xFFFDAE2A),
+            ),
+          ),
+          barrierDismissible: false,
+        ); //Get.back();
+        await updateNotifications2(idBranch, idProfe, outAcept);
+        // await controllerLogin.exitPostworking("Tecnico");
+        await controllerLogin.exit(controllerLogin.tokenUserLoggedIn);
+        updateOutAcept(0);
+        Get.back();
+        print('cargando aqui-16 para sacar del puesto y la apk-2');
+      }
+
+      update();
+    } else if (result.containsKey('notificationListEncarg') &&
+        result.containsKey('notificationListNewEncarg')) {
+      print('ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador');
+      notificationEncarg = result['notificationListEncarg'];
+
+      notificationListLengthEncarg = notificationEncarg.length;
+
+      notificationListNewEncarg = result['notificationListNewEncarg'];
+      notificationListNewLengthEncarg = notificationListNewEncarg.length;
+      print(
+          'ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador - notificationListNewLengthEncarg:${notificationEncarg.length}');
+
+      notificationListNewEncarg.forEach((element) async {
+        if (element.state == 3 &&
+            element.tittle == 'Aceptada Eliminación de Servicio') {
+          print('modificar time de mm 1 estoy aqui en el forEach');
+          String textoCompleto = element.description;
+          int idReservation = obtenerNumeroDespuesDelPunto(textoCompleto);
+          print(
+              'modificar time de mm 1 estoy aqui en el forEach-2-idReservation:$idReservation - textoCompleto:$textoCompleto');
+
+          controllerclient.watchModifyTimeRest(
+              idReservation,
+              textoCompleto,
+              'fetchNotificationList',
+              'aceptada'); //aqui le mando el tiempo tambien y los voy sumando si el id coincidiera
+          updateNotifications2(idBranch, idProfe,
+              element.id); //aqui es para no repetir esto y lo pongo en 0
+        }
+      });
+
+      update();
+    }
+  }
+
   Future<void> updateNotificationsState3(idBranch, idProf) async {
     try {
       int result = await repository.updateNotificationsState3(
@@ -892,6 +1088,7 @@ class NotificationController extends GetxController {
           idBranch, idProf, type, controllerLogin.tokenUserLoggedIn);
       if (result == 1) {
         print('Las notificaciones fueron vistas');
+        update();
       } else {
         print('No modifico las notificaciones como vistas');
       }

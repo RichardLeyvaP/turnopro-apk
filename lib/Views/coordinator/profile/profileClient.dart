@@ -591,7 +591,7 @@ class _ProfileClientState extends State<ProfileClient> {
                                   // await clientSchedControl.getProfessionalState(
                                   //     loginControl.branchIdLoggedIn);
                                   await clientSchedControl
-                                      .getProfessionalState2(
+                                      .getProfessionalState2Coord(
                                           loginControl.branchIdLoggedIn,
                                           clientCoordControl.idReservCORD,
                                           loginControl.tokenUserLoggedIn);

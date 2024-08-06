@@ -1,9 +1,9 @@
 // ignore_for_file: depend_on_referenced_packages, unused_element, unrelated_type_equality_checks
 
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/coexistence_model.dart';
 import 'package:turnopro_apk/Models/product_model.dart';
@@ -152,6 +152,71 @@ class ClientsCoordinatorController extends GetxController {
   }
 
   //Fin Variables del reloj
+
+  Future<void> notification_tail_colation(idBranch, idProf, type) async {
+    final NotificationController NotCont = Get.find<NotificationController>();
+    final ShoppingCartController ShopCont = Get.find<ShoppingCartController>();
+    try {
+      Map<String, dynamic> resultList =
+          await repository.notification_tail_colationR(idBranch, idProf,
+              'Coordinador', controllerLogin.tokenUserLoggedIn);
+      print(resultList);
+      //verificando , si entra al if es problemas de coneccion
+      if (resultList.containsKey('ConnectionIssues') &&
+          resultList['ConnectionIssues'] == true) {
+        correctConnection = false;
+        print(
+            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor-1-notification_tail_colationR');
+      } else {
+        //aqui evaluar resultados
+        //todo *******-1
+        //La cola donde attended es 0 3 y 33
+        correctConnection = true;
+        //aqui estoy guardando la cola del dia de hoy del profesional
+        clientsScheduledListBranch =
+            (resultList['tail'] ?? []).cast<ClientsScheduledModel>();
+        clientsScheduledListBranchLength = clientsScheduledListBranch.length;
+        //todo *******-1
+        //
+
+        //
+        //todo *******-2 cola
+        ShopCont.readUpdateDeleteCar(resultList['orderDEL']);
+        //todo *******-2 cola
+        //
+        //todo *******-3 cola1
+        correctConnection = true;
+        //aqui estoy guardando la cola del dia de hoy del profesional
+        clientsScheduledListBranchClient =
+            (resultList['clientListDel'] ?? []).cast<ClientsScheduledModel>();
+        clientsScheduledListBranchClientLength =
+            clientsScheduledListBranchClient.length;
+        //todo *******-3 cola1
+        //
+        //todo *******-2 prof1
+        clientsColacionRequestBranch =
+            (resultList['professionals3'] ?? []).cast<ClientsScheduledModel>();
+        clientsColacionRequestLength = clientsColacionRequestBranch.length;
+        //todo *******-3 prof1
+        //
+        //todo *******-2 prof1
+        pOutRequestBranch =
+            (resultList['professionals4'] ?? []).cast<ClientsScheduledModel>();
+        pOutRequestLength = pOutRequestBranch.length;
+        //todo *******-3 prof1
+        //todo *******-2 notifications
+        await NotCont.readUpdateNotifications(
+            idBranch, idProf, type, resultList);
+
+        //todo *******-2 notifications
+        //
+      }
+      update();
+    } catch (e) {
+      print(
+          'mandar alguna variable para la vista-dio este ERROR-notification_tail_colation:$e');
+    }
+  }
 
   Future<void> fetchClientsScheduledBranch(idBranch) async {
     try {
@@ -321,6 +386,31 @@ class ClientsCoordinatorController extends GetxController {
     }
 
     print(resultList);
+  }
+
+  Future<bool> reasignedClientCoord(
+      reservationId, clientId, professionalId, token) async {
+    Map<String, dynamic> resultList = await repository.reasignedClientCoord(
+        reservationId, clientId, professionalId, token);
+    print(resultList);
+    //verificando , si entra al if es problemas de coneccion
+    if (resultList.containsKey('ConnectionIssues') &&
+        resultList['ConnectionIssues'] == true) {
+      correctConnection = false;
+      controllerLogin.showConnectionError();
+      update();
+      print(
+          'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor-3');
+      return false;
+    } else if (resultList['result'] == true) {
+      correctConnection = true;
+      update();
+      print('Cliente reasignado correctamente-totem-homeeee');
+      return true;
+      //
+    } else {
+      return false;
+    }
   }
 
   Future<bool> reasignedClient(

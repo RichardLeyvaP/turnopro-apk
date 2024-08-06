@@ -76,28 +76,38 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
   callFirts() async {
     print('cargando aqui-1');
     //SOLO ESTRA UNA SOLA VEZ AL INICIO
-    await clientsScheduledController
+    await clientsScheduledController.notification_tail_colation(
+        loginController.branchIdLoggedIn,
+        loginController.idProfessionalLoggedIn,
+        'Coordinador');
+    clientsScheduledController.setLoading(false);
+    controllerShoppingCart.setLoading(false);
+    /* await clientsScheduledController
         .clientsAttendBranch(loginController.branchIdLoggedIn);
+    await Future.delayed(const Duration(milliseconds: 200));
     await controllerShoppingCart
         .loadOrderDeleteCar(loginController.branchIdLoggedIn!);
-
+    await Future.delayed(const Duration(milliseconds: 200));
     await notiController.fetchNotificationList(
         loginController.branchIdLoggedIn,
         loginController.idProfessionalLoggedIn,
         'Coordinador',
         'callFirts',
         loginController.tokenUserLoggedIn);
-
+    await Future.delayed(const Duration(milliseconds: 200));
     await clientsScheduledController
         .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
+    await Future.delayed(const Duration(milliseconds: 200));
     await clientsScheduledController
         .fetchClientsRechazBranch(loginController.branchIdLoggedIn);
     clientsScheduledController.setLoading(false);
+    await Future.delayed(const Duration(milliseconds: 200));
     await clientsScheduledController.ColacionRequestBranch(
         loginController.branchIdLoggedIn);
+    await Future.delayed(const Duration(milliseconds: 200));
     await clientsScheduledController
         .outRequestBranch(loginController.branchIdLoggedIn);
-    controllerShoppingCart.setLoading(false);
+    controllerShoppingCart.setLoading(false);*/
   }
 
   Timer? _timerCoord;
@@ -116,27 +126,36 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
             loginController.chargeUserLoggedIn == "Coordinador" &&
             loginController.usserPermissionQr != null) {
           // actualizo la cola
+          //todo la nueva
+          await clientsScheduledController.notification_tail_colation(
+              loginController.branchIdLoggedIn,
+              loginController.idProfessionalLoggedIn,
+              'Coordinador');
+          //todo la nueva
+          //  await clientsScheduledController
+          //       .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
 
-          await clientsScheduledController
-              .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
-          await clientsScheduledController
+          /*QUITADAAAAAAAAAAAAAAAAA  
+         await clientsScheduledController
               .fetchClientsRechazBranch(loginController.branchIdLoggedIn);
           clientsScheduledController.setLoading(false);
-          if (loginController.branchIdLoggedIn != null) {
+
             await controllerShoppingCart
                 .loadOrderDeleteCar(loginController.branchIdLoggedIn);
-          }
+
           await clientsScheduledController.ColacionRequestBranch(
               loginController.branchIdLoggedIn);
-          await clientsScheduledController
+              
+               await clientsScheduledController
               .outRequestBranch(loginController.branchIdLoggedIn);
           controllerShoppingCart.setLoading(false);
+          
           await notiController.fetchNotificationList(
               loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn,
               'Coordinador',
               'callTimerCoord',
-              loginController.tokenUserLoggedIn);
+              loginController.tokenUserLoggedIn);*/
         }
       }
     });
@@ -1882,6 +1901,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                           .clientsScheduledListBranchClient[i]
                                           .idBarber,
                                       'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue rechazado por el Técnico ${controllerclient.clientsScheduledListBranchClient[i].professional_name}',
+                                      'nada',
                                       'Barbero');
                                   //enviar notificacion al propio tecnico que fue aceptada
                                   notiController.storeNotification(
@@ -1891,6 +1911,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                           .clientsScheduledListBranchClient[i]
                                           .professional_id,
                                       'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue eliminado de su cola',
+                                      'nada',
                                       'Tecnico');
                                 }
                               }

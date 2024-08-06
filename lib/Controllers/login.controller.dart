@@ -224,13 +224,23 @@ class LoginController extends GetxController {
       print('soy un switchValue:true');
       Get.offAllNamed('/HomeResponsible');
     } else {
-      clockInitialTimeB(clientsScheduledController, 'Barbero');
+      int timeInit = await gettimeClokInitial(
+          idProfessionalLoggedIn!, branchIdLoggedIn!, tokenUserLoggedIn);
+      print(
+          'el tiempo devuelto inicial es desde el metodo del login:$timeInit');
+      clockInitialTimeB(timeInit, clientsScheduledController, 'Barbero');
+
       setLoggingInCharge(true, 'setswitchValue-194');
       switchValue = false;
       setIsLoggingIn(true);
       clientsScheduledController.setCloseIesperado(true);
       clientsScheduledController.setCloseIesperadoLogin(true);
-
+      await Future.delayed(const Duration(milliseconds: 500));
+      // await clientsScheduledController.fetchClientsScheduledNew(
+      //     idProfessionalLoggedIn,
+      //     branchIdLoggedIn,
+      //     'setswitchValue',
+      //     tokenUserLoggedIn);
       await clientsScheduledController.fetchClientsScheduled(
           idProfessionalLoggedIn, branchIdLoggedIn, 'setswitchValue');
       print('soy un switchValue:false');
@@ -905,19 +915,24 @@ class LoginController extends GetxController {
     return segundos;
   }
 
-  clockInitialTimeB(ClientsScheduledController clientsScheduledController,
+  clockInitialTimeB(
+      int timeInicDb,
+      ClientsScheduledController clientsScheduledController,
       String tyype) async {
+    print(
+        'el tiempo devuelto inicial es desde el metodo - ENTRANDOOOO-clockInitialTimeB-timeInicDb:$timeInicDb');
     //aqui obtengo la hora actual para comparar con la anterior si es posible
     int hAs = obtenerHoraActualEnSegundos();
-    print('verificando si esta activo:');
     LocalStorage.prefs.setInt('valueHoraAct', hAs);
     print('--este es el value del clok-valueHoraAct-LOGIN:$hAs');
     if (LocalStorage.prefs.getBool('valueClockActiv') != null &&
         LocalStorage.prefs.getBool('valueClockActiv') == true) {
-      print('verificando si esta activo:Si entre al if-1');
+      print(
+          'el tiempo devuelto inicial es desde el metodo - IF DE ARRIBA-variables activas1');
       if (LocalStorage.prefs.getInt('valueHoraAnt') != null &&
           LocalStorage.prefs.getInt('valueHoraAct') != null) {
-        print('verificando si esta activo:Si entre al if-2');
+        print(
+            'el tiempo devuelto inicial es desde el metodo - IF DE ARRIBA-variables activas2');
         int timeAsig = 180;
         //obtengo la hora anterior y actual en segundos
         int hourAnt = LocalStorage.prefs.getInt('valueHoraAnt')!;
@@ -927,6 +942,8 @@ class LoginController extends GetxController {
         int valueAntClock = LocalStorage.prefs.getInt('valueClockIni')!;
         int diferSeg = valueAntClock - segundExit;
         if (diferSeg > 0) {
+          print(
+              'el tiempo devuelto inicial es desde el metodo - if (diferSeg > 0) {');
           //aun no s eacabaron los 3 minutos
           // asigno el tiempo
           if (diferSeg > 180) {
@@ -936,9 +953,14 @@ class LoginController extends GetxController {
           }
         } else //es que se acaboron los 3 min
         {
+          print(
+              'el tiempo devuelto inicial es desde el metodo - else que ahi reasigno tambien');
           // ya una vez en el dia esto cumplido ya no importa el reloj de espera
           //al salir del sistema esta variable debe tomar false
-          timeAsig = 0;
+          timeAsig = timeInicDb;
+          //reasigno y pongo el reloj en 180
+          await clientCord.reasignedClientSegundoPlano(
+              idProfessionalLoggedIn!, branchIdLoggedIn, tokenUserLoggedIn, 0);
         }
         LocalStorage.prefs.setInt('valueClockIni', timeAsig);
 
@@ -954,13 +976,16 @@ class LoginController extends GetxController {
       }
     } else {
       //todo aqui llamar para ver que tiempo tiene el timerClockInitial
-      /* int timeInit =
-          await gettimeClokInitial(idProfessionalLoggedIn!, branchIdLoggedIn!);
-      print('el tiempo devuelto inicial es:$timeInit');
-      if (timeInit != -99 && timeInit != -999) {
-        timeInit += 20;
-        int tiempClock = 180 - timeInit;
-        if (tiempClock < 0) {
+
+      print(
+          'el tiempo devuelto inicial es desde el metodo - Entrando al sino hacer la verificacion');
+      if (timeInicDb != -99 && timeInicDb != -999 && timeInicDb != -222) {
+        print(
+            'el tiempo devuelto inicial es desde el metodo - clockInitialTimeB-entra al if()');
+        int tiempClock = 176 - timeInicDb;
+        if (tiempClock <= 0) {
+          print(
+              'el tiempo devuelto inicial es desde el metodo - clockInitialTimeB-entra a reasignar-tiempClock=$tiempClock');
           //reasigno y pongo el reloj en 180
           await clientCord.reasignedClientSegundoPlano(
               idProfessionalLoggedIn!,
@@ -976,11 +1001,10 @@ class LoginController extends GetxController {
         //sino esta ativo el time de 3 min pues vemos si ya estaba trabajando en segundo plano
         //llamamos a la db
       } else {
-        clientsScheduledController
-            .setTotalTimeInitial(181); //solo para saber que algo dio mal
         print(
-            'el tiempo inicial del reloj inicio en 181 segundos porque dio un error');
-      }*/
+            'el tiempo devuelto inicial es desde el metodo - clockInitialTimeB-NOOOO-entra al if()');
+        clientsScheduledController.setTotalTimeInitial(181);
+      }
     }
   }
 
@@ -1277,7 +1301,11 @@ class LoginController extends GetxController {
           if (chargeUserLoggedIn == "Barbero" ||
               chargeUserLoggedIn == "Barbero y Encargado") {
             //aqui es para saber solamnete el tiempo del reloj inicial de los 3min
-            clockInitialTimeB(clientsScheduledController, 'Barbero');
+            int timeInit = await gettimeClokInitial(
+                idProfessionalLoggedIn!, branchIdLoggedIn!, tokenUserLoggedIn);
+            print(
+                'el tiempo devuelto inicial es desde el metodo del login:$timeInit');
+            clockInitialTimeB(timeInit, clientsScheduledController, 'Barbero');
             //aqui cargo la cola del barbero para poder tener en el home al siguiente de la cola inicialmente
             print('estoy aqui al cargar datos del controlador de client');
             setIsLoggingIn(true);

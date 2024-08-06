@@ -358,6 +358,7 @@ class _HomePageBodyState extends State<HomePageBody>
                   loginController.branchIdLoggedIn!,
                   loginController.idProfessionalLoggedIn!,
                   'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado.',
+                  'no',
                   'Barbero');
 //todo notificate
               // reiniciateClock();
@@ -994,6 +995,7 @@ class _HomePageBodyState extends State<HomePageBody>
             print(
                 'EL telefono del que le sigue en la cola es:TELEFONO:$teleClient');
           }
+          await Future.delayed(const Duration(milliseconds: 500));
           //pregunto si no tinee a nadie en cola
           //voy a ver si hay alguno para reasignarlo
           print(
@@ -1017,11 +1019,13 @@ class _HomePageBodyState extends State<HomePageBody>
               'viendo si hay clientes esperando realmente::errorHome:${clientsScheduledController.errorHome})');
 
           //esta era para llamar a un aleatorio si no tenia nadie en cola.ya eso lo hace la api
-          if (clientsScheduledController.clientsScheSalon == 0 &&
-              clientsScheduledController.errorHome != -99) {
+          if ((clientsScheduledController.clientsScheSalon == 0 &&
+                  clientsScheduledController.errorHome != -99) ||
+              loginController.usserPermissionQr == 2) {
             restartStopClock();
           }
           if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
+            await Future.delayed(const Duration(milliseconds: 500));
             await notiController.fetchNotificationList(
                 loginController.branchIdLoggedIn,
                 loginController.idProfessionalLoggedIn,
@@ -1045,7 +1049,7 @@ class _HomePageBodyState extends State<HomePageBody>
               await clientsScheduledController.upadateVariablesValueTimers();
               //aqui en este actualiza los tiempos de los relojes
             }
-
+            await Future.delayed(const Duration(milliseconds: 500));
             await clientsScheduledController.fetchClientsScheduledNew(
                 loginController.idProfessionalLoggedIn,
                 loginController.branchIdLoggedIn,
@@ -1095,6 +1099,7 @@ class _HomePageBodyState extends State<HomePageBody>
                       loginController.branchIdLoggedIn,
                       loginController.idProfessionalLoggedIn,
                       'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!',
+                      'no',
                       'Barbero');
                   //todo notificate
                   // scheduleNotification(
@@ -1145,6 +1150,7 @@ class _HomePageBodyState extends State<HomePageBody>
             'Cart home',
             loginController.tokenUserLoggedIn);
         if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
+          await Future.delayed(const Duration(milliseconds: 700));
           await notiController.fetchNotificationList(
               loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn,
@@ -1728,6 +1734,9 @@ class _HomePageBodyState extends State<HomePageBody>
                                                     -99) &&
                                             loginController.usserPermissionQr ==
                                                 1
+                                        //         ||
+                                        // loginController.usserPermissionQr ==
+                                        //     2
                                         ? Container(
                                             decoration: const BoxDecoration(
                                               borderRadius: BorderRadius.all(

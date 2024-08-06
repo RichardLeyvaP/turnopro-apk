@@ -349,7 +349,9 @@ class _ProductsBodyState extends State<ProductsBody>
                                   ),
                                   onPressed: () async {
                                     if (controllerLogin.codigoQrValid() ==
-                                        true) {
+                                            true ||
+                                        (controllerLogin.usserPermissionQr ==
+                                            2)) {
                                       Get.dialog(
                                         const Center(
                                           child: CircularProgressIndicator(

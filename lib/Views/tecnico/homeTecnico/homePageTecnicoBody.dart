@@ -101,6 +101,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                 branchId,
                 professionalId,
                 'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado.',
+                'no',
                 'Tecnico');
           }
         }
@@ -235,6 +236,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
               loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn,
               'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!',
+              'no',
               'Tecnico');
           //agregar el id de ese cliente en un array para no mandar mas ese mensaje con ese cliente en espera
           if (clientsScheduledController.clientsAttendedTechnical != null) {
@@ -1384,6 +1386,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                             .clientsAttendedTechnical!
                                             .professional_id,
                                         'El cliente ${clientsScheduledController.clientsAttendedTechnical!.client_name} ya está disponible para que continúes con el servicio',
+                                        'no',
                                         'Barbero');
                                     await clientsScheduledController
                                         .acceptClientTechnical(
