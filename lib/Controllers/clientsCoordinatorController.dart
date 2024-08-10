@@ -439,24 +439,27 @@ class ClientsCoordinatorController extends GetxController {
 
   Future<bool> reasignedClientSegundoPlano(
       professionalId, branchId, token, place) async {
-    Map<String, dynamic> resultList = await repository
+    Map<String, dynamic>? resultList = await repository
         .reasignedClientSegundoPlano(professionalId, branchId, token, place);
-    print(resultList);
-    //verificando , si entra al if es problemas de coneccion
-    if (resultList.containsKey('ConnectionIssues') &&
-        resultList['ConnectionIssues'] == true) {
-      correctConnection = false;
-      update();
-      print(
-          'response.statusCode splano mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor-3');
-      return false;
-    } else if (resultList['result'] == true) {
-      correctConnection = true;
+    if (resultList != null) {
+      //verificando , si entra al if es problemas de coneccion
+      if (resultList.containsKey('ConnectionIssues') &&
+          resultList['ConnectionIssues'] == true) {
+        correctConnection = false;
+        update();
+        print(
+            'response.statusCode splano mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor-3');
+        return false;
+      } else if (resultList['result'] == true) {
+        correctConnection = true;
 
-      print(
-          'response.statusCode splano Cliente reasignado correctamente-totem');
-      return true;
-      //
+        print(
+            'response.statusCode splano Cliente reasignado correctamente-totem');
+        return true;
+        //
+      } else {
+        return false;
+      }
     } else {
       return false;
     }

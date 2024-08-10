@@ -1,9 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
+import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
+import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
 import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
 import 'package:intl/intl.dart';
+
+import '../../../services/background_service.dart';
 
 class LoadingPage extends StatelessWidget {
   @override
@@ -103,23 +108,12 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
           if (resultP == 1 &&
               resultH == 1) //td inserto correctamente la entrada
           {
-            // Obtener la fecha actual
-            /*  DateTime now = DateTime.now();
-
-            // Formatear la fecha para que solo incluya año, mes y día
-            String nowString = DateFormat('yyyy-MM-dd').format(now);
-
-            // Guardar la fecha en SharedPreferences
-            LocalStorage.prefs.setString('EntryFootprintData', nowString);
-            //mandar mensaje que td esta bien
-            LocalStorage.prefs
-                .setString('EntryFootprintUser', controllerLogin.userLoggedIn);
-            LocalStorage.prefs
-                .setString('EntryFootprintPass', controllerLogin.pass);
-            LocalStorage.prefs.setInt(
-                'EntryFootprintBranch', controllerLogin.branchIdLoggedIn!);
-            LocalStorage.prefs.setBool('EntryFootprintOpen', true);*/
             mensjeOk();
+            await initializeService();
+            await clientsScheduledController.fetchClientsScheduled(
+                controllerLogin.professionalsQR,
+                controllerLogin.branchIdLoggedIn,
+                'despues de leer qr');
           } else {
             //hubo problema al registrar la entrada
             mensjeError();
@@ -145,6 +139,7 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
           {
             //mandar mensaje que td esta bien
             mensjeOk();
+            await initializeService();
           } else {
             //hubo problema al registrar la entrada
             mensjeError();
@@ -155,6 +150,8 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
         }
         Get.offAllNamed('/HomeResponsible');
       } else if (controllerLogin.chargeUserLoggedIn == "Tecnico") {
+        final ClientsScheduledController clientsSchedCont =
+            Get.find<ClientsScheduledController>();
         //LLAMAR AL CONTROLADOR PARA INSERTARLO EN EL PUESTO DE TRABAJO
         if (controllerLogin.usserMssQr == 1) {
           int resultP = await controllerLogin.insertPuesto(
@@ -169,6 +166,9 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
           {
             //mandar mensaje que td esta bien
             mensjeOk();
+            await initializeService();
+            clientsSchedCont
+                .fetchClientsTechnical(loginController.branchIdLoggedIn);
           } else {
             //hubo problema al registrar la entrada
             mensjeError();
@@ -179,6 +179,10 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
         }
         Get.offAllNamed('/HomeTecnico');
       } else if (controllerLogin.chargeUserLoggedIn == "Coordinador") {
+        final ClientsCoordinatorController clientCont =
+            Get.find<ClientsCoordinatorController>();
+        final ShoppingCartController shopCont =
+            Get.find<ShoppingCartController>();
         int resultH = await controllerLogin.insertHoraEntrada(
             controllerLogin.professionalsQR, controllerLogin.branchIdLoggedIn);
         if (controllerLogin.usserMssQr == 1) {
@@ -186,6 +190,13 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
           {
             //mandar mensaje que td esta bien
             mensjeOk();
+            await initializeService();
+            await clientCont.notification_tail_colation(
+                controllerLogin.branchIdLoggedIn,
+                controllerLogin.professionalsQR,
+                'Coordinador');
+            clientCont.setLoading(false);
+            shopCont.setLoading(false);
           } else {
             //hubo problema al registrar la entrada
             mensjeError();

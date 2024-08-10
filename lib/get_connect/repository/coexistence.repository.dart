@@ -58,7 +58,7 @@ class CoexistenceRepository extends GetConnect {
         print('*************coexistenceList.length*************');
         print(coexistenceList.length);
         return coexistenceList;
-      } else if (response.statusCode == null) {
+      } else if (response.statusCode != 200) {
         controllerLogin.showConnectionError();
         return coexistenceList;
       } else {

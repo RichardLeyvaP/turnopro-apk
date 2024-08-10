@@ -143,7 +143,7 @@ Future<void> notificationSimplifies() async {
             'Barbero',
             'LLamando-desde-background-service',
             tokenUser);
-        await Future.delayed(const Duration(milliseconds: 600));
+        await Future.delayed(const Duration(seconds: 3));
         await notiController.fetchNotificationListSERV(
             branchProfesional,
             idProfesional,
@@ -307,13 +307,7 @@ Future<void> onStart(ServiceInstance service) async {
   //     content: "",
   //   );
   // }
-
-  // Example of a periodic task.
-  Timer.periodic(const Duration(seconds: 10), (timer) async {
-    notificationSimplifies();
-  });
-
-  Timer.periodic(const Duration(seconds: 16), (timer) async {
+  Future reasignate() async {
     // Verifica si las claves necesarias existen antes de usarlas
     int? branchProfesional = LocalStorage.prefs.getInt('branch_profesional');
     int? idProfesional = LocalStorage.prefs.getInt('id_profesional');
@@ -336,5 +330,12 @@ Future<void> onStart(ServiceInstance service) async {
       print(
           'Algunas claves necesarias no están presentes en LocalStorage.prefs.-reasignedClientSegundoPlano');
     }
+  }
+
+  // Example of a periodic task.
+  Timer.periodic(const Duration(seconds: 11), (timer) async {
+    notificationSimplifies();
+    await Future.delayed(const Duration(seconds: 6));
+    reasignate();
   });
 }

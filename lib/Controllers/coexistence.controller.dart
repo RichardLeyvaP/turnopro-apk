@@ -229,13 +229,20 @@ class CoexistenceController extends GetxController {
     int? idBranch = controllerLogin.branchIdLoggedIn;
     String? charge = controllerLogin.chargeUserLoggedIn;
     chargeSave = charge;
-    estadist0 =
-        await repository.fetchEstadist0(idProfessional, idBranch, charge);
-    print(estadist0.length);
-    estadist0Length = estadist0.length;
-    print('werya tengo-result coexistenceListLength:${estadist0Length}');
+    try {
+      estadist0 =
+          await repository.fetchEstadist0(idProfessional, idBranch, charge);
+      print(estadist0.length);
+      estadist0Length = estadist0.length;
+      print('werya tengo-result coexistenceListLength:${estadist0Length}');
 
-    update();
+      update();
+    } catch (e) {
+      print(e);
+    } finally {
+      Get.back();
+    }
+
     //controllerLogin.setIsLoadingFor(false);
   }
 

@@ -90,7 +90,8 @@ class _HomePageBodyState extends State<HomePageBody>
 
   reasigClient(int reservationId, int clientId) async {
     print('se hacompletado los 3 min-ESTOY EN reasigClient');
-    int idProfDisp = await professionalDisp(reservationId);
+    // int idProfDisp = await professionalDisp(reservationId);
+    int idProfDisp = -99;
     if (idProfDisp != 0) {
       // entonces reasignoP
       Get.dialog(
@@ -103,24 +104,26 @@ class _HomePageBodyState extends State<HomePageBody>
                 CircularProgressIndicator(
                   color: Color(0xFFFDAE2A),
                 ),
-                SizedBox(height: 16),
-                Text('Reasignando cliente...',
-                    style: TextStyle(color: Colors.white)),
+                // SizedBox(height: 16),
+                // Text('Reasignando cliente...',
+                //     style: TextStyle(color: Colors.white)),
               ],
             ),
           ),
         ),
         barrierDismissible: false,
       ); //Get.back();
-      bool result = await clientCord.reasignedClient(reservationId, clientId,
-          idProfDisp, loginController.tokenUserLoggedIn);
+      bool result = await clientCord.reasignedClient(
+          reservationId,
+          clientId,
+          loginController.idProfessionalLoggedIn,
+          loginController.tokenUserLoggedIn);
       if (result == true) {
         await clientsScheduledController.fetchClientsScheduledNew(
             loginController.idProfessionalLoggedIn,
             loginController.branchIdLoggedIn,
             'Home-reasignedClient',
             loginController.tokenUserLoggedIn);
-        Get.back();
         loginController.setCodigoQrValidAnt(1);
       } else {
         loginController.setCodigoQrValidAnt(1);
@@ -277,7 +280,9 @@ class _HomePageBodyState extends State<HomePageBody>
     print('cargando aqui-3');
     // initializeNotifications();
     //AQUI ME DEVUELVE A Q CLIENTE LE SIGUE Y ACUAL MOSTRAR EN LA COLA
-    clientsScheduledController.filterShowNext();
+    if (loginController.usserPermissionQr != null) {
+      clientsScheduledController.filterShowNext();
+    }
 
     timerConteo();
 
@@ -327,12 +332,13 @@ class _HomePageBodyState extends State<HomePageBody>
         }*/
 
           //AQUI SI HAY QUE REASIGNAR SE REASIGNA
-          if (clientsScheduledController.clientsScheduledNext != null) {
+          if (clientsScheduledController.clientsScheduledNextServ != null &&
+              loginController.codigoQrValid() == true) {
             print('se hacompletado los 3 min-HAY CLIENTE POR ATENDER');
             int reservationId = clientsScheduledController
-                .clientsScheduledNext!.reservation_id!;
+                .clientsScheduledNextServ!.reservation_id!;
             int clientId =
-                clientsScheduledController.clientsScheduledNext!.client_id!;
+                clientsScheduledController.clientsScheduledNextServ!.client_id!;
             reasigClient(reservationId, clientId);
           }
 
@@ -547,9 +553,9 @@ class _HomePageBodyState extends State<HomePageBody>
 //   void verifyingClockTime(
 //       ClientsScheduledController clientsScheduledController, int endingTime) {
 //     String teleClient = '';
-//     if (clientsScheduledController.clientsScheduledNext != null) {
+//     if (clientsScheduledController.clientsScheduledNextServ != null) {
 //       teleClient =
-//           clientsScheduledController.clientsScheduledNext!.telefone_client!;
+//           clientsScheduledController.clientsScheduledNextServ!.telefone_client!;
 //       print(
 //           'cargando aqui-8-EL TIEMPO ACTUAL DEL RELOJ duracionSend YA sera:TELEFONO:$teleClient');
 //     } else {
@@ -624,10 +630,10 @@ class _HomePageBodyState extends State<HomePageBody>
 
 //                     //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
 //                     String teleClient = '';
-//                     if (clientsScheduledController.clientsScheduledNext !=
+//                     if (clientsScheduledController.clientsScheduledNextServ !=
 //                         null) {
 //                       teleClient = clientsScheduledController
-//                           .clientsScheduledNext!.telefone_client!;
+//                           .clientsScheduledNextServ!.telefone_client!;
 //                       print(
 //                           'cargando aqui-8-Actualizando la variable-TELEFONO:$teleClient');
 //                     }
@@ -714,10 +720,10 @@ class _HomePageBodyState extends State<HomePageBody>
 //                             .clientsAttended2?.client_id)) {
 //                       //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
 //                       String teleClient = '';
-//                       if (clientsScheduledController.clientsScheduledNext !=
+//                       if (clientsScheduledController.clientsScheduledNextServ !=
 //                           null) {
 //                         teleClient = clientsScheduledController
-//                             .clientsScheduledNext!.telefone_client!;
+//                             .clientsScheduledNextServ!.telefone_client!;
 //                       }
 //                       clientsScheduledController.setNotificationClients1(
 //                           2, //esto indica que es el reloj 2
@@ -797,10 +803,10 @@ class _HomePageBodyState extends State<HomePageBody>
 //                             .clientsAttended3?.client_id)) {
 //                       //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
 //                       String teleClient = '';
-//                       if (clientsScheduledController.clientsScheduledNext !=
+//                       if (clientsScheduledController.clientsScheduledNextServ !=
 //                           null) {
 //                         teleClient = clientsScheduledController
-//                             .clientsScheduledNext!.telefone_client!;
+//                             .clientsScheduledNextServ!.telefone_client!;
 //                       }
 //                       clientsScheduledController.setNotificationClients1(
 //                           3, //esto indica que es el reloj 2
@@ -881,10 +887,10 @@ class _HomePageBodyState extends State<HomePageBody>
 //                             .clientsAttended4?.client_id)) {
 //                       //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
 //                       String teleClient = '';
-//                       if (clientsScheduledController.clientsScheduledNext !=
+//                       if (clientsScheduledController.clientsScheduledNextServ !=
 //                           null) {
 //                         teleClient = clientsScheduledController
-//                             .clientsScheduledNext!.telefone_client!;
+//                             .clientsScheduledNextServ!.telefone_client!;
 //                       }
 //                       clientsScheduledController.setNotificationClients1(
 //                           4, //esto indica que es el reloj 1
@@ -989,9 +995,9 @@ class _HomePageBodyState extends State<HomePageBody>
                     "Barbero y Encargado"))) {
           clientsScheduledController.filterShowNext();
           String teleClient = '';
-          if (clientsScheduledController.clientsScheduledNext != null) {
+          if (clientsScheduledController.clientsScheduledNextServ != null) {
             teleClient = clientsScheduledController
-                .clientsScheduledNext!.telefone_client!;
+                .clientsScheduledNextServ!.telefone_client!;
             print(
                 'EL telefono del que le sigue en la cola es:TELEFONO:$teleClient');
           }
@@ -1025,12 +1031,12 @@ class _HomePageBodyState extends State<HomePageBody>
             restartStopClock();
           }
           if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
-            await Future.delayed(const Duration(milliseconds: 500));
+            await Future.delayed(const Duration(milliseconds: 1000));
             await notiController.fetchNotificationList(
                 loginController.branchIdLoggedIn,
                 loginController.idProfessionalLoggedIn,
                 'Encargado',
-                'Cart home',
+                'Cart homeEncargado',
                 loginController.tokenUserLoggedIn);
           }
 
@@ -1046,6 +1052,8 @@ class _HomePageBodyState extends State<HomePageBody>
             if (loginController.switchValue ==
                 false) //es porque está en barbero
             {
+              await Future.delayed(const Duration(milliseconds: 500));
+              //veridficar que el que tenga para finalizar no mande a modificar
               await clientsScheduledController.upadateVariablesValueTimers();
               //aqui en este actualiza los tiempos de los relojes
             }
@@ -1147,7 +1155,7 @@ class _HomePageBodyState extends State<HomePageBody>
             loginController.branchIdLoggedIn,
             loginController.idProfessionalLoggedIn,
             'Barbero',
-            'Cart home',
+            'Cart homeBarbero1',
             loginController.tokenUserLoggedIn);
         if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
           await Future.delayed(const Duration(milliseconds: 700));
@@ -1155,7 +1163,7 @@ class _HomePageBodyState extends State<HomePageBody>
               loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn,
               'Encargado',
-              'Cart home',
+              'Cart homeEncargado1',
               loginController.tokenUserLoggedIn);
         }
       }
@@ -1341,8 +1349,8 @@ class _HomePageBodyState extends State<HomePageBody>
                 'relojes activos: 1-clientsScheduledController.timeClientsAttended1!${clientsScheduledController.timeClientsAttended1!}');
             animationCont[0]!.duration = Duration(
                 seconds: clientsScheduledController.timeClientsAttended1!);
-            print(
-                'value del reloj actual-activeClockLogin()-timeClientsAttended1:${clientsScheduledController.timeClientsAttended1!}');
+            // print(
+            //     'value del reloj actual-activeClockLogin()-timeClientsAttended1:${clientsScheduledController.timeClientsAttended1!}');
             animationCont[0]!.forward();
             //verificar si esta con el tecnico y detenerlo
             if (clientsScheduledController.clientsAttended1!.attended == 4 ||
@@ -1647,9 +1655,9 @@ class _HomePageBodyState extends State<HomePageBody>
       String firstName = '';
       // //todo AQUI DETENGO LOS TIMER QUE NO ESTAN VISIBLES
 
-      if (clientsScheduledController.clientsScheduledNext != null) {
+      if (clientsScheduledController.clientsScheduledNextServ != null) {
         String fullName =
-            clientsScheduledController.clientsScheduledNext!.client_name!;
+            clientsScheduledController.clientsScheduledNextServ!.client_name!;
         //todo1                // Dividir el nombre completo por espacios
         List<String> partsName =
             fullName.split(" "); // Tomar los primeros dos nombres (si existen)
@@ -1714,7 +1722,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                 child: clientsScheduledController
                                             .item.isEmpty &&
                                         (clientsScheduledController
-                                                    .clientsScheduledNext ==
+                                                    .clientsScheduledNextServ ==
                                                 null ||
                                             (clientsScheduledController
                                                         .boolFilterShowNext ==
@@ -1821,7 +1829,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                                           ]
                                                           //SI NO ESTA ATENDIENDOA NADIE Y HAY GENTE EN LA COLA ESPERANDO CARGA EL TIMER INICIAL
                                                           else if (clientsScheduledController
-                                                                  .clientsScheduledNext !=
+                                                                  .clientsScheduledNextServ !=
                                                               null) ...[
                                                             //AQUI VERIFICO SI YA ESCANEO EL CODIGO QR
                                                             if (loginController
@@ -1923,9 +1931,12 @@ class _HomePageBodyState extends State<HomePageBody>
                                   ? clientsScheduledController
                                                   .boolFilterShowNext ==
                                               true ||
-                                          clientsScheduledController
-                                                  .errorHome ==
-                                              -99
+                                          (clientsScheduledController
+                                                      .errorHome ==
+                                                  -99 &&
+                                              clientsScheduledController
+                                                      .boolFilterShowNextAux ==
+                                                  true) //saber si dio error y estaba para mostrar el siguiente en boolFilterShowNextAux
                                       ? cardClientTails(
                                           clientsScheduledController,
                                           context,
@@ -2096,8 +2107,10 @@ class _HomePageBodyState extends State<HomePageBody>
                                               ),
                                               barrierDismissible: false,
                                             ); //Get.back();
+                                            await Future.delayed(const Duration(
+                                                milliseconds: 500));
                                             await coexCont.fetchEstadist0();
-                                            Get.back();
+
                                             pagesConfigC.onTabTapped(
                                                 3); //index = 3 -> /StatisticPage
                                           },
@@ -2179,7 +2192,8 @@ class _HomePageBodyState extends State<HomePageBody>
         ),
         child: FittedBox(
             fit: BoxFit.contain,
-            child: clientsScheduledControllerE.clientsScheduledNext != null &&
+            child: clientsScheduledControllerE.clientsScheduledNextServ !=
+                        null &&
                     clientsScheduledControllerE.getWaitTime() == false
                 //  ||
                 //         LocalStorage.prefs.getBool('valueClockActiv') == false
@@ -2224,7 +2238,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                   // int resulButton = 0;
                                   // resulButton = loginController.handleButtonClick(
                                   //     clientsScheduledController
-                                  //         .clientsScheduledNext!.reservation_id);
+                                  //         .clientsScheduledNextServ!.reservation_id);
                                   // if (resulButton == 1) {
                                   //esto lo hace la api
                                   //
@@ -2232,13 +2246,13 @@ class _HomePageBodyState extends State<HomePageBody>
                                   //     'Solicitud de rechazo',
                                   //     loginController.branchIdLoggedIn,
                                   //     loginController.idProfessionalLoggedIn,
-                                  //     'EL profesional "${loginController.nameUserLoggedIn}" está rechazando a "${clientsScheduledControllerE.clientsScheduledNext!.client_name}"',
+                                  //     'EL profesional "${loginController.nameUserLoggedIn}" está rechazando a "${clientsScheduledControllerE.clientsScheduledNextServ!.client_name}"',
                                   //     'Ambos'); //esto es para quele llegue a coordinador y encargado
                                   int rest =
                                       await clientsScheduledControllerE
                                           .acceptOrRejectClient(
                                               clientsScheduledControllerE
-                                                  .clientsScheduledNext!
+                                                  .clientsScheduledNextServ!
                                                   .reservation_id,
                                               3,
                                               loginController
@@ -2374,7 +2388,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                       child: Text(
                                           //AQUI ETSA EL TIEMPO TOTAL DEL SERVICIO
                                           (clientsScheduledControllerE
-                                              .clientsScheduledNext!
+                                              .clientsScheduledNextServ!
                                               .total_time!),
                                           style: const TextStyle(
                                             height: 1.2,
@@ -2387,12 +2401,15 @@ class _HomePageBodyState extends State<HomePageBody>
                                 Expanded(
                                   child: ListView.builder(
                                     itemCount: clientsScheduledControllerE
-                                                .serviceCustomerSelected
+                                                .clientsScheduledNextServ!
+                                                .services!
                                                 .length >
                                             2
                                         ? 2
                                         : clientsScheduledControllerE
-                                            .serviceCustomerSelected.length,
+                                            .clientsScheduledNextServ!
+                                            .services!
+                                            .length,
                                     itemBuilder: (context, index) => Row(
                                       children: [
                                         Column(
@@ -2411,8 +2428,8 @@ class _HomePageBodyState extends State<HomePageBody>
                                                 ),
                                                 Text(
                                                   clientsScheduledControllerE
-                                                      .serviceCustomerSelected[
-                                                          index]
+                                                      .clientsScheduledNextServ!
+                                                      .services![index]
                                                       .name,
                                                   style: const TextStyle(
                                                       fontWeight:
@@ -2459,10 +2476,10 @@ class _HomePageBodyState extends State<HomePageBody>
                                     loginController.usserPermissionQrAntes ==
                                         1 &&
                                     clientsScheduledControllerE
-                                            .clientsScheduledNext !=
+                                            .clientsScheduledNextServ !=
                                         null &&
                                     clientsScheduledControllerE
-                                            .clientsScheduledNext!
+                                            .clientsScheduledNextServ!
                                             .reservation_id! >
                                         0) {
                                   loginController.setMakeCall(false);
@@ -2476,7 +2493,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                   resulButton =
                                       loginController.handleButtonClick(
                                           clientsScheduledControllerE
-                                              .clientsScheduledNext!
+                                              .clientsScheduledNextServ!
                                               .reservation_id!);
                                   if (resulButton == 1) {
                                     //aqui manda aceptar, es decir atender este cliente
@@ -2516,7 +2533,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                     await clientsScheduledControllerE
                                         .newClientAttended(
                                             clientsScheduledControllerE
-                                                .clientsScheduledNext!,
+                                                .clientsScheduledNextServ!,
                                             clientsScheduledControllerE
                                                 .availability);
 
@@ -2557,7 +2574,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                     await clientsScheduledControllerE
                                         .acceptOrRejectClient(
                                             clientsScheduledControllerE
-                                                .clientsScheduledNext!
+                                                .clientsScheduledNextServ!
                                                 .reservation_id,
                                             1,
                                             loginController.tokenUserLoggedIn);
@@ -2633,7 +2650,8 @@ class _HomePageBodyState extends State<HomePageBody>
                     ),
                   )
                 : (clientsScheduledController.clientsScheSalon == 0) &&
-                        clientsScheduledControllerE.clientsScheduledNext == null
+                        clientsScheduledControllerE.clientsScheduledNextServ ==
+                            null
                     ? const SizedBox(
                         height: 100,
                         child: Center(
@@ -2850,16 +2868,16 @@ class _HomePageBodyState extends State<HomePageBody>
                     animation: _animationController,
                     builder: (context, child) {
                       final value = _animationController.value;
-                      print('value del reloj actual = $value');
+                      // print('value del reloj actual = $value');
                       final remainingSeconds =
                           (_animationController.duration!.inSeconds -
                                   (_animationController.duration!.inSeconds *
                                       value))
                               .ceil();
-                      print(
-                          'value del reloj actual-2-remainingSeconds = $remainingSeconds');
-                      print(
-                          'value del reloj actual-3-remainingSeconds = ${_animationController.duration!.inSeconds}');
+                      // print(
+                      //     'value del reloj actual-2-remainingSeconds = $remainingSeconds');
+                      // print(
+                      //     'value del reloj actual-3-remainingSeconds = ${_animationController.duration!.inSeconds}');
                       int minutes = remainingSeconds ~/
                           60; // Calcula los minutos restantes
                       int seconds = remainingSeconds %
@@ -2877,7 +2895,7 @@ class _HomePageBodyState extends State<HomePageBody>
                         colorInicialCirculo = Colors.white;
                         fontSizeText = 10;
                       }
-                      print('cambioReloj - minutes:$minutes');
+                      // print('cambioReloj - minutes:$minutes');
                       if (minutes > 59) {
                         // División entera para obtener las horas
                         hoursN = minutes ~/ 60;
@@ -2888,8 +2906,8 @@ class _HomePageBodyState extends State<HomePageBody>
                         // Para asegurar que siempre se muestren dos dígitos
                         formattedMinutes = minutesN.toString().padLeft(2, '0');
 
-                        print('cambioReloj - horasN: $hoursN');
-                        print('cambioReloj - minutesN: $formattedMinutes');
+                        //print('cambioReloj - horasN: $hoursN');
+                        //print('cambioReloj - minutesN: $formattedMinutes');
                       }
 
                       return SizedBox(
@@ -3254,36 +3272,31 @@ class _HomePageBodyState extends State<HomePageBody>
         ),
         onPressed: () async {
           if (titleCart == 'Agenda') {
-            int timeInit = await loginController.gettimeClokInitial(
-                loginController.idProfessionalLoggedIn!,
-                loginController.branchIdLoggedIn!,
-                loginController.tokenUserLoggedIn);
-            print('el tiempo devuelto inicial es-desde el home:$timeInit');
-            Get.dialog(
-              const Center(
-                child: CircularProgressIndicator(
-                  color: Color(0xFFFDAE2A),
-                ),
-              ),
-              barrierDismissible: false,
-            ); //Get.back();
-
             //todo optimización de codigo-cambio de ruta (anterior-fetchClientsScheduled)
             if (clientsScheduledController.errorHome == -99) {
               await Future.delayed(const Duration(milliseconds: 2000));
             }
             if (loginController.makeCall == true &&
                 clientsScheduledController.getWaitTime() == false) {
-              //verificar que no este pediendo colación
-              await clientsScheduledController.fetchClientsScheduledNew(
-                  loginController.idProfessionalLoggedIn,
-                  loginController.branchIdLoggedIn,
-                  'Agenda-Card',
-                  loginController.tokenUserLoggedIn);
+              if (loginController.usserPermissionQr != null) {
+                //verificar que no este pediendo colación
+                Get.dialog(
+                  const Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xFFFDAE2A),
+                    ),
+                  ),
+                  barrierDismissible: false,
+                ); //Get.back();
+                await clientsScheduledController.fetchClientsScheduledNew(
+                    loginController.idProfessionalLoggedIn,
+                    loginController.branchIdLoggedIn,
+                    'Agenda-Card',
+                    loginController.tokenUserLoggedIn);
+              }
             }
 
             await Future.delayed(const Duration(milliseconds: 500));
-            Get.back();
             pagesConfigC.onTabTapped(1); //index = 4 -> /CoexistencePage
           }
           if (titleCart == 'Convivencia') {
@@ -3310,9 +3323,9 @@ class _HomePageBodyState extends State<HomePageBody>
               ),
               barrierDismissible: false,
             ); //Get.back();
-            await coexCont.fetchEstadist0();
             await Future.delayed(const Duration(milliseconds: 500));
-            Get.back();
+            await coexCont.fetchEstadist0();
+
             pagesConfigC.onTabTapped(3); //index = 3 -> /StatisticPage
           }
           if (titleCart == 'Notificaciones') {
@@ -3341,11 +3354,10 @@ class _HomePageBodyState extends State<HomePageBody>
                 loginController.branchIdLoggedIn,
                 loginController.idProfessionalLoggedIn,
                 typeEnv,
-                'Cart home',
+                'Cart homeCart',
                 loginController.tokenUserLoggedIn);
             await Future.delayed(const Duration(milliseconds: 500));
             pagesConfigC.onTabTapped(2); //index = 2 -> /NotificationsPageProf
-            Get.back();
           }
         },
         child: Padding(

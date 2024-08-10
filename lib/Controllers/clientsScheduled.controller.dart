@@ -32,6 +32,7 @@ class ClientsScheduledController extends GetxController {
   List<ClientsScheduledModel> selectClientsScheduledList = [];
   List<ClientsScheduledModel> selectclientsScheduledListTechnical = [];
   ClientsScheduledModel? clientsScheduledNext; // Cliente en espera
+  ClientsScheduledModel? clientsScheduledNextServ; // Cliente en espera
   ClientsScheduledModel? clientsNextTechnical; // Cliente en espera
   ClientsScheduledModel? clientsAttended1; // Cliente en espera
   ClientsScheduledModel? clientsAttendedTechnical,
@@ -107,6 +108,8 @@ class ClientsScheduledController extends GetxController {
   int totalTimeInitialT = 3 * 60; //Iniciando en 3 minutos el reloj
   bool callCliente = false; //si esta en false es que es la primera vez
   bool boolFilterShowNext = false; //si esta en false es que es la primera vez
+  bool boolFilterShowNextAux =
+      false; //si esta en false es que es la primera vez
   bool boolControlVision = false; //si esta en false es que es la primera vez
   bool boolFilterShowNextTecnhical =
       false; //si esta en false es que es la primera vez
@@ -140,6 +143,11 @@ class ClientsScheduledController extends GetxController {
     pickedFile = null;
     imagePath = null;
     // update();
+  }
+
+  updateTails() {
+    clientsScheduledListLength = 0;
+    update();
   }
 
   //
@@ -943,6 +951,7 @@ class ClientsScheduledController extends GetxController {
           ..stop();
       }
     } else if (clientsScheSalon != 0 &&
+        animationControllerInitial != null &&
         !animationControllerInitial!.isAnimating) {
       animationControllerInitial!
         ..duration = Duration(seconds: 180)
@@ -1798,13 +1807,29 @@ class ClientsScheduledController extends GetxController {
       String? token = controllerLogin.tokenUserLoggedIn;
       print('mostrando idProfessiona:$idProfessional y IdBranch:$idBranch');
 
-      bool resultTypeService =
+      var result =
           await repository.typeOfService(idProfessional, idBranch, token);
-      boolFilterShowNext = resultTypeService;
+
+      if (result is bool) {
+        boolFilterShowNextAux =
+            boolFilterShowNext; //guardo aqui para saber si dierra error q valor tenia
+        boolFilterShowNext = result;
+      } else if (result is int && result == -99) {
+        print('Dio error al mostrar el filterShowNext()');
+        // Manejo del error, puedes lanzar una excepción o asignar un valor por defecto
+        // Por ejemplo:
+        // resultTypeService = false; // O cualquier otro valor que tenga sentido en tu lógica
+      } else {
+        // Si result no es ni bool ni el entero esperado, puedes manejar el caso aquí.
+        //throw Exception('Unexpected type or value returned from typeOfService.');
+      }
+
+      // bool resultTypeService =
+      //     await repository.typeOfService(idProfessional, idBranch, token);
+      // boolFilterShowNext = resultTypeService;
       // setBoolControlVision(true);
     } catch (e) {
       contVision = false;
-      update();
       print(
           'Erra lista de notificor al obtener laciones: noUpdate-*********************$e'); //Error al obtener la lista de notificaciones:este
     } finally {
@@ -1922,21 +1947,41 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<void> searchForCustomerServices3(idCar, token) async {
-    Map<dynamic, dynamic> resultList =
-        await repository.getCustomerServicesList2(idCar, token);
+    try {
+      Map<dynamic, dynamic> resultList =
+          await repository.getCustomerServicesList2(idCar, token);
 
-    serviceCustomerSelected1 = resultList['serviceCustomer'];
+      if (resultList.containsKey("error")) {
+        var errorValue = resultList["error"];
+        // Aquí puedes manejar el error, dependiendo del valor asociado a "error"
+        if (errorValue == 'error') {
+          // Manejo específico para cuando "error" tiene el valor 'error'
+          print('Ocurrió un error: $errorValue');
+        } else {
+          // Manejo para otros posibles valores de "error"
+          print('Error recibido: $errorValue');
+        }
+      } else {
+        serviceCustomerSelected1 = resultList['serviceCustomer'];
 
-    serviceCustomerSelectedForm1 = serviceCustomerSelected1;
+        serviceCustomerSelectedForm1 = serviceCustomerSelected1;
 
-    professionalNameBarber1 = resultList['professionalNameBarber'];
-    imageUrlBarber1 = resultList['imageUrlBarber'];
-    imageLookBarber1 = resultList['imageLookBarber'];
-    cantVisitBarber1 = resultList['cantVisitBarber'];
-    endLookBarber1 = resultList['endLookBarber'];
-    frecuenciaBarber1 = resultList['frecuenciaBarber'];
+        professionalNameBarber1 = resultList['professionalNameBarber'];
+        imageUrlBarber1 = resultList['imageUrlBarber'];
+        imageLookBarber1 = resultList['imageLookBarber'];
+        cantVisitBarber1 = resultList['cantVisitBarber'];
+        endLookBarber1 = resultList['endLookBarber'];
+        frecuenciaBarber1 = resultList['frecuenciaBarber'];
 
-    update();
+        update();
+        // Manejo del caso en que no haya error y se reciban datos válidos
+        print('Datos recibidos: $resultList');
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      Get.back();
+    }
   }
 
   Future<bool> changeNoncomplianceP(
@@ -2042,6 +2087,136 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
+  // Future<void> fetchClientsScheduledNewServ(
+  //     idProfessional, idBranch, msj, token) async {
+  //   bool noUpdate = false;
+  //   print('entrando a actualizar la cola en - fetchClientsScheduledNew');
+  //   try {
+  //     List<ClientsScheduledModel> clientsAux = [];
+
+  //     String s = '';
+
+  //     Map<String, dynamic> resultList =
+  //         await repository.getClientsScheduledListNewServ(
+  //             idProfessional, idBranch, controllerLogin.isLoggingIn, token);
+  //     // setBoolControlVision(false);
+
+  //     //verificando , si entra al if es problemas de coneccion
+  //     if (resultList.containsKey('ConnectionIssues') &&
+  //         resultList['ConnectionIssues'] == true) {
+  //       correctConnection = false;
+  //       print('llamando a buscar clientes - ERROR2');
+  //       print('qwerc SII mandar ->MAL-${clientsScheduledList.length}');
+  //     } else {
+  //       correctConnection = true;
+  //       //aqui estoy guardando la cola del dia de hoy del profesional
+  //       List<ClientsScheduledModel>? clientsScheduledListAUX = [];
+  //       List<ClientsScheduledModel>? clientsScheduledListAUX2 = [];
+
+  //       clientsScheduledListAUX = (resultList['clientList'] ?? []).cast<
+  //           ClientsScheduledModel>(); //aqui estoy guardando la cola del dia de hoy del profesional
+  //       clientsScheduledListAUX2 =
+  //           (resultList['clientListSig'] ?? []).cast<ClientsScheduledModel>();
+  //       if (clientsScheduledListAUX != null &&
+  //           clientsScheduledListAUX2 != null) {
+  //         clientsScheduledList = clientsScheduledListAUX;
+
+  //         clientsScheduledListLength = clientsScheduledList.length;
+  //         print(
+  //             'llamada timer Cantidad de Clientes-1 :$clientsScheduledListLength');
+  //         clientsAux = clientsScheduledListAUX2;
+  //         clientsScheduledListLengthTail = clientsAux.length;
+  //         print(
+  //             'llamando a buscar clientes - BIEN4-clientsScheduledList.length:${clientsScheduledList.length}');
+  //         print(
+  //             'qwerc SII mandar ->BIEN-${clientsScheduledList.length}--entro de:$msj-idProfessional=$idProfessional--idBranche:$idBranch Objeto-${clientsScheduledList}');
+
+  //         //
+  //         //
+
+  //         //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+  //         clientsScheduledNextServ = resultList['nextClient'];
+  //         if (resultList.containsKey('clientListSalon')) {
+  //           setClientsScheSalon(resultList['clientListSalon']);
+  //         }
+
+  //         // setClientsScheSalon(resultList['clientListSalon']);
+  //         //si hay un siguiente mandar verificarle si es aleatorio o
+  //         quantityClientAttended = resultList['quantityClientAttended'];
+  //         varClientsWaiting = resultList['varclientswaiting'];
+  //         if (quantityClientAttended == 0) {
+  //           clientsAttended = 'nobody';
+  //         }
+
+  //         //**************************************************************** */
+  //         //**************************************************************** */
+  //         print(
+  //             'activando el Clock - 1 lenght - clientsScheduledList:${clientsScheduledList.length}');
+  //         for (var i = 0; i < clientsScheduledList.length; i++) {
+  //           // int clock = 0;
+  //           if (clientsScheduledList[i].attended == 11) {
+  //             int reservationId = clientsScheduledList[i].reservation_id!;
+
+  //             int clock = clientsScheduledList[i].clock!;
+  //             print(
+  //                 'EL RELOJ DEVUELTO ES : de fetchClientsScheduledNew:$clock');
+  //             //REVISAR SI VIENE EL RELOJ AHI
+  //             // int clock = await getValueClockDb(reservationId);
+  //             if (clock == 1) {
+  //               print('activando el Clock - 1');
+
+  //               await acceptOrRejectClient(
+  //                   reservationId, 111, loginController.tokenUserLoggedIn);
+  //               animationController1!.forward();
+  //               pauseResumeClock((clock - 1), -99);
+  //             }
+  //             if (clock == 2) {
+  //               print('activando el Clock - 2');
+
+  //               await acceptOrRejectClient(
+  //                   reservationId, 111, loginController.tokenUserLoggedIn);
+  //               animationController2!.forward();
+  //               pauseResumeClock((clock - 1), -99);
+  //             }
+  //             if (clock == 3) {
+  //               print('activando el Clock - 3');
+
+  //               await acceptOrRejectClient(
+  //                   reservationId, 111, loginController.tokenUserLoggedIn);
+  //               animationController3!.forward();
+  //               pauseResumeClock((clock - 1), -99);
+  //             }
+  //             if (clock == 4) {
+  //               print('activando el Clock - 4');
+
+  //               await acceptOrRejectClient(
+  //                   reservationId, 111, loginController.tokenUserLoggedIn);
+  //               animationController4!.forward();
+  //               pauseResumeClock((clock - 1), -99);
+  //             }
+  //           } //fin del if
+  //         }
+  //         //**************************************************************** */
+  //         //**************************************************************** */
+  //       }
+  //     }
+  //   } catch (e) {
+  //     noUpdate = true;
+  //     print(
+  //         'Dio error en Future<void> fetchClientsScheduled que se encuentra en el controlador del Login:$e');
+  //   } finally {
+  //     if (msj == 'Home-reasignedClient' || msj == 'Agenda-Card') {
+  //       Get.back();
+  //     }
+  //     print('Obtener la lista de notificaciones: noUpdate == click $noUpdate');
+  //     if (noUpdate == false) {
+  //       // setBoolControlVision(true);
+  //       update();
+  //     }
+  //     controllerLogin.setIsLoadingFor(false);
+  //   }
+  // }
+
   Future<void> fetchClientsScheduledNew(
       idProfessional, idBranch, msj, token) async {
     bool noUpdate = false;
@@ -2055,7 +2230,7 @@ class ClientsScheduledController extends GetxController {
           await repository.getClientsScheduledListNew(
               idProfessional, idBranch, controllerLogin.isLoggingIn, token);
       // setBoolControlVision(false);
-      print(resultList);
+
       //verificando , si entra al if es problemas de coneccion
       if (resultList.containsKey('ConnectionIssues') &&
           resultList['ConnectionIssues'] == true) {
@@ -2091,6 +2266,7 @@ class ClientsScheduledController extends GetxController {
 
           //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
           clientsScheduledNext = resultList['nextClient'];
+          clientsScheduledNextServ = resultList['nextClient'];
           if (resultList.containsKey('clientListSalon')) {
             setClientsScheSalon(resultList['clientListSalon']);
           }
@@ -2160,6 +2336,11 @@ class ClientsScheduledController extends GetxController {
       print(
           'Dio error en Future<void> fetchClientsScheduled que se encuentra en el controlador del Login:$e');
     } finally {
+      if (msj == 'Home-reasignedClient' ||
+          msj == 'Agenda-Card' ||
+          msj == 'navigation down') {
+        Get.back();
+      }
       print('Obtener la lista de notificaciones: noUpdate == click $noUpdate');
       if (noUpdate == false) {
         // setBoolControlVision(true);
@@ -2236,6 +2417,7 @@ class ClientsScheduledController extends GetxController {
 
           //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
           clientsScheduledNext = resultList['nextClient'];
+          clientsScheduledNextServ = resultList['nextClient'];
           quantityClientAttended = resultList['quantityClientAttended'];
           varClientsWaiting = resultList['varclientswaiting'];
           if (quantityClientAttended == 0) {

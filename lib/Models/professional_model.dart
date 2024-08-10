@@ -14,6 +14,7 @@ class ProfessionalModel {
   String? phone;
   String? image_url;
   String? position;
+  String? free;
 
   ProfessionalModel({
     required this.id,
@@ -27,6 +28,7 @@ class ProfessionalModel {
     this.phone,
     this.image_url,
     this.position,
+    this.free,
   });
 
   Map<String, dynamic> toMap() {
@@ -42,6 +44,7 @@ class ProfessionalModel {
       'phone': phone,
       'image_url': image_url,
       'position': position,
+      'free': free,
     };
   }
 
@@ -58,6 +61,7 @@ class ProfessionalModel {
       phone: map['phone'].toString(),
       image_url: map['image_url'].toString(),
       position: map['position'].toString(),
+      free: map['free'].toString(),
     );
   }
 

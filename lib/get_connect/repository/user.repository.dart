@@ -426,8 +426,13 @@ class UserRepository extends GetConnect {
       //print(response.body);
       if (response.statusCode == 200) {
         final intValue = response.body;
-        print('este es el id del puesto333-response-intValue:$intValue');
-        return intValue;
+        print(
+            'el tiempo devuelto inicial es desde el metodo - ENTRANDOOOO-clockInitialTimeB-timeInicDb-EN EL REPOSITORIO:$intValue');
+        if (intValue > 182) {
+          return 2;
+        } else {
+          return intValue;
+        }
       } else {
         return -99;
       }

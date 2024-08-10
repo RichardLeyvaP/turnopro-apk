@@ -53,7 +53,11 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
     loadDataFirt();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      callTimer1();
+      if (controllerLogin.usserPermissionQr !=
+          null) //si tiene entrada y qr leydo
+      {
+        callTimer1();
+      }
     });
   }
 

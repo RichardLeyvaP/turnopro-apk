@@ -337,7 +337,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                         loginController
                                                                             .tokenUserLoggedIn)
                                                                     .then((_) {
-                                                                  Get.back();
+                                                                  //Get.back();
                                                                   Get.toNamed(
                                                                     '/ProfileClientBarber',
                                                                     arguments: {
@@ -345,6 +345,10 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                           clientName,
                                                                       'urlImage':
                                                                           urlImage,
+                                                                      'servicesList': controllerClient
+                                                                          .clientsScheduledList[
+                                                                              index]
+                                                                          .services!
                                                                     },
                                                                   );
                                                                 });

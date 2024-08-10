@@ -348,7 +348,8 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                                           .position, //todo aqui que me devuelva
                                       '${_.professionalDispon[index].name}  ${_.professionalDispon[index].surname}',
                                       _.professionalDispon[index].id,
-                                      _.professionalDispon[index].image_url);
+                                      _.professionalDispon[index].image_url,
+                                      _.professionalDispon[index].free);
                                 },
                               )
                             : const Center(
@@ -364,7 +365,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
   }
 
   Padding cardOptions(
-      BuildContext context, icon, title, name, idProfess, imageUrl) {
+      BuildContext context, icon, title, name, idProfess, imageUrl, free) {
     return Padding(
       padding: const EdgeInsets.only(right: 10, top: 8, left: 10),
       child: Container(
@@ -476,14 +477,16 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                       Container(
                         width: 80, // Ajusta la altura según sea necesario
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFDAE2A),
+                          color: free.toString() == 'Libre'
+                              ? const Color(0xFF19CF9E)
+                              : const Color(0xFFFDAE2A),
                           borderRadius: BorderRadius.circular(
                               6), // La mitad de la altura para hacerlo circular
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
-                            'LIBRE',
-                            style: TextStyle(
+                            free.toString(),
+                            style: const TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
@@ -548,7 +551,8 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                           //aqui actualizo la cola que se muestra en el home
                           await clientCord.fetchClientsScheduledBranch(
                               loginController.branchIdLoggedIn);
-                          //clientCord.setLoading(false);
+                          //  setLoading(value)
+                          clientCord.setLoading(false);
                           print('Aqui lo mando al home despue de reasinarlo');
                           //aqui lo mando al home
                           //todo falta probarlo porque en el momento que se hizo no habia barberos disponibles
@@ -556,7 +560,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                               .jumpToPage(0); //AQUI VA  AL HOME
                           pagesConfigCont.showAppBar(true);
 
-                          //ENVIAR UNA NOTIFICACION AL PROFESSIONAL //TODO
+                          //ENVIAR UNA NOTIFICACION AL PROFESSIONAL //TODO 32:00
                         } else {
                           {
                             Get.snackbar(

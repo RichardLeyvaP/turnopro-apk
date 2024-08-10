@@ -408,30 +408,30 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                                     if (result ==
                                                                         1) {
                                                                       // ver que reloj es?
-                                                                      if (clientsController
-                                                                              .modifyTimeSpecific ==
-                                                                          0) {
-                                                                        controllerLogin
-                                                                            .setCallDeleteService1(false);
-                                                                      }
-                                                                      if (clientsController
-                                                                              .modifyTimeSpecific ==
-                                                                          1) {
-                                                                        controllerLogin
-                                                                            .setCallDeleteService2(false);
-                                                                      }
-                                                                      if (clientsController
-                                                                              .modifyTimeSpecific ==
-                                                                          2) {
-                                                                        controllerLogin
-                                                                            .setCallDeleteService3(false);
-                                                                      }
-                                                                      if (clientsController
-                                                                              .modifyTimeSpecific ==
-                                                                          3) {
-                                                                        controllerLogin
-                                                                            .setCallDeleteService4(false);
-                                                                      }
+                                                                      // if (clientsController
+                                                                      //         .modifyTimeSpecific ==
+                                                                      //     0) {
+                                                                      //   controllerLogin
+                                                                      //       .setCallDeleteService1(false);
+                                                                      // }
+                                                                      // if (clientsController
+                                                                      //         .modifyTimeSpecific ==
+                                                                      //     1) {
+                                                                      //   controllerLogin
+                                                                      //       .setCallDeleteService2(false);
+                                                                      // }
+                                                                      // if (clientsController
+                                                                      //         .modifyTimeSpecific ==
+                                                                      //     2) {
+                                                                      //   controllerLogin
+                                                                      //       .setCallDeleteService3(false);
+                                                                      // }
+                                                                      // if (clientsController
+                                                                      //         .modifyTimeSpecific ==
+                                                                      //     3) {
+                                                                      //   controllerLogin
+                                                                      //       .setCallDeleteService4(false);
+                                                                      // }
 
                                                                       notiController.storeNotification(
                                                                           'Solicitud de servicio a eliminar',

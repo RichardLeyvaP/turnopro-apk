@@ -58,9 +58,10 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
   void initState() {
     super.initState();
 //mandar a poner un cargando y al tener resultados quitarlos
-
-    clientsScheduledController
-        .fetchClientsTechnical(loginController.branchIdLoggedIn);
+    if ((loginController.usserPermissionQr != null)) {
+      clientsScheduledController
+          .fetchClientsTechnical(loginController.branchIdLoggedIn);
+    }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       callTimerTec();
@@ -1865,9 +1866,9 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
               ),
               barrierDismissible: false,
             ); //Get.back();
+            await Future.delayed(const Duration(milliseconds: 500));
             await coexistenceController.fetchEstadist0();
             pagesConfigC.onTabTapped(3); //index = 3 -> /StatisticPage
-            Get.back();
           }
           if (titleCart == 'Notificaciones') {
             Get.dialog(

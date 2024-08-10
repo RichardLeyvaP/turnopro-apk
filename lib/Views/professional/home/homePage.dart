@@ -47,104 +47,176 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
   }
 
   @override
+  AppLifecycleState? _lastState;
+  bool _wasInForeground = true;
+
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-    //await clientController.upadateVariablesValueTimers();
     super.didChangeAppLifecycleState(state);
+
     if (state == AppLifecycleState.paused) {
+      _wasInForeground = true;
+      // Aquí va tu lógica para manejar el segundo plano.
+      // Este código solo se ejecutará si la aplicación estaba en primer plano.
       LocalStorage.prefs.setBool('iAmActive', false);
       clientController.setCloseIesperado(true);
       loginController.getSegundoPlano(0);
       await LocalStorage.prefs.setBool('state_S_plano', true);
-      // Guardar la marca de tiempo cuando la app va a segundo plano
       await LocalStorage.prefs
           .setString('background_time', DateTime.now().toIso8601String());
-      print(
-          'La aplicación se está pausando (yendo a segundo plano)-timer 1 = ${LocalStorage.prefs.getInt('timer1')}');
-      print(
-          'La aplicación se está pausando (yendo a segundo plano)-timer 2 = ${LocalStorage.prefs.getInt('timer2')}');
-      print(
-          'La aplicación se está pausando (yendo a segundo plano)-timer 3 = ${LocalStorage.prefs.getInt('timer3')}');
-      print(
-          'La aplicación se está pausando (yendo a segundo plano)-timer 4 = ${LocalStorage.prefs.getInt('timer4')}');
-      //reinicio el servicio
-      // await restartService();
     } else if (state == AppLifecycleState.resumed) {
-      LocalStorage.prefs.setBool('iAmActive', true);
-      clientController.setCloseIesperado(false);
-      loginController.getSegundoPlano(3);
-      print('mirando: Setting state_S_plano to false');
-      bool result = await LocalStorage.prefs.setBool('state_S_plano', false);
-      print('Set state_S_plano result: $result');
-      print('La aplicación se está Reaunudandose nuevamente');
-      print(
-          'La aplicación se está LocalStorage.prefs.getBool(verificatePhoto):${LocalStorage.prefs.getBool('verificatePhoto')}');
-
-      //hacer esto solamnete si esta ya con el qr leido
-      if (loginController.usserPermissionQr == 1 &&
-          LocalStorage.prefs.getBool('verificatePhoto') == false) {
-        // Mostrar diálogo de carga
-        Get.dialog(
-          const Center(
-            child: Material(
-              color: Colors.transparent,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircularProgressIndicator(
-                    color: Color(0xFFFDAE2A),
-                  ),
-                  SizedBox(height: 16),
-                  Text('Actualizando datos...',
-                      style: TextStyle(color: Colors.white)),
-                ],
+      if (_lastState == AppLifecycleState.paused && _wasInForeground) {
+        // Aquí va tu lógica para cuando la aplicación se reanuda desde el segundo plano
+        LocalStorage.prefs.setBool('iAmActive', true);
+        clientController.setCloseIesperado(false);
+        loginController.getSegundoPlano(3);
+        await LocalStorage.prefs.setBool('state_S_plano', false);
+        if (loginController.usserPermissionQr == 1 &&
+            LocalStorage.prefs.getBool('verificatePhoto') == false) {
+          Get.dialog(
+            const Center(
+              child: Material(
+                color: Colors.transparent,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(
+                      color: Color(0xFFFDAE2A),
+                    ),
+                    SizedBox(height: 16),
+                    Text('Actualizando datos...',
+                        style: TextStyle(color: Colors.white)),
+                  ],
+                ),
               ),
             ),
-          ),
-          barrierDismissible: false,
-        );
-
-        try {
-          // Recuperar la marca de tiempo desde SharedPreferences
-          String? backgroundTimeString =
-              LocalStorage.prefs.getString('background_time');
-          if (backgroundTimeString != null) {
-            DateTime backgroundTime = DateTime.parse(backgroundTimeString);
-            final difference = DateTime.now().difference(backgroundTime);
-            // Convierte la diferencia a segundos
-            final differenceInSeconds = difference.inSeconds;
-            print(
-                'La aplicación estuvo en segundo plano por $differenceInSeconds segundos.');
-            // Enviar el tiempo transcurrido a la API
-            await clientController.getShowClock(
-                differenceInSeconds,
-                loginController.idProfessionalLoggedIn,
-                loginController.tokenUserLoggedIn);
-
-            // Aquí puedes manejar la lógica que necesites con el tiempo en segundo plano
+            barrierDismissible: false,
+          );
+          try {
+            String? backgroundTimeString =
+                LocalStorage.prefs.getString('background_time');
+            if (backgroundTimeString != null) {
+              DateTime backgroundTime = DateTime.parse(backgroundTimeString);
+              final difference = DateTime.now().difference(backgroundTime);
+              final differenceInSeconds = difference.inSeconds;
+              await clientController.getShowClock(
+                  differenceInSeconds,
+                  loginController.idProfessionalLoggedIn,
+                  loginController.tokenUserLoggedIn);
+            }
+          } catch (e) {
+            print('Error actualizando datos: $e');
+          } finally {
+            Get.back();
           }
-        } catch (e) {
-          print('Error actualizando datos: $e');
-        } finally {
-          // Cerrar diálogo de carga
-          Get.back();
         }
+        await LocalStorage.prefs.setBool('verificatePhoto', false);
       }
-
-      await LocalStorage.prefs.setBool('verificatePhoto', false);
-      //reinicio el servicio
-      //  await restartService();
-    } else if (state == AppLifecycleState.inactive) {
+    } else if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) {
       LocalStorage.prefs.setBool('iAmActive', false);
-      // La aplicación se cierra completamente
-      print('La aplicación se está inactiva');
-      // Agrega tu lógica para guardar en la base de datos aquí.
-    } else if (state == AppLifecycleState.detached) {
-      LocalStorage.prefs.setBool('iAmActive', false);
-      // La aplicación se cierra completamente
-      print('La aplicación se está cerrando completamente');
-      // Agrega tu lógica para guardar en la base de datos aquí.
     }
+
+    _lastState = state;
   }
+
+  // Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+  //   //await clientController.upadateVariablesValueTimers();
+  //   super.didChangeAppLifecycleState(state);
+  //   if (state == AppLifecycleState.paused) {
+  //     LocalStorage.prefs.setBool('iAmActive', false);
+  //     clientController.setCloseIesperado(true);
+  //     loginController.getSegundoPlano(0);
+  //     await LocalStorage.prefs.setBool('state_S_plano', true);
+  //     // Guardar la marca de tiempo cuando la app va a segundo plano
+  //     await LocalStorage.prefs
+  //         .setString('background_time', DateTime.now().toIso8601String());
+  //     print(
+  //         'La aplicación se está pausando (yendo a segundo plano)-timer 1 = ${LocalStorage.prefs.getInt('timer1')}');
+  //     print(
+  //         'La aplicación se está pausando (yendo a segundo plano)-timer 2 = ${LocalStorage.prefs.getInt('timer2')}');
+  //     print(
+  //         'La aplicación se está pausando (yendo a segundo plano)-timer 3 = ${LocalStorage.prefs.getInt('timer3')}');
+  //     print(
+  //         'La aplicación se está pausando (yendo a segundo plano)-timer 4 = ${LocalStorage.prefs.getInt('timer4')}');
+  //     //reinicio el servicio
+  //     // await restartService();
+  //   } else if (state == AppLifecycleState.resumed) {
+  //     LocalStorage.prefs.setBool('iAmActive', true);
+  //     clientController.setCloseIesperado(false);
+  //     loginController.getSegundoPlano(3);
+  //     print('mirando: Setting state_S_plano to false');
+  //     bool result = await LocalStorage.prefs.setBool('state_S_plano', false);
+  //     print('Set state_S_plano result: $result');
+  //     print('La aplicación se está Reaunudandose nuevamente');
+  //     print(
+  //         'La aplicación se está LocalStorage.prefs.getBool(verificatePhoto):${LocalStorage.prefs.getBool('verificatePhoto')}');
+
+  //     //hacer esto solamnete si esta ya con el qr leido
+  //     if (loginController.usserPermissionQr == 1 &&
+  //         LocalStorage.prefs.getBool('verificatePhoto') == false) {
+  //       // Mostrar diálogo de carga
+  //       Get.dialog(
+  //         const Center(
+  //           child: Material(
+  //             color: Colors.transparent,
+  //             child: Column(
+  //               mainAxisSize: MainAxisSize.min,
+  //               children: [
+  //                 CircularProgressIndicator(
+  //                   color: Color(0xFFFDAE2A),
+  //                 ),
+  //                 SizedBox(height: 16),
+  //                 Text('Actualizando datos...',
+  //                     style: TextStyle(color: Colors.white)),
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //         barrierDismissible: false,
+  //       );
+
+  //       try {
+  //         // Recuperar la marca de tiempo desde SharedPreferences
+  //         String? backgroundTimeString =
+  //             LocalStorage.prefs.getString('background_time');
+  //         if (backgroundTimeString != null) {
+  //           DateTime backgroundTime = DateTime.parse(backgroundTimeString);
+  //           final difference = DateTime.now().difference(backgroundTime);
+  //           // Convierte la diferencia a segundos
+  //           final differenceInSeconds = difference.inSeconds;
+  //           print(
+  //               'La aplicación estuvo en segundo plano por $differenceInSeconds segundos.');
+  //           // Enviar el tiempo transcurrido a la API
+  //           await clientController.getShowClock(
+  //               differenceInSeconds,
+  //               loginController.idProfessionalLoggedIn,
+  //               loginController.tokenUserLoggedIn);
+
+  //           // Aquí puedes manejar la lógica que necesites con el tiempo en segundo plano
+  //         }
+  //       } catch (e) {
+  //         print('Error actualizando datos: $e');
+  //       } finally {
+  //         // Cerrar diálogo de carga
+  //         Get.back();
+  //       }
+  //     }
+
+  //     await LocalStorage.prefs.setBool('verificatePhoto', false);
+  //     //reinicio el servicio
+  //     //  await restartService();
+  //   } else if (state == AppLifecycleState.inactive) {
+  //     LocalStorage.prefs.setBool('iAmActive', false);
+  //     // La aplicación se cierra completamente
+  //     print('La aplicación se está inactiva');
+  //     // Agrega tu lógica para guardar en la base de datos aquí.
+  //   } else if (state == AppLifecycleState.detached) {
+  //     LocalStorage.prefs.setBool('iAmActive', false);
+  //     // La aplicación se cierra completamente
+  //     print('La aplicación se está cerrando completamente');
+  //     // Agrega tu lógica para guardar en la base de datos aquí.
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -214,16 +286,17 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                             ),
                             barrierDismissible: false,
                           ); //Get.back();
-                          if (clientController.getWaitTime() == false) {
+                          if (loginController.usserPermissionQr != null &&
+                              clientController.getWaitTime() == false) {
+                            await Future.delayed(
+                                const Duration(milliseconds: 500));
                             await clientController.fetchClientsScheduledNew(
                                 loginController.idProfessionalLoggedIn,
                                 loginController.branchIdLoggedIn,
-                                'if (index == 1)',
+                                'navigation down',
                                 loginController.tokenUserLoggedIn);
                           }
-                          await Future.delayed(
-                              const Duration(milliseconds: 500));
-                          Get.back();
+                          // Get.back();
                         } else if (index == 2) {
                           Get.dialog(
                             const Center(
@@ -251,11 +324,9 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                               loginController.branchIdLoggedIn,
                               loginController.idProfessionalLoggedIn,
                               typeEnv,
-                              'Barra de navegacion',
+                              'Barra de navegacionAbajo',
                               loginController.tokenUserLoggedIn);
-                          await Future.delayed(
-                              const Duration(milliseconds: 500));
-                          Get.back();
+
                           /* await notiCont.fetchNotificationList(
                               loginController.branchIdLoggedIn,
                               loginController.idProfessionalLoggedIn);*/
@@ -268,10 +339,9 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                             ),
                             barrierDismissible: false,
                           );
-                          await coexistenceController.fetchEstadist0();
                           await Future.delayed(
                               const Duration(milliseconds: 500));
-                          Get.back();
+                          await coexistenceController.fetchEstadist0();
                         }
                         pagesConfigController.onTabTapped(index);
                       },

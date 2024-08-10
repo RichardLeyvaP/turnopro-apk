@@ -97,18 +97,18 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                         }
                         if (index == 2) //Notificaciones
                         {
-                          Get.dialog(
-                            const Center(
-                              child: CircularProgressIndicator(
-                                color: Color(0xFFFDAE2A),
-                              ),
-                            ),
-                            barrierDismissible: false,
-                          ); //Get.back();
                           if (loginController.idProfessionalLoggedIn != null &&
                               loginController.branchIdLoggedIn != null &&
                               (loginController.chargeUserLoggedIn ==
                                   "Tecnico")) {
+                            Get.dialog(
+                              const Center(
+                                child: CircularProgressIndicator(
+                                  color: Color(0xFFFDAE2A),
+                                ),
+                              ),
+                              barrierDismissible: false,
+                            ); //Get.back();
                             //await Future.delayed(Duration(seconds: 1));
                             //Buscar notificaciones
                             await notiCont.fetchNotificationList(
@@ -118,7 +118,7 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                                 'Navigator-abajo',
                                 loginController.tokenUserLoggedIn);
                           }
-                          Get.back();
+                          // Get.back();
                         }
                         if (index == 3) //Notificaciones
                         {
@@ -131,9 +131,9 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                             barrierDismissible: false,
                           ); //Get.back();
                           // controllerLogin.setIsLoadingFor(true);
-
+                          await Future.delayed(
+                              const Duration(milliseconds: 500));
                           await coexistenceController.fetchEstadist0();
-                          Get.back();
                         }
                         if (index == 4) //Notificaciones
                         {

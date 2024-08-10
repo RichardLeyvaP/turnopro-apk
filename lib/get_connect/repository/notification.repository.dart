@@ -2,11 +2,13 @@
 
 import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:mutex/mutex.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
 import 'package:turnopro_apk/Models/notification_model.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/env.dart';
+import 'package:http/http.dart' as http;
 //todo REVISAR aqui se esta cargando una API de ejemplo no la de SIMPLIFI
 
 class NotificationRepository extends GetConnect {
@@ -131,8 +133,8 @@ class NotificationRepository extends GetConnect {
 //
 //
 //
+  final m2 = Mutex();
   Future professionalBranchNotifQueque(idBranch, idProf, type, token) async {
-    int? varStatusCode;
     try {
       print(
           'llamada timer en 10 segundos A professionalBranchNotifQueque repository');
@@ -154,161 +156,169 @@ class NotificationRepository extends GetConnect {
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 50)); // Aumenta el tiempo de espera a 15 segundos
-      varStatusCode = response.statusCode;
-      print('viendo resultado1-response.statusCode:${response.statusCode}');
-      // print('viendo resultado1-response.body:${response.body}');
-      if (response.statusCode == 200) {
-        // final jsonResponse = jsonDecode(response.body);
 
-        //todo NOTIFICATIONS
-        final notifications = response.body['notifications'];
-        print(
-            'viendo resultado1-response.body[notifications]:${response.body['notifications']}');
-        for (Map notification in notifications) {
-          NotificationModel u =
-              NotificationModel.fromJson(jsonEncode(notification));
+      await m2.acquire();
+      try {
+        final response = await get(url, headers: headers).timeout(
+            Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
 
-          if (u.type == type || u.type == 'Barbero y Encargado') {
-            notificationList.add(u);
-          }
-          if (u.state == 0 || u.state == 3) {
-            //si esta en estos estados es que no se ha visto
-            //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
+        print('viendo resultado1-response.statusCode:${response.statusCode}');
+        // print('viendo resultado1-response.body:${response.body}');
+        if (response.statusCode == 200) {
+          // final jsonResponse = jsonDecode(response.body);
+
+          //todo NOTIFICATIONS
+          final notifications = response.body['notifications'];
+          print(
+              'viendo resultado1-response.body[notifications]:${response.body['notifications']}');
+          for (Map notification in notifications) {
+            NotificationModel u =
+                NotificationModel.fromJson(jsonEncode(notification));
+
             if (u.type == type || u.type == 'Barbero y Encargado') {
-              notificationListNew.add(u); //barbero
+              notificationList.add(u);
+            }
+            if (u.state == 0 || u.state == 3) {
+              //si esta en estos estados es que no se ha visto
+              //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
+              if (u.type == type || u.type == 'Barbero y Encargado') {
+                notificationListNew.add(u); //barbero
+              }
             }
           }
-        }
-        print(
-            'llamada timer en 10 segundos CANTIDAD nOTIFICACIONES:${notificationListNew.length}');
-        //todo END NOTIFICATIONS
-        //aqui el trabajo con la respuesta de la cola
-        // final List<dynamic> tailData = jsonResponse['tail'];
-        //todo  TAILS
-        final customers = response.body['tail'];
-        print('viendo resultado1-response.body[tail]:${response.body['tail']}');
-        print(
-            'llamada timer en 10 segundos A professionalBranchNotifQueque repository-customers:$customers');
-        for (Map service in customers) {
-          ClientsScheduledModel client =
-              ClientsScheduledModel.fromJson(jsonEncode(service));
           print(
-              'llamada timer en 10 segundos A professionalBranchNotifQueque repository-customers333:$customers');
-          // print(
-          //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
-          //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
-          if (controllerLogin.isLoggingIn == true) {
-            if (client.detached == 1 &&
-                client.attended != 33 &&
-                client.attended != 2) {
-              //33 es que lo rechazó el tecnico
-              //2 es que lo finalizaron y por alguna razon attended quedo en 1
-              //creo nuevo cliente
-              print(
-                  'clientes asistiendo entre a if (client.detached == 1) {//creo nuevo cliente');
-              Map newValue = {
-                "reservation_id": client.reservation_id,
-                //"updated_at": convertDateTimeToMinutes(client.updated_at!),
-                "updated_at": client.updated_at!,
-                "clock": client.clock!,
-                "timeClock": client.timeClock!, //todo cambiar123RLP
-                "client": client,
-              };
-              attendingClientList.add(newValue);
-              print(
-                  'clientes asistiendo client.reservation_id:${client.reservation_id}');
-              print('clientes asistiendo client.clock!:${client.clock!}');
-              print('clientes asistiendo timeClock:${client.timeClock! * 60}');
-              print('clientes asistiendo client:${client}');
-            }
-          }
-
-          clientList.add(client);
+              'llamada timer en 10 segundos CANTIDAD nOTIFICACIONES:${notificationListNew.length}');
+          //todo END NOTIFICATIONS
+          //aqui el trabajo con la respuesta de la cola
+          // final List<dynamic> tailData = jsonResponse['tail'];
+          //todo  TAILS
+          final customers = response.body['tail'];
           print(
-              'viendo resultado1 - Cclient-client_name:${client.client_name}');
-          print('viendo resultado1 - Cclient-attended:${client.attended}');
-          if (client.attended == 0) {
+              'viendo resultado1-response.body[tail]:${response.body['tail']}');
+          print(
+              'llamada timer en 10 segundos A professionalBranchNotifQueque repository-customers:$customers');
+          for (Map service in customers) {
+            ClientsScheduledModel client =
+                ClientsScheduledModel.fromJson(jsonEncode(service));
             print(
-                'llamada timer en 10 segundos A professionalBranchNotifQueque repository cliente espernado ser atendido');
-            clientListSig.add(client);
-          }
-          if ((client.attended != 2) &&
-              client.confirmation != 1 &&
-              client.confirmation != 2) {
-            clientListSalon++;
-            print('ver cuantas veces entro aqui ');
-          }
-
-          //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
-          print(
-              'gggclientes asistiendo entre a if (client.confirmation :${client.confirmation}) {');
-
-          if (hasNextClient == false) {
-            if (client.attended == 0 && client.confirmation == 4) {
-              nextClient = client;
-              hasNextClient = true;
+                'llamada timer en 10 segundos A professionalBranchNotifQueque repository-customers333:$customers');
+            // print(
+            //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
+            //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
+            if (controllerLogin.isLoggingIn == true) {
+              if (client.detached == 1 &&
+                  client.attended != 33 &&
+                  client.attended != 2) {
+                //33 es que lo rechazó el tecnico
+                //2 es que lo finalizaron y por alguna razon attended quedo en 1
+                //creo nuevo cliente
+                print(
+                    'clientes asistiendo entre a if (client.detached == 1) {//creo nuevo cliente');
+                Map newValue = {
+                  "reservation_id": client.reservation_id,
+                  //"updated_at": convertDateTimeToMinutes(client.updated_at!),
+                  "updated_at": client.updated_at!,
+                  "clock": client.clock!,
+                  "timeClock": client.timeClock!, //todo cambiar123RLP
+                  "client": client,
+                };
+                attendingClientList.add(newValue);
+                print(
+                    'clientes asistiendo client.reservation_id:${client.reservation_id}');
+                print('clientes asistiendo client.clock!:${client.clock!}');
+                print(
+                    'clientes asistiendo timeClock:${client.timeClock! * 60}');
+                print('clientes asistiendo client:${client}');
+              }
             }
-            //  if (client.attended == 0 ) {
-            //   cantCola++;
 
-            // }
-          }
-          //AQUI PARA SABER CUANTOS ESTA ATENDIENDO
-          if (client.attended == 1 ||
-              client.attended == 11 ||
-              client.attended == 111) {
+            clientList.add(client);
             print(
-                'viendo resultado1-clientes asistiendo entre a if (client.attended == 1) {');
-            quantityClientAttended++;
-          }
-          //Saber si no esta atendiendo a nadie
-          if (quantityClientAttended == 0) {
-            //para saber si hay algun cliente en espera
-            if (nextClient != null) {
-              varclientswaiting = true;
+                'viendo resultado1 - Cclient-client_name:${client.client_name}');
+            print('viendo resultado1 - Cclient-attended:${client.attended}');
+            if (client.attended == 0) {
+              print(
+                  'llamada timer en 10 segundos A professionalBranchNotifQueque repository cliente espernado ser atendido');
+              clientListSig.add(client);
+            }
+            if ((client.attended != 2) &&
+                client.confirmation != 1 &&
+                client.confirmation != 2) {
+              clientListSalon++;
+              print('ver cuantas veces entro aqui ');
+            }
+
+            //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
+            print(
+                'gggclientes asistiendo entre a if (client.confirmation :${client.confirmation}) {');
+
+            if (hasNextClient == false) {
+              if (client.attended == 0 && client.confirmation == 4) {
+                nextClient = client;
+                hasNextClient = true;
+              }
+              //  if (client.attended == 0 ) {
+              //   cantCola++;
+
+              // }
+            }
+            //AQUI PARA SABER CUANTOS ESTA ATENDIENDO
+            if (client.attended == 1 ||
+                client.attended == 11 ||
+                client.attended == 111) {
+              print(
+                  'viendo resultado1-clientes asistiendo entre a if (client.attended == 1) {');
+              quantityClientAttended++;
+            }
+            //Saber si no esta atendiendo a nadie
+            if (quantityClientAttended == 0) {
+              //para saber si hay algun cliente en espera
+              if (nextClient != null) {
+                varclientswaiting = true;
+              }
             }
           }
+          //aqui el trabajo con la respuesta de la cola
+          print('viendo resultado1 - CANTIDAD LA COLA:${clientList.length}');
+
+          //todo END TAILS
+
+          if (type == 'Encargado') {
+            return {
+              //valores de la cola
+              "clientList": clientList,
+              "clientListSig": clientListSig,
+              "nextClient": nextClient,
+              "quantityClientAttended": quantityClientAttended,
+              "attendingClient": attendingClientList, //puede ser null
+              "varclientswaiting":
+                  varclientswaiting, //este me dice si hay que mandar alguna notificacion recordando que hay cliente esperando en cola por ser atendido
+              //valores de la cola
+              "notificationListEncarg": notificationList,
+              "notificationListNewEncarg": notificationListNew,
+            };
+          } else {
+            return {
+              //valores de la cola
+              "clientListSalon": clientListSalon,
+              "clientList": clientList,
+              "clientListSig": clientListSig,
+              "nextClient": nextClient,
+              "quantityClientAttended": quantityClientAttended,
+              "attendingClient": attendingClientList, //puede ser null
+              "varclientswaiting":
+                  varclientswaiting, //este me dice si hay que mandar alguna notificacion recordando que hay cliente esperando en cola por ser atendido
+              //valores de la cola
+
+              "notificationList": notificationList,
+              "notificationListNew": notificationListNew,
+            };
+          }
+        } else if (response.statusCode != 200) {
+          return {'Erroor': -99};
         }
-        //aqui el trabajo con la respuesta de la cola
-        print('viendo resultado1 - CANTIDAD LA COLA:${clientList.length}');
-
-        //todo END TAILS
-
-        if (type == 'Encargado') {
-          return {
-            //valores de la cola
-            "clientList": clientList,
-            "clientListSig": clientListSig,
-            "nextClient": nextClient,
-            "quantityClientAttended": quantityClientAttended,
-            "attendingClient": attendingClientList, //puede ser null
-            "varclientswaiting":
-                varclientswaiting, //este me dice si hay que mandar alguna notificacion recordando que hay cliente esperando en cola por ser atendido
-            //valores de la cola
-            "notificationListEncarg": notificationList,
-            "notificationListNewEncarg": notificationListNew,
-          };
-        } else {
-          return {
-            //valores de la cola
-            "clientListSalon": clientListSalon,
-            "clientList": clientList,
-            "clientListSig": clientListSig,
-            "nextClient": nextClient,
-            "quantityClientAttended": quantityClientAttended,
-            "attendingClient": attendingClientList, //puede ser null
-            "varclientswaiting":
-                varclientswaiting, //este me dice si hay que mandar alguna notificacion recordando que hay cliente esperando en cola por ser atendido
-            //valores de la cola
-
-            "notificationList": notificationList,
-            "notificationListNew": notificationListNew,
-          };
-        }
-      } else if (response.statusCode == null) {
-        return {'Erroor': -99};
+      } finally {
+        m2.release();
       }
     } catch (e) {
       print('viendo resultado1 - DI ERROR EN :$e');
@@ -323,9 +333,88 @@ class NotificationRepository extends GetConnect {
     // }
   }
 
+  // Future getNotificationList(idBranch, idProf, type, token, place) async {
+  //   try {
+  //     print('estoy aqui en getNotificationList llamando desde:$place');
+  //     List<NotificationModel> notificationList = [];
+  //     List<NotificationModel> notificationListNew = [];
+  //     var url =
+  //         '${Env.apiEndpoint}/notification-professional?branch_id=$idBranch&professional_id=$idProf'; //cambiar aqui por servicios en la api
+
+  //     final headers = {
+  //       "Authorization": "Bearer $token", // Agrega el token a los encabezados
+  //     };
+  //     final response = await get(url, headers: headers).timeout(
+  //         Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+  //     if (response.statusCode == 200) {
+  //       final notifications = response.body['notifications'];
+  //       print(
+  //           'llamada timer estoy en CAntidad de Notificaciones fetchNotificationList Tecn:$notifications');
+  //       for (Map notification in notifications) {
+  //         NotificationModel u =
+  //             NotificationModel.fromJson(jsonEncode(notification));
+
+  //         if (type == 'Coordinador' || type == 'Encargado') {
+  //           if (u.type == type ||
+  //               u.type == 'Ambos' ||
+  //               u.type == 'Barbero y Encargado') {
+  //             notificationList.add(u);
+  //           }
+  //           if (u.state == 0 || u.state == 3) {
+  //             //si esta en estos estados es que no se ha visto
+  //             //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
+  //             if (u.type == type ||
+  //                 u.type == 'Ambos' ||
+  //                 u.type == 'Barbero y Encargado') {
+  //               notificationListNew.add(u); //barbero
+  //             }
+  //           }
+  //         } else {
+  //           if (u.type == type || u.type == 'Barbero y Encargado') {
+  //             notificationList.add(u);
+  //           }
+  //           if (u.state == 0 || u.state == 3) {
+  //             //si esta en estos estados es que no se ha visto
+  //             //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
+  //             if (u.type == type || u.type == 'Barbero y Encargado') {
+  //               notificationListNew.add(u); //barbero
+  //             }
+  //           }
+  //         }
+  //       }
+  //       if (type == 'Encargado') {
+  //         return {
+  //           "notificationListEncarg": notificationList,
+  //           "notificationListNewEncarg": notificationListNew,
+  //         };
+  //       } else {
+  //         return {
+  //           "notificationList": notificationList,
+  //           "notificationListNew": notificationListNew,
+  //         };
+  //       }
+  //     } else {
+  //       print(
+  //           'mandar alguna variable para la vista Error en Future getNotificationList:${response.statusCode}');
+  //       return {
+  //         "notificationListError": true,
+  //       };
+  //     }
+  //   } catch (e) {
+  //     print(
+  //         'mandar alguna variable para la vista Error en Future getNotificationList:$e');
+  //     return {
+  //       'Erroor': true
+  //     }; //si retorna null es que dio error deve ser de conexion
+  //   }
+  // }
+
+  final m = Mutex();
+
   Future getNotificationList(idBranch, idProf, type, token, place) async {
     try {
-      print('estoy aqui en getNotificationList llamando desde:$place');
+      print(
+          'estoy aqui en getNotificationList llamando desde-----------:$place');
       List<NotificationModel> notificationList = [];
       List<NotificationModel> notificationListNew = [];
       var url =
@@ -334,67 +423,77 @@ class NotificationRepository extends GetConnect {
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
-      if (response.statusCode == 200) {
-        final notifications = response.body['notifications'];
-        print(
-            'llamada timer estoy en CAntidad de Notificaciones fetchNotificationList Tecn:$notifications');
-        for (Map notification in notifications) {
-          NotificationModel u =
-              NotificationModel.fromJson(jsonEncode(notification));
 
-          if (type == 'Coordinador' || type == 'Encargado') {
-            if (u.type == type ||
-                u.type == 'Ambos' ||
-                u.type == 'Barbero y Encargado') {
-              notificationList.add(u);
-            }
-            if (u.state == 0 || u.state == 3) {
-              //si esta en estos estados es que no se ha visto
-              //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
+      await m.acquire();
+      try {
+        final response = await get(url, headers: headers).timeout(
+            Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+        if (response.statusCode == 200) {
+          final notifications = response.body['notifications'];
+          print(
+              'llamada timer estoy en CAntidad de Notificaciones fetchNotificationList Tecn:$notifications'); //R3 1405
+          for (Map notification in notifications) {
+            NotificationModel u =
+                NotificationModel.fromJson(jsonEncode(notification));
+
+            if (type == 'Coordinador' || type == 'Encargado') {
               if (u.type == type ||
                   u.type == 'Ambos' ||
                   u.type == 'Barbero y Encargado') {
-                notificationListNew.add(u); //barbero
+                notificationList.add(u);
               }
-            }
-          } else {
-            if (u.type == type || u.type == 'Barbero y Encargado') {
-              notificationList.add(u);
-            }
-            if (u.state == 0 || u.state == 3) {
-              //si esta en estos estados es que no se ha visto
-              //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
+              if (u.state == 0 || u.state == 3) {
+                //si esta en estos estados es que no se ha visto
+                //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
+                if (u.type == type ||
+                    u.type == 'Ambos' ||
+                    u.type == 'Barbero y Encargado') {
+                  notificationListNew.add(u); //barbero
+                }
+              }
+            } else {
               if (u.type == type || u.type == 'Barbero y Encargado') {
-                notificationListNew.add(u); //barbero
+                notificationList.add(u);
+              }
+              if (u.state == 0 || u.state == 3) {
+                //si esta en estos estados es que no se ha visto
+                //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
+                if (u.type == type || u.type == 'Barbero y Encargado') {
+                  notificationListNew.add(u); //barbero
+                }
               }
             }
           }
-        }
-        if (type == 'Encargado') {
+          if (type == 'Encargado') {
+            return {
+              "notificationListEncarg": notificationList,
+              "notificationListNewEncarg": notificationListNew,
+            };
+          } else {
+            return {
+              "notificationList": notificationList,
+              "notificationListNew": notificationListNew,
+            };
+          }
+        } else if (response.statusCode != 200) {
+          print(
+              'mandar alguna variable para la vista Error en Future getNotificationList:${response.statusCode}');
           return {
-            "notificationListEncarg": notificationList,
-            "notificationListNewEncarg": notificationListNew,
-          };
-        } else {
-          return {
-            "notificationList": notificationList,
-            "notificationListNew": notificationListNew,
+            "notificationListError": true,
           };
         }
-      } else {
-        print(
-            'mandar alguna variable para la vista Error en Future getNotificationList:${response.statusCode}');
-        return {
-          "notificationListError": true,
-        };
+      } finally {
+        if (place == 'Cart homeCart' || place == 'Barra de navegacion') {
+          //controlar que cierre siempre el cargando
+          Get.back();
+        }
+        m.release();
       }
     } catch (e) {
       print(
-          'mandar alguna variable para la vista Error en Future getNotificationList:$e');
+          'mandar alguna variable para la vista Error en Future getNotificationList-nuevo:$e');
       return {
-        'Erroor': true
+        'notificationListError': true
       }; //si retorna null es que dio error deve ser de conexion
     }
   }

@@ -34,6 +34,10 @@ class LoginController extends GetxController {
 
   bool switchValue = false; //false es barbero y true Encargado
 
+  setSwitchValue() {
+    switchValue = false;
+  }
+
   //optener la hora actual
   Future<void> checkConnection() async {
     final ConnectivityService connectivityService =
@@ -969,6 +973,9 @@ class LoginController extends GetxController {
         print('--este es el value del clok-segundExit:$segundExit');
         print('--este es el value del clok-valueAntClock:$valueAntClock');
         print('--este es el value del clok-diferSeg:$diferSeg');
+        if (timeAsig <= 0) {
+          timeAsig = 2;
+        }
 
         clientsScheduledController.setTotalTimeInitial(timeAsig);
       } else {
@@ -1224,24 +1231,27 @@ class LoginController extends GetxController {
           } else {
             print('asignando valores de memoria:NO-1');
           }
+          int stateBET = 2;
           if (chargeUserLoggedIn == 'Barbero' ||
               chargeUserLoggedIn == 'Barbero y Encargado' ||
               chargeUserLoggedIn == 'Tecnico') {
             int idPuesto = await getIdPuesto(idProfessionalLoggedIn!);
             if (idPuesto != -99 && idPuesto != -999) {
               print('id de mi puesto de trabajo = $idPuesto');
-              int state = await getStateProfessionall(idProfessionalLoggedIn!);
+              stateBET = await getStateProfessionall(idProfessionalLoggedIn!);
 
               //preguntar por el state
-              if (state == 1) //si esta 1 Qr = 1
+              if (stateBET == 1) //si esta 1 Qr = 1//esta trabajando td bien
               {
                 print('estoy si aqui 2');
                 setCodigoQrValid(1);
-              } else if (state == 2) //si esta en colación 2 Qr = null
+              } else if (stateBET == 2) //si esta en colación 2 Qr = null
               {
                 print('estoy si aqui 1');
                 setCodigoQrValid(null);
-              } else if (state == 3 || state == 4) // si esta en 3 Qr = 2
+              } else if (stateBET == 3 ||
+                  stateBET ==
+                      4) // si esta en 3 Solicitud para salir y 4 solicitud Colación
               {
                 print('estoy si aqui 3');
                 setCodigoQrValid(2);
@@ -1249,6 +1259,7 @@ class LoginController extends GetxController {
             } else {
               final NotificationController notifCont =
                   Get.find<NotificationController>();
+
               //no tiene puesto de trabajo
               await notifCont.updateNotificationsState3(
                   branchIdLoggedIn, idProfessionalLoggedIn!);
@@ -1260,7 +1271,7 @@ class LoginController extends GetxController {
             }
           }
 
-          await initializeService();
+          //await initializeService();
           await LocalStorage.prefs.setBool('verificatePhoto', false);
           //todo aqui guardo cada vez que loguea los datos para la proxima vez que no tenga que loguearse
 
@@ -1274,6 +1285,11 @@ class LoginController extends GetxController {
             } else {
               setCodigoQrValid(null);
             }
+          }
+          if (chargeUserLoggedIn ==
+              'Coordinador') //garantizando que siempre en coordinador salga el appBar
+          {
+            await pagesConfigCont.showAppBar(true);
           }
 
           if (chargeUserLoggedIn == 'Coordinador' ||
@@ -1300,27 +1316,35 @@ class LoginController extends GetxController {
 
           if (chargeUserLoggedIn == "Barbero" ||
               chargeUserLoggedIn == "Barbero y Encargado") {
-            //aqui es para saber solamnete el tiempo del reloj inicial de los 3min
-            int timeInit = await gettimeClokInitial(
-                idProfessionalLoggedIn!, branchIdLoggedIn!, tokenUserLoggedIn);
-            print(
-                'el tiempo devuelto inicial es desde el metodo del login:$timeInit');
-            clockInitialTimeB(timeInit, clientsScheduledController, 'Barbero');
-            //aqui cargo la cola del barbero para poder tener en el home al siguiente de la cola inicialmente
-            print('estoy aqui al cargar datos del controlador de client');
-            setIsLoggingIn(true);
-            setLoggingNotification(true);
-            setLoggingInCharge(true, 'loginGetIn-904');
-            clientsScheduledController.setCloseIesperado(true);
-            clientsScheduledController.setCloseIesperadoLogin(true);
-            await clientsScheduledController.fetchClientsScheduled(
-                idProfessionalLoggedIn,
-                branchIdLoggedIn,
-                'Barbero y Encargado');
+            if (stateBET ==
+                1) //si esta adentro con td bien.puede hacer estas llamadas
+            ///solo cargo td esto si tengo el qr leido
+            {
+              //aqui es para saber solamnete el tiempo del reloj inicial de los 3min
+              int timeInit = await gettimeClokInitial(idProfessionalLoggedIn!,
+                  branchIdLoggedIn!, tokenUserLoggedIn);
+              print(
+                  'el tiempo devuelto inicial es desde el metodo del login:$timeInit');
+              clockInitialTimeB(
+                  timeInit, clientsScheduledController, 'Barbero');
+              //aqui cargo la cola del barbero para poder tener en el home al siguiente de la cola inicialmente
 
-            print(' ya no llegue aqui voy a cargar la pagina del profesional');
+              setIsLoggingIn(true);
+              setLoggingNotification(true);
+              setLoggingInCharge(true, 'loginGetIn-904');
+              clientsScheduledController.setCloseIesperado(true);
+              clientsScheduledController.setCloseIesperadoLogin(true);
+              await clientsScheduledController.fetchClientsScheduled(
+                  idProfessionalLoggedIn,
+                  branchIdLoggedIn,
+                  'Barbero y Encargado');
+              // await clientsScheduledController.fetchClientsScheduledNew(
+              //     idProfessionalLoggedIn,
+              //     branchIdLoggedIn,
+              //     '-login-',
+              //     tokenUserLoggedIn);
+            }
 
-            print('***************SOY BARBERO*************');
             pagina = '/Professional';
             loadingValue(false);
             pagesConfigCont.selectedIndex = 0;
@@ -1374,14 +1398,23 @@ class LoginController extends GetxController {
     } catch (e) {
       showConnectionError();
       Get.back();
-      print('errorrrrrreeeeeeeeeeeeeeeee:$e');
+      print('errorrrrrreeeeeeeeeeeeeeeee loginGetIn:$e');
     }
   }
 
   Future<void> exit(String token) async {
     try {
-      final service = FlutterBackgroundService(); //detengo el servicio
-      service.invoke('stopService');
+      FlutterBackgroundService().invoke('clearAllNotifications');
+      FlutterBackgroundService().invoke('stopService');
+      final ClientsScheduledController clientCont =
+          Get.find<ClientsScheduledController>();
+      final NotificationController notCont = Get.find<NotificationController>();
+      clientCont.updateTails();
+      notCont.setNotifLenght();
+      setSwitchValue(); //si fuera Barbero encargado que lo ponga en la parte del barbero
+
+      // Llama a cualquier función o realiza alguna tarea aquí
+
       //cuando ya de salir que valla eliminar el token que ponga a uno todas las notificaciones
       //y las limpie de alla arriba del servicio
       /* notifCont.updateNotifications(

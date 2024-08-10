@@ -7,6 +7,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
+import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/Utility/textTruncate.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/ImageDetailScreen.dart';
 import 'package:turnopro_apk/env.dart';
@@ -67,6 +68,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
     // Extrae los valores individuales de los argumentos
     String clientName = args['clientName'];
     String urlImageClient = args['urlImage'];
+    List<ServiceModel> servicesList = Get.arguments['servicesList'];
     return GetBuilder<ClientsScheduledController>(builder: (controllerCoord) {
       return Scaffold(
         backgroundColor: const Color.fromARGB(255, 231, 232, 234),
@@ -223,8 +225,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
             ),
             Expanded(
               flex: 12,
-              child: clientSchedControl.serviceCustomerSelectedForm1
-                      .isNotEmpty //todo si hay cargarlos aqui
+              child: servicesList.isNotEmpty //todo si hay cargarlos aqui
                   ? Padding(
                       padding:
                           const EdgeInsets.only(left: 10, right: 10, top: 8),
@@ -236,8 +237,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                         child: ListView.builder(
                           padding: EdgeInsets
                               .zero, // Elimina cualquier padding del ListView
-                          itemCount: clientSchedControl
-                              .serviceCustomerSelectedForm1.length,
+                          itemCount: servicesList.length,
                           itemBuilder: (context, index) {
                             // Utiliza la función cardOptions para construir cada Card
                             return Column(
@@ -245,20 +245,11 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                                 cardOptions2(
                                   context,
                                   // Pasa aquí los datos necesarios para cardOptions
-                                  clientSchedControl
-                                      .serviceCustomerSelectedForm1[index].name,
-                                  clientSchedControl
-                                      .serviceCustomerSelectedForm1[index]
-                                      .type_service,
-                                  clientSchedControl
-                                      .serviceCustomerSelectedForm1[index]
-                                      .image_service,
+                                  servicesList[index].name,
+                                  servicesList[index].type_service,
+                                  servicesList[index].image_service,
                                 ),
-                                index ==
-                                        clientSchedControl
-                                                .serviceCustomerSelectedForm1
-                                                .length -
-                                            1
+                                index == servicesList.length - 1
                                     ? SizedBox(
                                         height: 8,
                                       )

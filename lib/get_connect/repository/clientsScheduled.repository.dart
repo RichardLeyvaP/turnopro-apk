@@ -169,7 +169,7 @@ class ClientsScheduledRepository extends GetConnect {
   //
   //
 
-  Future getClientsScheduledListNew(
+  Future getClientsScheduledListNewServ(
       idProfessional, idBranch, isLoggingIn, token) async {
     print('estoy en repositorio en - 2');
 
@@ -185,7 +185,7 @@ class ClientsScheduledRepository extends GetConnect {
 
       //final response = await get(url, headers: headers);
       var url =
-          '${Env.apiEndpoint}/cola_branch_professional_new?professional_id=$idProfessional&branch_id=$idBranch';
+          '${Env.apiEndpoint}/tail-branch-professional?professional_id=$idProfessional&branch_id=$idBranch';
       print('a.......... getClientsScheduledList:url:$url');
 
       final headers = {
@@ -195,17 +195,14 @@ class ClientsScheduledRepository extends GetConnect {
           Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
 
       //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
-      if (response.statusCode == null) {
+      if (response.statusCode != 200) {
         print('Primer ruta protegida-response.statusCode == null');
         print('response.statusCode:${response.statusCode}');
+        //loginController.showConnectionError();
         return {
           "ConnectionIssues": true,
         };
-      } else
-        print('hay coneccion');
-      print(
-          'Primer ruta protegida-response.statusCode :${response.statusCode}');
-      if (response.statusCode == 200) {
+      } else if (response.statusCode == 200) {
         print('Primer ruta protegida-response.statusCode == 200');
         // print('ya tengo la cola de la api es estaa *****************');
         final customers = response.body['tail'];
@@ -292,22 +289,155 @@ class ClientsScheduledRepository extends GetConnect {
             }
           }
         }
+        return {
+          "clientListSalon": clientListSalon,
+          "clientList": clientList,
+          "clientListSig": clientListSig,
+          "nextClient": nextClient,
+          "quantityClientAttended": quantityClientAttended,
+          "attendingClient": attendingClientList, //puede ser null
+          "varclientswaiting":
+              varclientswaiting, //este me dice si hay que mandar alguna notificacion recordando que hay cliente esperando en cola por ser atendido
+        };
       }
-      if (response.statusCode == null) {
-        //llamar aqui el metodo del login que muestra error de conexion
-        loginController.showConnectionError();
-      }
+    } catch (e) {
+      print('Primer ruta protegida-Dio error:$e');
+    }
+  }
+//
+  //
 
-      return {
-        "clientListSalon": clientListSalon,
-        "clientList": clientList,
-        "clientListSig": clientListSig,
-        "nextClient": nextClient,
-        "quantityClientAttended": quantityClientAttended,
-        "attendingClient": attendingClientList, //puede ser null
-        "varclientswaiting":
-            varclientswaiting, //este me dice si hay que mandar alguna notificacion recordando que hay cliente esperando en cola por ser atendido
+  Future getClientsScheduledListNew(
+      idProfessional, idBranch, isLoggingIn, token) async {
+    print('estoy en repositorio en - 2');
+
+    try {
+      int clientListSalon = 0;
+      List<ClientsScheduledModel> clientList = [];
+      List<ClientsScheduledModel> clientListSig = [];
+      List<Map> attendingClientList = [];
+      ClientsScheduledModel? nextClient;
+      bool hasNextClient = false;
+      int quantityClientAttended = 0;
+      bool varclientswaiting = false;
+
+      //final response = await get(url, headers: headers);
+      var url =
+          '${Env.apiEndpoint}/tail-branch-professional?professional_id=$idProfessional&branch_id=$idBranch';
+      print('a.......... getClientsScheduledList:url:$url');
+
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
+      final response = await get(url, headers: headers).timeout(
+          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+
+      //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
+      if (response.statusCode != 200) {
+        print('Primer ruta protegida-response.statusCode == null');
+        print('response.statusCode:${response.statusCode}');
+        //loginController.showConnectionError();
+        return {
+          "ConnectionIssues": true,
+        };
+      } else if (response.statusCode == 200) {
+        print('Primer ruta protegida-response.statusCode == 200');
+        // print('ya tengo la cola de la api es estaa *****************');
+        final customers = response.body['tail'];
+        // print('ya tengo la cola de la api es estaa${customers}');
+
+// // //todo LEER TIPOS DE DATOS QUE VIENEN D LA API
+//       for (int i = 0; i < customers.length; i++) {
+//         print(
+//             'ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
+//         customers[i].forEach((key, value) {
+//           print(
+//               'ya tengo la cola de la api es estaa $key: ${value.runtimeType}');
+//         });
+//       }
+// // //todo LEER TIPOS DE DATOS QUE VIENEN D LA API
+
+        for (Map service in customers) {
+          // print(
+          //     'ya tengo la cola de la api es estaa *********for (Map service in customers)********');
+          ClientsScheduledModel client =
+              ClientsScheduledModel.fromJson(jsonEncode(service));
+          // print(
+          //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
+          //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
+          if (isLoggingIn == true) {
+            //controllerLogin.isLoggingIn
+            if (client.detached == 1 &&
+                client.attended != 33 &&
+                client.attended != 2) {
+              //33 es que lo rechazó el tecnico
+              //2 es que ya fue atendido y por alguna razón quedo attendened 1
+              //creo nuevo cliente
+              print(
+                  'clientes asistiendo entre a if (client.detached == 1) {//creo nuevo cliente');
+              Map newValue = {
+                "reservation_id": client.reservation_id,
+                //"updated_at": convertDateTimeToMinutes(client.updated_at!),
+                "updated_at": client.updated_at!,
+                "clock": client.clock!,
+                "timeClock": client.timeClock!, //todo cambiar123RLP
+                "client": client,
+              };
+              attendingClientList.add(newValue);
+              print(
+                  'clientes asistiendo client.reservation_id:${client.reservation_id}');
+              print('clientes asistiendo client.clock!:${client.clock!}');
+              print('clientes asistiendo timeClock:${client.timeClock! * 60}');
+              print('clientes asistiendo client:${client}');
+            }
+          }
+
+          clientList.add(client);
+          if (client.attended == 0) {
+            clientListSig.add(client);
+          }
+          if ((client.attended != 2) &&
+              client.confirmation != 1 &&
+              client.confirmation != 2) {
+            clientListSalon++;
+            print('ver cuantas veces entro aqui ');
+          }
+          //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
+          print(
+              'gggclientes asistiendo entre a if (client.confirmation :2${client.confirmation}) {');
+          if (hasNextClient == false) {
+            if (client.attended == 0 && client.confirmation == 4) {
+              //todo aqui poner que el siguiente sea solo si está anunciado
+              nextClient = client;
+              hasNextClient = true;
+            }
+          }
+          //AQUI PARA SABER CUANTOS ESTA ATENDIENDO
+          if (client.attended == 1 ||
+              client.attended == 11 ||
+              client.attended == 111) {
+            print('clientes asistiendo entre a if (client.attended == 1) {');
+            quantityClientAttended++;
+          }
+          //Saber si no esta atendiendo a nadie
+          if (quantityClientAttended == 0) {
+            //para saber si hay algun cliente en espera
+            if (nextClient != null) {
+              varclientswaiting = true;
+            }
+          }
+        }
+        return {
+          "clientListSalon": clientListSalon,
+          "clientList": clientList,
+          "clientListSig": clientListSig,
+          "nextClient": nextClient,
+          "quantityClientAttended": quantityClientAttended,
+          "attendingClient": attendingClientList, //puede ser null
+          "varclientswaiting":
+              varclientswaiting, //este me dice si hay que mandar alguna notificacion recordando que hay cliente esperando en cola por ser atendido
+        };
+      }
     } catch (e) {
       print('Primer ruta protegida-Dio error:$e');
     }
@@ -329,7 +459,7 @@ class ClientsScheduledRepository extends GetConnect {
       bool varclientswaiting = false;
       String token = token1;
       var url =
-          '${Env.apiEndpoint}/cola_branch_professional?professional_id=$idProfessional&branch_id=$idBranch';
+          '${Env.apiEndpoint}/tail-branch-professional?professional_id=$idProfessional&branch_id=$idBranch';
       print('a.......... getClientsScheduledList:url:$url');
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -517,7 +647,11 @@ class ClientsScheduledRepository extends GetConnect {
           "frecuenciaBarber": frecuenciaBarber,
         };
       } else {
-        return serviceCustomer;
+        // return serviceCustomer;
+        return {
+          //valores de la cola
+          "error": 'error',
+        };
       }
     } catch (e) {
       print(e);
@@ -687,11 +821,12 @@ class ClientsScheduledRepository extends GetConnect {
         final typeService = response.body;
         print('typeOfService(idProfessional, idBranch) async:$typeService');
         return typeService;
-      } else {
-        return false;
+      } else if (response.statusCode != 200) {
+        return -99;
       }
     } catch (e) {
       print('typeOfService(idProfessional, idBranch):$e');
+      return -99;
     }
   }
 

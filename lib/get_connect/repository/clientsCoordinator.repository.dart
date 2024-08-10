@@ -210,20 +210,19 @@ class ClientsCoordinatorRepository extends GetConnect {
       print('response.statusCode professionalId:${url}');
       print(
           'response.statusCode professionalId:response.statusCode${response.statusCode}');
-      if (response.statusCode == null) {
-        print('response.statusCode:${response.statusCode}');
-        return {
-          "ConnectionIssues": true,
-        };
-      } else if (response.statusCode == 200) {
+      if (response.statusCode == 200) {
         print(
             'hay coneccion reasignedClient devuelve true,response.statusCode == 200 ');
         return {
           "result": true,
         };
-      }
-
-      return {"clientList": clientList};
+      } else if (response.statusCode != 200) {
+        print('response.statusCode:${response.statusCode}');
+        return {
+          "ConnectionIssues": true,
+        };
+      } else
+        return {"clientList": clientList};
     } catch (e) {
       print('response.statusCode:${e}');
       print(e);

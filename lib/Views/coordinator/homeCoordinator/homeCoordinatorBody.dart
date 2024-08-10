@@ -217,7 +217,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   Text(
                                     'Cargando ...',
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 12),
+                                        color: Colors.black, fontSize: 12),
                                   )
                                 ],
                               ))

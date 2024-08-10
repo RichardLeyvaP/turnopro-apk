@@ -58,6 +58,11 @@ class NotificationController extends GetxController {
     return notification;
   }
 
+  setNotifLenght() {
+    notificationListNewLength = 0;
+    update();
+  }
+
   void updateOutAcept(int value) {
     outAcept = value;
     //update();
@@ -243,6 +248,8 @@ class NotificationController extends GetxController {
         'llamada timer ...tipo:$type......idSucursal:$idBranch......iProf:$idProfe');
 
     try {
+      controllerLogin
+          .setLoggingNotification(false); //decir que no llego del login
       final resultList = await repository.professionalBranchNotifQueque(
           idBranch, idProfe, type, token);
       bool siHayEliminarService = false;
@@ -379,6 +386,7 @@ class NotificationController extends GetxController {
             }
 
             clientCon.clientsScheduledNext = resultList['nextClient'];
+            clientCon.clientsScheduledNextServ = resultList['nextClient'];
             int clientNewAux = 0;
             if (clientCon.clientsScheduledListId.isNotEmpty) {
               clientNewAux = clientCon.clientsScheduledListId.length;
@@ -426,8 +434,8 @@ class NotificationController extends GetxController {
               'Error al obtener la lista de notificaciones:este:-CONTROLADO AQUI');
           controllerclient.setclientLisError(-99);
           if (!_retryAttempted && controllerclient.errorHome == -99) {
-            Get.snackbar('Alerta', 'Conexión débil.',
-                duration: const Duration(milliseconds: 2500));
+            // Get.snackbar('Alerta', 'Conexión débil.',
+            //     duration: const Duration(milliseconds: 2500));
             clientCon.correctConnection = false;
             _retryAttempted = true;
             professionalBranchNotifQueque(idBranch, idProfe, type, msj, token);
@@ -437,20 +445,19 @@ class NotificationController extends GetxController {
         print('Error al obtener la lista de notificaciones:este:');
         controllerclient.setclientLisError(-99);
         if (!_retryAttempted && controllerclient.errorHome == -99) {
-          Get.snackbar('Alerta', 'Conexión débil.',
-              duration: const Duration(milliseconds: 2500));
+          // Get.snackbar('Alerta', 'Conexión débil.',
+          //     duration: const Duration(milliseconds: 2500));
           clientCon.correctConnection = false;
           _retryAttempted = true;
           professionalBranchNotifQueque(idBranch, idProfe, type, msj, token);
         }
       }
-      controllerLogin.setLoggingNotification(false);
     } catch (e) {
       print('Error de excepción al obtener la lista de notificaciones:$e');
       controllerclient.setclientLisError(-99);
       if (!_retryAttempted && controllerclient.errorHome == -99) {
-        Get.snackbar('Alerta', 'Conexión débil.',
-            duration: const Duration(milliseconds: 2500));
+        // Get.snackbar('Alerta', 'Conexión débil.',
+        //     duration: const Duration(milliseconds: 2500));
         clientCon.correctConnection = false;
         _retryAttempted = true;
         professionalBranchNotifQueque(idBranch, idProfe, type, msj, token);
@@ -474,7 +481,7 @@ class NotificationController extends GetxController {
         'llamada timer ...tipo:$type......idSucursal:$idBranch......iProf:$idProfe');
     try {
       Map<String, dynamic> result = await repository.getNotificationList(
-          idBranch, idProfe, type, token, 'fetchNotificationListSERV');
+          idBranch, idProfe, type, token, msj);
       bool siHayEliminarService = false;
       print('object-${clientsTechnicalCont.clientsTechnicalLength}');
       if (result.containsKey('notificationListError') &&
@@ -486,10 +493,10 @@ class NotificationController extends GetxController {
             clientsTechnicalCont.clientsTechnicalLength >
                 0) //es tecnico y tiene la cola vacia que ni lo muestre
         {
-          controllerLogin.showConnectionError();
+          // controllerLogin.showConnectionError();
         }
         if (type != 'Tecnico') {
-          controllerLogin.showConnectionError();
+          //  controllerLogin.showConnectionError();
         }
       } else if (result.containsKey('Erroor') && result['Erroor'] == true) {
         print(
@@ -703,7 +710,7 @@ class NotificationController extends GetxController {
         'llamada timer ...tipo:$type......idSucursal:$idBranch......iProf:$idProfe');
     try {
       Map<String, dynamic> result = await repository.getNotificationList(
-          idBranch, idProfe, type, token, 'fetchNotificationListSERV');
+          idBranch, idProfe, type, token, msj);
       bool siHayEliminarService = false;
       print('object-${clientsTechnicalCont.clientsTechnicalLength}');
       if (result.containsKey('notificationListError') &&
@@ -718,7 +725,11 @@ class NotificationController extends GetxController {
           controllerLogin.showConnectionError();
         }
         if (type != 'Tecnico') {
-          controllerLogin.showConnectionError();
+          if (msj == 'Barra de navegacionAbajo' ||
+              msj == 'Cart homeCart' ||
+              msj == 'Navigator-abajo') {
+            controllerLogin.showConnectionError();
+          }
         }
       } else if (result.containsKey('Erroor') && result['Erroor'] == true) {
         print(
@@ -901,6 +912,10 @@ class NotificationController extends GetxController {
       controllerLogin.setIsLoadingFor(false);
       // Manejo de errores
       print('Error al obtener la lista de notificaciones:aqui: $e');
+    } finally {
+      if (msj == 'Barra de navegacionAbajo' || msj == 'Navigator-abajo') {
+        Get.back();
+      }
     }
   }
 
@@ -919,7 +934,7 @@ class NotificationController extends GetxController {
         controllerLogin.showConnectionError();
       }
       if (type != 'Tecnico') {
-        controllerLogin.showConnectionError();
+        //  controllerLogin.showConnectionError();
       }
     } else if (result.containsKey('Erroor') && result['Erroor'] == true) {
       print(
