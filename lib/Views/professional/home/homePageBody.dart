@@ -34,19 +34,15 @@ class HomePageBody extends StatefulWidget {
   State<HomePageBody> createState() => _HomePageBodyState();
 }
 
-class _HomePageBodyState extends State<HomePageBody>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
-  final ClientsScheduledController clientsScheduledController =
-      Get.find<ClientsScheduledController>();
-  final ClientsCoordinatorController clientCord =
-      Get.find<ClientsCoordinatorController>();
+class _HomePageBodyState extends State<HomePageBody> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+  final ClientsScheduledController clientsScheduledController = Get.find<ClientsScheduledController>();
+  final ClientsCoordinatorController clientCord = Get.find<ClientsCoordinatorController>();
 
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
 
   final LoginController loginController = Get.find<LoginController>();
 
-  final CoexistenceController coexistenceController =
-      Get.put(CoexistenceController());
+  final CoexistenceController coexistenceController = Get.put(CoexistenceController());
   NotificationController notiController = Get.find<NotificationController>();
   ServiceController serviceControll = Get.find<ServiceController>();
   ShoppingCartController chopCont = Get.find<ShoppingCartController>();
@@ -114,16 +110,10 @@ class _HomePageBodyState extends State<HomePageBody>
         barrierDismissible: false,
       ); //Get.back();
       bool result = await clientCord.reasignedClient(
-          reservationId,
-          clientId,
-          loginController.idProfessionalLoggedIn,
-          loginController.tokenUserLoggedIn);
+          reservationId, clientId, loginController.idProfessionalLoggedIn, loginController.tokenUserLoggedIn);
       if (result == true) {
-        await clientsScheduledController.fetchClientsScheduledNew(
-            loginController.idProfessionalLoggedIn,
-            loginController.branchIdLoggedIn,
-            'Home-reasignedClient',
-            loginController.tokenUserLoggedIn);
+        await clientsScheduledController.fetchClientsScheduledNew(loginController.idProfessionalLoggedIn,
+            loginController.branchIdLoggedIn, 'Home-reasignedClient', loginController.tokenUserLoggedIn);
         loginController.setCodigoQrValidAnt(1);
       } else {
         loginController.setCodigoQrValidAnt(1);
@@ -156,10 +146,7 @@ class _HomePageBodyState extends State<HomePageBody>
     int idBarberAct = loginController.idProfessionalLoggedIn!;
     List<ProfessionalModel> profDisp;
     profDisp = await clientsScheduledController.getFirstProfessional(
-        loginController.branchIdLoggedIn,
-        idReserv,
-        idBarberAct,
-        loginController.tokenUserLoggedIn);
+        loginController.branchIdLoggedIn, idReserv, idBarberAct, loginController.tokenUserLoggedIn);
     if (profDisp.isNotEmpty) {
       print('hay profesional libre para reasignar');
       return profDisp[0].id;
@@ -202,8 +189,7 @@ class _HomePageBodyState extends State<HomePageBody>
   }
 
   restartStopClock() {
-    print(
-        'verificando si esta activo:Aqui estoy párando el reloj reiniciateClock()');
+    print('verificando si esta activo:Aqui estoy párando el reloj reiniciateClock()');
     // LocalStorage.prefs.setBool('convivenciaIncumplida', true);
     LocalStorage.prefs.setInt('valueClockIni', 180);
     clientsScheduledController.setTotalTimeInitial(180);
@@ -226,13 +212,10 @@ class _HomePageBodyState extends State<HomePageBody>
   verificateClockInit() async {
     if (LocalStorage.prefs.getBool('valueClockActiv') != null &&
         LocalStorage.prefs.getBool('valueClockActiv') == true) {
-      print(
-          'el tiempo devuelto inicial es-0:${LocalStorage.prefs.getBool('valueClockActiv')}');
+      print('el tiempo devuelto inicial es-0:${LocalStorage.prefs.getBool('valueClockActiv')}');
     } else {
-      int timeInit = await loginController.gettimeClokInitial(
-          loginController.idProfessionalLoggedIn!,
-          loginController.branchIdLoggedIn!,
-          loginController.tokenUserLoggedIn);
+      int timeInit = await loginController.gettimeClokInitial(loginController.idProfessionalLoggedIn!,
+          loginController.branchIdLoggedIn!, loginController.tokenUserLoggedIn);
       print('el tiempo devuelto inicial es-1:$timeInit');
       int tiempClock = 180;
       if (timeInit != -99 && timeInit != -999) {
@@ -256,17 +239,14 @@ class _HomePageBodyState extends State<HomePageBody>
         //  await Future.delayed(
         //   Duration(milliseconds: 500));
         //se mantiene el valor
-        print(
-            'el tiempo devuelto inicial es-3-Inicializando clock inicial en:$tiempClock');
+        print('el tiempo devuelto inicial es-3-Inicializando clock inicial en:$tiempClock');
         clientsScheduledController.setTotalTimeInitial(tiempClock);
         //sino esta ativo el time de 3 min pues vemos si ya estaba trabajando en segundo plano
         //llamamos a la db
       } else {
         print('el tiempo devuelto inicial es-4-No entre al if');
-        clientsScheduledController
-            .setTotalTimeInitial(181); //solo para saber que algo dio mal
-        print(
-            'el tiempo inicial del reloj inicio en 181 segundos porque dio un error');
+        clientsScheduledController.setTotalTimeInitial(181); //solo para saber que algo dio mal
+        print('el tiempo inicial del reloj inicio en 181 segundos porque dio un error');
       }
     }
   }
@@ -293,8 +273,7 @@ class _HomePageBodyState extends State<HomePageBody>
     );
 
     // Agregar listener solo una vez
-    clientsScheduledController.animationControllerInitial!
-        .addStatusListener((status) {
+    clientsScheduledController.animationControllerInitial!.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         print('Se ha completado los 3-La animación se ha completado-SIIIII');
 //  bool hasClient1 = clientsAttended1 != null;
@@ -309,14 +288,10 @@ class _HomePageBodyState extends State<HomePageBody>
           String type = 'Tiempo';
           int estado = 0; //es que incumplió
           //CADA VEZ QUE ENTRE AQUI INCULPLIO CON EL TIEMPO DE LLAMAR AL CLIENTE ANTES DE 3MIN
-          if (loginController.branchIdLoggedIn != null &&
-              loginController.idProfessionalLoggedIn != null) {
+          if (loginController.branchIdLoggedIn != null && loginController.idProfessionalLoggedIn != null) {
             //acabaron los 3 minutos de espera
             clientsScheduledController.changeNoncomplianceP2(
-                type,
-                loginController.branchIdLoggedIn!,
-                loginController.idProfessionalLoggedIn!,
-                estado);
+                type, loginController.branchIdLoggedIn!, loginController.idProfessionalLoggedIn!, estado);
           }
 
           // Aquí llamamos a BackgroundTaskService para registrar la tarea de una sola vez
@@ -332,32 +307,24 @@ class _HomePageBodyState extends State<HomePageBody>
         }*/
 
           //AQUI SI HAY QUE REASIGNAR SE REASIGNA
-          if (clientsScheduledController.clientsScheduledNextServ != null &&
-              loginController.codigoQrValid() == true) {
+          if (clientsScheduledController.clientsScheduledNextServ != null && loginController.codigoQrValid() == true) {
+            //es decir que tenga qr leido
             print('se hacompletado los 3 min-HAY CLIENTE POR ATENDER');
-            int reservationId = clientsScheduledController
-                .clientsScheduledNextServ!.reservation_id!;
-            int clientId =
-                clientsScheduledController.clientsScheduledNextServ!.client_id!;
+            int reservationId = clientsScheduledController.clientsScheduledNextServ!.reservation_id!;
+            int clientId = clientsScheduledController.clientsScheduledNextServ!.client_id!;
             reasigClient(reservationId, clientId);
           }
 
           // reasigClient(int reservationId, int clientId);
           if (loginController.chargeUserLoggedIn != "Barbero y Encargado") {
-            if (clientsScheduledController
-                        .noncomplianceProfessional['Tiempo'] !=
-                    0 &&
+            if (clientsScheduledController.noncomplianceProfessional['Tiempo'] != 0 &&
                 loginController.usserPermissionQr == 1 &&
                 clientsScheduledController.clientsScheSalon > 0) {
               print('--este es el value del clok-FINALIZANDO*****22');
-              print(
-                  'inserto correctamente ********** .noncomplianceProfessional[]');
+              print('inserto correctamente ********** .noncomplianceProfessional[]');
 
               clientsScheduledController.changeNoncomplianceP(
-                  type,
-                  loginController.branchIdLoggedIn!,
-                  loginController.idProfessionalLoggedIn!,
-                  estado);
+                  type, loginController.branchIdLoggedIn!, loginController.idProfessionalLoggedIn!, estado);
               //aqui llamar e insertar en las notificacione sque incumplio esta convivencia
               notiController.storeNotification(
                   'Incumplimiento de convivencia',
@@ -381,21 +348,17 @@ class _HomePageBodyState extends State<HomePageBody>
         }
       }
     });
-    Future<void> saveUserDataMemory(
-        int? permQr, int timerInitial, int salon) async {
+    Future<void> saveUserDataMemory(int? permQr, int timerInitial, int salon) async {
       // Guardar cada dato por separado
       if (permQr != null) {
         await LocalStorage.prefs.setInt('var_PermissQr', permQr);
       } else {
-        await LocalStorage.prefs
-            .setInt('var_PermissQr', -999); //para saber que es null
+        await LocalStorage.prefs.setInt('var_PermissQr', -999); //para saber que es null
       }
-      await LocalStorage.prefs.setInt(
-          'var_timerInitial', timerInitial); //si es 181 es que esta parado
+      await LocalStorage.prefs.setInt('var_timerInitial', timerInitial); //si es 181 es que esta parado
 
       //veri si hay clietes en el salon
-      await LocalStorage.prefs
-          .setInt('var_clientsalon', salon); //para saber que es null
+      await LocalStorage.prefs.setInt('var_clientsalon', salon); //para saber que es null
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -408,8 +371,8 @@ class _HomePageBodyState extends State<HomePageBody>
         /*  if()
         {*/
         clientsScheduledController.upadateVariablesValueTimersPreferenc();
-        saveUserDataMemory(loginController.usserPermissionQr,
-            getTimeRemaining(), clientsScheduledController.clientsScheSalon);
+        saveUserDataMemory(
+            loginController.usserPermissionQr, getTimeRemaining(), clientsScheduledController.clientsScheSalon);
 
         //  }
 
@@ -420,8 +383,7 @@ class _HomePageBodyState extends State<HomePageBody>
         //todo ***********************************************************************
         print('Se ha completado los 3 minutos-Timer-Chequeando');
         if (clientsScheduledController.animationControllerInitial != null &&
-            clientsScheduledController
-                .animationControllerInitial!.isAnimating) {
+            clientsScheduledController.animationControllerInitial!.isAnimating) {
           // Aquí puedes realizar alguna acción periódica si es necesario
           print('Se ha completado los 3 minutos-esta activo el reloj');
         }
@@ -929,8 +891,7 @@ class _HomePageBodyState extends State<HomePageBody>
   int aux = 0;
   timerConteo() {
     _timer4 = Timer.periodic(Duration(seconds: 1), (timer) async {
-      print(
-          'entrando funcion nueva a timerConteo():${clientsScheduledController.getwaitTimeCount()}');
+      print('entrando funcion nueva a timerConteo():${clientsScheduledController.getwaitTimeCount()}');
 
       // clearAllNotifications();
       if (clientsScheduledController.getwaitTimeCount() <= 1) {
@@ -938,8 +899,7 @@ class _HomePageBodyState extends State<HomePageBody>
         if (loginController.usserPermissionQr == 1) {
           _refresh();
         }
-      } else if (clientsScheduledController.getWaitTime() ==
-          true) //esta esperando los 30 segundos
+      } else if (clientsScheduledController.getWaitTime() == true) //esta esperando los 30 segundos
 
       {
         clientsScheduledController.setwaitTimeCount(1);
@@ -969,8 +929,7 @@ class _HomePageBodyState extends State<HomePageBody>
         print(
             'response.statusCode splano - Llamando aqui la funcion dentro del timer-SUMANDO:$cont');
       }*/
-      print(
-          'llamada timer en 10 segundos obtenerHoraActualEnSegundos:${loginController.chargeUserLoggedIn}');
+      print('llamada timer en 10 segundos obtenerHoraActualEnSegundos:${loginController.chargeUserLoggedIn}');
       /*   print('Tiempo restante12345:aux ${getTimeRemaining()} segundos');
       if (getTimeRemaining() == aux) {
         print('Tiempo restante12345:-SON IGUALES-$aux');
@@ -980,8 +939,7 @@ class _HomePageBodyState extends State<HomePageBody>
         print('Tiempo restante12345:-SON DIFERENTES-$aux');
       }*/
 
-      if (loginController.makeCall == true &&
-          clientsScheduledController.getWaitTime() == false) {
+      if (loginController.makeCall == true && clientsScheduledController.getWaitTime() == false) {
         print('Error al obtener la lista de notificaciones:este:TIMER-TIMER');
         print(
             'Error al obtener la lista de notificaciones:este:clientsScheduledController.boolFilterShowNext:${clientsScheduledController.boolFilterShowNext}');
@@ -991,15 +949,12 @@ class _HomePageBodyState extends State<HomePageBody>
             loginController.idProfessionalLoggedIn != null &&
             loginController.branchIdLoggedIn != null &&
             (loginController.chargeUserLoggedIn == "Barbero" ||
-                (loginController.chargeUserLoggedIn ==
-                    "Barbero y Encargado"))) {
+                (loginController.chargeUserLoggedIn == "Barbero y Encargado"))) {
           clientsScheduledController.filterShowNext();
           String teleClient = '';
           if (clientsScheduledController.clientsScheduledNextServ != null) {
-            teleClient = clientsScheduledController
-                .clientsScheduledNextServ!.telefone_client!;
-            print(
-                'EL telefono del que le sigue en la cola es:TELEFONO:$teleClient');
+            teleClient = clientsScheduledController.clientsScheduledNextServ!.telefone_client!;
+            print('EL telefono del que le sigue en la cola es:TELEFONO:$teleClient');
           }
           await Future.delayed(const Duration(milliseconds: 500));
           //pregunto si no tinee a nadie en cola
@@ -1019,14 +974,11 @@ class _HomePageBodyState extends State<HomePageBody>
 
           await notiController.professionalBranchNotifQueque(
               idBranch, idProfe, type, msj, loginController.tokenUserLoggedIn);
-          print(
-              'viendo si hay clientes esperando realmente::${clientsScheduledController.clientsScheSalon})');
-          print(
-              'viendo si hay clientes esperando realmente::errorHome:${clientsScheduledController.errorHome})');
+          print('viendo si hay clientes esperando realmente::${clientsScheduledController.clientsScheSalon})');
+          print('viendo si hay clientes esperando realmente::errorHome:${clientsScheduledController.errorHome})');
 
           //esta era para llamar a un aleatorio si no tenia nadie en cola.ya eso lo hace la api
-          if ((clientsScheduledController.clientsScheSalon == 0 &&
-                  clientsScheduledController.errorHome != -99) ||
+          if ((clientsScheduledController.clientsScheSalon == 0 && clientsScheduledController.errorHome != -99) ||
               loginController.usserPermissionQr == 2) {
             restartStopClock();
           }
@@ -1045,12 +997,10 @@ class _HomePageBodyState extends State<HomePageBody>
           if (loginController.idProfessionalLoggedIn != null &&
               loginController.branchIdLoggedIn != null &&
               (loginController.chargeUserLoggedIn == "Barbero" ||
-                  (loginController.chargeUserLoggedIn ==
-                      "Barbero y Encargado"))) {
+                  (loginController.chargeUserLoggedIn == "Barbero y Encargado"))) {
             //guardar datos de los relojes en la db
             //comprobar que este en barbero
-            if (loginController.switchValue ==
-                false) //es porque está en barbero
+            if (loginController.switchValue == false) //es porque está en barbero
             {
               await Future.delayed(const Duration(milliseconds: 500));
               //veridficar que el que tenga para finalizar no mande a modificar
@@ -1058,11 +1008,8 @@ class _HomePageBodyState extends State<HomePageBody>
               //aqui en este actualiza los tiempos de los relojes
             }
             await Future.delayed(const Duration(milliseconds: 500));
-            await clientsScheduledController.fetchClientsScheduledNew(
-                loginController.idProfessionalLoggedIn,
-                loginController.branchIdLoggedIn,
-                'if (index == 1)',
-                loginController.tokenUserLoggedIn);
+            await clientsScheduledController.fetchClientsScheduledNew(loginController.idProfessionalLoggedIn,
+                loginController.branchIdLoggedIn, 'if (index == 1)', loginController.tokenUserLoggedIn);
           }
           //lo que llamaba el timer 2
 
@@ -1070,8 +1017,7 @@ class _HomePageBodyState extends State<HomePageBody>
           if (loginController.idProfessionalLoggedIn != null &&
               loginController.branchIdLoggedIn != null &&
               (loginController.chargeUserLoggedIn == "Barbero" ||
-                  (loginController.chargeUserLoggedIn ==
-                      "Barbero y Encargado"))) {
+                  (loginController.chargeUserLoggedIn == "Barbero y Encargado"))) {
             //en este caso son 3 minutos que esta definido en el controlador
             //aqui verifico si se esta acabando algun servico para mandar una notificacion
             //  await Future.delayed(Duration(seconds: 1));
@@ -1084,20 +1030,16 @@ class _HomePageBodyState extends State<HomePageBody>
           if (loginController.idProfessionalLoggedIn != null &&
               loginController.branchIdLoggedIn != null &&
               (loginController.chargeUserLoggedIn == "Barbero" ||
-                  (loginController.chargeUserLoggedIn ==
-                      "Barbero y Encargado"))) {
+                  (loginController.chargeUserLoggedIn == "Barbero y Encargado"))) {
             //en este caso son 3 minutos que esta definido en el controlador
             //aqui verifico si se esta acabando algun servico para mandar una notificacion
             //
             // await Future.delayed(Duration(seconds: 2));
 
-            if ((clientsScheduledController.varClientsWaiting == true) &&
-                (loginController.usserPermissionQr == 1)) {
+            if ((clientsScheduledController.varClientsWaiting == true) && (loginController.usserPermissionQr == 1)) {
               print('esteeeeee se cumplio que puede atender ..aqui entrandoya');
-              if (clientsScheduledController
-                      .animationControllerInitial!.isAnimating &&
-                  clientsScheduledController.cantClientWait !=
-                      clientsScheduledController.clientsScheduledListLength) {
+              if (clientsScheduledController.animationControllerInitial!.isAnimating &&
+                  clientsScheduledController.cantClientWait != clientsScheduledController.clientsScheduledListLength) {
                 // La animación está activa (en progreso)
                 if (clientsScheduledController.contClientsWaiting == 10) {
                   print('esteeeeee varClientsWaiting Mande la notificacion ya');
@@ -1114,28 +1056,23 @@ class _HomePageBodyState extends State<HomePageBody>
                   //     '!Alerta', 'Recuerda que tienes clientes en cola');
                   //para controlar que con este cliente solo le avise una vez
                   clientsScheduledController.setContClientsWaiting(20);
-                  clientsScheduledController.setcantClientWait(
-                      clientsScheduledController.clientsScheduledListLength);
+                  clientsScheduledController.setcantClientWait(clientsScheduledController.clientsScheduledListLength);
                 }
                 if (clientsScheduledController.contClientsWaiting == 10) {
-                  print(
-                      'entando en 10 segundos aqui para insertar el tiempo si hubiera reloj activo');
+                  print('entando en 10 segundos aqui para insertar el tiempo si hubiera reloj activo');
                 } else if (clientsScheduledController.contClientsWaiting ==
                     100) //si llega a 100 mando que sea 20 de nuevo para q no pase de los valores del entero y tener un control mejor de el
                 {
                   clientsScheduledController.setContClientsWaiting(20);
                 } else {
-                  clientsScheduledController
-                      .setContClientsWaiting(-91119); //sumo 1
+                  clientsScheduledController.setContClientsWaiting(-91119); //sumo 1
                 }
               } else {
-                clientsScheduledController
-                    .setContClientsWaiting(-90009); //inicializo nuevamente a 0
+                clientsScheduledController.setContClientsWaiting(-90009); //inicializo nuevamente a 0
                 // La animación está detenida
               }
             } else {
-              clientsScheduledController
-                  .setContClientsWaiting(-90009); //inicializo nuevamente a 0
+              clientsScheduledController.setContClientsWaiting(-90009); //inicializo nuevamente a 0
             }
             //
           }
@@ -1151,12 +1088,8 @@ class _HomePageBodyState extends State<HomePageBody>
           ..reset()
           ..stop();
         //solo llamar las notificaciones
-        await notiController.fetchNotificationList(
-            loginController.branchIdLoggedIn,
-            loginController.idProfessionalLoggedIn,
-            'Barbero',
-            'Cart homeBarbero1',
-            loginController.tokenUserLoggedIn);
+        await notiController.fetchNotificationList(loginController.branchIdLoggedIn,
+            loginController.idProfessionalLoggedIn, 'Barbero', 'Cart homeBarbero1', loginController.tokenUserLoggedIn);
         if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
           await Future.delayed(const Duration(milliseconds: 700));
           await notiController.fetchNotificationList(
@@ -1175,13 +1108,9 @@ class _HomePageBodyState extends State<HomePageBody>
     // await Future.delayed(Duration(seconds: 1));
     //pongo la variable de espera de 30 segundo a false
     if (loginController.usserPermissionQr == 1) {
-      await clientsScheduledController.fetchClientsScheduledNew(
-          loginController.idProfessionalLoggedIn,
-          loginController.branchIdLoggedIn,
-          'Text(ENVIAR)',
-          loginController.tokenUserLoggedIn);
-      clientsScheduledController.setWaitTime(
-          false); //sigue el funcionamiento normal haciendo llamadas
+      await clientsScheduledController.fetchClientsScheduledNew(loginController.idProfessionalLoggedIn,
+          loginController.branchIdLoggedIn, 'Text(ENVIAR)', loginController.tokenUserLoggedIn);
+      clientsScheduledController.setWaitTime(false); //sigue el funcionamiento normal haciendo llamadas
       clientsScheduledController.setBoolControlVision(true);
       clientsScheduledController.setwaitTimeCount(0);
     }
@@ -1198,8 +1127,7 @@ class _HomePageBodyState extends State<HomePageBody>
     super.build(context);
 
     _timer2 = Timer.periodic(Duration(seconds: 5), (timer) async {
-      print(
-          'Esto se ejecuta 2 segundos después de renderizar el cuadro--nuevo');
+      print('Esto se ejecuta 2 segundos después de renderizar el cuadro--nuevo');
 
       if (getTimeRemaining() < 3) {
         // aaqui cancelar hasta que vea si rasigna o no
@@ -1239,8 +1167,7 @@ class _HomePageBodyState extends State<HomePageBody>
           print('-*-*-*-**>>>> si fui un sierre inesperado');
           if (clientsScheduledController.item.isNotEmpty) {
             loginController.setCodigoQrValid(1);
-          } else if (loginController.usserPermissionQr == -99 &&
-              loginController.usserPermissionQr == 0) {
+          } else if (loginController.usserPermissionQr == -99 && loginController.usserPermissionQr == 0) {
             loginController.setCodigoQrValid(null);
             print('id de mi puesto de trabajo 1 no esta en ningun puesto:null');
           }
@@ -1248,8 +1175,7 @@ class _HomePageBodyState extends State<HomePageBody>
           print('-*-*-*-**>>>> NOOO fui un sierre inesperado');
         }
         if (loginController.isLoggingInCharge == true) {
-          await loginController.setLoggingInCharge(
-              false, 'buildComponent-1103');
+          await loginController.setLoggingInCharge(false, 'buildComponent-1103');
         }
 
         clientsScheduledController.setCloseIesperado(false);
@@ -1262,8 +1188,7 @@ class _HomePageBodyState extends State<HomePageBody>
       clientsScheduledController.setCloseIesperado(false);
     });
 
-    return GetBuilder<ClientsScheduledController>(
-        builder: (clientsScheduledController) {
+    return GetBuilder<ClientsScheduledController>(builder: (clientsScheduledController) {
       //CREANDO LISTAS PARA UTILIZARLO EN EL FOR
       List<ClientsScheduledModel?> clientsList = [
         clientsScheduledController.clientsAttended1,
@@ -1284,8 +1209,7 @@ class _HomePageBodyState extends State<HomePageBody>
         print('La aplicación se activeClock() {--111');
         for (var i = 0; i < clientsScheduledController.item.length; i++) {
           if (clientsScheduledController.item[i] == 0) {
-            animationCont[0]!.duration =
-                Duration(seconds: animationCont[0]!.duration!.inSeconds);
+            animationCont[0]!.duration = Duration(seconds: animationCont[0]!.duration!.inSeconds);
             //ver si esta con el tecnico ponerlo parado sin descontar
             animationCont[0]!.forward();
             //verificar si esta con el tecnico y detenerlo
@@ -1295,11 +1219,9 @@ class _HomePageBodyState extends State<HomePageBody>
               animationCont[0]!.stop();
             }
 
-            print(
-                'La aplicación se activeClock() {--1 ${animationCont[0]!.duration!.inSeconds}');
+            print('La aplicación se activeClock() {--1 ${animationCont[0]!.duration!.inSeconds}');
           } else if (clientsScheduledController.item[i] == 1) {
-            animationCont[1]!.duration =
-                Duration(seconds: animationCont[1]!.duration!.inSeconds);
+            animationCont[1]!.duration = Duration(seconds: animationCont[1]!.duration!.inSeconds);
             animationCont[1]!.forward();
             //verificar si esta con el tecnico y detenerlo
             if (clientsScheduledController.clientsAttended2!.attended == 4 ||
@@ -1307,11 +1229,9 @@ class _HomePageBodyState extends State<HomePageBody>
                 clientsScheduledController.clientsAttended2!.attended == 33) {
               animationCont[1]!.stop();
             }
-            print(
-                'La aplicación se activeClock() {--2 ${animationCont[1]!.duration!.inSeconds}');
+            print('La aplicación se activeClock() {--2 ${animationCont[1]!.duration!.inSeconds}');
           } else if (clientsScheduledController.item[i] == 2) {
-            animationCont[2]!.duration =
-                Duration(seconds: animationCont[2]!.duration!.inSeconds);
+            animationCont[2]!.duration = Duration(seconds: animationCont[2]!.duration!.inSeconds);
             animationCont[2]!.forward();
             //verificar si esta con el tecnico y detenerlo
             if (clientsScheduledController.clientsAttended3!.attended == 4 ||
@@ -1319,11 +1239,9 @@ class _HomePageBodyState extends State<HomePageBody>
                 clientsScheduledController.clientsAttended3!.attended == 33) {
               animationCont[2]!.stop();
             }
-            print(
-                'La aplicación se activeClock() {--3 ${animationCont[2]!.duration!.inSeconds}');
+            print('La aplicación se activeClock() {--3 ${animationCont[2]!.duration!.inSeconds}');
           } else if (clientsScheduledController.item[i] == 3) {
-            animationCont[3]!.duration =
-                Duration(seconds: animationCont[3]!.duration!.inSeconds);
+            animationCont[3]!.duration = Duration(seconds: animationCont[3]!.duration!.inSeconds);
             animationCont[3]!.forward();
             //verificar si esta con el tecnico y detenerlo
             if (clientsScheduledController.clientsAttended4!.attended == 4 ||
@@ -1331,8 +1249,7 @@ class _HomePageBodyState extends State<HomePageBody>
                 clientsScheduledController.clientsAttended4!.attended == 33) {
               animationCont[3]!.stop();
             }
-            print(
-                'La aplicación se activeClock() {--4 ${animationCont[3]!.duration!.inSeconds}');
+            print('La aplicación se activeClock() {--4 ${animationCont[3]!.duration!.inSeconds}');
           }
         }
       }
@@ -1341,14 +1258,11 @@ class _HomePageBodyState extends State<HomePageBody>
         print('La aplicación se activeClock() {--9');
         for (var i = 0; i < clientsScheduledController.item.length; i++) {
           if (clientsScheduledController.item[i] == 0) {
-            print(
-                'relojes activos: 1-clientsScheduledController.item[$i]:${clientsScheduledController.item[i]}');
-            print(
-                'relojes activos: 1-:${clientsScheduledController.clientsAttended1!.attended}');
+            print('relojes activos: 1-clientsScheduledController.item[$i]:${clientsScheduledController.item[i]}');
+            print('relojes activos: 1-:${clientsScheduledController.clientsAttended1!.attended}');
             print(
                 'relojes activos: 1-clientsScheduledController.timeClientsAttended1!${clientsScheduledController.timeClientsAttended1!}');
-            animationCont[0]!.duration = Duration(
-                seconds: clientsScheduledController.timeClientsAttended1!);
+            animationCont[0]!.duration = Duration(seconds: clientsScheduledController.timeClientsAttended1!);
             // print(
             //     'value del reloj actual-activeClockLogin()-timeClientsAttended1:${clientsScheduledController.timeClientsAttended1!}');
             animationCont[0]!.forward();
@@ -1359,13 +1273,10 @@ class _HomePageBodyState extends State<HomePageBody>
               animationCont[0]!.stop();
             }
 
-            print(
-                'La aplicación se activeClock() {--8 ${clientsScheduledController.timeClientsAttended1!}');
+            print('La aplicación se activeClock() {--8 ${clientsScheduledController.timeClientsAttended1!}');
           } else if (clientsScheduledController.item[i] == 1) {
-            print(
-                'relojes activos: 2-${clientsScheduledController.clientsAttended2!.attended}');
-            animationCont[1]!.duration = Duration(
-                seconds: clientsScheduledController.timeClientsAttended2!);
+            print('relojes activos: 2-${clientsScheduledController.clientsAttended2!.attended}');
+            animationCont[1]!.duration = Duration(seconds: clientsScheduledController.timeClientsAttended2!);
             animationCont[1]!.forward();
             //verificar si esta con el tecnico y detenerlo
 
@@ -1374,34 +1285,27 @@ class _HomePageBodyState extends State<HomePageBody>
                 clientsScheduledController.clientsAttended2!.attended == 33) {
               animationCont[1]!.stop();
             }
-            print(
-                'La aplicación se activeClock() {--7 ${clientsScheduledController.timeClientsAttended2!}');
+            print('La aplicación se activeClock() {--7 ${clientsScheduledController.timeClientsAttended2!}');
           } else if (clientsScheduledController.item[i] == 2) {
-            print(
-                'relojes activos: 3-${clientsScheduledController.clientsAttended3!.attended}');
-            animationCont[2]!.duration = Duration(
-                seconds: clientsScheduledController.timeClientsAttended3!);
+            print('relojes activos: 3-${clientsScheduledController.clientsAttended3!.attended}');
+            animationCont[2]!.duration = Duration(seconds: clientsScheduledController.timeClientsAttended3!);
             animationCont[2]!.forward();
             if (clientsScheduledController.clientsAttended3!.attended == 4 ||
                 clientsScheduledController.clientsAttended3!.attended == 5 ||
                 clientsScheduledController.clientsAttended3!.attended == 33) {
               animationCont[2]!.stop();
             }
-            print(
-                'La aplicación se activeClock() {--6 ${clientsScheduledController.timeClientsAttended3!}');
+            print('La aplicación se activeClock() {--6 ${clientsScheduledController.timeClientsAttended3!}');
           } else if (clientsScheduledController.item[i] == 3) {
-            print(
-                'relojes activos: 4-${clientsScheduledController.clientsAttended4!.attended}');
-            animationCont[3]!.duration = Duration(
-                seconds: clientsScheduledController.timeClientsAttended4!);
+            print('relojes activos: 4-${clientsScheduledController.clientsAttended4!.attended}');
+            animationCont[3]!.duration = Duration(seconds: clientsScheduledController.timeClientsAttended4!);
             animationCont[3]!.forward();
             if (clientsScheduledController.clientsAttended4!.attended == 4 ||
                 clientsScheduledController.clientsAttended4!.attended == 5 ||
                 clientsScheduledController.clientsAttended4!.attended == 33) {
               animationCont[3]!.stop();
             }
-            print(
-                'La aplicación se activeClock() {--5 ${clientsScheduledController.timeClientsAttended4!}');
+            print('La aplicación se activeClock() {--5 ${clientsScheduledController.timeClientsAttended4!}');
           }
         }
         //llamar aqui y poner en false
@@ -1417,42 +1321,34 @@ class _HomePageBodyState extends State<HomePageBody>
 
       if (loginController.isLoggingInCharge == true) {
         //solo va a entar si viene del login
-        print(
-            'Hubo un cierre inesperado y se estan activando los relojessiiiiii');
+        print('Hubo un cierre inesperado y se estan activando los relojessiiiiii');
 
         activeClockLogin();
       }
-      if (clientsScheduledController.closeIesperado == true &&
-          loginController.isLoggingInCharge == false) {
-        print(
-            'Hubo un cierre inesperado y se estan activando los relojesDDDDDDDDDDDDDDDDDDDDD');
+      if (clientsScheduledController.closeIesperado == true && loginController.isLoggingInCharge == false) {
+        print('Hubo un cierre inesperado y se estan activando los relojesDDDDDDDDDDDDDDDDDDDDD');
         activeClock();
       }
 
       if (clientsScheduledController.activeModifyTime == true) {
         //SI activeModifyTime =  TRUE SUMO TIEMPO
-        print(
-            'tiempo a sumar =  2 EL TIEMPO ACTUAL DEL RELOJ estoy entrando aqui');
+        print('tiempo a sumar =  2 EL TIEMPO ACTUAL DEL RELOJ estoy entrando aqui');
         //aqui verifico qsi hay que agregarle el tiempo algun reloj
         print(
             'activeModifyTime SOY = ${clientsScheduledController.activeModifyTime} Y MANDE ESTE TIEMPO ${clientsScheduledController.modifyTime[clientsScheduledController.modifyTimeSpecific]}');
         int i = clientsScheduledController.modifyTimeSpecific;
-        int value = clientsScheduledController
-            .modifyTime[clientsScheduledController.modifyTimeSpecific];
+        int value = clientsScheduledController.modifyTime[clientsScheduledController.modifyTimeSpecific];
         // Obtén la duración total del AnimationController
         Duration? duracionTotal = animationCont[i]!.duration;
 
 // Obtén el tiempo transcurrido hasta ahora en minutos
-        double tiempoTranscurrido =
-            animationCont[i]!.value * duracionTotal!.inMinutes;
+        double tiempoTranscurrido = animationCont[i]!.value * duracionTotal!.inMinutes;
 
 // Calcula el tiempo restante en minutos
         double tiempoRestante = duracionTotal.inMinutes - tiempoTranscurrido;
 
-        print(
-            'EL TIEMPO ACTUAL DEL RELOJ Tiempo duracionTotal: $duracionTotal');
-        print(
-            'EL TIEMPO ACTUAL DEL RELOJ Tiempo tiempoTranscurrido: ${tiempoTranscurrido.truncate()}');
+        print('EL TIEMPO ACTUAL DEL RELOJ Tiempo duracionTotal: $duracionTotal');
+        print('EL TIEMPO ACTUAL DEL RELOJ Tiempo tiempoTranscurrido: ${tiempoTranscurrido.truncate()}');
         print('EL TIEMPO ACTUAL DEL RELOJ Tiempo restante: $tiempoRestante');
 
         int valueMin = tiempoRestante.truncate() + value;
@@ -1461,13 +1357,11 @@ class _HomePageBodyState extends State<HomePageBody>
         );
 
         animationCont[i]!.duration = nuevaDuracion;
-        print(
-            'EL TIEMPO ACTUAL DEL RELOJ duracionSend YA sera valueMinuto :$valueMin');
+        print('EL TIEMPO ACTUAL DEL RELOJ duracionSend YA sera valueMinuto :$valueMin');
         //aqui actualizar la variable
         //aqui es cuando agregan algun servicio
         //todo aqui poner el metodo
-        loginController.getUpdateTime(valueMin, (i + 1),
-            'build-homePage-i=${i + 1}'); //porque i comienza en 0
+        loginController.getUpdateTime(valueMin, (i + 1), 'build-homePage-i=${i + 1}'); //porque i comienza en 0
 
         animationCont[i]!.reset();
         animationCont[i]!.forward();
@@ -1479,8 +1373,7 @@ class _HomePageBodyState extends State<HomePageBody>
       if (clientsScheduledController.activeModifyTimeRest == true) {
         if (clientsScheduledController.modifyTimeSpecificRest != -99) //reloj 1
         {
-          print(
-              'modificar time de mm 1 estoy aqui en el (clientsScheduledController.modifyTimeSpecificRest != -99)');
+          print('modificar time de mm 1 estoy aqui en el (clientsScheduledController.modifyTimeSpecificRest != -99)');
           int i = clientsScheduledController.modifyTimeSpecificRest;
           int value = clientsScheduledController.modifyTimeSpecificRestTIME;
           // Obtén la duración total del AnimationController
@@ -1488,8 +1381,7 @@ class _HomePageBodyState extends State<HomePageBody>
           print('modificar time de mm i = $i');
           print('modificar time de mm value = $value');
 // Obtén el tiempo transcurrido hasta ahora en minutos
-          double tiempoTranscurrido =
-              animationCont[i]!.value * duracionTotal!.inMinutes;
+          double tiempoTranscurrido = animationCont[i]!.value * duracionTotal!.inMinutes;
 
 // Calcula el tiempo restante en minutos
           double tiempoRestante = duracionTotal.inMinutes - tiempoTranscurrido;
@@ -1506,8 +1398,7 @@ class _HomePageBodyState extends State<HomePageBody>
           //aqui actualizar la variable
           //aqui es cuando eliminan algun servicio
           //todo aqui poner el metodo
-          loginController.getUpdateTime(
-              valueMin, 1, 'build-homePage-1'); //debe ser el reloj 1
+          loginController.getUpdateTime(valueMin, 1, 'build-homePage-1'); //debe ser el reloj 1
           animationCont[i]!.reset();
           animationCont[i]!.forward();
           print('EL TIEMPO ACTUAL DEL RELOJ RESETEADO YA');
@@ -1515,16 +1406,14 @@ class _HomePageBodyState extends State<HomePageBody>
 
         if (clientsScheduledController.modifyTimeSpecificRest1 != -99) //reloj 2
         {
-          print(
-              'modificar time de mm 1 estoy aqui en el (clientsScheduledController.modifyTimeSpecificRest1 != -99)');
+          print('modificar time de mm 1 estoy aqui en el (clientsScheduledController.modifyTimeSpecificRest1 != -99)');
           int i = clientsScheduledController.modifyTimeSpecificRest1;
           int value = clientsScheduledController.modifyTimeSpecificRestTIME1;
           // Obtén la duración total del AnimationController
           Duration? duracionTotal = animationCont[i]!.duration;
 
 // Obtén el tiempo transcurrido hasta ahora en minutos
-          double tiempoTranscurrido =
-              animationCont[i]!.value * duracionTotal!.inMinutes;
+          double tiempoTranscurrido = animationCont[i]!.value * duracionTotal!.inMinutes;
 
 // Calcula el tiempo restante en minutos
           double tiempoRestante = duracionTotal.inMinutes - tiempoTranscurrido;
@@ -1541,24 +1430,21 @@ class _HomePageBodyState extends State<HomePageBody>
           //aqui actualizar la variable
           //aqui es cuando eliminan algun servicio
           //todo aqui poner el metodo
-          loginController.getUpdateTime(
-              valueMin, 2, 'build-homePage-1'); //debe ser el reloj 2
+          loginController.getUpdateTime(valueMin, 2, 'build-homePage-1'); //debe ser el reloj 2
           animationCont[i]!.reset();
           animationCont[i]!.forward();
           print('EL TIEMPO ACTUAL DEL RELOJ RESETEADO YA');
         }
         if (clientsScheduledController.modifyTimeSpecificRest2 != -99) //reloj 3
         {
-          print(
-              'modificar time de mm 1 estoy aqui en el (clientsScheduledController.modifyTimeSpecificRest2 != -99)');
+          print('modificar time de mm 1 estoy aqui en el (clientsScheduledController.modifyTimeSpecificRest2 != -99)');
           int i = clientsScheduledController.modifyTimeSpecificRest2;
           int value = clientsScheduledController.modifyTimeSpecificRestTIME2;
           // Obtén la duración total del AnimationController
           Duration? duracionTotal = animationCont[i]!.duration;
 
 // Obtén el tiempo transcurrido hasta ahora en minutos
-          double tiempoTranscurrido =
-              animationCont[i]!.value * duracionTotal!.inMinutes;
+          double tiempoTranscurrido = animationCont[i]!.value * duracionTotal!.inMinutes;
 
 // Calcula el tiempo restante en minutos
           double tiempoRestante = duracionTotal.inMinutes - tiempoTranscurrido;
@@ -1575,8 +1461,7 @@ class _HomePageBodyState extends State<HomePageBody>
 //aqui actualizar la variable
           //aqui es cuando eliminan algun servicio
           //todo aqui poner el metodo
-          loginController.getUpdateTime(
-              valueMin, 3, 'build-homePage-3'); //debe ser el reloj 3
+          loginController.getUpdateTime(valueMin, 3, 'build-homePage-3'); //debe ser el reloj 3
           animationCont[i]!.reset();
           animationCont[i]!.forward();
           print('EL TIEMPO ACTUAL DEL RELOJ RESETEADO YA');
@@ -1584,16 +1469,14 @@ class _HomePageBodyState extends State<HomePageBody>
 
         if (clientsScheduledController.modifyTimeSpecificRest3 != -99) //reloj 4
         {
-          print(
-              'modificar time de mm 1 estoy aqui en el (clientsScheduledController.modifyTimeSpecificRest3 != -99)');
+          print('modificar time de mm 1 estoy aqui en el (clientsScheduledController.modifyTimeSpecificRest3 != -99)');
           int i = clientsScheduledController.modifyTimeSpecificRest3;
           int value = clientsScheduledController.modifyTimeSpecificRestTIME3;
           // Obtén la duración total del AnimationController
           Duration? duracionTotal = animationCont[i]!.duration;
 
 // Obtén el tiempo transcurrido hasta ahora en minutos
-          double tiempoTranscurrido =
-              animationCont[i]!.value * duracionTotal!.inMinutes;
+          double tiempoTranscurrido = animationCont[i]!.value * duracionTotal!.inMinutes;
 
 // Calcula el tiempo restante en minutos
           double tiempoRestante = duracionTotal.inMinutes - tiempoTranscurrido;
@@ -1610,8 +1493,7 @@ class _HomePageBodyState extends State<HomePageBody>
 //aqui actualizar la variable
           //aqui es cuando eliminan algun servicio
           //todo aqui poner el metodo
-          loginController.getUpdateTime(
-              valueMin, 4, 'build-homePage-4'); //debe ser el reloj 4
+          loginController.getUpdateTime(valueMin, 4, 'build-homePage-4'); //debe ser el reloj 4
           animationCont[i]!.reset();
           animationCont[i]!.forward();
           print('EL TIEMPO ACTUAL DEL RELOJ RESETEADO YA');
@@ -1623,9 +1505,7 @@ class _HomePageBodyState extends State<HomePageBody>
       //AQUI ESCUCHANDO PARA SABER SI TENGO QUE DETENER O REAUNUDAR LOS TIMER
       if (clientsScheduledController.clockchanges == true) {
         //
-        for (var i = 0;
-            i < clientsScheduledController.pausResumeClock.length;
-            i++) {
+        for (var i = 0; i < clientsScheduledController.pausResumeClock.length; i++) {
           int? value = clientsScheduledController.pausResumeClock[i];
           //
           if (value != -99) {
@@ -1656,11 +1536,9 @@ class _HomePageBodyState extends State<HomePageBody>
       // //todo AQUI DETENGO LOS TIMER QUE NO ESTAN VISIBLES
 
       if (clientsScheduledController.clientsScheduledNextServ != null) {
-        String fullName =
-            clientsScheduledController.clientsScheduledNextServ!.client_name!;
+        String fullName = clientsScheduledController.clientsScheduledNextServ!.client_name!;
         //todo1                // Dividir el nombre completo por espacios
-        List<String> partsName =
-            fullName.split(" "); // Tomar los primeros dos nombres (si existen)
+        List<String> partsName = fullName.split(" "); // Tomar los primeros dos nombres (si existen)
         firstName = partsName.isNotEmpty ? partsName[0] : "";
         // String secondName = partsName.length > 1 ? partsName[1] : "";
       }
@@ -1685,233 +1563,174 @@ class _HomePageBodyState extends State<HomePageBody>
         color: Colors.white,
         backgroundColor: const Color(0xFFFDAE2A),
         child: SingleChildScrollView(
-          physics:
-              const AlwaysScrollableScrollPhysics(), // Esto permite que el scroll siempre esté disponible
+          physics: const AlwaysScrollableScrollPhysics(), // Esto permite que el scroll siempre esté disponible
 
           child: ConstrainedBox(
-            constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height * 0.1),
+            constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height * 0.1),
             child: IntrinsicHeight(
               child: Column(
                 //Cart anaranjado grande inicial que tiene el cronometro
                 children: [
-                  clientsScheduledController.getWaitTime() == true &&
-                          loginController.usserPermissionQr == 1
+                  clientsScheduledController.getWaitTime() == true && loginController.usserPermissionQr == 1
                       ? Expanded(
-                          flex: loginController.androidInfoDisplay! >=
-                                  6.6 //propiedades de telefone
+                          flex: loginController.androidInfoDisplay! >= 6.6 //propiedades de telefone
                               ? 12
                               : 13,
                           child: Center(
-                              child: Text(
-                                  'Espera de ${clientsScheduledController.getwaitTimeCount()} segundos',
+                              child: Text('Espera de ${clientsScheduledController.getwaitTimeCount()} segundos',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w700,
                                     fontSize: 16,
                                     color: Color.fromARGB(255, 82, 81, 81),
                                   ))))
                       : Expanded(
-                          flex: loginController.androidInfoDisplay! >=
-                                  6.6 //propiedades de telefone
+                          flex: loginController.androidInfoDisplay! >= 6.6 //propiedades de telefone
                               ? 12
                               : 13,
                           child: Column(
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
-                                child: clientsScheduledController
-                                            .item.isEmpty &&
-                                        (clientsScheduledController
-                                                    .clientsScheduledNextServ ==
-                                                null ||
-                                            (clientsScheduledController
-                                                        .boolFilterShowNext ==
-                                                    false &&
-                                                clientsScheduledController
-                                                        .errorHome !=
-                                                    -99)) &&
+                                child: clientsScheduledController.item.isEmpty &&
+                                        (clientsScheduledController.clientsScheduledNextServ == null ||
+                                            (clientsScheduledController.boolFilterShowNext == false &&
+                                                clientsScheduledController.errorHome != -99)) &&
                                         loginController.usserPermissionQr == 1
                                     ? const SizedBox(
                                         height: 45,
                                       )
-                                    : (clientsScheduledController
-                                                        .clientsScheduledListLength >
-                                                    0 ||
-                                                clientsScheduledController
-                                                        .errorHome ==
-                                                    -99) &&
-                                            loginController.usserPermissionQr ==
-                                                1
+                                    : (clientsScheduledController.clientsScheduledListLength > 0 ||
+                                                clientsScheduledController.errorHome == -99) &&
+                                            loginController.usserPermissionQr == 1
                                         //         ||
                                         // loginController.usserPermissionQr ==
                                         //     2
                                         ? Container(
                                             decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(12)),
+                                              borderRadius: BorderRadius.all(Radius.circular(12)),
                                               color: Colors.white,
                                               //color: Color(0xFFFDAE2A),
                                             ),
                                             child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
                                               children: [
                                                 /*todo texto arriba */ Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8, top: 5),
+                                                  padding: const EdgeInsets.only(left: 8, top: 5),
                                                   child: Align(
-                                                    alignment:
-                                                        Alignment.topLeft,
+                                                    alignment: Alignment.topLeft,
                                                     child: Text(
-                                                      clientsScheduledController
-                                                              .item.isEmpty
+                                                      clientsScheduledController.item.isEmpty
                                                           ? 'Cliente en espera'
                                                           : 'Atendiendo ${clientsScheduledController.item.length} cliente(s)',
                                                       style: const TextStyle(
                                                         fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: Color.fromARGB(
-                                                            255, 82, 81, 81),
+                                                        fontWeight: FontWeight.w700,
+                                                        color: Color.fromARGB(255, 82, 81, 81),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
 
                                                 /*CRONOMETRO*/ Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(2.0),
+                                                  padding: const EdgeInsets.all(2.0),
                                                   //todo AQUI LA LOGICA AL MOSTRAR LOS TIMER
                                                   child: SingleChildScrollView(
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          //AQUI MUESTRA LOS TIMER DE LOS CLIENTES QUE ESTE ATENDIENDO
-                                                          if (clientsScheduledController
-                                                              .item
-                                                              .isNotEmpty) ...[
-                                                            for (int i = 0;
-                                                                i <
-                                                                    clientsScheduledController
-                                                                        .item
-                                                                        .length;
-                                                                i++) ...[
-                                                              cardTimer(
-                                                                clientsList[clientsScheduledController
-                                                                        .item[i]]!
-                                                                    .reservation_id!,
-                                                                i,
-                                                                clientsList[clientsScheduledController
-                                                                        .item[i]]!
-                                                                    .attended!,
-                                                                clientsList[clientsScheduledController
-                                                                        .item[i]]!
-                                                                    .car_id!,
-                                                                clientsList[clientsScheduledController
-                                                                        .item[i]]!
-                                                                    .client_image!,
-                                                                UniqueKey(),
-                                                                clientsList[clientsScheduledController
-                                                                        .item[i]]!
-                                                                    .client_name!,
-                                                                clientsScheduledController,
-                                                                animationCont[
-                                                                    clientsScheduledController
-                                                                            .item[
-                                                                        i]]!,
-                                                              ),
-                                                            ],
-                                                          ]
-                                                          //SI NO ESTA ATENDIENDOA NADIE Y HAY GENTE EN LA COLA ESPERANDO CARGA EL TIMER INICIAL
-                                                          else if (clientsScheduledController
-                                                                  .clientsScheduledNextServ !=
-                                                              null) ...[
-                                                            //AQUI VERIFICO SI YA ESCANEO EL CODIGO QR
-                                                            if (loginController
-                                                                        .codigoQrValid() ==
-                                                                    true &&
-                                                                clientsScheduledController
-                                                                    .item
-                                                                    .isEmpty) ...[
-                                                              cardTimer2(
-                                                                UniqueKey(),
-                                                                'Esperando',
-                                                                clientsScheduledController,
-                                                                clientsScheduledController
-                                                                    .animationControllerInitial!,
-                                                              ),
-                                                            ] else if (loginController
-                                                                    .usserPermissionQr ==
-                                                                2) ...[
-                                                              const Center(
-                                                                child: Column(
-                                                                  children: [
-                                                                    SizedBox(
-                                                                      height:
-                                                                          35,
-                                                                    ),
-                                                                    Text(
-                                                                      'Debe de esperar la respuesta',
-                                                                      style: TextStyle(
-                                                                          // color: Colors.white,
-                                                                          color: Color.fromARGB(255, 39, 39, 39),
-                                                                          fontWeight: FontWeight.w600),
-                                                                    ),
-                                                                    Text(
-                                                                      'a su solicitud',
-                                                                      style: TextStyle(
-                                                                          //color: Colors.white,
-                                                                          color: Color.fromARGB(255, 39, 39, 39),
-                                                                          fontWeight: FontWeight.w600),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height:
-                                                                          45,
-                                                                    ),
-                                                                  ],
+                                                    scrollDirection: Axis.horizontal,
+                                                    child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                                                      //AQUI MUESTRA LOS TIMER DE LOS CLIENTES QUE ESTE ATENDIENDO
+                                                      if (clientsScheduledController.item.isNotEmpty) ...[
+                                                        for (int i = 0;
+                                                            i < clientsScheduledController.item.length;
+                                                            i++) ...[
+                                                          cardTimer(
+                                                            clientsList[clientsScheduledController.item[i]]!
+                                                                .reservation_id!,
+                                                            i,
+                                                            clientsList[clientsScheduledController.item[i]]!.attended!,
+                                                            clientsList[clientsScheduledController.item[i]]!.car_id!,
+                                                            clientsList[clientsScheduledController.item[i]]!
+                                                                .client_image!,
+                                                            UniqueKey(),
+                                                            clientsList[clientsScheduledController.item[i]]!
+                                                                .client_name!,
+                                                            clientsScheduledController,
+                                                            animationCont[clientsScheduledController.item[i]]!,
+                                                          ),
+                                                        ],
+                                                      ]
+                                                      //SI NO ESTA ATENDIENDOA NADIE Y HAY GENTE EN LA COLA ESPERANDO CARGA EL TIMER INICIAL
+                                                      else if (clientsScheduledController.clientsScheduledNextServ !=
+                                                          null) ...[
+                                                        //AQUI VERIFICO SI YA ESCANEO EL CODIGO QR
+                                                        if (loginController.codigoQrValid() == true &&
+                                                            clientsScheduledController.item.isEmpty) ...[
+                                                          cardTimer2(
+                                                            UniqueKey(),
+                                                            'Esperando',
+                                                            clientsScheduledController,
+                                                            clientsScheduledController.animationControllerInitial!,
+                                                          ),
+                                                        ] else if (loginController.usserPermissionQr == 2) ...[
+                                                          const Center(
+                                                            child: Column(
+                                                              children: [
+                                                                SizedBox(
+                                                                  height: 35,
                                                                 ),
-                                                              )
-                                                            ] else ...[
-                                                              const Center(
-                                                                child: Column(
-                                                                  children: [
-                                                                    SizedBox(
-                                                                      height:
-                                                                          35,
-                                                                    ),
-                                                                    Text(
-                                                                      'Debe de escanear el código Qr ',
-                                                                      style: TextStyle(
-                                                                          // color: Colors.white,
-                                                                          color: Color.fromARGB(255, 39, 39, 39),
-                                                                          fontWeight: FontWeight.w600),
-                                                                    ),
-                                                                    Text(
-                                                                      'para atender clientes',
-                                                                      style: TextStyle(
-                                                                          //color: Colors.white,
-                                                                          color: Color.fromARGB(255, 39, 39, 39),
-                                                                          fontWeight: FontWeight.w600),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height:
-                                                                          45,
-                                                                    ),
-                                                                  ],
+                                                                Text(
+                                                                  'Debe de esperar la respuesta',
+                                                                  style: TextStyle(
+                                                                      // color: Colors.white,
+                                                                      color: Color.fromARGB(255, 39, 39, 39),
+                                                                      fontWeight: FontWeight.w600),
                                                                 ),
-                                                              )
-                                                            ]
-                                                          ] else ...[
-                                                            const SizedBox(
-                                                              height: 45,
+                                                                Text(
+                                                                  'a su solicitud',
+                                                                  style: TextStyle(
+                                                                      //color: Colors.white,
+                                                                      color: Color.fromARGB(255, 39, 39, 39),
+                                                                      fontWeight: FontWeight.w600),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 45,
+                                                                ),
+                                                              ],
                                                             ),
-                                                          ]
-                                                        ]),
+                                                          )
+                                                        ] else ...[
+                                                          const Center(
+                                                            child: Column(
+                                                              children: [
+                                                                SizedBox(
+                                                                  height: 35,
+                                                                ),
+                                                                Text(
+                                                                  'Debe de escanear el código Qr ',
+                                                                  style: TextStyle(
+                                                                      // color: Colors.white,
+                                                                      color: Color.fromARGB(255, 39, 39, 39),
+                                                                      fontWeight: FontWeight.w600),
+                                                                ),
+                                                                Text(
+                                                                  'para atender clientes',
+                                                                  style: TextStyle(
+                                                                      //color: Colors.white,
+                                                                      color: Color.fromARGB(255, 39, 39, 39),
+                                                                      fontWeight: FontWeight.w600),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 45,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ]
+                                                      ] else ...[
+                                                        const SizedBox(
+                                                          height: 45,
+                                                        ),
+                                                      ]
+                                                    ]),
                                                   ),
                                                   //FIN CLIENTES QUE ESTAN EN COLA
                                                 ),
@@ -1925,56 +1744,38 @@ class _HomePageBodyState extends State<HomePageBody>
                                             height: 80,
                                           ),
                               ),
-                              clientsScheduledController.boolControlVision ==
-                                          true &&
+                              clientsScheduledController.boolControlVision == true &&
                                       loginController.usserPermissionQr == 1
-                                  ? clientsScheduledController
-                                                  .boolFilterShowNext ==
-                                              true ||
-                                          (clientsScheduledController
-                                                      .errorHome ==
-                                                  -99 &&
-                                              clientsScheduledController
-                                                      .boolFilterShowNextAux ==
+                                  ? clientsScheduledController.boolFilterShowNext == true ||
+                                          (clientsScheduledController.errorHome == -99 &&
+                                              clientsScheduledController.boolFilterShowNextAux ==
                                                   true) //saber si dio error y estaba para mostrar el siguiente en boolFilterShowNextAux
-                                      ? cardClientTails(
-                                          clientsScheduledController,
-                                          context,
-                                          firstName,
-                                          animationCont)
+                                      ? cardClientTails(clientsScheduledController, context, firstName, animationCont)
                                       :
 
                                       //si hubiera algien en cola
-                                      (clientsScheduledController
-                                                  .clientsScheduledListLengthTail >
-                                              0)
+                                      (clientsScheduledController.clientsScheduledListLengthTail > 0)
                                           ? const Column(
                                               children: [
                                                 Text(
                                                   'Cliente atendiéndose',
                                                   style: TextStyle(
-                                                      color: Color.fromARGB(
-                                                          255, 82, 81, 81),
-                                                      fontWeight:
-                                                          FontWeight.w700),
+                                                      color: Color.fromARGB(255, 82, 81, 81),
+                                                      fontWeight: FontWeight.w700),
                                                 ),
                                                 Text(
                                                   'Esperando para mostrar el siguiente',
                                                   style: TextStyle(
-                                                      color: Color.fromARGB(
-                                                          255, 82, 81, 81),
-                                                      fontWeight:
-                                                          FontWeight.w500),
+                                                      color: Color.fromARGB(255, 82, 81, 81),
+                                                      fontWeight: FontWeight.w500),
                                                 ),
                                               ],
                                             )
-                                          : const Text(
-                                              'No hay clientes en cola.',
+                                          : const Text('No hay clientes en cola.',
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w700,
                                                 fontSize: 16,
-                                                color: Color.fromARGB(
-                                                    255, 82, 81, 81),
+                                                color: Color.fromARGB(255, 82, 81, 81),
                                               ))
                                   : loginController.usserPermissionQr == 2
                                       ? const Center(
@@ -1987,19 +1788,15 @@ class _HomePageBodyState extends State<HomePageBody>
                                                 'Debe de esperar la respuesta',
                                                 style: TextStyle(
                                                     // color: Colors.white,
-                                                    color: Color.fromARGB(
-                                                        255, 39, 39, 39),
-                                                    fontWeight:
-                                                        FontWeight.w600),
+                                                    color: Color.fromARGB(255, 39, 39, 39),
+                                                    fontWeight: FontWeight.w600),
                                               ),
                                               Text(
                                                 'a su solicitud',
                                                 style: TextStyle(
                                                     //color: Colors.white,
-                                                    color: Color.fromARGB(
-                                                        255, 39, 39, 39),
-                                                    fontWeight:
-                                                        FontWeight.w600),
+                                                    color: Color.fromARGB(255, 39, 39, 39),
+                                                    fontWeight: FontWeight.w600),
                                               ),
                                               SizedBox(
                                                 height: 45,
@@ -2007,8 +1804,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                             ],
                                           ),
                                         )
-                                      : loginController.usserPermissionQr ==
-                                              null
+                                      : loginController.usserPermissionQr == null
                                           ? Text('')
                                           : const Column(
                                               children: [
@@ -2019,8 +1815,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                                   child: SizedBox(
                                                     width: 24,
                                                     height: 24,
-                                                    child:
-                                                        CircularProgressIndicator(
+                                                    child: CircularProgressIndicator(
                                                       color: Color(0xFFFDAE2A),
                                                       strokeWidth: 3,
                                                     ),
@@ -2040,14 +1835,12 @@ class _HomePageBodyState extends State<HomePageBody>
                             child: Column(
                               children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     const Text(
                                       'Dashboard',
                                       style: TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 82, 81, 81),
+                                          color: Color.fromARGB(255, 82, 81, 81),
                                           fontSize: 16,
                                           fontWeight: FontWeight.w700),
                                     ),
@@ -2067,31 +1860,18 @@ class _HomePageBodyState extends State<HomePageBody>
                                 Column(
                                   children: [
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Container(
-                                          width: (MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.46), //Tamaño de los Cards
-                                          height: loginController
-                                                      .androidInfoWidth! >=
-                                                  867.42 //propiedades de telefone
-                                              ? (MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.198)
-                                              : (MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.170),
+                                          width: (MediaQuery.of(context).size.width * 0.46), //Tamaño de los Cards
+                                          height: loginController.androidInfoWidth! >= 867.42 //propiedades de telefone
+                                              ? (MediaQuery.of(context).size.height * 0.198)
+                                              : (MediaQuery.of(context).size.height * 0.170),
                                           child: cartsHome(
                                               context,
                                               12,
                                               const Color(0xFF19CF9E),
-                                              const Color.fromARGB(
-                                                  255, 231, 233, 233),
+                                              const Color.fromARGB(255, 231, 233, 233),
                                               'Agenda',
                                               'Clientes Agendados',
                                               Icons.perm_contact_calendar),
@@ -2100,26 +1880,22 @@ class _HomePageBodyState extends State<HomePageBody>
                                           onTap: () async {
                                             Get.dialog(
                                               const Center(
-                                                child:
-                                                    CircularProgressIndicator(
+                                                child: CircularProgressIndicator(
                                                   color: Color(0xFFFDAE2A),
                                                 ),
                                               ),
                                               barrierDismissible: false,
                                             ); //Get.back();
-                                            await Future.delayed(const Duration(
-                                                milliseconds: 500));
+                                            await Future.delayed(const Duration(milliseconds: 500));
                                             await coexCont.fetchEstadist0();
 
-                                            pagesConfigC.onTabTapped(
-                                                3); //index = 3 -> /StatisticPage
+                                            pagesConfigC.onTabTapped(3); //index = 3 -> /StatisticPage
                                           },
                                           child: cartsHome(
                                               context,
                                               12,
                                               const Color(0xFF4470F3),
-                                              Color.fromARGB(
-                                                  255, 231, 233, 233),
+                                              Color.fromARGB(255, 231, 233, 233),
                                               'Estadísticas',
                                               'Revisa Tus Ingresos',
                                               Icons.bar_chart),
@@ -2127,13 +1903,10 @@ class _HomePageBodyState extends State<HomePageBody>
                                       ],
                                     ),
                                     SizedBox(
-                                      height:
-                                          (MediaQuery.of(context).size.height *
-                                              0.01),
+                                      height: (MediaQuery.of(context).size.height * 0.01),
                                     ),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         InkWell(
                                           onTap: () async {},
@@ -2141,8 +1914,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                               context,
                                               12,
                                               const Color(0xFFFF6750),
-                                              Color.fromARGB(
-                                                  255, 231, 233, 233),
+                                              Color.fromARGB(255, 231, 233, 233),
                                               'Notificaciones',
                                               'Tus Notificaciones',
                                               Icons.notifications),
@@ -2153,8 +1925,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                               context,
                                               12,
                                               const Color(0xFFFDAE2A),
-                                              Color.fromARGB(
-                                                  255, 231, 233, 233),
+                                              Color.fromARGB(255, 231, 233, 233),
                                               'Convivencia',
                                               'Cumplimiento de Reglas',
                                               Icons.star),
@@ -2178,13 +1949,9 @@ class _HomePageBodyState extends State<HomePageBody>
     //todoooooooooooooooooooooooooooooooooooooooooo
   }
 
-  cardClientTails(
-      ClientsScheduledController clientsScheduledController2,
-      BuildContext context,
-      String firstName,
+  cardClientTails(ClientsScheduledController clientsScheduledController2, BuildContext context, String firstName,
       List<AnimationController?> animationCont) {
-    return GetBuilder<ClientsScheduledController>(
-        builder: (clientsScheduledControllerE) {
+    return GetBuilder<ClientsScheduledController>(builder: (clientsScheduledControllerE) {
       return Padding(
         padding: const EdgeInsets.only(
           left: 8,
@@ -2192,8 +1959,7 @@ class _HomePageBodyState extends State<HomePageBody>
         ),
         child: FittedBox(
             fit: BoxFit.contain,
-            child: clientsScheduledControllerE.clientsScheduledNextServ !=
-                        null &&
+            child: clientsScheduledControllerE.clientsScheduledNextServ != null &&
                     clientsScheduledControllerE.getWaitTime() == false
                 //  ||
                 //         LocalStorage.prefs.getBool('valueClockActiv') == false
@@ -2210,31 +1976,24 @@ class _HomePageBodyState extends State<HomePageBody>
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: Colors.white, // Color blanco para el borde
-                              width:
-                                  1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                              width: 1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                             ),
                             color: Color(0xFFFF6750),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(18)),
+                            borderRadius: const BorderRadius.all(Radius.circular(18)),
                           ),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: const Color(
-                                  0xFFFF6750), // Color de fondo en verde
+                              primary: const Color(0xFFFF6750), // Color de fondo en verde
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    16.0), // Ajusta el radio según tus necesidades
+                                borderRadius: BorderRadius.circular(16.0), // Ajusta el radio según tus necesidades
                               ),
                             ),
                             onPressed: () async {
                               if (clientsScheduledController.errorHome != -99) {
                                 if (loginController.codigoQrValid() == true &&
-                                    loginController.usserPermissionQrAntes ==
-                                        1) {
-                                  clientsScheduledControllerE
-                                      .setBoolFilterShowNext(false);
-                                  clientsScheduledControllerE
-                                      .setBoolControlVision(false);
+                                    loginController.usserPermissionQrAntes == 1) {
+                                  clientsScheduledControllerE.setBoolFilterShowNext(false);
+                                  clientsScheduledControllerE.setBoolControlVision(false);
                                   // int resulButton = 0;
                                   // resulButton = loginController.handleButtonClick(
                                   //     clientsScheduledController
@@ -2248,25 +2007,16 @@ class _HomePageBodyState extends State<HomePageBody>
                                   //     loginController.idProfessionalLoggedIn,
                                   //     'EL profesional "${loginController.nameUserLoggedIn}" está rechazando a "${clientsScheduledControllerE.clientsScheduledNextServ!.client_name}"',
                                   //     'Ambos'); //esto es para quele llegue a coordinador y encargado
-                                  int rest =
-                                      await clientsScheduledControllerE
-                                          .acceptOrRejectClient(
-                                              clientsScheduledControllerE
-                                                  .clientsScheduledNextServ!
-                                                  .reservation_id,
-                                              3,
-                                              loginController
-                                                  .tokenUserLoggedIn);
+                                  int rest = await clientsScheduledControllerE.acceptOrRejectClient(
+                                      clientsScheduledControllerE.clientsScheduledNextServ!.reservation_id,
+                                      3,
+                                      loginController.tokenUserLoggedIn);
                                   if (rest == 1) {
-                                    LocalStorage.prefs
-                                        .setInt('valueClockIni', 180);
-                                    clientsScheduledController
-                                        .setTotalTimeInitial(180);
-                                    LocalStorage.prefs
-                                        .setBool('valueClockActiv', false);
+                                    LocalStorage.prefs.setInt('valueClockIni', 180);
+                                    clientsScheduledController.setTotalTimeInitial(180);
+                                    LocalStorage.prefs.setBool('valueClockActiv', false);
 
-                                    clientsScheduledController
-                                        .animationControllerInitial!
+                                    clientsScheduledController.animationControllerInitial!
                                       ..duration = Duration(seconds: 180)
                                       ..reset()
                                       ..stop();
@@ -2279,59 +2029,41 @@ class _HomePageBodyState extends State<HomePageBody>
                                   //     .setBoolControlVision(true);
 
                                   //}
-                                } else if (loginController.usserPermissionQr ==
-                                    2) {
+                                } else if (loginController.usserPermissionQr == 2) {
                                   Get.snackbar(
                                     'Mensaje',
                                     'Debe de esperar la respuesta a su solicitud',
-                                    duration:
-                                        const Duration(milliseconds: 2500),
-                                    backgroundColor: const Color.fromARGB(
-                                        118, 255, 255, 255),
+                                    duration: const Duration(milliseconds: 2500),
+                                    backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                     showProgressIndicator: true,
-                                    progressIndicatorBackgroundColor:
-                                        const Color.fromARGB(
-                                            255, 203, 205, 209),
-                                    progressIndicatorValueColor:
-                                        const AlwaysStoppedAnimation(
-                                            Color(0xFFFDAE2A)),
+                                    progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                    progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                     overlayBlur: 3,
                                   );
                                 } else {
                                   Get.snackbar(
                                     'Mensaje',
                                     'Debe de escanear el código Qr de entrada',
-                                    duration:
-                                        const Duration(milliseconds: 2500),
-                                    backgroundColor: const Color.fromARGB(
-                                        118, 255, 255, 255),
+                                    duration: const Duration(milliseconds: 2500),
+                                    backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                     showProgressIndicator: true,
-                                    progressIndicatorBackgroundColor:
-                                        const Color.fromARGB(
-                                            255, 203, 205, 209),
-                                    progressIndicatorValueColor:
-                                        const AlwaysStoppedAnimation(
-                                            Color(0xFFFDAE2A)),
+                                    progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                    progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                     overlayBlur: 3,
                                   );
                                 }
                               } else {
                                 //mostrar mensaje de error de conexion
                                 loginController.showConnectionError();
-                                await Future.delayed(
-                                    Duration(milliseconds: 1000));
+                                await Future.delayed(Duration(milliseconds: 1000));
                                 Get.snackbar(
                                   'Mensaje',
                                   'Vuelva a intentarlo, hubo problema de conexión.',
                                   duration: const Duration(milliseconds: 2500),
-                                  backgroundColor:
-                                      const Color.fromARGB(118, 255, 255, 255),
+                                  backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                   showProgressIndicator: true,
-                                  progressIndicatorBackgroundColor:
-                                      const Color.fromARGB(255, 203, 205, 209),
-                                  progressIndicatorValueColor:
-                                      const AlwaysStoppedAnimation(
-                                          Color(0xFFFDAE2A)),
+                                  progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                   overlayBlur: 3,
                                 );
                               }
@@ -2357,29 +2089,22 @@ class _HomePageBodyState extends State<HomePageBody>
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
                                       children: [
                                         const Icon(
                                           Icons.person,
-                                          color: const Color.fromARGB(
-                                              255, 43, 44, 49),
+                                          color: const Color.fromARGB(255, 43, 44, 49),
                                           size: 22,
                                         ),
                                         Text(
-                                          clientCord.truncateText(
-                                              firstName, 13),
+                                          clientCord.truncateText(firstName, 13),
                                           softWrap: true,
-                                          style: const TextStyle(
-                                              height: 1.0,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 20),
+                                          style:
+                                              const TextStyle(height: 1.0, fontWeight: FontWeight.w600, fontSize: 20),
                                         ),
                                       ],
                                     ),
@@ -2387,9 +2112,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                       padding: const EdgeInsets.only(right: 10),
                                       child: Text(
                                           //AQUI ETSA EL TIEMPO TOTAL DEL SERVICIO
-                                          (clientsScheduledControllerE
-                                              .clientsScheduledNextServ!
-                                              .total_time!),
+                                          (clientsScheduledControllerE.clientsScheduledNextServ!.total_time!),
                                           style: const TextStyle(
                                             height: 1.2,
                                             fontSize: 16,
@@ -2400,23 +2123,15 @@ class _HomePageBodyState extends State<HomePageBody>
                                 ),
                                 Expanded(
                                   child: ListView.builder(
-                                    itemCount: clientsScheduledControllerE
-                                                .clientsScheduledNextServ!
-                                                .services!
-                                                .length >
-                                            2
-                                        ? 2
-                                        : clientsScheduledControllerE
-                                            .clientsScheduledNextServ!
-                                            .services!
-                                            .length,
+                                    itemCount:
+                                        clientsScheduledControllerE.clientsScheduledNextServ!.services!.length > 2
+                                            ? 2
+                                            : clientsScheduledControllerE.clientsScheduledNextServ!.services!.length,
                                     itemBuilder: (context, index) => Row(
                                       children: [
                                         Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               children: [
@@ -2428,12 +2143,8 @@ class _HomePageBodyState extends State<HomePageBody>
                                                 ),
                                                 Text(
                                                   clientsScheduledControllerE
-                                                      .clientsScheduledNextServ!
-                                                      .services![index]
-                                                      .name,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w700),
+                                                      .clientsScheduledNextServ!.services![index].name,
+                                                  style: const TextStyle(fontWeight: FontWeight.w700),
                                                 ),
                                               ],
                                             ),
@@ -2452,49 +2163,33 @@ class _HomePageBodyState extends State<HomePageBody>
                           width: (MediaQuery.of(context).size.width * 0.20),
                           decoration: BoxDecoration(
                               border: Border.all(
-                                color:
-                                    Colors.white, // Color blanco para el borde
-                                width:
-                                    1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                                color: Colors.white, // Color blanco para el borde
+                                width: 1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                               ),
                               color: const Color(0xFF19CF9E),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(18))),
+                              borderRadius: const BorderRadius.all(Radius.circular(18))),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: const Color(
-                                  0xFF19CF9E), // Color de fondo en verde
+                              primary: const Color(0xFF19CF9E), // Color de fondo en verde
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    16.0), // Ajusta el radio según tus necesidades
+                                borderRadius: BorderRadius.circular(16.0), // Ajusta el radio según tus necesidades
                               ),
                             ),
                             onPressed: () async {
                               //AQUI VEO SI YA ESCANEO EL CODIGO QR Y ESTA EN EL LOCAL
                               if (clientsScheduledController.errorHome != -99) {
                                 if (loginController.codigoQrValid() == true &&
-                                    loginController.usserPermissionQrAntes ==
-                                        1 &&
-                                    clientsScheduledControllerE
-                                            .clientsScheduledNextServ !=
-                                        null &&
-                                    clientsScheduledControllerE
-                                            .clientsScheduledNextServ!
-                                            .reservation_id! >
-                                        0) {
+                                    loginController.usserPermissionQrAntes == 1 &&
+                                    clientsScheduledControllerE.clientsScheduledNextServ != null &&
+                                    clientsScheduledControllerE.clientsScheduledNextServ!.reservation_id! > 0) {
                                   loginController.setMakeCall(false);
-                                  clientsScheduledControllerE
-                                      .setBoolControlVision(false);
-                                  clientsScheduledControllerE
-                                      .setBoolFilterShowNext(false);
+                                  clientsScheduledControllerE.setBoolControlVision(false);
+                                  clientsScheduledControllerE.setBoolFilterShowNext(false);
                                   //aqui poner que muestre un cargando
 
                                   int resulButton = 0;
-                                  resulButton =
-                                      loginController.handleButtonClick(
-                                          clientsScheduledControllerE
-                                              .clientsScheduledNextServ!
-                                              .reservation_id!);
+                                  resulButton = loginController.handleButtonClick(
+                                      clientsScheduledControllerE.clientsScheduledNextServ!.reservation_id!);
                                   if (resulButton == 1) {
                                     //aqui manda aceptar, es decir atender este cliente
                                     //aqui intento hacer que cuando acepte no ce vea el siguiente en la lista
@@ -2505,136 +2200,89 @@ class _HomePageBodyState extends State<HomePageBody>
                                         false); //este es para saber si hay algun cliente esperando para mandar la notificación
                                     // detengo el timer de 2 minutos
 
-                                    LocalStorage.prefs
-                                        .setInt('valueClockIni', 180);
-                                    clientsScheduledController
-                                        .setTotalTimeInitial(180);
-                                    LocalStorage.prefs
-                                        .setBool('valueClockActiv', false);
+                                    LocalStorage.prefs.setInt('valueClockIni', 180);
+                                    clientsScheduledController.setTotalTimeInitial(180);
+                                    LocalStorage.prefs.setBool('valueClockActiv', false);
 
-                                    clientsScheduledController
-                                        .animationControllerInitial!
+                                    clientsScheduledController.animationControllerInitial!
                                       ..duration = Duration(seconds: 180)
                                       ..reset()
                                       ..stop();
                                     // detengo todos los timers que deben detenerse
-                                    for (int j = 0;
-                                        j <
-                                            clientsScheduledControllerE
-                                                .itemDel.length;
-                                        j++) {
-                                      animationCont[clientsScheduledControllerE
-                                              .itemDel[j]]!
-                                          .stop();
-                                      animationCont[clientsScheduledControllerE
-                                              .itemDel[j]]!
-                                          .reset();
+                                    for (int j = 0; j < clientsScheduledControllerE.itemDel.length; j++) {
+                                      animationCont[clientsScheduledControllerE.itemDel[j]]!.stop();
+                                      animationCont[clientsScheduledControllerE.itemDel[j]]!.reset();
                                     }
-                                    await clientsScheduledControllerE
-                                        .newClientAttended(
-                                            clientsScheduledControllerE
-                                                .clientsScheduledNextServ!,
-                                            clientsScheduledControllerE
-                                                .availability);
+                                    await clientsScheduledControllerE.newClientAttended(
+                                        clientsScheduledControllerE.clientsScheduledNextServ!,
+                                        clientsScheduledControllerE.availability);
 
                                     //
                                     //
                                     //
                                     //HACE LAS VERIFICACIONES NECESARIAS PARA ACTIVAR LOS RELOJES QUE NECESITEN SER ACTIVADOS
-                                    if (clientsScheduledControllerE.busyClock ==
-                                        0) {
-                                      animationCont[0]!.duration = Duration(
-                                          seconds: clientsScheduledControllerE
-                                              .timeClientsAttended1!);
+                                    if (clientsScheduledControllerE.busyClock == 0) {
+                                      animationCont[0]!.duration =
+                                          Duration(seconds: clientsScheduledControllerE.timeClientsAttended1!);
                                       animationCont[0]!.forward();
-                                    } else if (clientsScheduledControllerE
-                                            .busyClock ==
-                                        1) {
-                                      animationCont[1]!.duration = Duration(
-                                          seconds: clientsScheduledControllerE
-                                              .timeClientsAttended2!);
+                                    } else if (clientsScheduledControllerE.busyClock == 1) {
+                                      animationCont[1]!.duration =
+                                          Duration(seconds: clientsScheduledControllerE.timeClientsAttended2!);
                                       animationCont[1]!.forward();
-                                    } else if (clientsScheduledControllerE
-                                            .busyClock ==
-                                        2) {
-                                      animationCont[2]!.duration = Duration(
-                                          seconds: clientsScheduledControllerE
-                                              .timeClientsAttended3!);
+                                    } else if (clientsScheduledControllerE.busyClock == 2) {
+                                      animationCont[2]!.duration =
+                                          Duration(seconds: clientsScheduledControllerE.timeClientsAttended3!);
                                       animationCont[2]!.forward();
-                                    } else if (clientsScheduledControllerE
-                                            .busyClock ==
-                                        3) {
-                                      animationCont[3]!.duration = Duration(
-                                          seconds: clientsScheduledControllerE
-                                              .timeClientsAttended4!);
+                                    } else if (clientsScheduledControllerE.busyClock == 3) {
+                                      animationCont[3]!.duration =
+                                          Duration(seconds: clientsScheduledControllerE.timeClientsAttended4!);
                                       animationCont[3]!.forward();
                                     }
 
                                     //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
-                                    await clientsScheduledControllerE
-                                        .acceptOrRejectClient(
-                                            clientsScheduledControllerE
-                                                .clientsScheduledNextServ!
-                                                .reservation_id,
-                                            1,
-                                            loginController.tokenUserLoggedIn);
+                                    await clientsScheduledControllerE.acceptOrRejectClient(
+                                        clientsScheduledControllerE.clientsScheduledNextServ!.reservation_id,
+                                        1,
+                                        loginController.tokenUserLoggedIn);
                                   }
                                   loginController.setMakeCall(true);
                                   // clientsScheduledControllerE
                                   //     .setBoolControlVision(true);
-                                } else if (loginController.usserPermissionQr ==
-                                    2) {
+                                } else if (loginController.usserPermissionQr == 2) {
                                   Get.snackbar(
                                     'Mensaje',
                                     'Debe de esperar la respuesta a su solicitud',
-                                    duration:
-                                        const Duration(milliseconds: 2500),
-                                    backgroundColor: const Color.fromARGB(
-                                        118, 255, 255, 255),
+                                    duration: const Duration(milliseconds: 2500),
+                                    backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                     showProgressIndicator: true,
-                                    progressIndicatorBackgroundColor:
-                                        const Color.fromARGB(
-                                            255, 203, 205, 209),
-                                    progressIndicatorValueColor:
-                                        const AlwaysStoppedAnimation(
-                                            Color(0xFFFDAE2A)),
+                                    progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                    progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                     overlayBlur: 3,
                                   );
                                 } else {
                                   Get.snackbar(
                                     'Mensaje',
                                     'Debe de escanear el código Qr de entrada',
-                                    duration:
-                                        const Duration(milliseconds: 2500),
-                                    backgroundColor: const Color.fromARGB(
-                                        118, 255, 255, 255),
+                                    duration: const Duration(milliseconds: 2500),
+                                    backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                     showProgressIndicator: true,
-                                    progressIndicatorBackgroundColor:
-                                        const Color.fromARGB(
-                                            255, 203, 205, 209),
-                                    progressIndicatorValueColor:
-                                        const AlwaysStoppedAnimation(
-                                            Color(0xFFFDAE2A)),
+                                    progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                    progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                     overlayBlur: 3,
                                   );
                                 }
                               } else {
                                 //mostrar mensaje de error de conexion
                                 loginController.showConnectionError();
-                                await Future.delayed(
-                                    Duration(milliseconds: 1000));
+                                await Future.delayed(Duration(milliseconds: 1000));
                                 Get.snackbar(
                                   'Mensaje',
                                   'Vuelva a intentarlo, hubo problema de conexión..',
                                   duration: const Duration(milliseconds: 2500),
-                                  backgroundColor:
-                                      const Color.fromARGB(118, 255, 255, 255),
+                                  backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                   showProgressIndicator: true,
-                                  progressIndicatorBackgroundColor:
-                                      const Color.fromARGB(255, 203, 205, 209),
-                                  progressIndicatorValueColor:
-                                      const AlwaysStoppedAnimation(
-                                          Color(0xFFFDAE2A)),
+                                  progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                   overlayBlur: 3,
                                 );
                               }
@@ -2650,8 +2298,7 @@ class _HomePageBodyState extends State<HomePageBody>
                     ),
                   )
                 : (clientsScheduledController.clientsScheSalon == 0) &&
-                        clientsScheduledControllerE.clientsScheduledNextServ ==
-                            null
+                        clientsScheduledControllerE.clientsScheduledNextServ == null
                     ? const SizedBox(
                         height: 100,
                         child: Center(
@@ -2718,8 +2365,7 @@ class _HomePageBodyState extends State<HomePageBody>
     double fontSizeText = (MediaQuery.of(context).size.width * 0.030);
     // Dividir el nombre completo por espacios
 
-    List<String> partsName =
-        name.split(" "); // Tomar los primeros dos nombres (si existen)
+    List<String> partsName = name.split(" "); // Tomar los primeros dos nombres (si existen)
     String firstName = partsName.isNotEmpty ? partsName[0] : "";
     // String secondName = partsName.length > 1 ? partsName[1] : "";
     int hoursN = 0;
@@ -2762,16 +2408,15 @@ class _HomePageBodyState extends State<HomePageBody>
               if (isPaused == true || isCompleted == true) {
                 //aqui si el reloj esta detenido es que esta con el tecnico
                 // aqui selecciono el cliente
-                await clientsScheduledController.metodsClients(
-                    index, carrId, idreservation, name, imag);
+                await clientsScheduledController.metodsClients(index, carrId, idreservation, name, imag);
                 print('ya páse por aqui-1');
                 //todo FIN esto estaba en la pagina del modal al dar en Ver carrito
 
                 //aqui devuelve en category_branch las categorias
                 //aqui devuelve en category_products los productos por categorias
                 await controllerProduct
-                    .metdNewServiceProduct(loginController.branchIdLoggedIn,
-                        loginController.idProfessionalLoggedIn, carrId)
+                    .metdNewServiceProduct(
+                        loginController.branchIdLoggedIn, loginController.idProfessionalLoggedIn, carrId)
                     .then((result1) async {
                   if (result1 == 1) {
                     print('ya páse por aqui-2');
@@ -2805,10 +2450,8 @@ class _HomePageBodyState extends State<HomePageBody>
               duration: const Duration(milliseconds: 2500),
               backgroundColor: const Color.fromARGB(118, 255, 255, 255),
               showProgressIndicator: true,
-              progressIndicatorBackgroundColor:
-                  const Color.fromARGB(255, 203, 205, 209),
-              progressIndicatorValueColor:
-                  const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
+              progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+              progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
               overlayBlur: 3,
             );
           }
@@ -2822,10 +2465,8 @@ class _HomePageBodyState extends State<HomePageBody>
             duration: const Duration(milliseconds: 2500),
             backgroundColor: const Color.fromARGB(118, 255, 255, 255),
             showProgressIndicator: true,
-            progressIndicatorBackgroundColor:
-                const Color.fromARGB(255, 203, 205, 209),
-            progressIndicatorValueColor:
-                const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
+            progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+            progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
             overlayBlur: 3,
           );
         }
@@ -2836,21 +2477,13 @@ class _HomePageBodyState extends State<HomePageBody>
           children: [
             Container(
               width: (clientsScheduledController.boolFilterShowNext == false &&
-                          clientsScheduledController
-                                  .clientsScheduledListLengthTail >
-                              0) ||
-                      (clientsScheduledController
-                              .clientsScheduledListLengthTail ==
-                          0)
+                          clientsScheduledController.clientsScheduledListLengthTail > 0) ||
+                      (clientsScheduledController.clientsScheduledListLengthTail == 0)
                   ? 130
                   : 130,
               height: (clientsScheduledController.boolFilterShowNext == false &&
-                          clientsScheduledController
-                                  .clientsScheduledListLengthTail >
-                              0) ||
-                      (clientsScheduledController
-                              .clientsScheduledListLengthTail ==
-                          0)
+                          clientsScheduledController.clientsScheduledListLengthTail > 0) ||
+                      (clientsScheduledController.clientsScheduledListLengthTail == 0)
                   ? 130
                   : 130,
               decoration: BoxDecoration(
@@ -2869,19 +2502,15 @@ class _HomePageBodyState extends State<HomePageBody>
                     builder: (context, child) {
                       final value = _animationController.value;
                       // print('value del reloj actual = $value');
-                      final remainingSeconds =
-                          (_animationController.duration!.inSeconds -
-                                  (_animationController.duration!.inSeconds *
-                                      value))
-                              .ceil();
+                      final remainingSeconds = (_animationController.duration!.inSeconds -
+                              (_animationController.duration!.inSeconds * value))
+                          .ceil();
                       // print(
                       //     'value del reloj actual-2-remainingSeconds = $remainingSeconds');
                       // print(
                       //     'value del reloj actual-3-remainingSeconds = ${_animationController.duration!.inSeconds}');
-                      int minutes = remainingSeconds ~/
-                          60; // Calcula los minutos restantes
-                      int seconds = remainingSeconds %
-                          60; // Calcula los segundos restantes
+                      int minutes = remainingSeconds ~/ 60; // Calcula los minutos restantes
+                      int seconds = remainingSeconds % 60; // Calcula los segundos restantes
 
                       if (seconds < 10) {
                         segundos = "0";
@@ -2918,105 +2547,67 @@ class _HomePageBodyState extends State<HomePageBody>
                             ShaderMask(
                               shaderCallback: (rect) {
                                 return SweepGradient(
-                                    startAngle: 0.0,
-                                    endAngle: 3.14 * 2, //twoPi
-                                    stops: [value, value],
-                                    // 0.0 , 0.5 , 0.5 , 1.0
-                                    center: Alignment.center,
-                                    colors: [
-                                      Colors.white,
-                                      Color.fromARGB(255, 92, 91, 91)
-                                          .withAlpha(100)
-                                    ]).createShader(rect);
+                                        startAngle: 0.0,
+                                        endAngle: 3.14 * 2, //twoPi
+                                        stops: [value, value],
+                                        // 0.0 , 0.5 , 0.5 , 1.0
+                                        center: Alignment.center,
+                                        colors: [Colors.white, Color.fromARGB(255, 92, 91, 91).withAlpha(100)])
+                                    .createShader(rect);
                               },
                               child: Container(
                                 width: clientsScheduledController.sizeClock,
                                 height: clientsScheduledController.sizeClock,
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        image: Image.asset(
-                                                "assets/images/radial_scale.png")
-                                            .image)),
+                                    image: DecorationImage(image: Image.asset("assets/images/radial_scale.png").image)),
                               ),
                             ),
                             Center(
                               child: Container(
-                                width:
-                                    (clientsScheduledController.sizeClock) - 50,
-                                height:
-                                    (clientsScheduledController.sizeClock) - 50,
-                                decoration: BoxDecoration(
-                                    color: colorInicialCirculo,
-                                    shape: BoxShape.circle),
+                                width: (clientsScheduledController.sizeClock) - 50,
+                                height: (clientsScheduledController.sizeClock) - 50,
+                                decoration: BoxDecoration(color: colorInicialCirculo, shape: BoxShape.circle),
                                 child: Center(
                                     child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         minutes > 59
                                             ? minutesN > 9
                                                 ? Text(
                                                     '$hoursN:$minutesN:',
                                                     style: TextStyle(
-                                                        fontSize:
-                                                            (MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                0.038), //todo2
-                                                        fontFamily: GoogleFonts
-                                                                .orbitron()
-                                                            .fontFamily,
+                                                        fontSize: (MediaQuery.of(context).size.width * 0.038), //todo2
+                                                        fontFamily: GoogleFonts.orbitron().fontFamily,
                                                         color: colorInicial,
-                                                        fontWeight:
-                                                            FontWeight.w900),
+                                                        fontWeight: FontWeight.w900),
                                                   )
                                                 : Text(
                                                     '$hoursN : $formattedMinutes :',
                                                     style: TextStyle(
-                                                        fontSize:
-                                                            (MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                0.038), //todo2
-                                                        fontFamily: GoogleFonts
-                                                                .orbitron()
-                                                            .fontFamily,
+                                                        fontSize: (MediaQuery.of(context).size.width * 0.038), //todo2
+                                                        fontFamily: GoogleFonts.orbitron().fontFamily,
                                                         color: colorInicial,
-                                                        fontWeight:
-                                                            FontWeight.w900),
+                                                        fontWeight: FontWeight.w900),
                                                   )
                                             : Text(
                                                 '$minutes :',
                                                 style: TextStyle(
-                                                    fontSize:
-                                                        (MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.038), //todo2
-                                                    fontFamily:
-                                                        GoogleFonts.orbitron()
-                                                            .fontFamily,
+                                                    fontSize: (MediaQuery.of(context).size.width * 0.038), //todo2
+                                                    fontFamily: GoogleFonts.orbitron().fontFamily,
                                                     color: colorInicial,
-                                                    fontWeight:
-                                                        FontWeight.w900),
+                                                    fontWeight: FontWeight.w900),
                                               ),
                                         Text(
                                           "$segundos$seconds",
                                           style: TextStyle(
-                                              fontSize: (MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.038),
+                                              fontSize: (MediaQuery.of(context).size.width * 0.038),
                                               color: colorInicial,
-                                              fontFamily: GoogleFonts.orbitron()
-                                                  .fontFamily,
+                                              fontFamily: GoogleFonts.orbitron().fontFamily,
                                               fontWeight: FontWeight.w900),
                                         ),
                                       ],
@@ -3037,11 +2628,8 @@ class _HomePageBodyState extends State<HomePageBody>
               alignment: Alignment.center,
               child: Text(
                 firstName,
-                style: const TextStyle(
-                    fontSize: 18,
-                    height: 1.3,
-                    color: Color(0xFFFDAE2A),
-                    fontWeight: FontWeight.w900),
+                style:
+                    const TextStyle(fontSize: 18, height: 1.3, color: Color(0xFFFDAE2A), fontWeight: FontWeight.w900),
               ),
             ),
           ],
@@ -3064,8 +2652,7 @@ class _HomePageBodyState extends State<HomePageBody>
     double fontSizeText = (MediaQuery.of(context).size.width * 0.030);
     // Dividir el nombre completo por espacios
 
-    List<String> partsName =
-        name.split(" "); // Tomar los primeros dos nombres (si existen)
+    List<String> partsName = name.split(" "); // Tomar los primeros dos nombres (si existen)
     String firstName = partsName.isNotEmpty ? partsName[0] : "";
     // String secondName = partsName.length > 1 ? partsName[1] : "";
     LocalStorage.prefs.setBool('valueClockActiv', true);
@@ -3075,21 +2662,13 @@ class _HomePageBodyState extends State<HomePageBody>
         children: [
           Container(
             width: (clientsScheduledController.boolFilterShowNext == false &&
-                        clientsScheduledController
-                                .clientsScheduledListLengthTail >
-                            0) ||
-                    (clientsScheduledController
-                            .clientsScheduledListLengthTail ==
-                        0)
+                        clientsScheduledController.clientsScheduledListLengthTail > 0) ||
+                    (clientsScheduledController.clientsScheduledListLengthTail == 0)
                 ? 130
                 : 130,
             height: (clientsScheduledController.boolFilterShowNext == false &&
-                        clientsScheduledController
-                                .clientsScheduledListLengthTail >
-                            0) ||
-                    (clientsScheduledController
-                            .clientsScheduledListLengthTail ==
-                        0)
+                        clientsScheduledController.clientsScheduledListLengthTail > 0) ||
+                    (clientsScheduledController.clientsScheduledListLengthTail == 0)
                 ? 130
                 : 130,
             decoration: BoxDecoration(
@@ -3107,14 +2686,11 @@ class _HomePageBodyState extends State<HomePageBody>
                   animation: _animationController,
                   builder: (context, child) {
                     final value = _animationController.value;
-                    final remainingSeconds = (_animationController
-                                .duration!.inSeconds -
-                            (_animationController.duration!.inSeconds * value))
-                        .ceil();
-                    int minutes =
-                        remainingSeconds ~/ 60; // Calcula los minutos restantes
-                    int seconds =
-                        remainingSeconds % 60; // Calcula los segundos restantes
+                    final remainingSeconds =
+                        (_animationController.duration!.inSeconds - (_animationController.duration!.inSeconds * value))
+                            .ceil();
+                    int minutes = remainingSeconds ~/ 60; // Calcula los minutos restantes
+                    int seconds = remainingSeconds % 60; // Calcula los segundos restantes
 
                     if (seconds < 10) {
                       segundos = "0";
@@ -3137,37 +2713,27 @@ class _HomePageBodyState extends State<HomePageBody>
                           ShaderMask(
                             shaderCallback: (rect) {
                               return SweepGradient(
-                                  startAngle: 0.0,
-                                  endAngle: 3.14 * 2, //twoPi
-                                  stops: [value, value],
-                                  // 0.0 , 0.5 , 0.5 , 1.0
-                                  center: Alignment.center,
-                                  colors: [
-                                    Colors.white,
-                                    Color.fromARGB(255, 92, 91, 91)
-                                        .withAlpha(100)
-                                  ]).createShader(rect);
+                                      startAngle: 0.0,
+                                      endAngle: 3.14 * 2, //twoPi
+                                      stops: [value, value],
+                                      // 0.0 , 0.5 , 0.5 , 1.0
+                                      center: Alignment.center,
+                                      colors: [Colors.white, Color.fromARGB(255, 92, 91, 91).withAlpha(100)])
+                                  .createShader(rect);
                             },
                             child: Container(
                               width: clientsScheduledController.sizeClock,
                               height: clientsScheduledController.sizeClock,
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: Image.asset(
-                                              "assets/images/radial_scale.png")
-                                          .image)),
+                                  image: DecorationImage(image: Image.asset("assets/images/radial_scale.png").image)),
                             ),
                           ),
                           Center(
                             child: Container(
-                              width:
-                                  (clientsScheduledController.sizeClock) - 50,
-                              height:
-                                  (clientsScheduledController.sizeClock) - 50,
-                              decoration: BoxDecoration(
-                                  color: colorInicialCirculo,
-                                  shape: BoxShape.circle),
+                              width: (clientsScheduledController.sizeClock) - 50,
+                              height: (clientsScheduledController.sizeClock) - 50,
+                              decoration: BoxDecoration(color: colorInicialCirculo, shape: BoxShape.circle),
                               child: Center(
                                   child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -3179,25 +2745,17 @@ class _HomePageBodyState extends State<HomePageBody>
                                       Text(
                                         '$minutes :',
                                         style: TextStyle(
-                                            fontSize: (MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.04), //todo2
-                                            fontFamily: GoogleFonts.orbitron()
-                                                .fontFamily,
+                                            fontSize: (MediaQuery.of(context).size.width * 0.04), //todo2
+                                            fontFamily: GoogleFonts.orbitron().fontFamily,
                                             color: colorInicial,
                                             fontWeight: FontWeight.w900),
                                       ),
                                       Text(
                                         "$segundos$seconds",
                                         style: TextStyle(
-                                            fontSize: (MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.04),
+                                            fontSize: (MediaQuery.of(context).size.width * 0.04),
                                             color: colorInicial,
-                                            fontFamily: GoogleFonts.orbitron()
-                                                .fontFamily,
+                                            fontFamily: GoogleFonts.orbitron().fontFamily,
                                             fontWeight: FontWeight.w900),
                                       ),
                                     ],
@@ -3222,10 +2780,7 @@ class _HomePageBodyState extends State<HomePageBody>
                       child: Text(
                         '$firstName...',
                         style: const TextStyle(
-                            fontSize: 10,
-                            height: 1.3,
-                            color: Color(0xFFFDAE2A),
-                            fontWeight: FontWeight.w900),
+                            fontSize: 10, height: 1.3, color: Color(0xFFFDAE2A), fontWeight: FontWeight.w900),
                       ),
                     )
                   : Padding(
@@ -3233,10 +2788,7 @@ class _HomePageBodyState extends State<HomePageBody>
                       child: Text(
                         firstName,
                         style: const TextStyle(
-                            fontSize: 18,
-                            height: 1.3,
-                            color: Color(0xFFFDAE2A),
-                            fontWeight: FontWeight.w600),
+                            fontSize: 18, height: 1.3, color: Color(0xFFFDAE2A), fontWeight: FontWeight.w600),
                       ),
                     )),
         ],
@@ -3244,20 +2796,13 @@ class _HomePageBodyState extends State<HomePageBody>
     );
   }
 
-  Container cartsHome(
-      BuildContext context,
-      double borderRadiusValue,
-      Color colorVariable,
-      Color colorBottom,
-      String titleCart,
-      String descriptionTitleCart,
-      iconCart) {
+  Container cartsHome(BuildContext context, double borderRadiusValue, Color colorVariable, Color colorBottom,
+      String titleCart, String descriptionTitleCart, iconCart) {
     return Container(
       width: (MediaQuery.of(context).size.width * 0.46), //Tamaño de los Cards
-      height:
-          loginController.androidInfoWidth! >= 867.42 //propiedades de telefone
-              ? (MediaQuery.of(context).size.height * 0.198)
-              : (MediaQuery.of(context).size.height * 0.170),
+      height: loginController.androidInfoWidth! >= 867.42 //propiedades de telefone
+          ? (MediaQuery.of(context).size.height * 0.198)
+          : (MediaQuery.of(context).size.height * 0.170),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
         color: colorVariable,
@@ -3266,8 +2811,7 @@ class _HomePageBodyState extends State<HomePageBody>
         style: ElevatedButton.styleFrom(
           primary: colorVariable, // Color de fondo en verde
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-                borderRadiusValue), // Ajusta el radio según tus necesidades
+            borderRadius: BorderRadius.circular(borderRadiusValue), // Ajusta el radio según tus necesidades
           ),
         ),
         onPressed: () async {
@@ -3276,8 +2820,7 @@ class _HomePageBodyState extends State<HomePageBody>
             if (clientsScheduledController.errorHome == -99) {
               await Future.delayed(const Duration(milliseconds: 2000));
             }
-            if (loginController.makeCall == true &&
-                clientsScheduledController.getWaitTime() == false) {
+            if (loginController.makeCall == true && clientsScheduledController.getWaitTime() == false) {
               if (loginController.usserPermissionQr != null) {
                 //verificar que no este pediendo colación
                 Get.dialog(
@@ -3288,11 +2831,8 @@ class _HomePageBodyState extends State<HomePageBody>
                   ),
                   barrierDismissible: false,
                 ); //Get.back();
-                await clientsScheduledController.fetchClientsScheduledNew(
-                    loginController.idProfessionalLoggedIn,
-                    loginController.branchIdLoggedIn,
-                    'Agenda-Card',
-                    loginController.tokenUserLoggedIn);
+                await clientsScheduledController.fetchClientsScheduledNew(loginController.idProfessionalLoggedIn,
+                    loginController.branchIdLoggedIn, 'Agenda-Card', loginController.tokenUserLoggedIn);
               }
             }
 
@@ -3310,8 +2850,8 @@ class _HomePageBodyState extends State<HomePageBody>
             ); //Get.back();
             // controllerLogin.setIsLoadingFor(true);
             await coexistenceController.fetchCoexistenceList();
-            await Future.delayed(const Duration(milliseconds: 500));
-            Get.back();
+            // await Future.delayed(const Duration(milliseconds: 500));
+            // Get.back();
             pagesConfigC.onTabTapped(4); //index = 4 -> /CoexistencePage
           }
           if (titleCart == 'Estadísticas') {
@@ -3350,12 +2890,8 @@ class _HomePageBodyState extends State<HomePageBody>
               typeEnv = 'Barbero';
             }
 
-            await notiController.fetchNotificationList(
-                loginController.branchIdLoggedIn,
-                loginController.idProfessionalLoggedIn,
-                typeEnv,
-                'Cart homeCart',
-                loginController.tokenUserLoggedIn);
+            await notiController.fetchNotificationList(loginController.branchIdLoggedIn,
+                loginController.idProfessionalLoggedIn, typeEnv, 'Cart homeCart', loginController.tokenUserLoggedIn);
             await Future.delayed(const Duration(milliseconds: 500));
             pagesConfigC.onTabTapped(2); //index = 2 -> /NotificationsPageProf
           }
@@ -3370,8 +2906,7 @@ class _HomePageBodyState extends State<HomePageBody>
                 alignment: Alignment.topRight,
                 child: CircleAvatar(
                   radius: 20, // Tamaño del CircleAvatar
-                  backgroundColor:
-                      colorBottom, // Color de fondo del CircleAvatar
+                  backgroundColor: colorBottom, // Color de fondo del CircleAvatar
                   child: Icon(
                     iconCart, // Icono que deseas mostrar
                     size: 30, // Tamaño del icono
@@ -3384,19 +2919,11 @@ class _HomePageBodyState extends State<HomePageBody>
                 children: [
                   Text(
                     titleCart,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        height: 0.4),
+                    style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600, height: 0.4),
                   ),
                   Text(
                     descriptionTitleCart,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 11,
-                        height: 1.5,
-                        fontWeight: FontWeight.w400),
+                    style: const TextStyle(color: Colors.white, fontSize: 11, height: 1.5, fontWeight: FontWeight.w400),
                   ),
                 ],
               )

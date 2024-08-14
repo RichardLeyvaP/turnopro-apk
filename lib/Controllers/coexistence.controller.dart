@@ -108,14 +108,19 @@ class CoexistenceController extends GetxController {
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
     int? idBranch = controllerLogin.branchIdLoggedIn;
-    coexistence = await repository.getCoexistenceList(
-        idProfessional, idBranch, controllerLogin.tokenUserLoggedIn);
-    print(coexistence.length);
-    coexistenceListLength = coexistence.length;
-    print('a15627 coexistenceListLength:${coexistenceListLength}');
+    try {
+      coexistence = await repository.getCoexistenceList(idProfessional, idBranch, controllerLogin.tokenUserLoggedIn);
+      print(coexistence.length);
+      coexistenceListLength = coexistence.length;
+      print('a15627 coexistenceListLength:${coexistenceListLength}');
 
-    update();
-    controllerLogin.setIsLoadingFor(false);
+      update();
+    } catch (e) {
+      print(e);
+    } finally {
+      controllerLogin.setIsLoadingFor(false);
+      Get.back();
+    }
   }
 
   String averageEarnings = '0', totalEarnings = '0';
@@ -125,8 +130,8 @@ class CoexistenceController extends GetxController {
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
     int? idBranch = controllerLogin.branchIdLoggedIn;
-    Map<String, dynamic> resultList = await repository.getAnoStadist(
-        idProfessional, idBranch, ano, controllerLogin.tokenUserLoggedIn);
+    Map<String, dynamic> resultList =
+        await repository.getAnoStadist(idProfessional, idBranch, ano, controllerLogin.tokenUserLoggedIn);
     meses[0] = double.parse(resultList['stadist']['enero'].toString());
     print('resultadosssssss 4');
     meses[1] = double.parse(resultList['stadist']['febrero'].toString());
@@ -163,8 +168,7 @@ class CoexistenceController extends GetxController {
     int? idBranch = controllerLogin.branchIdLoggedIn;
     String? charge = controllerLogin.chargeUserLoggedIn;
     chargeSave = charge;
-    estadist1 =
-        await repository.fetchEstadist1(idProfessional, idBranch, data, charge);
+    estadist1 = await repository.fetchEstadist1(idProfessional, idBranch, data, charge);
     print(estadist1.length);
     estadist1Length = estadist1.length;
     print('werya tengo-result coexistenceListLength:${estadist1Length}');
@@ -188,16 +192,13 @@ class CoexistenceController extends GetxController {
       }
     }
 
-    Map<String, dynamic> resultList =
-        await repository.fetchEstadistPagos(idProfessional, idBranch, charge);
+    Map<String, dynamic> resultList = await repository.fetchEstadistPagos(idProfessional, idBranch, charge);
 
     estadistPagos = resultList['branchProf'];
-    retriesResult = resultList[
-        'retries']; //en este controlo si dio error al buscar los datos con true
+    retriesResult = resultList['retries']; //en este controlo si dio error al buscar los datos con true
     print(estadistPagos.length);
     estadistPagosLength = estadistPagos.length;
-    print(
-        'werya tengo-result coexistenceListLength:${resultList['pendiente']}');
+    print('werya tengo-result coexistenceListLength:${resultList['pendiente']}');
     estadistPagosFijo = {
       'pendiente': resultList['pendiente'].toString(),
       'pagado': resultList['pagado'].toString(),
@@ -230,8 +231,7 @@ class CoexistenceController extends GetxController {
     String? charge = controllerLogin.chargeUserLoggedIn;
     chargeSave = charge;
     try {
-      estadist0 =
-          await repository.fetchEstadist0(idProfessional, idBranch, charge);
+      estadist0 = await repository.fetchEstadist0(idProfessional, idBranch, charge);
       print(estadist0.length);
       estadist0Length = estadist0.length;
       print('werya tengo-result coexistenceListLength:${estadist0Length}');
@@ -249,8 +249,7 @@ class CoexistenceController extends GetxController {
   Future<void> specificCoexistenceList(idProfessional) async {
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idBranch = controllerLogin.branchIdLoggedIn;
-    coexistence = await repository.getCoexistenceList(
-        idProfessional, idBranch, controllerLogin.tokenUserLoggedIn);
+    coexistence = await repository.getCoexistenceList(idProfessional, idBranch, controllerLogin.tokenUserLoggedIn);
     print(coexistence.length);
     coexistenceListLength = coexistence.length;
     update();
@@ -258,8 +257,7 @@ class CoexistenceController extends GetxController {
 
   Future<void> fetchBranchProfessionals() async {
     selectedProfessional = null;
-    print(
-        'ESTOY ENTRANDO AQUI A CONVIVENCIAS aqui en fetchBranchProfessionals()');
+    print('ESTOY ENTRANDO AQUI A CONVIVENCIAS aqui en fetchBranchProfessionals()');
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idBranch = controllerLogin.branchIdLoggedIn;
     print(
@@ -295,8 +293,7 @@ class CoexistenceController extends GetxController {
       if (branchProfessionalListLength > 0) {
         return 1;
       } else {
-        print(
-            'ya tengo la cola de la api es estaa Tipos de dato No hay sucursales');
+        print('ya tengo la cola de la api es estaa Tipos de dato No hay sucursales');
         return 0;
       }
     } else {

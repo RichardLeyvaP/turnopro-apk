@@ -22,8 +22,7 @@ class Estadistc2Pagos extends StatefulWidget {
 
 class _Estadistc2PagosState extends State<Estadistc2Pagos> {
   final LoginController loginCont = Get.find<LoginController>();
-  final PagesConfigController pagesConfigCont =
-      Get.find<PagesConfigController>();
+  final PagesConfigController pagesConfigCont = Get.find<PagesConfigController>();
   final CoexistenceController coexCont = Get.find<CoexistenceController>();
   final double valuePadding = 12;
 
@@ -87,28 +86,21 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                     child: Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10, right: 10, left: 10, bottom: 10),
+                          padding: const EdgeInsets.only(top: 10, right: 10, left: 10, bottom: 10),
                           child: Container(
                             height: (MediaQuery.of(context).size.height * 0.08),
                             width: (MediaQuery.of(context).size.width * 1),
-                            child: GetBuilder<ClientsScheduledController>(
-                                builder: (controllerClient) {
+                            child: GetBuilder<ClientsScheduledController>(builder: (controllerClient) {
                               return Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    height:
-                                        (MediaQuery.of(context).size.height *
-                                            0.085),
-                                    width: MediaQuery.of(context).size.width *
-                                        0.485,
+                                    height: (MediaQuery.of(context).size.height * 0.085),
+                                    width: MediaQuery.of(context).size.width * 0.485,
                                     decoration: const BoxDecoration(
                                       color: Color(0xFFFDAE2A), //todo
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8)),
+                                      borderRadius: BorderRadius.all(Radius.circular(8)),
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
@@ -116,45 +108,31 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                         children: [
                                           const Text('Pendiente a Cobrar',
                                               style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w700)),
-                                          Text(
-                                              '  ${formatNumber(_.estadistPagosFijo['pendiente'].toString())}  ',
+                                                  fontSize: 16, color: Colors.white, fontWeight: FontWeight.w700)),
+                                          Text('  ${formatNumber(_.estadistPagosFijo['pendiente'].toString())}  ',
                                               style: const TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w700)),
+                                                  fontSize: 16, color: Colors.white, fontWeight: FontWeight.w700)),
                                         ],
                                       ),
                                     ),
                                   ),
                                   Container(
-                                    height:
-                                        (MediaQuery.of(context).size.height *
-                                            0.085),
-                                    width: MediaQuery.of(context).size.width *
-                                        0.485,
+                                    height: (MediaQuery.of(context).size.height * 0.085),
+                                    width: MediaQuery.of(context).size.width * 0.485,
                                     decoration: const BoxDecoration(
                                       color: Color(0xFF19CF9E), //todo
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8)),
+                                      borderRadius: BorderRadius.all(Radius.circular(8)),
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
                                         children: [
-                                          const Text('Ganancia Total',
+                                          const Text('Cobrado',
                                               style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w700)),
-                                          Text(
-                                              '  ${formatNumber(_.estadistPagosFijo['pagado'].toString())}  ',
+                                                  fontSize: 16, color: Colors.white, fontWeight: FontWeight.w700)),
+                                          Text('  ${formatNumber(_.estadistPagosFijo['pagado'].toString())}  ',
                                               style: const TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w700)),
+                                                  fontSize: 16, color: Colors.white, fontWeight: FontWeight.w700)),
                                         ],
                                       ),
                                     ),
@@ -666,8 +644,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                           child: Row(
                             children: [
                               Container(
-                                height:
-                                    (MediaQuery.of(context).size.height * 0.11),
+                                height: (MediaQuery.of(context).size.height * 0.11),
                                 width: (MediaQuery.of(context).size.width * 1),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -676,62 +653,44 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                       color: Colors.grey.withOpacity(0.7),
                                       spreadRadius: 1,
                                       blurRadius: 5,
-                                      offset: const Offset(-5,
-                                          5), // Ajusta los valores para personalizar la sombra
+                                      offset: const Offset(-5, 5), // Ajusta los valores para personalizar la sombra
                                     ),
                                   ],
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(borderRadiusValue)),
+                                  borderRadius: const BorderRadius.all(Radius.circular(borderRadiusValue)),
                                 ),
-                                child: GetBuilder<ClientsScheduledController>(
-                                    builder: (controllerClient) {
+                                child: GetBuilder<ClientsScheduledController>(builder: (controllerClient) {
                                   return ListTile(
                                       shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(12)),
+                                        borderRadius: BorderRadius.all(Radius.circular(12)),
                                       ),
                                       title: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
                                             children: [
                                               const SizedBox(
                                                 width: 5,
                                               ),
                                               SizedBox(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.9,
+                                                width: MediaQuery.of(context).size.width * 0.9,
                                                 child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     const SizedBox(
                                                       height: 6,
                                                     ),
                                                     Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: [
                                                         Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          mainAxisAlignment: MainAxisAlignment.start,
                                                           children: [
                                                             Icon(
-                                                              MdiIcons
-                                                                  .accountDetails,
-                                                              color: const Color(
-                                                                  0xFFFDAE2A),
+                                                              MdiIcons.accountDetails,
+                                                              color: const Color(0xFFFDAE2A),
                                                             ),
                                                             const SizedBox(
                                                               width: 5,
@@ -743,11 +702,8 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                                   .ellipsis, // Agrega los tres puntos suspensivos
                                                               style: TextStyle(
                                                                   fontSize: 18,
-                                                                  color: Color(
-                                                                      0xFFFDAE2A),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700),
+                                                                  color: Color(0xFFFDAE2A),
+                                                                  fontWeight: FontWeight.w700),
                                                             ),
                                                           ],
                                                         ),
@@ -762,20 +718,13 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                     Container(
                                                       height: 1,
                                                       width: 1000,
-                                                      color:
-                                                          const Color.fromARGB(
-                                                              155,
-                                                              182,
-                                                              184,
-                                                              182),
+                                                      color: const Color.fromARGB(155, 182, 184, 182),
                                                     ),
                                                     const SizedBox(
                                                       height: 6,
                                                     ),
                                                     Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: [
                                                         const Text(
                                                           'Clientes atendidos',
@@ -783,25 +732,14 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                                             fontSize: 16,
                                                           ),
                                                         ),
-                                                        Text(
-                                                            _.estadistPagosFijo[
-                                                                    'clientAtended']
-                                                                .toString(),
-                                                            maxLines:
-                                                                2, // Limita el texto a 2 líneas
+                                                        Text(_.estadistPagosFijo['clientAtended'].toString(),
+                                                            maxLines: 2, // Limita el texto a 2 líneas
                                                             overflow: TextOverflow
                                                                 .ellipsis, // Agrega los tres puntos suspensivos
                                                             style: const TextStyle(
                                                                 fontSize: 16,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        148,
-                                                                        0,
-                                                                        0,
-                                                                        0),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700)),
+                                                                color: Color.fromARGB(148, 0, 0, 0),
+                                                                fontWeight: FontWeight.w700)),
                                                       ],
                                                     ),
                                                   ],
@@ -822,14 +760,12 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                   //pagos
                   Expanded(
                     flex: loginCont.chargeUserLoggedIn == 'Barbero' ||
-                            loginCont.chargeUserLoggedIn ==
-                                'Barbero y Encargado'
+                            loginCont.chargeUserLoggedIn == 'Barbero y Encargado'
                         ? 18
                         : 22, // 85% del espacio disponible para esta parte
                     child: _.estadistPagosLength > 0
                         ? ListView.builder(
-                            padding: EdgeInsets
-                                .zero, // Elimina cualquier padding del ListView
+                            padding: EdgeInsets.zero, // Elimina cualquier padding del ListView
                             itemCount: _.estadistPagosLength,
                             itemBuilder: (context, index) => Padding(
                                   padding: const EdgeInsets.only(
@@ -842,188 +778,108 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                     child: Row(
                                       children: [
                                         Container(
-                                          height: (MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.13),
-                                          width: (MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              1),
+                                          height: (MediaQuery.of(context).size.height * 0.13),
+                                          width: (MediaQuery.of(context).size.width * 1),
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(0.3),
+                                                color: Colors.grey.withOpacity(0.3),
                                                 spreadRadius: 1,
                                                 blurRadius: 3,
-                                                offset: const Offset(0,
-                                                    5), // Ajusta los valores para personalizar la sombra
+                                                offset: const Offset(
+                                                    0, 5), // Ajusta los valores para personalizar la sombra
                                               ),
                                             ],
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(
-                                                        borderRadiusValue)),
+                                            borderRadius: const BorderRadius.all(Radius.circular(borderRadiusValue)),
                                           ),
-                                          child: GetBuilder<
-                                                  ClientsScheduledController>(
-                                              builder: (controllerClient) {
+                                          child: GetBuilder<ClientsScheduledController>(builder: (controllerClient) {
                                             return ListTile(
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(12)),
+                                                shape: const RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.all(Radius.circular(12)),
                                                 ),
                                                 title: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisAlignment: MainAxisAlignment.start,
                                                       children: [
                                                         const SizedBox(
                                                           width: 5,
                                                         ),
                                                         SizedBox(
-                                                          width: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width *
-                                                              0.9,
+                                                          width: MediaQuery.of(context).size.width * 0.9,
                                                           child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
                                                               const SizedBox(
                                                                 height: 12,
                                                               ),
                                                               Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                 children: [
                                                                   Icon(
-                                                                    MdiIcons
-                                                                        .calendar,
-                                                                    color: const Color(
-                                                                        0xFFFDAE2A),
+                                                                    MdiIcons.calendar,
+                                                                    color: const Color(0xFFFDAE2A),
                                                                   ),
                                                                   Text(
-                                                                    _
-                                                                        .estadistPagos[
-                                                                            index]
-                                                                        .date
-                                                                        .toString(),
-                                                                    maxLines:
-                                                                        2, // Limita el texto a 2 líneas
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis, // Agrega los tres puntos suspensivos
+                                                                    _.estadistPagos[index].date.toString(),
+                                                                    maxLines: 2, // Limita el texto a 2 líneas
+                                                                    overflow: TextOverflow
+                                                                        .ellipsis, // Agrega los tres puntos suspensivos
                                                                     style: const TextStyle(
-                                                                        fontSize:
-                                                                            18,
-                                                                        color: Color(
-                                                                            0xFFFDAE2A),
-                                                                        fontWeight:
-                                                                            FontWeight.w700),
+                                                                        fontSize: 18,
+                                                                        color: Color(0xFFFDAE2A),
+                                                                        fontWeight: FontWeight.w700),
                                                                   ),
                                                                 ],
                                                               ),
                                                               Container(
                                                                 height: 2,
                                                                 width: 1000,
-                                                                color: const Color
-                                                                        .fromARGB(
-                                                                    155,
-                                                                    182,
-                                                                    184,
-                                                                    182),
+                                                                color: const Color.fromARGB(155, 182, 184, 182),
                                                               ),
                                                               const SizedBox(
                                                                 height: 6,
                                                               ),
                                                               Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                 children: [
-                                                                  const Text(
-                                                                      'Tipo de Pago'),
+                                                                  const Text('Tipo de Pago'),
                                                                   Text(
-                                                                    _
-                                                                        .estadistPagos[
-                                                                            index]
-                                                                        .type
-                                                                        .toString(),
-                                                                    maxLines:
-                                                                        2, // Limita el texto a 2 líneas
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis, // Agrega los tres puntos suspensivos
+                                                                    _.estadistPagos[index].type.toString(),
+                                                                    maxLines: 2, // Limita el texto a 2 líneas
+                                                                    overflow: TextOverflow
+                                                                        .ellipsis, // Agrega los tres puntos suspensivos
                                                                     style: const TextStyle(
-                                                                        fontSize:
-                                                                            16,
-                                                                        color: Color.fromARGB(
-                                                                            148,
-                                                                            0,
-                                                                            0,
-                                                                            0),
-                                                                        fontWeight:
-                                                                            FontWeight.w700),
+                                                                        fontSize: 16,
+                                                                        color: Color.fromARGB(148, 0, 0, 0),
+                                                                        fontWeight: FontWeight.w700),
                                                                   ),
                                                                 ],
                                                               ),
                                                               Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                 children: [
                                                                   const Text(
                                                                     'Cantidad',
                                                                     style: TextStyle(
-                                                                        fontSize:
-                                                                            16,
-                                                                        color: Color.fromARGB(
-                                                                            220,
-                                                                            0,
-                                                                            0,
-                                                                            0),
-                                                                        fontWeight:
-                                                                            FontWeight.w700),
+                                                                        fontSize: 16,
+                                                                        color: Color.fromARGB(220, 0, 0, 0),
+                                                                        fontWeight: FontWeight.w700),
                                                                   ),
                                                                   Text(
-                                                                    formatNumber(_
-                                                                        .estadistPagos[
-                                                                            index]
-                                                                        .amount
-                                                                        .toString()),
-                                                                    maxLines:
-                                                                        2, // Limita el texto a 2 líneas
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis, // Agrega los tres puntos suspensivos
+                                                                    formatNumber(
+                                                                        _.estadistPagos[index].amount.toString()),
+                                                                    maxLines: 2, // Limita el texto a 2 líneas
+                                                                    overflow: TextOverflow
+                                                                        .ellipsis, // Agrega los tres puntos suspensivos
                                                                     style: const TextStyle(
-                                                                        fontSize:
-                                                                            16,
-                                                                        color: Color.fromARGB(
-                                                                            220,
-                                                                            0,
-                                                                            0,
-                                                                            0),
-                                                                        fontWeight:
-                                                                            FontWeight.w700),
+                                                                        fontSize: 16,
+                                                                        color: Color.fromARGB(220, 0, 0, 0),
+                                                                        fontWeight: FontWeight.w700),
                                                                   ),
                                                                 ],
                                                               ),

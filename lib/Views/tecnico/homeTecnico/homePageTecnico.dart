@@ -23,10 +23,8 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
   final NotificationController notiCont = Get.find<NotificationController>();
   final LoginController loginController = Get.find<LoginController>();
-  final ClientsTechnicalController clientsScheduledController =
-      Get.find<ClientsTechnicalController>();
-  final CoexistenceController coexistenceController =
-      Get.put(CoexistenceController());
+  final ClientsTechnicalController clientsScheduledController = Get.find<ClientsTechnicalController>();
+  final CoexistenceController coexistenceController = Get.put(CoexistenceController());
 
   @override
   void initState() {
@@ -43,8 +41,7 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
     controllerLogin.getScreenResolution(context);
     return FadeIn(
       duration: const Duration(seconds: 2),
-      child:
-          GetBuilder<PagesConfigController>(builder: (pagesConfigController) {
+      child: GetBuilder<PagesConfigController>(builder: (pagesConfigController) {
         return Scaffold(
           backgroundColor: const Color.fromARGB(255, 231, 232, 234),
           appBar: pagesConfigController.selectedIndex == 0
@@ -59,16 +56,14 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
           ), // Muestra la página actual
           //body: homePageBody(borderRadiusValue, context, colorVariable, colorBottom, titleCart, descriptionTitleCart, iconCart),
           bottomNavigationBar: Padding(
-            padding:
-                EdgeInsets.all((MediaQuery.of(context).size.height * 0.012)),
+            padding: EdgeInsets.all((MediaQuery.of(context).size.height * 0.012)),
             child: ClipRRect(
                 borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(10),
                     topLeft: Radius.circular(10),
                     bottomLeft: Radius.circular(10),
                     bottomRight: Radius.circular(10)),
-                child: GetBuilder<ClientsTechnicalController>(
-                    builder: (controClient) {
+                child: GetBuilder<ClientsTechnicalController>(builder: (controClient) {
                   return BottomNavigationBar(
                       showSelectedLabels: false,
                       showUnselectedLabels: false,
@@ -78,8 +73,7 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                       currentIndex: pagesConfigController.selectedIndex,
                       type: BottomNavigationBarType.fixed,
                       onTap: (index) async {
-                        print(
-                            'mostrando aqui selectedIndex:${pagesConfigController.selectedIndex}');
+                        print('mostrando aqui selectedIndex:${pagesConfigController.selectedIndex}');
                         if (index == 1) //Agenda->clientes
                         {
                           Get.dialog(
@@ -90,17 +84,14 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                             ),
                             barrierDismissible: false,
                           ); //Get.back();
-                          await clientsScheduledController
-                              .fetchClientsTechnical(
-                                  loginController.branchIdLoggedIn);
+                          await clientsScheduledController.fetchClientsTechnical(loginController.branchIdLoggedIn);
                           Get.back();
                         }
                         if (index == 2) //Notificaciones
                         {
                           if (loginController.idProfessionalLoggedIn != null &&
                               loginController.branchIdLoggedIn != null &&
-                              (loginController.chargeUserLoggedIn ==
-                                  "Tecnico")) {
+                              (loginController.chargeUserLoggedIn == "Tecnico")) {
                             Get.dialog(
                               const Center(
                                 child: CircularProgressIndicator(
@@ -131,8 +122,7 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                             barrierDismissible: false,
                           ); //Get.back();
                           // controllerLogin.setIsLoadingFor(true);
-                          await Future.delayed(
-                              const Duration(milliseconds: 500));
+                          await Future.delayed(const Duration(milliseconds: 500));
                           await coexistenceController.fetchEstadist0();
                         }
                         if (index == 4) //Notificaciones
@@ -147,7 +137,7 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                           ); //Get.back();
                           // controllerLogin.setIsLoadingFor(true);
                           await coexistenceController.fetchCoexistenceList();
-                          Get.back();
+                          // Get.back();
                         }
                         pagesConfigController.onTabTapped(index);
                       },
@@ -162,61 +152,47 @@ class _HomePagesTecnicoState extends State<HomePagesTecnico> {
                             ? BottomNavigationBarItem(
                                 icon: Badge(
                                   backgroundColor: Color(0xFF19CF9E),
-                                  label: Text(
-                                      '${controClient.clientsTechnicalLength}'),
+                                  label: Text('${controClient.clientsTechnicalLength}'),
                                   child: Icon(
                                     Icons.perm_contact_calendar,
-                                    size: MediaQuery.of(context).size.width *
-                                        0.08,
+                                    size: MediaQuery.of(context).size.width * 0.08,
                                   ),
                                 ),
                                 label: 'Agenda')
                             : BottomNavigationBarItem(
                                 icon: Icon(
                                   Icons.perm_contact_calendar,
-                                  size:
-                                      MediaQuery.of(context).size.width * 0.08,
+                                  size: MediaQuery.of(context).size.width * 0.08,
                                 ),
                                 label: 'Agenda'),
                         notiCont.notificationListNewLength != 0
                             ? BottomNavigationBarItem(
                                 icon: Badge(
-                                  label: GetBuilder<NotificationController>(
-                                      builder: (_notiCont) {
-                                    WidgetsBinding.instance
-                                        .addPostFrameCallback((_) {
+                                  label: GetBuilder<NotificationController>(builder: (_notiCont) {
+                                    WidgetsBinding.instance.addPostFrameCallback((_) {
                                       // Se ejecutará después de que se haya construido el widget
                                       //define que tipo de saludo dar dependiendo de la hora
-                                      if (_notiCont.notificationListNewLength !=
-                                          _notiCont.notificationListBack) {
-                                        _notiCont.updateNotificationListBack(
-                                            _notiCont
-                                                .notificationListNewLength);
+                                      if (_notiCont.notificationListNewLength != _notiCont.notificationListBack) {
+                                        _notiCont.updateNotificationListBack(_notiCont.notificationListNewLength);
                                       }
                                     });
 
-                                    if (_notiCont.notificationListNewLength !=
-                                            _notiCont.notificationListBack &&
-                                        _notiCont.notificationListNewLength !=
-                                            0) {
+                                    if (_notiCont.notificationListNewLength != _notiCont.notificationListBack &&
+                                        _notiCont.notificationListNewLength != 0) {
                                       // _notiCont.reproducirSound();
                                     }
-                                    return Text(
-                                        (_notiCont.notificationListNewLength)
-                                            .toString());
+                                    return Text((_notiCont.notificationListNewLength).toString());
                                   }),
                                   child: Icon(
                                     Icons.notifications,
-                                    size: MediaQuery.of(context).size.width *
-                                        0.08,
+                                    size: MediaQuery.of(context).size.width * 0.08,
                                   ),
                                 ),
                                 label: 'Notificaciones')
                             : BottomNavigationBarItem(
                                 icon: Icon(
                                   Icons.notifications,
-                                  size:
-                                      MediaQuery.of(context).size.width * 0.08,
+                                  size: MediaQuery.of(context).size.width * 0.08,
                                 ),
                                 label: 'Notificaciones'),
                         BottomNavigationBarItem(
@@ -249,8 +225,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   //Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-  Size get preferredSize =>
-      const Size.fromHeight(70); // Ajusta el tamaño del AppBar aquí
+  Size get preferredSize => const Size.fromHeight(70); // Ajusta el tamaño del AppBar aquí
   NotificationController notiController = Get.find<NotificationController>();
   // Utilizar una función o getter para obtener imageDirection
 
@@ -265,8 +240,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         return Row(
           children: [
             Container(
-              margin: const EdgeInsets.only(
-                  top: 8), // Agrega un margen en la parte superior
+              margin: const EdgeInsets.only(top: 8), // Agrega un margen en la parte superior
 
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -281,12 +255,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: ClipOval(
                   child: Image.network(
                     '${Env.apiEndpoint}/images/${logUser.imageUrlLoggedIn}',
-                    fit: BoxFit
-                        .cover, // Ajusta la imagen para cubrir completamente el área
+                    fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
                     width: 50, // Ancho deseado de la imagen dentro del círculo
                     height: 50,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
+                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                       if (loadingProgress == null) {
                         // Si la imagen se carga correctamente, mostramos la imagen
                         return child;
@@ -297,23 +269,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         );
                       }
                     },
-                    errorBuilder: (BuildContext context, Object error,
-                        StackTrace? stackTrace) {
+                    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                       // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
                       if (kDebugMode) {
                         return CircleAvatar(
                           radius: 25,
-                          backgroundColor: Colors
-                              .transparent, // Fondo transparente para que el borde sea visible
+                          backgroundColor: Colors.transparent, // Fondo transparente para que el borde sea visible
                           child: ClipOval(
                             child: Image.asset(
                               'assets/images/default_profile.jpg',
-                              fit: BoxFit
-                                  .cover, // Ajusta la imagen para cubrir completamente el área
-                              width:
-                                  50, // Ancho deseado de la imagen dentro del círculo
-                              height:
-                                  50, // Alto deseado de la imagen dentro del círculo
+                              fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                              width: 50, // Ancho deseado de la imagen dentro del círculo
+                              height: 50, // Alto deseado de la imagen dentro del círculo
                             ),
                           ),
                         );
@@ -321,17 +288,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         // Si no estamos en modo de depuración, mostramos un texto de error
                         return CircleAvatar(
                           radius: 25,
-                          backgroundColor: Colors
-                              .transparent, // Fondo transparente para que el borde sea visible
+                          backgroundColor: Colors.transparent, // Fondo transparente para que el borde sea visible
                           child: ClipOval(
                             child: Image.asset(
                               'assets/images/default_profile.jpg',
-                              fit: BoxFit
-                                  .cover, // Ajusta la imagen para cubrir completamente el área
-                              width:
-                                  50, // Ancho deseado de la imagen dentro del círculo
-                              height:
-                                  50, // Alto deseado de la imagen dentro del círculo
+                              fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                              width: 50, // Ancho deseado de la imagen dentro del círculo
+                              height: 50, // Alto deseado de la imagen dentro del círculo
                             ),
                           ),
                         );
@@ -343,8 +306,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               //
             ),
             SizedBox(
-              width: (MediaQuery.of(context).size.width *
-                  0.02), //Espacio entre foto perfil y el saludo y el nombre
+              width: (MediaQuery.of(context).size.width * 0.02), //Espacio entre foto perfil y el saludo y el nombre
             ), // Espacio entre la imagen y el texto
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -403,22 +365,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                     ),
                                   ),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       const Padding(
                                         padding: EdgeInsets.only(left: 12),
                                         child: Text(
                                           'Mensaje',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w700),
+                                          style:
+                                              TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700),
                                         ),
                                       ),
                                       IconButton(
-                                        icon: Icon(Icons.close,
-                                            color: Colors.white),
+                                        icon: Icon(Icons.close, color: Colors.white),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
@@ -431,31 +389,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                   child: Column(
                                     children: [
                                       const Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 20,
-                                              left: 16,
-                                              right: 16,
-                                              bottom: 10),
+                                          padding: EdgeInsets.only(top: 20, left: 16, right: 16, bottom: 10),
                                           child: Text(
                                               'No puede leer un nuevo código de entrada, debe salir de la aplicación primero')),
                                       //
 
                                       ButtonBar(
-                                        alignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                        alignment: MainAxisAlignment.spaceEvenly,
                                         children: <Widget>[
                                           ElevatedButton(
                                             style: ButtonStyle(
-                                              padding: MaterialStateProperty
-                                                  .all<EdgeInsetsGeometry>(
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 0,
-                                                    horizontal: 26.0),
+                                              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                                const EdgeInsets.symmetric(vertical: 0, horizontal: 26.0),
                                               ),
                                               backgroundColor:
-                                                  MaterialStateProperty.all<
-                                                          Color>(
-                                                      const Color(0xFF4470F3)),
+                                                  MaterialStateProperty.all<Color>(const Color(0xFF4470F3)),
                                             ),
                                             onPressed: () async {
                                               // Lógica para enviar el comentario
@@ -474,10 +422,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                 ),
                                                 const Text(
                                                   'Aceptar',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w800),
+                                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
                                                 ),
                                               ],
                                             ),
@@ -500,10 +445,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       duration: const Duration(milliseconds: 2500),
                       backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                       showProgressIndicator: true,
-                      progressIndicatorBackgroundColor:
-                          const Color.fromARGB(255, 203, 205, 209),
-                      progressIndicatorValueColor:
-                          const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
+                      progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                      progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                       overlayBlur: 3,
                     );
                   } else {
@@ -514,8 +457,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 },
                 child: CircleAvatar(
                   radius: 22, // Tamaño del CircleAvatar
-                  backgroundColor: const Color(
-                      0xFF2B3141), // Color de fondo del CircleAvatar
+                  backgroundColor: const Color(0xFF2B3141), // Color de fondo del CircleAvatar
                   child: Icon(
                     MdiIcons.qrcodeScan,
                     size: MediaQuery.of(context).size.width * 0.06,
@@ -527,8 +469,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 width: 10,
               ),
               GetBuilder<ClientsTechnicalController>(builder: (clCont) {
-                print(
-                    'imprimiendo cuantos atinede el tecnico: -> ${clCont.quantityClientAttended}');
+                print('imprimiendo cuantos atinede el tecnico: -> ${clCont.quantityClientAttended}');
                 return InkWell(
                   onTap: () {
                     showDialog(
@@ -551,22 +492,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                     ),
                                   ),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       const Padding(
                                         padding: EdgeInsets.only(left: 12),
                                         child: Text(
                                           'Mensaje',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w700),
+                                          style:
+                                              TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700),
                                         ),
                                       ),
                                       IconButton(
-                                        icon: Icon(Icons.close,
-                                            color: Colors.white),
+                                        icon: Icon(Icons.close, color: Colors.white),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
@@ -579,43 +516,23 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                   child: Column(
                                     children: [
                                       Padding(
-                                          padding:
-                                              const EdgeInsets
-                                                      .only(
-                                                  top: 30,
-                                                  left: 16,
-                                                  right: 16,
-                                                  bottom: 10),
-                                          child: clCont
-                                                      .quantityClientAttendedTechnical !=
-                                                  0
-                                              ? Text(
-                                                  'No puedes salir del sistema, tienes clientes atendiendo!')
-                                              : Text(
-                                                  'Deseas salir de la aplicación?                         ')),
+                                          padding: const EdgeInsets.only(top: 30, left: 16, right: 16, bottom: 10),
+                                          child: clCont.quantityClientAttendedTechnical != 0
+                                              ? Text('No puedes salir del sistema, tienes clientes atendiendo!')
+                                              : Text('Deseas salir de la aplicación?                         ')),
                                       //
 
                                       ButtonBar(
-                                        alignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                        alignment: MainAxisAlignment.spaceEvenly,
                                         children: <Widget>[
                                           ElevatedButton(
                                             style: ButtonStyle(
-                                                padding: MaterialStateProperty
-                                                    .all<EdgeInsetsGeometry>(
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 0,
-                                                      horizontal: 18.0),
+                                                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                                  const EdgeInsets.symmetric(vertical: 0, horizontal: 18.0),
                                                 ),
-                                                backgroundColor:
-                                                    (clCont.quantityClientAttendedTechnical !=
-                                                            0)
-                                                        ? MaterialStateProperty
-                                                            .all<Color>(Color(
-                                                                0xFF4470F3))
-                                                        : MaterialStateProperty
-                                                            .all<Color>(Color(
-                                                                0xFFFF6750))),
+                                                backgroundColor: (clCont.quantityClientAttendedTechnical != 0)
+                                                    ? MaterialStateProperty.all<Color>(Color(0xFF4470F3))
+                                                    : MaterialStateProperty.all<Color>(Color(0xFFFF6750))),
                                             onPressed: () async {
                                               // Lógica para enviar el comentario
                                               //LLAMAR AL ENPOINT PARA SACAR DEL PUESTO DE TRABAJO
@@ -623,22 +540,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                               //         true ||
                                               //     clCont.quantityClientAttendedTechnical !=
                                               //         0))
-                                              if ((clCont
-                                                      .quantityClientAttendedTechnical !=
-                                                  0)) //aceptar
+                                              if ((clCont.quantityClientAttendedTechnical != 0)) //aceptar
                                               {
                                                 // Cerrar el primer modal
                                                 Navigator.pop(context);
                                               } else {
-                                                print(
-                                                    'solicitud pidiendo ir a colación.');
+                                                print('solicitud pidiendo ir a colación.');
                                                 if (_.usserPermissionQr == 1) {
                                                   //todo esto cambiarlo
-                                                  int result = await _
-                                                      .ColacionProfessional(
-                                                          _.idProfessionalLoggedIn,
-                                                          'Tecnico',
-                                                          3);
+                                                  int result = await _.ColacionProfessional(
+                                                      _.idProfessionalLoggedIn, 'Tecnico', 3);
 
                                                   if (result == 1) //codigo 200
                                                   {
@@ -656,116 +567,72 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                     Get.snackbar(
                                                       '',
                                                       'Solicitud de colación pedida correctamente,espere un momento...',
-                                                      colorText:
-                                                          const Color.fromARGB(
-                                                              255, 43, 44, 49),
-                                                      titleText:
-                                                          const Text('Mensaje'),
-                                                      duration: const Duration(
-                                                          seconds: 4),
-                                                      showProgressIndicator:
-                                                          true,
-                                                      progressIndicatorBackgroundColor:
-                                                          const Color(
-                                                              0xFF4470F3),
+                                                      colorText: const Color.fromARGB(255, 43, 44, 49),
+                                                      titleText: const Text('Mensaje'),
+                                                      duration: const Duration(seconds: 4),
+                                                      showProgressIndicator: true,
+                                                      progressIndicatorBackgroundColor: const Color(0xFF4470F3),
                                                       progressIndicatorValueColor:
-                                                          const AlwaysStoppedAnimation(
-                                                              Color(
-                                                                  0xFFFDAE2A)),
+                                                          const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                                       overlayBlur: 3,
                                                     );
-                                                    print(
-                                                        'solicitud enviada correctamente');
-                                                  } else if (result ==
-                                                      2) //codigo diferente de 200
+                                                    print('solicitud enviada correctamente');
+                                                  } else if (result == 2) //codigo diferente de 200
                                                   {
                                                     Get.snackbar(
                                                       '',
                                                       'Inténtelo nuevamente,problemas de conexión',
-                                                      colorText:
-                                                          const Color.fromARGB(
-                                                              255, 43, 44, 49),
-                                                      titleText:
-                                                          const Text('Alerta'),
-                                                      duration: const Duration(
-                                                          seconds: 4),
-                                                      showProgressIndicator:
-                                                          true,
-                                                      progressIndicatorBackgroundColor:
-                                                          const Color(
-                                                              0xFF4470F3),
+                                                      colorText: const Color.fromARGB(255, 43, 44, 49),
+                                                      titleText: const Text('Alerta'),
+                                                      duration: const Duration(seconds: 4),
+                                                      showProgressIndicator: true,
+                                                      progressIndicatorBackgroundColor: const Color(0xFF4470F3),
                                                       progressIndicatorValueColor:
-                                                          const AlwaysStoppedAnimation(
-                                                              Color(
-                                                                  0xFFFDAE2A)),
+                                                          const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                                       overlayBlur: 3,
                                                     );
-                                                    print(
-                                                        'problema al enviar la solicitud');
-                                                  } else if (result ==
-                                                      3) //entro a la exepcion del catch
+                                                    print('problema al enviar la solicitud');
+                                                  } else if (result == 3) //entro a la exepcion del catch
                                                   {
                                                     Get.snackbar(
                                                       '',
                                                       'Inténtelo nuevamente,problemas de conexión...',
-                                                      colorText:
-                                                          const Color.fromARGB(
-                                                              255, 43, 44, 49),
-                                                      titleText:
-                                                          const Text('Alerta'),
-                                                      duration: const Duration(
-                                                          seconds: 4),
-                                                      showProgressIndicator:
-                                                          true,
-                                                      progressIndicatorBackgroundColor:
-                                                          const Color(
-                                                              0xFF4470F3),
+                                                      colorText: const Color.fromARGB(255, 43, 44, 49),
+                                                      titleText: const Text('Alerta'),
+                                                      duration: const Duration(seconds: 4),
+                                                      showProgressIndicator: true,
+                                                      progressIndicatorBackgroundColor: const Color(0xFF4470F3),
                                                       progressIndicatorValueColor:
-                                                          const AlwaysStoppedAnimation(
-                                                              Color(
-                                                                  0xFFFDAE2A)),
+                                                          const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                                       overlayBlur: 3,
                                                     );
-                                                    print(
-                                                        'problema al enviar la solicitud2');
+                                                    print('problema al enviar la solicitud2');
                                                   }
                                                   //manadar un mensaje si la solicitud se envio bien
-                                                } else if (_
-                                                        .usserPermissionQr ==
-                                                    2) {
+                                                } else if (_.usserPermissionQr == 2) {
                                                   Get.snackbar(
                                                     'Mensaje',
                                                     'Debe de esperar la respuesta a su solicitud',
-                                                    duration: const Duration(
-                                                        milliseconds: 2500),
-                                                    backgroundColor:
-                                                        const Color.fromARGB(
-                                                            118, 255, 255, 255),
+                                                    duration: const Duration(milliseconds: 2500),
+                                                    backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                                     showProgressIndicator: true,
                                                     progressIndicatorBackgroundColor:
-                                                        const Color.fromARGB(
-                                                            255, 203, 205, 209),
+                                                        const Color.fromARGB(255, 203, 205, 209),
                                                     progressIndicatorValueColor:
-                                                        const AlwaysStoppedAnimation(
-                                                            Color(0xFFFDAE2A)),
+                                                        const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                                     overlayBlur: 3,
                                                   );
                                                 } else {
                                                   Get.snackbar(
                                                     'Mensaje',
                                                     'Aún no ha entrado a trabajar.',
-                                                    duration: const Duration(
-                                                        milliseconds: 2500),
-                                                    backgroundColor:
-                                                        const Color.fromARGB(
-                                                            118, 255, 255, 255),
+                                                    duration: const Duration(milliseconds: 2500),
+                                                    backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                                     showProgressIndicator: true,
                                                     progressIndicatorBackgroundColor:
-                                                        const Color.fromARGB(
-                                                            255, 203, 205, 209),
+                                                        const Color.fromARGB(255, 203, 205, 209),
                                                     progressIndicatorValueColor:
-                                                        const AlwaysStoppedAnimation(
-                                                            Color(0xFFFDAE2A)),
+                                                        const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                                     overlayBlur: 3,
                                                   );
                                                 }
@@ -777,65 +644,48 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                             //             false ||
                                             //         clCont.quantityClientAttendedTechnical !=
                                             //             0)
-                                            child:
-                                                (clCont.quantityClientAttendedTechnical !=
-                                                        0)
-                                                    ? Row(
-                                                        children: [
-                                                          Icon(
-                                                            MdiIcons.check,
-                                                            color: Colors.white,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 6,
-                                                          ),
-                                                          const Text(
-                                                            'Aceptar',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w800),
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : Row(
-                                                        children: [
-                                                          Icon(
-                                                            MdiIcons.cancel,
-                                                            color: Colors.white,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 6,
-                                                          ),
-                                                          const Text(
-                                                            'Colación',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w800),
-                                                          ),
-                                                        ],
+                                            child: (clCont.quantityClientAttendedTechnical != 0)
+                                                ? Row(
+                                                    children: [
+                                                      Icon(
+                                                        MdiIcons.check,
+                                                        color: Colors.white,
                                                       ),
+                                                      SizedBox(
+                                                        width: 6,
+                                                      ),
+                                                      const Text(
+                                                        'Aceptar',
+                                                        style:
+                                                            TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+                                                      ),
+                                                    ],
+                                                  )
+                                                : Row(
+                                                    children: [
+                                                      Icon(
+                                                        MdiIcons.cancel,
+                                                        color: Colors.white,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 6,
+                                                      ),
+                                                      const Text(
+                                                        'Colación',
+                                                        style:
+                                                            TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+                                                      ),
+                                                    ],
+                                                  ),
                                           ),
-                                          if ((clCont
-                                                  .quantityClientAttendedTechnical ==
-                                              0))
+                                          if ((clCont.quantityClientAttendedTechnical == 0))
                                             ElevatedButton(
                                               style: ButtonStyle(
-                                                padding: MaterialStateProperty
-                                                    .all<EdgeInsetsGeometry>(
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 0,
-                                                      horizontal: 18.0),
+                                                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                                  const EdgeInsets.symmetric(vertical: 0, horizontal: 18.0),
                                                 ),
                                                 backgroundColor:
-                                                    MaterialStateProperty
-                                                        .all<Color>(const Color(
-                                                            0xFF4470F3)),
+                                                    MaterialStateProperty.all<Color>(const Color(0xFF4470F3)),
                                               ),
                                               onPressed: () async {
                                                 //todo falta llamar un metodo aqui
@@ -846,15 +696,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                 //LLAMAR AL ENPOINT PARA SACAR DEL PUESTO DE TRABAJO
                                                 if (_.usserPermissionQr == 1) {
                                                   //todo esto cambiarlo
-                                                  int result = await _
-                                                      .ColacionProfessional(
-                                                          _.idProfessionalLoggedIn,
-                                                          'Tecnico',
-                                                          4); //solicitud de salida
+                                                  int result = await _.ColacionProfessional(
+                                                      _.idProfessionalLoggedIn, 'Tecnico', 4); //solicitud de salida
                                                   if (result == 1) //codigo 200
                                                   {
-                                                    _.setCodigoQrValid(
-                                                        2); //si el QR = 2 sacarlo de la app
+                                                    _.setCodigoQrValid(2); //si el QR = 2 sacarlo de la app
                                                     //lo hace la api
                                                     /*
                                                     notiController.storeNotification(
@@ -867,78 +713,46 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                     Get.snackbar(
                                                       '',
                                                       'Solicitud de salida pedida correctamente,espere un momento...',
-                                                      colorText:
-                                                          const Color.fromARGB(
-                                                              255, 43, 44, 49),
-                                                      titleText:
-                                                          const Text('Mensaje'),
-                                                      duration: const Duration(
-                                                          seconds: 4),
-                                                      showProgressIndicator:
-                                                          true,
-                                                      progressIndicatorBackgroundColor:
-                                                          const Color(
-                                                              0xFF4470F3),
+                                                      colorText: const Color.fromARGB(255, 43, 44, 49),
+                                                      titleText: const Text('Mensaje'),
+                                                      duration: const Duration(seconds: 4),
+                                                      showProgressIndicator: true,
+                                                      progressIndicatorBackgroundColor: const Color(0xFF4470F3),
                                                       progressIndicatorValueColor:
-                                                          const AlwaysStoppedAnimation(
-                                                              Color(
-                                                                  0xFFFDAE2A)),
+                                                          const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                                       overlayBlur: 3,
                                                     );
-                                                    print(
-                                                        'solicitud enviada correctamente');
-                                                  } else if (result ==
-                                                      2) //codigo diferente de 200
+                                                    print('solicitud enviada correctamente');
+                                                  } else if (result == 2) //codigo diferente de 200
                                                   {
                                                     Get.snackbar(
                                                       '',
                                                       'Inténtelo nuevamente,problemas de conexión',
-                                                      colorText:
-                                                          const Color.fromARGB(
-                                                              255, 43, 44, 49),
-                                                      titleText:
-                                                          const Text('Alerta'),
-                                                      duration: const Duration(
-                                                          seconds: 4),
-                                                      showProgressIndicator:
-                                                          true,
-                                                      progressIndicatorBackgroundColor:
-                                                          const Color(
-                                                              0xFF4470F3),
+                                                      colorText: const Color.fromARGB(255, 43, 44, 49),
+                                                      titleText: const Text('Alerta'),
+                                                      duration: const Duration(seconds: 4),
+                                                      showProgressIndicator: true,
+                                                      progressIndicatorBackgroundColor: const Color(0xFF4470F3),
                                                       progressIndicatorValueColor:
-                                                          const AlwaysStoppedAnimation(
-                                                              Color(
-                                                                  0xFFFDAE2A)),
+                                                          const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                                       overlayBlur: 3,
                                                     );
-                                                    print(
-                                                        'problema al enviar la solicitud');
-                                                  } else if (result ==
-                                                      3) //entro a la exepcion del catch
+                                                    print('problema al enviar la solicitud');
+                                                  } else if (result == 3) //entro a la exepcion del catch
                                                   {
                                                     Get.snackbar(
                                                       '',
                                                       'Inténtelo nuevamente,problemas de conexión...',
-                                                      colorText:
-                                                          const Color.fromARGB(
-                                                              255, 43, 44, 49),
-                                                      titleText:
-                                                          const Text('Alerta'),
-                                                      duration: const Duration(
-                                                          seconds: 4),
-                                                      showProgressIndicator:
-                                                          true,
-                                                      progressIndicatorBackgroundColor:
-                                                          const Color(
-                                                              0xFF4470F3),
+                                                      colorText: const Color.fromARGB(255, 43, 44, 49),
+                                                      titleText: const Text('Alerta'),
+                                                      duration: const Duration(seconds: 4),
+                                                      showProgressIndicator: true,
+                                                      progressIndicatorBackgroundColor: const Color(0xFF4470F3),
                                                       progressIndicatorValueColor:
-                                                          const AlwaysStoppedAnimation(
-                                                              Color(
-                                                                  0xFFFDAE2A)),
+                                                          const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                                       overlayBlur: 3,
                                                     );
-                                                    print(
-                                                        'problema al enviar la solicitud2');
+                                                    print('problema al enviar la solicitud2');
                                                   }
                                                   //manadar un mensaje si la solicitud se envio bien
 
@@ -947,29 +761,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                   //
                                                   //
                                                   //
-                                                } else if (_
-                                                        .usserPermissionQr ==
-                                                    2) {
+                                                } else if (_.usserPermissionQr == 2) {
                                                   Get.snackbar(
                                                     'Mensaje',
                                                     'Debe de esperar la respuesta a su solicitud',
-                                                    duration: const Duration(
-                                                        milliseconds: 2500),
-                                                    backgroundColor:
-                                                        const Color.fromARGB(
-                                                            118, 255, 255, 255),
+                                                    duration: const Duration(milliseconds: 2500),
+                                                    backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                                     showProgressIndicator: true,
                                                     progressIndicatorBackgroundColor:
-                                                        const Color.fromARGB(
-                                                            255, 203, 205, 209),
+                                                        const Color.fromARGB(255, 203, 205, 209),
                                                     progressIndicatorValueColor:
-                                                        const AlwaysStoppedAnimation(
-                                                            Color(0xFFFDAE2A)),
+                                                        const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                                     overlayBlur: 3,
                                                   );
-                                                } else if (_
-                                                        .usserPermissionQr ==
-                                                    null) {
+                                                } else if (_.usserPermissionQr == null) {
                                                   _.exit(_.tokenUserLoggedIn);
                                                 }
 
@@ -986,13 +791,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                     width: 6,
                                                   ),
                                                   Text(
-                                                    _.usserPermissionQr == 1
-                                                        ? 'Me retiro'
-                                                        : 'Salir',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w800),
+                                                    _.usserPermissionQr == 1 ? 'Me retiro' : 'Salir',
+                                                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
                                                   ),
                                                 ],
                                               ),
@@ -1011,8 +811,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   },
                   child: CircleAvatar(
                     radius: 22, // Tamaño del CircleAvatar
-                    backgroundColor: const Color(
-                        0xFF2B3141), // Color de fondo del CircleAvatar
+                    backgroundColor: const Color(0xFF2B3141), // Color de fondo del CircleAvatar
                     child: Icon(
                       MdiIcons.exitToApp,
                       size: MediaQuery.of(context).size.width * 0.06,
