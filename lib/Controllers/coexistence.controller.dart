@@ -125,6 +125,13 @@ class CoexistenceController extends GetxController {
 
   String averageEarnings = '0', totalEarnings = '0';
   List<double> meses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+  clearVarStatist() {
+    averageEarnings = '0';
+    totalEarnings = '0';
+    meses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  }
+
   //todo nuevaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
   Future<void> getStadistAno(int ano) async {
     final LoginController controllerLogin = Get.find<LoginController>();

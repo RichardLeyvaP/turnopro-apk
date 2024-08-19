@@ -6,8 +6,7 @@ import 'package:turnopro_apk/Models/weekly_statistics_model.dart';
 import 'package:turnopro_apk/get_connect/repository/statistics.repository.dart';
 
 class StatisticController extends GetxController {
-  WeeklyStatisticsRepository weeklyStatisticsRepository =
-      WeeklyStatisticsRepository();
+  WeeklyStatisticsRepository weeklyStatisticsRepository = WeeklyStatisticsRepository();
   //DECLARACION DE VARIABLES
   //*********************** */
   int quantityDates = 0;
@@ -37,6 +36,36 @@ class StatisticController extends GetxController {
   Map<String, dynamic> statisticsGeneralRespon1 = {};
   Map<String, dynamic> statisticsGeneralRespon2 = {};
   Map<String, dynamic> statisticsGeneralRespon3 = {};
+
+  clearVarStadistCont() {
+    quantityDates = 0;
+    quantityDatesDia = 0;
+    quantityDatesSem = 0;
+    numberdayWeek = -99099;
+    dateRange = '';
+    dateRangeSem = '';
+    dateRangeDia = '';
+    earningByDays = [];
+    earningByDaysSem = [];
+    earningByDaysDia = [];
+    earningByDaysMen = [];
+    totalEarnings = 0.0;
+    totalEarningsSem = 0.0;
+    totalEarningsMen = 0.0;
+    totalEarningsDia = 0.0;
+    averageEarnings = 0.0;
+    averageEarningsSem = 0.0;
+    averageEarningsMen = 0.0;
+    averageEarningsDia = 0.0;
+    //*********************** */
+    statisticsGeneral = {};
+    statisticsGeneralSem = {};
+    statisticsGeneralMen = {};
+    statisticsGeneralDia = {};
+    statisticsGeneralRespon1 = {};
+    statisticsGeneralRespon2 = {};
+    statisticsGeneralRespon3 = {};
+  }
 
   @override
   void onReady() {
@@ -138,19 +167,14 @@ class StatisticController extends GetxController {
     //todo asi mapea bien
 
     final LoginController controllerLogin = Get.find<LoginController>();
-    print(
-        '111111 getDataStatisticDay -mes:$mes...year:$year..idProf:${controllerLogin.idProfessionalLoggedIn}');
+    print('111111 getDataStatisticDay -mes:$mes...year:$year..idProf:${controllerLogin.idProfessionalLoggedIn}');
     earningByDaysMen.clear();
     averageEarningsMen = 0.0;
     totalEarningsMen = 0.0;
 
     try {
-      var responseId = await weeklyStatisticsRepository.getDayStatisticsListMen(
-          controllerLogin.idProfessionalLoggedIn,
-          controllerLogin.branchIdLoggedIn,
-          mes,
-          year,
-          controllerLogin.tokenUserLoggedIn);
+      var responseId = await weeklyStatisticsRepository.getDayStatisticsListMen(controllerLogin.idProfessionalLoggedIn,
+          controllerLogin.branchIdLoggedIn, mes, year, controllerLogin.tokenUserLoggedIn);
       print('respuest getDayStatisticsList----$responseId');
 
       if (responseId['Monto Generado'] != 0) {
@@ -166,8 +190,7 @@ class StatisticController extends GetxController {
     }
   }
 
-  Future<void> getDataStatisticRespon(page, startDateIn, endDateIn,
-      numberdayWeekIn, quantityDatesIn, mes, year) async {
+  Future<void> getDataStatisticRespon(page, startDateIn, endDateIn, numberdayWeekIn, quantityDatesIn, mes, year) async {
     //todo asi mapea bien
     print('111111 getDataStatisticRespon');
     final LoginController controllerLogin = Get.find<LoginController>();
@@ -193,12 +216,7 @@ class StatisticController extends GetxController {
 
     try {
       var responStad = await weeklyStatisticsRepository.getDayStatisticsRespon(
-          controllerLogin.branchIdLoggedIn,
-          startDateIn,
-          endDateIn,
-          mes,
-          year,
-          controllerLogin.tokenUserLoggedIn);
+          controllerLogin.branchIdLoggedIn, startDateIn, endDateIn, mes, year, controllerLogin.tokenUserLoggedIn);
       print('respuest getDataStatisticRespon----$responStad');
 
       if (responStad['Monto Generado'] != 0) {
@@ -221,8 +239,7 @@ class StatisticController extends GetxController {
       }
       update();
     } catch (e) {
-      print(
-          'Resultados getDataStatisticRespon ERROR StatisticController en getDataStatistic esta otra :$e');
+      print('Resultados getDataStatisticRespon ERROR StatisticController en getDataStatistic esta otra :$e');
     }
   }
 
@@ -263,8 +280,7 @@ class StatisticController extends GetxController {
   //   }
   // }
 
-  Future<void> getDataStatistic(
-      startDateIn, endDateIn, numberdayWeekIn, quantityDatesIn) async {
+  Future<void> getDataStatistic(startDateIn, endDateIn, numberdayWeekIn, quantityDatesIn) async {
     final LoginController controllerLogin = Get.find<LoginController>();
     earningByDays.clear();
     averageEarnings = 0.0;
@@ -280,14 +296,13 @@ class StatisticController extends GetxController {
     //     'Id Profesional : ${controllerLogin.idProfessionalLoggedIn}  fechaIni: $startDateIn  fechaFin: $endDateIn  diaSemana: $numberdayWeekIn  cantidad de fechas: $quantityDatesIn');
 
     try {
-      WeeklyStatisticsModel responseId =
-          await weeklyStatisticsRepository.getWeeklyStatisticsList(
-              controllerLogin.idProfessionalLoggedIn,
-              controllerLogin.branchIdLoggedIn,
-              startDateIn,
-              endDateIn,
-              numberdayWeekIn,
-              controllerLogin.tokenUserLoggedIn);
+      WeeklyStatisticsModel responseId = await weeklyStatisticsRepository.getWeeklyStatisticsList(
+          controllerLogin.idProfessionalLoggedIn,
+          controllerLogin.branchIdLoggedIn,
+          startDateIn,
+          endDateIn,
+          numberdayWeekIn,
+          controllerLogin.tokenUserLoggedIn);
 
       if (responseId.averageEarnings != null) {
         numberdayWeek = -99099;
@@ -301,8 +316,7 @@ class StatisticController extends GetxController {
 
           //todo actualizando variables globales *****
           if (numberdayWeek == -99099) {
-            numberdayWeek =
-                dayOfWeek; //todo ya aqui actualiza el dia de la semana en el grafico
+            numberdayWeek = dayOfWeek; //todo ya aqui actualiza el dia de la semana en el grafico
           }
         }
 

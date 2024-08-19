@@ -14,10 +14,8 @@ import 'package:uuid/uuid.dart';
 
 final LoginController loginController = Get.find<LoginController>();
 NotificationController notiController = Get.find<NotificationController>();
-final ClientsCoordinatorController clientCord =
-    Get.find<ClientsCoordinatorController>();
-final ClientsScheduledController clientsScheduledController =
-    Get.find<ClientsScheduledController>();
+final ClientsCoordinatorController clientCord = Get.find<ClientsCoordinatorController>();
+final ClientsScheduledController clientsScheduledController = Get.find<ClientsScheduledController>();
 
 const notificationChannelIdSilent = 'silent_channel_id';
 const notificationChannelIdNormal = 'normal_channel_id';
@@ -25,8 +23,7 @@ const notificationId = 888;
 
 Future<void> initializeService() async {
   final service = FlutterBackgroundService();
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   // Crear el canal de notificaciones sin sonido
   const AndroidNotificationChannel silentChannel = AndroidNotificationChannel(
@@ -49,13 +46,11 @@ Future<void> initializeService() async {
   );
 
   await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(silentChannel);
 
   await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(normalChannel);
 
   // Detener cualquier instancia en ejecución antes de iniciar una nueva
@@ -70,7 +65,7 @@ Future<void> initializeService() async {
       isForegroundMode: true,
       // isForegroundMode: true,
       notificationChannelId: notificationChannelIdSilent,
-      initialNotificationTitle: 'Simplifies v1.0',
+      initialNotificationTitle: 'Simplifies-v1.0',
       initialNotificationContent: '',
     ),
     iosConfiguration: IosConfiguration(
@@ -115,16 +110,13 @@ bool onIosBackground(ServiceInstance service) {
 
 Future<void> notificationSimplifies() async {
   print('notificacion desde:-:SERVICIO-notificationSimplifies()');
-  print(
-      'notificacion desde:-:SERVICIO-notificationSimplifies()-${LocalStorage.prefs.getString('charge_profesional')}');
+  print('notificacion desde:-:SERVICIO-notificationSimplifies()-${LocalStorage.prefs.getString('charge_profesional')}');
 
   // Verifica si la clave 'charge_profesional' existe y no está vacía
-  String? chargeProfesional =
-      LocalStorage.prefs.getString('charge_profesional');
+  String? chargeProfesional = LocalStorage.prefs.getString('charge_profesional');
 
   if (chargeProfesional != null && chargeProfesional.isNotEmpty) {
-    print(
-        'notificacion desde:-:SERVICIO-notificationSimplifies()-chargeProfesional:$chargeProfesional');
+    print('notificacion desde:-:SERVICIO-notificationSimplifies()-chargeProfesional:$chargeProfesional');
     // Verifica si el valor de 'charge_profesional' es 'Barbero y Encargado'
     if (chargeProfesional == 'Barbero y Encargado') {
       print('notificacion desde:-:SERVICIO-notificationSimplifies()-1');
@@ -134,25 +126,14 @@ Future<void> notificationSimplifies() async {
       int? idProfesional = LocalStorage.prefs.getInt('id_profesional');
       String? tokenUser = LocalStorage.prefs.getString('tokenUser');
 
-      if (branchProfesional != null &&
-          idProfesional != null &&
-          tokenUser != null) {
+      if (branchProfesional != null && idProfesional != null && tokenUser != null) {
         await notiController.fetchNotificationListSERV(
-            branchProfesional,
-            idProfesional,
-            'Barbero',
-            'LLamando-desde-background-service',
-            tokenUser);
+            branchProfesional, idProfesional, 'Barbero', 'LLamando-desde-background-service', tokenUser);
         await Future.delayed(const Duration(seconds: 3));
         await notiController.fetchNotificationListSERV(
-            branchProfesional,
-            idProfesional,
-            'Encargado',
-            'LLamando-desde-background-service',
-            tokenUser);
+            branchProfesional, idProfesional, 'Encargado', 'LLamando-desde-background-service', tokenUser);
       } else {
-        print(
-            'Algunas claves necesarias no están presentes en LocalStorage.prefs.');
+        print('Algunas claves necesarias no están presentes en LocalStorage.prefs.');
       }
     } else {
       print('notificacion desde:-:SERVICIO-notificationSimplifies()-2');
@@ -162,18 +143,11 @@ Future<void> notificationSimplifies() async {
       int? idProfesional = LocalStorage.prefs.getInt('id_profesional');
       String? tokenUser = LocalStorage.prefs.getString('tokenUser');
 
-      if (branchProfesional != null &&
-          idProfesional != null &&
-          tokenUser != null) {
+      if (branchProfesional != null && idProfesional != null && tokenUser != null) {
         await notiController.fetchNotificationListSERV(
-            branchProfesional,
-            idProfesional,
-            chargeProfesional,
-            'LLamando-desde-background-service',
-            tokenUser);
+            branchProfesional, idProfesional, chargeProfesional, 'LLamando-desde-background-service', tokenUser);
       } else {
-        print(
-            'Algunas claves necesarias no están presentes en LocalStorage.prefs.');
+        print('Algunas claves necesarias no están presentes en LocalStorage.prefs.');
       }
     }
   } else {
@@ -184,8 +158,7 @@ Future<void> notificationSimplifies() async {
 }
 
 // Inicializa el plugin de notificaciones locales
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 // Lista para almacenar los IDs de las notificaciones
 List<int> notificationIds = [];
@@ -194,20 +167,16 @@ Future<void> initializeNotificationsNew() async {
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('ic_bg_service_small');
 
-  const InitializationSettings initializationSettings =
-      InitializationSettings(android: initializationSettingsAndroid);
+  const InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 }
 
-Future<void> localNotificationsSimplifies(
-    String title, String description) async {
-  const channelId =
-      notificationChannelIdNormal; // Usa un canal de notificación constante
+Future<void> localNotificationsSimplifies(String title, String description) async {
+  const channelId = notificationChannelIdNormal; // Usa un canal de notificación constante
 
   // Configuración específica de Android para el canal
-  const AndroidNotificationDetails androidPlatformChannelSpecifics =
-      AndroidNotificationDetails(
+  const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
     channelId,
     'Nombre del Canal',
     channelDescription: 'Descripción del Canal',
@@ -225,15 +194,13 @@ Future<void> localNotificationsSimplifies(
   );
 
   // Detalles de la notificación para la plataforma
-  final NotificationDetails platformChannelSpecifics =
-      NotificationDetails(android: androidPlatformChannelSpecifics);
+  final NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
 
   // Genera un ID de notificación único
   final int notificationId = Uuid().v1().hashCode;
 
   // Muestra la notificación
-  await flutterLocalNotificationsPlugin.show(
-      notificationId, title, description, platformChannelSpecifics);
+  await flutterLocalNotificationsPlugin.show(notificationId, title, description, platformChannelSpecifics);
 
   // Añadir el ID de la notificación a la lista
   notificationIds.add(notificationId);
@@ -312,23 +279,17 @@ Future<void> onStart(ServiceInstance service) async {
     int? branchProfesional = LocalStorage.prefs.getInt('branch_profesional');
     int? idProfesional = LocalStorage.prefs.getInt('id_profesional');
     String? tokenUser = LocalStorage.prefs.getString('tokenUser');
-    String? chargeProfesional =
-        LocalStorage.prefs.getString('charge_profesional');
+    String? chargeProfesional = LocalStorage.prefs.getString('charge_profesional');
 
-    if (branchProfesional != null &&
-        idProfesional != null &&
-        tokenUser != null) {
+    if (branchProfesional != null && idProfesional != null && tokenUser != null) {
       if (chargeProfesional != null && chargeProfesional.isNotEmpty) {
         // Verifica si el valor de 'charge_profesional' es 'Barbero y Encargado'
-        if ((chargeProfesional == 'Barbero y Encargado') ||
-            (chargeProfesional == 'Barbero')) {
-          await clientCord.reasignedClientSegundoPlano(
-              idProfesional, branchProfesional, tokenUser, 1);
+        if ((chargeProfesional == 'Barbero y Encargado') || (chargeProfesional == 'Barbero')) {
+          await clientCord.reasignedClientSegundoPlano(idProfesional, branchProfesional, tokenUser, 1);
         }
       }
     } else {
-      print(
-          'Algunas claves necesarias no están presentes en LocalStorage.prefs.-reasignedClientSegundoPlano');
+      print('Algunas claves necesarias no están presentes en LocalStorage.prefs.-reasignedClientSegundoPlano');
     }
   }
 

@@ -85,7 +85,7 @@ class _HomePageBodyState extends State<HomePageBody> with AutomaticKeepAliveClie
   }
 
   reasigClient(int reservationId, int clientId) async {
-    print('se hacompletado los 3 min-ESTOY EN reasigClient');
+    print('se hacompletado los 3 min-ESTOY EN reasigClient()');
     // int idProfDisp = await professionalDisp(reservationId);
     int idProfDisp = -99;
     if (idProfDisp != 0) {
@@ -305,11 +305,12 @@ class _HomePageBodyState extends State<HomePageBody> with AutomaticKeepAliveClie
             estado,
           );
         }*/
-
+          print('se hacompletado los 3 min-ESTOY EN initState()-AFUERA');
           //AQUI SI HAY QUE REASIGNAR SE REASIGNA
           if (clientsScheduledController.clientsScheduledNextServ != null && loginController.codigoQrValid() == true) {
             //es decir que tenga qr leido
-            print('se hacompletado los 3 min-HAY CLIENTE POR ATENDER');
+            //   print('se hacompletado los 3 min-HAY CLIENTE POR ATENDER');
+            print('se hacompletado los 3 min-ESTOY EN initState()');
             int reservationId = clientsScheduledController.clientsScheduledNextServ!.reservation_id!;
             int clientId = clientsScheduledController.clientsScheduledNextServ!.client_id!;
             reasigClient(reservationId, clientId);

@@ -40,8 +40,7 @@ class LoginController extends GetxController {
 
   //optener la hora actual
   Future<void> checkConnection() async {
-    final ConnectivityService connectivityService =
-        Get.find<ConnectivityService>();
+    final ConnectivityService connectivityService = Get.find<ConnectivityService>();
     await connectivityService.fetchData();
   }
 
@@ -154,8 +153,7 @@ class LoginController extends GetxController {
     //aqui ya verifico los estados y ghuardo resultado
     if (clock == 1) //si fuera reloj 1
     {
-      print(
-          'EL TIEMPO ACTUAL DEL RELOJ duracionSend YA sera 1-:${getDateString(h3min)}');
+      print('EL TIEMPO ACTUAL DEL RELOJ duracionSend YA sera 1-:${getDateString(h3min)}');
       if (alert == 0) {
         //aqui retorna un String 'FIN'
         LocalStorage.prefs.setString('varSistemHr3min1', 'FIN');
@@ -170,8 +168,7 @@ class LoginController extends GetxController {
       }
     } else if (clock == 2) //si fuera reloj 2
     {
-      print(
-          'EL TIEMPO ACTUAL DEL RELOJ duracionSend YA sera 2-:${getDateString(h3min)}');
+      print('EL TIEMPO ACTUAL DEL RELOJ duracionSend YA sera 2-:${getDateString(h3min)}');
       if (alert == 0) {
         //aqui retorna un String 'FIN'
         LocalStorage.prefs.setString('varSistemHr3min2', 'FIN');
@@ -186,8 +183,7 @@ class LoginController extends GetxController {
       }
     } else if (clock == 3) //si fuera reloj 1
     {
-      print(
-          'EL TIEMPO ACTUAL DEL RELOJ duracionSend YA sera 3-:${getDateString(h3min)}');
+      print('EL TIEMPO ACTUAL DEL RELOJ duracionSend YA sera 3-:${getDateString(h3min)}');
       if (alert == 0) {
         //aqui retorna un String 'FIN'
         LocalStorage.prefs.setString('varSistemHr3min3', 'FIN');
@@ -202,8 +198,7 @@ class LoginController extends GetxController {
       }
     } else if (clock == 4) //si fuera reloj 1
     {
-      print(
-          'EL TIEMPO ACTUAL DEL RELOJ duracionSend YA sera 4-:${getDateString(h3min)}');
+      print('EL TIEMPO ACTUAL DEL RELOJ duracionSend YA sera 4-:${getDateString(h3min)}');
       if (alert == 0) {
         //aqui retorna un String 'FIN'
         LocalStorage.prefs.setString('varSistemHr3min4', 'FIN');
@@ -220,18 +215,15 @@ class LoginController extends GetxController {
   }
 
   Future<void> setswitchValue() async {
-    final ClientsScheduledController clientsScheduledController =
-        Get.find<ClientsScheduledController>();
+    final ClientsScheduledController clientsScheduledController = Get.find<ClientsScheduledController>();
 
     if (switchValue == false) {
       switchValue = true;
       print('soy un switchValue:true');
       Get.offAllNamed('/HomeResponsible');
     } else {
-      int timeInit = await gettimeClokInitial(
-          idProfessionalLoggedIn!, branchIdLoggedIn!, tokenUserLoggedIn);
-      print(
-          'el tiempo devuelto inicial es desde el metodo del login:$timeInit');
+      int timeInit = await gettimeClokInitial(idProfessionalLoggedIn!, branchIdLoggedIn!, tokenUserLoggedIn);
+      print('el tiempo devuelto inicial es desde el metodo del login:$timeInit');
       clockInitialTimeB(timeInit, clientsScheduledController, 'Barbero');
 
       setLoggingInCharge(true, 'setswitchValue-194');
@@ -259,8 +251,7 @@ class LoginController extends GetxController {
   }
 
   void setPagePosition(value) {
-    print(
-        'llamada timer en 10 segundos llamadasTimer1()-setPagePosition(value):$value');
+    print('llamada timer en 10 segundos llamadasTimer1()-setPagePosition(value):$value');
     pagePosition = value;
     update();
   }
@@ -589,8 +580,7 @@ class LoginController extends GetxController {
     // Obtener información sobre el dispositivo
     AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
     print("Android SDK Version222: ${androidInfo.version.release}");
-    print(
-        "Android SDK androidInfo.displayMetrics.sizeInches: ${androidInfo.displayMetrics.sizeInches}");
+    print("Android SDK androidInfo.displayMetrics.sizeInches: ${androidInfo.displayMetrics.sizeInches}");
     androidInfoDisplay = androidInfo.displayMetrics.sizeInches;
     androidInfoVersion = int.parse(androidInfo.version.release);
     // getScreenResolution();
@@ -598,8 +588,7 @@ class LoginController extends GetxController {
   }
 
   void getScreenResolution(BuildContext context) {
-    final ClientsScheduledController clientContro =
-        Get.find<ClientsScheduledController>();
+    final ClientsScheduledController clientContro = Get.find<ClientsScheduledController>();
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final Size screenSize = mediaQuery.size;
 
@@ -648,8 +637,7 @@ class LoginController extends GetxController {
 
   Future<bool> qrReading(String? qr) async {
     //todo falta poner un cargando
-    print(
-        'esto es lo que entre aqui a el controlador de lectura del QR${qr.toString()}');
+    print('esto es lo que entre aqui a el controlador de lectura del QR${qr.toString()}');
     Map<String, dynamic> jsonMap = json.decode(qr.toString());
     print('esto es lo que ......................Objeto JSON: $jsonMap');
 
@@ -727,8 +715,7 @@ class LoginController extends GetxController {
   }
 
   Future<bool> saveDataQr(int idBranch, int professionalId) async {
-    bool resultList =
-        await usuarioLg.generateQr(idBranch, professionalId, tokenUserLoggedIn);
+    bool resultList = await usuarioLg.generateQr(idBranch, professionalId, tokenUserLoggedIn);
     return resultList;
   }
 
@@ -801,10 +788,8 @@ class LoginController extends GetxController {
 
 //
 //
-  Future<void> loginGetInEncargadoBarbero(
-      String u, String p, int idBranch) async {
-    final ClientsScheduledController clientsScheduledController =
-        Get.find<ClientsScheduledController>();
+  Future<void> loginGetInEncargadoBarbero(String u, String p, int idBranch) async {
+    final ClientsScheduledController clientsScheduledController = Get.find<ClientsScheduledController>();
     String email = u.toString(), pass = p.toString();
     incorrectFields = false;
     try {
@@ -827,14 +812,11 @@ class LoginController extends GetxController {
         print('ssssssssssss ${result['useTechnical']}');
         print('ssssssssssss branchIdLoggedIn:$branchIdLoggedIn');
         //*******Asignando Valores*****/
-        print(
-            'a.......... branchIdLoggedIn***************************: $branchIdLoggedIn');
+        print('a.......... branchIdLoggedIn***************************: $branchIdLoggedIn');
         print('TOKEN***************************: $tokenUserLoggedIn');
         print('ID-Profess***************************: $idProfessionalLoggedIn');
 
-        if (tokenUserLoggedIn != '' &&
-            nameUserLoggedIn != '' &&
-            emailUserLoggedIn != '') {
+        if (tokenUserLoggedIn != '' && nameUserLoggedIn != '' && emailUserLoggedIn != '') {
           //Define el tipo de saludo
           getGreeting();
 
@@ -861,8 +843,7 @@ class LoginController extends GetxController {
             print('estoy si aqui 4');
             print('id de mi puesto de trabajo = $idPuesto');
             setCodigoQrValid(null);
-            print(
-                'id de mi puesto de trabajo estoy entrando a poner el codigo1 en :null');
+            print('id de mi puesto de trabajo estoy entrando a poner el codigo1 en :null');
           }
 
           if (chargeUserLoggedIn == "Barbero") {
@@ -872,8 +853,7 @@ class LoginController extends GetxController {
             setLoggingInCharge(true, 'loginGetInEncargadoBarbero-659');
             clientsScheduledController.setCloseIesperado(true);
             clientsScheduledController.setCloseIesperadoLogin(true);
-            await clientsScheduledController.fetchClientsScheduled(
-                idProfessionalLoggedIn, branchIdLoggedIn, 'Barbero');
+            await clientsScheduledController.fetchClientsScheduled(idProfessionalLoggedIn, branchIdLoggedIn, 'Barbero');
 
             print(' ya no llegue aqui voy a cargar la pagina del profesional');
 
@@ -892,8 +872,7 @@ class LoginController extends GetxController {
             incorrectFields = true;
             await loadingValue(false);
             update();
-            print(
-                ' NO ENTRO PORQUE NO TIENE UN ROL PARA LA APP, COINCIDE QUE ES TRABAJADOR PERO NO DEL APK');
+            print(' NO ENTRO PORQUE NO TIENE UN ROL PARA LA APP, COINCIDE QUE ES TRABAJADOR PERO NO DEL APK');
           }
         }
 
@@ -919,24 +898,17 @@ class LoginController extends GetxController {
     return segundos;
   }
 
-  clockInitialTimeB(
-      int timeInicDb,
-      ClientsScheduledController clientsScheduledController,
-      String tyype) async {
-    print(
-        'el tiempo devuelto inicial es desde el metodo - ENTRANDOOOO-clockInitialTimeB-timeInicDb:$timeInicDb');
+  clockInitialTimeB(int timeInicDb, ClientsScheduledController clientsScheduledController, String tyype) async {
+    print('el tiempo devuelto inicial es desde el metodo - ENTRANDOOOO-clockInitialTimeB-timeInicDb:$timeInicDb');
     //aqui obtengo la hora actual para comparar con la anterior si es posible
     int hAs = obtenerHoraActualEnSegundos();
     LocalStorage.prefs.setInt('valueHoraAct', hAs);
     print('--este es el value del clok-valueHoraAct-LOGIN:$hAs');
     if (LocalStorage.prefs.getBool('valueClockActiv') != null &&
         LocalStorage.prefs.getBool('valueClockActiv') == true) {
-      print(
-          'el tiempo devuelto inicial es desde el metodo - IF DE ARRIBA-variables activas1');
-      if (LocalStorage.prefs.getInt('valueHoraAnt') != null &&
-          LocalStorage.prefs.getInt('valueHoraAct') != null) {
-        print(
-            'el tiempo devuelto inicial es desde el metodo - IF DE ARRIBA-variables activas2');
+      print('el tiempo devuelto inicial es desde el metodo - IF DE ARRIBA-variables activas1');
+      if (LocalStorage.prefs.getInt('valueHoraAnt') != null && LocalStorage.prefs.getInt('valueHoraAct') != null) {
+        print('el tiempo devuelto inicial es desde el metodo - IF DE ARRIBA-variables activas2');
         int timeAsig = 180;
         //obtengo la hora anterior y actual en segundos
         int hourAnt = LocalStorage.prefs.getInt('valueHoraAnt')!;
@@ -946,8 +918,7 @@ class LoginController extends GetxController {
         int valueAntClock = LocalStorage.prefs.getInt('valueClockIni')!;
         int diferSeg = valueAntClock - segundExit;
         if (diferSeg > 0) {
-          print(
-              'el tiempo devuelto inicial es desde el metodo - if (diferSeg > 0) {');
+          print('el tiempo devuelto inicial es desde el metodo - if (diferSeg > 0) {');
           //aun no s eacabaron los 3 minutos
           // asigno el tiempo
           if (diferSeg > 180) {
@@ -957,14 +928,12 @@ class LoginController extends GetxController {
           }
         } else //es que se acaboron los 3 min
         {
-          print(
-              'el tiempo devuelto inicial es desde el metodo - else que ahi reasigno tambien');
+          print('el tiempo devuelto inicial es desde el metodo - else que ahi reasigno tambien');
           // ya una vez en el dia esto cumplido ya no importa el reloj de espera
           //al salir del sistema esta variable debe tomar false
           timeAsig = timeInicDb;
           //reasigno y pongo el reloj en 180
-          await clientCord.reasignedClientSegundoPlano(
-              idProfessionalLoggedIn!, branchIdLoggedIn, tokenUserLoggedIn, 0);
+          await clientCord.reasignedClientSegundoPlano(idProfessionalLoggedIn!, branchIdLoggedIn, tokenUserLoggedIn, 0);
         }
         LocalStorage.prefs.setInt('valueClockIni', timeAsig);
 
@@ -984,21 +953,16 @@ class LoginController extends GetxController {
     } else {
       //todo aqui llamar para ver que tiempo tiene el timerClockInitial
 
-      print(
-          'el tiempo devuelto inicial es desde el metodo - Entrando al sino hacer la verificacion');
+      print('el tiempo devuelto inicial es desde el metodo - Entrando al sino hacer la verificacion');
       if (timeInicDb != -99 && timeInicDb != -999 && timeInicDb != -222) {
-        print(
-            'el tiempo devuelto inicial es desde el metodo - clockInitialTimeB-entra al if()');
+        print('el tiempo devuelto inicial es desde el metodo - clockInitialTimeB-entra al if()');
         int tiempClock = 176 - timeInicDb;
         if (tiempClock <= 0) {
           print(
               'el tiempo devuelto inicial es desde el metodo - clockInitialTimeB-entra a reasignar-tiempClock=$tiempClock');
           //reasigno y pongo el reloj en 180
           await clientCord.reasignedClientSegundoPlano(
-              idProfessionalLoggedIn!,
-              branchIdLoggedIn,
-              tokenUserLoggedIn,
-              0); //0 significa que es desde el login
+              idProfessionalLoggedIn!, branchIdLoggedIn, tokenUserLoggedIn, 0); //0 significa que es desde el login
           tiempClock = 180;
         }
         //  await Future.delayed(
@@ -1008,8 +972,7 @@ class LoginController extends GetxController {
         //sino esta ativo el time de 3 min pues vemos si ya estaba trabajando en segundo plano
         //llamamos a la db
       } else {
-        print(
-            'el tiempo devuelto inicial es desde el metodo - clockInitialTimeB-NOOOO-entra al if()');
+        print('el tiempo devuelto inicial es desde el metodo - clockInitialTimeB-NOOOO-entra al if()');
         clientsScheduledController.setTotalTimeInitial(181);
       }
     }
@@ -1018,13 +981,10 @@ class LoginController extends GetxController {
   verificateClockInit2() async {
     if (LocalStorage.prefs.getBool('valueClockActiv') != null &&
         LocalStorage.prefs.getBool('valueClockActiv') == true) {
-      print(
-          'el tiempo devuelto inicial es-0:${LocalStorage.prefs.getBool('valueClockActiv')}');
+      print('el tiempo devuelto inicial es-0:${LocalStorage.prefs.getBool('valueClockActiv')}');
     } else {
-      int timeInit = await loginController.gettimeClokInitial(
-          loginController.idProfessionalLoggedIn!,
-          loginController.branchIdLoggedIn!,
-          loginController.tokenUserLoggedIn);
+      int timeInit = await loginController.gettimeClokInitial(loginController.idProfessionalLoggedIn!,
+          loginController.branchIdLoggedIn!, loginController.tokenUserLoggedIn);
       print('el tiempo devuelto inicial es-1:$timeInit');
       int tiempClock = 180;
       if (timeInit != -99 && timeInit != -999) {
@@ -1048,30 +1008,25 @@ class LoginController extends GetxController {
         //  await Future.delayed(
         //   Duration(milliseconds: 500));
         //se mantiene el valor
-        print(
-            'el tiempo devuelto inicial es-3-Inicializando clock inicial en:$tiempClock');
+        print('el tiempo devuelto inicial es-3-Inicializando clock inicial en:$tiempClock');
         clientsScheduledController.setTotalTimeInitial(tiempClock);
         //sino esta ativo el time de 3 min pues vemos si ya estaba trabajando en segundo plano
         //llamamos a la db
       } else {
         print('el tiempo devuelto inicial es-4-No entre al if');
-        clientsScheduledController
-            .setTotalTimeInitial(181); //solo para saber que algo dio mal
-        print(
-            'el tiempo inicial del reloj inicio en 181 segundos porque dio un error');
+        clientsScheduledController.setTotalTimeInitial(181); //solo para saber que algo dio mal
+        print('el tiempo inicial del reloj inicio en 181 segundos porque dio un error');
       }
     }
   }
 
-  clockInitialTimeT(
-      ClientsTechnicalController clientsScheduledController, String tyype) {
+  clockInitialTimeT(ClientsTechnicalController clientsScheduledController, String tyype) {
     //aqui obtengo la hora actual para comparar con la anterior si es posible
 
     if (LocalStorage.prefs.getBool('valueClockActivT') != null &&
         LocalStorage.prefs.getBool('valueClockActivT') == true) {
       int timeAsig = 180;
-      if (LocalStorage.prefs.getInt('valueHoraAnt') != null &&
-          LocalStorage.prefs.getInt('valueClockIni') != null) {
+      if (LocalStorage.prefs.getInt('valueHoraAnt') != null && LocalStorage.prefs.getInt('valueClockIni') != null) {
         //obtengo la hora anterior y actual en segundos
         int hourAnt = LocalStorage.prefs.getInt('valueHoraAnt')!;
         int hourAct = obtenerHoraActualEnSegundos();
@@ -1106,12 +1061,9 @@ class LoginController extends GetxController {
       bool activeClock = LocalStorage.prefs.getBool('valueClockTec1ActivT')!;
       print('entrando porque esta el atendiendo cliente:CONTROLADOR-INI');
       if (activeClock) {
-        print(
-            'entrando porque esta el atendiendo cliente:CONTROLADOR-activeClock:$activeClock');
-        if (LocalStorage.prefs.getInt('valueHoraAnt') != null &&
-            LocalStorage.prefs.getInt('valueClockTec1') != null) {
-          print(
-              'entrando porque esta el atendiendo cliente:CONTROLADOR-dentro del if:si');
+        print('entrando porque esta el atendiendo cliente:CONTROLADOR-activeClock:$activeClock');
+        if (LocalStorage.prefs.getInt('valueHoraAnt') != null && LocalStorage.prefs.getInt('valueClockTec1') != null) {
+          print('entrando porque esta el atendiendo cliente:CONTROLADOR-dentro del if:si');
           int timeAsig = 180;
           //obtengo la hora anterior y actual en segundos
           int hourAnt = LocalStorage.prefs.getInt('valueHoraAnt')!;
@@ -1139,15 +1091,13 @@ class LoginController extends GetxController {
           print('--este es el value del clok-diferSeg-T:$diferSeg');
 
           clientsScheduledController.setTotalTimeClientec(timeAsig);
-          print(
-              'entrando porque esta el atendiendo cliente:CONTROLADOR-dentro del if-FINAL:timeAsig:$timeAsig');
+          print('entrando porque esta el atendiendo cliente:CONTROLADOR-dentro del if-FINAL:timeAsig:$timeAsig');
         }
       }
     }
   }
 
-  Future<void> saveUserDataMemory(
-      String name, int branch, int id, String charge, String token) async {
+  Future<void> saveUserDataMemory(String name, int branch, int id, String charge, String token) async {
     // Guardar cada dato por separado
     await LocalStorage.prefs.setString('name_profesional', name);
     await LocalStorage.prefs.setInt('branch_profesional', branch);
@@ -1158,12 +1108,9 @@ class LoginController extends GetxController {
 
 //
   Future<void> loginGetIn(String u, String p, int idBranch) async {
-    final ClientsScheduledController clientsScheduledController =
-        Get.find<ClientsScheduledController>();
-    final ClientsTechnicalController clientsScheduledControllerT =
-        Get.find<ClientsTechnicalController>();
-    final PagesConfigController pagesConfigCont =
-        Get.find<PagesConfigController>();
+    final ClientsScheduledController clientsScheduledController = Get.find<ClientsScheduledController>();
+    final ClientsTechnicalController clientsScheduledControllerT = Get.find<ClientsTechnicalController>();
+    final PagesConfigController pagesConfigCont = Get.find<PagesConfigController>();
     String email = u.toString(), pass = p.toString();
     incorrectFields = false;
     try {
@@ -1187,8 +1134,7 @@ class LoginController extends GetxController {
         print('ssssssssssss branchIdLoggedIn:login:$branchIdLoggedIn');
         print('ssssssssssss chargeUserLoggedIn:login:$chargeUserLoggedIn');
         //*******Asignando Valores*****/
-        print(
-            'T123456789-a.......... branchIdLoggedIn***************************: $branchIdLoggedIn');
+        print('T123456789-a.......... branchIdLoggedIn***************************: $branchIdLoggedIn');
         print('T123456789-OKEN***************************: $tokenUserLoggedIn');
         print('ID-Profess***************************: $idProfessionalLoggedIn');
         //digo que voy desde el login
@@ -1196,9 +1142,7 @@ class LoginController extends GetxController {
         //reinicio el servicio
         // await restartService();
 
-        if (tokenUserLoggedIn != '' &&
-            nameUserLoggedIn != '' &&
-            emailUserLoggedIn != '') {
+        if (tokenUserLoggedIn != '' && nameUserLoggedIn != '' && emailUserLoggedIn != '') {
           //Define el tipo de saludo
           getGreeting();
           //todo aqui guardo cada vez que loguea los datos para la proxima vez que no tenga que loguearse
@@ -1216,17 +1160,14 @@ class LoginController extends GetxController {
             // Guardar la fecha en SharedPreferences
             LocalStorage.prefs.setString('EntryFootprintData', nowString);
             //mandar mensaje que td esta bien
-            LocalStorage.prefs
-                .setString('EntryFootprintUser', controllerLogin.userLoggedIn);
-            LocalStorage.prefs
-                .setString('EntryFootprintPass', controllerLogin.pass);
-            LocalStorage.prefs.setInt(
-                'EntryFootprintBranch', controllerLogin.branchIdLoggedIn!);
+            LocalStorage.prefs.setString('EntryFootprintUser', controllerLogin.userLoggedIn);
+            LocalStorage.prefs.setString('EntryFootprintPass', controllerLogin.pass);
+            LocalStorage.prefs.setInt('EntryFootprintBranch', controllerLogin.branchIdLoggedIn!);
             LocalStorage.prefs.setBool('EntryFootprintOpen', true);
 
             //GUARDAR EN MEMORIA D ETELEFONO LOS DATOS MAS IMPORTANTES
-            saveUserDataMemory(nameUserLoggedIn, branchIdLoggedIn!,
-                idProfessionalLoggedIn!, chargeUserLoggedIn, tokenUserLoggedIn);
+            saveUserDataMemory(
+                nameUserLoggedIn, branchIdLoggedIn!, idProfessionalLoggedIn!, chargeUserLoggedIn, tokenUserLoggedIn);
             //aqui deb reiniciar mi servicio
           } else {
             print('asignando valores de memoria:NO-1');
@@ -1249,25 +1190,20 @@ class LoginController extends GetxController {
               {
                 print('estoy si aqui 1');
                 setCodigoQrValid(null);
-              } else if (stateBET == 3 ||
-                  stateBET ==
-                      4) // si esta en 3 Solicitud para salir y 4 solicitud Colación
+              } else if (stateBET == 3 || stateBET == 4) // si esta en 3 Solicitud para salir y 4 solicitud Colación
               {
                 print('estoy si aqui 3');
                 setCodigoQrValid(2);
               }
             } else {
-              final NotificationController notifCont =
-                  Get.find<NotificationController>();
+              final NotificationController notifCont = Get.find<NotificationController>();
 
               //no tiene puesto de trabajo
-              await notifCont.updateNotificationsState3(
-                  branchIdLoggedIn, idProfessionalLoggedIn!);
+              await notifCont.updateNotificationsState3(branchIdLoggedIn, idProfessionalLoggedIn!);
               print('estoy si aqui 4');
               print('id de mi puesto de trabajo = $idPuesto');
               setCodigoQrValid(null);
-              print(
-                  'id de mi puesto de trabajo estoy entrando a poner el codigo1 en :null');
+              print('id de mi puesto de trabajo estoy entrando a poner el codigo1 en :null');
             }
           }
 
@@ -1275,25 +1211,21 @@ class LoginController extends GetxController {
           await LocalStorage.prefs.setBool('verificatePhoto', false);
           //todo aqui guardo cada vez que loguea los datos para la proxima vez que no tenga que loguearse
 
-          if (chargeUserLoggedIn == 'Encargado' ||
-              chargeUserLoggedIn == 'Coordinador') {
+          if (chargeUserLoggedIn == 'Encargado' || chargeUserLoggedIn == 'Coordinador') {
             int entrada = 0;
-            entrada = await getEntradaPuesto(
-                idProfessionalLoggedIn!, branchIdLoggedIn!);
+            entrada = await getEntradaPuesto(idProfessionalLoggedIn!, branchIdLoggedIn!);
             if (entrada == 1) {
               setCodigoQrValid(1);
             } else {
               setCodigoQrValid(null);
             }
           }
-          if (chargeUserLoggedIn ==
-              'Coordinador') //garantizando que siempre en coordinador salga el appBar
+          if (chargeUserLoggedIn == 'Coordinador') //garantizando que siempre en coordinador salga el appBar
           {
             await pagesConfigCont.showAppBar(true);
           }
 
-          if (chargeUserLoggedIn == 'Coordinador' ||
-              chargeUserLoggedIn == 'Encargado') {
+          if (chargeUserLoggedIn == 'Coordinador' || chargeUserLoggedIn == 'Encargado') {
             int state = await getStateProfessionall(idProfessionalLoggedIn!);
 
             //preguntar por el state
@@ -1314,19 +1246,14 @@ class LoginController extends GetxController {
             }
           }
 
-          if (chargeUserLoggedIn == "Barbero" ||
-              chargeUserLoggedIn == "Barbero y Encargado") {
-            if (stateBET ==
-                1) //si esta adentro con td bien.puede hacer estas llamadas
+          if (chargeUserLoggedIn == "Barbero" || chargeUserLoggedIn == "Barbero y Encargado") {
+            if (stateBET == 1) //si esta adentro con td bien.puede hacer estas llamadas
             ///solo cargo td esto si tengo el qr leido
             {
               //aqui es para saber solamnete el tiempo del reloj inicial de los 3min
-              int timeInit = await gettimeClokInitial(idProfessionalLoggedIn!,
-                  branchIdLoggedIn!, tokenUserLoggedIn);
-              print(
-                  'el tiempo devuelto inicial es desde el metodo del login:$timeInit');
-              clockInitialTimeB(
-                  timeInit, clientsScheduledController, 'Barbero');
+              int timeInit = await gettimeClokInitial(idProfessionalLoggedIn!, branchIdLoggedIn!, tokenUserLoggedIn);
+              print('el tiempo devuelto inicial es desde el metodo del login:$timeInit');
+              clockInitialTimeB(timeInit, clientsScheduledController, 'Barbero');
               //aqui cargo la cola del barbero para poder tener en el home al siguiente de la cola inicialmente
 
               setIsLoggingIn(true);
@@ -1335,9 +1262,7 @@ class LoginController extends GetxController {
               clientsScheduledController.setCloseIesperado(true);
               clientsScheduledController.setCloseIesperadoLogin(true);
               await clientsScheduledController.fetchClientsScheduled(
-                  idProfessionalLoggedIn,
-                  branchIdLoggedIn,
-                  'Barbero y Encargado');
+                  idProfessionalLoggedIn, branchIdLoggedIn, 'Barbero y Encargado');
               // await clientsScheduledController.fetchClientsScheduledNew(
               //     idProfessionalLoggedIn,
               //     branchIdLoggedIn,
@@ -1374,8 +1299,7 @@ class LoginController extends GetxController {
             incorrectFields = true;
             await loadingValue(false);
             update();
-            print(
-                ' NO ENTRO PORQUE NO TIENE UN ROL PARA LA APP, COINCIDE QUE ES TRABAJADOR PERO NO DEL APK');
+            print(' NO ENTRO PORQUE NO TIENE UN ROL PARA LA APP, COINCIDE QUE ES TRABAJADOR PERO NO DEL APK');
           }
         }
         Get.back();
@@ -1406,8 +1330,7 @@ class LoginController extends GetxController {
     try {
       FlutterBackgroundService().invoke('clearAllNotifications');
       FlutterBackgroundService().invoke('stopService');
-      final ClientsScheduledController clientCont =
-          Get.find<ClientsScheduledController>();
+      final ClientsScheduledController clientCont = Get.find<ClientsScheduledController>();
       final NotificationController notCont = Get.find<NotificationController>();
       clientCont.updateTails();
       notCont.setNotifLenght();
@@ -1423,12 +1346,10 @@ class LoginController extends GetxController {
         Map<String, dynamic>? result; //INICIALIZANDO A NULL
         await Future.delayed(const Duration(seconds: 1));
         // result = await usuarioLg.userLogout(token);
-        result = await usuarioLg.userLogoutNew(
-            idProfessionalLoggedIn!, branchIdLoggedIn!, token);
+        result = await usuarioLg.userLogoutNew(idProfessionalLoggedIn!, branchIdLoggedIn!, token);
 
         if (result != null) {
-          print(
-              'SI CERRO SECION CORRECTAMENTE ELIMINANDO LOS DATOS DE SECCION');
+          print('SI CERRO SECION CORRECTAMENTE ELIMINANDO LOS DATOS DE SECCION');
           await clearSessionData();
           print('reiniciar app mandando');
           LocalStorage.prefs.setBool('iAmActive', false);
@@ -1459,13 +1380,11 @@ class LoginController extends GetxController {
           LocalStorage.prefs.remove('EntryFootprintData');
           LocalStorage.prefs.remove('EntryFootprintOpen');
           print('reiniciar app:$result');
-          print(
-              'NO CERRO SECION CORRECTAMENTE ELIMINANDO LOS DATOS DE SECCION');
+          print('NO CERRO SECION CORRECTAMENTE ELIMINANDO LOS DATOS DE SECCION');
           Get.offAllNamed('/LoginFormPage');
         }
       } else
-        print(
-            'ERROR: -----> Revisar que el token esta llegando aqui vacio->token= $token');
+        print('ERROR: -----> Revisar que el token esta llegando aqui vacio->token= $token');
     } catch (e) {
       print('Erroor:$e');
     }
@@ -1473,8 +1392,8 @@ class LoginController extends GetxController {
 
   Future<int> insertPuesto(professional_id, workplace_id, places) async {
     try {
-      var result = await usuarioLg.insertPuesto(professional_id, workplace_id,
-          places, branchIdLoggedIn, tokenUserLoggedIn);
+      var result =
+          await usuarioLg.insertPuesto(professional_id, workplace_id, places, branchIdLoggedIn, tokenUserLoggedIn);
       if (result == 1) {
         print('esto es lo que INSERTO EN EL PUESTO DE TRABAJO');
       } else {
@@ -1489,8 +1408,7 @@ class LoginController extends GetxController {
 
   Future<int> insertHoraEntrada(professional_id, branch_id) async {
     try {
-      var result = await usuarioLg.insertHoraEntrada(
-          professional_id, branch_id, tokenUserLoggedIn);
+      var result = await usuarioLg.insertHoraEntrada(professional_id, branch_id, tokenUserLoggedIn);
       if (result == 1) {
         print('esto es lo que INSERTO LA HORA D EENTRADA');
       } else {
@@ -1512,25 +1430,21 @@ class LoginController extends GetxController {
         print('este es el id del puesto :$idPuesto');
 
         if (idPuesto != -99 && idPuesto != -999) {
-          result = await usuarioLg.exitPostworking(
-              idPuesto, tipe, idProfessionalLoggedIn!);
+          result = await usuarioLg.exitPostworking(idPuesto, tipe, idProfessionalLoggedIn!);
           if (result == true) {
             await ColacionProfessional(idProfessionalLoggedIn, tipe, 0);
-            bool exit = await usuarioLg.exitHours(
-                branchIdLoggedIn, idProfessionalLoggedIn, tokenUserLoggedIn);
+            bool exit = await usuarioLg.exitHours(branchIdLoggedIn, idProfessionalLoggedIn, tokenUserLoggedIn);
             if (exit) {
               print('YA registra la hora de salida del barbero o tecnico');
             } else {
               print('NO registró la hora de salida del barbero o tecnico');
             }
           } else {
-            print(
-                'este es el id del puesto NO SALIO DEL PUESTO EL PROFESIONAL');
+            print('este es el id del puesto NO SALIO DEL PUESTO EL PROFESIONAL');
           }
         }
       } else if (tipe == 'Admin') {
-        bool exit = await usuarioLg.exitHours(
-            branchIdLoggedIn, idProfessionalLoggedIn, tokenUserLoggedIn);
+        bool exit = await usuarioLg.exitHours(branchIdLoggedIn, idProfessionalLoggedIn, tokenUserLoggedIn);
         if (exit) {
           print('YA registra la hora de salida del encargado o coordinador');
         } else {
@@ -1544,8 +1458,7 @@ class LoginController extends GetxController {
 
   Future<int> ColacionProfessional(idProfe, type, state) async {
     try {
-      int exit = await usuarioLg.solitColacion(
-          branchIdLoggedIn, idProfe, type, state, tokenUserLoggedIn);
+      int exit = await usuarioLg.solitColacion(branchIdLoggedIn, idProfe, type, state, tokenUserLoggedIn);
 
       if (state == 2) //es solicitud a enviar
       {
@@ -1594,8 +1507,7 @@ class LoginController extends GetxController {
       int idPuesto = -99;
       print('este s es el id del puesto idProfes:$idProfes');
       idPuesto = await usuarioLg.getIdPuestoRepo(idProfes, chargeUserLoggedIn);
-      print(
-          'este s es el id del puesto idProfes despue sde llamar al puesto:$idPuesto');
+      print('este s es el id del puesto idProfes despue sde llamar al puesto:$idPuesto');
 
       print('NO s ESTA EN NINGUN PUESTO EL PROFESIONAL');
       return idPuesto;
@@ -1611,8 +1523,7 @@ class LoginController extends GetxController {
       int idPuesto = -99;
       print('este s es el id del puesto idProfes:$idProfes');
       idPuesto = await usuarioLg.getEntradaPuestoRepo(idProfes, branch);
-      print(
-          'este s es el id del puesto idProfes despue sde llamar al puesto:$idPuesto');
+      print('este s es el id del puesto idProfes despue sde llamar al puesto:$idPuesto');
 
       return idPuesto;
     } catch (e) {
@@ -1626,8 +1537,7 @@ class LoginController extends GetxController {
       //INICIALIZANDO A NULL
       int state = -99;
       state = await usuarioLg.getStateProfessional(idProfes);
-      print(
-          'este es el id del puesto idProfes despue sde llamar al state:$state');
+      print('este es el id del puesto idProfes despue sde llamar al state:$state');
 
       return state;
     } catch (e) {
@@ -1637,6 +1547,18 @@ class LoginController extends GetxController {
   }
 
   Future<void> clearSessionData() async {
+    //variables de
+    final CoexistenceController coexCont = Get.find<CoexistenceController>();
+    final StatisticController statCont = Get.find<StatisticController>();
+    coexCont.clearVarStatist(); //esta es la del grafico
+
+    statCont.clearVarStadistCont(); //aqui limpia tds las variables de la estadistica
+
+    //
+    //
+    //
+    //
+    //
     nameUserLoggedIn = '';
     userLoggedIn = '';
     tokenUserLoggedIn = '';
