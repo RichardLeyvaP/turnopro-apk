@@ -18,19 +18,16 @@ class ClientsScheduledRepository extends GetConnect {
     int timeC1 = -999, timeC2 = -999, timeC3 = -999, timeC4 = -999;
 
     try {
-      var url =
-          '${Env.apiEndpoint}/show-clocks?professional_id=$professionalId';
+      var url = '${Env.apiEndpoint}/show-clocks?professional_id=$professionalId';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response =
-          await get(url, headers: headers).timeout(Duration(seconds: 15));
+      final response = await get(url, headers: headers).timeout(Duration(seconds: 15));
       print(url);
       print(response.statusCode);
       print('RETORNE-- repoShowClock-.url:${response.statusCode}');
-      print(
-          'RETORNE-- repoShowClock-response.statusCode:${response.statusCode}');
+      print('RETORNE-- repoShowClock-response.statusCode:${response.statusCode}');
       if ((response.statusCode == 200)) {
         print('RETORNE-- repoShowClock-repoShowClock:${response.body}');
         // Decodifica el JSON
@@ -45,31 +42,18 @@ class ClientsScheduledRepository extends GetConnect {
           print('RETORNE---ESTA VACIA');
         } else {
           tailsResponse.tails.forEach((clock) {
-            print(
-                'RETORNE---Clock: ${clock.clock}, TimeClock: ${clock.timeClock}, Detached: ${clock.detached}');
-            if (clock.clock == 1 &&
-                (clock.attended != 4 &&
-                    clock.attended != 5 &&
-                    clock.attended != 33)) {
+            print('RETORNE---Clock: ${clock.clock}, TimeClock: ${clock.timeClock}, Detached: ${clock.detached}');
+            if (clock.clock == 1 && (clock.attended != 4 && clock.attended != 5 && clock.attended != 33)) {
               //esta con el tecnco si attended tiene esos valores
               int calculatedTime = clock.timeClock - differenceInSeconds;
               timeC1 = calculatedTime < 0 ? 0 : calculatedTime;
-            } else if (clock.clock == 2 &&
-                (clock.attended != 4 &&
-                    clock.attended != 5 &&
-                    clock.attended != 33)) {
+            } else if (clock.clock == 2 && (clock.attended != 4 && clock.attended != 5 && clock.attended != 33)) {
               int calculatedTime = clock.timeClock - differenceInSeconds;
               timeC2 = calculatedTime < 0 ? 0 : calculatedTime;
-            } else if (clock.clock == 3 &&
-                (clock.attended != 4 &&
-                    clock.attended != 5 &&
-                    clock.attended != 33)) {
+            } else if (clock.clock == 3 && (clock.attended != 4 && clock.attended != 5 && clock.attended != 33)) {
               int calculatedTime = clock.timeClock - differenceInSeconds;
               timeC3 = calculatedTime < 0 ? 0 : calculatedTime;
-            } else if (clock.clock == 4 &&
-                (clock.attended != 4 &&
-                    clock.attended != 5 &&
-                    clock.attended != 33)) {
+            } else if (clock.clock == 4 && (clock.attended != 4 && clock.attended != 5 && clock.attended != 33)) {
               int calculatedTime = clock.timeClock - differenceInSeconds;
               timeC4 = calculatedTime < 0 ? 0 : calculatedTime;
             }
@@ -87,8 +71,7 @@ class ClientsScheduledRepository extends GetConnect {
         return false;
       }
     } catch (e) {
-      print(
-          'RETORNE-- repoShowClock-ERROR DE SERVIDOR A LA CREACION DEL Qr:$e');
+      print('RETORNE-- repoShowClock-ERROR DE SERVIDOR A LA CREACION DEL Qr:$e');
       return -999;
     }
   }
@@ -104,14 +87,13 @@ class ClientsScheduledRepository extends GetConnect {
       int idTecn = idProf;
 
       // var url = '${Env.apiEndpoint}/cola_branch_capilar?branch_id=$idBranch';
-      var url =
-          '${Env.apiEndpoint}/cola_branch_tecnico?branch_id=$idBranch&professional_id=$idTecn';
+      var url = '${Env.apiEndpoint}/cola_branch_tecnico?branch_id=$idBranch&professional_id=$idTecn';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
       if (response.statusCode == null) {
         print('response.statusCode tecnico:${response.statusCode}');
@@ -124,8 +106,7 @@ class ClientsScheduledRepository extends GetConnect {
         print('ya tengo la cola de la api tecnico');
         final customers = response.body['tail'];
         for (Map service in customers) {
-          ClientsScheduledModel client =
-              ClientsScheduledModel.fromJson(jsonEncode(service));
+          ClientsScheduledModel client = ClientsScheduledModel.fromJson(jsonEncode(service));
 
           clientList.add(client);
           //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 4
@@ -150,8 +131,7 @@ class ClientsScheduledRepository extends GetConnect {
             quantityClientRechaz++;
           }
         }
-        print(
-            'imprimiendo cuantos atinede el tecnico:...$quantityClientAttended');
+        print('imprimiendo cuantos atinede el tecnico:...$quantityClientAttended');
       }
 
       return {
@@ -169,8 +149,7 @@ class ClientsScheduledRepository extends GetConnect {
   //
   //
 
-  Future getClientsScheduledListNewServ(
-      idProfessional, idBranch, isLoggingIn, token) async {
+  Future getClientsScheduledListNewServ(idProfessional, idBranch, isLoggingIn, token) async {
     print('estoy en repositorio en - 2');
 
     try {
@@ -184,15 +163,14 @@ class ClientsScheduledRepository extends GetConnect {
       bool varclientswaiting = false;
 
       //final response = await get(url, headers: headers);
-      var url =
-          '${Env.apiEndpoint}/tail-branch-professional?professional_id=$idProfessional&branch_id=$idBranch';
+      var url = '${Env.apiEndpoint}/tail-branch-professional?professional_id=$idProfessional&branch_id=$idBranch';
       print('a.......... getClientsScheduledList:url:$url');
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
 
       //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
       if (response.statusCode != 200) {
@@ -222,21 +200,17 @@ class ClientsScheduledRepository extends GetConnect {
         for (Map service in customers) {
           // print(
           //     'ya tengo la cola de la api es estaa *********for (Map service in customers)********');
-          ClientsScheduledModel client =
-              ClientsScheduledModel.fromJson(jsonEncode(service));
+          ClientsScheduledModel client = ClientsScheduledModel.fromJson(jsonEncode(service));
           // print(
           //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
           //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
           if (isLoggingIn == true) {
             //controllerLogin.isLoggingIn
-            if (client.detached == 1 &&
-                client.attended != 33 &&
-                client.attended != 2) {
+            if (client.detached == 1 && client.attended != 33 && client.attended != 2) {
               //33 es que lo rechazó el tecnico
               //2 es que ya fue atendido y por alguna razón quedo attendened 1
               //creo nuevo cliente
-              print(
-                  'clientes asistiendo entre a if (client.detached == 1) {//creo nuevo cliente');
+              print('clientes asistiendo entre a if (client.detached == 1) {//creo nuevo cliente');
               Map newValue = {
                 "reservation_id": client.reservation_id,
                 //"updated_at": convertDateTimeToMinutes(client.updated_at!),
@@ -246,8 +220,7 @@ class ClientsScheduledRepository extends GetConnect {
                 "client": client,
               };
               attendingClientList.add(newValue);
-              print(
-                  'clientes asistiendo client.reservation_id:${client.reservation_id}');
+              print('clientes asistiendo client.reservation_id:${client.reservation_id}');
               print('clientes asistiendo client.clock!:${client.clock!}');
               print('clientes asistiendo timeClock:${client.timeClock! * 60}');
               print('clientes asistiendo client:${client}');
@@ -258,15 +231,12 @@ class ClientsScheduledRepository extends GetConnect {
           if (client.attended == 0) {
             clientListSig.add(client);
           }
-          if ((client.attended != 2) &&
-              client.confirmation != 1 &&
-              client.confirmation != 2) {
+          if ((client.attended != 2) && client.confirmation != 1 && client.confirmation != 2) {
             clientListSalon++;
             print('ver cuantas veces entro aqui ');
           }
           //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
-          print(
-              'gggclientes asistiendo entre a if (client.confirmation :2${client.confirmation}) {');
+          print('gggclientes asistiendo entre a if (client.confirmation :2${client.confirmation}) {');
           if (hasNextClient == false) {
             if (client.attended == 0 && client.confirmation == 4) {
               //todo aqui poner que el siguiente sea solo si está anunciado
@@ -275,9 +245,7 @@ class ClientsScheduledRepository extends GetConnect {
             }
           }
           //AQUI PARA SABER CUANTOS ESTA ATENDIENDO
-          if (client.attended == 1 ||
-              client.attended == 11 ||
-              client.attended == 111) {
+          if (client.attended == 1 || client.attended == 11 || client.attended == 111) {
             print('clientes asistiendo entre a if (client.attended == 1) {');
             quantityClientAttended++;
           }
@@ -307,8 +275,7 @@ class ClientsScheduledRepository extends GetConnect {
 //
   //
 
-  Future getClientsScheduledListNew(
-      idProfessional, idBranch, isLoggingIn, token) async {
+  Future getClientsScheduledListNew(idProfessional, idBranch, isLoggingIn, token) async {
     print('estoy en repositorio en - 2');
 
     try {
@@ -322,15 +289,14 @@ class ClientsScheduledRepository extends GetConnect {
       bool varclientswaiting = false;
 
       //final response = await get(url, headers: headers);
-      var url =
-          '${Env.apiEndpoint}/tail-branch-professional?professional_id=$idProfessional&branch_id=$idBranch';
+      var url = '${Env.apiEndpoint}/tail-branch-professional?professional_id=$idProfessional&branch_id=$idBranch';
       print('a.......... getClientsScheduledList:url:$url');
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
 
       //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
       if (response.statusCode != 200) {
@@ -360,21 +326,17 @@ class ClientsScheduledRepository extends GetConnect {
         for (Map service in customers) {
           // print(
           //     'ya tengo la cola de la api es estaa *********for (Map service in customers)********');
-          ClientsScheduledModel client =
-              ClientsScheduledModel.fromJson(jsonEncode(service));
+          ClientsScheduledModel client = ClientsScheduledModel.fromJson(jsonEncode(service));
           // print(
           //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
           //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
           if (isLoggingIn == true) {
             //controllerLogin.isLoggingIn
-            if (client.detached == 1 &&
-                client.attended != 33 &&
-                client.attended != 2) {
+            if (client.detached == 1 && client.attended != 33 && client.attended != 2) {
               //33 es que lo rechazó el tecnico
               //2 es que ya fue atendido y por alguna razón quedo attendened 1
               //creo nuevo cliente
-              print(
-                  'clientes asistiendo entre a if (client.detached == 1) {//creo nuevo cliente');
+              print('clientes asistiendo entre a if (client.detached == 1) {//creo nuevo cliente');
               Map newValue = {
                 "reservation_id": client.reservation_id,
                 //"updated_at": convertDateTimeToMinutes(client.updated_at!),
@@ -384,8 +346,7 @@ class ClientsScheduledRepository extends GetConnect {
                 "client": client,
               };
               attendingClientList.add(newValue);
-              print(
-                  'clientes asistiendo client.reservation_id:${client.reservation_id}');
+              print('clientes asistiendo client.reservation_id:${client.reservation_id}');
               print('clientes asistiendo client.clock!:${client.clock!}');
               print('clientes asistiendo timeClock:${client.timeClock! * 60}');
               print('clientes asistiendo client:${client}');
@@ -396,15 +357,12 @@ class ClientsScheduledRepository extends GetConnect {
           if (client.attended == 0) {
             clientListSig.add(client);
           }
-          if ((client.attended != 2) &&
-              client.confirmation != 1 &&
-              client.confirmation != 2) {
+          if ((client.attended != 2) && client.confirmation != 1 && client.confirmation != 2) {
             clientListSalon++;
             print('ver cuantas veces entro aqui ');
           }
           //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
-          print(
-              'gggclientes asistiendo entre a if (client.confirmation :2${client.confirmation}) {');
+          print('gggclientes asistiendo entre a if (client.confirmation :2${client.confirmation}) {');
           if (hasNextClient == false) {
             if (client.attended == 0 && client.confirmation == 4) {
               //todo aqui poner que el siguiente sea solo si está anunciado
@@ -413,9 +371,7 @@ class ClientsScheduledRepository extends GetConnect {
             }
           }
           //AQUI PARA SABER CUANTOS ESTA ATENDIENDO
-          if (client.attended == 1 ||
-              client.attended == 11 ||
-              client.attended == 111) {
+          if (client.attended == 1 || client.attended == 11 || client.attended == 111) {
             print('clientes asistiendo entre a if (client.attended == 1) {');
             quantityClientAttended++;
           }
@@ -445,8 +401,7 @@ class ClientsScheduledRepository extends GetConnect {
 //
   //
 
-  Future getClientsScheduledList(
-      idProfessional, idBranch, isLoggingIn, token1) async {
+  Future getClientsScheduledList(idProfessional, idBranch, isLoggingIn, token1) async {
     print('estoy en repositorio en - 2');
 
     try {
@@ -458,14 +413,12 @@ class ClientsScheduledRepository extends GetConnect {
       int quantityClientAttended = 0;
       bool varclientswaiting = false;
       String token = token1;
-      var url =
-          '${Env.apiEndpoint}/tail-branch-professional?professional_id=$idProfessional&branch_id=$idBranch';
+      var url = '${Env.apiEndpoint}/tail-branch-professional?professional_id=$idProfessional&branch_id=$idBranch';
       print('a.......... getClientsScheduledList:url:$url');
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response =
-          await get(url, headers: headers).timeout(Duration(seconds: 15));
+      final response = await get(url, headers: headers).timeout(Duration(seconds: 15));
       // Aumenta el tiempo de espera a 30 segundos
 
       //si la respuesta fuera null es que no logro conectarse al db,servidor caido o no tienne internet
@@ -495,20 +448,16 @@ class ClientsScheduledRepository extends GetConnect {
         for (Map service in customers) {
           // print(
           //     'ya tengo la cola de la api es estaa *********for (Map service in customers)********');
-          ClientsScheduledModel client =
-              ClientsScheduledModel.fromJson(jsonEncode(service));
+          ClientsScheduledModel client = ClientsScheduledModel.fromJson(jsonEncode(service));
           // print(
           //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
           //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
           if (isLoggingIn == true) {
             //controllerLogin.isLoggingIn
-            if (client.detached == 1 &&
-                client.attended != 0 &&
-                client.attended != 2) {
+            if (client.detached == 1 && client.attended != 0 && client.attended != 2) {
               //33 es que lo rechazó el tecnico
               //creo nuevo cliente
-              print(
-                  'clientes asistiendo entre a if (client.detached == 1) {//creo nuevo cliente');
+              print('clientes asistiendo entre a if (client.detached == 1) {//creo nuevo cliente');
               Map newValue = {
                 "reservation_id": client.reservation_id,
                 //"updated_at": convertDateTimeToMinutes(client.updated_at!),
@@ -518,8 +467,7 @@ class ClientsScheduledRepository extends GetConnect {
                 "client": client,
               };
               attendingClientList.add(newValue);
-              print(
-                  'clientes asistiendo client.reservation_id:${client.reservation_id}');
+              print('clientes asistiendo client.reservation_id:${client.reservation_id}');
               print('clientes asistiendo client.clock!:${client.clock!}');
               print('clientes asistiendo timeClock:${client.timeClock! * 60}');
               print('clientes asistiendo client:${client}');
@@ -531,10 +479,8 @@ class ClientsScheduledRepository extends GetConnect {
             clientListSig.add(client);
           }
           //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
-          print(
-              'gggclientes asistiendo entre a if (client.confirmation :3${client.confirmation}) {');
-          print(
-              'gggclientes asistiendo entre a if (client.length :3${client}) {');
+          print('gggclientes asistiendo entre a if (client.confirmation :3${client.confirmation}) {');
+          print('gggclientes asistiendo entre a if (client.length :3${client}) {');
           print('gggclientes asistiendo entre a if (token :3${token}) {');
           if (hasNextClient == false) {
             if (client.attended == 0 && client.confirmation == 4) {
@@ -543,10 +489,7 @@ class ClientsScheduledRepository extends GetConnect {
             }
           }
           //AQUI PARA SABER CUANTOS ESTA ATENDIENDO
-          if (client.attended == 1 ||
-              client.attended == 11 ||
-              client.attended == 111 ||
-              client.attended == 33) {
+          if (client.attended == 1 || client.attended == 11 || client.attended == 111 || client.attended == 33) {
             print('relojes activos:${client.clock!}');
             //33 es rechazado por el tecnico pero es atendido por el barbero
             print('clientes asistiendo entre a if (client.attended == 1) {');
@@ -572,7 +515,7 @@ class ClientsScheduledRepository extends GetConnect {
             varclientswaiting, //este me dice si hay que mandar alguna notificacion recordando que hay cliente esperando en cola por ser atendido
       };
     } catch (e) {
-      print(e);
+      print('eeror al mapera:$e');
     }
   }
 
@@ -602,8 +545,8 @@ class ClientsScheduledRepository extends GetConnect {
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         print('ya tengo los servicios');
         final customers = response.body['services'];
@@ -621,9 +564,7 @@ class ClientsScheduledRepository extends GetConnect {
         final data = response.body['clientHistory'];
         print('ertyu - clientHistory $data');
         String professionalNameBarber = data[0]['professionalName'];
-        String imageUrlBarber = data[0]['image_url'] == ''
-            ? 'comments/default_profile.jpg'
-            : data[0]['image_url'];
+        String imageUrlBarber = data[0]['image_url'] == '' ? 'comments/default_profile.jpg' : data[0]['image_url'];
         String imageLookBarber = data[0]['imageLook'];
         int cantVisitBarber = data[0]['cantVisit'];
         String endLookBarber = data[0]['endLook'] ?? '';
@@ -668,8 +609,8 @@ class ClientsScheduledRepository extends GetConnect {
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         print('ya tengo los servicios');
         final customers = response.body['services'];
@@ -710,8 +651,8 @@ class ClientsScheduledRepository extends GetConnect {
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         print('ya guardo el reloj que esta utilizando');
         return true;
@@ -739,8 +680,8 @@ class ClientsScheduledRepository extends GetConnect {
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         result = response.body;
         print('EL RELOJ DEVUELTO ES :$result');
@@ -758,22 +699,18 @@ class ClientsScheduledRepository extends GetConnect {
   Future sendWhatsappNotificationRepos(String telefone, token) async {
     print('estoy en repositorio en - 5');
     try {
-      var url =
-          '${Env.apiEndpoint}/whatsapp-notification?telefone_client=$telefone';
+      var url = '${Env.apiEndpoint}/whatsapp-notification?telefone_client=$telefone';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
-        print(
-            'cargando aqui-8-sendWhatsappNotificationRepos-TELEFONO:$telefone');
-        print(
-            'EL mensaje de whatassapp se ha enviado  correctamente :${response.statusCode}');
+        print('cargando aqui-8-sendWhatsappNotificationRepos-TELEFONO:$telefone');
+        print('EL mensaje de whatassapp se ha enviado  correctamente :${response.statusCode}');
       } else {
-        print(
-            'cargando aqui-8-codigo:${response.statusCode} -sendWhatsappNotificationRepos-TELEFONO:$telefone');
+        print('cargando aqui-8-codigo:${response.statusCode} -sendWhatsappNotificationRepos-TELEFONO:$telefone');
       }
     } catch (e) {
       print(e);
@@ -809,14 +746,13 @@ class ClientsScheduledRepository extends GetConnect {
   Future typeOfService(idProfessional, idBranch, token) async {
     print('estoy en repositorio en - 6');
     try {
-      var url =
-          '${Env.apiEndpoint}/type_of_service?professional_id=$idProfessional&branch_id=$idBranch';
+      var url = '${Env.apiEndpoint}/type_of_service?professional_id=$idProfessional&branch_id=$idBranch';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         final typeService = response.body;
         print('typeOfService(idProfessional, idBranch) async:$typeService');
@@ -844,8 +780,8 @@ class ClientsScheduledRepository extends GetConnect {
         final headers = {
           "Authorization": "Bearer $token", // Agrega el token a los encabezados
         };
-        final response = await get(url, headers: headers).timeout(
-            Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+        final response = await get(url, headers: headers)
+            .timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
         if (response.statusCode == 200) {
           return true;
         } else {
@@ -885,8 +821,7 @@ class ClientsScheduledRepository extends GetConnect {
         print('Acacba de incumplir en este type de convivencia:$type');
         return true;
       } else {
-        print(
-            'Intento de darle incumplimiento, pero algo salió mal y no fue posible');
+        print('Intento de darle incumplimiento, pero algo salió mal y no fue posible');
         return false;
       }
     } catch (e) {
@@ -916,14 +851,12 @@ class ClientsScheduledRepository extends GetConnect {
       print(professionalId);
       print(estado);
       print(response.statusCode);
-      print(
-          'llamda a la api desde segundo plano-REPOS-CODE-${response.statusCode}');
+      print('llamda a la api desde segundo plano-REPOS-CODE-${response.statusCode}');
       if (response.statusCode == 200) {
         print('Acacba de incumplir en este type de convivencia:$type');
         return true;
       } else {
-        print(
-            'Intento de darle incumplimiento, pero algo salió mal y no fue posible');
+        print('Intento de darle incumplimiento, pero algo salió mal y no fue posible');
         return false;
       }
     } catch (e) {
@@ -942,16 +875,14 @@ class ClientsScheduledRepository extends GetConnect {
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         final statusClient = response.body;
-        print(
-            'Future<int> returnClientStatus(reservationId) async {:$statusClient');
+        print('Future<int> returnClientStatus(reservationId) async {:$statusClient');
         return statusClient;
       } else {
-        print(
-            'Future<int> returnClientStatus(reservationId) async {:${response.statusCode}');
+        print('Future<int> returnClientStatus(reservationId) async {:${response.statusCode}');
         return -99;
       }
     } catch (e) {
@@ -968,25 +899,22 @@ class ClientsScheduledRepository extends GetConnect {
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
-      print(
-          'getProfessionalState(idBranch) async getProfessionalState(idBranch) url:$url');
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      print('getProfessionalState(idBranch) async getProfessionalState(idBranch) url:$url');
       print(
           'getProfessionalState(idBranch) async getProfessionalState(idBranch) response.statusCode:${response.statusCode}');
       if (response.statusCode == 200) {
         final professionals = response.body['professionals'];
         for (Map professional in professionals) {
-          ProfessionalModel u =
-              ProfessionalModel.fromJson(jsonEncode(professional));
+          ProfessionalModel u = ProfessionalModel.fromJson(jsonEncode(professional));
           //AQUI SOLO COJO QUE NO SEAN RESPONSABLES
           if (u.name != 'Encargado' && u.name != 'Coordinador') {
             //charge_id=3 es un responsable
             professionalList.add(u);
           }
         }
-        print(
-            'getProfessionalState(idBranch) async getProfessionalState(idBranch) async');
+        print('getProfessionalState(idBranch) async getProfessionalState(idBranch) async');
         print(professionalList.length);
         print(
             'getProfessionalState(idBranch) async getProfessionalState(idBranch) async professionalList.length:${professionalList.length}');
@@ -999,8 +927,7 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
-  Future getProfessionalState2First(
-      idBranch, idReserv, idBarberAct, token) async {
+  Future getProfessionalState2First(idBranch, idReserv, idBarberAct, token) async {
     print('estoy en repositorio en - 10');
     List<ProfessionalModel> professionalList = [];
     try {
@@ -1008,34 +935,26 @@ class ClientsScheduledRepository extends GetConnect {
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      var url =
-          '${Env.apiEndpoint}/professional-state?branch_id=$idBranch&reservation_id=$idReserv';
+      var url = '${Env.apiEndpoint}/professional-state?branch_id=$idBranch&reservation_id=$idReserv';
 
-      final response =
-          await get(url, headers: headers).timeout(Duration(seconds: 15));
+      final response = await get(url, headers: headers).timeout(Duration(seconds: 15));
       ;
-      print(
-          'getProfessionalState(idBranch) async getProfessionalState(idBranch) url:$url');
+      print('getProfessionalState(idBranch) async getProfessionalState(idBranch) url:$url');
       print(
           'getProfessionalState(idBranch) async getProfessionalState(idBranch) response.statusCode:${response.statusCode}');
       if (response.statusCode == 200) {
         final professionals = response.body['professionals'];
         for (Map professional in professionals) {
-          ProfessionalModel u =
-              ProfessionalModel.fromJson(jsonEncode(professional));
+          ProfessionalModel u = ProfessionalModel.fromJson(jsonEncode(professional));
           //AQUI SOLO COJO QUE NO SEAN RESPONSABLES
-          if (u.charge_id != 'Encargado' &&
-              u.charge_id != 'Coordinador' &&
-              u.id != idBarberAct &&
-              cant == 0) {
+          if (u.charge_id != 'Encargado' && u.charge_id != 'Coordinador' && u.id != idBarberAct && cant == 0) {
             //que no sea ni coordinador,ni encargado,ni el mismo barbero
 
             professionalList.add(u);
             cant++; //para garantizar que solo me devuelva 1
           }
         }
-        print(
-            'profe libres - professionalList.length:${professionalList.length}');
+        print('profe libres - professionalList.length:${professionalList.length}');
         return professionalList;
       }
 
@@ -1050,31 +969,27 @@ class ClientsScheduledRepository extends GetConnect {
     print('estoy en repositorio en - 10');
     try {
       List<ProfessionalModel> professionalList = [];
-      var url =
-          '${Env.apiEndpoint}/professional-state-coordinador?branch_id=$idBranch&reservation_id=$idReserv';
+      var url = '${Env.apiEndpoint}/professional-state-coordinador?branch_id=$idBranch&reservation_id=$idReserv';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
-      print(
-          'getProfessionalState(idBranch) async getProfessionalState(idBranch) url:$url');
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      print('getProfessionalState(idBranch) async getProfessionalState(idBranch) url:$url');
       print(
           'getProfessionalState(idBranch) async getProfessionalState(idBranch) response.statusCode-desde coordinador:${response.statusCode}');
       if (response.statusCode == 200) {
         final professionals = response.body['professionals'];
         for (Map professional in professionals) {
-          ProfessionalModel u =
-              ProfessionalModel.fromJson(jsonEncode(professional));
+          ProfessionalModel u = ProfessionalModel.fromJson(jsonEncode(professional));
           //AQUI SOLO COJO QUE NO SEAN RESPONSABLES
           if (u.name != 'Encargado' && u.name != 'Coordinador') {
             //charge_id=3 es un responsable
             professionalList.add(u);
           }
         }
-        print(
-            'getProfessionalState(idBranch) async getProfessionalState(idBranch) async');
+        print('getProfessionalState(idBranch) async getProfessionalState(idBranch) async');
         print(professionalList.length);
         print(
             'getProfessionalState(idBranch) async getProfessionalState(idBranch) async professionalList.length:${professionalList.length}');
@@ -1083,8 +998,7 @@ class ClientsScheduledRepository extends GetConnect {
 
       return professionalList;
     } catch (e) {
-      print(
-          'getProfessionalState(idBranch) async getProfessionalState(idBranch) url:ERRORRRR:$e');
+      print('getProfessionalState(idBranch) async getProfessionalState(idBranch) url:ERRORRRR:$e');
     }
   }
 
@@ -1092,31 +1006,27 @@ class ClientsScheduledRepository extends GetConnect {
     print('estoy en repositorio en - 10');
     try {
       List<ProfessionalModel> professionalList = [];
-      var url =
-          '${Env.apiEndpoint}/professional-state?branch_id=$idBranch&reservation_id=$idReserv';
+      var url = '${Env.apiEndpoint}/professional-state?branch_id=$idBranch&reservation_id=$idReserv';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
-      print(
-          'getProfessionalState(idBranch) async getProfessionalState(idBranch) url:$url');
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      print('getProfessionalState(idBranch) async getProfessionalState(idBranch) url:$url');
       print(
           'getProfessionalState(idBranch) async getProfessionalState(idBranch) response.statusCode:${response.statusCode}');
       if (response.statusCode == 200) {
         final professionals = response.body['professionals'];
         for (Map professional in professionals) {
-          ProfessionalModel u =
-              ProfessionalModel.fromJson(jsonEncode(professional));
+          ProfessionalModel u = ProfessionalModel.fromJson(jsonEncode(professional));
           //AQUI SOLO COJO QUE NO SEAN RESPONSABLES
           if (u.name != 'Encargado' && u.name != 'Coordinador') {
             //charge_id=3 es un responsable
             professionalList.add(u);
           }
         }
-        print(
-            'getProfessionalState(idBranch) async getProfessionalState(idBranch) async');
+        print('getProfessionalState(idBranch) async getProfessionalState(idBranch) async');
         print(professionalList.length);
         print(
             'getProfessionalState(idBranch) async getProfessionalState(idBranch) async professionalList.length:${professionalList.length}');
@@ -1132,28 +1042,24 @@ class ClientsScheduledRepository extends GetConnect {
   Future acceptOrRejectClient(reservationId, attended, token) async {
     print('estoy en repositorio en - 11');
     try {
-      var url =
-          '${Env.apiEndpoint}/tail_attended?reservation_id=$reservationId&attended=$attended';
-      print(
-          'ERROR:acceptOrRejectClient1 value = false- reservationId:$reservationId');
+      var url = '${Env.apiEndpoint}/tail_attended?reservation_id=$reservationId&attended=$attended';
+      print('ERROR:acceptOrRejectClient1 value = false- reservationId:$reservationId');
       print('ERROR:acceptOrRejectClient1 value = false- attended:$attended');
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
         print('acceptOrRejectClient1 value = true');
 
         return 1;
       } else if (response.statusCode == null) {
-        print(
-            'ERROR:acceptOrRejectClient1 value = false- response.statusCode2${response.statusCode}');
+        print('ERROR:acceptOrRejectClient1 value = false- response.statusCode2${response.statusCode}');
         return -99;
       }
     } catch (e) {
-      print(
-          'mensaje al querer hacer esta accion:error al querer finalizar un servicio:$e');
+      print('mensaje al querer hacer esta accion:error al querer finalizar un servicio:$e');
       return 0;
     }
   }
@@ -1173,8 +1079,7 @@ class ClientsScheduledRepository extends GetConnect {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
       final response = await post(headers: headers, url, body);
-      print(
-          'deleteReservationClient value response.statusCode :${response.statusCode}');
+      print('deleteReservationClient value response.statusCode :${response.statusCode}');
       if (response.statusCode == 200) {
         value = true;
       }
@@ -1186,14 +1091,12 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
-  Future storeByReservationId(
-      imag, reservationId, commentText, dioClient, token) async {
+  Future storeByReservationId(imag, reservationId, commentText, dioClient, token) async {
     print('estoy en repositorio en - 13');
     try {
       // Crear FormData y agregar la imagen
       dio.FormData formData = dio.FormData.fromMap({
-        'client_look':
-            await dio.MultipartFile.fromFile(imag, filename: 'client_look.jpg'),
+        'client_look': await dio.MultipartFile.fromFile(imag, filename: 'client_look.jpg'),
         'reservation_id': reservationId,
         'look': commentText,
       });
@@ -1204,19 +1107,15 @@ class ClientsScheduledRepository extends GetConnect {
           data: formData,
           options: dio.Options(
             headers: {
-              'Authorization':
-                  'Bearer $token', // Agregar el token en el encabezado
+              'Authorization': 'Bearer $token', // Agregar el token en el encabezado
               'Content-Type': 'multipart/form-data', // Tipo de contenido
             },
           ),
         );
         print(response.data);
-        print(
-            'esta es la subida de la imagen.Dio este resultado response.statusCode: ${response.statusCode}');
-        print(
-            'esta es la subida de la imagen.Dio este resultado response.data: ${response.data}');
-        print(
-            'esta es la subida de la imagen.Dio este resultado token: $token');
+        print('esta es la subida de la imagen.Dio este resultado response.statusCode: ${response.statusCode}');
+        print('esta es la subida de la imagen.Dio este resultado response.data: ${response.data}');
+        print('esta es la subida de la imagen.Dio este resultado token: $token');
         return true;
       } catch (e) {
         print('esta es la subida de la imagen.Error al subir la imagen: $e');
