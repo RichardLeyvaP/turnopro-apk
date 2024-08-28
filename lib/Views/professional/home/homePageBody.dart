@@ -1384,7 +1384,8 @@ class _HomePageBodyState extends State<HomePageBody> with AutomaticKeepAliveClie
                                       :
 
                                       //si hubiera algien en cola
-                                      (clientsScheduledController.clientsScheduledListLengthTail > 0)
+                                      (clientsScheduledController.clientsScheduledListLengthTail > 0) &&
+                                              clientsScheduledController.errorClientAcept == false
                                           ? const Column(
                                               children: [
                                                 Text(
@@ -1401,12 +1402,14 @@ class _HomePageBodyState extends State<HomePageBody> with AutomaticKeepAliveClie
                                                 ),
                                               ],
                                             )
-                                          : const Text('No hay clientes en cola.',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 16,
-                                                color: Color.fromARGB(255, 82, 81, 81),
-                                              ))
+                                          : clientsScheduledController.errorClientAcept == false
+                                              ? const Text('No hay clientes en cola.',
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 16,
+                                                    color: Color.fromARGB(255, 82, 81, 81),
+                                                  ))
+                                              : Text('')
                                   : loginController.usserPermissionQr == 2
                                       ? const Center(
                                           child: Column(
@@ -1818,6 +1821,7 @@ class _HomePageBodyState extends State<HomePageBody> with AutomaticKeepAliveClie
                                   //aqui poner que muestre un cargando
                                   clientsScheduledControllerE.clientsScheduledNextServAux =
                                       clientsScheduledControllerE.clientsScheduledNextServ!;
+                                  clientsScheduledControllerE.funtErrorClientAcept(true);
 
                                   int resulButton = 0;
                                   resulButton = loginController.handleButtonClick(
@@ -1877,9 +1881,12 @@ class _HomePageBodyState extends State<HomePageBody> with AutomaticKeepAliveClie
                                         animationCont[3]!.forward();
                                       }
                                     } else {
-                                      //mostrar mensaje de error de conexion
+                                      //activo nuevamente que el boton para coger al cliente este disponible
+                                      loginController.handleButtonClickDelete(
+                                          clientsScheduledControllerE.clientsScheduledNextServAux!.reservation_id!);
+                                      //mostrar mensaje de error de
                                       loginController.showConnectionError();
-                                      await Future.delayed(Duration(milliseconds: 1000));
+                                      await Future.delayed(Duration(milliseconds: 1500));
                                       Get.snackbar(
                                         'Mensaje',
                                         'Vuelva a intentarlo, hubo problema de conexión..',
@@ -1890,6 +1897,9 @@ class _HomePageBodyState extends State<HomePageBody> with AutomaticKeepAliveClie
                                         progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                         overlayBlur: 3,
                                       );
+                                      loginController.setMakeCall(true);
+                                      clientsScheduledControllerE.setBoolFilterShowNext(true);
+                                      await _refresh();
                                     }
                                   }
                                   loginController.setMakeCall(true);
@@ -1933,6 +1943,7 @@ class _HomePageBodyState extends State<HomePageBody> with AutomaticKeepAliveClie
                                   overlayBlur: 3,
                                 );
                               }
+                              clientsScheduledControllerE.funtErrorClientAcept(false);
                             },
                             child: Icon(
                               MdiIcons.thumbUpOutline,

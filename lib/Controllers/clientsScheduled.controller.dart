@@ -85,6 +85,11 @@ class ClientsScheduledController extends GetxController {
   int clientsScheSalon = 0;
   int errorHome = 0;
   int clientsScheduledListLengthTail = 0;
+  bool errorClientAcept = false;
+  funtErrorClientAcept(bool value) {
+    errorClientAcept = value;
+  }
+
   int clientsTechnicalLength = 0;
   int? carIdClientsScheduled;
   int quantityClientAttended = 0;
@@ -1679,6 +1684,7 @@ class ClientsScheduledController extends GetxController {
         boolFilterShowNextAux = boolFilterShowNext; //guardo aqui para saber si dierra error q valor tenia
         boolFilterShowNext = result;
       } else if (result is int && result == -99) {
+        controllerLogin.showConnectionErrorServices();
         print('Dio error al mostrar el filterShowNext()');
         // Manejo del error, puedes lanzar una excepción o asignar un valor por defecto
         // Por ejemplo:

@@ -68,6 +68,19 @@ class LoginController extends GetxController {
     );
   }
 
+  void showConnectionErrorServices() {
+    showSimpleNotification(
+      Text(
+        '!Conectándose al servidor',
+        style: TextStyle(color: Color(0xFF4470F3)),
+      ),
+      background: Colors.white,
+      // position: NotificationPosition.top,
+      position: NotificationPosition.bottom,
+      slideDismiss: true, // para que se pueda deslizar para cerrar
+    );
+  }
+
   void showConnectionErrorLogin() {
     showSimpleNotification(
       Text(
