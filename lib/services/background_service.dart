@@ -65,7 +65,7 @@ Future<void> initializeService() async {
       isForegroundMode: true,
       // isForegroundMode: true,
       notificationChannelId: notificationChannelIdSilent,
-      initialNotificationTitle: 'Simplifies-v1.0.1',
+      initialNotificationTitle: 'Simplifies V1.0.1',
       initialNotificationContent: '',
     ),
     iosConfiguration: IosConfiguration(
