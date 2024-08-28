@@ -28,18 +28,15 @@ class ServicesProductsPage extends StatefulWidget {
   State<ServicesProductsPage> createState() => _ServicesProductsPageState();
 }
 
-class _ServicesProductsPageState extends State<ServicesProductsPage>
-    with SingleTickerProviderStateMixin {
+class _ServicesProductsPageState extends State<ServicesProductsPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   //final ServiceController controller = Get.put(ServiceController());
 
   final ProductController controllerProduct = Get.put(ProductController());
 
   final ServiceController controllerService = Get.find<ServiceController>();
-  final ClientsScheduledController clientsController =
-      Get.find<ClientsScheduledController>();
-  final ShoppingCartController controllerShoppingCart =
-      Get.find<ShoppingCartController>();
+  final ClientsScheduledController clientsController = Get.find<ClientsScheduledController>();
+  final ShoppingCartController controllerShoppingCart = Get.find<ShoppingCartController>();
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
   final LoginController controllerLog = Get.put(LoginController());
   NotificationController notiController = Get.find<NotificationController>();
@@ -87,8 +84,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
       home: Scaffold(
           backgroundColor: backgroundColor,
           appBar: AppBar(
-            backgroundColor:
-                Color.fromARGB(255, 231, 232, 234), // Color de fondo del AppBar
+            backgroundColor: Color.fromARGB(255, 231, 232, 234), // Color de fondo del AppBar
             elevation: 0, // Sombra del AppBar
             toolbarHeight: 170, // Altura del AppBar
             // actions: [
@@ -109,8 +105,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                       Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10, left: 0, bottom: 8),
+                            padding: const EdgeInsets.only(top: 10, left: 0, bottom: 8),
                             child: Row(
                               children: [
                                 IconButton(
@@ -143,36 +138,26 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                   },
                                   child: CircleAvatar(
                                     radius: 25,
-                                    backgroundColor:
-                                        Colors.white, // Fondo de la imagen
+                                    backgroundColor: Colors.white, // Fondo de la imagen
                                     child: ClipOval(
                                       child: CachedNetworkImage(
-                                        imageUrl:
-                                            '${Env.apiEndpoint}/images/${clientsController.urlImageTemporary}',
-                                        fit: BoxFit
-                                            .cover, // Ajusta la imagen para cubrir completamente el área
-                                        width:
-                                            50, // Ancho deseado de la imagen dentro del círculo
-                                        height:
-                                            50, // Alto deseado de la imagen dentro del círculo
-                                        placeholder: (context, url) =>
-                                            const CircularProgressIndicator(
+                                        imageUrl: '${Env.apiEndpoint}/images/${clientsController.urlImageTemporary}',
+                                        fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                        width: 50, // Ancho deseado de la imagen dentro del círculo
+                                        height: 50, // Alto deseado de la imagen dentro del círculo
+                                        placeholder: (context, url) => const CircularProgressIndicator(
                                           color: Color(0xFFFDAE2A),
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            CircleAvatar(
+                                        errorWidget: (context, url, error) => CircleAvatar(
                                           radius: 25,
-                                          backgroundColor: Colors
-                                              .transparent, // Fondo transparente para que el borde sea visible
+                                          backgroundColor:
+                                              Colors.transparent, // Fondo transparente para que el borde sea visible
                                           child: ClipOval(
                                             child: Image.asset(
                                               'assets/images/default_profile.jpg',
-                                              fit: BoxFit
-                                                  .cover, // Ajusta la imagen para cubrir completamente el área
-                                              width:
-                                                  50, // Ancho deseado de la imagen dentro del círculo
-                                              height:
-                                                  50, // Alto deseado de la imagen dentro del círculo
+                                              fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                              width: 50, // Ancho deseado de la imagen dentro del círculo
+                                              height: 50, // Alto deseado de la imagen dentro del círculo
                                             ),
                                           ),
                                         ),
@@ -195,9 +180,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                 text: clientsController.nameClientTemporary,
                                 maxLength: 22,
                                 styleText: const TextStyle(
-                                    fontSize: 16,
-                                    color: const Color(0xFF2B3141),
-                                    fontWeight: FontWeight.bold),
+                                    fontSize: 16, color: const Color(0xFF2B3141), fontWeight: FontWeight.bold),
                               ),
                               /*   Text(clientsController.nameClientTemporary,
                                   style: const TextStyle(
@@ -207,9 +190,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
 
                               Text('CLIENTE',
                                   style: const TextStyle(
-                                      color: const Color(0xFF2B3141),
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold)),
+                                      color: const Color(0xFF2B3141), fontSize: 10, fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ],
@@ -223,8 +204,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                               child: _.shoppingCart == 0
                                   ? CircleAvatar(
                                       radius: 22, // Tamaño del CircleAvatar
-                                      backgroundColor: const Color(
-                                          0xFF2B3141), // Color de fondo del CircleAvatar
+                                      backgroundColor: const Color(0xFF2B3141), // Color de fondo del CircleAvatar
                                       child: IconButton(
                                         icon: const Icon(
                                           Icons.shopping_cart,
@@ -235,14 +215,11 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                           Get.snackbar(
                                             'Mensaje del Carrito de Compra',
                                             'Su carrito esta vacio',
-                                            duration: const Duration(
-                                                milliseconds: 2500),
+                                            duration: const Duration(milliseconds: 2500),
                                             showProgressIndicator: true,
-                                            progressIndicatorBackgroundColor:
-                                                const Color(0xFF4470F3),
+                                            progressIndicatorBackgroundColor: const Color(0xFF4470F3),
                                             progressIndicatorValueColor:
-                                                const AlwaysStoppedAnimation(
-                                                    Color(0xFFFDAE2A)),
+                                                const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                             overlayBlur: 3,
                                           );
                                         }, // Evento onPress
@@ -251,8 +228,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                       label: Text(_.shoppingCart.toString()),
                                       child: CircleAvatar(
                                           radius: 22, // Tamaño del CircleAvatar
-                                          backgroundColor: const Color(
-                                              0xFF2B3141), // Color de fondo del CircleAvatar
+                                          backgroundColor: const Color(0xFF2B3141), // Color de fondo del CircleAvatar
                                           child: IconButton(
                                             icon: const Icon(
                                               Icons.shopping_cart_outlined,
@@ -263,8 +239,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                               // Muestra el indicador de carga
                                               Get.dialog(
                                                 const Center(
-                                                  child:
-                                                      CircularProgressIndicator(
+                                                  child: CircularProgressIndicator(
                                                     color: Color(0xFFFDAE2A),
                                                   ),
                                                 ),
@@ -280,8 +255,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                               } catch (e) {
                                                 // En caso de error, oculta el indicador de carga y muestra un mensaje de error
                                                 Get.back();
-                                                Get.snackbar('Error',
-                                                    'Hubo un error al cargar el carrito: $e');
+                                                Get.snackbar('Error', 'Hubo un error al cargar el carrito: $e');
                                               }
                                             }, // Evento onPress
                                           ))),
@@ -307,26 +281,20 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                           if (loginController.branchTecnicLoggedIn == 1) ...[
                             ElevatedButton(
                               style: ButtonStyle(
-                                padding: MaterialStateProperty.all<
-                                    EdgeInsetsGeometry>(
-                                  const EdgeInsets.symmetric(
-                                      vertical: 0, horizontal: 8.0),
+                                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                  const EdgeInsets.symmetric(vertical: 0, horizontal: 8.0),
                                 ),
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
+                                backgroundColor: MaterialStateProperty.all<Color>(
                                   const Color(0xFF4470F3),
                                 ),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
+                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        10.0), // Radio de los bordes
+                                    borderRadius: BorderRadius.circular(10.0), // Radio de los bordes
                                   ),
                                 ),
                               ),
                               onPressed: () async {
-                                if (controllerLog.usserPermissionQr == 1 ||
-                                    (controllerLog.usserPermissionQr == 2)) {
+                                if (controllerLog.usserPermissionQr == 1 || (controllerLog.usserPermissionQr == 2)) {
                                   Get.dialog(
                                     const Center(
                                       child: Material(
@@ -338,9 +306,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                               color: Color(0xFFFDAE2A),
                                             ),
                                             SizedBox(height: 16),
-                                            Text('Enviando al técnico...',
-                                                style: TextStyle(
-                                                    color: Colors.white)),
+                                            Text('Enviando al técnico...', style: TextStyle(color: Colors.white)),
                                           ],
                                         ),
                                       ),
@@ -358,11 +324,8 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                       'Tecnico'); //esto es para quele llegue a coordinador y encargado
 
                                   //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
-                                  await clientsController.acceptOrRejectClient(
-                                      clientsController.idClientTemporary,
-                                      4,
-                                      loginController
-                                          .tokenUserLoggedIn); // Cierra el modal
+                                  await clientsController.acceptOrRejectClient(clientsController.idClientTemporary, 4,
+                                      loginController.tokenUserLoggedIn); // Cierra el modal
                                   pagesConfigC.back();
                                   Get.back();
                                 }
@@ -379,19 +342,15 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                           ],
                           ElevatedButton(
                             style: ButtonStyle(
-                              padding:
-                                  MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                const EdgeInsets.symmetric(
-                                    vertical: 0, horizontal: 8.0),
+                              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                const EdgeInsets.symmetric(vertical: 0, horizontal: 8.0),
                               ),
                               backgroundColor: MaterialStateProperty.all<Color>(
                                 const Color(0xFFFF6750),
                               ),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      10.0), // Radio de los bordes
+                                  borderRadius: BorderRadius.circular(10.0), // Radio de los bordes
                                 ),
                               ),
                             ),
@@ -399,19 +358,15 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                               if (controllerLog.usserPermissionQr == 1) {
                                 commentController.text = '';
                                 clientsController.clearImage();
-                                LocalStorage.prefs
-                                    .setBool('verificatePhoto', false);
+                                LocalStorage.prefs.setBool('verificatePhoto', false);
 
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return GetBuilder<
-                                            ClientsScheduledController>(
-                                        builder: (_) {
+                                    return GetBuilder<ClientsScheduledController>(builder: (_) {
                                       return Dialog(
                                         shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
+                                          borderRadius: BorderRadius.circular(10.0),
                                         ), //this right here
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
@@ -425,42 +380,33 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                 ),
                                               ),
                                               child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: <Widget>[
                                                   const Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 12),
+                                                    padding: EdgeInsets.only(left: 12),
                                                     child: Text(
                                                       'Comentario',
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.w700),
+                                                          fontWeight: FontWeight.w700),
                                                     ),
                                                   ),
                                                   IconButton(
-                                                    icon: Icon(Icons.close,
-                                                        color: Colors.white),
+                                                    icon: Icon(Icons.close, color: Colors.white),
                                                     onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
+                                                      Navigator.of(context).pop();
                                                     },
                                                   )
                                                 ],
                                               ),
                                             ),
                                             Container(
-                                              height: (_.imagePath == null)
-                                                  ? 240
-                                                  : 300,
+                                              height: (_.imagePath == null) ? 240 : 300,
                                               child: Column(
                                                 children: [
                                                   Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
+                                                    padding: const EdgeInsets.only(
                                                       left: 16,
                                                       right: 16,
                                                     ),
@@ -468,21 +414,13 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                       onChanged: (value) {
                                                         _checkText();
                                                       },
-                                                      controller:
-                                                          commentController,
+                                                      controller: commentController,
                                                       maxLines: 5,
-                                                      decoration:
-                                                          const InputDecoration(
-                                                        border:
-                                                            InputBorder.none,
-                                                        hintText:
-                                                            'Escribe tu comentario aquí...',
+                                                      decoration: const InputDecoration(
+                                                        border: InputBorder.none,
+                                                        hintText: 'Escribe tu comentario aquí...',
                                                         hintStyle: TextStyle(
-                                                          color: Color.fromARGB(
-                                                              120,
-                                                              241,
-                                                              131,
-                                                              84),
+                                                          color: Color.fromARGB(120, 241, 131, 84),
                                                         ), // Cambiar el color del hintText
                                                       ),
                                                     ),
@@ -493,41 +431,27 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
 
                                                   (_.imagePath == null)
                                                       ? const Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
+                                                          mainAxisAlignment: MainAxisAlignment.center,
                                                           children: [
-                                                            Icon(Icons
-                                                                .image_outlined),
+                                                            Icon(Icons.image_outlined),
                                                             Text(
                                                               'Cargar foto del cliente',
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700),
+                                                              style: TextStyle(fontWeight: FontWeight.w700),
                                                             ),
                                                           ],
                                                         )
                                                       : Container(
-                                                          width:
-                                                              70, // Establece el ancho deseado
-                                                          height:
-                                                              70, // Establece la altura deseada
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10), // Establece el radio de borde deseado
+                                                          width: 70, // Establece el ancho deseado
+                                                          height: 70, // Establece la altura deseada
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(
+                                                                10), // Establece el radio de borde deseado
                                                           ),
                                                           child: ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10), // Asegúrate de que este radio sea igual al radio del borde del BoxDecoration
+                                                            borderRadius: BorderRadius.circular(
+                                                                10), // Asegúrate de que este radio sea igual al radio del borde del BoxDecoration
                                                             child: Image.file(
-                                                              File(
-                                                                  _.imagePath!),
+                                                              File(_.imagePath!),
                                                               fit: BoxFit
                                                                   .cover, // Puedes ajustar el modo de ajuste según tus necesidades
                                                             ),
@@ -539,58 +463,34 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                   //
                                                   //
                                                   ButtonBar(
-                                                    alignment: MainAxisAlignment
-                                                        .spaceEvenly,
+                                                    alignment: MainAxisAlignment.spaceEvenly,
                                                     children: <Widget>[
                                                       ElevatedButton(
                                                         style: ButtonStyle(
-                                                          padding:
-                                                              MaterialStateProperty
-                                                                  .all<
-                                                                      EdgeInsetsGeometry>(
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                vertical: 0,
-                                                                horizontal:
-                                                                    26.0),
+                                                          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                                            const EdgeInsets.symmetric(vertical: 0, horizontal: 26.0),
                                                           ),
                                                           backgroundColor:
-                                                              MaterialStateProperty
-                                                                  .all<Color>(Color(
-                                                                      0xFF4470F3)),
+                                                              MaterialStateProperty.all<Color>(Color(0xFF4470F3)),
                                                         ),
                                                         onPressed: () async {
-                                                          final ImagePicker
-                                                              _picker =
-                                                              ImagePicker();
-                                                          _.setPickedFile(
-                                                              await _picker
-                                                                  .pickImage(
-                                                            source: ImageSource
-                                                                .camera,
+                                                          final ImagePicker _picker = ImagePicker();
+                                                          _.setPickedFile(await _picker.pickImage(
+                                                            source: ImageSource.camera,
                                                           ));
-                                                          await LocalStorage
-                                                              .prefs
-                                                              .setBool(
-                                                                  'verificatePhoto',
-                                                                  true);
+                                                          await LocalStorage.prefs.setBool('verificatePhoto', true);
 
                                                           // Verifica si pickedFile no es nulo antes de acceder a su propiedad path
-                                                          if (_.pickedFile !=
-                                                              null) {
-                                                            _.setImagePath(_
-                                                                .pickedFile!
-                                                                .path);
+                                                          if (_.pickedFile != null) {
+                                                            _.setImagePath(_.pickedFile!.path);
                                                           }
-                                                          print(
-                                                              'DIRECCIONDELAIMAGEN : ${_.imagePath}');
+                                                          print('DIRECCIONDELAIMAGEN : ${_.imagePath}');
                                                         },
                                                         child: Row(
                                                           children: [
                                                             Icon(
                                                               MdiIcons.camera,
-                                                              color:
-                                                                  Colors.white,
+                                                              color: Colors.white,
                                                             ),
                                                             SizedBox(
                                                               width: 6,
@@ -598,286 +498,171 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                             const Text(
                                                               'FOTO',
                                                               style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w800),
+                                                                  color: Colors.white, fontWeight: FontWeight.w800),
                                                             ),
                                                           ],
                                                         ),
                                                       ),
                                                       ElevatedButton(
                                                         style: ButtonStyle(
-                                                          padding:
-                                                              MaterialStateProperty
-                                                                  .all<
-                                                                      EdgeInsetsGeometry>(
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                vertical: 0,
-                                                                horizontal:
-                                                                    26.0),
+                                                          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                                            const EdgeInsets.symmetric(vertical: 0, horizontal: 26.0),
                                                           ),
-                                                          backgroundColor:
-                                                              MaterialStateProperty.all<
-                                                                  Color>(hasText &&
-                                                                      _.pickedFile !=
-                                                                          null
-                                                                  ? Color(
-                                                                      0xFF19CF9E)
-                                                                  : Color
-                                                                      .fromARGB(
-                                                                          155,
-                                                                          192,
-                                                                          191,
-                                                                          191)),
+                                                          backgroundColor: MaterialStateProperty.all<Color>(hasText
+                                                              ? Color(0xFF19CF9E)
+                                                              : Color.fromARGB(155, 192, 191, 191)),
                                                         ),
                                                         onPressed: () async {
                                                           // Lógica para enviar el comentario
                                                           // Obtener el valor del campo de texto
-                                                          String commentText =
-                                                              commentController
-                                                                  .text;
+                                                          String commentText = commentController.text;
                                                           // Eliminar espacios en blanco al principio y al final
 
                                                           // Verificar que el campo no esté vacío
-                                                          if (hasText &&
-                                                              _.pickedFile !=
-                                                                  null) {
+                                                          // if (hasText &&
+                                                          //     _.pickedFile !=
+                                                          //         null) {
+
+                                                          if (hasText) {
                                                             // Cerrar el primer modal
-                                                            Navigator.pop(
-                                                                context);
+                                                            Navigator.pop(context);
 
                                                             Get.dialog(
                                                               const Center(
                                                                 child: Material(
-                                                                  color: Colors
-                                                                      .transparent,
+                                                                  color: Colors.transparent,
                                                                   child: Column(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .min,
+                                                                    mainAxisSize: MainAxisSize.min,
                                                                     children: [
                                                                       CircularProgressIndicator(
-                                                                        color: Color(
-                                                                            0xFFFDAE2A),
+                                                                        color: Color(0xFFFDAE2A),
                                                                       ),
-                                                                      SizedBox(
-                                                                          height:
-                                                                              16),
-                                                                      Text(
-                                                                          'Espere...',
-                                                                          style:
-                                                                              TextStyle(color: Colors.white)),
+                                                                      SizedBox(height: 16),
+                                                                      Text('Espere...',
+                                                                          style: TextStyle(color: Colors.white)),
                                                                     ],
                                                                   ),
                                                                 ),
                                                               ),
-                                                              barrierDismissible:
-                                                                  false,
+                                                              barrierDismissible: false,
                                                             ); //Get.back();
 
-                                                            if (_.pickedFile !=
-                                                                null) {
-                                                              dio.Dio
-                                                                  dioClient =
-                                                                  dio.Dio();
-                                                              String imag = _
-                                                                  .pickedFile!
-                                                                  .path;
+                                                            if (_.pickedFile != null) {
+                                                              dio.Dio dioClient = dio.Dio();
+                                                              String imag = _.pickedFile!.path;
 
-                                                              clientsController
-                                                                  .storeByReservationId(
-                                                                      imag,
-                                                                      clientsController
-                                                                          .idClientTemporary,
-                                                                      commentText,
-                                                                      dioClient);
+                                                              clientsController.storeByReservationId(
+                                                                  imag,
+                                                                  clientsController.idClientTemporary,
+                                                                  commentText,
+                                                                  dioClient);
                                                             }
 
                                                             // Lógica para enviar el comentario
-                                                            int resul = await clientsController
-                                                                .acceptOrRejectClient(
-                                                                    clientsController
-                                                                        .idClientTemporary,
-                                                                    2,
-                                                                    loginController
-                                                                        .tokenUserLoggedIn);
+                                                            int resul = await clientsController.acceptOrRejectClient(
+                                                                clientsController.idClientTemporary,
+                                                                2,
+                                                                loginController.tokenUserLoggedIn);
                                                             if (resul ==
                                                                 -99) //es que finalizó bien y dio status.code = null
                                                             {
                                                               Get.back(); //aqui cierro el cargando
-                                                            } else if (resul ==
-                                                                1) //es que finalizó bien
+                                                            } else if (resul == 1) //es que finalizó bien
                                                             {
                                                               //aqui poner una variable que espere por 30 segundos para cambiar al valor por defecto
                                                               //para con esta variable controlar que en ese tiempo no le caiga nadie en la cola
 
                                                               bool valRActiv =
-                                                                  clientsController
-                                                                      .verificateValueTimers();
+                                                                  clientsController.verificateValueTimers();
 
-                                                              print(
-                                                                  'valores de lso clok***Reloj:$valRActiv');
-                                                              if (valRActiv ==
-                                                                  false) {
-                                                                clientsController
-                                                                    .setWaitTime(
-                                                                        true);
-                                                                clientsController
-                                                                    .setBoolControlVision(
-                                                                        false);
+                                                              print('valores de lso clok***Reloj:$valRActiv');
+                                                              if (valRActiv == false) {
+                                                                clientsController.setWaitTime(true);
+                                                                clientsController.setBoolControlVision(false);
                                                               } else {
-                                                                clientsController
-                                                                    .setWaitTime(
-                                                                        false);
-                                                                clientsController
-                                                                    .setBoolControlVision(
-                                                                        true);
+                                                                clientsController.setWaitTime(false);
+                                                                clientsController.setBoolControlVision(true);
                                                               }
 
                                                               Get.back(); //aqui cierro el cargando
                                                               Get.snackbar(
                                                                 'Mensaje',
                                                                 'Finalizando servicio',
-                                                                duration: const Duration(
-                                                                    milliseconds:
-                                                                        2500),
+                                                                duration: const Duration(milliseconds: 2500),
                                                                 backgroundColor:
-                                                                    const Color
-                                                                            .fromARGB(
-                                                                        118,
-                                                                        255,
-                                                                        255,
-                                                                        255),
-                                                                showProgressIndicator:
-                                                                    true,
+                                                                    const Color.fromARGB(118, 255, 255, 255),
+                                                                showProgressIndicator: true,
                                                                 progressIndicatorBackgroundColor:
-                                                                    const Color
-                                                                            .fromARGB(
-                                                                        255,
-                                                                        203,
-                                                                        205,
-                                                                        209),
+                                                                    const Color.fromARGB(255, 203, 205, 209),
                                                                 progressIndicatorValueColor:
-                                                                    const AlwaysStoppedAnimation(
-                                                                        Color(
-                                                                            0xFFFDAE2A)),
+                                                                    const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                                                 overlayBlur: 3,
                                                               );
-                                                              final ClientsScheduledController
-                                                                  cliCont =
-                                                                  Get.find<
-                                                                      ClientsScheduledController>();
-                                                              loginController
-                                                                  .setCodigoQrValid(
-                                                                      1);
-                                                              cliCont
-                                                                  .setImagePath(
-                                                                      null);
-                                                              Future.delayed(
-                                                                  const Duration(
-                                                                      seconds:
-                                                                          2),
-                                                                  () {
+                                                              final ClientsScheduledController cliCont =
+                                                                  Get.find<ClientsScheduledController>();
+                                                              loginController.setCodigoQrValid(1);
+                                                              cliCont.setImagePath(null);
+                                                              Future.delayed(const Duration(seconds: 2), () {
                                                                 // Aquí dentro puedes poner la acción que deseas realizar después de esperar 2 segundos
-                                                                loginController
-                                                                    .inTheClock(
-                                                                        false);
-                                                                pagesConfigC
-                                                                    .back();
+                                                                loginController.inTheClock(false);
+                                                                pagesConfigC.back();
                                                                 // Llama a cualquier función o realiza alguna tarea aquí
                                                               });
 
-                                                              print(
-                                                                  'Comentario enviado - $commentText ');
+                                                              print('Comentario enviado - $commentText ');
                                                             } else //fallo la
                                                             {
                                                               Get.back(); //aqui cierro el cargando
                                                               Get.snackbar(
                                                                 '!Alerta',
                                                                 'No finalizó el servicio correctamente, vuelva a intentarlo',
-                                                                duration: const Duration(
-                                                                    milliseconds:
-                                                                        3000),
-                                                                showProgressIndicator:
-                                                                    true,
+                                                                duration: const Duration(milliseconds: 3000),
+                                                                showProgressIndicator: true,
                                                                 progressIndicatorBackgroundColor:
-                                                                    const Color
-                                                                            .fromARGB(
-                                                                        255,
-                                                                        146,
-                                                                        99,
-                                                                        19),
+                                                                    const Color.fromARGB(255, 146, 99, 19),
                                                                 progressIndicatorValueColor:
-                                                                    const AlwaysStoppedAnimation(
-                                                                        Color(
-                                                                            0xFFFDAE2A)),
+                                                                    const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                                                 overlayBlur: 3,
                                                               );
                                                             }
                                                           } else {
-                                                            if (hasText ==
-                                                                false) {
+                                                            if (hasText == false) {
                                                               Get.snackbar(
                                                                 'Mensaje',
                                                                 'Debe escribir un comentario al respecto',
-                                                                duration: const Duration(
-                                                                    milliseconds:
-                                                                        2500),
-                                                                showProgressIndicator:
-                                                                    true,
+                                                                duration: const Duration(milliseconds: 2500),
+                                                                showProgressIndicator: true,
                                                                 progressIndicatorBackgroundColor:
-                                                                    Color
-                                                                        .fromARGB(
-                                                                            255,
-                                                                            146,
-                                                                            99,
-                                                                            19),
+                                                                    Color.fromARGB(255, 146, 99, 19),
                                                                 progressIndicatorValueColor:
-                                                                    const AlwaysStoppedAnimation(
-                                                                        Color(
-                                                                            0xFFFDAE2A)),
-                                                                overlayBlur: 3,
-                                                              );
-                                                            } else if (_
-                                                                    .pickedFile ==
-                                                                null) {
-                                                              Get.snackbar(
-                                                                'Mensaje',
-                                                                'Debe de tomar una foto',
-                                                                duration: const Duration(
-                                                                    milliseconds:
-                                                                        2500),
-                                                                showProgressIndicator:
-                                                                    true,
-                                                                progressIndicatorBackgroundColor:
-                                                                    Color
-                                                                        .fromARGB(
-                                                                            255,
-                                                                            146,
-                                                                            99,
-                                                                            19),
-                                                                progressIndicatorValueColor:
-                                                                    const AlwaysStoppedAnimation(
-                                                                        Color(
-                                                                            0xFFFDAE2A)),
+                                                                    const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                                                 overlayBlur: 3,
                                                               );
                                                             }
 
+                                                            /*   else if (_.pickedFile == null) {
+                                                              Get.snackbar(
+                                                                'Mensaje',
+                                                                'Debe de tomar una foto',
+                                                                duration: const Duration(milliseconds: 2500),
+                                                                showProgressIndicator: true,
+                                                                progressIndicatorBackgroundColor:
+                                                                    Color.fromARGB(255, 146, 99, 19),
+                                                                progressIndicatorValueColor:
+                                                                    const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
+                                                                overlayBlur: 3,
+                                                              );
+                                                            }*/
+
                                                             // El campo de texto está vacío, puedes mostrar un mensaje o realizar alguna acción
-                                                            print(
-                                                                'El comentario no puede estar vacío');
+                                                            print('El comentario no puede estar vacío');
                                                           }
                                                         },
                                                         child: Row(
                                                           children: [
                                                             Icon(
                                                               MdiIcons.send,
-                                                              color:
-                                                                  Colors.white,
+                                                              color: Colors.white,
                                                             ),
                                                             SizedBox(
                                                               width: 6,
@@ -885,11 +670,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                                             const Text(
                                                               'ENVIAR',
                                                               style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w800),
+                                                                  color: Colors.white, fontWeight: FontWeight.w800),
                                                             ),
                                                           ],
                                                         ),
@@ -911,14 +692,10 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                                   'Mensaje',
                                   'Debe de esperar la respuesta a su solicitud',
                                   duration: const Duration(milliseconds: 2500),
-                                  backgroundColor:
-                                      const Color.fromARGB(118, 255, 255, 255),
+                                  backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                   showProgressIndicator: true,
-                                  progressIndicatorBackgroundColor:
-                                      const Color.fromARGB(255, 203, 205, 209),
-                                  progressIndicatorValueColor:
-                                      const AlwaysStoppedAnimation(
-                                          Color(0xFFFDAE2A)),
+                                  progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                   overlayBlur: 3,
                                 );
                               }
@@ -947,9 +724,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
               child: Container(
                 width: (MediaQuery.of(context).size.width * 0.935),
                 decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10)),
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
                   color: Colors.white,
                 ),
                 child: Column(
@@ -965,8 +740,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
                         // isScrollable: true,//rlp si son muchos tab para que tenga scroll entre los tab
                         indicator: clickServicesDecoration,
                         labelColor: Colors.white,
-                        unselectedLabelColor:
-                            const Color.fromARGB(155, 136, 135, 135),
+                        unselectedLabelColor: const Color.fromARGB(155, 136, 135, 135),
                         automaticIndicatorColorAdjustment: false,
                         controller: _tabController,
                         tabs: const [
@@ -991,8 +765,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage>
             children: [
               Container(
                 color: backgroundColor,
-                child:
-                    ServicesBodyPage(), //RLP AQUI SE CARGA LA PAGINA DE LOS SERVICIOS
+                child: ServicesBodyPage(), //RLP AQUI SE CARGA LA PAGINA DE LOS SERVICIOS
               ),
               Container(
                 color: backgroundColor,

@@ -32,6 +32,7 @@ class ClientsScheduledController extends GetxController {
   List<ClientsScheduledModel> selectclientsScheduledListTechnical = [];
   ClientsScheduledModel? clientsScheduledNext; // Cliente en espera
   ClientsScheduledModel? clientsScheduledNextServ; // Cliente en espera
+  ClientsScheduledModel? clientsScheduledNextServAux; // Cliente en espera
   ClientsScheduledModel? clientsNextTechnical; // Cliente en espera
   ClientsScheduledModel? clientsAttended1; // Cliente en espera
   ClientsScheduledModel? clientsAttendedTechnical,

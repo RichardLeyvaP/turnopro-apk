@@ -437,6 +437,15 @@ class LoginController extends GetxController {
     }
   }
 
+  void handleButtonClickDelete(int buttonId) {
+    // Verificar si el ID del botón ya ha sido presionado
+    if (pressedButtonIds.contains(buttonId)) {
+      // Si el ID ya ha sido presionado, eliminarlo de la lista
+      pressedButtonIds.remove(buttonId);
+      print('Botón $buttonId deseleccionado, return 0');
+    }
+  }
+
   int handleButtonClickService(int buttonId) {
     // Verificar si el ID del botón ya ha sido presionado
     if (pressedButtonServ.contains(buttonId)) {
