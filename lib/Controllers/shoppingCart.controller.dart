@@ -20,8 +20,7 @@ class ShoppingCartController extends GetxController {
 
 //DECLARACION DE VARIABLES
   List<ProductModel> productCart = [], selectproduct = []; // Lista de product
-  List<ServiceModel> serviceCart = [],
-      selectserviceCart = []; // Lista de service
+  List<ServiceModel> serviceCart = [], selectserviceCart = []; // Lista de service
   List<String> idServiceCart = []; // Lista de service
   List<OrderDeleteModel> orderDeleteCar = [];
   bool buttonPress = false;
@@ -40,8 +39,7 @@ class ShoppingCartController extends GetxController {
   bool isLoading = true;
   int? carIdClienteSelect;
   final LoginController controllerLogin = Get.find<LoginController>();
-  final ClientsScheduledController clientScheduCont =
-      Get.find<ClientsScheduledController>();
+  final ClientsScheduledController clientScheduCont = Get.find<ClientsScheduledController>();
   void setLoading(value) {
     isLoading = value;
     update();
@@ -71,16 +69,13 @@ class ShoppingCartController extends GetxController {
     print('estoy cargando el carro de id car :$carIdClienteSelect');
 
     try {
-      print(
-          '**** 11111111 **** *** ESTE ES EL getTotalServices ACTUALMENTE:$getTotalServices');
+      print('**** 11111111 **** *** ESTE ES EL getTotalServices ACTUALMENTE:$getTotalServices');
       //  print('00000');
-      Map<String, dynamic> resultList =
-          await productRepository.getCartProductService(); //todo aqui revisando
+      Map<String, dynamic> resultList = await productRepository.getCartProductService(); //todo aqui revisando
       //print('1111111');
 
       //primero veo que no halla dado null la llamada
-      if (resultList.containsKey('statusCode') &&
-          resultList['statusCode'] == null) {
+      if (resultList.containsKey('statusCode') && resultList['statusCode'] == null) {
         controllerLogin.showConnectionError();
       } else {
         selectproduct = (resultList['products'] ?? []).cast<ProductModel>();
@@ -91,8 +86,7 @@ class ShoppingCartController extends GetxController {
         getTotalServices = resultList['PriceService'];
         getTotalProduct = resultList['PriceProduct'];
         //}
-        print(
-            '**** 11111111 **** *** ESTE ES EL getTotalServices ACTUALMENTE:$getTotalServices');
+        print('**** 11111111 **** *** ESTE ES EL getTotalServices ACTUALMENTE:$getTotalServices');
         productListLength = selectproduct.length;
         serviceListLength = selectserviceCart.length;
         //aqui asigno los servicios que ya tiene sekeccionados
@@ -119,12 +113,10 @@ class ShoppingCartController extends GetxController {
   Future<void> loadOrderDeleteCar(branchId) async {
     print(' estoy loadOrderDeleteCar aqui en loadOrderDeleteCar');
     try {
-      orderDeleteCar =
-          await productRepository.serviceRequestProductDelete(branchId); //todo
+      orderDeleteCar = await productRepository.serviceRequestProductDelete(branchId); //todo
       print('estoy loadOrderDeleteCar llegue aquiiiii orderDeleteCar');
       print(orderDeleteCar);
-      print(
-          'estoy loadOrderDeleteCar llegue aquiiiii orderDeleteCar.length:${orderDeleteCar.length}');
+      print('estoy loadOrderDeleteCar llegue aquiiiii orderDeleteCar.length:${orderDeleteCar.length}');
 
       update();
     } catch (e) {
@@ -155,8 +147,7 @@ class ShoppingCartController extends GetxController {
   Future<int> requestDelete(int id, int request_delete) async {
     //todooooooooo
     try {
-      int result = await productRepository.awaitRequestDelete(
-          id, request_delete, controllerLogin.tokenUserLoggedIn);
+      int result = await productRepository.awaitRequestDelete(id, request_delete, controllerLogin.tokenUserLoggedIn);
       if (result == 1) {
         requestDeleteOrder.add(id);
         internetError = 0;
@@ -173,8 +164,8 @@ class ShoppingCartController extends GetxController {
   Future<int> requestDelete2(int id, int request_delete, int idBranch) async {
     //todooooooooo
     try {
-      orderDeleteCar = await productRepository.awaitRequestDelete2(
-          id, request_delete, idBranch, controllerLogin.tokenUserLoggedIn);
+      orderDeleteCar =
+          await productRepository.awaitRequestDelete2(id, request_delete, idBranch, controllerLogin.tokenUserLoggedIn);
       if (orderDeleteCar.isNotEmpty) {
         requestDeleteOrder.add(id);
         internetError = 0;
@@ -241,8 +232,7 @@ class ShoppingCartController extends GetxController {
     try {
       final LoginController controllerLogin = Get.find<LoginController>();
       serviceCart = await serviceRepository.getServiceList(
-          controllerLogin.idProfessionalLoggedIn,
-          controllerLogin.branchIdLoggedIn);
+          controllerLogin.idProfessionalLoggedIn, controllerLogin.branchIdLoggedIn);
       internetError = 0;
       update();
     } catch (e) {
@@ -266,8 +256,7 @@ class ShoppingCartController extends GetxController {
 
   Future<int> _addOrderCartListNEW(car_id, product_id, service_id, type) async {
     try {
-      int res = await productRepository.addOrderCartList(
-          car_id, product_id, service_id, type);
+      int res = await productRepository.addOrderCartList(car_id, product_id, service_id, type);
       print('internetError responseId:$responseId');
       if (res != -990099) {
         print('agregar responseId');
@@ -291,8 +280,7 @@ class ShoppingCartController extends GetxController {
 
   Future<int> _addOrderCartList(car_id, product_id, service_id, type) async {
     try {
-      int res = await productRepository.addOrderCartList(
-          car_id, product_id, service_id, type);
+      int res = await productRepository.addOrderCartList(car_id, product_id, service_id, type);
       print('internetError responseId:$responseId');
       if (res != -990099) {
         print('agregar responseId');
@@ -317,16 +305,14 @@ class ShoppingCartController extends GetxController {
   //
   //
 
-  Future shopProduct(
-      priceProduct, car_id, productId, categoryId, branchId) async {
+  Future shopProduct(priceProduct, car_id, productId, categoryId, branchId) async {
     try {
       final ProductController productCont = Get.find<ProductController>();
       List<ProductModel>? tempProduct;
       getTotalProduct = getTotalProduct + priceProduct;
       totalPrice = getTotalServices + getTotalProduct;
 
-      tempProduct = await productRepository.addOrderProduct(
-          car_id, productId, categoryId, branchId);
+      tempProduct = await productRepository.addOrderProduct(car_id, productId, categoryId, branchId);
       //actualizar los productos pasando el id de la categoria
       if (tempProduct != null) {
         productCont.productActualizate(tempProduct);
@@ -343,8 +329,7 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  void updateShoppingCartValueSer(
-      priceService, id, car_id, type, servicioName) async {
+  void updateShoppingCartValueSer(priceService, id, car_id, type, servicioName) async {
     // print('*************serviceCart:${serviceCart.length}');
 
     if (!idServiceCart.contains(servicioName)) {
@@ -355,8 +340,7 @@ class ShoppingCartController extends GetxController {
       getTotalServicesProduct_Sum(type, priceService);
       shoppingCart += 1;
       serviceListLength = selectserviceCart.length;
-      print(
-          'LISTA2 _fetchServiceList Limpiando long de idServiceCart.length:${idServiceCart.length}');
+      print('LISTA2 _fetchServiceList Limpiando long de idServiceCart.length:${idServiceCart.length}');
     }
     update();
   }
@@ -368,68 +352,61 @@ class ShoppingCartController extends GetxController {
   //                    'service',
   //                 _.services[index].name);
   //(priceService, id, car_id, type, servicioName)
-  Future<int> updateShoppingCartValueSerNew(
-      List<ServiceModel> selectServiceNew) async {
+  Future<int> updateShoppingCartValueSerNew(List<ServiceModel> selectServiceNew) async {
     try {
       int durationService = 0;
-      final ClientsScheduledController clientsController =
-          Get.find<ClientsScheduledController>();
+      List<ServiceModel> selectServicesTotal = selectServiceNew;
+      final ServiceController serviceController = Get.find<ServiceController>();
       int cant = 0;
+
       for (ServiceModel service in selectServiceNew) {
-        // Llama al método _addOrderCartList con los parámetros necesarios
-        idServiceCart.add(service.name);
-        int resul = await _addOrderCartListNEW(carIdClienteSelect, 0,
-            service.id, 'service'); //todo REVISAR TIENE PROBLEMA
+        int resul = await _addOrderCartListNEW(carIdClienteSelect, 0, service.id, 'service');
         //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
+
         if (resul == 0) //todo esta bien si retorna 0
         {
+          // Llama al método _addOrderCartList con los parámetros necesarios
+          idServiceCart.add(service.name);
           cant++;
           getTotalServicesProduct_Sum('service', service.price_service);
           shoppingCart += 1;
           serviceListLength = selectserviceCart.length;
           print('memsj Servicio guardado exitosamente: ${service.id}');
-          print(
-              'memsj durationService:en el for: ${service.duration_service * 60}');
+          print('memsj durationService:en el for: ${service.duration_service * 60}');
           durationService += service.duration_service * 60;
+        } else {
+          //si no lo agrega lo descelecciona
+          serviceController.getSelectServiceNew(service);
         }
-        // Pausa por 200 ms entre cada solicitud para evitar sobrecargar el servidor
-        await Future.delayed(const Duration(milliseconds: 200));
-      }
-      if (cant == selectServiceNew.length) {
-        print('todos los servicios se insertaron correctamente');
-      } else {
-        cant = cant - selectServiceNew.length;
-        print(
-            'todos los servicios NO se insertaron correctamente faltaron: $cant por insertarse');
-      }
-      print('memsj durationService: $durationService');
-      //agregar el tiempo al reloj
-      print('memsj durationService:en el for: $durationService');
 
-      if (cant > 0) //si es menor o igual no insertó nada
+        // Pausa por 200 ms entre cada solicitud para evitar sobrecargar el servidor
+        await Future.delayed(const Duration(milliseconds: 500));
+      }
+
+      //agregar el tiempo al reloj
+      if (cant > 0) //si es mayor es que insertó y hay que actualizar los relojes
       {
         if (clientScheduCont.modifyTimeSpecific == 0) //es el reloj 1
         {
-          addDurationToTimer(clientScheduCont.animationController1!,
-              Duration(seconds: durationService)); //todo cambiar123RLP
+          addDurationToTimer(
+              clientScheduCont.animationController1!, Duration(seconds: durationService)); //todo cambiar123RLP
         } else if (clientScheduCont.modifyTimeSpecific == 1) //reloj 2
         {
-          addDurationToTimer(clientScheduCont.animationController2!,
-              Duration(seconds: durationService));
+          addDurationToTimer(clientScheduCont.animationController2!, Duration(seconds: durationService));
         } else if (clientScheduCont.modifyTimeSpecific == 2) //reloj 3
         {
-          addDurationToTimer(clientScheduCont.animationController3!,
-              Duration(seconds: durationService));
+          addDurationToTimer(clientScheduCont.animationController3!, Duration(seconds: durationService));
         } else if (clientScheduCont.modifyTimeSpecific == 3) //reloj
         {
-          addDurationToTimer(clientScheduCont.animationController4!,
-              Duration(seconds: durationService));
+          addDurationToTimer(clientScheduCont.animationController4!, Duration(seconds: durationService));
         }
         //esta e spara actualizar las variables de memoria del telefono
-        controllerLogin.getUpdateTime(
-            durationService,
-            (clientScheduCont.modifyTimeSpecific + 1),
+        controllerLogin.getUpdateTime(durationService, (clientScheduCont.modifyTimeSpecific + 1),
             'updateShoppingCartValueSerNew-reloj=${clientScheduCont.modifyTimeSpecific + 1}');
+      }
+
+      if (cant != selectServicesTotal.length) {
+        cant = cant - selectServicesTotal.length;
       }
 
       //clientsController.modifingTime((durationService));
@@ -443,8 +420,7 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  void addDurationToTimer(
-      AnimationController controller, Duration additionalDuration) {
+  void addDurationToTimer(AnimationController controller, Duration additionalDuration) {
     // Verificar si el controlador está detenido o activo
     int currentTime;
     if (controller.isAnimating) {
@@ -480,8 +456,7 @@ class ShoppingCartController extends GetxController {
         // print('*************serviceCart:${serviceCart.length}');
         if (!selectserviceCart.contains(serviceCart[index])) {
           selectserviceCart.add(serviceCart[index]);
-          _addOrderCartList(car_id, 0, serviceCart[index].id,
-              type); //todo REVISAR TIENE PROBLEMA
+          _addOrderCartList(car_id, 0, serviceCart[index].id, type); //todo REVISAR TIENE PROBLEMA
           //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
           getTotalServicesProduct_Sum(type, serviceCart[index].price_service);
           shoppingCart += 1;

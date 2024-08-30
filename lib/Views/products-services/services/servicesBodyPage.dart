@@ -25,13 +25,11 @@ class ServicesBodyPage extends StatefulWidget {
 class _ServicesBodyPageState extends State<ServicesBodyPage> {
   final double valuePadding = 12;
 
-  final ShoppingCartController controllerShoppingCart =
-      Get.find<ShoppingCartController>();
+  final ShoppingCartController controllerShoppingCart = Get.find<ShoppingCartController>();
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
 
   final LoginController controllerLogin = Get.find<LoginController>();
-  final ClientsScheduledController clientsController =
-      Get.find<ClientsScheduledController>();
+  final ClientsScheduledController clientsController = Get.find<ClientsScheduledController>();
 
   //bool visibleButonEliminar = false;
   @override
@@ -62,119 +60,66 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                         flex: 24,
                         child: Container(
                           decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(10),
-                                bottomRight: Radius.circular(10)),
+                            borderRadius:
+                                BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
                             color: Colors.white,
                           ),
                           child: Column(
                             children: [
                               Expanded(
-                                flex:
-                                    heightFlexBody, // 85% del espacio disponible para esta parte
+                                flex: heightFlexBody, // 85% del espacio disponible para esta parte
                                 child: ListView.builder(
-                                    shrinkWrap:
-                                        true, // Ajustar al tamaño de su contenido
+                                    shrinkWrap: true, // Ajustar al tamaño de su contenido
                                     itemCount: _.serviceListLength,
                                     itemBuilder: (context, index) {
                                       return Padding(
                                         padding: EdgeInsets.fromLTRB(
-                                            (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.01),
-                                            (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.0006),
-                                            (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.01),
-                                            (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.006)),
+                                            (MediaQuery.of(context).size.height * 0.01),
+                                            (MediaQuery.of(context).size.height * 0.0006),
+                                            (MediaQuery.of(context).size.height * 0.01),
+                                            (MediaQuery.of(context).size.height * 0.006)),
                                         child: FittedBox(
                                           fit: BoxFit.contain,
                                           child: Row(
                                             children: [
                                               Container(
-                                                height: (MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.1),
-                                                width: (MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    1),
-                                                decoration: ((_.selectService
-                                                                .contains(_.services[
-                                                                    index])) ||
-                                                            (controllerShoppingCart
-                                                                .idServiceCart
-                                                                .contains(_
-                                                                    .services[
-                                                                        index]
-                                                                    .name))) ||
+                                                height: (MediaQuery.of(context).size.height * 0.1),
+                                                width: (MediaQuery.of(context).size.width * 1),
+                                                decoration: ((_.selectService.contains(_.services[index])) ||
+                                                            (controllerShoppingCart.idServiceCart
+                                                                .contains(_.services[index].name))) ||
                                                         (_.selectServiceNew.contains(_.services[index]) ||
-                                                            _.services[index]
-                                                                    .cliente ==
-                                                                true)
+                                                            _.services[index].cliente == true)
                                                     ? const BoxDecoration(
-                                                        borderRadius: BorderRadius.all(
-                                                            Radius.circular(borderRadiusValue)),
+                                                        borderRadius:
+                                                            BorderRadius.all(Radius.circular(borderRadiusValue)),
                                                         gradient: LinearGradient(
                                                           colors: [
                                                             Colors.white,
                                                             Color(0xFFFDAE2A),
                                                           ],
                                                           stops: [0.0, 0.8],
-                                                          begin:
-                                                              FractionalOffset
-                                                                  .centerRight,
-                                                          end: FractionalOffset
-                                                              .centerLeft,
+                                                          begin: FractionalOffset.centerRight,
+                                                          end: FractionalOffset.centerLeft,
                                                         ))
                                                     : const BoxDecoration(
-                                                        color: Color.fromARGB(
-                                                            255, 231, 232, 234),
-                                                        borderRadius: BorderRadius
-                                                            .all(Radius.circular(
-                                                                borderRadiusValue)),
+                                                        color: Color.fromARGB(255, 231, 232, 234),
+                                                        borderRadius:
+                                                            BorderRadius.all(Radius.circular(borderRadiusValue)),
                                                       ),
                                                 child: ListTile(
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                12)),
+                                                  shape: const RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.all(Radius.circular(12)),
                                                   ),
                                                   onTap: () async {
-                                                    if (controllerLogin
-                                                                .codigoQrValid() ==
-                                                            true ||
-                                                        (loginController
-                                                                .usserPermissionQr ==
-                                                            2)) {
-                                                      if (!_.selectService
-                                                              .contains(
-                                                                  _.services[
-                                                                      index]) &&
-                                                          !(controllerShoppingCart
-                                                              .idServiceCart
-                                                              .contains(_
-                                                                  .services[
-                                                                      index]
-                                                                  .name)) &&
-                                                          _.services[index]
-                                                                  .cliente ==
-                                                              false) {
-                                                        print(
-                                                            'aquoi seleccionandolo');
-                                                        _.getSelectServiceNew(
-                                                            _.services[index]);
+                                                    if (controllerLogin.codigoQrValid() == true ||
+                                                        (loginController.usserPermissionQr == 2)) {
+                                                      if (!_.selectService.contains(_.services[index]) &&
+                                                          !(controllerShoppingCart.idServiceCart
+                                                              .contains(_.services[index].name)) &&
+                                                          _.services[index].cliente == false) {
+                                                        print('aquoi seleccionandolo');
+                                                        _.getSelectServiceNew(_.services[index]);
 
                                                         //MENSAJE DE CONFIRMACION SI DESEA REALMENTE AGREGAR UN SERVICIO
                                                       }
@@ -182,120 +127,87 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                       Get.snackbar(
                                                         'Mensaje',
                                                         'Debe de escanear el código Qr de entrada',
-                                                        duration:
-                                                            const Duration(
-                                                                milliseconds:
-                                                                    2500),
-                                                        backgroundColor:
-                                                            const Color
-                                                                    .fromARGB(
-                                                                118,
-                                                                255,
-                                                                255,
-                                                                255),
-                                                        showProgressIndicator:
-                                                            true,
+                                                        duration: const Duration(milliseconds: 2500),
+                                                        backgroundColor: const Color.fromARGB(118, 255, 255, 255),
+                                                        showProgressIndicator: true,
                                                         progressIndicatorBackgroundColor:
-                                                            const Color
-                                                                    .fromARGB(
-                                                                255,
-                                                                203,
-                                                                205,
-                                                                209),
+                                                            const Color.fromARGB(255, 203, 205, 209),
                                                         progressIndicatorValueColor:
-                                                            const AlwaysStoppedAnimation(
-                                                                Color(
-                                                                    0xFFFDAE2A)),
+                                                            const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                                         overlayBlur: 3,
                                                       );
                                                     }
                                                   },
                                                   title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 6),
+                                                    padding: const EdgeInsets.only(top: 6),
                                                     child: Column(
                                                       children: [
                                                         Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
                                                             Row(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: [
                                                                 CircleAvatar(
                                                                   radius: 20,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .white, //fondo de la imagen
-                                                                  child:
-                                                                      ClipOval(
-                                                                    child: Image
-                                                                        .network(
+                                                                  backgroundColor: Colors.white, //fondo de la imagen
+                                                                  child: ClipOval(
+                                                                    child: Image.network(
                                                                       '${Env.apiEndpoint}/images/${_.services[index].image_service}',
                                                                       fit: BoxFit
                                                                           .cover, // Ajusta la imagen para cubrir completamente el área
                                                                       width:
                                                                           50, // Ancho deseado de la imagen dentro del círculo
-                                                                      height:
-                                                                          50,
+                                                                      height: 50,
 
                                                                       loadingBuilder: (BuildContext context,
-                                                                          Widget
-                                                                              child,
-                                                                          ImageChunkEvent?
-                                                                              loadingProgress) {
-                                                                        if (loadingProgress ==
-                                                                            null) {
+                                                                          Widget child,
+                                                                          ImageChunkEvent? loadingProgress) {
+                                                                        if (loadingProgress == null) {
                                                                           // Si la imagen se carga correctamente, mostramos la imagen
                                                                           return child;
                                                                         } else {
                                                                           // Si la imagen aún se está cargando, mostramos un indicador de progreso
                                                                           return const CircularProgressIndicator(
-                                                                            color:
-                                                                                Color(0xFFFDAE2A),
+                                                                            color: Color(0xFFFDAE2A),
                                                                           );
                                                                         }
                                                                       },
-                                                                      errorBuilder: (BuildContext context,
-                                                                          Object
-                                                                              error,
-                                                                          StackTrace?
-                                                                              stackTrace) {
+                                                                      errorBuilder: (BuildContext context, Object error,
+                                                                          StackTrace? stackTrace) {
                                                                         // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
                                                                         if (kDebugMode) {
                                                                           return CircleAvatar(
-                                                                            radius:
-                                                                                20,
-                                                                            backgroundColor:
-                                                                                Colors.transparent, // Fondo transparente para que el borde sea visible
-                                                                            child:
-                                                                                ClipOval(
+                                                                            radius: 20,
+                                                                            backgroundColor: Colors
+                                                                                .transparent, // Fondo transparente para que el borde sea visible
+                                                                            child: ClipOval(
                                                                               child: Image.asset(
                                                                                 'assets/images/service-default.png',
-                                                                                fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
-                                                                                width: 50, // Ancho deseado de la imagen dentro del círculo
-                                                                                height: 50, // Alto deseado de la imagen dentro del círculo
+                                                                                fit: BoxFit
+                                                                                    .cover, // Ajusta la imagen para cubrir completamente el área
+                                                                                width:
+                                                                                    50, // Ancho deseado de la imagen dentro del círculo
+                                                                                height:
+                                                                                    50, // Alto deseado de la imagen dentro del círculo
                                                                               ),
                                                                             ),
                                                                           );
                                                                         } else {
                                                                           // Si no estamos en modo de depuración, mostramos un texto de error
                                                                           return CircleAvatar(
-                                                                            radius:
-                                                                                20,
-                                                                            backgroundColor:
-                                                                                Colors.transparent, // Fondo transparente para que el borde sea visible
-                                                                            child:
-                                                                                ClipOval(
+                                                                            radius: 20,
+                                                                            backgroundColor: Colors
+                                                                                .transparent, // Fondo transparente para que el borde sea visible
+                                                                            child: ClipOval(
                                                                               child: Image.asset(
                                                                                 'assets/images/service-default.png',
-                                                                                fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
-                                                                                width: 50, // Ancho deseado de la imagen dentro del círculo
-                                                                                height: 50, // Alto deseado de la imagen dentro del círculo
+                                                                                fit: BoxFit
+                                                                                    .cover, // Ajusta la imagen para cubrir completamente el área
+                                                                                width:
+                                                                                    50, // Ancho deseado de la imagen dentro del círculo
+                                                                                height:
+                                                                                    50, // Alto deseado de la imagen dentro del círculo
                                                                               ),
                                                                             ),
                                                                           );
@@ -311,36 +223,22 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                                   width: 8,
                                                                 ),
                                                                 Row(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
+                                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                                   children: [
                                                                     Column(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .start,
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
+                                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                                       children: [
                                                                         Text(
-                                                                          _.services[index]
-                                                                              .name
-                                                                              .toString(),
-                                                                          style:
-                                                                              const TextStyle(
-                                                                            fontSize:
-                                                                                18,
-                                                                            fontWeight:
-                                                                                FontWeight.w600,
-                                                                            color:
-                                                                                const Color(0xFF2B3141),
+                                                                          _.services[index].name.toString(),
+                                                                          style: const TextStyle(
+                                                                            fontSize: 18,
+                                                                            fontWeight: FontWeight.w600,
+                                                                            color: const Color(0xFF2B3141),
                                                                           ),
                                                                         ),
                                                                         Text(
-                                                                          _.services[index]
-                                                                              .type_service
-                                                                              .toString(),
+                                                                          _.services[index].type_service.toString(),
                                                                           style: const TextStyle(
                                                                               fontSize: 15,
                                                                               color: const Color(0xFF2B3141)),
@@ -352,22 +250,11 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                               ],
                                                             ),
                                                             Text(
-                                                              formatNumber(_
-                                                                  .services[
-                                                                      index]
-                                                                  .price_service
-                                                                  .toString()),
+                                                              formatNumber(_.services[index].price_service.toString()),
                                                               style: TextStyle(
-                                                                  fontSize: (MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.03),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w800,
-                                                                  color: const Color(
-                                                                      0xFF2B3141)),
+                                                                  fontSize: (MediaQuery.of(context).size.height * 0.03),
+                                                                  fontWeight: FontWeight.w800,
+                                                                  color: const Color(0xFF2B3141)),
                                                             ),
                                                           ],
                                                         ),
@@ -375,49 +262,34 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                           height: 3,
                                                         ),
                                                         Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             LayoutBuilder(
-                                                              builder: (context,
-                                                                  constraints) {
+                                                              builder: (context, constraints) {
                                                                 return Container(
-                                                                  height: (MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.008),
-                                                                  width: constraints
-                                                                      .maxWidth,
-                                                                  decoration:
-                                                                      const BoxDecoration(
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            255,
-                                                                            231,
-                                                                            232,
-                                                                            234),
-                                                                    borderRadius:
-                                                                        BorderRadius.all(
-                                                                            Radius.circular(borderRadiusValue)),
+                                                                  height: (MediaQuery.of(context).size.height * 0.008),
+                                                                  width: constraints.maxWidth,
+                                                                  decoration: const BoxDecoration(
+                                                                    color: Color.fromARGB(255, 231, 232, 234),
+                                                                    borderRadius: BorderRadius.all(
+                                                                        Radius.circular(borderRadiusValue)),
                                                                   ),
                                                                   child: Row(
                                                                     children: [
                                                                       Container(
-                                                                          width:
-                                                                              constraints.maxWidth * (_.services[index].duration_service / controllerLogin.serviceTime), //TODO AQUI CALCULA PARA QUE PINTE EL CONTAINER-RESPECTO-TIEMPO
+                                                                          width: constraints.maxWidth *
+                                                                              (_.services[index].duration_service /
+                                                                                  controllerLogin
+                                                                                      .serviceTime), //TODO AQUI CALCULA PARA QUE PINTE EL CONTAINER-RESPECTO-TIEMPO
                                                                           decoration: const BoxDecoration(
-                                                                              borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
+                                                                              borderRadius: BorderRadius.all(
+                                                                                  Radius.circular(borderRadiusValue)),
                                                                               gradient: LinearGradient(
                                                                                 colors: [
                                                                                   Colors.white,
                                                                                   Color(0xFFFDAE2A),
                                                                                 ],
-                                                                                stops: [
-                                                                                  0.0,
-                                                                                  0.8
-                                                                                ],
+                                                                                stops: [0.0, 0.8],
                                                                                 begin: FractionalOffset.centerLeft,
                                                                                 end: FractionalOffset.centerRight,
                                                                               ))),
@@ -430,30 +302,18 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                               height: 3,
                                                             ),
                                                             Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .end,
+                                                              mainAxisAlignment: MainAxisAlignment.end,
                                                               children: [
-                                                                Icon(
-                                                                    Icons.timer,
-                                                                    color: Color(
-                                                                        0xFFFDAE2A),
-                                                                    size: (MediaQuery.of(context)
-                                                                            .size
-                                                                            .height *
-                                                                        0.016)),
+                                                                Icon(Icons.timer,
+                                                                    color: Color(0xFFFDAE2A),
+                                                                    size: (MediaQuery.of(context).size.height * 0.016)),
                                                                 Text(
                                                                   '${_.services[index].duration_service} Minutos',
                                                                   style: const TextStyle(
-                                                                      height:
-                                                                          1.0,
-                                                                      fontSize:
-                                                                          10,
-                                                                      color: Color(
-                                                                          0xFFFDAE2A),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
+                                                                      height: 1.0,
+                                                                      fontSize: 10,
+                                                                      color: Color(0xFFFDAE2A),
+                                                                      fontWeight: FontWeight.w500),
                                                                 ),
                                                               ],
                                                             ),
@@ -482,27 +342,20 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                GetBuilder<ShoppingCartController>(
-                                    builder: (shpCont) {
+                                GetBuilder<ShoppingCartController>(builder: (shpCont) {
                                   return ElevatedButton(
                                     style: ButtonStyle(
-                                      padding: MaterialStateProperty.all<
-                                          EdgeInsetsGeometry>(
-                                        const EdgeInsets.symmetric(
-                                            vertical: 0, horizontal: 8.0),
+                                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                        const EdgeInsets.symmetric(vertical: 0, horizontal: 8.0),
                                       ),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
+                                      backgroundColor: MaterialStateProperty.all<Color>(
                                         _.selectServiceNew.isNotEmpty
                                             ? const Color(0xFF4470F3)
-                                            : const Color.fromARGB(
-                                                118, 255, 255, 255),
+                                            : const Color.fromARGB(118, 255, 255, 255),
                                       ),
-                                      shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                         RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              10.0), // Radio de los bordes
+                                          borderRadius: BorderRadius.circular(10.0), // Radio de los bordes
                                         ),
                                       ),
                                     ),
@@ -520,61 +373,47 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                     color: Color(0xFFFDAE2A),
                                                   ),
                                                   SizedBox(height: 16),
-                                                  Text('Agregando servicios...',
-                                                      style: TextStyle(
-                                                          color: Colors.white)),
+                                                  Text('Agregando servicios...', style: TextStyle(color: Colors.white)),
                                                 ],
                                               ),
                                             ),
                                           ),
                                           barrierDismissible: false,
                                         ); //Get.back();
-                                        int resp = await shpCont
-                                            .updateShoppingCartValueSerNew(
-                                                _.selectServiceNew);
+                                        int cantTotalServSelec = _.selectServiceNew.length;
+                                        int resp = await shpCont.updateShoppingCartValueSerNew(_.selectServiceNew);
+
                                         Get.back(); //quito el cargando
                                         if (resp >= 1) {
-                                          //reiniciar los relojes
-
                                           if (resp > 1) {
                                             s = 's';
                                           }
                                           Get.snackbar(
                                             'Mensaje',
                                             'Servicio$s agregado$s correctamente',
-                                            duration: const Duration(
-                                                milliseconds: 2500),
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    118, 255, 255, 255),
+                                            duration: const Duration(milliseconds: 2500),
+                                            backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                             showProgressIndicator: true,
-                                            progressIndicatorBackgroundColor:
-                                                const Color.fromARGB(
-                                                    255, 203, 205, 209),
+                                            progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
                                             progressIndicatorValueColor:
-                                                const AlwaysStoppedAnimation(
-                                                    Color(0xFFFDAE2A)),
+                                                const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                             overlayBlur: 3,
                                           );
-                                        } else if (resp < 0 &&
-                                            resp != -990099) {
+                                        } else if (resp < 0 && resp != -990099) {
+                                          if ((resp * -1) > 1) {
+                                            s = 's';
+                                          }
                                           controllerLogin.showConnectionError();
                                           Get.snackbar(
                                             'Mensaje',
-                                            'Problemas de conexión,inténtelo nuevamente agregar servicios',
+                                            'Problemas de conexión,dejó de agregarse ${resp * -1} servicio$s',
                                             //  'Conexión lenta al agregarse (${resp * -1}) servicios',
-                                            duration: const Duration(
-                                                milliseconds: 2500),
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    118, 255, 255, 255),
+                                            duration: const Duration(milliseconds: 2500),
+                                            backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                             showProgressIndicator: true,
-                                            progressIndicatorBackgroundColor:
-                                                const Color.fromARGB(
-                                                    255, 203, 205, 209),
+                                            progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
                                             progressIndicatorValueColor:
-                                                const AlwaysStoppedAnimation(
-                                                    Color(0xFFFDAE2A)),
+                                                const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                             overlayBlur: 3,
                                           );
                                           //aqui mando al home ya que hubo problemas al insertar
@@ -585,18 +424,12 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                           Get.snackbar(
                                             '!Alerta',
                                             'Problema al agregar los servicios,inténtelo de nuevo',
-                                            duration: const Duration(
-                                                milliseconds: 2500),
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    118, 255, 255, 255),
+                                            duration: const Duration(milliseconds: 2500),
+                                            backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                             showProgressIndicator: true,
-                                            progressIndicatorBackgroundColor:
-                                                const Color.fromARGB(
-                                                    255, 203, 205, 209),
+                                            progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
                                             progressIndicatorValueColor:
-                                                const AlwaysStoppedAnimation(
-                                                    Color(0xFFFDAE2A)),
+                                                const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                             overlayBlur: 3,
                                           );
                                           //aqui mando al home ya que hubo problemas al insertar
@@ -609,17 +442,11 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                         Get.snackbar(
                                           'Mensaje',
                                           'No hay servicios seleccionados',
-                                          duration: const Duration(
-                                              milliseconds: 2500),
-                                          backgroundColor: const Color.fromARGB(
-                                              118, 255, 255, 255),
+                                          duration: const Duration(milliseconds: 2500),
+                                          backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                           showProgressIndicator: true,
-                                          progressIndicatorBackgroundColor:
-                                              const Color.fromARGB(
-                                                  255, 203, 205, 209),
-                                          progressIndicatorValueColor:
-                                              const AlwaysStoppedAnimation(
-                                                  Color(0xFFFDAE2A)),
+                                          progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                          progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                           overlayBlur: 3,
                                         );
                                       }
