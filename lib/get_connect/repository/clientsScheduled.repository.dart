@@ -1095,8 +1095,9 @@ class ClientsScheduledRepository extends GetConnect {
     print('estoy en repositorio en - 13');
     try {
       // Crear FormData y agregar la imagen
+
       dio.FormData formData = dio.FormData.fromMap({
-        'client_look': await dio.MultipartFile.fromFile(imag, filename: 'client_look.jpg'),
+        'client_look': imag != '' ? await dio.MultipartFile.fromFile(imag, filename: 'client_look.jpg') : '',
         'reservation_id': reservationId,
         'look': commentText,
       });
@@ -1116,7 +1117,11 @@ class ClientsScheduledRepository extends GetConnect {
         print('esta es la subida de la imagen.Dio este resultado response.statusCode: ${response.statusCode}');
         print('esta es la subida de la imagen.Dio este resultado response.data: ${response.data}');
         print('esta es la subida de la imagen.Dio este resultado token: $token');
-        return true;
+        if (response.statusCode == 200) {
+          return true;
+        } else {
+          return false;
+        }
       } catch (e) {
         print('esta es la subida de la imagen.Error al subir la imagen: $e');
         return false;

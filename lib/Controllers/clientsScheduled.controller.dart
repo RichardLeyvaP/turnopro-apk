@@ -1477,10 +1477,118 @@ class ClientsScheduledController extends GetxController {
     }
   }
 
-  Future<void> storeByReservationId(imag, reservationId, commentText, dioClient) async {
-    bool value = await repository.storeByReservationId(
-        imag, reservationId, commentText, dioClient, controllerLogin.tokenUserLoggedIn);
-    print('si es - $value - ha o no enviado el comentario');
+  Future<int> storeByReservationId(imag, reservationId, commentText, dioClient) async {
+    try {
+      bool value = await repository.storeByReservationId(
+          imag, reservationId, commentText, dioClient, controllerLogin.tokenUserLoggedIn);
+      print('si es - $value - ha o no enviado el comentario');
+
+      //verificar que reloj es el que hay que QUITAR
+      if (value == true) //td esta bien
+      {
+        //si es 2 es que ya termino de atender al cliente1
+        if (clientsAttended1 != null) {
+          if (reservationId == clientsAttended1!.reservation_id) {
+            //SACO DE MI LISTA A clientsAttended1
+            clientsAttended1 = null;
+
+            //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended1
+            if (item.contains(0)) {
+              item.remove(0);
+            }
+            pausResumeClock[0] = -99;
+            //await sentValueClockDb(reservationId, 0);
+            await setTimeClock(
+                reservationId,
+                0,
+                0,
+                1,
+                false,
+                controllerLogin
+                    .tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min //el ultimo campo es el reloj
+          }
+        }
+        if (clientsAttended2 != null) {
+          //si es 2 es que ya termino de atender al cliente2
+          if (reservationId == clientsAttended2!.reservation_id) {
+            //SACO DE MI LISTA A clientsAttended2
+            clientsAttended2 = null;
+            pauseResumeClock(1, 0);
+            //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended2
+            if (item.contains(1)) {
+              item.remove(1);
+            }
+            pausResumeClock[1] = -99;
+            // await sentValueClockDb(reservationId, 0);
+            await setTimeClock(
+                reservationId,
+                0,
+                0,
+                2,
+                false,
+                controllerLogin
+                    .tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min //el ultimo campo es el reloj
+          }
+        }
+        if (clientsAttended3 != null) {
+          //si es 2 es que ya termino de atender al cliente3
+          if (reservationId == clientsAttended3!.reservation_id) {
+            //SACO DE MI LISTA A clientsAttended3
+            clientsAttended3 = null;
+            pauseResumeClock(2, 0);
+            //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended3
+            if (item.contains(2)) {
+              item.remove(2);
+            }
+            pausResumeClock[2] = -99;
+            // await sentValueClockDb(reservationId, 0);
+            await setTimeClock(
+                reservationId,
+                0,
+                0,
+                3,
+                false,
+                controllerLogin
+                    .tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min //el ultimo campo es el reloj
+          }
+        }
+        if (clientsAttended4 != null) {
+          //si es 2 es que ya termino de atender al cliente4
+          if (reservationId == clientsAttended4!.reservation_id) {
+            //SACO DE MI LISTA A clientsAttended4
+            clientsAttended4 = null;
+            pauseResumeClock(3, 0);
+            //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended4
+            if (item.contains(3)) {
+              item.remove(3);
+            }
+            pausResumeClock[3] = -99;
+            //await sentValueClockDb(reservationId, 0);
+            await setTimeClock(
+                reservationId,
+                0,
+                0,
+                4,
+                false,
+                controllerLogin
+                    .tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min //el ultimo campo es el reloj
+          }
+        }
+        update();
+        //AQUI INSERTO EN LA DB SI HUBIERAS RELOJES ACTIVOS
+        await upadateVariablesValueTimers();
+        filterShowCardTimer();
+        filterShowNext();
+        return 1;
+      } else {
+        //no finalizó correctamente al cliente
+        controllerLogin.showConnectionError();
+        return 0;
+      }
+    } catch (e) {
+      print(e);
+      return 0;
+    }
   }
 
   void clockChanges(bool value) {
@@ -1511,97 +1619,6 @@ class ClientsScheduledController extends GetxController {
           await fetchClientsScheduled(idProfessional, idBranch, 'acceptOrRejectClient');
         }
 
-        //verificar que reloj es el que hay que QUITAR
-        if (attended == 2) {
-          //si es 2 es que ya termino de atender al cliente1
-          if (clientsAttended1 != null) {
-            if (reservationId == clientsAttended1!.reservation_id) {
-              //SACO DE MI LISTA A clientsAttended1
-              clientsAttended1 = null;
-
-              //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended1
-              if (item.contains(0)) {
-                item.remove(0);
-              }
-              pausResumeClock[0] = -99;
-              //await sentValueClockDb(reservationId, 0);
-              await setTimeClock(
-                  reservationId,
-                  0,
-                  0,
-                  1,
-                  false,
-                  controllerLogin
-                      .tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min //el ultimo campo es el reloj
-            }
-          }
-          if (clientsAttended2 != null) {
-            //si es 2 es que ya termino de atender al cliente2
-            if (reservationId == clientsAttended2!.reservation_id) {
-              //SACO DE MI LISTA A clientsAttended2
-              clientsAttended2 = null;
-              pauseResumeClock(1, 0);
-              //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended2
-              if (item.contains(1)) {
-                item.remove(1);
-              }
-              pausResumeClock[1] = -99;
-              // await sentValueClockDb(reservationId, 0);
-              await setTimeClock(
-                  reservationId,
-                  0,
-                  0,
-                  2,
-                  false,
-                  controllerLogin
-                      .tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min //el ultimo campo es el reloj
-            }
-          }
-          if (clientsAttended3 != null) {
-            //si es 2 es que ya termino de atender al cliente3
-            if (reservationId == clientsAttended3!.reservation_id) {
-              //SACO DE MI LISTA A clientsAttended3
-              clientsAttended3 = null;
-              pauseResumeClock(2, 0);
-              //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended3
-              if (item.contains(2)) {
-                item.remove(2);
-              }
-              pausResumeClock[2] = -99;
-              // await sentValueClockDb(reservationId, 0);
-              await setTimeClock(
-                  reservationId,
-                  0,
-                  0,
-                  3,
-                  false,
-                  controllerLogin
-                      .tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min //el ultimo campo es el reloj
-            }
-          }
-          if (clientsAttended4 != null) {
-            //si es 2 es que ya termino de atender al cliente4
-            if (reservationId == clientsAttended4!.reservation_id) {
-              //SACO DE MI LISTA A clientsAttended4
-              clientsAttended4 = null;
-              pauseResumeClock(3, 0);
-              //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended4
-              if (item.contains(3)) {
-                item.remove(3);
-              }
-              pausResumeClock[3] = -99;
-              //await sentValueClockDb(reservationId, 0);
-              await setTimeClock(
-                  reservationId,
-                  0,
-                  0,
-                  4,
-                  false,
-                  controllerLogin
-                      .tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min //el ultimo campo es el reloj
-            }
-          }
-        }
         //SI ES ATEENDED = 4 ES PORQUE VA A MANDARLO AL TECNICO
         //AQUI MANDAR A LLAMAR A LA FUNCION set_clock(TIMER), DEPENDIENDO DEL TIMER QUE SEA
         //ESTO LO MODIFICA EN LA BD PARA QUE EL TECNICO TENGA ACCESO A EL

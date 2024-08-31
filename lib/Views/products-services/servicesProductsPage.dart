@@ -547,27 +547,20 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
                                                               barrierDismissible: false,
                                                             ); //Get.back();
 
+                                                            dio.Dio dioClient = dio.Dio();
+                                                            String imag = '';
                                                             if (_.pickedFile != null) {
-                                                              dio.Dio dioClient = dio.Dio();
-                                                              String imag = _.pickedFile!.path;
-
-                                                              clientsController.storeByReservationId(
-                                                                  imag,
-                                                                  clientsController.idClientTemporary,
-                                                                  commentText,
-                                                                  dioClient);
+                                                              imag = _.pickedFile!.path;
                                                             }
 
-                                                            // Lógica para enviar el comentario
-                                                            int resul = await clientsController.acceptOrRejectClient(
-                                                                clientsController.idClientTemporary,
-                                                                2,
-                                                                loginController.tokenUserLoggedIn);
-                                                            if (resul ==
-                                                                -99) //es que finalizó bien y dio status.code = null
-                                                            {
-                                                              Get.back(); //aqui cierro el cargando
-                                                            } else if (resul == 1) //es que finalizó bien
+                                                            int resultFin =
+                                                                await clientsController.storeByReservationId(
+                                                                    imag,
+                                                                    clientsController.idClientTemporary,
+                                                                    commentText,
+                                                                    dioClient);
+
+                                                            if (resultFin == 1) //es que finalizó bien
                                                             {
                                                               //aqui poner una variable que espere por 30 segundos para cambiar al valor por defecto
                                                               //para con esta variable controlar que en ese tiempo no le caiga nadie en la cola
@@ -610,9 +603,9 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
                                                               });
 
                                                               print('Comentario enviado - $commentText ');
-                                                            } else //fallo la
-                                                            {
+                                                            } else {
                                                               Get.back(); //aqui cierro el cargando
+
                                                               Get.snackbar(
                                                                 '!Alerta',
                                                                 'No finalizó el servicio correctamente, vuelva a intentarlo',
