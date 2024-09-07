@@ -96,9 +96,14 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                   differenceInSeconds, loginController.idProfessionalLoggedIn, loginController.tokenUserLoggedIn);
             }
           } catch (e) {
+            if (Get.isDialogOpen ?? false) {
+              Get.back();
+            }
             print('Error actualizando datos: $e');
           } finally {
-            Get.back();
+            if (Get.isDialogOpen ?? false) {
+              Get.back();
+            }
           }
         }
         await LocalStorage.prefs.setBool('verificatePhoto', false);

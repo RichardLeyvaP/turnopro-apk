@@ -1828,20 +1828,28 @@ class _HomePageBodyState extends State<HomePageBody> with AutomaticKeepAliveClie
                                       clientsScheduledControllerE.clientsScheduledNextServ!.reservation_id!);
                                   if (resulButton == 1) {
                                     //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
-                                    int aceptClient = await clientsScheduledControllerE.acceptOrRejectClient(
-                                        clientsScheduledControllerE.clientsScheduledNextServ!.reservation_id,
-                                        1,
-                                        loginController.tokenUserLoggedIn);
+                                    //                            await setTimeClock(reservationId, timeClientsActAttended2, detached, clock, true,
+                                    // controllerLogin.tokenUserLoggedIn);
+
+                                    int timeClock = clientsScheduledControllerE.convertTimeToSeconds(
+                                        clientsScheduledControllerE.clientsScheduledNextServAux!.total_time!);
+                                    int clock = clientsScheduledControllerE.availability;
+                                    // (timeClock, clock,detached, reservationId, attended, token)
+                                    int aceptClient = await clientsScheduledControllerE.acceptClientClock(
+                                        clientsScheduledControllerE.clientsScheduledNextServAux!,
+                                        timeClock, //timeClock
+                                        clock, //clock
+                                        1, //detached
+                                        clientsScheduledControllerE
+                                            .clientsScheduledNextServ!.reservation_id, //reservationId
+                                        1, //attended
+                                        loginController.tokenUserLoggedIn); //token
                                     if (aceptClient == 1) {
-                                      //aqui manda aceptar, es decir atender este cliente
-                                      //aqui intento hacer que cuando acepte no ce vea el siguiente en la lista
-                                      // nunca a no ser que luego lo ponga en true porque tenga services simultaneos
-
-                                      //
-                                      clientsScheduledControllerE.clientsWaiting(
+                                      //todo este se comentó porque la logica esta dentro del metodo acceptOrRejectClientClock()
+                                      /* clientsScheduledControllerE.clientsWaiting(
                                           false); //este es para saber si hay algun cliente esperando para mandar la notificación
-                                      // detengo el timer de 2 minutos
 
+                                      // detengo el timer de 3 minutos
                                       LocalStorage.prefs.setInt('valueClockIni', 180);
                                       clientsScheduledController.setTotalTimeInitial(180);
                                       LocalStorage.prefs.setBool('valueClockActiv', false);
@@ -1849,33 +1857,60 @@ class _HomePageBodyState extends State<HomePageBody> with AutomaticKeepAliveClie
                                       clientsScheduledController.animationControllerInitial!
                                         ..duration = Duration(seconds: 180)
                                         ..reset()
-                                        ..stop();
+                                        ..stop();*/
+                                      //todo ******************
                                       // detengo todos los timers que deben detenerse
                                       for (int j = 0; j < clientsScheduledControllerE.itemDel.length; j++) {
                                         animationCont[clientsScheduledControllerE.itemDel[j]]!.stop();
                                         animationCont[clientsScheduledControllerE.itemDel[j]]!.reset();
                                       }
-                                      await clientsScheduledControllerE.newClientAttended(
+                                      //todo este se comentó porque la logica esta dentro del metodo acceptOrRejectClientClock()
+                                      /* await clientsScheduledControllerE.newClientAttended(
                                           clientsScheduledControllerE.clientsScheduledNextServAux!,
-                                          clientsScheduledControllerE.availability);
-
+                                          clientsScheduledControllerE.availability);*/
+                                      //todo ******************
                                       //
                                       //
                                       //
                                       //HACE LAS VERIFICACIONES NECESARIAS PARA ACTIVAR LOS RELOJES QUE NECESITEN SER ACTIVADOS
                                       if (clientsScheduledControllerE.busyClock == 0) {
+                                        // Detenemos el controlador
+                                        if (animationCont[0]!.isAnimating) {
+                                          animationCont[0]!.stop();
+                                        }
+
+// Reseteamos el controlador a su estado inicial
+                                        animationCont[0]!.reset();
                                         animationCont[0]!.duration =
                                             Duration(seconds: clientsScheduledControllerE.timeClientsAttended1!);
                                         animationCont[0]!.forward();
                                       } else if (clientsScheduledControllerE.busyClock == 1) {
+                                        if (animationCont[1]!.isAnimating) {
+                                          animationCont[1]!.stop();
+                                        }
+
+// Reseteamos el controlador a su estado inicial
+                                        animationCont[1]!.reset();
                                         animationCont[1]!.duration =
                                             Duration(seconds: clientsScheduledControllerE.timeClientsAttended2!);
                                         animationCont[1]!.forward();
                                       } else if (clientsScheduledControllerE.busyClock == 2) {
+                                        if (animationCont[2]!.isAnimating) {
+                                          animationCont[2]!.stop();
+                                        }
+
+// Reseteamos el controlador a su estado inicial
+                                        animationCont[2]!.reset();
                                         animationCont[2]!.duration =
                                             Duration(seconds: clientsScheduledControllerE.timeClientsAttended3!);
                                         animationCont[2]!.forward();
                                       } else if (clientsScheduledControllerE.busyClock == 3) {
+                                        if (animationCont[3]!.isAnimating) {
+                                          animationCont[3]!.stop();
+                                        }
+
+// Reseteamos el controlador a su estado inicial
+                                        animationCont[3]!.reset();
                                         animationCont[3]!.duration =
                                             Duration(seconds: clientsScheduledControllerE.timeClientsAttended4!);
                                         animationCont[3]!.forward();

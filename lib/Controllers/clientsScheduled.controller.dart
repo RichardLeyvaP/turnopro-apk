@@ -171,6 +171,39 @@ class ClientsScheduledController extends GetxController {
   bool waitTime = false; //false es que puede hacer llamadas a buscar la cola
   int waitTimeCount = 30; //false es que puede hacer llamadas a buscar la cola
 
+  int convertTimeToMinutes(String time) {
+    // Divide el string en partes separadas por ":"
+    List<String> parts = time.split(':');
+
+    // Verifica que el formato tenga al menos horas y minutos
+    if (parts.length >= 2) {
+      int hours = int.parse(parts[0]); // Convierte horas a entero
+      int minutes = int.parse(parts[1]); // Convierte minutos a entero
+
+      // Convierte todo a minutos
+      return (hours * 60) + minutes;
+    } else {
+      throw FormatException('Formato de tiempo inválido');
+    }
+  }
+
+  int convertTimeToSeconds(String time) {
+    // Divide el string en partes separadas por ":"
+    List<String> parts = time.split(':');
+
+    // Verifica que el formato tenga horas, minutos y segundos
+    if (parts.length == 3) {
+      int hours = int.parse(parts[0]); // Convierte horas a entero
+      int minutes = int.parse(parts[1]); // Convierte minutos a entero
+      int seconds = int.parse(parts[2]); // Convierte segundos a entero
+
+      // Convierte todo a segundos
+      return (hours * 3600) + (minutes * 60) + seconds;
+    } else {
+      throw FormatException('Formato de tiempo inválido');
+    }
+  }
+
   Future getShowClock(int differenceInSeconds, idProf, token) async {
     print('RETORNE---Clock: si la diferencia es:differenceInSeconds= {$differenceInSeconds}');
     if (differenceInSeconds > 10) {
@@ -1602,6 +1635,77 @@ class ClientsScheduledController extends GetxController {
     pausResumeClock[clock] = value;
     clockchanges = true;
     update();
+  }
+
+  Future<int> acceptClientClock(clientSig, timeClock, clock, detached, reservationId, attended, token) async {
+    // final LoginController controllerLogin = Get.find<LoginController>();
+    try {
+      int value = await repository.acceptClientClock(timeClock, clock, detached, reservationId, attended, token);
+      //si lo que devuelve es true actualizo la cola
+      if (value == 1) {
+        print('mensaje al querer hacer esta accion:mando bien-value:$value');
+        int? idBranch = controllerLogin.branchIdLoggedIn;
+        int? idProfessional = controllerLogin.idProfessionalLoggedIn;
+        //aqui actualizo la cola
+
+        try {
+          // Llama al próximo cliente a atender y actualiza la cola
+          await fetchClientsScheduled(idProfessional, idBranch, 'acceptOrRejectClient');
+        } catch (e) {
+          // Maneja el error de forma específica
+          print('Error al actualizar la cola: $e');
+        }
+
+        filterShowCardTimer();
+        Future.delayed(Duration(milliseconds: 500));
+        try {
+          filterShowNext();
+        } catch (e) {
+          print('Error en filterShowNext: $e');
+        }
+
+        if (clientSig is ClientsScheduledModel) {
+          //verificando que realmente se del tipo ClientsScheduledModel
+          newClientAttended(clientSig, clock);
+        }
+
+        //************************************************* */
+        clientsWaiting(false); //este es para saber si hay algun cliente esperando para mandar la notificación
+
+        // detengo el timer de 3 minutos
+        LocalStorage.prefs.setInt('valueClockIni', 180);
+        setTotalTimeInitial(180);
+        LocalStorage.prefs.setBool('valueClockActiv', false);
+
+        animationControllerInitial!
+          ..duration = const Duration(seconds: 180)
+          ..reset()
+          ..stop();
+
+        //************************************************* */
+
+        update();
+
+        //AQUI INSERTO EN LA DB SI HUBIERAS RELOJES ACTIVOS
+        //todo este lo quite ahora en este nuevo cambio porque ya mande a insertar el tiempo
+        // await upadateVariablesValueTimers();
+        //AQUI ACTUALIZO LA VARIABLE QUE ME DICE QUE YA LLAMO A UN CLIENTE
+        callCliente = true;
+        return 1;
+      } else if (value == -99) {
+        // controllerLogin.showConnectionError();
+        print('Dio error al mandar a aceptar o rechazar al cliente.Status = null');
+        return -99;
+      } else {
+        print('Dio error al mandar a aceptar o rechazar al cliente');
+        return 0;
+      }
+    } catch (e) {
+      print(e);
+      return -99;
+    } finally {
+      setBoolControlVision(true);
+    }
   }
 
   Future<int> acceptOrRejectClient(reservationId, attended, token) async {

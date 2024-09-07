@@ -1064,6 +1064,29 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
+  Future acceptClientClock(timeClock, clock, detached, reservationId, attended, token) async {
+    try {
+      var url =
+          '${Env.apiEndpoint}/tail-attended-client?reservation_id=$reservationId&attended=$attended&timeClock=$timeClock&clock=$clock&detached=$detached';
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      if (response.statusCode == 200) {
+        print('acceptOrRejectClient1 value = true');
+
+        return 1;
+      } else if (response.statusCode == null) {
+        print('ERROR:acceptOrRejectClient1 value = false- response.statusCode2${response.statusCode}');
+        return -99;
+      }
+    } catch (e) {
+      print('mensaje al querer hacer esta accion:error al querer finalizar un servicio:$e');
+      return 0;
+    }
+  }
+
   Future<bool> deleteReservationClient(reservationId, cause, token) async {
     print('estoy en repositorio en - 12');
     try {
