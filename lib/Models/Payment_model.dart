@@ -29,8 +29,7 @@ class PaymentModel {
   }
 
   static List<PaymentModel> listFromJson(String jsonString) {
-    final List<dynamic> parsed =
-        json.decode(jsonString); // Use json.decode here
+    final List<dynamic> parsed = json.decode(jsonString); // Use json.decode here
     return parsed.map((json) => PaymentModel.fromJson(json)).toList();
   }
 }

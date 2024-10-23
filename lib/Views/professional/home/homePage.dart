@@ -430,6 +430,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           builder: (logUser) {
         return InkWell(
           onTap: () {
+            /*
             loginController.addOpenSecretkey();
             print('llave secreta = ${loginController.getOpenSecretkey()}');
             if (loginController.userLoggedIn != '' && loginController.getOpenSecretkey() == 5) {
@@ -562,6 +563,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               );
               loginController.setOpenSecretkey(0);
             }
+            */
           },
           child: Row(
             children: [

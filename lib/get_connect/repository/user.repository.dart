@@ -156,26 +156,23 @@ class UserRepository extends GetConnect {
   Future getUserLoggedBranch(String email, String password) async {
     try {
       String token = loginController.tokenUserLoggedIn;
-      var url =
-          '${Env.apiEndpoint}/login-phone-get-branch?email=$email&password=$password';
+      var url = '${Env.apiEndpoint}/login-phone-get-branch?email=$email&password=$password';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       print('devolviendo de url:$url');
       print(response.statusCode);
       if (response.statusCode == 200) {
         //print('addOrderCartList response:$response');
         final branchesLog = response.body['branches'];
-        print(
-            'devolviendo de getBranchLoggedIn(String email, String password) sii');
+        print('devolviendo de getBranchLoggedIn(String email, String password) sii');
         print(branchesLog);
         return branchesLog;
       } else {
-        print(
-            'devolviendo de getBranchLoggedIn(String email, String password) NOO- ${response.statusCode}');
+        print('devolviendo de getBranchLoggedIn(String email, String password) NOO- ${response.statusCode}');
         return null;
       }
     } catch (e) {
@@ -185,13 +182,15 @@ class UserRepository extends GetConnect {
 
   Future getUserLoggedIn(String email, String password, int idBranch) async {
     try {
-      var url = '${Env.apiEndpoint}/login-phone';
+      var url = '${Env.apiEndpoint}/login-phone-version';
+      //var url = '${Env.apiEndpoint}/login-phone';
 
       final Map<String, dynamic> body = {
         'branch_id': idBranch,
         'email': email,
         'password': password,
-      };
+        'version': 'Simplifies V1.0.6', //version Simplifies
+      }; //esto solo lo tiene la version nueva apartir de Simplifies V1.0.6
 
       print('a..........$url');
       print('a..........$body');
@@ -208,8 +207,7 @@ class UserRepository extends GetConnect {
           print(users);
           return users;
         } else {
-          print(
-              '3dentro del code:200 pero retorno null es porque algo dio nul , la sucursal puede ser');
+          print('3dentro del code:200 pero retorno null es porque algo dio nul , la sucursal puede ser');
           return null;
         }
       } else {
@@ -224,15 +222,13 @@ class UserRepository extends GetConnect {
 
   Future userLogoutNew(int professionalId, int branchId, String token) async {
     try {
-      var url =
-          '${Env.apiEndpoint}/logout-phone?professional_id=$professionalId&branch_id=$branchId';
+      var url = '${Env.apiEndpoint}/logout-phone?professional_id=$professionalId&branch_id=$branchId';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
 
-      final response =
-          await get(url, headers: headers).timeout(Duration(seconds: 15));
+      final response = await get(url, headers: headers).timeout(Duration(seconds: 15));
       //print(response.body);
       if (response.statusCode == 200) {
         final resp = response.body;
@@ -262,8 +258,7 @@ class UserRepository extends GetConnect {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
 
-      final response =
-          await get(url, headers: headers).timeout(Duration(seconds: 15));
+      final response = await get(url, headers: headers).timeout(Duration(seconds: 15));
       //print(response.body);
       if (response.statusCode == 200) {
         final resp = response.body;
@@ -280,8 +275,7 @@ class UserRepository extends GetConnect {
   }
 
   // ignore: non_constant_identifier_names
-  Future<int> insertPuesto(
-      professional_id, workplace_id, places, branch_id, token) async {
+  Future<int> insertPuesto(professional_id, workplace_id, places, branch_id, token) async {
     try {
       var url = '${Env.apiEndpoint}/professionalworkplace';
 
@@ -326,10 +320,8 @@ class UserRepository extends GetConnect {
       final response = await post(headers: headers, url, body);
       print('registrar hora d entrada-:ruta: $url');
 
-      print(
-          'registrar hora d entrada-:response.statusCode ${response.statusCode}');
-      print(
-          'registrar hora d entrada-:professional_id y branch_id $professional_id y $branch_id');
+      print('registrar hora d entrada-:response.statusCode ${response.statusCode}');
+      print('registrar hora d entrada-:professional_id y branch_id $professional_id y $branch_id');
       if (response.statusCode == 200) {
         return 1;
       } else {
@@ -345,19 +337,17 @@ class UserRepository extends GetConnect {
       var url = '';
       String token = loginController.tokenUserLoggedIn;
       if (type == "Barbero") {
-        url =
-            '${Env.apiEndpoint}/update-state-prof-workplace?id=$id&busy=0&professional_id=$idProf';
+        url = '${Env.apiEndpoint}/update-state-prof-workplace?id=$id&busy=0&professional_id=$idProf';
       } else if (type == "Tecnico") {
-        url =
-            '${Env.apiEndpoint}/update-state-tec-workplace?id=$id&select=0&professional_id=$idProf';
+        url = '${Env.apiEndpoint}/update-state-tec-workplace?id=$id&select=0&professional_id=$idProf';
       }
       print('este es el id del puesto url:$url');
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       print('este es el id del puesto url:${response.statusCode}');
 
       //print(response.body);
@@ -376,17 +366,15 @@ class UserRepository extends GetConnect {
     try {
       String token = loginController.tokenUserLoggedIn;
       print('este es el id del puesto222-idProfessional:$idProfessional');
-      var url =
-          '${Env.apiEndpoint}/workplace-show-professional?professional_id=$idProfessional&charge=$charge';
+      var url = '${Env.apiEndpoint}/workplace-show-professional?professional_id=$idProfessional&charge=$charge';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       print('este es el id del puesto333-response:$response');
-      print(
-          'este es el id del puesto333-response.statusCode:${response.statusCode}');
+      print('este es el id del puesto333-response.statusCode:${response.statusCode}');
       //print(response.body);
       if (response.statusCode == 200) {
         final intValue = int.parse(response.body);
@@ -407,22 +395,19 @@ class UserRepository extends GetConnect {
     }
   }
 
-  Future gettimeClokInitial(
-      int idProfessional, int branch, String token) async {
+  Future gettimeClokInitial(int idProfessional, int branch, String token) async {
     try {
       print('este es el id del puesto222-idProfessional:$idProfessional');
-      var url =
-          '${Env.apiEndpoint}/time-clock-reservation?professional_id=$idProfessional&branch_id=$branch';
+      var url = '${Env.apiEndpoint}/time-clock-reservation?professional_id=$idProfessional&branch_id=$branch';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       print('este es el id del puesto333-response:$response');
       print('este es el id del puesto333-response-url:$url');
-      print(
-          'este es el id del puesto333-response.statusCode de gettimeClokInitial:${response.statusCode}');
+      print('este es el id del puesto333-response.statusCode de gettimeClokInitial:${response.statusCode}');
       //print(response.body);
       if (response.statusCode == 200) {
         final intValue = response.body;
@@ -446,17 +431,15 @@ class UserRepository extends GetConnect {
     try {
       String token = loginController.tokenUserLoggedIn;
       print('este es el id del puesto222-idProfessional:$idProfessional');
-      var url =
-          '${Env.apiEndpoint}/record-show-professional?professional_id=$idProfessional&branch_id=$idBanch';
+      var url = '${Env.apiEndpoint}/record-show-professional?professional_id=$idProfessional&branch_id=$idBanch';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       print('este es el id del puesto333-response:$response');
-      print(
-          'este es el id del puesto333-response.statusCode:${response.statusCode}');
+      print('este es el id del puesto333-response.statusCode:${response.statusCode}');
       //print(response.body);
       if (response.statusCode == 200) {
         int intValue = int.parse(response.body);
@@ -483,11 +466,10 @@ class UserRepository extends GetConnect {
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       print('este es el id del puesto333-response:$response');
-      print(
-          'este es el id del puesto333-response.statusCode:${response.statusCode}');
+      print('este es el id del puesto333-response.statusCode:${response.statusCode}');
       //print(response.body);
       if (response.statusCode == 200) {
         final intValue = int.parse(response.body);

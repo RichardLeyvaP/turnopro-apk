@@ -1612,13 +1612,22 @@ class ClientsScheduledController extends GetxController {
         await upadateVariablesValueTimers();
         filterShowCardTimer();
         filterShowNext();
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
         return 1;
       } else {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
         //no finalizó correctamente al cliente
         controllerLogin.showConnectionError();
         return 0;
       }
     } catch (e) {
+      if (Get.isDialogOpen ?? false) {
+        Get.back();
+      }
       print(e);
       return 0;
     }
@@ -1987,6 +1996,30 @@ class ClientsScheduledController extends GetxController {
         update();
       } else {
         noncomplianceProfessional[type] = 0;
+        update();
+      }
+    }
+    return result;
+  }
+
+  Future<bool> changeNoncompliancePId(
+      //todo1
+      id,
+      type,
+      branchId,
+      professionalId,
+      estado) async {
+    //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
+    bool result =
+        await repository.storeByTypeId(id, type, branchId, professionalId, estado, controllerLogin.tokenUserLoggedIn);
+    if (result) {
+      print('CORRECTO actualizo el estado correctamente');
+      //AQUI ES PÓRQUE INCUMPLIO CON ALGO
+      if (estado == 1) {
+        noncomplianceProfessional[id.toString()] = 1;
+        update();
+      } else {
+        noncomplianceProfessional[id.toString()] = 0;
         update();
       }
     }

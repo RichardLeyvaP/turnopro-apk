@@ -2060,7 +2060,7 @@ class _HomePageBodyState extends State<HomePageBody> with AutomaticKeepAliveClie
 
     List<String> partsName = name.split(" "); // Tomar los primeros dos nombres (si existen)
     String firstName = partsName.isNotEmpty ? partsName[0] : "";
-    // String secondName = partsName.length > 1 ? partsName[1] : "";
+    String secondName = partsName.length > 1 ? partsName[1] : "";
     int hoursN = 0;
     int minutesN = 0;
     String formattedMinutes = '00';
@@ -2320,9 +2320,10 @@ class _HomePageBodyState extends State<HomePageBody> with AutomaticKeepAliveClie
             Align(
               alignment: Alignment.center,
               child: Text(
-                firstName,
+                //"$firstName $secondName" ,
+                clientCord.truncateText(name, 18),
                 style:
-                    const TextStyle(fontSize: 18, height: 1.3, color: Color(0xFFFDAE2A), fontWeight: FontWeight.w900),
+                    const TextStyle(fontSize: 11, height: 1.3, color: Color(0xFFFDAE2A), fontWeight: FontWeight.w900),
               ),
             ),
           ],

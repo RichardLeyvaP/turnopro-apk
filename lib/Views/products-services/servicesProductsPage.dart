@@ -249,12 +249,16 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
                                               try {
                                                 await _.loadCart();
 
-                                                Get.back(); // Cierra el diálogo
+                                                if (Get.isDialogOpen ?? false) {
+                                                  Get.back();
+                                                } // Cierra el diálogo
 
                                                 pagesConfigC.nextPage();
                                               } catch (e) {
                                                 // En caso de error, oculta el indicador de carga y muestra un mensaje de error
-                                                Get.back();
+                                                if (Get.isDialogOpen ?? false) {
+                                                  Get.back();
+                                                }
                                                 Get.snackbar('Error', 'Hubo un error al cargar el carrito: $e');
                                               }
                                             }, // Evento onPress
@@ -327,7 +331,9 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
                                   await clientsController.acceptOrRejectClient(clientsController.idClientTemporary, 4,
                                       loginController.tokenUserLoggedIn); // Cierra el modal
                                   pagesConfigC.back();
-                                  Get.back();
+                                  if (Get.isDialogOpen ?? false) {
+                                    Get.back();
+                                  }
                                 }
                               },
                               child: const Text(
@@ -473,18 +479,41 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
                                                           backgroundColor:
                                                               MaterialStateProperty.all<Color>(Color(0xFF4470F3)),
                                                         ),
+                                                        //todo este estaba antes
+                                                        // onPressed: () async {
+                                                        //   final ImagePicker _picker = ImagePicker();
+                                                        //   _.setPickedFile(await _picker.pickImage(
+                                                        //     source: ImageSource.camera,
+                                                        //   ));
+                                                        //   await LocalStorage.prefs.setBool('verificatePhoto', true);
+
+                                                        //   // Verifica si pickedFile no es nulo antes de acceder a su propiedad path
+                                                        //   if (_.pickedFile != null) {
+                                                        //     _.setImagePath(_.pickedFile!.path);
+                                                        //   }
+                                                        //   print('DIRECCIONDELAIMAGEN : ${_.imagePath}');
+                                                        // },
+                                                        //todo este estaba antes
+
                                                         onPressed: () async {
                                                           final ImagePicker _picker = ImagePicker();
-                                                          _.setPickedFile(await _picker.pickImage(
-                                                            source: ImageSource.camera,
-                                                          ));
-                                                          await LocalStorage.prefs.setBool('verificatePhoto', true);
 
-                                                          // Verifica si pickedFile no es nulo antes de acceder a su propiedad path
-                                                          if (_.pickedFile != null) {
-                                                            _.setImagePath(_.pickedFile!.path);
+                                                          // Elige la imagen con calidad reducida (por ejemplo, 50%)
+                                                          final XFile? pickedFile = await _picker.pickImage(
+                                                            source: ImageSource.camera,
+                                                            imageQuality: 20, // Establece la calidad al 50%
+                                                          );
+
+                                                          // Guarda la imagen seleccionada en una variable y almacena la preferencia
+                                                          if (pickedFile != null) {
+                                                            _.setPickedFile(pickedFile);
+                                                            await LocalStorage.prefs.setBool('verificatePhoto', true);
+
+                                                            // Verifica si pickedFile no es nulo antes de acceder a su propiedad path
+                                                            _.setImagePath(pickedFile.path);
+
+                                                            print('DIRECCIONDELAIMAGEN : ${_.imagePath}');
                                                           }
-                                                          print('DIRECCIONDELAIMAGEN : ${_.imagePath}');
                                                         },
                                                         child: Row(
                                                           children: [
@@ -577,11 +606,13 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
                                                                 clientsController.setBoolControlVision(true);
                                                               }
 
-                                                              Get.back(); //aqui cierro el cargando
+                                                              if (Get.isDialogOpen ?? false) {
+                                                                Get.back();
+                                                              } //aqui cierro el cargando
                                                               Get.snackbar(
                                                                 'Mensaje',
                                                                 'Finalizando servicio',
-                                                                duration: const Duration(milliseconds: 2500),
+                                                                duration: const Duration(milliseconds: 2000),
                                                                 backgroundColor:
                                                                     const Color.fromARGB(118, 255, 255, 255),
                                                                 showProgressIndicator: true,
@@ -595,7 +626,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
                                                                   Get.find<ClientsScheduledController>();
                                                               loginController.setCodigoQrValid(1);
                                                               cliCont.setImagePath(null);
-                                                              Future.delayed(const Duration(seconds: 2), () {
+                                                              Future.delayed(const Duration(milliseconds: 1000), () {
                                                                 // Aquí dentro puedes poner la acción que deseas realizar después de esperar 2 segundos
                                                                 loginController.inTheClock(false);
                                                                 pagesConfigC.back();
@@ -604,7 +635,9 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
 
                                                               print('Comentario enviado - $commentText ');
                                                             } else {
-                                                              Get.back(); //aqui cierro el cargando
+                                                              if (Get.isDialogOpen ?? false) {
+                                                                Get.back();
+                                                              } //aqui cierro el cargando
 
                                                               Get.snackbar(
                                                                 '!Alerta',

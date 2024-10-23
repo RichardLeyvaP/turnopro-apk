@@ -7,12 +7,14 @@ class CoexistenceModel {
   String description;
   String type;
   int state;
+  int id;
 
   CoexistenceModel({
     required this.name,
     required this.description,
     required this.state,
     required this.type,
+    required this.id,
   });
 
   Map<String, dynamic> toMap() {
@@ -21,6 +23,7 @@ class CoexistenceModel {
       'description': description,
       'state': state,
       'type': type,
+      'id': id,
     };
   }
 
@@ -30,11 +33,11 @@ class CoexistenceModel {
       description: map['description'] ?? '',
       type: map['type'] ?? '',
       state: map['state'] ?? 0,
+      id: map['id'] ?? 0,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory CoexistenceModel.fromJson(String source) =>
-      CoexistenceModel.fromMap(json.decode(source));
+  factory CoexistenceModel.fromJson(String source) => CoexistenceModel.fromMap(json.decode(source));
 }

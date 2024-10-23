@@ -80,8 +80,7 @@ class topPage extends StatelessWidget {
                         ),
                         onPressed: () {
                           print('estoy entrando aqui...');
-                          if ((title == 'Servicios' || title == 'Productos') &&
-                              page == 'Coordinador') {
+                          if ((title == 'Servicios' || title == 'Productos') && page == 'Coordinador') {
                             pagesConfigC.goToPreviousPage();
                           }
                           if (isPagesConfig == true) {
@@ -108,19 +107,15 @@ class topPage extends StatelessWidget {
                                 child: Container(
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                      color: Colors
-                                          .white, // Color blanco para el borde
-                                      width:
-                                          1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                                      color: Colors.white, // Color blanco para el borde
+                                      width: 1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                                     ),
                                     color: colorIcon,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(12)),
+                                    borderRadius: const BorderRadius.all(Radius.circular(12)),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Icon(IconnsP,
-                                        size: 40, color: Colors.white),
+                                    child: Icon(IconnsP, size: 40, color: Colors.white),
                                   ),
                                 ),
                               ),
@@ -130,15 +125,11 @@ class topPage extends StatelessWidget {
                                   Text(
                                     title,
                                     style: const TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 16,
-                                        color: Color.fromARGB(200, 0, 0, 0)),
+                                        fontWeight: FontWeight.w700, fontSize: 16, color: Color.fromARGB(200, 0, 0, 0)),
                                   ),
                                   Text(
                                     subTitle,
-                                    style: const TextStyle(
-                                        fontSize: 11,
-                                        color: Color.fromARGB(180, 0, 0, 0)),
+                                    style: const TextStyle(fontSize: 11, color: Color.fromARGB(180, 0, 0, 0)),
                                   ),
                                 ],
                               ),
@@ -165,8 +156,7 @@ class topPage extends StatelessWidget {
                               ); //Get.back();s
                               if (textButton == 'MIS PAGOS') {
                                 await coexContro.fetchEstadistPagos();
-                                await Future.delayed(
-                                    const Duration(milliseconds: 500));
+                                await Future.delayed(const Duration(milliseconds: 500));
                               }
                               //AQUI PONER OTRAS CONDICIONES SI ES POSIBLE
 
@@ -175,14 +165,12 @@ class topPage extends StatelessWidget {
                               //Get.toNamed('/Estadistc2Pagos');
                             },
                             style: ButtonStyle(
-                              padding:
-                                  MaterialStateProperty.all<EdgeInsetsGeometry>(
+                              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                                 const EdgeInsets.symmetric(
                                   vertical: 0,
                                 ),
                               ),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  colorButton!),
+                              backgroundColor: MaterialStateProperty.all<Color>(colorButton!),
                               // MaterialStateProperty.all<Color>(Color(0xFF4470F3)),
                             ),
                             child: Row(
@@ -191,9 +179,7 @@ class topPage extends StatelessWidget {
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(
                                     textButton!,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w800),
+                                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
                                   ),
                                 ),
                               ],
@@ -207,17 +193,10 @@ class topPage extends StatelessWidget {
                                 children: [
                                   const Text(
                                     'TOTAL',
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w800),
+                                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800),
                                   ),
-                                  Text(
-                                      totalCC == null
-                                          ? '0'
-                                          : formatNumber(totalCC!),
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w800)),
+                                  Text(totalCC == null ? '0' : formatNumber(totalCC!),
+                                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
                                 ],
                               ),
                             )

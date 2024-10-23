@@ -5,6 +5,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Views/coordinator/services/localStorage.dart';
 import 'package:intl/intl.dart';
+import 'package:turnopro_apk/services/background_service.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -25,7 +26,7 @@ class _SplashPageState extends State<SplashPage> {
     DateTime now = DateTime.now();
     // Formatear la fecha para que solo incluya año, mes y día
     String dataAct = DateFormat('yyyy-MM-dd').format(now);
-    Future.delayed(const Duration(seconds: 6), () async {
+    Future.delayed(const Duration(milliseconds: 100), () async {
       if (LocalStorage.prefs.getString('EntryFootprintData') != null &&
           LocalStorage.prefs.getString('EntryFootprintData') == dataAct &&
           LocalStorage.prefs.getBool('EntryFootprintOpen') != null &&
@@ -35,10 +36,17 @@ class _SplashPageState extends State<SplashPage> {
           LocalStorage.prefs.getInt('EntryFootprintBranch') !=
               null) //si essiste la variable fecha creada y coincide con la fecha de hoy abrir con huella
       {
-        await controllerLogin.loginGetIn(
-            LocalStorage.prefs.getString('EntryFootprintUser')!,
-            LocalStorage.prefs.getString('EntryFootprintPass')!,
-            LocalStorage.prefs.getInt('EntryFootprintBranch')!);
+        try {
+          await controllerLogin.loginGetIn(LocalStorage.prefs.getString('EntryFootprintUser')!,
+              LocalStorage.prefs.getString('EntryFootprintPass')!, LocalStorage.prefs.getInt('EntryFootprintBranch')!);
+          //si todo esta bien y el servicio no esta activo - activarlo
+          checkAndStartService(); //si esta detenido, aqui lo inicio
+        } catch (e) {
+          //si diera algun error ver si esta activo, detener el servicio
+          checkAndStopService(); //si esta detenido, aqui lo inicio
+          print(e);
+        }
+
         // llamar al controlador y loguear con esos datos
         // Get.offAllNamed(
         //   '/AuthCheck',
@@ -60,7 +68,7 @@ class _SplashPageState extends State<SplashPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Pulse(
-            duration: const Duration(seconds: 2),
+            duration: const Duration(milliseconds: 300),
             child: const Image(
               image: AssetImage(
                 'assets/images/ico.png',
@@ -86,8 +94,8 @@ class _SplashPageState extends State<SplashPage> {
                 width: 10,
               ),
               FadeIn(
-                duration: const Duration(seconds: 2),
-                delay: const Duration(seconds: 2),
+                //  duration: const Duration(milliseconds: 500),
+                // delay: const Duration(milliseconds: 500),
                 child: const Center(
                     child: CircularProgressIndicator(
                   color: Color(0xFFFDAE2A),

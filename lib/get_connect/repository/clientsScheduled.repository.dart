@@ -818,7 +818,48 @@ class ClientsScheduledRepository extends GetConnect {
       print(estado);
       print(response.statusCode);
       if (response.statusCode == 200) {
-        print('Acacba de incumplir en este type de convivencia:$type');
+        print('Acacba de incumplir en este type de convivencia-type:$type');
+        print('Acacba de incumplir en este type de convivencia-branchId:$branchId');
+        print('Acacba de incumplir en este type de convivencia-professionalId:$professionalId');
+        print('Acacba de incumplir en este type de convivencia-estado:$estado');
+        return true;
+      } else {
+        print('Intento de darle incumplimiento, pero algo salió mal y no fue posible');
+        return false;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future storeByTypeId(id, type, branchId, professionalId, estado, token) async {
+    print('estoy en repositorio en - 8');
+    try {
+      var url = '${Env.apiEndpoint}/storeByTypeId';
+
+      final Map<String, dynamic> body = {
+        'id': id,
+        'type': type,
+        'branch_id': branchId,
+        'professional_id': professionalId,
+        'estado': estado,
+      };
+
+      final headers = {
+        "Authorization": "Bearer $token", // Agrega el token a los encabezados
+      };
+      final response = await post(headers: headers, url, body);
+      print(type);
+      print(branchId);
+      print(professionalId);
+      print(estado);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print('Acacba de incumplir en este type de convivencia-type:$id');
+        print('Acacba de incumplir en este type de convivencia-type:$type');
+        print('Acacba de incumplir en este type de convivencia-branchId:$branchId');
+        print('Acacba de incumplir en este type de convivencia-professionalId:$professionalId');
+        print('Acacba de incumplir en este type de convivencia-estado:$estado');
         return true;
       } else {
         print('Intento de darle incumplimiento, pero algo salió mal y no fue posible');
@@ -853,7 +894,7 @@ class ClientsScheduledRepository extends GetConnect {
       print(response.statusCode);
       print('llamda a la api desde segundo plano-REPOS-CODE-${response.statusCode}');
       if (response.statusCode == 200) {
-        print('Acacba de incumplir en este type de convivencia:$type');
+        print('Acacba de incumplir en este type de convivencia1:$type');
         return true;
       } else {
         print('Intento de darle incumplimiento, pero algo salió mal y no fue posible');

@@ -1151,14 +1151,14 @@ class LoginController extends GetxController {
         branchIdLoggedIn = result['branch_id'];
         imageUrlLoggedIn = result['image'];
         branchTecnicLoggedIn = result['useTechnical'];
-        print('ssssssssssss ${result['useTechnical'].runtimeType}');
-        print('ssssssssssss ${result['useTechnical']}');
-        print('ssssssssssss branchIdLoggedIn:login:$branchIdLoggedIn');
-        print('ssssssssssss chargeUserLoggedIn:login:$chargeUserLoggedIn');
+        // print('ssssssssssss ${result['useTechnical'].runtimeType}');
+        // print('ssssssssssss ${result['useTechnical']}');
+        // print('ssssssssssss branchIdLoggedIn:login:$branchIdLoggedIn');
+        // print('ssssssssssss chargeUserLoggedIn:login:$chargeUserLoggedIn');
         //*******Asignando Valores*****/
-        print('T123456789-a.......... branchIdLoggedIn***************************: $branchIdLoggedIn');
-        print('T123456789-OKEN***************************: $tokenUserLoggedIn');
-        print('ID-Profess***************************: $idProfessionalLoggedIn');
+        // print('T123456789-a.......... branchIdLoggedIn***************************: $branchIdLoggedIn');
+        // print('T123456789-OKEN***************************: $tokenUserLoggedIn');
+        // print('ID-Profess***************************: $idProfessionalLoggedIn');
         //digo que voy desde el login
         LocalStorage.prefs.setBool('iAmActive', true);
         //reinicio el servicio
@@ -1166,7 +1166,7 @@ class LoginController extends GetxController {
 
         if (tokenUserLoggedIn != '' && nameUserLoggedIn != '' && emailUserLoggedIn != '') {
           //Define el tipo de saludo
-          getGreeting();
+          // getGreeting();
           //todo aqui guardo cada vez que loguea los datos para la proxima vez que no tenga que loguearse
 
 // Obtener la fecha actual
@@ -1191,6 +1191,7 @@ class LoginController extends GetxController {
             saveUserDataMemory(
                 nameUserLoggedIn, branchIdLoggedIn!, idProfessionalLoggedIn!, chargeUserLoggedIn, tokenUserLoggedIn);
             //aqui deb reiniciar mi servicio
+            // checkAndStartService(); //si esta detenido, aqui lo inicio
           } else {
             print('asignando valores de memoria:NO-1');
           }
@@ -1329,12 +1330,14 @@ class LoginController extends GetxController {
         update();
       } //cierre if (result != null) {
       else if (result == null) {
+        checkAndStopService(); //si esta activo lo detengo
         showConnectionErrorLogin();
         // Get.back();
         Get.offAllNamed(
           '/LoginFormPage',
         );
       } else {
+        checkAndStopService(); //si esta activo lo detengo
         incorrectFields = true;
         await loadingValue(false);
         update();
@@ -1342,6 +1345,7 @@ class LoginController extends GetxController {
         Get.back();
       }
     } catch (e) {
+      checkAndStopService(); //si esta activo lo detengo
       showConnectionError();
       Get.back();
       print('errorrrrrreeeeeeeeeeeeeeeee loginGetIn:$e');

@@ -15,48 +15,37 @@ import 'package:turnopro_apk/env.dart';
 import 'package:http/http.dart' as http;
 
 class CoexistenceRepository extends GetConnect {
-  final ClientsScheduledController controllerClient =
-      Get.find<ClientsScheduledController>();
-  final ClientsTechnicalController controllerClientTecn =
-      Get.find<ClientsTechnicalController>();
+  final ClientsScheduledController controllerClient = Get.find<ClientsScheduledController>();
+  final ClientsTechnicalController controllerClientTecn = Get.find<ClientsTechnicalController>();
   final LoginController controllerLogin = Get.find<LoginController>();
 
-  Future<List<CoexistenceModel>> getCoexistenceList(
-      idProfessional, idBranch, token) async {
+  Future<List<CoexistenceModel>> getCoexistenceList(idProfessional, idBranch, token) async {
     print('actualizando las convivencias iniciales.RLP- getCoexistenceList');
     List<CoexistenceModel> coexistenceList = [];
     try {
       print('a15627 idProfessional:$idProfessional');
-      var url =
-          '${Env.apiEndpoint}/rules_professional?professional_id=$idProfessional&branch_id=$idBranch';
+      var url = '${Env.apiEndpoint}/rules_professional?professional_id=$idProfessional&branch_id=$idBranch';
       print('a15627 siiiiiiii 0');
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       if (response.statusCode == 200) {
-        print('a15627 siiiiiiii 1');
         final coexistences = response.body['rules'];
-        print(coexistences);
+
         for (Map coexistence in coexistences) {
-          print('a15627 siiiiiiii 2');
-          CoexistenceModel u =
-              CoexistenceModel.fromJson(jsonEncode(coexistence));
+          CoexistenceModel u = CoexistenceModel.fromJson(jsonEncode(coexistence));
           coexistenceList.add(u);
           if (controllerLogin.chargeUserLoggedIn == "Tecnico") {
-            print('a15627 siiiiiiii 3-1');
-            controllerClientTecn.noncomplianceProfessional[u.type] = u.state;
+            controllerClientTecn.noncomplianceProfessional[u.id.toString()] = u.state;
           }
           if (controllerLogin.chargeUserLoggedIn == "Barbero") {
-            print('a15627 siiiiiiii 3-2');
-            controllerClient.noncomplianceProfessional[u.type] = u.state;
+            controllerClient.noncomplianceProfessional[u.id.toString()] = u.state;
           }
-          controllerClient.noncomplianceProfessional[u.type] = u.state;
-          print('a15627 siiiiiiii 1');
+          controllerClient.noncomplianceProfessional[u.id.toString()] = u.state;
         }
-        print('*************coexistenceList.length*************');
-        print(coexistenceList.length);
+
         return coexistenceList;
       } else if (response.statusCode != 200) {
         controllerLogin.showConnectionError();
@@ -85,8 +74,8 @@ class CoexistenceRepository extends GetConnect {
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
+      final response =
+          await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
       print('esta ruta dice:response.statusCode>${response.statusCode}');
       print('esta ruta dice:response.statusCode>${response.statusCode == 200}');
       print('esta ruta dice:response.statusCode>${response.body}');
@@ -129,25 +118,21 @@ class CoexistenceRepository extends GetConnect {
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response =
-          await get(url, headers: headers).timeout(Duration(seconds: 15));
+      final response = await get(url, headers: headers).timeout(Duration(seconds: 15));
       if (response.statusCode == 200) {
         final professionals = response.body['professionals'];
-        print(
-            'ESTOY ENTRANDO AQUI A CONVIVENCIAS estoy en professionals:$professionals');
+        print('ESTOY ENTRANDO AQUI A CONVIVENCIAS estoy en professionals:$professionals');
         for (int i = 0; i < professionals.length; i++) {
           print('ESTOY ENTRANDO AQUI A CONVIVENCIAS  para el objeto ${i + 1}:');
           professionals[i].forEach((key, value) {
-            print(
-                'ESTOY ENTRANDO AQUI A CONVIVENCIAS  es estaa $key: ${value.runtimeType}');
+            print('ESTOY ENTRANDO AQUI A CONVIVENCIAS  es estaa $key: ${value.runtimeType}');
             print('********************i:$i');
           });
         }
         print(professionals);
         for (Map professional in professionals) {
           print('ESTOY ENTRANDO AQUI A CONVIVENCIAS MAP()');
-          ProfessionalModel u =
-              ProfessionalModel.fromJson(jsonEncode(professional));
+          ProfessionalModel u = ProfessionalModel.fromJson(jsonEncode(professional));
           //AQUI SOLO COJO QUE NO SEAN RESPONSABLES
           //todo cambiar por el nombre del cargo YASMANY TIENE QUE MANDARLO
           if (loginController.chargeUserLoggedIn == "Coordinador") {
@@ -176,8 +161,7 @@ class CoexistenceRepository extends GetConnect {
 
 //
 //
-  Future<List<Estadist1Model>> fetchEstadist1(
-      professional_id, branch_id, data, charge) async {
+  Future<List<Estadist1Model>> fetchEstadist1(professional_id, branch_id, data, charge) async {
     // todo esta es la que carga a los profesionales y a los tecnicos
     List<Estadist1Model> branchProf = [];
     print('werya tengo repositorio11 estoy en getBranchProfessionals');
@@ -185,8 +169,7 @@ class CoexistenceRepository extends GetConnect {
       var url =
           '${Env.apiEndpoint}/professional-car-date?branch_id=$branch_id&professional_id=$professional_id&data=$data';
       if (charge == 'Tecnico') {
-        url =
-            '${Env.apiEndpoint}/tecnico-car-date?branch_id=$branch_id&professional_id=$professional_id&data=$data';
+        url = '${Env.apiEndpoint}/tecnico-car-date?branch_id=$branch_id&professional_id=$professional_id&data=$data';
         print('soy tecnico siii');
       }
 
@@ -194,24 +177,18 @@ class CoexistenceRepository extends GetConnect {
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response =
-          await get(url, headers: headers).timeout(Duration(seconds: 15));
-      print(
-          'werya tengo repositorio22 estoy en getBranchProfessionals url:$url');
+      final response = await get(url, headers: headers).timeout(Duration(seconds: 15));
+      print('werya tengo repositorio22 estoy en getBranchProfessionals url:$url');
       if (response.statusCode == 200) {
-        print(
-            'werya tengo repositorio33 response.statusCode == 200 estoy en getBranchProfessionals');
+        print('werya tengo repositorio33 response.statusCode == 200 estoy en getBranchProfessionals');
         // Parsear el body como una cadena JSON
         final jsonResponse = response.body['car'];
-        print(
-            'response.statusCode == 200 estoy en getBranchProfessionals-charge:$charge');
+        print('response.statusCode == 200 estoy en getBranchProfessionals-charge:$charge');
 
         for (int i = 0; i < jsonResponse.length; i++) {
-          print(
-              'ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
+          print('ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
           jsonResponse[i].forEach((key, value) {
-            print(
-                'ya tengo la cola de la api es estaa $key: ${value.runtimeType}');
+            print('ya tengo la cola de la api es estaa $key: ${value.runtimeType}');
           });
         }
 
@@ -227,8 +204,7 @@ class CoexistenceRepository extends GetConnect {
           branchProf.add(u);
         }
 
-        print(
-            'werya tengo repositorio44 response.statusCode == 200 estoy en branchProf:${branchProf.length}');
+        print('werya tengo repositorio44 response.statusCode == 200 estoy en branchProf:${branchProf.length}');
         return branchProf;
       } else {
         return branchProf;
@@ -342,8 +318,7 @@ class CoexistenceRepository extends GetConnect {
     }
   }
 
-  Future<Map<String, dynamic>> fetchEstadistPagos(
-      professional_id, branch_id, charge) async {
+  Future<Map<String, dynamic>> fetchEstadistPagos(professional_id, branch_id, charge) async {
     List<PaymentModel> branchProf = [];
     int attempts = 0;
 
@@ -355,13 +330,11 @@ class CoexistenceRepository extends GetConnect {
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response =
-          await get(url, headers: headers).timeout(Duration(seconds: 15));
+      final response = await get(url, headers: headers).timeout(Duration(seconds: 15));
 
       if (response.statusCode == 200) {
         attempts = 10;
-        print(
-            'werya tengo repositorio33 response.statusCode == 200 estoy en getBranchProfessionals');
+        print('werya tengo repositorio33 response.statusCode == 200 estoy en getBranchProfessionals');
         // Parsear el body como una cadena JSON
         // Obtén el cuerpo (body) como una cadena (String)
 
@@ -409,8 +382,7 @@ class CoexistenceRepository extends GetConnect {
         double sum_pyment = 0;
         for (int i = 0; i < payments.length; i++) {
           final Map<String, dynamic> branch = payments[i];
-          print(
-              'werya tengo repositorio44 response.statusCode == 200 estoy 2345:${payments[i]}');
+          print('werya tengo repositorio44 response.statusCode == 200 estoy 2345:${payments[i]}');
 
           // Crear una instancia de Estadist1Model
           PaymentModel u = PaymentModel.fromJson(branch);
@@ -422,8 +394,7 @@ class CoexistenceRepository extends GetConnect {
           //}
         }
 
-        print(
-            'werya tengo repositorio44 response.statusCode == 200 estoy en branchProf:${pendiente}');
+        print('werya tengo repositorio44 response.statusCode == 200 estoy en branchProf:${pendiente}');
         return {
           'branchProf': branchProf,
           'pendiente': pendiente,
@@ -495,34 +466,28 @@ class CoexistenceRepository extends GetConnect {
 //
 ////
 //
-  Future<List<Estadist0Model>> fetchEstadist0(
-      professional_id, branch_id, charge) async {
+  Future<List<Estadist0Model>> fetchEstadist0(professional_id, branch_id, charge) async {
     // todo esta es la que carga a los profesionales y a los tecnicos
     List<Estadist0Model> branchProf = [];
     print('werya tengo repositorio11 estoy en getBranchProfessionals');
     try {
-      var url =
-          '${Env.apiEndpoint}/professional-car?branch_id=$branch_id&professional_id=$professional_id';
+      var url = '${Env.apiEndpoint}/professional-car?branch_id=$branch_id&professional_id=$professional_id';
       if (charge == 'Tecnico') //tecnico
       {
-        url =
-            '${Env.apiEndpoint}/tecnico-car?branch_id=$branch_id&professional_id=$professional_id';
+        url = '${Env.apiEndpoint}/tecnico-car?branch_id=$branch_id&professional_id=$professional_id';
       }
 
       String token = controllerLogin.tokenUserLoggedIn;
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response =
-          await get(url, headers: headers).timeout(Duration(seconds: 15));
+      final response = await get(url, headers: headers).timeout(Duration(seconds: 15));
       print('werya tengo repositorio22 estoy en getBranchProfessionals');
       if (response.statusCode == 200) {
-        print(
-            'werya tengo repositorio33 response.statusCode == 200 estoy en getBranchProfessionals');
+        print('werya tengo repositorio33 response.statusCode == 200 estoy en getBranchProfessionals');
         // Parsear el body como una cadena JSON
         final jsonResponse = response.body['car'];
-        print(
-            'werya tengo repositorio----------------33 response.statusCode == 200 estoy en getBranchProfessionals');
+        print('werya tengo repositorio----------------33 response.statusCode == 200 estoy en getBranchProfessionals');
 
         final List<dynamic> branchP = jsonResponse;
 
@@ -536,8 +501,7 @@ class CoexistenceRepository extends GetConnect {
           branchProf.add(u);
         }
 
-        print(
-            'werya tengo repositorio44 response.statusCode == 200 estoy en branchProf:${branchProf.length}');
+        print('werya tengo repositorio44 response.statusCode == 200 estoy en branchProf:${branchProf.length}');
         return branchProf;
       } else {
         return branchProf;
@@ -557,27 +521,22 @@ class CoexistenceRepository extends GetConnect {
     List<BranchModel> branchProf = [];
     print('estoy en getBranchProfessionals');
     try {
-      var url =
-          '${Env.apiEndpoint}/login-phone-get-branch?email=$email&password=$password';
+      var url = '${Env.apiEndpoint}/login-phone-get-branch?email=$email&password=$password';
 
       String token = controllerLogin.tokenUserLoggedIn;
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      final response =
-          await get(url, headers: headers).timeout(Duration(seconds: 15));
-      print(
-          'ya tengo la cola de la api es response.statusCode : ${response.statusCode}');
+      final response = await get(url, headers: headers).timeout(Duration(seconds: 15));
+      print('ya tengo la cola de la api es response.statusCode : ${response.statusCode}');
       if (response.statusCode == null || response.statusCode != 200) {
         return null;
       } else if (response.statusCode == 200) {
         final barnchP = response.body['branches'];
         for (int i = 0; i < barnchP.length; i++) {
-          print(
-              'ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
+          print('ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
           barnchP[i].forEach((key, value) {
-            print(
-                'ya tengo la cola de la api es estaa $key: ${value.runtimeType}');
+            print('ya tengo la cola de la api es estaa $key: ${value.runtimeType}');
             print('********************i:$i');
           });
         }

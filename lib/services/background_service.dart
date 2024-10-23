@@ -65,7 +65,7 @@ Future<void> initializeService() async {
       isForegroundMode: true,
       // isForegroundMode: true,
       notificationChannelId: notificationChannelIdSilent,
-      initialNotificationTitle: 'Simplifies V1.0.5',
+      initialNotificationTitle: 'Simplifies V1.0.6', //version Simplifies
       initialNotificationContent: '',
     ),
     iosConfiguration: IosConfiguration(
@@ -299,4 +299,30 @@ Future<void> onStart(ServiceInstance service) async {
     await Future.delayed(const Duration(seconds: 6));
     reasignate();
   });
+}
+
+Future<void> checkAndStartService() async {
+  // Verificar si el servicio ya está en ejecución
+  bool isRunning = await FlutterBackgroundService().isRunning();
+
+  if (isRunning) {
+    // Si el servicio está en ejecución, no hacer nada
+    print("El servicio ya está activo");
+  } else {
+    // Si el servicio no está activo, iniciarlo
+    print("El servicio no está activo, iniciándolo...");
+    FlutterBackgroundService().startService();
+  }
+}
+
+Future<void> checkAndStopService() async {
+  // Verificar si el servicio ya está en ejecución
+  bool isRunning = await FlutterBackgroundService().isRunning();
+
+  if (isRunning) {
+    // Si el servicio está en ejecución, detenerlo
+    print("El servicio ya está activo y se va a mandar a detener");
+    clearAllNotifications();
+    FlutterBackgroundService().invoke("stopService");
+  }
 }
