@@ -34,12 +34,9 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
   }
 
   final double valuePadding = 12;
-  final StatisticController controllerStatistic =
-      Get.find<StatisticController>();
-  final PagesConfigResponController pagesConfigCont =
-      Get.find<PagesConfigResponController>();
-  final PagesConfigController pagesConfigCont1 =
-      Get.find<PagesConfigController>();
+  final StatisticController controllerStatistic = Get.find<StatisticController>();
+  final PagesConfigResponController pagesConfigCont = Get.find<PagesConfigResponController>();
+  final PagesConfigController pagesConfigCont1 = Get.find<PagesConfigController>();
   final LoginController loginController = Get.find<LoginController>();
   int cantVisitas = 3;
 
@@ -112,17 +109,14 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
               pagesConfigCont1.colacionNotification == 0
                   ? Expanded(
                       flex: 18,
-                      child: controllerCORD.clientsScheduledListBranch
-                              .isNotEmpty //todo si hay cargarlos aqui
+                      child: controllerCORD.clientsScheduledListBranch.isNotEmpty //todo si hay cargarlos aqui
                           ? ListView.builder(
-                              padding: EdgeInsets
-                                  .zero, // Elimina cualquier padding del ListView
+                              padding: EdgeInsets.zero, // Elimina cualquier padding del ListView
                               itemCount: controllerCORD
                                   .clientsScheduledListBranchLength, //aqui ver la long de clientAttenCORD y mostrar aqui los que esten
                               itemBuilder: (context, index) {
                                 // Utiliza la función cardOptions para construir cada Card
-                                return cardClientTails(
-                                    controllerCORD, context, index);
+                                return cardClientTails(controllerCORD, context, index);
                               },
                             )
                           : const Center(
@@ -131,21 +125,15 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                     )
                   : Expanded(
                       flex: 18,
-                      child: controllerCORD.clientsColacionBranch
-                              .isNotEmpty //todo si hay cargarlos aqui
+                      child: controllerCORD.clientsColacionBranch.isNotEmpty //todo si hay cargarlos aqui
                           ? ListView.builder(
-                              padding: EdgeInsets
-                                  .zero, // Elimina cualquier padding del ListView
+                              padding: EdgeInsets.zero, // Elimina cualquier padding del ListView
                               itemCount: controllerCORD
                                   .clientsColacionBranchLength, //aqui ver la long de clientAttenCORD y mostrar aqui los que esten
                               itemBuilder: (context, index) {
                                 // Utiliza la función cardOptions para construir cada Card
                                 return cardProfessionalesColacion(
-                                    controllerCORD,
-                                    context,
-                                    index,
-                                    pagesConfigCont1.pageController2,
-                                    pagesConfigCont1);
+                                    controllerCORD, context, index, pagesConfigCont1.pageController2, pagesConfigCont1);
                               },
                             )
                           : const Center(
@@ -159,15 +147,10 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
     );
   }
 
-  cardProfessionalesColacion(
-      ClientsCoordinatorController controllerclient,
-      BuildContext context,
-      index,
-      PageController pageController2,
-      PagesConfigController pagesConfigC) {
+  cardProfessionalesColacion(ClientsCoordinatorController controllerclient, BuildContext context, index,
+      PageController pageController2, PagesConfigController pagesConfigC) {
     DateFormat formatter = DateFormat('HH:mm');
-    DateTime currentTime = formatter
-        .parse(controllerclient.clientsColacionBranch[index].start_time!);
+    DateTime currentTime = formatter.parse(controllerclient.clientsColacionBranch[index].start_time!);
 
     // Paso 2: Sumar una hora al objeto DateTime
     DateTime newTime = currentTime.add(Duration(hours: 1));
@@ -191,22 +174,17 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8, top: 8, bottom: 8, right: 4),
+                        padding: const EdgeInsets.only(left: 8, top: 8, bottom: 8, right: 4),
                         child: CircleAvatar(
                           radius: 25,
                           backgroundColor: Colors.white, //fondo de la imagen
                           child: ClipOval(
                             child: Image.network(
                               '${Env.apiEndpoint}/images/${controllerclient.clientsColacionBranch[index].client_image}',
-                              fit: BoxFit
-                                  .cover, // Ajusta la imagen para cubrir completamente el área
-                              width:
-                                  50, // Ancho deseado de la imagen dentro del círculo
+                              fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                              width: 50, // Ancho deseado de la imagen dentro del círculo
                               height: 50,
-                              loadingBuilder: (BuildContext context,
-                                  Widget child,
-                                  ImageChunkEvent? loadingProgress) {
+                              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                                 if (loadingProgress == null) {
                                   // Si la imagen se carga correctamente, mostramos la imagen
                                   return child;
@@ -217,23 +195,19 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                                   );
                                 }
                               },
-                              errorBuilder: (BuildContext context, Object error,
-                                  StackTrace? stackTrace) {
+                              errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                                 // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
                                 if (kDebugMode) {
                                   return CircleAvatar(
                                     radius: 25,
-                                    backgroundColor: Colors
-                                        .transparent, // Fondo transparente para que el borde sea visible
+                                    backgroundColor:
+                                        Colors.transparent, // Fondo transparente para que el borde sea visible
                                     child: ClipOval(
                                       child: Image.asset(
                                         'assets/images/default_profile.jpg',
-                                        fit: BoxFit
-                                            .cover, // Ajusta la imagen para cubrir completamente el área
-                                        width:
-                                            50, // Ancho deseado de la imagen dentro del círculo
-                                        height:
-                                            50, // Alto deseado de la imagen dentro del círculo
+                                        fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                        width: 50, // Ancho deseado de la imagen dentro del círculo
+                                        height: 50, // Alto deseado de la imagen dentro del círculo
                                       ),
                                     ),
                                   );
@@ -241,17 +215,14 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                                   // Si no estamos en modo de depuración, mostramos un texto de error
                                   return CircleAvatar(
                                     radius: 25,
-                                    backgroundColor: Colors
-                                        .transparent, // Fondo transparente para que el borde sea visible
+                                    backgroundColor:
+                                        Colors.transparent, // Fondo transparente para que el borde sea visible
                                     child: ClipOval(
                                       child: Image.asset(
                                         'assets/images/default_profile.jpg',
-                                        fit: BoxFit
-                                            .cover, // Ajusta la imagen para cubrir completamente el área
-                                        width:
-                                            50, // Ancho deseado de la imagen dentro del círculo
-                                        height:
-                                            50, // Alto deseado de la imagen dentro del círculo
+                                        fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                        width: 50, // Ancho deseado de la imagen dentro del círculo
+                                        height: 50, // Alto deseado de la imagen dentro del círculo
                                       ),
                                     ),
                                   );
@@ -278,41 +249,30 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                               Column(
                                 children: [
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         //PROFESIONAL
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
                                           SizedBox(
                                             width: 5,
                                           ),
                                           Text(
-                                            controllerclient
-                                                .clientsColacionBranch[index]
-                                                .professional_name!,
+                                            controllerclient.clientsColacionBranch[index].professional_name!,
                                             softWrap: true,
-                                            style: const TextStyle(
-                                                fontSize: 15,
-                                                height: 1,
-                                                fontWeight: FontWeight.w500),
+                                            style:
+                                                const TextStyle(fontSize: 15, height: 1, fontWeight: FontWeight.w500),
                                           ),
                                         ],
                                       ),
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 6.0),
+                                        padding: const EdgeInsets.only(right: 6.0),
                                         child: Text(
                                           '${controllerclient.clientsColacionBranch[index].start_time!.substring(0, 5)} - $formattedNewTime',
                                           softWrap: true,
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              height: 1,
-                                              fontWeight: FontWeight.w500),
+                                          style: const TextStyle(fontSize: 15, height: 1, fontWeight: FontWeight.w500),
                                         ),
                                       ),
                                     ],
@@ -330,14 +290,11 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
     );
   }
 
-  FittedBox cardClientTails(ClientsCoordinatorController controllerclient,
-      BuildContext context, index) {
+  FittedBox cardClientTails(ClientsCoordinatorController controllerclient, BuildContext context, index) {
     String tipo = '';
     if (controllerclient.clientsScheduledListBranch[index].from_home == 1) {
       tipo = 'Reser';
-    } else if (controllerclient
-            .clientsScheduledListBranch[index].select_professional ==
-        1) {
+    } else if (controllerclient.clientsScheduledListBranch[index].select_professional == 1) {
       tipo = 'Selec';
     } else {
       tipo = 'Aleat';
@@ -354,15 +311,9 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                       borderRadius: const BorderRadius.all(Radius.circular(12)),
                       border: Border.all(
                           width: 2,
-                          color: controllerclient
-                                      .clientsScheduledListBranch[index]
-                                      .from_home ==
-                                  1
+                          color: controllerclient.clientsScheduledListBranch[index].from_home == 1
                               ? const Color(0xFFFDAE2A)
-                              : controllerclient
-                                          .clientsScheduledListBranch[index]
-                                          .select_professional ==
-                                      1
+                              : controllerclient.clientsScheduledListBranch[index].select_professional == 1
                                   ? const Color(0xFF19CF9E)
                                   : const Color(0xFF4470F3))),
                   //AQUI CONTROLO SI HAY ALGUIEN EN COLA
@@ -380,8 +331,10 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ImageDetailScreen(
-                                      imageUrl:
-                                          '${Env.apiEndpoint}/images/${controllerclient.clientsScheduledListBranch[index].client_image}'),
+                                    imageUrl:
+                                        '${Env.apiEndpoint}/images/${controllerclient.clientsScheduledListBranch[index].client_image}',
+                                    description: '',
+                                  ),
                                 ),
                               );
                             },
@@ -397,17 +350,13 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                                       width: 50,
                                       height: 50,
                                       child: CircularProgressIndicator(
-                                        strokeWidth:
-                                            2, // Personaliza el ancho del indicador como desees
-                                        valueColor: AlwaysStoppedAnimation<
-                                                Color>(
-                                            Color.fromARGB(110, 253, 176, 42)),
+                                        strokeWidth: 2, // Personaliza el ancho del indicador como desees
+                                        valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(110, 253, 176, 42)),
                                       ),
                                     ),
                                   ),
                                 ),
-                                errorWidget: (context, url, error) =>
-                                    Image.asset(
+                                errorWidget: (context, url, error) => Image.asset(
                                   'assets/images/default_profile.jpg',
                                   cacheWidth: 50,
                                   cacheHeight: 50,
@@ -465,17 +414,12 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                                   children: [
                                     const Icon(
                                       Icons.person,
-                                      color:
-                                          const Color.fromARGB(255, 43, 44, 49),
+                                      color: const Color.fromARGB(255, 43, 44, 49),
                                     ),
                                     Text(
-                                      controllerclient
-                                          .clientsScheduledListBranch[index]
-                                          .client_name!,
+                                      controllerclient.clientsScheduledListBranch[index].client_name!,
                                       softWrap: true,
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600),
+                                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                                     ),
                                   ],
                                 ),
@@ -488,13 +432,9 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                                       MdiIcons.accountTie,
                                     ),
                                     Text(
-                                      controllerclient
-                                          .clientsScheduledListBranch[index]
-                                          .professional_name!,
+                                      controllerclient.clientsScheduledListBranch[index].professional_name!,
                                       softWrap: true,
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600),
+                                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                                     ),
                                   ],
                                 ),

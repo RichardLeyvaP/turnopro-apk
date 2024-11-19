@@ -24,11 +24,9 @@ class AttendingClient extends StatefulWidget {
 
 class _AttendingClientState extends State<AttendingClient> {
   final double valuePadding = 12;
-  final PagesConfigController pagesConfigCont =
-      Get.find<PagesConfigController>();
+  final PagesConfigController pagesConfigCont = Get.find<PagesConfigController>();
   final LoginController loginController = Get.find<LoginController>();
-  final PagesConfigController pagesConfigCont1 =
-      Get.find<PagesConfigController>();
+  final PagesConfigController pagesConfigCont1 = Get.find<PagesConfigController>();
   int cantVisitas = 3;
 
   String description = 'Coca Cola Classic 350 ml';
@@ -102,21 +100,15 @@ class _AttendingClientState extends State<AttendingClient> {
               pagesConfigCont.colacionNotification == 0
                   ? Expanded(
                       flex: 18,
-                      child: controllerCORD.clientAttendBranch
-                              .isNotEmpty //todo si hay cargarlos aqui
+                      child: controllerCORD.clientAttendBranch.isNotEmpty //todo si hay cargarlos aqui
                           ? ListView.builder(
-                              padding: EdgeInsets
-                                  .zero, // Elimina cualquier padding del ListView
+                              padding: EdgeInsets.zero, // Elimina cualquier padding del ListView
                               itemCount: controllerCORD
                                   .clientAttendBranchLength, //aqui ver la long de clientAttenCORD y mostrar aqui los que esten
                               itemBuilder: (context, index) {
                                 // Utiliza la función cardOptions para construir cada Card
                                 return cardClientTails(
-                                    controllerCORD,
-                                    context,
-                                    index,
-                                    pagesConfigCont.pageController2,
-                                    pagesConfigCont);
+                                    controllerCORD, context, index, pagesConfigCont.pageController2, pagesConfigCont);
                               },
                             )
                           : const Center(
@@ -125,21 +117,15 @@ class _AttendingClientState extends State<AttendingClient> {
                     )
                   : Expanded(
                       flex: 18,
-                      child: controllerCORD.clientsColacionBranch
-                              .isNotEmpty //todo si hay cargarlos aqui
+                      child: controllerCORD.clientsColacionBranch.isNotEmpty //todo si hay cargarlos aqui
                           ? ListView.builder(
-                              padding: EdgeInsets
-                                  .zero, // Elimina cualquier padding del ListView
+                              padding: EdgeInsets.zero, // Elimina cualquier padding del ListView
                               itemCount: controllerCORD
                                   .clientsColacionBranchLength, //aqui ver la long de clientAttenCORD y mostrar aqui los que esten
                               itemBuilder: (context, index) {
                                 // Utiliza la función cardOptions para construir cada Card
                                 return cardProfessionalesColacion(
-                                    controllerCORD,
-                                    context,
-                                    index,
-                                    pagesConfigCont.pageController2,
-                                    pagesConfigCont);
+                                    controllerCORD, context, index, pagesConfigCont.pageController2, pagesConfigCont);
                               },
                             )
                           : const Center(
@@ -153,15 +139,10 @@ class _AttendingClientState extends State<AttendingClient> {
     );
   }
 
-  cardProfessionalesColacion(
-      ClientsCoordinatorController controllerclient,
-      BuildContext context,
-      index,
-      PageController pageController2,
-      PagesConfigController pagesConfigC) {
+  cardProfessionalesColacion(ClientsCoordinatorController controllerclient, BuildContext context, index,
+      PageController pageController2, PagesConfigController pagesConfigC) {
     DateFormat formatter = DateFormat('HH:mm');
-    DateTime currentTime = formatter
-        .parse(controllerclient.clientsColacionBranch[index].start_time!);
+    DateTime currentTime = formatter.parse(controllerclient.clientsColacionBranch[index].start_time!);
 
     // Paso 2: Sumar una hora al objeto DateTime
     DateTime newTime = currentTime.add(Duration(hours: 1));
@@ -185,22 +166,17 @@ class _AttendingClientState extends State<AttendingClient> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8, top: 8, bottom: 8, right: 4),
+                        padding: const EdgeInsets.only(left: 8, top: 8, bottom: 8, right: 4),
                         child: CircleAvatar(
                           radius: 25,
                           backgroundColor: Colors.white, //fondo de la imagen
                           child: ClipOval(
                             child: Image.network(
                               '${Env.apiEndpoint}/images/${controllerclient.clientsColacionBranch[index].client_image}',
-                              fit: BoxFit
-                                  .cover, // Ajusta la imagen para cubrir completamente el área
-                              width:
-                                  50, // Ancho deseado de la imagen dentro del círculo
+                              fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                              width: 50, // Ancho deseado de la imagen dentro del círculo
                               height: 50,
-                              loadingBuilder: (BuildContext context,
-                                  Widget child,
-                                  ImageChunkEvent? loadingProgress) {
+                              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                                 if (loadingProgress == null) {
                                   // Si la imagen se carga correctamente, mostramos la imagen
                                   return child;
@@ -211,23 +187,19 @@ class _AttendingClientState extends State<AttendingClient> {
                                   );
                                 }
                               },
-                              errorBuilder: (BuildContext context, Object error,
-                                  StackTrace? stackTrace) {
+                              errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                                 // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
                                 if (kDebugMode) {
                                   return CircleAvatar(
                                     radius: 25,
-                                    backgroundColor: Colors
-                                        .transparent, // Fondo transparente para que el borde sea visible
+                                    backgroundColor:
+                                        Colors.transparent, // Fondo transparente para que el borde sea visible
                                     child: ClipOval(
                                       child: Image.asset(
                                         'assets/images/default_profile.jpg',
-                                        fit: BoxFit
-                                            .cover, // Ajusta la imagen para cubrir completamente el área
-                                        width:
-                                            50, // Ancho deseado de la imagen dentro del círculo
-                                        height:
-                                            50, // Alto deseado de la imagen dentro del círculo
+                                        fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                        width: 50, // Ancho deseado de la imagen dentro del círculo
+                                        height: 50, // Alto deseado de la imagen dentro del círculo
                                       ),
                                     ),
                                   );
@@ -235,17 +207,14 @@ class _AttendingClientState extends State<AttendingClient> {
                                   // Si no estamos en modo de depuración, mostramos un texto de error
                                   return CircleAvatar(
                                     radius: 25,
-                                    backgroundColor: Colors
-                                        .transparent, // Fondo transparente para que el borde sea visible
+                                    backgroundColor:
+                                        Colors.transparent, // Fondo transparente para que el borde sea visible
                                     child: ClipOval(
                                       child: Image.asset(
                                         'assets/images/default_profile.jpg',
-                                        fit: BoxFit
-                                            .cover, // Ajusta la imagen para cubrir completamente el área
-                                        width:
-                                            50, // Ancho deseado de la imagen dentro del círculo
-                                        height:
-                                            50, // Alto deseado de la imagen dentro del círculo
+                                        fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                        width: 50, // Ancho deseado de la imagen dentro del círculo
+                                        height: 50, // Alto deseado de la imagen dentro del círculo
                                       ),
                                     ),
                                   );
@@ -272,41 +241,30 @@ class _AttendingClientState extends State<AttendingClient> {
                               Column(
                                 children: [
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         //PROFESIONAL
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
                                           SizedBox(
                                             width: 5,
                                           ),
                                           Text(
-                                            controllerclient
-                                                .clientsColacionBranch[index]
-                                                .professional_name!,
+                                            controllerclient.clientsColacionBranch[index].professional_name!,
                                             softWrap: true,
-                                            style: const TextStyle(
-                                                fontSize: 15,
-                                                height: 1,
-                                                fontWeight: FontWeight.w500),
+                                            style:
+                                                const TextStyle(fontSize: 15, height: 1, fontWeight: FontWeight.w500),
                                           ),
                                         ],
                                       ),
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 6.0),
+                                        padding: const EdgeInsets.only(right: 6.0),
                                         child: Text(
                                           '${controllerclient.clientsColacionBranch[index].start_time!.substring(0, 5)} - $formattedNewTime',
                                           softWrap: true,
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              height: 1,
-                                              fontWeight: FontWeight.w500),
+                                          style: const TextStyle(fontSize: 15, height: 1, fontWeight: FontWeight.w500),
                                         ),
                                       ),
                                     ],
@@ -324,17 +282,12 @@ class _AttendingClientState extends State<AttendingClient> {
     );
   }
 
-  cardClientTails(
-      ClientsCoordinatorController controllerclient,
-      BuildContext context,
-      index,
-      PageController pageController2,
-      PagesConfigController pagesConfigC) {
+  cardClientTails(ClientsCoordinatorController controllerclient, BuildContext context, index,
+      PageController pageController2, PagesConfigController pagesConfigC) {
     String tipo = '';
     if (controllerclient.clientAttendBranch[index].from_home == 1) {
       tipo = 'Reser';
-    } else if (controllerclient.clientAttendBranch[index].select_professional ==
-        1) {
+    } else if (controllerclient.clientAttendBranch[index].select_professional == 1) {
       tipo = 'Selec';
     } else {
       tipo = 'Aleat';
@@ -352,13 +305,9 @@ class _AttendingClientState extends State<AttendingClient> {
                       borderRadius: BorderRadius.all(Radius.circular(12)),
                       border: Border.all(
                           width: 2,
-                          color: controllerclient
-                                      .clientAttendBranch[index].from_home ==
-                                  1
+                          color: controllerclient.clientAttendBranch[index].from_home == 1
                               ? const Color(0xFFFDAE2A)
-                              : controllerclient.clientAttendBranch[index]
-                                          .select_professional ==
-                                      1
+                              : controllerclient.clientAttendBranch[index].select_professional == 1
                                   ? const Color(0xFF19CF9E)
                                   : const Color(0xFF4470F3))),
                   //AQUI CONTROLO SI HAY ALGUIEN EN COLA
@@ -366,8 +315,7 @@ class _AttendingClientState extends State<AttendingClient> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8, top: 12, bottom: 8, right: 4),
+                        padding: const EdgeInsets.only(left: 8, top: 12, bottom: 8, right: 4),
                         child: CircleAvatar(
                           //'${Env.apiEndpoint}/images/${controllerclient.clientAttendBranch[index].client_image}'
                           radius: 25,
@@ -378,8 +326,10 @@ class _AttendingClientState extends State<AttendingClient> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ImageDetailScreen(
-                                      imageUrl:
-                                          '${Env.apiEndpoint}/images/${controllerclient.clientAttendBranch[index].client_image}'),
+                                    imageUrl:
+                                        '${Env.apiEndpoint}/images/${controllerclient.clientAttendBranch[index].client_image}',
+                                    description: '',
+                                  ),
                                 ),
                               );
                             },
@@ -395,17 +345,13 @@ class _AttendingClientState extends State<AttendingClient> {
                                       width: 50,
                                       height: 50,
                                       child: CircularProgressIndicator(
-                                        strokeWidth:
-                                            2, // Personaliza el ancho del indicador como desees
-                                        valueColor: AlwaysStoppedAnimation<
-                                                Color>(
-                                            Color.fromARGB(110, 253, 176, 42)),
+                                        strokeWidth: 2, // Personaliza el ancho del indicador como desees
+                                        valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(110, 253, 176, 42)),
                                       ),
                                     ),
                                   ),
                                 ),
-                                errorWidget: (context, url, error) =>
-                                    Image.asset(
+                                errorWidget: (context, url, error) => Image.asset(
                                   'assets/images/default_profile.jpg',
                                   cacheWidth: 50,
                                   cacheHeight: 50,
@@ -436,31 +382,23 @@ class _AttendingClientState extends State<AttendingClient> {
                               Column(
                                 children: [
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         //CLIENTE
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
                                           const Icon(
                                             Icons.person,
-                                            color: const Color.fromARGB(
-                                                255, 43, 44, 49),
+                                            color: const Color.fromARGB(255, 43, 44, 49),
                                             size: 22,
                                           ),
                                           TruncatedText(
-                                            text: controllerclient
-                                                .clientAttendBranch[index]
-                                                .client_name!,
+                                            text: controllerclient.clientAttendBranch[index].client_name!,
                                             maxLength: 17,
-                                            styleText: const TextStyle(
-                                                fontSize: 15,
-                                                height: 1,
-                                                fontWeight: FontWeight.w500),
+                                            styleText:
+                                                const TextStyle(fontSize: 15, height: 1, fontWeight: FontWeight.w500),
                                           ),
                                           /*  Text(
                                             controllerclient
@@ -475,14 +413,11 @@ class _AttendingClientState extends State<AttendingClient> {
                                         ],
                                       ),
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 10),
+                                        padding: const EdgeInsets.only(right: 10),
                                         child: Text(
                                           '${controllerclient.clientAttendBranch[index].start_time} - ${controllerclient.clientAttendBranch[index].final_hour}  $tipo',
                                           softWrap: true,
-                                          style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500),
+                                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                                         ),
                                       ),
                                     ],
@@ -494,19 +429,14 @@ class _AttendingClientState extends State<AttendingClient> {
                                     children: [
                                       Icon(
                                         MdiIcons.accountTie,
-                                        color: const Color.fromARGB(
-                                            255, 43, 44, 49),
+                                        color: const Color.fromARGB(255, 43, 44, 49),
                                         size: 22,
                                       ),
                                       TruncatedText(
-                                        text: controllerclient
-                                            .clientAttendBranch[index]
-                                            .professional_name!,
+                                        text: controllerclient.clientAttendBranch[index].professional_name!,
                                         maxLength: 25,
-                                        styleText: const TextStyle(
-                                            fontSize: 15,
-                                            height: 1,
-                                            fontWeight: FontWeight.w500),
+                                        styleText:
+                                            const TextStyle(fontSize: 15, height: 1, fontWeight: FontWeight.w500),
                                       ),
                                       /* Text(
                                         controllerclient

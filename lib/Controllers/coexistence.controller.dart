@@ -137,35 +137,44 @@ class CoexistenceController extends GetxController {
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
     int? idBranch = controllerLogin.branchIdLoggedIn;
-    Map<String, dynamic> resultList =
-        await repository.getAnoStadist(idProfessional, idBranch, ano, controllerLogin.tokenUserLoggedIn);
-    meses[0] = double.parse(resultList['stadist']['enero'].toString());
-    print('resultadosssssss 4');
-    meses[1] = double.parse(resultList['stadist']['febrero'].toString());
-    print('resultadosssssss 5');
-    meses[2] = double.parse(resultList['stadist']['marzo'].toString());
-    print('resultadosssssss 6');
-    meses[3] = double.parse(resultList['stadist']['abril'].toString());
-    print('resultadosssssss 7');
-    meses[4] = double.parse(resultList['stadist']['mayo'].toString());
-    print('resultadosssssss 8');
-    meses[5] = double.parse(resultList['stadist']['junio'].toString());
-    print('resultadosssssss 9');
-    meses[6] = double.parse(resultList['stadist']['julio'].toString());
-    meses[7] = double.parse(resultList['stadist']['agosto'].toString());
-    meses[8] = double.parse(resultList['stadist']['septiembre'].toString());
-    meses[9] = double.parse(resultList['stadist']['octubre'].toString());
-    meses[10] = double.parse(resultList['stadist']['noviembre'].toString());
-    meses[11] = double.parse(resultList['stadist']['diciembre'].toString());
-    print('resultadosssssss 15');
+    try {
+      Map<String, dynamic> resultList =
+          await repository.getAnoStadist(idProfessional, idBranch, ano, controllerLogin.tokenUserLoggedIn);
+      meses[0] = double.parse(resultList['stadist']['enero'].toString());
+      print('resultadosssssss 4');
+      meses[1] = double.parse(resultList['stadist']['febrero'].toString());
+      print('resultadosssssss 5');
+      meses[2] = double.parse(resultList['stadist']['marzo'].toString());
+      print('resultadosssssss 6');
+      meses[3] = double.parse(resultList['stadist']['abril'].toString());
+      print('resultadosssssss 7');
+      meses[4] = double.parse(resultList['stadist']['mayo'].toString());
+      print('resultadosssssss 8');
+      meses[5] = double.parse(resultList['stadist']['junio'].toString());
+      print('resultadosssssss 9');
+      meses[6] = double.parse(resultList['stadist']['julio'].toString());
+      meses[7] = double.parse(resultList['stadist']['agosto'].toString());
+      meses[8] = double.parse(resultList['stadist']['septiembre'].toString());
+      meses[9] = double.parse(resultList['stadist']['octubre'].toString());
+      meses[10] = double.parse(resultList['stadist']['noviembre'].toString());
+      meses[11] = double.parse(resultList['stadist']['diciembre'].toString());
+      print('resultadosssssss 15');
 
-    //   averageEarnings = resultList['averageEarnings'];
+      //   averageEarnings = resultList['averageEarnings'];
 
-    averageEarnings = resultList['averageEarnings'].toString();
-    totalEarnings = resultList['totalEarnings'].toString();
-    //   totalEarnings = resultList['totalEarnings'];
+      averageEarnings = resultList['averageEarnings'].toString();
+      totalEarnings = resultList['totalEarnings'].toString();
+      //   totalEarnings = resultList['totalEarnings'];
 
-    update();
+      update();
+    } catch (e) {
+      print(e);
+    } finally {
+      // Cerrar diálogo
+      if (Get.isDialogOpen ?? false) {
+        Get.back();
+      }
+    }
   }
 
   Future<void> fetchEstadist1(data) async {

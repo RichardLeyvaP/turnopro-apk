@@ -22,10 +22,8 @@ class AssignProfessional extends StatefulWidget {
 
 class _AssignProfessionalState extends State<AssignProfessional> {
   final double valuePadding = 12;
-  final PagesConfigController pagesConfigCont =
-      Get.find<PagesConfigController>();
-  final ClientsCoordinatorController clientCord =
-      Get.find<ClientsCoordinatorController>();
+  final PagesConfigController pagesConfigCont = Get.find<PagesConfigController>();
+  final ClientsCoordinatorController clientCord = Get.find<ClientsCoordinatorController>();
   int cantVisitas = 3;
 
   List<String> direcc = [
@@ -203,8 +201,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                         flex: 6,
                         child: SafeArea(
                           child: Padding(
-                            padding:
-                                EdgeInsets.only(top: 5, right: 10, left: 10),
+                            padding: EdgeInsets.only(top: 5, right: 10, left: 10),
                             child: Container(
                               height: 10,
                               decoration: BoxDecoration(
@@ -213,23 +210,19 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                                     color: Colors.grey.withOpacity(0.3),
                                     spreadRadius: 3,
                                     blurRadius: 5,
-                                    offset: Offset(0,
-                                        3), // Cambia el desplazamiento de la sombra
+                                    offset: Offset(0, 3), // Cambia el desplazamiento de la sombra
                                   ),
                                 ],
                                 color: colorCont, //todo
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(borderCont)),
+                                borderRadius: BorderRadius.all(Radius.circular(borderCont)),
                               ),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
                                     icon: const Icon(Icons.arrow_back),
                                     onPressed: () {
-                                      pagesConfigCont.goToPage(
-                                          1, pagesConfigCont.pageController2);
+                                      pagesConfigCont.goToPage(1, pagesConfigCont.pageController2);
 
                                       // Navigator.pop(context);
                                     },
@@ -245,17 +238,17 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                                           child: CircleAvatar(
                                             //'${Env.apiEndpoint}/images/${controllerCoord.imageLookCORD}'
                                             radius: 25,
-                                            backgroundColor: Colors
-                                                .white, //fondo de la imagen
+                                            backgroundColor: Colors.white, //fondo de la imagen
                                             child: GestureDetector(
                                               onDoubleTap: () {
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ImageDetailScreen(
-                                                            imageUrl:
-                                                                '${Env.apiEndpoint}/images/${controllerCoord.imageLookCORD}'),
+                                                    builder: (context) => ImageDetailScreen(
+                                                      imageUrl:
+                                                          '${Env.apiEndpoint}/images/${controllerCoord.imageLookCORD}',
+                                                      description: controllerCoord.endLookCORD,
+                                                    ),
                                                   ),
                                                 );
                                               },
@@ -263,34 +256,23 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                                                 child: CachedNetworkImage(
                                                   imageUrl:
                                                       '${Env.apiEndpoint}/images/${controllerCoord.imageLookCORD}',
-                                                  placeholder: (context, url) =>
-                                                      Container(
+                                                  placeholder: (context, url) => Container(
                                                     width: 30,
                                                     height: 30,
                                                     child: const Center(
                                                       child: SizedBox(
                                                         width: 30,
                                                         height: 30,
-                                                        child:
-                                                            CircularProgressIndicator(
+                                                        child: CircularProgressIndicator(
                                                           strokeWidth:
                                                               2, // Personaliza el ancho del indicador como desees
-                                                          valueColor:
-                                                              AlwaysStoppedAnimation<
-                                                                      Color>(
-                                                                  Color
-                                                                      .fromARGB(
-                                                                          110,
-                                                                          253,
-                                                                          176,
-                                                                          42)),
+                                                          valueColor: AlwaysStoppedAnimation<Color>(
+                                                              Color.fromARGB(110, 253, 176, 42)),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                  errorWidget:
-                                                      (context, url, error) =>
-                                                          Image.asset(
+                                                  errorWidget: (context, url, error) => Image.asset(
                                                     'assets/images/default_profile.jpg',
                                                     cacheWidth: 30,
                                                     cacheHeight: 30,
@@ -307,22 +289,16 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                                       ),
                                       Text(
                                         controllerCoord.clientNameCORD,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 20),
+                                        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
                                       ),
                                       Text(
                                         'Barbero Actual: ${controllerCoord.professActualNameCORD}',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w100,
-                                            fontSize: 11,
-                                            height: 1.0),
+                                        style: const TextStyle(fontWeight: FontWeight.w100, fontSize: 11, height: 1.0),
                                       ),
                                     ],
                                   ),
                                   SizedBox(
-                                    width: (MediaQuery.of(context).size.width *
-                                        0.14),
+                                    width: (MediaQuery.of(context).size.width * 0.14),
                                   ),
                                 ],
                               ),
@@ -332,11 +308,9 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                       ),
                       Expanded(
                         flex: 18, //cantidad aqui de profesionales disponibles
-                        child: _.professionalDisponLength >
-                                0 //todo si hay cargarlos aqui
+                        child: _.professionalDisponLength > 0 //todo si hay cargarlos aqui
                             ? ListView.builder(
-                                padding: EdgeInsets
-                                    .zero, // Elimina cualquier padding del ListView
+                                padding: EdgeInsets.zero, // Elimina cualquier padding del ListView
                                 itemCount: _.professionalDisponLength,
                                 itemBuilder: (context, index) {
                                   // Utiliza la función cardOptions para construir cada Card
@@ -344,8 +318,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                                       context,
                                       // Pasa aquí los datos necesarios para cardOptions
                                       icon,
-                                      _.professionalDispon[index]
-                                          .position, //todo aqui que me devuelva
+                                      _.professionalDispon[index].position, //todo aqui que me devuelva
                                       '${_.professionalDispon[index].name}  ${_.professionalDispon[index].surname}',
                                       _.professionalDispon[index].id,
                                       _.professionalDispon[index].image_url,
@@ -364,8 +337,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
     });
   }
 
-  Padding cardOptions(
-      BuildContext context, icon, title, name, idProfess, imageUrl, free) {
+  Padding cardOptions(BuildContext context, icon, title, name, idProfess, imageUrl, free) {
     return Padding(
       padding: const EdgeInsets.only(right: 10, top: 8, left: 10),
       child: Container(
@@ -390,13 +362,10 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                     child: ClipOval(
                       child: Image.network(
                         '${Env.apiEndpoint}/images/$imageUrl',
-                        fit: BoxFit
-                            .cover, // Ajusta la imagen para cubrir completamente el área
-                        width:
-                            50, // Ancho deseado de la imagen dentro del círculo
+                        fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                        width: 50, // Ancho deseado de la imagen dentro del círculo
                         height: 50,
-                        loadingBuilder: (BuildContext context, Widget child,
-                            ImageChunkEvent? loadingProgress) {
+                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                           if (loadingProgress == null) {
                             // Si la imagen se carga correctamente, mostramos la imagen
                             return child;
@@ -407,23 +376,18 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                             );
                           }
                         },
-                        errorBuilder: (BuildContext context, Object error,
-                            StackTrace? stackTrace) {
+                        errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                           // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
                           if (kDebugMode) {
                             return CircleAvatar(
                               radius: 25,
-                              backgroundColor: Colors
-                                  .transparent, // Fondo transparente para que el borde sea visible
+                              backgroundColor: Colors.transparent, // Fondo transparente para que el borde sea visible
                               child: ClipOval(
                                 child: Image.asset(
                                   'assets/images/default_profile.jpg',
-                                  fit: BoxFit
-                                      .cover, // Ajusta la imagen para cubrir completamente el área
-                                  width:
-                                      50, // Ancho deseado de la imagen dentro del círculo
-                                  height:
-                                      50, // Alto deseado de la imagen dentro del círculo
+                                  fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                  width: 50, // Ancho deseado de la imagen dentro del círculo
+                                  height: 50, // Alto deseado de la imagen dentro del círculo
                                 ),
                               ),
                             );
@@ -431,17 +395,13 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                             // Si no estamos en modo de depuración, mostramos un texto de error
                             return CircleAvatar(
                               radius: 25,
-                              backgroundColor: Colors
-                                  .transparent, // Fondo transparente para que el borde sea visible
+                              backgroundColor: Colors.transparent, // Fondo transparente para que el borde sea visible
                               child: ClipOval(
                                 child: Image.asset(
                                   'assets/images/default_profile.jpg',
-                                  fit: BoxFit
-                                      .cover, // Ajusta la imagen para cubrir completamente el área
-                                  width:
-                                      50, // Ancho deseado de la imagen dentro del círculo
-                                  height:
-                                      50, // Alto deseado de la imagen dentro del círculo
+                                  fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
+                                  width: 50, // Ancho deseado de la imagen dentro del círculo
+                                  height: 50, // Alto deseado de la imagen dentro del círculo
                                 ),
                               ),
                             );
@@ -477,11 +437,8 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                       Container(
                         width: 80, // Ajusta la altura según sea necesario
                         decoration: BoxDecoration(
-                          color: free.toString() == 'Libre'
-                              ? const Color(0xFF19CF9E)
-                              : const Color(0xFFFDAE2A),
-                          borderRadius: BorderRadius.circular(
-                              6), // La mitad de la altura para hacerlo circular
+                          color: free.toString() == 'Libre' ? const Color(0xFF19CF9E) : const Color(0xFFFDAE2A),
+                          borderRadius: BorderRadius.circular(6), // La mitad de la altura para hacerlo circular
                         ),
                         child: Center(
                           child: Text(
@@ -506,20 +463,15 @@ class _AssignProfessionalState extends State<AssignProfessional> {
 
                   ElevatedButton(
                       style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                8.0), // Ajusta el valor según sea necesario
+                            borderRadius: BorderRadius.circular(8.0), // Ajusta el valor según sea necesario
                           ),
                         ),
                         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.symmetric(
-                              vertical: 4.0,
-                              horizontal: 26.0), // Ajusta el padding
+                          const EdgeInsets.symmetric(vertical: 4.0, horizontal: 26.0), // Ajusta el padding
                         ),
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Color(0xFF4470F3)),
+                        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF4470F3)),
 
                         // Añadir más propiedades de estilo aquí
                       ),
@@ -530,34 +482,26 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                         //todo falta poner un cargando
                         clientCord.setLoading(true);
                         bool result = await clientCord.reasignedClientCoord(
-                            reservationId,
-                            clientIdCORD,
-                            idProfess,
-                            loginController.tokenUserLoggedIn);
+                            reservationId, clientIdCORD, idProfess, loginController.tokenUserLoggedIn);
                         if (result == true) {
                           Get.snackbar(
                             'Mensaje',
                             'Cliente reasignado correctamente',
                             duration: const Duration(milliseconds: 2500),
-                            backgroundColor:
-                                const Color.fromARGB(118, 255, 255, 255),
+                            backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                             showProgressIndicator: true,
-                            progressIndicatorBackgroundColor:
-                                const Color.fromARGB(255, 203, 205, 209),
-                            progressIndicatorValueColor:
-                                const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
+                            progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                            progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                             overlayBlur: 3,
                           );
                           //aqui actualizo la cola que se muestra en el home
-                          await clientCord.fetchClientsScheduledBranch(
-                              loginController.branchIdLoggedIn);
+                          await clientCord.fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
                           //  setLoading(value)
                           clientCord.setLoading(false);
                           print('Aqui lo mando al home despue de reasinarlo');
                           //aqui lo mando al home
                           //todo falta probarlo porque en el momento que se hizo no habia barberos disponibles
-                          pagesConfigCont.pageController2
-                              .jumpToPage(0); //AQUI VA  AL HOME
+                          pagesConfigCont.pageController2.jumpToPage(0); //AQUI VA  AL HOME
                           pagesConfigCont.showAppBar(true);
 
                           //ENVIAR UNA NOTIFICACION AL PROFESSIONAL //TODO 32:00
@@ -569,11 +513,8 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                               duration: const Duration(milliseconds: 2500),
                               backgroundColor: Color.fromARGB(118, 230, 30, 30),
                               showProgressIndicator: true,
-                              progressIndicatorBackgroundColor:
-                                  const Color.fromARGB(255, 203, 205, 209),
-                              progressIndicatorValueColor:
-                                  const AlwaysStoppedAnimation(
-                                      Color.fromARGB(255, 250, 6, 6)),
+                              progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                              progressIndicatorValueColor: const AlwaysStoppedAnimation(Color.fromARGB(255, 250, 6, 6)),
                               overlayBlur: 3,
                             );
                           }
@@ -581,10 +522,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                       },
                       child: const Text(
                         'ASIGNAR',
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700),
+                        style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),
                       )),
                 ],
               ),

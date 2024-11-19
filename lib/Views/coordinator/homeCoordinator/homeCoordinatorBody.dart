@@ -27,20 +27,16 @@ class HomeCoordinatorBody extends StatefulWidget {
 
 class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
-  final ClientsCoordinatorController clientsScheduledController =
-      Get.find<ClientsCoordinatorController>();
+  final ClientsCoordinatorController clientsScheduledController = Get.find<ClientsCoordinatorController>();
 
   final PagesConfigController pagesConfigC = Get.find<PagesConfigController>();
 
   final LoginController loginController = Get.find<LoginController>();
-  final ClientsScheduledController clientsScheduleCont =
-      Get.find<ClientsScheduledController>();
+  final ClientsScheduledController clientsScheduleCont = Get.find<ClientsScheduledController>();
 
-  final CoexistenceController coexistenceController =
-      Get.put(CoexistenceController());
+  final CoexistenceController coexistenceController = Get.put(CoexistenceController());
   NotificationController notiController = Get.find<NotificationController>();
-  final ShoppingCartController controllerShoppingCart =
-      Get.find<ShoppingCartController>();
+  final ShoppingCartController controllerShoppingCart = Get.find<ShoppingCartController>();
   late TabController _tabController;
 
   @override
@@ -77,9 +73,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     print('cargando aqui-1');
     //SOLO ESTRA UNA SOLA VEZ AL INICIO
     await clientsScheduledController.notification_tail_colation(
-        loginController.branchIdLoggedIn,
-        loginController.idProfessionalLoggedIn,
-        'Coordinador');
+        loginController.branchIdLoggedIn, loginController.idProfessionalLoggedIn, 'Coordinador');
     clientsScheduledController.setLoading(false);
     controllerShoppingCart.setLoading(false);
     /* await clientsScheduledController
@@ -116,8 +110,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     // Cancela cualquier temporizador existente para evitar duplicaciones
 
     // Establece un temporizador que llama a la función cada 20 segundos
-    _timerCoord =
-        Timer.periodic(const Duration(seconds: 13), (Timer timer) async {
+    _timerCoord = Timer.periodic(const Duration(seconds: 13), (Timer timer) async {
       await loginController.checkConnection();
       print('hola entrando en 10 min;');
       if (loginController.makeCallC == true) {
@@ -128,9 +121,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
           // actualizo la cola
           //todo la nueva
           await clientsScheduledController.notification_tail_colation(
-              loginController.branchIdLoggedIn,
-              loginController.idProfessionalLoggedIn,
-              'Coordinador');
+              loginController.branchIdLoggedIn, loginController.idProfessionalLoggedIn, 'Coordinador');
           //todo la nueva
           //  await clientsScheduledController
           //       .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
@@ -170,8 +161,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     //AQUI REVISO SI HAY ALGUNO POR ACTIVAR LO ACTIVO
 
     super.build(context);
-    return GetBuilder<ClientsCoordinatorController>(
-        builder: (controllerclient) {
+    return GetBuilder<ClientsCoordinatorController>(builder: (controllerclient) {
       return PageView(
           controller: pagesConfigC.pageController2,
           scrollDirection: Axis.horizontal,
@@ -183,8 +173,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
 
             setState(() {
               pagesConfigC.currentPageIndex = index;
-              print(
-                  'mostrando aqui el valor de index ESTOY EN HOMEcOORDINATORbODY : $index');
+              print('mostrando aqui el valor de index ESTOY EN HOMEcOORDINATORbODY : $index');
               print(
                   'mostrando aqui el valor de pagesConfigC.pages31Index ESTOY EN HOMEcOORDINATORbODY wewewe : ${pagesConfigC.pages31Index}');
             });
@@ -199,12 +188,9 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                     padding: EdgeInsets.all(12.0),
                     child: Container(
                         decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12)),
+                          borderRadius: const BorderRadius.all(Radius.circular(12)),
                           color: Colors.white,
-                          border: Border.all(
-                              width: 2,
-                              color: Color.fromARGB(110, 175, 175, 175)),
+                          border: Border.all(width: 2, color: Color.fromARGB(110, 175, 175, 175)),
                         ),
                         child: controllerclient.isLoading
                             ? const Center(
@@ -216,8 +202,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   ),
                                   Text(
                                     'Cargando ...',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 12),
+                                    style: TextStyle(color: Colors.black, fontSize: 12),
                                   )
                                 ],
                               ))
@@ -230,48 +215,28 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                         // Contenido de las pestañas
 
                                         Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 36,
-                                              left: 8,
-                                              right: 8,
-                                              bottom: 6),
+                                          padding: const EdgeInsets.only(top: 36, left: 8, right: 8, bottom: 6),
                                           child: FadeIn(
-                                            duration:
-                                                const Duration(seconds: 2),
+                                            duration: const Duration(seconds: 2),
                                             child: SingleChildScrollView(
                                               child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
-                                                  GetBuilder<
-                                                          ShoppingCartController>(
-                                                      builder: (contShopp) {
-                                                    if (controllerShoppingCart
-                                                            .isLoading ==
-                                                        true) {
+                                                  GetBuilder<ShoppingCartController>(builder: (contShopp) {
+                                                    if (controllerShoppingCart.isLoading == true) {
                                                       return const Center(
                                                           child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                         children: [
                                                           SizedBox(
                                                             height: 45,
                                                           ),
                                                           CircularProgressIndicator(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    241,
-                                                                    130,
-                                                                    84),
+                                                            color: Color.fromARGB(255, 241, 130, 84),
                                                           ),
                                                           Text(
                                                             'Cargando lista de solicitudes...',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 12),
+                                                            style: TextStyle(color: Colors.white, fontSize: 12),
                                                           )
                                                         ],
                                                       ));
@@ -279,10 +244,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                                       return Column(
                                                         children: [
                                                           showRequestsDelete(
-                                                              context,
-                                                              contShopp,
-                                                              loginController,
-                                                              controllerclient),
+                                                              context, contShopp, loginController, controllerclient),
                                                         ],
                                                       );
                                                     }
@@ -292,37 +254,23 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                             ),
                                           ),
                                         ),
-                                        controllerclient
-                                                    .clientsScheduledListBranchLength >
-                                                0
+                                        controllerclient.clientsScheduledListBranchLength > 0
                                             ?
 
                                             //AQUI ESTA LA LISTA DE COLAS
                                             Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 36,
-                                                    left: 12,
-                                                    right: 12,
-                                                    bottom: 12),
+                                                padding:
+                                                    const EdgeInsets.only(top: 36, left: 12, right: 12, bottom: 12),
                                                 child: ListView.builder(
-                                                  itemCount: controllerclient
-                                                      .clientsScheduledListBranchLength,
-                                                  itemBuilder: (context,
-                                                          index) =>
-                                                      cardClientTails(
-                                                          controllerclient,
-                                                          context,
-                                                          index,
-                                                          pagesConfigC
-                                                              .pageController2,
-                                                          pagesConfigC),
+                                                  itemCount: controllerclient.clientsScheduledListBranchLength,
+                                                  itemBuilder: (context, index) => cardClientTails(controllerclient,
+                                                      context, index, pagesConfigC.pageController2, pagesConfigC),
                                                 ),
                                               )
                                             : const Padding(
                                                 padding: EdgeInsets.all(8.0),
                                                 child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
                                                     Text(
                                                       'No hay clientes en cola',
@@ -349,25 +297,21 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                         child: DefaultTabController(
                                           length: 2,
                                           child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 6, right: 6, top: 6),
+                                            padding: const EdgeInsets.only(left: 6, right: 6, top: 6),
                                             child: TabBar(
                                               controller: _tabController,
                                               onTap: (index) {
-                                                print(
-                                                    'SI ESTOY LLEGANDO AL OnTap');
+                                                print('SI ESTOY LLEGANDO AL OnTap');
                                                 _tabController.animateTo(index);
                                               },
-                                              labelColor: Colors
-                                                  .white, // Color del texto
-                                              unselectedLabelColor: Colors
-                                                  .grey, // Color del texto cuando no está seleccionado
+                                              labelColor: Colors.white, // Color del texto
+                                              unselectedLabelColor:
+                                                  Colors.grey, // Color del texto cuando no está seleccionado
 
                                               indicator: BoxDecoration(
-                                                color: Color(
-                                                    0xFF4470F3), // Color de fondo cuando está seleccionado
-                                                borderRadius: BorderRadius.circular(
-                                                    8), // Bordes redondeados, si lo deseas
+                                                color: Color(0xFF4470F3), // Color de fondo cuando está seleccionado
+                                                borderRadius:
+                                                    BorderRadius.circular(8), // Bordes redondeados, si lo deseas
                                               ),
                                               tabs: const [
                                                 Tab(
@@ -400,8 +344,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 Text(
                                   'Dashboard',
                                   style: TextStyle(
-                                      color:
-                                          const Color.fromARGB(255, 43, 44, 49),
+                                      color: const Color.fromARGB(255, 43, 44, 49),
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700),
                                 ),
@@ -410,52 +353,30 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                             Column(
                               children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     cartsHome(
                                         context,
                                         12,
                                         const Color(0xFF19CF9E),
-                                        const Color.fromARGB(
-                                            255, 231, 233, 233),
+                                        const Color.fromARGB(255, 231, 233, 233),
                                         'Atendiéndose',
                                         'Clientes Atendiéndose',
                                         Icons.person),
-                                    cartsHome(
-                                        context,
-                                        12,
-                                        const Color(0xFFFF6750),
-                                        Color.fromARGB(255, 231, 233, 233),
-                                        'Colación',
-                                        'Colación',
-                                        Icons.person_pin_rounded),
+                                    cartsHome(context, 12, const Color(0xFFFF6750), Color.fromARGB(255, 231, 233, 233),
+                                        'Colación', 'Colación', Icons.person_pin_rounded),
                                   ],
                                 ),
                                 SizedBox(
-                                  height: (MediaQuery.of(context).size.height *
-                                      0.01),
+                                  height: (MediaQuery.of(context).size.height * 0.01),
                                 ),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    cartsHome(
-                                        context,
-                                        12,
-                                        const Color(0xFF4470F3),
-                                        Color.fromARGB(255, 231, 233, 233),
-                                        'Estadísticas',
-                                        'Revisa Tus Ingresos',
-                                        Icons.bar_chart),
-                                    cartsHome(
-                                        context,
-                                        12,
-                                        const Color(0xFFFDAE2A),
-                                        Color.fromARGB(255, 231, 233, 233),
-                                        'Convivencia',
-                                        'Cumplimiento de Reglas',
-                                        Icons.star),
+                                    cartsHome(context, 12, const Color(0xFF4470F3), Color.fromARGB(255, 231, 233, 233),
+                                        'Estadísticas', 'Revisa Tus Ingresos', Icons.bar_chart),
+                                    cartsHome(context, 12, const Color(0xFFFDAE2A), Color.fromARGB(255, 231, 233, 233),
+                                        'Convivencia', 'Cumplimiento de Reglas', Icons.star),
                                   ],
                                 ),
                               ],
@@ -482,18 +403,12 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
 //
 //
 //
-  cardClientTails(
-      ClientsCoordinatorController controllerclient,
-      BuildContext context,
-      index,
-      PageController pageController2,
-      PagesConfigController pagesConfigC) {
+  cardClientTails(ClientsCoordinatorController controllerclient, BuildContext context, index,
+      PageController pageController2, PagesConfigController pagesConfigC) {
     String tipo = '';
     if (controllerclient.clientsScheduledListBranch[index].from_home == 1) {
       tipo = 'Reser';
-    } else if (controllerclient
-            .clientsScheduledListBranch[index].select_professional ==
-        1) {
+    } else if (controllerclient.clientsScheduledListBranch[index].select_professional == 1) {
       tipo = 'Selec';
     } else {
       tipo = 'Aleat';
@@ -510,15 +425,9 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                       borderRadius: BorderRadius.all(Radius.circular(12)),
                       border: Border.all(
                           width: 2,
-                          color: controllerclient
-                                      .clientsScheduledListBranch[index]
-                                      .from_home ==
-                                  1
+                          color: controllerclient.clientsScheduledListBranch[index].from_home == 1
                               ? const Color(0xFFFDAE2A)
-                              : controllerclient
-                                          .clientsScheduledListBranch[index]
-                                          .select_professional ==
-                                      1
+                              : controllerclient.clientsScheduledListBranch[index].select_professional == 1
                                   ? const Color(0xFF19CF9E)
                                   : const Color(0xFF4470F3))),
                   //AQUI CONTROLO SI HAY ALGUIEN EN COLA
@@ -536,8 +445,10 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ImageDetailScreen(
-                                      imageUrl:
-                                          '${Env.apiEndpoint}/images/${controllerclient.clientsScheduledListBranch[index].client_image}'),
+                                    imageUrl:
+                                        '${Env.apiEndpoint}/images/${controllerclient.clientsScheduledListBranch[index].client_image}',
+                                    description: '',
+                                  ),
                                 ),
                               );
                             },
@@ -553,17 +464,13 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       width: 50,
                                       height: 50,
                                       child: CircularProgressIndicator(
-                                        strokeWidth:
-                                            2, // Personaliza el ancho del indicador como desees
-                                        valueColor: AlwaysStoppedAnimation<
-                                                Color>(
-                                            Color.fromARGB(110, 253, 176, 42)),
+                                        strokeWidth: 2, // Personaliza el ancho del indicador como desees
+                                        valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(110, 253, 176, 42)),
                                       ),
                                     ),
                                   ),
                                 ),
-                                errorWidget: (context, url, error) =>
-                                    Image.asset(
+                                errorWidget: (context, url, error) => Image.asset(
                                   'assets/images/default_profile.jpg',
                                   cacheWidth: 50,
                                   cacheHeight: 50,
@@ -600,19 +507,13 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                     children: [
                                       const Icon(
                                         Icons.person,
-                                        color: const Color.fromARGB(
-                                            255, 43, 44, 49),
+                                        color: const Color.fromARGB(255, 43, 44, 49),
                                         size: 22,
                                       ),
                                       Text(
-                                        controllerclient
-                                            .clientsScheduledListBranch[index]
-                                            .client_name!,
+                                        controllerclient.clientsScheduledListBranch[index].client_name!,
                                         softWrap: true,
-                                        style: const TextStyle(
-                                            height: 1.0,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 20),
+                                        style: const TextStyle(height: 1.0, fontWeight: FontWeight.w600, fontSize: 20),
                                       ),
                                     ],
                                   ),
@@ -623,17 +524,13 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                     children: [
                                       Icon(
                                         MdiIcons.clockOutline,
-                                        color: const Color.fromARGB(
-                                            255, 43, 44, 49),
+                                        color: const Color.fromARGB(255, 43, 44, 49),
                                         size: 22,
                                       ),
                                       Text(
                                         '${controllerclient.clientsScheduledListBranch[index].start_time} - ${controllerclient.clientsScheduledListBranch[index].final_hour}  $tipo',
                                         softWrap: true,
-                                        style: const TextStyle(
-                                            height: 1.0,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16),
+                                        style: const TextStyle(height: 1.0, fontWeight: FontWeight.w500, fontSize: 16),
                                       ),
                                     ],
                                   ),
@@ -644,19 +541,13 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                     children: [
                                       Icon(
                                         MdiIcons.accountTie,
-                                        color: const Color.fromARGB(
-                                            255, 43, 44, 49),
+                                        color: const Color.fromARGB(255, 43, 44, 49),
                                         size: 22,
                                       ),
                                       Text(
-                                        controllerclient
-                                            .clientsScheduledListBranch[index]
-                                            .professional_name!,
+                                        controllerclient.clientsScheduledListBranch[index].professional_name!,
                                         softWrap: true,
-                                        style: const TextStyle(
-                                            height: 1.0,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 20),
+                                        style: const TextStyle(height: 1.0, fontWeight: FontWeight.w600, fontSize: 20),
                                       ),
                                     ],
                                   ),
@@ -667,25 +558,21 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                            top: 4, bottom: 4, right: 6.0),
+                        padding: const EdgeInsets.only(top: 4, bottom: 4, right: 6.0),
                         child: Container(
                           height: (MediaQuery.of(context).size.height * 0.115),
                           width: (MediaQuery.of(context).size.width * 0.20),
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: Colors.white, // Color blanco para el borde
-                              width:
-                                  1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                              width: 1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                             ),
                           ),
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: const Color(
-                                    0xFF19CF9E), // Color de fondo en verde
+                                primary: const Color(0xFF19CF9E), // Color de fondo en verde
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      12.0), // Ajusta el radio según tus necesidades
+                                  borderRadius: BorderRadius.circular(12.0), // Ajusta el radio según tus necesidades
                                 ),
                               ),
                               onPressed: () async {
@@ -698,30 +585,19 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                     ),
                                     barrierDismissible: false,
                                   ); //Get.back();
-                                  int idClient = controllerclient
-                                      .clientsScheduledListBranch[index]
-                                      .client_id!;
-                                  int idReserv = controllerclient
-                                      .clientsScheduledListBranch[index]
-                                      .reservation_id!;
-                                  int idBranch =
-                                      loginController.branchIdLoggedIn!;
+                                  int idClient = controllerclient.clientsScheduledListBranch[index].client_id!;
+                                  int idReserv = controllerclient.clientsScheduledListBranch[index].reservation_id!;
+                                  int idBranch = loginController.branchIdLoggedIn!;
                                   // aqui llamar a la db y pedir todos los datos del cliente
                                   /*   clientsScheduledController
                                           .saveIdProfessional(controllerclient
                                               .clientsScheduledListBranch[index]
                                               .professional_id!);*/
                                   controllerclient.setActualNameCORD(
-                                      controllerclient
-                                          .clientsScheduledListBranch[index]
-                                          .professional_name);
+                                      controllerclient.clientsScheduledListBranch[index].professional_name);
 
-                                  await controllerclient
-                                      .getClientHistory(
-                                          idClient, idBranch, idReserv)
-                                      .then((_) async {
-                                    if (controllerclient.correctConnection ==
-                                        true) {
+                                  await controllerclient.getClientHistory(idClient, idBranch, idReserv).then((_) async {
+                                    if (controllerclient.correctConnection == true) {
                                       Get.back();
                                       pageController2.nextPage(
                                         duration: Duration(milliseconds: 300),
@@ -732,17 +608,11 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       Get.snackbar(
                                         'Error',
                                         'Problemas al conectarse al servidor.',
-                                        duration:
-                                            const Duration(milliseconds: 2500),
-                                        backgroundColor: const Color.fromARGB(
-                                            118, 255, 255, 255),
+                                        duration: const Duration(milliseconds: 2500),
+                                        backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                         showProgressIndicator: true,
-                                        progressIndicatorBackgroundColor:
-                                            const Color.fromARGB(
-                                                255, 203, 205, 209),
-                                        progressIndicatorValueColor:
-                                            const AlwaysStoppedAnimation(
-                                                Color(0xFFFDAE2A)),
+                                        progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                        progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                         overlayBlur: 3,
                                       );
                                     }
@@ -753,17 +623,11 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   Get.snackbar(
                                     'Mensaje',
                                     'Debe de escanear el código Qr de entrada',
-                                    duration:
-                                        const Duration(milliseconds: 2500),
-                                    backgroundColor: const Color.fromARGB(
-                                        118, 255, 255, 255),
+                                    duration: const Duration(milliseconds: 2500),
+                                    backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                     showProgressIndicator: true,
-                                    progressIndicatorBackgroundColor:
-                                        const Color.fromARGB(
-                                            255, 203, 205, 209),
-                                    progressIndicatorValueColor:
-                                        const AlwaysStoppedAnimation(
-                                            Color(0xFFFDAE2A)),
+                                    progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                    progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                     overlayBlur: 3,
                                   );
                                 }
@@ -777,17 +641,12 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       Icon(
                                         MdiIcons.eye,
                                         color: Colors.white,
-                                        size: (MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.05),
+                                        size: (MediaQuery.of(context).size.height * 0.05),
                                       ),
                                       const Text(
                                         'VER MÁS',
-                                        style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w900),
+                                        style:
+                                            TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.w900),
                                       ),
                                     ],
                                   ),
@@ -807,18 +666,11 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
 
 //
 
-  Container cartsHome(
-      BuildContext context,
-      double borderRadiusValue,
-      Color colorVariable,
-      Color colorBottom,
-      String titleCart,
-      String descriptionTitleCart,
-      iconCart) {
+  Container cartsHome(BuildContext context, double borderRadiusValue, Color colorVariable, Color colorBottom,
+      String titleCart, String descriptionTitleCart, iconCart) {
     return Container(
       width: (MediaQuery.of(context).size.width * 0.46), //Tamaño de los Cards
-      height: (MediaQuery.of(context).size.height *
-          0.192), //todo cambiadoNuevoValores
+      height: (MediaQuery.of(context).size.height * 0.192), //todo cambiadoNuevoValores
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
         color: colorVariable,
@@ -827,8 +679,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
         style: ElevatedButton.styleFrom(
           primary: colorVariable, // Color de fondo en verde
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-                borderRadiusValue), // Ajusta el radio según tus necesidades
+            borderRadius: BorderRadius.circular(borderRadiusValue), // Ajusta el radio según tus necesidades
           ),
         ),
         onPressed: () async {
@@ -842,8 +693,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
               ),
               barrierDismissible: false,
             ); //Get.back();
-            await clientsScheduledController
-                .clientsAttendBranch(loginController.branchIdLoggedIn);
+            await clientsScheduledController.clientsAttendBranch(loginController.branchIdLoggedIn);
             pagesConfigC.onTabTapped(1);
             Get.back();
           }
@@ -882,8 +732,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
               ),
               barrierDismissible: false,
             ); //Get.back();
-            await clientsScheduledController.ClientsColacionBranch(
-                loginController.branchIdLoggedIn);
+            await clientsScheduledController.ClientsColacionBranch(loginController.branchIdLoggedIn);
             pagesConfigC.onTabTapped(1); //index = 2 -> /NotificationsPageProf
             Get.back();
           }
@@ -898,8 +747,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                 alignment: Alignment.topRight,
                 child: CircleAvatar(
                   radius: 20, // Tamaño del CircleAvatar
-                  backgroundColor:
-                      colorBottom, // Color de fondo del CircleAvatar
+                  backgroundColor: colorBottom, // Color de fondo del CircleAvatar
                   child: Icon(
                     iconCart, // Icono que deseas mostrar
                     size: 30, // Tamaño del icono
@@ -912,19 +760,11 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                 children: [
                   Text(
                     titleCart,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        height: 0.4),
+                    style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600, height: 0.4),
                   ),
                   Text(
                     descriptionTitleCart,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 11,
-                        height: 1.5,
-                        fontWeight: FontWeight.w400),
+                    style: const TextStyle(color: Colors.white, fontSize: 11, height: 1.5, fontWeight: FontWeight.w400),
                   ),
                 ],
               )
@@ -935,10 +775,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     );
   }
 
-  Column showRequestsDelete(
-      context,
-      ShoppingCartController contShopp,
-      LoginController controllerLogin,
+  Column showRequestsDelete(context, ShoppingCartController contShopp, LoginController controllerLogin,
       ClientsCoordinatorController controllerclient) {
     List<Widget> widgets = [];
     String titulo = "";
@@ -969,40 +806,31 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                 child: Row(
                   children: [
                     Padding(
-                      padding:
-                          const EdgeInsets.only(left: 6, top: 6, bottom: 6),
+                      padding: const EdgeInsets.only(left: 6, top: 6, bottom: 6),
                       child: Container(
                         height: (MediaQuery.of(context).size.height * 0.120),
                         width: (MediaQuery.of(context).size.width * 0.20),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: Colors.white, // Color blanco para el borde
-                            width:
-                                1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                            width: 1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                           ),
                           color: const Color(0xFFFF6750),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12)),
+                          borderRadius: const BorderRadius.all(Radius.circular(12)),
                         ),
                         child: IconButton(
                           onPressed: () async {
                             //  if (controllerLogin.codigoQrValid() == true) {
-                            if (controllerLogin.usserPermissionQr == 1 ||
-                                controllerLogin.usserPermissionQr == 2) {
-                              loginController.setMakeCallC(
-                                  false); //se pone a false para que el timer no haga llamadas
+                            if (controllerLogin.usserPermissionQr == 1 || controllerLogin.usserPermissionQr == 2) {
+                              loginController.setMakeCallC(false); //se pone a false para que el timer no haga llamadas
                               controllerShoppingCart.setLoading(true);
-                              int idProf = controllerclient
-                                  .pOutRequestBranch[i].professional_id!;
-                              String charge =
-                                  controllerclient.pOutRequestBranch[i].charge!;
+                              int idProf = controllerclient.pOutRequestBranch[i].professional_id!;
+                              String charge = controllerclient.pOutRequestBranch[i].charge!;
                               if (charge == 'Barbero y Encargado') {
                                 charge = 'Barbero';
                               }
 
-                              int result =
-                                  await controllerLogin.ColacionProfessional(
-                                      idProf, charge, 1);
+                              int result = await controllerLogin.ColacionProfessional(idProf, charge, 1);
                               //aqui mandar notificacion
                               if (result == 1) {
                                 //codigo 200
@@ -1022,38 +850,29 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   'Alerta',
                                   'Inténtelo nuevamente,problemas de conexión',
                                   duration: const Duration(milliseconds: 2500),
-                                  backgroundColor:
-                                      const Color.fromARGB(118, 255, 255, 255),
+                                  backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                   showProgressIndicator: true,
-                                  progressIndicatorBackgroundColor:
-                                      const Color.fromARGB(255, 203, 205, 209),
-                                  progressIndicatorValueColor:
-                                      const AlwaysStoppedAnimation(
-                                          Color(0xFFFDAE2A)),
+                                  progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                   overlayBlur: 3,
                                 );
                               }
                               if (controllerLogin.branchIdLoggedIn != null) {
                                 //loginController.setMakeCallC(true);//se pone a true dentro de la funcion cuando finaliza
-                                await controllerclient.outRequestBranch(
-                                    controllerLogin.branchIdLoggedIn);
+                                await controllerclient.outRequestBranch(controllerLogin.branchIdLoggedIn);
                                 controllerShoppingCart.setLoading(false);
                               }
-                              loginController.setMakeCallC(
-                                  true); //por si no entrara al metodo,que avilite las llamadas del timer
+                              loginController
+                                  .setMakeCallC(true); //por si no entrara al metodo,que avilite las llamadas del timer
                             } else {
                               Get.snackbar(
                                 'Mensaje',
                                 'Debe de escanear el código Qr de entrada',
                                 duration: const Duration(milliseconds: 2500),
-                                backgroundColor:
-                                    const Color.fromARGB(118, 255, 255, 255),
+                                backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                 showProgressIndicator: true,
-                                progressIndicatorBackgroundColor:
-                                    const Color.fromARGB(255, 203, 205, 209),
-                                progressIndicatorValueColor:
-                                    const AlwaysStoppedAnimation(
-                                        Color(0xFFFDAE2A)),
+                                progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                 overlayBlur: 3,
                               );
                             }
@@ -1094,11 +913,9 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                               ],
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 0, right: 10),
+                              padding: const EdgeInsets.only(left: 0, right: 10),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -1108,26 +925,17 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                         MdiIcons.accountTie,
                                       ),
                                       Text(
-                                        controllerclient.pOutRequestBranch[i]
-                                            .professional_name!,
+                                        controllerclient.pOutRequestBranch[i].professional_name!,
                                         style: TextStyle(
-                                          fontSize: (MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.018),
+                                          fontSize: (MediaQuery.of(context).size.height * 0.018),
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ],
                                   ),
-                                  Text(
-                                      controllerclient
-                                          .pOutRequestBranch[i].start_time!,
+                                  Text(controllerclient.pOutRequestBranch[i].start_time!,
                                       style: TextStyle(
-                                          fontSize: (MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.018),
+                                          fontSize: (MediaQuery.of(context).size.height * 0.018),
                                           fontWeight: FontWeight.w800,
                                           height: 1)),
                                 ],
@@ -1138,38 +946,29 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.only(right: 6, top: 6, bottom: 6),
+                      padding: const EdgeInsets.only(right: 6, top: 6, bottom: 6),
                       child: Container(
                         height: (MediaQuery.of(context).size.height * 0.120),
                         width: (MediaQuery.of(context).size.width * 0.20),
                         decoration: BoxDecoration(
                             border: Border.all(
                               color: Colors.white, // Color blanco para el borde
-                              width:
-                                  1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                              width: 1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                             ),
                             color: const Color(0xFF19CF9E),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(12))),
+                            borderRadius: const BorderRadius.all(Radius.circular(12))),
                         child: IconButton(
                           onPressed: () async {
-                            if (controllerLogin.usserPermissionQr == 1 ||
-                                controllerLogin.usserPermissionQr == 2) {
-                              loginController.setMakeCallC(
-                                  false); //desavilite las llamadas del timer
+                            if (controllerLogin.usserPermissionQr == 1 || controllerLogin.usserPermissionQr == 2) {
+                              loginController.setMakeCallC(false); //desavilite las llamadas del timer
                               controllerShoppingCart.setLoading(true);
-                              int idProf = controllerclient
-                                  .pOutRequestBranch[i].professional_id!;
-                              String charge =
-                                  controllerclient.pOutRequestBranch[i].charge!;
+                              int idProf = controllerclient.pOutRequestBranch[i].professional_id!;
+                              String charge = controllerclient.pOutRequestBranch[i].charge!;
                               if (charge == 'Barbero y Encargado') {
                                 charge = 'Barbero';
                               }
 
-                              int result =
-                                  await controllerLogin.ColacionProfessional(
-                                      idProf, charge, 0);
+                              int result = await controllerLogin.ColacionProfessional(idProf, charge, 0);
                               //aqui mandar notificacion
                               if (result == 1) {
                                 //aqui sacar al barbero del puesto y td
@@ -1200,39 +999,29 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   'Alerta',
                                   'Inténtelo nuevamente,problemas de conexión',
                                   duration: const Duration(milliseconds: 2500),
-                                  backgroundColor:
-                                      const Color.fromARGB(118, 255, 255, 255),
+                                  backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                   showProgressIndicator: true,
-                                  progressIndicatorBackgroundColor:
-                                      const Color.fromARGB(255, 203, 205, 209),
-                                  progressIndicatorValueColor:
-                                      const AlwaysStoppedAnimation(
-                                          Color(0xFFFDAE2A)),
+                                  progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                   overlayBlur: 3,
                                 );
                               }
                               if (controllerLogin.branchIdLoggedIn != null) {
                                 // loginController.setMakeCallC(
                                 //   true); //avilite las llamadas del timer
-                                await controllerclient.outRequestBranch(
-                                    controllerLogin.branchIdLoggedIn);
+                                await controllerclient.outRequestBranch(controllerLogin.branchIdLoggedIn);
                                 controllerShoppingCart.setLoading(false);
                               }
-                              loginController.setMakeCallC(
-                                  true); //avilite las llamadas del timer
+                              loginController.setMakeCallC(true); //avilite las llamadas del timer
                             } else {
                               Get.snackbar(
                                 'Mensaje',
                                 'Debe de escanear el código Qr de entrada',
                                 duration: const Duration(milliseconds: 2500),
-                                backgroundColor:
-                                    const Color.fromARGB(118, 255, 255, 255),
+                                backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                 showProgressIndicator: true,
-                                progressIndicatorBackgroundColor:
-                                    const Color.fromARGB(255, 203, 205, 209),
-                                progressIndicatorValueColor:
-                                    const AlwaysStoppedAnimation(
-                                        Color(0xFFFDAE2A)),
+                                progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                 overlayBlur: 3,
                               );
                             }
@@ -1285,42 +1074,32 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                 child: Row(
                   children: [
                     Padding(
-                      padding:
-                          const EdgeInsets.only(left: 6, top: 6, bottom: 6),
+                      padding: const EdgeInsets.only(left: 6, top: 6, bottom: 6),
                       child: Container(
                         height: (MediaQuery.of(context).size.height * 0.120),
                         width: (MediaQuery.of(context).size.width * 0.20),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: Colors.white, // Color blanco para el borde
-                            width:
-                                1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                            width: 1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                           ),
                           color: const Color(0xFFFF6750),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12)),
+                          borderRadius: const BorderRadius.all(Radius.circular(12)),
                         ),
                         child: IconButton(
                           onPressed: () async {
                             //  if (controllerLogin.codigoQrValid() == true) {
-                            if (controllerLogin.usserPermissionQr == 1 ||
-                                controllerLogin.usserPermissionQr == 2) {
-                              loginController.setMakeCallC(
-                                  false); //de-avilite las llamadas del timer
+                            if (controllerLogin.usserPermissionQr == 1 || controllerLogin.usserPermissionQr == 2) {
+                              loginController.setMakeCallC(false); //de-avilite las llamadas del timer
                               controllerShoppingCart.setLoading(true);
-                              int idProf = controllerclient
-                                  .clientsColacionRequestBranch[i]
-                                  .professional_id!;
-                              String charge = controllerclient
-                                  .clientsColacionRequestBranch[i].charge!;
+                              int idProf = controllerclient.clientsColacionRequestBranch[i].professional_id!;
+                              String charge = controllerclient.clientsColacionRequestBranch[i].charge!;
                               if (charge == 'Barbero y Encargado') {
                                 charge = 'Barbero';
                               }
                               print('este es el cargo : $charge');
 
-                              int result =
-                                  await controllerLogin.ColacionProfessional(
-                                      idProf, charge, 1);
+                              int result = await controllerLogin.ColacionProfessional(idProf, charge, 1);
                               //aqui mandar notificacion
                               if (result == 1) {
                                 //codigo 200
@@ -1341,40 +1120,30 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   'Alerta',
                                   'Inténtelo nuevamente,problemas de conexión',
                                   duration: const Duration(milliseconds: 2500),
-                                  backgroundColor:
-                                      const Color.fromARGB(118, 255, 255, 255),
+                                  backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                   showProgressIndicator: true,
-                                  progressIndicatorBackgroundColor:
-                                      const Color.fromARGB(255, 203, 205, 209),
-                                  progressIndicatorValueColor:
-                                      const AlwaysStoppedAnimation(
-                                          Color(0xFFFDAE2A)),
+                                  progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                   overlayBlur: 3,
                                 );
                               }
                               if (controllerLogin.branchIdLoggedIn != null) {
                                 // loginController.setMakeCallC(
                                 //   true); //avilite las llamadas del timer
-                                await clientsScheduledController
-                                    .ColacionRequestBranch(
-                                        controllerLogin.branchIdLoggedIn);
+                                await clientsScheduledController.ColacionRequestBranch(
+                                    controllerLogin.branchIdLoggedIn);
                                 controllerShoppingCart.setLoading(false);
                               }
-                              loginController.setMakeCallC(
-                                  true); //avilite las llamadas del timer
+                              loginController.setMakeCallC(true); //avilite las llamadas del timer
                             } else {
                               Get.snackbar(
                                 'Mensaje',
                                 'Debe de escanear el código Qr de entrada',
                                 duration: const Duration(milliseconds: 2500),
-                                backgroundColor:
-                                    const Color.fromARGB(118, 255, 255, 255),
+                                backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                 showProgressIndicator: true,
-                                progressIndicatorBackgroundColor:
-                                    const Color.fromARGB(255, 203, 205, 209),
-                                progressIndicatorValueColor:
-                                    const AlwaysStoppedAnimation(
-                                        Color(0xFFFDAE2A)),
+                                progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                 overlayBlur: 3,
                               );
                             }
@@ -1415,11 +1184,9 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                               ],
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 0, right: 10),
+                              padding: const EdgeInsets.only(left: 0, right: 10),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -1429,28 +1196,17 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                         MdiIcons.accountTie,
                                       ),
                                       Text(
-                                        controllerclient
-                                            .clientsColacionRequestBranch[i]
-                                            .professional_name!,
+                                        controllerclient.clientsColacionRequestBranch[i].professional_name!,
                                         style: TextStyle(
-                                          fontSize: (MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.018),
+                                          fontSize: (MediaQuery.of(context).size.height * 0.018),
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ],
                                   ),
-                                  Text(
-                                      controllerclient
-                                          .clientsColacionRequestBranch[i]
-                                          .start_time!,
+                                  Text(controllerclient.clientsColacionRequestBranch[i].start_time!,
                                       style: TextStyle(
-                                          fontSize: (MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.018),
+                                          fontSize: (MediaQuery.of(context).size.height * 0.018),
                                           fontWeight: FontWeight.w800,
                                           height: 1)),
                                 ],
@@ -1461,39 +1217,29 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.only(right: 6, top: 6, bottom: 6),
+                      padding: const EdgeInsets.only(right: 6, top: 6, bottom: 6),
                       child: Container(
                         height: (MediaQuery.of(context).size.height * 0.120),
                         width: (MediaQuery.of(context).size.width * 0.20),
                         decoration: BoxDecoration(
                             border: Border.all(
                               color: Colors.white, // Color blanco para el borde
-                              width:
-                                  1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                              width: 1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                             ),
                             color: const Color(0xFF19CF9E),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(12))),
+                            borderRadius: const BorderRadius.all(Radius.circular(12))),
                         child: IconButton(
                           onPressed: () async {
-                            if (controllerLogin.usserPermissionQr == 1 ||
-                                controllerLogin.usserPermissionQr == 2) {
-                              loginController.setMakeCallC(
-                                  false); //avilite las llamadas del timer
+                            if (controllerLogin.usserPermissionQr == 1 || controllerLogin.usserPermissionQr == 2) {
+                              loginController.setMakeCallC(false); //avilite las llamadas del timer
                               controllerShoppingCart.setLoading(true);
-                              int idProf = controllerclient
-                                  .clientsColacionRequestBranch[i]
-                                  .professional_id!;
-                              String charge = controllerclient
-                                  .clientsColacionRequestBranch[i].charge!;
+                              int idProf = controllerclient.clientsColacionRequestBranch[i].professional_id!;
+                              String charge = controllerclient.clientsColacionRequestBranch[i].charge!;
                               if (charge == 'Barbero y Encargado') {
                                 charge = 'Barbero';
                               }
 
-                              int result =
-                                  await controllerLogin.ColacionProfessional(
-                                      idProf, charge, 2);
+                              int result = await controllerLogin.ColacionProfessional(idProf, charge, 2);
                               //aqui mandar notificacion
                               if (result == 1) {
                                 //poner a null el Qr
@@ -1523,38 +1269,28 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   'Alerta',
                                   'Inténtelo nuevamente,problemas de conexión',
                                   duration: const Duration(milliseconds: 2500),
-                                  backgroundColor:
-                                      const Color.fromARGB(118, 255, 255, 255),
+                                  backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                   showProgressIndicator: true,
-                                  progressIndicatorBackgroundColor:
-                                      const Color.fromARGB(255, 203, 205, 209),
-                                  progressIndicatorValueColor:
-                                      const AlwaysStoppedAnimation(
-                                          Color(0xFFFDAE2A)),
+                                  progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                   overlayBlur: 3,
                                 );
                               }
                               if (controllerLogin.branchIdLoggedIn != null) {
-                                await clientsScheduledController
-                                    .ColacionRequestBranch(
-                                        controllerLogin.branchIdLoggedIn);
+                                await clientsScheduledController.ColacionRequestBranch(
+                                    controllerLogin.branchIdLoggedIn);
                                 controllerShoppingCart.setLoading(false);
                               }
-                              loginController.setMakeCallC(
-                                  true); //avilite las llamadas del timer
+                              loginController.setMakeCallC(true); //avilite las llamadas del timer
                             } else {
                               Get.snackbar(
                                 'Mensaje',
                                 'Debe de escanear el código Qr de entrada',
                                 duration: const Duration(milliseconds: 2500),
-                                backgroundColor:
-                                    const Color.fromARGB(118, 255, 255, 255),
+                                backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                 showProgressIndicator: true,
-                                progressIndicatorBackgroundColor:
-                                    const Color.fromARGB(255, 203, 205, 209),
-                                progressIndicatorValueColor:
-                                    const AlwaysStoppedAnimation(
-                                        Color(0xFFFDAE2A)),
+                                progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                 overlayBlur: 3,
                               );
                             }
@@ -1583,9 +1319,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     //
 
     //todo aqui le muestra a los clientes solicitados como rechazados
-    for (int i = 0;
-        i < controllerclient.clientsScheduledListBranchClientLength;
-        i++) {
+    for (int i = 0; i < controllerclient.clientsScheduledListBranchClientLength; i++) {
       titulo = 'Rechazando Cliente';
 
       widgets.add(
@@ -1606,52 +1340,38 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                 child: Row(
                   children: [
                     Padding(
-                      padding:
-                          const EdgeInsets.only(left: 6, top: 6, bottom: 6),
+                      padding: const EdgeInsets.only(left: 6, top: 6, bottom: 6),
                       child: Container(
                         height: (MediaQuery.of(context).size.height * 0.126),
                         width: (MediaQuery.of(context).size.width * 0.20),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: Colors.white, // Color blanco para el borde
-                            width:
-                                1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                            width: 1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                           ),
                           color: const Color(0xFFFF6750),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12)),
+                          borderRadius: const BorderRadius.all(Radius.circular(12)),
                         ),
                         child: IconButton(
                           onPressed: () async {
-                            if (controllerLogin.usserPermissionQr == 1 ||
-                                controllerLogin.usserPermissionQr == 2) {
-                              loginController.setMakeCallC(
-                                  false); //de-avilite las llamadas del timer
+                            if (controllerLogin.usserPermissionQr == 1 || controllerLogin.usserPermissionQr == 2) {
+                              loginController.setMakeCallC(false); //de-avilite las llamadas del timer
                               //rechazar la Eliminación
                               controllerShoppingCart.setLoading(true);
                               print('rechazando la solicitud');
                               //aqui mandar a poner en 0 de nuevo en la cola al cliente
                               bool result = false;
-                              String charge = controllerclient
-                                  .clientsScheduledListBranchClient[i].charge!;
+                              String charge = controllerclient.clientsScheduledListBranchClient[i].charge!;
                               print('rechazando la solicitud - charge:$charge');
                               if (charge == 'Barbero y Encargado') {
                                 charge = 'Barbero';
                               }
                               if (charge == 'Barbero') {
-                                result = await clientsScheduledController
-                                    .acceptOrRejectClientCoord(
-                                        controllerclient
-                                            .clientsScheduledListBranchClient[i]
-                                            .reservation_id,
-                                        0);
+                                result = await clientsScheduledController.acceptOrRejectClientCoord(
+                                    controllerclient.clientsScheduledListBranchClient[i].reservation_id, 0);
                               } else if (charge == 'Tecnico') {
-                                result = await clientsScheduledController
-                                    .acceptOrRejectClientCoord(
-                                        controllerclient
-                                            .clientsScheduledListBranchClient[i]
-                                            .reservation_id,
-                                        4);
+                                result = await clientsScheduledController.acceptOrRejectClientCoord(
+                                    controllerclient.clientsScheduledListBranchClient[i].reservation_id, 4);
                               }
 
                               //aqui mandar notificacion
@@ -1661,28 +1381,21 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   notiController.storeNotification2(
                                       'Solicitud de Eliminación Rechazada',
                                       controllerLogin.branchIdLoggedIn,
-                                      controllerclient
-                                          .clientsScheduledListBranchClient[i]
-                                          .professional_id,
+                                      controllerclient.clientsScheduledListBranchClient[i].professional_id,
                                       '!Atención..El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} no fue rechazado.',
                                       'Barbero');
                                 } else if (charge == 'Tecnico') {
                                   notiController.storeNotification2(
                                       'Solicitud de Eliminación Rechazada',
                                       controllerLogin.branchIdLoggedIn,
-                                      controllerclient
-                                          .clientsScheduledListBranchClient[i]
-                                          .professional_id,
+                                      controllerclient.clientsScheduledListBranchClient[i].professional_id,
                                       '!Atención..El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} no fue rechazado.',
                                       'Tecnico');
                                 }
                                 if (controllerLogin.branchIdLoggedIn != null) {
                                   // loginController.setMakeCallC(true); //avilite las llamadas del timer
-                                  await controllerclient
-                                      .fetchClientsRechazBranch(
-                                          controllerLogin.branchIdLoggedIn!);
-                                  await contShopp.loadOrderDeleteCar(
-                                      controllerLogin.branchIdLoggedIn!);
+                                  await controllerclient.fetchClientsRechazBranch(controllerLogin.branchIdLoggedIn!);
+                                  await contShopp.loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
                                   controllerShoppingCart.setLoading(false);
                                 }
                                 loginController.setMakeCallC(true);
@@ -1691,33 +1404,24 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   'Mensaje',
                                   'Intentelo nuevamente',
                                   duration: const Duration(milliseconds: 2500),
-                                  backgroundColor:
-                                      const Color.fromARGB(118, 255, 255, 255),
+                                  backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                   showProgressIndicator: true,
-                                  progressIndicatorBackgroundColor:
-                                      const Color.fromARGB(255, 203, 205, 209),
-                                  progressIndicatorValueColor:
-                                      const AlwaysStoppedAnimation(
-                                          Color(0xFFFDAE2A)),
+                                  progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                  progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                   overlayBlur: 3,
                                 );
                                 controllerShoppingCart.setLoading(false);
                               }
-                              loginController.setMakeCallC(
-                                  true); //avilite las llamadas del timer
+                              loginController.setMakeCallC(true); //avilite las llamadas del timer
                             } else {
                               Get.snackbar(
                                 'Mensaje',
                                 'Debe de escanear el código Qr de entrada',
                                 duration: const Duration(milliseconds: 2500),
-                                backgroundColor:
-                                    const Color.fromARGB(118, 255, 255, 255),
+                                backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                 showProgressIndicator: true,
-                                progressIndicatorBackgroundColor:
-                                    const Color.fromARGB(255, 203, 205, 209),
-                                progressIndicatorValueColor:
-                                    const AlwaysStoppedAnimation(
-                                        Color(0xFFFDAE2A)),
+                                progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                 overlayBlur: 3,
                               );
                             }
@@ -1750,54 +1454,34 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 children: [
                                   Text(
                                     ' $titulo',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 18,
-                                        height: 1),
+                                    style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18, height: 1),
                                   ),
                                 ],
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 0, right: 10),
+                                padding: const EdgeInsets.only(left: 0, right: 10),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         const Icon(
                                           Icons.person,
                                           color: Color.fromARGB(180, 0, 0, 0),
                                         ),
                                         Text(
-                                          controllerclient
-                                              .clientsScheduledListBranchClient[
-                                                  i]
-                                              .client_name!,
+                                          controllerclient.clientsScheduledListBranchClient[i].client_name!,
                                           style: TextStyle(
-                                              fontSize: (MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.018),
+                                              fontSize: (MediaQuery.of(context).size.height * 0.018),
                                               fontWeight: FontWeight.w500),
                                         ),
                                       ],
                                     ),
-                                    Text(
-                                        controllerclient
-                                            .clientsScheduledListBranchClient[i]
-                                            .time
-                                            .toString(),
+                                    Text(controllerclient.clientsScheduledListBranchClient[i].time.toString(),
                                         style: TextStyle(
-                                            fontSize: (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.018),
+                                            fontSize: (MediaQuery.of(context).size.height * 0.018),
                                             fontWeight: FontWeight.w800)),
                                   ],
                                 ),
@@ -1810,15 +1494,9 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                     MdiIcons.accountTie,
                                   ),
                                   Text(
-                                    controllerclient
-                                        .clientsScheduledListBranchClient[i]
-                                        .professional_name
-                                        .toString(),
+                                    controllerclient.clientsScheduledListBranchClient[i].professional_name.toString(),
                                     style: TextStyle(
-                                        fontSize: (MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.018),
+                                        fontSize: (MediaQuery.of(context).size.height * 0.018),
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ],
@@ -1829,49 +1507,36 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.only(right: 6, top: 6, bottom: 6),
+                      padding: const EdgeInsets.only(right: 6, top: 6, bottom: 6),
                       child: Container(
                         height: (MediaQuery.of(context).size.height * 0.126),
                         width: (MediaQuery.of(context).size.width * 0.20),
                         decoration: BoxDecoration(
                             border: Border.all(
                               color: Colors.white, // Color blanco para el borde
-                              width:
-                                  1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
+                              width: 1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
                             ),
                             color: const Color(0xFF19CF9E),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(12))),
+                            borderRadius: const BorderRadius.all(Radius.circular(12))),
                         child: IconButton(
                           onPressed: () async {
-                            if (controllerLogin.usserPermissionQr == 1 ||
-                                controllerLogin.usserPermissionQr == 2) {
-                              loginController.setMakeCallC(
-                                  false); //de-avilite las llamadas del timer
+                            if (controllerLogin.usserPermissionQr == 1 || controllerLogin.usserPermissionQr == 2) {
+                              loginController.setMakeCallC(false); //de-avilite las llamadas del timer
                               controllerShoppingCart.setLoading(true);
-                              String charge = controllerclient
-                                  .clientsScheduledListBranchClient[i].charge!;
+                              String charge = controllerclient.clientsScheduledListBranchClient[i].charge!;
                               bool result = false;
                               String typeDelete = '';
                               if (charge == 'Barbero y Encargado') {
                                 charge = 'Barbero';
                               }
                               if (charge == 'Barbero') {
-                                result = await clientsScheduleCont
-                                    .deleteReservationClientCoor(
-                                        controllerclient
-                                            .clientsScheduledListBranchClient[i]
-                                            .reservation_id,
-                                        'Fue rechazado por ${controllerclient.clientsScheduledListBranchClient[i].professional_name}');
+                                result = await clientsScheduleCont.deleteReservationClientCoor(
+                                    controllerclient.clientsScheduledListBranchClient[i].reservation_id,
+                                    'Fue rechazado por ${controllerclient.clientsScheduledListBranchClient[i].professional_name}');
                                 typeDelete = 'Aceptada Eliminación de Cliente';
                               } else if (charge == 'Tecnico') {
-                                result = await clientsScheduledController
-                                    .acceptOrRejectClientCoord(
-                                        controllerclient
-                                            .clientsScheduledListBranchClient[i]
-                                            .reservation_id,
-                                        11);
+                                result = await clientsScheduledController.acceptOrRejectClientCoord(
+                                    controllerclient.clientsScheduledListBranchClient[i].reservation_id, 11);
 
                                 typeDelete = 'Aceptada Eliminación de Cliente';
                               }
@@ -1897,9 +1562,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   notiController.storeNotification(
                                       'Cliente rechazado por el Técnico',
                                       controllerLogin.branchIdLoggedIn,
-                                      controllerclient
-                                          .clientsScheduledListBranchClient[i]
-                                          .idBarber,
+                                      controllerclient.clientsScheduledListBranchClient[i].idBarber,
                                       'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue rechazado por el Técnico ${controllerclient.clientsScheduledListBranchClient[i].professional_name}',
                                       'nada',
                                       'Barbero');
@@ -1907,9 +1570,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   notiController.storeNotification(
                                       typeDelete,
                                       controllerLogin.branchIdLoggedIn,
-                                      controllerclient
-                                          .clientsScheduledListBranchClient[i]
-                                          .professional_id,
+                                      controllerclient.clientsScheduledListBranchClient[i].professional_id,
                                       'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue eliminado de su cola',
                                       'nada',
                                       'Tecnico');
@@ -1917,27 +1578,20 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                               }
                               if (controllerLogin.branchIdLoggedIn != null) {
                                 //  loginController.setMakeCallC(true); //de-avilite las llamadas del timer
-                                await controllerclient.fetchClientsRechazBranch(
-                                    controllerLogin.branchIdLoggedIn!);
-                                await contShopp.loadOrderDeleteCar(
-                                    controllerLogin.branchIdLoggedIn!);
+                                await controllerclient.fetchClientsRechazBranch(controllerLogin.branchIdLoggedIn!);
+                                await contShopp.loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
                                 controllerShoppingCart.setLoading(false);
                               }
-                              loginController.setMakeCallC(
-                                  true); //avilite las llamadas del timer
+                              loginController.setMakeCallC(true); //avilite las llamadas del timer
                             } else {
                               Get.snackbar(
                                 'Mensaje',
                                 'Debe de escanear el código Qr de entrada',
                                 duration: const Duration(milliseconds: 2500),
-                                backgroundColor:
-                                    const Color.fromARGB(118, 255, 255, 255),
+                                backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                 showProgressIndicator: true,
-                                progressIndicatorBackgroundColor:
-                                    const Color.fromARGB(255, 203, 205, 209),
-                                progressIndicatorValueColor:
-                                    const AlwaysStoppedAnimation(
-                                        Color(0xFFFDAE2A)),
+                                progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                 overlayBlur: 3,
                               );
                             }
@@ -1991,45 +1645,35 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                 child: Row(
                   children: [
                     Padding(
-                      padding:
-                          const EdgeInsets.only(left: 6, top: 6, bottom: 6),
+                      padding: const EdgeInsets.only(left: 6, top: 6, bottom: 6),
                       child: Container(
                         height: (MediaQuery.of(context).size.height * 0.126),
                         width: (MediaQuery.of(context).size.width * 0.20),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFF6750),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12)),
+                          borderRadius: const BorderRadius.all(Radius.circular(12)),
                         ),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: const Color(
-                                0xFFFF6750), // Color de fondo en verde
+                            primary: const Color(0xFFFF6750), // Color de fondo en verde
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  12.0), // Ajusta el radio según tus necesidades
+                              borderRadius: BorderRadius.circular(12.0), // Ajusta el radio según tus necesidades
                             ),
                             // Ajusta el radio según tus necesidades
                           ),
                           onPressed: () async {
-                            if (controllerLogin.usserPermissionQr == 1 ||
-                                controllerLogin.usserPermissionQr == 2) {
+                            if (controllerLogin.usserPermissionQr == 1 || controllerLogin.usserPermissionQr == 2) {
                               //rechazar la Eliminación
-                              loginController.setMakeCallC(
-                                  false); //de-avilite las llamadas del timer
+                              loginController.setMakeCallC(false); //de-avilite las llamadas del timer
                               controllerShoppingCart.setLoading(true);
-                              int result = await contShopp.requestDelete(
-                                  contShopp.orderDeleteCar[i].id, 0);
+                              int result = await contShopp.requestDelete(contShopp.orderDeleteCar[i].id, 0);
                               //aqui mandar notificacion
                               if (result == 1) {
                                 String serviceProduct = 'Servicio';
-                                String? nameServiceProduct =
-                                    contShopp.orderDeleteCar[i].nameService;
-                                if (contShopp.orderDeleteCar[i].nameService ==
-                                    null) {
+                                String? nameServiceProduct = contShopp.orderDeleteCar[i].nameService;
+                                if (contShopp.orderDeleteCar[i].nameService == null) {
                                   serviceProduct = 'Producto';
-                                  nameServiceProduct =
-                                      contShopp.orderDeleteCar[i].nameProduct;
+                                  nameServiceProduct = contShopp.orderDeleteCar[i].nameProduct;
                                 }
                                 //la notificacion la crea la api
                                 //
@@ -2041,25 +1685,19 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 //     'Barbero');
                               }
                               if (controllerLogin.branchIdLoggedIn != null) {
-                                await contShopp.loadOrderDeleteCar(
-                                    controllerLogin.branchIdLoggedIn!);
+                                await contShopp.loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
                                 controllerShoppingCart.setLoading(false);
                               }
-                              loginController.setMakeCallC(
-                                  true); //avilite las llamadas del timer
+                              loginController.setMakeCallC(true); //avilite las llamadas del timer
                             } else {
                               Get.snackbar(
                                 'Mensaje',
                                 'Debe de escanear el código Qr de entrada',
                                 duration: const Duration(milliseconds: 2500),
-                                backgroundColor:
-                                    const Color.fromARGB(118, 255, 255, 255),
+                                backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                 showProgressIndicator: true,
-                                progressIndicatorBackgroundColor:
-                                    const Color.fromARGB(255, 203, 205, 209),
-                                progressIndicatorValueColor:
-                                    const AlwaysStoppedAnimation(
-                                        Color(0xFFFDAE2A)),
+                                progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                 overlayBlur: 3,
                               );
                             }
@@ -2091,19 +1729,14 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                               children: [
                                 Text(
                                   ' $titulo',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18,
-                                      height: 1),
+                                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18, height: 1),
                                 ),
                               ],
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 5, right: 10),
+                              padding: const EdgeInsets.only(left: 5, right: 10),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -2115,23 +1748,15 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                             ? '${contShopp.orderDeleteCar[i].nameService}'
                                             : '${contShopp.orderDeleteCar[i].nameProduct}',
                                         style: TextStyle(
-                                            fontSize: (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.018),
+                                            fontSize: (MediaQuery.of(context).size.height * 0.018),
                                             fontWeight: FontWeight.w500,
                                             height: 1),
                                       ),
                                     ],
                                   ),
-                                  Text(
-                                      contShopp.orderDeleteCar[i].hora
-                                          .toString(),
+                                  Text(contShopp.orderDeleteCar[i].hora.toString(),
                                       style: TextStyle(
-                                          fontSize: (MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.018),
+                                          fontSize: (MediaQuery.of(context).size.height * 0.018),
                                           fontWeight: FontWeight.w800,
                                           height: 1)),
                                 ],
@@ -2145,12 +1770,9 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   MdiIcons.accountTie,
                                 ),
                                 Text(
-                                  contShopp.orderDeleteCar[i].nameProfesional
-                                      .toString(),
+                                  contShopp.orderDeleteCar[i].nameProfesional.toString(),
                                   style: TextStyle(
-                                      fontSize:
-                                          (MediaQuery.of(context).size.height *
-                                              0.018),
+                                      fontSize: (MediaQuery.of(context).size.height * 0.018),
                                       fontWeight: FontWeight.w500,
                                       height: 1),
                                 ),
@@ -2167,9 +1789,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 Text(
                                   contShopp.orderDeleteCar[i].nameClient,
                                   style: TextStyle(
-                                      fontSize:
-                                          (MediaQuery.of(context).size.height *
-                                              0.018),
+                                      fontSize: (MediaQuery.of(context).size.height * 0.018),
                                       fontWeight: FontWeight.w500,
                                       height: 1),
                                 ),
@@ -2180,55 +1800,40 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.only(right: 6, top: 6, bottom: 6),
+                      padding: const EdgeInsets.only(right: 6, top: 6, bottom: 6),
                       child: Container(
                         height: (MediaQuery.of(context).size.height * 0.126),
                         width: (MediaQuery.of(context).size.width * 0.20),
                         decoration: BoxDecoration(
-                            color: const Color(0xFF19CF9E),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(12))),
+                            color: const Color(0xFF19CF9E), borderRadius: const BorderRadius.all(Radius.circular(12))),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: const Color(
-                                0xFF19CF9E), // Color de fondo en verde
+                            primary: const Color(0xFF19CF9E), // Color de fondo en verde
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  12.0), // Ajusta el radio según tus necesidades
+                              borderRadius: BorderRadius.circular(12.0), // Ajusta el radio según tus necesidades
                             ),
                           ),
                           onPressed: () async {
-                            if (controllerLogin.usserPermissionQr == 1 ||
-                                controllerLogin.usserPermissionQr == 2) {
+                            if (controllerLogin.usserPermissionQr == 1 || controllerLogin.usserPermissionQr == 2) {
                               if (contShopp.buttonPress == false) {
                                 contShopp.setButtonPress(true);
-                                loginController.setMakeCallC(
-                                    false); //avilite las llamadas del timer
+                                loginController.setMakeCallC(false); //avilite las llamadas del timer
                                 controllerShoppingCart.setLoading(true);
-                                int result = await contShopp.orderDelete(
-                                    contShopp.orderDeleteCar[i].id);
+                                int result = await contShopp.orderDelete(contShopp.orderDeleteCar[i].id);
                                 //aqui mandar notificacion
                                 print('return resul: IconButton $result');
-                                print(
-                                    'return resul: orderDeleteCar[i].id ${contShopp.orderDeleteCar[i].id}');
+                                print('return resul: orderDeleteCar[i].id ${contShopp.orderDeleteCar[i].id}');
                                 if (result == 1) {
-                                  String typeDelete =
-                                      'Aceptada Eliminación de Servicio';
+                                  String typeDelete = 'Aceptada Eliminación de Servicio';
                                   String serviceProduct = 'Servicio';
-                                  String? nameServiceProduct =
-                                      contShopp.orderDeleteCar[i].nameService;
-                                  if (contShopp.orderDeleteCar[i].nameService ==
-                                      '') {
-                                    typeDelete =
-                                        'Aceptada Eliminación de Producto';
+                                  String? nameServiceProduct = contShopp.orderDeleteCar[i].nameService;
+                                  if (contShopp.orderDeleteCar[i].nameService == '') {
+                                    typeDelete = 'Aceptada Eliminación de Producto';
                                     serviceProduct = 'Producto';
-                                    nameServiceProduct =
-                                        contShopp.orderDeleteCar[i].nameProduct;
+                                    nameServiceProduct = contShopp.orderDeleteCar[i].nameProduct;
                                   }
 
-                                  if (typeDelete ==
-                                      'Aceptada Eliminación de Servicio') {
+                                  if (typeDelete == 'Aceptada Eliminación de Servicio') {
                                     //esta notificación la esta haciendo el api
                                     //
                                     // notiController.storeNotification2(
@@ -2253,29 +1858,23 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 if (controllerLogin.branchIdLoggedIn != null) {
                                   // loginController.setMakeCallC(
                                   // true); //avilite las llamadas del timer
-                                  await contShopp.loadOrderDeleteCar(
-                                      controllerLogin.branchIdLoggedIn!);
+                                  await contShopp.loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
                                   controllerShoppingCart.setLoading(false);
                                   contShopp.setButtonPress(false);
                                 }
                               }
                               controllerShoppingCart.setLoading(false);
                               contShopp.setButtonPress(false);
-                              loginController.setMakeCallC(
-                                  true); //avilite las llamadas del timer
+                              loginController.setMakeCallC(true); //avilite las llamadas del timer
                             } else {
                               Get.snackbar(
                                 'Mensaje',
                                 'Debe de escanear el código Qr de entrada',
                                 duration: const Duration(milliseconds: 2500),
-                                backgroundColor:
-                                    const Color.fromARGB(118, 255, 255, 255),
+                                backgroundColor: const Color.fromARGB(118, 255, 255, 255),
                                 showProgressIndicator: true,
-                                progressIndicatorBackgroundColor:
-                                    const Color.fromARGB(255, 203, 205, 209),
-                                progressIndicatorValueColor:
-                                    const AlwaysStoppedAnimation(
-                                        Color(0xFFFDAE2A)),
+                                progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
+                                progressIndicatorValueColor: const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
                                 overlayBlur: 3,
                               );
                             }

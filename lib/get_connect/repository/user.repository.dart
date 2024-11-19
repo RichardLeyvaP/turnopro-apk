@@ -189,8 +189,8 @@ class UserRepository extends GetConnect {
         'branch_id': idBranch,
         'email': email,
         'password': password,
-        'version': 'Simplifies V1.0.6', //version Simplifies
-      }; //esto solo lo tiene la version nueva apartir de Simplifies V1.0.6
+        'version': 'Simplifies V1.0.7', //version Simplifies
+      }; //esto solo lo tiene la version nueva apartir de Simplifies V1.0.7
 
       print('a..........$url');
       print('a..........$body');

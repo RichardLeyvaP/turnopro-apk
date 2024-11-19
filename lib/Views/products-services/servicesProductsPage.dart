@@ -131,8 +131,9 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => ImageDetailScreen(
-                                            imageUrl:
-                                                '${Env.apiEndpoint}/images/${clientsController.urlImageTemporary}'),
+                                          imageUrl: '${Env.apiEndpoint}/images/${clientsController.urlImageTemporary}',
+                                          description: clientsController.endLookBarber1,
+                                        ),
                                       ),
                                     );
                                   },
