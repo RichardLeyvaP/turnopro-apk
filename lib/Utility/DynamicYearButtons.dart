@@ -35,7 +35,7 @@ class _DynamicYearButtonsState extends State<DynamicYearButtons> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: selectedYear == year
-                      ? Colors.green // Color verde si está seleccionado
+                      ? Color(0xFF19CF9E) // Color verde si está seleccionado
                       : const Color(0xFF4470F3), // Color azul predeterminado
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0), // Ajusta el radio según tus necesidades
