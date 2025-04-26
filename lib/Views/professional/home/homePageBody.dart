@@ -56,7 +56,7 @@ class _HomePageBodyState extends State<HomePageBody> with AutomaticKeepAliveClie
   bool _isMounted = true;
 /*
   WebSocketChannel channel = IOWebSocketChannel.connect(
-      'wss://api2.simplifies.cl/api/notification-professional?branch_id=15&professional_id=76');*/
+      'wss://testapi.simplifies.cl/api/notification-professional?branch_id=15&professional_id=76');*/
 
   Future<void> saveData() async {
     int valueClock = getTimeRemaining();
