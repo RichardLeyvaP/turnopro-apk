@@ -405,7 +405,7 @@ class ClientsCoordinatorController extends GetxController {
     } else if (resultList['result'] == true) {
       correctConnection = true;
       update();
-      print('Cliente reasignado correctamente-totem-homeeee');
+      print('Cliente reasignado correctamente-totem-homeeee2');
       return true;
       //
     } else {
@@ -429,7 +429,7 @@ class ClientsCoordinatorController extends GetxController {
     } else if (resultList['result'] == true) {
       correctConnection = true;
       update();
-      print('Cliente reasignado correctamente-totem-homeeee');
+      print('Cliente reasignado correctamente-totem-homeeee1');
       return true;
       //
     } else {
@@ -439,6 +439,7 @@ class ClientsCoordinatorController extends GetxController {
 
   Future<bool> reasignedClientSegundoPlano(
       professionalId, branchId, token, place) async {
+    print("Entra a Segundo Plano 7721");
     Map<String, dynamic>? resultList = await repository
         .reasignedClientSegundoPlano(professionalId, branchId, token, place);
     if (resultList != null) {
@@ -603,7 +604,7 @@ class ClientsCoordinatorController extends GetxController {
       print(
           'EL TIEMPO ACTUAL DEL RELOJ 4 ES Tiempo restante: $timeClientsActAttended4 reservation_id : $reservationId -  clock : $clock - detached :$detached');
     } else {
-      print('EL TIEMPO ACTUAL DEL RELOJ 1 ES Nulo:$timeClientsActAttended1 ');
+      print('EL TIEMPO ACTUAL DEL RELOJ 1 ES Nulo1:$timeClientsActAttended1 ');
     }
 
     // timeClientsActAttended2 = time2;

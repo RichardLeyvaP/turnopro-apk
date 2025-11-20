@@ -3,6 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/product.controller.dart';
@@ -238,7 +239,7 @@ class _ProductsBodyState extends State<ProductsBody>
                       child: CachedNetworkImage(
                         // maxHeightDiskCache: 120,
                         // maxWidthDiskCache: 160,
-                        imageUrl: '${Env.apiEndpoint}/images/$addressProduct',
+                        imageUrl: '${dotenv.env['API_ENDPOINT']}/images/$addressProduct',
                         placeholder: (context, url) => const SizedBox(
                           width: 30,
                           height: 30,
@@ -270,7 +271,7 @@ class _ProductsBodyState extends State<ProductsBody>
                 ),
                 SizedBox(
                   height: (MediaQuery.of(context).size.height * 0.26),
-                  width: (MediaQuery.of(context).size.width * 0.40),
+                  width: (MediaQuery.of(context).size.width * 0.50),
                   child: Column(
                     //AQUI ES LA PARTE DERECHA DE LOS DATOS DEL PRODUCTO
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -279,7 +280,7 @@ class _ProductsBodyState extends State<ProductsBody>
                         title: Text(
                           productName,
                           style: const TextStyle(
-                            fontSize: 18,
+                            fontSize: 12,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -307,7 +308,7 @@ class _ProductsBodyState extends State<ProductsBody>
                                   pCont.product[itemIndex].product_exit
                                       .toString(),
                                   style: const TextStyle(
-                                      fontSize: 15,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.w800,
                                       color: Color.fromARGB(148, 0, 0, 0)),
                                 ),
@@ -323,11 +324,11 @@ class _ProductsBodyState extends State<ProductsBody>
                             style: TextStyle(
                                 fontSize: (MediaQuery.of(context).size.height *
                                     0.024),
-                                fontWeight: FontWeight.w800),
+                                fontWeight: FontWeight.w900),
                           ),
                         ),
                         subtitle: Padding(
-                          padding: const EdgeInsets.only(top: 2, left: 15),
+                          padding: const EdgeInsets.only(top: 2, left: 0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -407,25 +408,26 @@ class _ProductsBodyState extends State<ProductsBody>
                                   },
                                   child: Row(
                                     children: [
-                                      Center(
-                                        child: Text(
-                                          '  AGREGAR',
-                                          style: TextStyle(
-                                              fontSize: (MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.03),
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
                                       Icon(
                                         Icons.add,
                                         color: Colors.white,
                                         size: (MediaQuery.of(context)
-                                                .size
-                                                .height *
+                                            .size
+                                            .height *
                                             0.03),
                                       ),
+                                      Center(
+                                        child: Text(
+                                          'AGREGAR',
+                                          style: TextStyle(
+                                            fontSize: MediaQuery.of(context).size.width * 0.04,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white, // <-- Aquí se define el color blanco
+                                          ),
+                                        ),
+
+                                      ),
+
                                     ],
                                   ),
                                 ),

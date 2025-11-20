@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
@@ -156,7 +157,7 @@ class _ProductClientState extends State<ProductClient> {
                         itemCount: controllerCORD.productCORD.length,
                         itemBuilder: (context, index) {
                           print(
-                              'images de products:${Env.apiEndpoint}/images/${controllerCORD.productCORD[index].image_product}}');
+                              'images de products:${dotenv.env['API_ENDPOINT']}/images/${controllerCORD.productCORD[index].image_product}}');
                           print(
                               'images de products:${controllerCORD.productCORD[index].image_product}');
                           // Utiliza la función cardOptions para construir cada Card
@@ -223,7 +224,7 @@ class _ProductClientState extends State<ProductClient> {
                           child: CachedNetworkImage(
                             maxHeightDiskCache: 100,
                             maxWidthDiskCache: 100,
-                            imageUrl: '${Env.apiEndpoint}/images/$imageProd',
+                            imageUrl: '${dotenv.env['API_ENDPOINT']}/images/$imageProd',
                             placeholder: (context, url) =>
                                 CircularProgressIndicator(
                               color: Color(0xFFFDAE2A),

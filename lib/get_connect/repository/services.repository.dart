@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
@@ -15,7 +16,7 @@ class ServiceRepository extends GetConnect {
     try {
       if (idProfessional != null) {
         var url =
-            '${Env.apiEndpoint}/professional_services?professional_id=$idProfessional&branch_id=$idBranch';
+            '${dotenv.env['API_ENDPOINT']}/professional_services?professional_id=$idProfessional&branch_id=$idBranch';
 
         final headers = {
           "Authorization": "Bearer $token", // Agrega el token a los encabezados

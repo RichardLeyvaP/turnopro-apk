@@ -141,7 +141,8 @@ class topPage extends StatelessWidget {
                       // Añade más widgets o ajusta según sea necesario
                     ],
                   ),
-                  buttonRight == true
+
+                  (buttonRight == true && textButton != 'MIS PAGOS')
                       ? Padding(
                           padding: const EdgeInsets.only(right: 12.0),
                           child: ElevatedButton(

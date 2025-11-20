@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';
@@ -15,7 +16,7 @@ class ModalHelperTecnical {
   static showModalTechnical(PageController pageController, BuildContext context,
       String cliente, int reservationId, int carId, int idProf) async {
     String imageDirection =
-        '${Env.apiEndpoint}/images/professional/ejemplo1.jpg';
+        '${dotenv.env['API_ENDPOINT']}/images/professional/ejemplo1.jpg';
 
     showModalBottomSheet(
       isScrollControlled: true,

@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
@@ -537,14 +538,14 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 MaterialPageRoute(
                                   builder: (context) => ImageDetailScreen(
                                       imageUrl:
-                                          '${Env.apiEndpoint}/images/${controllerclient.clientsScheduledListBranch[index].client_image}'),
+                                          '${dotenv.env['API_ENDPOINT']}/images/${controllerclient.clientsScheduledListBranch[index].client_image}'),
                                 ),
                               );
                             },
                             child: ClipOval(
                               child: CachedNetworkImage(
                                 imageUrl:
-                                    '${Env.apiEndpoint}/images/${controllerclient.clientsScheduledListBranch[index].client_image}',
+                                    '${dotenv.env['API_ENDPOINT']}/images/${controllerclient.clientsScheduledListBranch[index].client_image}',
                                 placeholder: (context, url) => Container(
                                   width: 50,
                                   height: 50,
@@ -681,7 +682,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                           ),
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: const Color(
+                                backgroundColor: const Color(
                                     0xFF19CF9E), // Color de fondo en verde
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
@@ -825,7 +826,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: colorVariable, // Color de fondo en verde
+          backgroundColor: colorVariable, // Color de fondo en verde
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
                 borderRadiusValue), // Ajusta el radio según tus necesidades
@@ -2003,7 +2004,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                         ),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: const Color(
+                            backgroundColor: const Color(
                                 0xFFFF6750), // Color de fondo en verde
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
@@ -2191,7 +2192,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 const BorderRadius.all(Radius.circular(12))),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: const Color(
+                            backgroundColor: const Color(
                                 0xFF19CF9E), // Color de fondo en verde
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(

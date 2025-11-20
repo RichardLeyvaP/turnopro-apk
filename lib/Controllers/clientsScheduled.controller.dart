@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages, unused_element, unrelated_type_equality_checks
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -1979,6 +1980,45 @@ class ClientsScheduledController extends GetxController {
     }
   }
 
+  Future<Map<dynamic, dynamic>?> searchForCustomerServices4(idCar, token) async {
+    try {
+      Map<dynamic, dynamic> resultList = await repository.getCustomerServicesList2(idCar, token);
+
+      if (resultList.containsKey("error")) {
+        var errorValue = resultList["error"];
+        // Aquí puedes manejar el error, dependiendo del valor asociado a "error"
+        if (errorValue == 'error') {
+          // Manejo específico para cuando "error" tiene el valor 'error'
+          print('Ocurrió un error: $errorValue');
+        } else {
+          // Manejo para otros posibles valores de "error"
+          print('Error recibido: $errorValue');
+        }
+      } else {
+
+        return resultList;
+        serviceCustomerSelected1 = resultList['serviceCustomer'];
+
+        serviceCustomerSelectedForm1 = serviceCustomerSelected1;
+
+        professionalNameBarber1 = resultList['professionalNameBarber'];
+        imageUrlBarber1 = resultList['imageUrlBarber'];
+        imageLookBarber1 = resultList['imageLookBarber'];
+        cantVisitBarber1 = resultList['cantVisitBarber'];
+        endLookBarber1 = resultList['endLookBarber'];
+        frecuenciaBarber1 = resultList['frecuenciaBarber'];
+
+
+        // Manejo del caso en que no haya error y se reciban datos válidos
+        print('Datos recibidos: $resultList');
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      Get.back();
+    }
+  }
+
   Future<bool> changeNoncomplianceP(
       //todo1
       type,
@@ -1986,6 +2026,8 @@ class ClientsScheduledController extends GetxController {
       professionalId,
       estado) async {
     //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
+    print('Segundo Plano - changeNoncomplianceP');
+
     bool result =
         await repository.storeByType(type, branchId, professionalId, estado, controllerLogin.tokenUserLoggedIn);
     if (result) {
@@ -2010,6 +2052,8 @@ class ClientsScheduledController extends GetxController {
       professionalId,
       estado) async {
     //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
+
+    print('Segundo Plano - changeNoncompliancePId');
     bool result =
         await repository.storeByTypeId(id, type, branchId, professionalId, estado, controllerLogin.tokenUserLoggedIn);
     if (result) {
@@ -2032,6 +2076,8 @@ class ClientsScheduledController extends GetxController {
       branchId,
       professionalId,
       estado) async {
+
+    print('Segundo Plano - changeNoncomplianceP2');
     print('llamda a la api desde segundo plano-ENTRANDO');
     //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
     bool result =
@@ -2274,7 +2320,15 @@ class ClientsScheduledController extends GetxController {
 
           //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
           clientsScheduledNext = resultList['nextClient'];
+
+
+
+
           clientsScheduledNextServ = resultList['nextClient'];
+
+          clientsScheduledNextServ = ClientsScheduledModel.fromMap(
+            resultList['nextClient']
+          );
           if (resultList.containsKey('clientListSalon')) {
             setClientsScheSalon(resultList['clientListSalon']);
           }
@@ -2335,7 +2389,7 @@ class ClientsScheduledController extends GetxController {
       }
     } catch (e) {
       noUpdate = true;
-      print('Dio error en Future<void> fetchClientsScheduled que se encuentra en el controlador del Login:$e');
+      print('Dio1 error en Future<void> fetchClientsScheduled que se encuentra en el controlador del Login:$e');
     } finally {
       if (msj == 'Home-reasignedClient' || msj == 'Agenda-Card' || msj == 'navigation down') {
         Get.back();
@@ -2409,6 +2463,10 @@ class ClientsScheduledController extends GetxController {
           //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
           clientsScheduledNext = resultList['nextClient'];
           clientsScheduledNextServ = resultList['nextClient'];
+
+
+
+
           quantityClientAttended = resultList['quantityClientAttended'];
           varClientsWaiting = resultList['varclientswaiting'];
           if (quantityClientAttended == 0) {
@@ -2429,7 +2487,7 @@ class ClientsScheduledController extends GetxController {
       update();
       controllerLogin.setIsLoadingFor(false);
     } catch (e) {
-      print('Dio error en Future<void> fetchClientsScheduled que se encuentra en el controlador del Login:$e');
+      print('Dio2 error en Future<void> fetchClientsScheduled que se encuentra en el controlador del Login:$e');
     } finally {
       // setBoolControlVision(true);
     }

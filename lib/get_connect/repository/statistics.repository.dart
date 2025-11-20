@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, non_constant_identifier_names
 
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Models/EarningByDay.dart';
 import 'package:turnopro_apk/Models/weekly_statistics_model.dart';
@@ -17,11 +18,11 @@ class WeeklyStatisticsRepository extends GetConnect {
         if (mes != -99) {
           //si manda un mes
           url =
-              '${Env.apiEndpoint}/branch_winner?branch_id=$idBranch&mes=$mes&year=$year';
+              '${dotenv.env['API_ENDPOINT']}/branch_winner?branch_id=$idBranch&mes=$mes&year=$year';
         } else {
           //si no manda un mes es porque manda yn rango de fechas
           url =
-              '${Env.apiEndpoint}/branch_winner?branch_id=$idBranch&startDate=$startDate&endDate=$endDate';
+              '${dotenv.env['API_ENDPOINT']}/branch_winner?branch_id=$idBranch&startDate=$startDate&endDate=$endDate';
         }
 
         print(idBranch);
@@ -63,7 +64,7 @@ class WeeklyStatisticsRepository extends GetConnect {
     try {
       if (idProfessional != null) {
         var url =
-            '${Env.apiEndpoint}/professionals_ganancias_branch?professional_id=$idProfessional&branch_id=$idBranch&startDate=$startDate&endDate=$endDate&charge=$charge';
+            '${dotenv.env['API_ENDPOINT']}/professionals_ganancias_branch?professional_id=$idProfessional&branch_id=$idBranch&startDate=$startDate&endDate=$endDate&charge=$charge';
         print(idProfessional);
         print(idBranch);
         print(startDate);
@@ -97,7 +98,7 @@ class WeeklyStatisticsRepository extends GetConnect {
     try {
       if (idProfessional != null) {
         var url =
-            '${Env.apiEndpoint}/professionals_ganancias_branch?professional_id=$idProfessional&branch_id=$idBranch&mes=$mes&year=$year';
+            '${dotenv.env['API_ENDPOINT']}/professionals_ganancias_branch?professional_id=$idProfessional&branch_id=$idBranch&mes=$mes&year=$year';
         print(idProfessional);
         print(idBranch);
         print(mes);
@@ -135,7 +136,7 @@ class WeeklyStatisticsRepository extends GetConnect {
     try {
       if (idProfessional != null) {
         var url =
-            '${Env.apiEndpoint}/professionals_ganancias?professional_id=$idProfessional&branch_id=$idBranch&startDate=$startDate&endDate=$endDate&day=$day';
+            '${dotenv.env['API_ENDPOINT']}/professionals_ganancias?professional_id=$idProfessional&branch_id=$idBranch&startDate=$startDate&endDate=$endDate&day=$day';
 
         final response = await http.get(
           Uri.parse(url),

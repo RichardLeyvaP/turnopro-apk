@@ -387,7 +387,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: colorVariable, // Color de fondo en verde
+          backgroundColor: colorVariable, // Color de fondo en verde
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
                 12), // Ajusta el radio según tus necesidades
@@ -1529,7 +1529,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                         ),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: const Color(
+                            backgroundColor: const Color(
                                 0xFFFF6750), // Color de fondo en verde
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
@@ -1715,7 +1715,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 const BorderRadius.all(Radius.circular(12))),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: const Color(
+                            backgroundColor: const Color(
                                 0xFF19CF9E), // Color de fondo en verde
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(

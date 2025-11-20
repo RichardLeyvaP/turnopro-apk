@@ -230,6 +230,8 @@ void clearAllNotifications() {
 
 @pragma('vm:entry-point')
 Future<void> onStart(ServiceInstance service) async {
+
+  print('Entra Aca');
   DartPluginRegistrant.ensureInitialized();
   await AppInitializer.initializeApp();
   WidgetsFlutterBinding.ensureInitialized();

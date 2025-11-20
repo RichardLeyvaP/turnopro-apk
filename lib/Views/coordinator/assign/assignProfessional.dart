@@ -2,6 +2,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
@@ -255,14 +256,14 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                                                     builder: (context) =>
                                                         ImageDetailScreen(
                                                             imageUrl:
-                                                                '${Env.apiEndpoint}/images/${controllerCoord.imageLookCORD}'),
+                                                                '${dotenv.env['API_ENDPOINT']}/images/${controllerCoord.imageLookCORD}'),
                                                   ),
                                                 );
                                               },
                                               child: ClipOval(
                                                 child: CachedNetworkImage(
                                                   imageUrl:
-                                                      '${Env.apiEndpoint}/images/${controllerCoord.imageLookCORD}',
+                                                      '${dotenv.env['API_ENDPOINT']}/images/${controllerCoord.imageLookCORD}',
                                                   placeholder: (context, url) =>
                                                       Container(
                                                     width: 30,
@@ -389,7 +390,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                     backgroundColor: Colors.white, //fondo de la imagen
                     child: ClipOval(
                       child: Image.network(
-                        '${Env.apiEndpoint}/images/$imageUrl',
+                        '${dotenv.env['API_ENDPOINT']}/images/$imageUrl',
                         fit: BoxFit
                             .cover, // Ajusta la imagen para cubrir completamente el área
                         width:

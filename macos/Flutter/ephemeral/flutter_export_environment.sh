@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=C:\Users\richa\fvm\versions\3.10.6"
-export "FLUTTER_APPLICATION_PATH=D:\Proyectos\Web\turnopro-apk"
+export "FLUTTER_ROOT=/Users/macbookpro/development/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/macbookpro/Documents/GitHub/turnopro-apk"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.0"

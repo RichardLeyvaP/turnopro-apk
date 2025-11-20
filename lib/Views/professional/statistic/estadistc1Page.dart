@@ -2,6 +2,7 @@
 //import 'package:animate_do/animate_do.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
@@ -163,7 +164,7 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                               radius: 20,
                                                                               child: ClipOval(
                                                                                 child: Image.network(
-                                                                                  '${Env.apiEndpoint}/images/${_.estadist1[index].client_image}',
+                                                                                  '${dotenv.env['API_ENDPOINT']}/images/${_.estadist1[index].client_image}',
                                                                                   fit: BoxFit
                                                                                       .cover, // Ajusta la imagen para cubrir completamente el área
                                                                                   width:
@@ -391,7 +392,7 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                               width: 5,
                                                             ),
                                                             SizedBox(
-                                                              width: MediaQuery.of(context).size.width * 0.9,
+                                                              width: MediaQuery.of(context).size.width * 0.88,
                                                               child: Column(
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
@@ -404,14 +405,14 @@ class _Estadistc1PageState extends State<Estadistc1Page> {
                                                                       Row(
                                                                         children: [
                                                                           Padding(
-                                                                            padding: const EdgeInsets.all(8.0),
+                                                                            padding: const EdgeInsets.all(0.0),
                                                                             child: CircleAvatar(
                                                                               radius: 20,
                                                                               backgroundColor:
                                                                                   Colors.white, //fondo de la imagen
                                                                               child: ClipOval(
                                                                                 child: Image.network(
-                                                                                  '${Env.apiEndpoint}/images/${_.estadist1[index].client_image}',
+                                                                                  '${dotenv.env['API_ENDPOINT']}/images/${_.estadist1[index].client_image}',
                                                                                   fit: BoxFit
                                                                                       .cover, // Ajusta la imagen para cubrir completamente el área
                                                                                   width:

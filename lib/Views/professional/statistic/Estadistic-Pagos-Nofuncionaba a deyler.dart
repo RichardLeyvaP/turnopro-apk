@@ -28,7 +28,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
   /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
   final IconnsBack = Icons.arrow_back;
   final IconnsP = MdiIcons.currencyUsd;
-  String title = 'Pagos Realizados';
+  String title = 'Pagos Realizados 4';
   String subTitle = 'Mis pagos';
   final colorCont = Colors.white;
   double panddCont = 8;

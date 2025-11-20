@@ -303,7 +303,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                             index]
                                                                         .client_name!;
                                                                 String urlImage = controllerClient
-                                                                            .clientsScheduledList[
+                                                                                .clientsScheduledList[
                                                                                 index]
                                                                             .client_image! ==
                                                                         ''

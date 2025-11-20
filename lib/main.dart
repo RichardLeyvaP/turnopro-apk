@@ -14,7 +14,7 @@ void main() async {
   // Manejo de errores al iniciar la aplicación
   try {
    await AppInitializer.initializeApp(); // Encargado de configuraciones previas
-    await LocalStorage.configurePrefs(); // Configurar almacenamiento local
+   await LocalStorage.configurePrefs(); // Configurar almacenamiento local
 
     // Cargar variables de entorno
     await loadEnvironmentVariables();
@@ -37,9 +37,25 @@ void main() async {
 // Función para cargar variables de entorno de manera segura
 Future<void> loadEnvironmentVariables() async {
   try {
-    await dotenv.load(fileName: "assets/env.dart");
-    print('Variables de entorno cargadas correctamente');
-    print('API_ENDPOINT: ${dotenv.env['API_ENDPOINT']}');
+
+    await dotenv.load(fileName: "assets/prod.env");  // <- importante
+    print("Variables de entorno cargadas correctamente");
+
+    final String apiEndpoint = dotenv.env['API_ENDPOINT']?.isNotEmpty == true
+        ? dotenv.env['API_ENDPOINT']!
+        : "https://api3.simplifies.cl/api";
+
+    final String apiKey = dotenv.env['API_KEY']?.isNotEmpty == true
+        ? dotenv.env['API_KEY']!
+        : "2RICHARDlEYVApEREZ";
+
+    final String apiToken = dotenv.env['API_TOKEN']?.isNotEmpty == true
+        ? dotenv.env['API_TOKEN']!
+        : " !PRODUCCION";
+
+    print(dotenv.env['API_ENDPOINT']);
+    print('API Key: $apiKey');
+    print('API Token: $apiToken');
   } catch (e) {
     print('Error al cargar las variables de entorno: $e');
     throw Exception('No se pudieron cargar las variables de entorno');

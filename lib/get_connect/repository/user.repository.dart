@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Models/ClockModel.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
@@ -10,7 +11,7 @@ import 'package:turnopro_apk/env.dart';
 class UserRepository extends GetConnect {
   Future generateQr(branchId, professionalId, token) async {
     try {
-      var url = '${Env.apiEndpoint}/record';
+      var url = '${dotenv.env['API_ENDPOINT']}/record';
       final Map<String, dynamic> body = {
         'branch_id': branchId,
         'professional_id': professionalId,
@@ -101,7 +102,7 @@ class UserRepository extends GetConnect {
 
   Future exitHours(branchId, professionalId, token) async {
     try {
-      var url = '${Env.apiEndpoint}/record';
+      var url = '${dotenv.env['API_ENDPOINT']}/record';
       final Map<String, dynamic> body = {
         'branch_id': branchId,
         'professional_id': professionalId,
@@ -127,7 +128,7 @@ class UserRepository extends GetConnect {
 
   Future solitColacion(branchId, professionalId, type, state, token) async {
     try {
-      var url = '${Env.apiEndpoint}/request_location_professional';
+      var url = '${dotenv.env['API_ENDPOINT']}/request_location_professional';
       final Map<String, dynamic> body = {
         'branch_id': branchId,
         'professional_id': professionalId,
@@ -156,7 +157,7 @@ class UserRepository extends GetConnect {
   Future getUserLoggedBranch(String email, String password) async {
     try {
       String token = loginController.tokenUserLoggedIn;
-      var url = '${Env.apiEndpoint}/login-phone-get-branch?email=$email&password=$password';
+      var url = '${dotenv.env['API_ENDPOINT']}/login-phone-get-branch?email=$email&password=$password';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -182,7 +183,7 @@ class UserRepository extends GetConnect {
 
   Future getUserLoggedIn(String email, String password, int idBranch) async {
     try {
-      var url = '${Env.apiEndpoint}/login-phone-version';
+      var url = '${dotenv.env['API_ENDPOINT']}/login-phone-version';
       //var url = '${Env.apiEndpoint}/login-phone';
 
       final Map<String, dynamic> body = {
@@ -222,7 +223,7 @@ class UserRepository extends GetConnect {
 
   Future userLogoutNew(int professionalId, int branchId, String token) async {
     try {
-      var url = '${Env.apiEndpoint}/logout-phone?professional_id=$professionalId&branch_id=$branchId';
+      var url = '${dotenv.env['API_ENDPOINT']}/logout-phone?professional_id=$professionalId&branch_id=$branchId';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -246,7 +247,7 @@ class UserRepository extends GetConnect {
 
   Future userLogout(String token) async {
     try {
-      var url = '${Env.apiEndpoint}/logout';
+      var url = '${dotenv.env['API_ENDPOINT']}/logout';
 
       // Parámetros que deseas enviar en la solicitud POST
       /*   final Map<String, dynamic> body = {
@@ -277,7 +278,7 @@ class UserRepository extends GetConnect {
   // ignore: non_constant_identifier_names
   Future<int> insertPuesto(professional_id, workplace_id, places, branch_id, token) async {
     try {
-      var url = '${Env.apiEndpoint}/professionalworkplace';
+      var url = '${dotenv.env['API_ENDPOINT']}/professionalworkplace';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
@@ -305,7 +306,7 @@ class UserRepository extends GetConnect {
   // ignore: non_constant_identifier_names
   Future<int> insertHoraEntrada(professional_id, branch_id, token) async {
     try {
-      var url = '${Env.apiEndpoint}/record';
+      var url = '${dotenv.env['API_ENDPOINT']}/record';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
@@ -337,9 +338,9 @@ class UserRepository extends GetConnect {
       var url = '';
       String token = loginController.tokenUserLoggedIn;
       if (type == "Barbero") {
-        url = '${Env.apiEndpoint}/update-state-prof-workplace?id=$id&busy=0&professional_id=$idProf';
+        url = '${dotenv.env['API_ENDPOINT']}/update-state-prof-workplace?id=$id&busy=0&professional_id=$idProf';
       } else if (type == "Tecnico") {
-        url = '${Env.apiEndpoint}/update-state-tec-workplace?id=$id&select=0&professional_id=$idProf';
+        url = '${dotenv.env['API_ENDPOINT']}/update-state-tec-workplace?id=$id&select=0&professional_id=$idProf';
       }
       print('este es el id del puesto url:$url');
 
@@ -366,7 +367,7 @@ class UserRepository extends GetConnect {
     try {
       String token = loginController.tokenUserLoggedIn;
       print('este es el id del puesto222-idProfessional:$idProfessional');
-      var url = '${Env.apiEndpoint}/workplace-show-professional?professional_id=$idProfessional&charge=$charge';
+      var url = '${dotenv.env['API_ENDPOINT']}/workplace-show-professional?professional_id=$idProfessional&charge=$charge';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -398,7 +399,7 @@ class UserRepository extends GetConnect {
   Future gettimeClokInitial(int idProfessional, int branch, String token) async {
     try {
       print('este es el id del puesto222-idProfessional:$idProfessional');
-      var url = '${Env.apiEndpoint}/time-clock-reservation?professional_id=$idProfessional&branch_id=$branch';
+      var url = '${dotenv.env['API_ENDPOINT']}/time-clock-reservation?professional_id=$idProfessional&branch_id=$branch';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -431,7 +432,7 @@ class UserRepository extends GetConnect {
     try {
       String token = loginController.tokenUserLoggedIn;
       print('este es el id del puesto222-idProfessional:$idProfessional');
-      var url = '${Env.apiEndpoint}/record-show-professional?professional_id=$idProfessional&branch_id=$idBanch';
+      var url = '${dotenv.env['API_ENDPOINT']}/record-show-professional?professional_id=$idProfessional&branch_id=$idBanch';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -460,7 +461,7 @@ class UserRepository extends GetConnect {
     try {
       String token = loginController.tokenUserLoggedIn;
       print('este es el id del puesto222-idProfessional:$idProfessional');
-      var url = '${Env.apiEndpoint}/professional-show-apk?id=$idProfessional';
+      var url = '${dotenv.env['API_ENDPOINT']}/professional-show-apk?id=$idProfessional';
       print('este es el id del var url:$url');
 
       final headers = {

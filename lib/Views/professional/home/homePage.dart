@@ -2,6 +2,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:animate_do/animate_do.dart';
 //import 'package:lottie/lottie.dart';
@@ -582,7 +583,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   backgroundColor: Colors.white, //fondo de la imagen
                   child: ClipOval(
                     child: Image.network(
-                      '${Env.apiEndpoint}/images/${logUser.imageUrlLoggedIn}',
+                      '${dotenv.env['API_ENDPOINT']}/images/${logUser.imageUrlLoggedIn}',
                       fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
                       width: 50, // Ancho deseado de la imagen dentro del círculo
                       height: 50,
@@ -691,28 +692,28 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       children: [
                         Stack(
                           children: [
-                            Switch(
-                              value: _.switchValue,
-                              onChanged: (value) async {
-                                Get.dialog(
-                                  const Center(
-                                    child: CircularProgressIndicator(
-                                      color: Color(0xFFFDAE2A),
+                            Transform.scale(
+                              scale: 0.7, // 🔧 Cambia este valor para hacerlo más pequeño (0.5 = 50%)
+                              child: Switch(
+                                value: _.switchValue,
+                                onChanged: (value) async {
+                                  Get.dialog(
+                                    const Center(
+                                      child: CircularProgressIndicator(
+                                        color: Color(0xFFFDAE2A),
+                                      ),
                                     ),
-                                  ),
-                                  barrierDismissible: false,
-                                ); //Get.back();
-                                await Future.delayed(Duration(seconds: 1));
-                                await _.setswitchValue();
-                                Get.back();
-                                // _.switchValue = value;
-                              },
-                              activeColor: Colors.blue, // Color cuando está activado
-                              activeTrackColor:
-                                  const Color.fromARGB(255, 129, 193, 223), // Color de la pista cuando está activado
-                              inactiveThumbColor: const Color(0xFF2B3141), // Color del pulgar cuando está desactivado
-                              inactiveTrackColor:
-                                  Color.fromARGB(255, 87, 90, 99), // Color de la pista cuando está desactivado
+                                    barrierDismissible: false,
+                                  );
+                                  await Future.delayed(const Duration(seconds: 1));
+                                  await _.setswitchValue();
+                                  Get.back();
+                                },
+                                activeColor: Colors.blue,
+                                activeTrackColor: const Color.fromARGB(255, 129, 193, 223),
+                                inactiveThumbColor: const Color(0xFF2B3141),
+                                inactiveTrackColor: const Color.fromARGB(255, 87, 90, 99),
+                              ),
                             ),
                             GetBuilder<NotificationController>(builder: (_notiCont) {
                               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -743,7 +744,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                         : null,
                                     child: Text(
                                       _.switchValue ? '  Barbero' : 'Encargado',
-                                      style: const TextStyle(fontSize: 10, color: const Color(0xFF2B3141), height: 1),
+                                      style: const TextStyle(fontSize: 12, color: const Color(0xFF2B3141), height: 1),
                                     ),
                                   )
                                   // Ajusta el espacio entre el texto y el Badge

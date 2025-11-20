@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
@@ -233,7 +234,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                                 child: ClipOval(
                                                                   child: Image
                                                                       .network(
-                                                                    '${Env.apiEndpoint}/images/${controllerShoppingCart.selectserviceCart[index].image_service}',
+                                                                    '${dotenv.env['API_ENDPOINT']}/images/${controllerShoppingCart.selectserviceCart[index].image_service}',
                                                                     fit: BoxFit
                                                                         .cover, // Ajusta la imagen para cubrir completamente el área
                                                                     width:
@@ -658,7 +659,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                                 child: ClipOval(
                                                                   child: Image
                                                                       .network(
-                                                                    '${Env.apiEndpoint}/images/${controllerShoppingCart.selectproduct[index].image_product}',
+                                                                    '${dotenv.env['API_ENDPOINT']}/images/${controllerShoppingCart.selectproduct[index].image_product}',
                                                                     fit: BoxFit
                                                                         .cover, // Ajusta la imagen para cubrir completamente el área
                                                                     width:

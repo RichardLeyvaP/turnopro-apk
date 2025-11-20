@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -882,7 +883,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                           backgroundColor: Colors.white, //fondo de la imagen
                                           child: ClipOval(
                                             child: Image.network(
-                                              '${Env.apiEndpoint}/images/$imageClient',
+                                              '${dotenv.env['API_ENDPOINT']}/images/$imageClient',
                                               fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
                                               width: 50, // Ancho deseado de la imagen dentro del círculo
                                               height: 50,
@@ -1379,7 +1380,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: colorVariable, // Color de fondo en verde
+          backgroundColor: colorVariable, // Color de fondo en verde
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadiusValue), // Ajusta el radio según tus necesidades
           ),

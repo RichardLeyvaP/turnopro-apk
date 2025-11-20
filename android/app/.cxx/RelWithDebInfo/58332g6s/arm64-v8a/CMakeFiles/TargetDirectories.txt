@@ -1,0 +1,2 @@
+/Users/macbookpro/Documents/GitHub/turnopro-apk/android/app/.cxx/RelWithDebInfo/58332g6s/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/macbookpro/Documents/GitHub/turnopro-apk/android/app/.cxx/RelWithDebInfo/58332g6s/arm64-v8a/CMakeFiles/rebuild_cache.dir

@@ -2,6 +2,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
@@ -192,7 +193,7 @@ class _AttendingClientState extends State<AttendingClient> {
                           backgroundColor: Colors.white, //fondo de la imagen
                           child: ClipOval(
                             child: Image.network(
-                              '${Env.apiEndpoint}/images/${controllerclient.clientsColacionBranch[index].client_image}',
+                              '${dotenv.env['API_ENDPOINT']}/images/${controllerclient.clientsColacionBranch[index].client_image}',
                               fit: BoxFit
                                   .cover, // Ajusta la imagen para cubrir completamente el área
                               width:
@@ -379,14 +380,14 @@ class _AttendingClientState extends State<AttendingClient> {
                                 MaterialPageRoute(
                                   builder: (context) => ImageDetailScreen(
                                       imageUrl:
-                                          '${Env.apiEndpoint}/images/${controllerclient.clientAttendBranch[index].client_image}'),
+                                          '${dotenv.env['API_ENDPOINT']}/images/${controllerclient.clientAttendBranch[index].client_image}'),
                                 ),
                               );
                             },
                             child: ClipOval(
                               child: CachedNetworkImage(
                                 imageUrl:
-                                    '${Env.apiEndpoint}/images/${controllerclient.clientAttendBranch[index].client_image}',
+                                    '${dotenv.env['API_ENDPOINT']}/images/${controllerclient.clientAttendBranch[index].client_image}',
                                 placeholder: (context, url) => Container(
                                   width: 50,
                                   height: 50,

@@ -143,7 +143,7 @@ class _StatisticPageState extends State<StatisticPage>
                         controller: _tabController,
                         tabs: const [
                           Tab(text: 'Día'),
-                          Tab(text: 'Rango'),
+                          Tab(text: 'Rangos'),
                           // Tab(text: 'Sem.'),
                           Tab(text: 'Mensual'),
                         ],

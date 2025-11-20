@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Models/ClockModel.dart';
 import 'package:turnopro_apk/Models/clientsScheduled_model.dart';
@@ -18,7 +19,7 @@ class ClientsScheduledRepository extends GetConnect {
     int timeC1 = -999, timeC2 = -999, timeC3 = -999, timeC4 = -999;
 
     try {
-      var url = '${Env.apiEndpoint}/show-clocks?professional_id=$professionalId';
+      var url = '${dotenv.env['API_ENDPOINT']}/show-clocks?professional_id=$professionalId';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -86,8 +87,8 @@ class ClientsScheduledRepository extends GetConnect {
       int quantityClientRechaz = 0;
       int idTecn = idProf;
 
-      // var url = '${Env.apiEndpoint}/cola_branch_capilar?branch_id=$idBranch';
-      var url = '${Env.apiEndpoint}/cola_branch_tecnico?branch_id=$idBranch&professional_id=$idTecn';
+      // var url = '${dotenv.env['API_ENDPOINT']}/cola_branch_capilar?branch_id=$idBranch';
+      var url = '${dotenv.env['API_ENDPOINT']}/cola_branch_tecnico?branch_id=$idBranch&professional_id=$idTecn';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -163,7 +164,7 @@ class ClientsScheduledRepository extends GetConnect {
       bool varclientswaiting = false;
 
       //final response = await get(url, headers: headers);
-      var url = '${Env.apiEndpoint}/tail-branch-professional?professional_id=$idProfessional&branch_id=$idBranch';
+      var url = '${dotenv.env['API_ENDPOINT']}/tail-branch-professional?professional_id=$idProfessional&branch_id=$idBranch';
       print('a.......... getClientsScheduledList:url:$url');
 
       final headers = {
@@ -289,7 +290,8 @@ class ClientsScheduledRepository extends GetConnect {
       bool varclientswaiting = false;
 
       //final response = await get(url, headers: headers);
-      var url = '${Env.apiEndpoint}/tail-branch-professional?professional_id=$idProfessional&branch_id=$idBranch';
+
+      var url = '${dotenv.env['API_ENDPOINT']}/tail-branch-professional?professional_id=$idProfessional&branch_id=$idBranch';
       print('a.......... getClientsScheduledList:url:$url');
 
       final headers = {
@@ -413,7 +415,7 @@ class ClientsScheduledRepository extends GetConnect {
       int quantityClientAttended = 0;
       bool varclientswaiting = false;
       String token = token1;
-      var url = '${Env.apiEndpoint}/tail-branch-professional?professional_id=$idProfessional&branch_id=$idBranch';
+      var url = '${dotenv.env['API_ENDPOINT']}/tail-branch-professional?professional_id=$idProfessional&branch_id=$idBranch';
       print('a.......... getClientsScheduledList:url:$url');
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -536,11 +538,11 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   Future getCustomerServicesList2(idCar, token) async {
-    print('estoy en repositorio en - 3');
+    print('estoy en repositorio en - 35');
     print('ertyu - idCar $idCar');
     try {
       List<ServiceModel> serviceCustomer = [];
-      var url = '${Env.apiEndpoint}/car_services2?car_id=$idCar';
+      var url = '${dotenv.env['API_ENDPOINT']}/car_services2?car_id=$idCar';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -600,11 +602,11 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   Future getCustomerServicesList(idCar, token) async {
-    print('estoy en repositorio en - 3');
+    print('estoy en repositorio en - 36');
 
     try {
       List<ServiceModel> serviceCustomer = [];
-      var url = '${Env.apiEndpoint}/car_services?car_id=$idCar';
+      var url = '${dotenv.env['API_ENDPOINT']}/car_services?car_id=$idCar';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -632,21 +634,11 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
   Future sentValueClockDb(id, clock, token) async {
     print('estoy en repositorio en - 4');
     try {
-      var url = '${Env.apiEndpoint}/set_clock?reservation_id=$id&clock=$clock';
+      var url = '${dotenv.env['API_ENDPOINT']}/set_clock?reservation_id=$id&clock=$clock';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -664,18 +656,14 @@ class ClientsScheduledRepository extends GetConnect {
     } catch (e) {
       print(e);
     }
-  } //
+  }
 
-//
-//
-//
-//
-//
+
   Future<int> getValueClockDb(id, token) async {
     print('estoy en repositorio en - 5');
     int result = -99;
     try {
-      var url = '${Env.apiEndpoint}/get_clock?reservation_id=$id';
+      var url = '${dotenv.env['API_ENDPOINT']}/get_clock?reservation_id=$id';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -699,7 +687,7 @@ class ClientsScheduledRepository extends GetConnect {
   Future sendWhatsappNotificationRepos(String telefone, token) async {
     print('estoy en repositorio en - 5');
     try {
-      var url = '${Env.apiEndpoint}/whatsapp-notification?telefone_client=$telefone';
+      var url = '${dotenv.env['API_ENDPOINT']}/whatsapp-notification?telefone_client=$telefone';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -720,7 +708,7 @@ class ClientsScheduledRepository extends GetConnect {
 
   /* Future<bool> getServicesSimultaneou(idCar) async {
     var url =
-        '${Env.apiEndpoint}/car_services?car_id=$idCar'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
+        '${dotenv.env['API_ENDPOINT']}/car_services?car_id=$idCar'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
 
     final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -746,7 +734,7 @@ class ClientsScheduledRepository extends GetConnect {
   Future typeOfService(idProfessional, idBranch, token) async {
     print('estoy en repositorio en - 6');
     try {
-      var url = '${Env.apiEndpoint}/type_of_service?professional_id=$idProfessional&branch_id=$idBranch';
+      var url = '${dotenv.env['API_ENDPOINT']}/type_of_service?professional_id=$idProfessional&branch_id=$idBranch';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -775,7 +763,7 @@ class ClientsScheduledRepository extends GetConnect {
       print('EL TIEMPO ACTUAL clock->$clock');
       if (timeClock != null) {
         var url =
-            '${Env.apiEndpoint}/set_timeClock?reservation_id=$reservationId&timeClock=$timeClock&detached=$detached&clock=$clock';
+            '${dotenv.env['API_ENDPOINT']}/set_timeClock?reservation_id=$reservationId&timeClock=$timeClock&detached=$detached&clock=$clock';
 
         final headers = {
           "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -799,7 +787,7 @@ class ClientsScheduledRepository extends GetConnect {
   Future storeByType(type, branchId, professionalId, estado, token) async {
     print('estoy en repositorio en - 8');
     try {
-      var url = '${Env.apiEndpoint}/storeByType';
+      var url = '${dotenv.env['API_ENDPOINT']}/storeByType';
 
       final Map<String, dynamic> body = {
         'type': type,
@@ -835,7 +823,7 @@ class ClientsScheduledRepository extends GetConnect {
   Future storeByTypeId(id, type, branchId, professionalId, estado, token) async {
     print('estoy en repositorio en - 8');
     try {
-      var url = '${Env.apiEndpoint}/storeByTypeId';
+      var url = '${dotenv.env['API_ENDPOINT']}/storeByTypeId';
 
       final Map<String, dynamic> body = {
         'id': id,
@@ -874,7 +862,7 @@ class ClientsScheduledRepository extends GetConnect {
     print('estoy en repositorio en - 8');
     print('llamda a la api desde segundo plano-REPOS');
     try {
-      var url = '${Env.apiEndpoint}/storeByType-time';
+      var url = '${dotenv.env['API_ENDPOINT']}/storeByType-time';
 
       final Map<String, dynamic> body = {
         'type': type,
@@ -911,7 +899,7 @@ class ClientsScheduledRepository extends GetConnect {
     print('estoy en repositorio en - 9');
     try {
       var url =
-          '${Env.apiEndpoint}/return_client_status?reservation_id=$reservationId'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
+          '${dotenv.env['API_ENDPOINT']}/return_client_status?reservation_id=$reservationId'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -935,7 +923,7 @@ class ClientsScheduledRepository extends GetConnect {
     print('estoy en repositorio en - 10');
     try {
       List<ProfessionalModel> professionalList = [];
-      var url = '${Env.apiEndpoint}/professional-state?branch_id=$idBranch';
+      var url = '${dotenv.env['API_ENDPOINT']}/professional-state?branch_id=$idBranch';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -976,7 +964,7 @@ class ClientsScheduledRepository extends GetConnect {
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
-      var url = '${Env.apiEndpoint}/professional-state?branch_id=$idBranch&reservation_id=$idReserv';
+      var url = '${dotenv.env['API_ENDPOINT']}/professional-state?branch_id=$idBranch&reservation_id=$idReserv';
 
       final response = await get(url, headers: headers).timeout(Duration(seconds: 15));
       ;
@@ -1010,7 +998,7 @@ class ClientsScheduledRepository extends GetConnect {
     print('estoy en repositorio en - 10');
     try {
       List<ProfessionalModel> professionalList = [];
-      var url = '${Env.apiEndpoint}/professional-state-coordinador?branch_id=$idBranch&reservation_id=$idReserv';
+      var url = '${dotenv.env['API_ENDPOINT']}/professional-state-coordinador?branch_id=$idBranch&reservation_id=$idReserv';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -1047,7 +1035,7 @@ class ClientsScheduledRepository extends GetConnect {
     print('estoy en repositorio en - 10');
     try {
       List<ProfessionalModel> professionalList = [];
-      var url = '${Env.apiEndpoint}/professional-state?branch_id=$idBranch&reservation_id=$idReserv';
+      var url = '${dotenv.env['API_ENDPOINT']}/professional-state?branch_id=$idBranch&reservation_id=$idReserv';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -1083,7 +1071,7 @@ class ClientsScheduledRepository extends GetConnect {
   Future acceptOrRejectClient(reservationId, attended, token) async {
     print('estoy en repositorio en - 11');
     try {
-      var url = '${Env.apiEndpoint}/tail_attended?reservation_id=$reservationId&attended=$attended';
+      var url = '${dotenv.env['API_ENDPOINT']}/tail_attended?reservation_id=$reservationId&attended=$attended';
       print('ERROR:acceptOrRejectClient1 value = false- reservationId:$reservationId');
       print('ERROR:acceptOrRejectClient1 value = false- attended:$attended');
       final headers = {
@@ -1108,7 +1096,7 @@ class ClientsScheduledRepository extends GetConnect {
   Future acceptClientClock(timeClock, clock, detached, reservationId, attended, token) async {
     try {
       var url =
-          '${Env.apiEndpoint}/tail-attended-client?reservation_id=$reservationId&attended=$attended&timeClock=$timeClock&clock=$clock&detached=$detached';
+          '${dotenv.env['API_ENDPOINT']}/tail-attended-client?reservation_id=$reservationId&attended=$attended&timeClock=$timeClock&clock=$clock&detached=$detached';
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
@@ -1132,7 +1120,7 @@ class ClientsScheduledRepository extends GetConnect {
     print('estoy en repositorio en - 12');
     try {
       bool value = false;
-      var url = '${Env.apiEndpoint}/reservation-destroy';
+      var url = '${dotenv.env['API_ENDPOINT']}/reservation-destroy';
       print('deleteReservationClient value reservationId :$reservationId');
       print('deleteReservationClient value cause :$cause');
       final Map<String, dynamic> body = {
@@ -1168,7 +1156,7 @@ class ClientsScheduledRepository extends GetConnect {
 
       try {
         dio.Response response = await dioClient.post(
-          '${Env.apiEndpoint}/storeByReservationId',
+          '${dotenv.env['API_ENDPOINT']}/storeByReservationId',
           data: formData,
           options: dio.Options(
             headers: {
@@ -1191,30 +1179,6 @@ class ClientsScheduledRepository extends GetConnect {
         return false;
       }
 
-      /*  var url = '${Env.apiEndpoint}/storeByReservationId';
-
-    // Parámetros que deseas enviar en la solicitud POST
-    final Map<String, dynamic> body = {
-      'reservation_id': reservationId,
-      'look': look,
-      'client_look': image,
-    };
-    // Realizar la solicitud POST
-    final headers = {
-        "Authorization": "Bearer $token", // Agrega el token a los encabezados
-      };
-    final response = await post(headers:headers,url, body);
-    if (response.statusCode == 200) {
-      print('storeByReservationId value = true');
-      value = true;
-      return value;
-    } else {
-      print('ERROR:storeByReservationId value = false');
-      print(
-          'ERROR:storeByReservationId value = false : ${response.statusCode}');
-
-      return false;
-    }*/
     } catch (e) {
       print(e);
     }

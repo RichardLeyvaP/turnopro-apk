@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/clientsTechnical.controller.dart';
 import 'package:turnopro_apk/Models/Estadist0_model.dart';
@@ -24,7 +25,7 @@ class CoexistenceRepository extends GetConnect {
     List<CoexistenceModel> coexistenceList = [];
     try {
       print('a15627 idProfessional:$idProfessional');
-      var url = '${Env.apiEndpoint}/rules_professional?professional_id=$idProfessional&branch_id=$idBranch';
+      var url = '${dotenv.env['API_ENDPOINT']}/rules_professional?professional_id=$idProfessional&branch_id=$idBranch';
       print('a15627 siiiiiiii 0');
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -65,11 +66,11 @@ class CoexistenceRepository extends GetConnect {
     List<CoexistenceModel> coexistenceList = [];
     try {
       final url =
-          '${Env.apiEndpoint}/professional-win-year?professional_id=$idProfessional&branch_id=$idBranch&year=$year';
+          '${dotenv.env['API_ENDPOINT']}/professional-win-year?professional_id=$idProfessional&branch_id=$idBranch&year=$year';
       // var url =
-      //     '${Env.apiEndpoint}/professional-win-year?professional_id=$idProfessional&branch_id=$idBranch&year=$year';
+      //     '${dotenv.env['API_ENDPOINT']}/professional-win-year?professional_id=$idProfessional&branch_id=$idBranch&year=$year';
       print(
-          'url de grafico:${Env.apiEndpoint}/professional-win-year?professional_id=$idProfessional&branch_id=$idBranch&year=$year');
+          'url de grafico:${dotenv.env['API_ENDPOINT']}/professional-win-year?professional_id=$idProfessional&branch_id=$idBranch&year=$year');
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -113,7 +114,7 @@ class CoexistenceRepository extends GetConnect {
     List<ProfessionalModel> professionalList = [];
     print('estoy en getBranchProfessionals');
     try {
-      var url = '${Env.apiEndpoint}/branch_professionals?branch_id=$idBranch';
+      var url = '${dotenv.env['API_ENDPOINT']}/branch_professionals?branch_id=$idBranch';
       String token = controllerLogin.tokenUserLoggedIn;
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -167,9 +168,9 @@ class CoexistenceRepository extends GetConnect {
     print('werya tengo repositorio11 estoy en getBranchProfessionals');
     try {
       var url =
-          '${Env.apiEndpoint}/professional-car-date?branch_id=$branch_id&professional_id=$professional_id&data=$data';
+          '${dotenv.env['API_ENDPOINT']}/professional-car-date?branch_id=$branch_id&professional_id=$professional_id&data=$data';
       if (charge == 'Tecnico') {
-        url = '${Env.apiEndpoint}/tecnico-car-date?branch_id=$branch_id&professional_id=$professional_id&data=$data';
+        url = '${dotenv.env['API_ENDPOINT']}/tecnico-car-date?branch_id=$branch_id&professional_id=$professional_id&data=$data';
         print('soy tecnico siii');
       }
 
@@ -228,8 +229,8 @@ class CoexistenceRepository extends GetConnect {
 
 //     try {
 //       var url =
-//           '${Env.apiEndpoint}/professional-payment-show-apk?branch_id=$branch_id&professional_id=$professional_id&charge=$charge';
-//       // '${Env.apiEndpoint}/professional-payment-show?branch_id=$branch_id&professional_id=$professional_id';
+//           '${dotenv.env['API_ENDPOINT']}/professional-payment-show-apk?branch_id=$branch_id&professional_id=$professional_id&charge=$charge';
+//       // '${dotenv.env['API_ENDPOINT']}/professional-payment-show?branch_id=$branch_id&professional_id=$professional_id';
 
 //       final response = await get(url).timeout(Duration(seconds: 10));
 //       print('werya tengo repositorio22 estoy en getBranchProfessionals');
@@ -325,7 +326,7 @@ class CoexistenceRepository extends GetConnect {
     print('ENTRE AL NUEVO METODO ESTE NUMERO DE VECES:$attempts');
     try {
       var url =
-          '${Env.apiEndpoint}/professional-payment-show-apk?branch_id=$branch_id&professional_id=$professional_id&charge=$charge';
+          '${dotenv.env['API_ENDPOINT']}/professional-payment-show-apk?branch_id=$branch_id&professional_id=$professional_id&charge=$charge';
       String token = controllerLogin.tokenUserLoggedIn;
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -471,10 +472,10 @@ class CoexistenceRepository extends GetConnect {
     List<Estadist0Model> branchProf = [];
     print('werya tengo repositorio11 estoy en getBranchProfessionals');
     try {
-      var url = '${Env.apiEndpoint}/professional-car?branch_id=$branch_id&professional_id=$professional_id';
+      var url = '${dotenv.env['API_ENDPOINT']}/professional-car?branch_id=$branch_id&professional_id=$professional_id';
       if (charge == 'Tecnico') //tecnico
       {
-        url = '${Env.apiEndpoint}/tecnico-car?branch_id=$branch_id&professional_id=$professional_id';
+        url = '${dotenv.env['API_ENDPOINT']}/tecnico-car?branch_id=$branch_id&professional_id=$professional_id';
       }
 
       String token = controllerLogin.tokenUserLoggedIn;
@@ -520,9 +521,12 @@ class CoexistenceRepository extends GetConnect {
     // todo esta es la que carga a los profesionales y a los tecnicos
     List<BranchModel> branchProf = [];
     print('estoy en getBranchProfessionals');
-    try {
-      var url = '${Env.apiEndpoint}/login-phone-get-branch?email=$email&password=$password';
+    print('Este es el URL');
 
+    try {
+
+      var url = '${dotenv.env['API_ENDPOINT']}/login-phone-get-branch?email=$email&password=$password';
+      print(url);
       String token = controllerLogin.tokenUserLoggedIn;
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados

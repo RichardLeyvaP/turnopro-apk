@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:mutex/mutex.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
@@ -18,7 +19,7 @@ class NotificationRepository extends GetConnect {
       tittle, branchId, professionalId, description, type, token) async {
     try {
       var url =
-          '${Env.apiEndpoint}/notification2'; //esta inserta la notificacion con state = 3
+          '${dotenv.env['API_ENDPOINT']}/notification2'; //esta inserta la notificacion con state = 3
       print('inserto correctamente ********** la notificacio:$tittle');
       final Map<String, dynamic> body = {
         'tittle': tittle,
@@ -54,7 +55,7 @@ class NotificationRepository extends GetConnect {
   Future<bool> storeNotificationSERVICE(
       tittle, branchId, professionalId, description, type) async {
     try {
-      var url = '${Env.apiEndpoint}/notificationSERVICE';
+      var url = '${dotenv.env['API_ENDPOINT']}/notificationSERVICE';
       print('inserto correctamente ********** la notificacio:$tittle');
       final Map<String, dynamic> body = {
         'tittle': tittle,
@@ -89,7 +90,7 @@ class NotificationRepository extends GetConnect {
   Future<bool> storeNotification(tittle, branchId, professionalId, description,
       type, stateApk, token) async {
     try {
-      var url = '${Env.apiEndpoint}/notification';
+      var url = '${dotenv.env['API_ENDPOINT']}/notification';
       print('inserto correctamente ********** la notificacio:$tittle');
       final Map<String, dynamic> body = {
         'tittle': tittle,
@@ -151,7 +152,7 @@ class NotificationRepository extends GetConnect {
       bool varclientswaiting = false;
       //variables de la cola
       var url =
-          '${Env.apiEndpoint}/professional-branch-notif-queque?branch_id=$idBranch&professional_id=$idProf'; //cambiar aqui por servicios en la api
+          '${dotenv.env['API_ENDPOINT']}/professional-branch-notif-queque?branch_id=$idBranch&professional_id=$idProf'; //cambiar aqui por servicios en la api
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -418,7 +419,7 @@ class NotificationRepository extends GetConnect {
       List<NotificationModel> notificationList = [];
       List<NotificationModel> notificationListNew = [];
       var url =
-          '${Env.apiEndpoint}/notification-professional?branch_id=$idBranch&professional_id=$idProf'; //cambiar aqui por servicios en la api
+          '${dotenv.env['API_ENDPOINT']}/notification-professional?branch_id=$idBranch&professional_id=$idProf'; //cambiar aqui por servicios en la api
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -500,7 +501,7 @@ class NotificationRepository extends GetConnect {
 
   Future<int> updateNotificationsState3(idBranch, idProf, token) async {
     try {
-      var url = '${Env.apiEndpoint}/notification-state3';
+      var url = '${dotenv.env['API_ENDPOINT']}/notification-state3';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
@@ -525,7 +526,7 @@ class NotificationRepository extends GetConnect {
 
   Future<int> updateNotifications(idBranch, idProf, type, token) async {
     try {
-      var url = '${Env.apiEndpoint}/notification';
+      var url = '${dotenv.env['API_ENDPOINT']}/notification';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
@@ -552,7 +553,7 @@ class NotificationRepository extends GetConnect {
   Future<int> updateNotifications2(idBranch, idProf, id, token) async {
     try {
       var url =
-          '${Env.apiEndpoint}/notification2'; //pone de es estate del mensaje en 0
+          '${dotenv.env['API_ENDPOINT']}/notification2'; //pone de es estate del mensaje en 0
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {

@@ -153,8 +153,7 @@ class _StadisticaMensualPageNuevaState
                               width: MediaQuery.of(context).size.width * 0.4,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  primary:
-                                      buttonColor, // Color de fondo en verde
+                                  backgroundColor: buttonColor, // Color de fondo en verde
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
                                         8.0), // Ajusta el radio según tus necesidades

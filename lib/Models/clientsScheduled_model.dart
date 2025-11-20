@@ -2,6 +2,10 @@ import 'dart:convert';
 
 import 'package:turnopro_apk/Models/services_model.dart';
 
+import 'ServiceHistory_model.dart';
+
+
+
 class ClientsScheduledModel {
   int? reservation_id;
   int? idBarber;
@@ -28,6 +32,12 @@ class ClientsScheduledModel {
   int? from_home;
   int? select_professional;
   List<ServiceModel>? services;
+  String? url_image_barber;
+  String? frecuencia;
+  int? cant_visit;
+  List<ServiceHistoryModel>? history_service;
+
+
 
   ClientsScheduledModel({
     this.reservation_id,
@@ -55,6 +65,11 @@ class ClientsScheduledModel {
     this.from_home,
     this.select_professional,
     this.services,
+    this.url_image_barber,
+    this.frecuencia,
+    this.cant_visit,
+    this.history_service,
+
   });
 
   Map<String, dynamic> toMap() {
@@ -82,6 +97,11 @@ class ClientsScheduledModel {
       'from_home': from_home,
       'select_professional': select_professional,
       'services': services?.map((x) => x.toMap()).toList(),
+      'url_image_barber': url_image_barber,
+      'frecuencia': frecuencia,
+      'cant_visit': cant_visit,
+      'history_service': history_service?.map((x) => x.toMap()).toList(),
+
     };
   }
 
@@ -101,6 +121,7 @@ class ClientsScheduledModel {
       updated_at: map['updated_at'],
       professional_name: map['professional_name'] ?? '',
       professional_id: map['professional_id'] ?? 0,
+
       total_services: map['total_services'] ?? 0,
       clock: map['clock'] ?? 0,
       timeClock: map['timeClock'] ?? 0,
@@ -113,6 +134,12 @@ class ClientsScheduledModel {
       select_professional: map['select_professional'] ?? 0,
       services:
           map['services'] != null ? List<ServiceModel>.from(map['services'].map((x) => ServiceModel.fromMap(x))) : null,
+      url_image_barber: map['url_image_barber'] ?? '',
+      frecuencia: map['frecuencia'] ?? '',
+      cant_visit: map['cant_visit'] ?? 0,
+      history_service: map['history_service'] != null
+          ? List<ServiceHistoryModel>.from(map['history_service'].map((x) => ServiceHistoryModel.fromMap(x)))
+          : null,
     );
   }
 

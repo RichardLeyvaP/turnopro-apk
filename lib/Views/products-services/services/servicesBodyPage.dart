@@ -14,6 +14,8 @@ import 'package:turnopro_apk/Utility/utils.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/env.dart';
 //import 'package:turnopro_apk/Routes/index.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 class ServicesBodyPage extends StatefulWidget {
   const ServicesBodyPage({super.key});
@@ -153,7 +155,7 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                                   backgroundColor: Colors.white, //fondo de la imagen
                                                                   child: ClipOval(
                                                                     child: Image.network(
-                                                                      '${Env.apiEndpoint}/images/${_.services[index].image_service}',
+                                                                      '${dotenv.env['API_ENDPOINT']}/images/${_.services[index].image_service}',
                                                                       fit: BoxFit
                                                                           .cover, // Ajusta la imagen para cubrir completamente el área
                                                                       width:

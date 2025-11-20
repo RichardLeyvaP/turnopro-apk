@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsScheduled.controller.dart';
@@ -107,7 +108,7 @@ class ModalHelper {
                                     Colors.white, //fondo de la imagen
                                 child: ClipOval(
                                   child: Image.network(
-                                    '${Env.apiEndpoint}/images/$urlImage',
+                                    '${dotenv.env['API_ENDPOINT']}/images/$urlImage',
                                     fit: BoxFit
                                         .cover, // Ajusta la imagen para cubrir completamente el área
                                     width:

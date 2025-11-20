@@ -2,6 +2,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:animate_do/animate_do.dart';
 //import 'package:lottie/lottie.dart';
@@ -254,7 +255,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 backgroundColor: Colors.white, //fondo de la imagen
                 child: ClipOval(
                   child: Image.network(
-                    '${Env.apiEndpoint}/images/${logUser.imageUrlLoggedIn}',
+                    '${dotenv.env['API_ENDPOINT']}/images/${logUser.imageUrlLoggedIn}',
                     fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
                     width: 50, // Ancho deseado de la imagen dentro del círculo
                     height: 50,

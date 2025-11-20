@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, non_constant_identifier_names
 
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/shoppingCart.controller.dart';
@@ -28,7 +29,7 @@ class ProductRepository extends GetConnect {
       int carId = shoppingCartController.carIdClienteSelect!;
       String token = loginCont.tokenUserLoggedIn;
       var url =
-          '${Env.apiEndpoint}/car_orders?id=$carId'; //todo REVISAR aqui enviar el id del carro correspondiente al cliente-profesional
+          '${dotenv.env['API_ENDPOINT']}/car_orders?id=$carId'; //todo REVISAR aqui enviar el id del carro correspondiente al cliente-profesional
       print('estoy cargando el carro de id car :$url');
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -81,7 +82,7 @@ class ProductRepository extends GetConnect {
       String token = loginCont.tokenUserLoggedIn;
       List<OrderDeleteModel> orderDEL = [];
       var url =
-          '${Env.apiEndpoint}/car_order_delete_branch?branch_id=$branchId'; //AHORA MISMO EL QUE TIENE ES EL ID=6
+          '${dotenv.env['API_ENDPOINT']}/car_order_delete_branch?branch_id=$branchId'; //AHORA MISMO EL QUE TIENE ES EL ID=6
       // category_branch?branch_id=10
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -126,7 +127,7 @@ class ProductRepository extends GetConnect {
     print('este es el branchId: $branchId');
     try {
       var url =
-          '${Env.apiEndpoint}/category_products?id=$id&branch_id=$branchId';
+          '${dotenv.env['API_ENDPOINT']}/category_products?id=$id&branch_id=$branchId';
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
@@ -157,7 +158,7 @@ class ProductRepository extends GetConnect {
     try {
       String token = loginCont.tokenUserLoggedIn;
       List<ProductModel> productList = [];
-      var url = '${Env.apiEndpoint}/product_branch?branch_id=$branchId';
+      var url = '${dotenv.env['API_ENDPOINT']}/product_branch?branch_id=$branchId';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -186,7 +187,7 @@ class ProductRepository extends GetConnect {
     try {
       print('Nuevo metodo para productos - Iniciando');
       List<ProductModel> productList = [];
-      var url = '${Env.apiEndpoint}/store-products';
+      var url = '${dotenv.env['API_ENDPOINT']}/store-products';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
@@ -243,7 +244,7 @@ class ProductRepository extends GetConnect {
       print('internetError product_id:$product_id');
       print('internetError service_id:$service_id');
       print('internetError type:$type');
-      var url = '${Env.apiEndpoint}/order';
+      var url = '${dotenv.env['API_ENDPOINT']}/order';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
@@ -278,7 +279,7 @@ class ProductRepository extends GetConnect {
 
   Future<int> awaitRequestDelete(id, request_delete, token) async {
     try {
-      var url = '${Env.apiEndpoint}/order';
+      var url = '${dotenv.env['API_ENDPOINT']}/order';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
@@ -304,7 +305,7 @@ class ProductRepository extends GetConnect {
   Future awaitRequestDelete2(id, request_delete, idBranch, token) async {
     List<OrderDeleteModel> orderDEL = [];
     try {
-      var url = '${Env.apiEndpoint}/order2';
+      var url = '${dotenv.env['API_ENDPOINT']}/order2';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
@@ -351,7 +352,7 @@ class ProductRepository extends GetConnect {
 
   Future<int> orderDeleteCar(id) async {
     try {
-      var url = '${Env.apiEndpoint}/order-destroy';
+      var url = '${dotenv.env['API_ENDPOINT']}/order-destroy';
 
       // Parámetros que deseas enviar en la solicitud POST
       final Map<String, dynamic> body = {
@@ -378,7 +379,7 @@ class ProductRepository extends GetConnect {
     List<CategoryModel> categoryList = [];
     try {
       var url =
-          '${Env.apiEndpoint}/category_branch?branch_id=$branchIdLoggedIn';
+          '${dotenv.env['API_ENDPOINT']}/category_branch?branch_id=$branchIdLoggedIn';
 //todo aqui van las categorias de los productos para el tab
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -438,7 +439,7 @@ class ProductRepository extends GetConnect {
 
     try {
       var url =
-          '${Env.apiEndpoint}/category-products-branch?branch_id=$branch_id&professional_id=$professional_id&car_id=$car_id';
+          '${dotenv.env['API_ENDPOINT']}/category-products-branch?branch_id=$branch_id&professional_id=$professional_id&car_id=$car_id';
 //todo aqui van las categorias de los productos para el tab
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados

@@ -15,6 +15,7 @@ import 'package:turnopro_apk/Views/professional/clientsScheduled/ImageDetailScre
 import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/env.dart';
 //
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart' as dio;
@@ -44,7 +45,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     // controllerProduct.initializeData();
   }
 
@@ -132,7 +133,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
                                       MaterialPageRoute(
                                         builder: (context) => ImageDetailScreen(
                                             imageUrl:
-                                                '${Env.apiEndpoint}/images/${clientsController.urlImageTemporary}'),
+                                            '${dotenv.env['API_ENDPOINT']}/${clientsController.urlImageTemporary}'),
                                       ),
                                     );
                                   },
@@ -141,7 +142,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
                                     backgroundColor: Colors.white, // Fondo de la imagen
                                     child: ClipOval(
                                       child: CachedNetworkImage(
-                                        imageUrl: '${Env.apiEndpoint}/images/${clientsController.urlImageTemporary}',
+                                        imageUrl: '${dotenv.env['API_ENDPOINT']}/images/${clientsController.urlImageTemporary}',
                                         fit: BoxFit.cover, // Ajusta la imagen para cubrir completamente el área
                                         width: 50, // Ancho deseado de la imagen dentro del círculo
                                         height: 50, // Alto deseado de la imagen dentro del círculo

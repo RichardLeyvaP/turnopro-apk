@@ -2,6 +2,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:turnopro_apk/Controllers/clientsCoordinatorController.dart';
@@ -128,14 +129,14 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                                               builder: (context) =>
                                                   ImageDetailScreen(
                                                       imageUrl:
-                                                          '${Env.apiEndpoint}/images/$urlImageClient'),
+                                                          '${dotenv.env['API_ENDPOINT']}/images/$urlImageClient'),
                                             ),
                                           );
                                         },
                                         child: ClipOval(
                                           child: CachedNetworkImage(
                                             imageUrl:
-                                                '${Env.apiEndpoint}/images/$urlImageClient',
+                                                '${dotenv.env['API_ENDPOINT']}/images/$urlImageClient',
                                             placeholder: (context, url) =>
                                                 Container(
                                               width: 30,
@@ -333,13 +334,13 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                                               builder: (context) =>
                                                   ImageDetailScreen(
                                                       imageUrl:
-                                                          '${Env.apiEndpoint}/images/$urlImageClient'),
+                                                          '${dotenv.env['API_ENDPOINT']}/images/$urlImageClient'),
                                             ),
                                           );
                                         },
                                         child: CachedNetworkImage(
                                           imageUrl:
-                                              '${Env.apiEndpoint}/images/$urlImageClient',
+                                              '${dotenv.env['API_ENDPOINT']}/images/$urlImageClient',
                                           fit: BoxFit
                                               .fill, // Puedes ajustar el modo de ajuste según sea necesario
                                           width: 360,
@@ -425,7 +426,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                       radius: 24,
                       child: ClipOval(
                         child: Image.network(
-                          '${Env.apiEndpoint}/images/$image',
+                          '${dotenv.env['API_ENDPOINT']}/images/$image',
                           fit: BoxFit
                               .cover, // Ajusta la imagen para cubrir completamente el área
                           width:
@@ -687,7 +688,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                     backgroundColor: Colors.white, //fondo de la imagen
                     child: ClipOval(
                       child: CachedNetworkImage(
-                        imageUrl: '${Env.apiEndpoint}/images/$urlImage',
+                        imageUrl: '${dotenv.env['API_ENDPOINT']}/images/$urlImage',
                         placeholder: (context, url) => Container(
                           width: 30,
                           height: 30,
@@ -726,7 +727,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                       const Row(
                         children: [
                           Text(
-                            'Último barbero ',
+                            'Último profesional',
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,

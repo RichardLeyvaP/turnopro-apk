@@ -368,7 +368,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                       width: MediaQuery.of(context)
                                                                               .size
                                                                               .width *
-                                                                          0.9,
+                                                                          0.88,
                                                                       child:
                                                                           Column(
                                                                         crossAxisAlignment:
