@@ -63,11 +63,11 @@ class PagesConfigResponController extends GetxController {
   //************************************************** */
 
   void back() {
-    print('estoy haciendo un back()');
+    print('haciendo un back()');
     if (selectedIndexRespBackList.isNotEmpty) {
       selectedIndexResp = getLastElement(selectedIndexRespBackList);
       pageRespController.jumpToPage(selectedIndexResp);
-      print('si hay un historial en la cola:$selectedIndexResp');
+      print('si hay  historial en la cola:$selectedIndexResp');
       if (selectedIndexResp == 0) {
         clearList(selectedIndexRespBackList);
         print('eliminando la cola de selecciones');

@@ -53,9 +53,7 @@ Future<void> loadEnvironmentVariables() async {
         ? dotenv.env['API_TOKEN']!
         : " !PRODUCCION";
 
-    print(dotenv.env['API_ENDPOINT']);
-    print('API Key: $apiKey');
-    print('API Token: $apiToken');
+
   } catch (e) {
     print('Error al cargar las variables de entorno: $e');
     throw Exception('No se pudieron cargar las variables de entorno');

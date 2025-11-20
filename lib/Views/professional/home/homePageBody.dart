@@ -106,7 +106,7 @@ class _HomePageBodyState extends State<HomePageBody>
     int hAs = obtenerHoraActualEnSegundos();
     LocalStorage.prefs.setInt('valueHoraAnt', hAs);
 
-    print('--este es el value del clok... ->Value guardado:$valueClock');
+
   }
 
   int getTimeRemaining() {
@@ -127,11 +127,11 @@ class _HomePageBodyState extends State<HomePageBody>
   }
 
   reasigClient(int reservationId, int clientId) async {
-    print('se hacompletado los 3 min-ESTOY EN reasigClient()');
-    // int idProfDisp = await professionalDisp(reservationId);
+    print('se ha completado los 3 min reasigClient()');
+
     int idProfDisp = -99;
     if (idProfDisp != 0) {
-      // entonces reasignoP
+      // Reasignar profesional
       Get.dialog(
         const Center(
           child: Material(
@@ -226,7 +226,7 @@ class _HomePageBodyState extends State<HomePageBody>
 
   restartStopClock() {
     print(
-        'verificando si esta activo:Aqui estoy párando el reloj reiniciateClock()');
+        'verificando si esta activo: Deteniendo el reloj reiniciateClock()');
 
     LocalStorage.prefs.setInt('valueClockIni', 180);
     clientsScheduledController.setTotalTimeInitial(180);
@@ -337,13 +337,13 @@ class _HomePageBodyState extends State<HomePageBody>
                 estado);
           }
 
-          print('se ha completado los 3 min-ESTOY EN initState()-AFUERA');
+          print('se ha completado los 3 min- initState()');
           //AQUI SI HAY QUE REASIGNAR SE REASIGNA
           if (clientsScheduledController.clientsScheduledNextServ != null &&
               loginController.codigoQrValid() == true) {
             //es decir que tenga qr leido
             //   print('se hacompletado los 3 min-HAY CLIENTE POR ATENDER');
-            print('se hacompletado los 3 min-ESTOY EN initState()');
+            print('se ha completado los 3 min initState()');
             int reservationId = clientsScheduledController
                 .clientsScheduledNextServ!.reservation_id!;
             int clientId =
@@ -351,17 +351,14 @@ class _HomePageBodyState extends State<HomePageBody>
             reasigClient(reservationId, clientId);
           }
 
-          // reasigClient(int reservationId, int clientId);
+
           if (loginController.chargeUserLoggedIn != "Barbero y Encargado") {
             if (clientsScheduledController
                         .noncomplianceProfessional['Tiempo'] !=
                     0 &&
                 loginController.usserPermissionQr == 1 &&
                 clientsScheduledController.clientsScheSalon > 0) {
-              print('--este es el value del clok-FINALIZANDO*****22');
-              print(
-                  'inserto correctamente ********** .noncomplianceProfessional[]');
-
+              print('Valor de Reloj -FINALIZANDO');
               clientsScheduledController.changeNoncomplianceP(
                   type,
                   loginController.branchIdLoggedIn!,
@@ -403,16 +400,11 @@ class _HomePageBodyState extends State<HomePageBody>
       print('Se ha completado los 3-Renderizado de la pagina');
 
       _timer3 = Timer.periodic(Duration(seconds: 3), (timer) async {
-        //todo aqui voy guardando tds las variables que necesito para el segundo plano
-        //todo ********************************AQUI VER QUE SI FINALIZA NO CUARDE EN ESE MOMENTO***************************************
-        //
 
         clientsScheduledController.upadateVariablesValueTimersPreferenc();
         saveUserDataMemory(loginController.usserPermissionQr,
             getTimeRemaining(), clientsScheduledController.clientsScheSalon);
 
-        //todo aqui voy guardando tds las variables que necesito para el segundo plano
-        //todo ***********************************************************************
         print('Se ha completado los 3 minutos-Timer-Chequeando');
         if (clientsScheduledController.animationControllerInitial != null &&
             clientsScheduledController
@@ -424,7 +416,7 @@ class _HomePageBodyState extends State<HomePageBody>
       clientsScheduledController.animationControllerInitial!.forward();
 
       if (loginController.isLoggingInCharge == true) {
-        print('cargando aqui-15');
+
         await loginController.setLoggingInCharge(false, 'buildComponent-1114');
       }
     });
@@ -534,30 +526,26 @@ class _HomePageBodyState extends State<HomePageBody>
       print(
           'Esto se ejecuta 2 segundos después de renderizar el cuadro--nuevo');
 
-      if (getTimeRemaining() < 3) {
-        // aaqui cancelar hasta que vea si rasigna o no
-        // comente esto aqui porque no esta funcionando bien
-        //     loginController.setCodigoQrValidAnt(0); //10 es en espera
-      }
+
       if (loginController.idProfessionalLoggedIn != null &&
           loginController.branchIdLoggedIn != null &&
           (loginController.chargeUserLoggedIn == "Barbero" ||
-              (loginController.chargeUserLoggedIn == "Barbero y Encargado"))) {
-        //  verifyingClockTimeActive();
+          (loginController.chargeUserLoggedIn == "Barbero y Encargado"))) {
+
       }
       if (loginController.segundoPlano == 3) {
         print('cargando aqui-11');
         print('..segundoPlano siii APAGANDO LLAMADA');
         loginController.getSegundoPlano(1);
       }
-      //todo este no va hacer falta si lo implemento en ShopingCart.controller
+
       if (clientsScheduledController.activeModifyTime == true) {
-        print('cargando aqui-12');
+
         //AQUI GARANTIZO QUE AUMENTE EL VALOR DEL RELOJ UNA SOLA VEZ Y QUE INSERTE EN LA DB 1 SOLA VEZ
         clientsScheduledController.setActiveModifyTime(false);
       }
       if (clientsScheduledController.activeModifyTimeRest == true) {
-        print('cargando aqui-13');
+
         //AQUI GARANTIZO QUE disminuya EL VALOR DEL RELOJ UNA SOLA VEZ Y QUE INSERTE EN LA DB 1 SOLA VEZ
         clientsScheduledController.setActiveModifyTimeRest(false);
         clientsScheduledController.clearModifyTimeSpecificRest();
@@ -569,16 +557,16 @@ class _HomePageBodyState extends State<HomePageBody>
         //define que tipo de saludo dar dependiendo de la hora
 
         if (clientsScheduledController.closeIesperado == true) {
-          print('-*-*-*-**>>>> si fui un sierre inesperado');
+          print('-*-*-*-**>>>> si fui un cierre inesperado');
           if (clientsScheduledController.item.isNotEmpty) {
             loginController.setCodigoQrValid(1);
           } else if (loginController.usserPermissionQr == -99 &&
               loginController.usserPermissionQr == 0) {
             loginController.setCodigoQrValid(null);
-            print('id de mi puesto de trabajo 1 no esta en ningun puesto:null');
+            print('id de puesto de trabajo 1 no esta en ningun puesto:null');
           }
         } else {
-          print('-*-*-*-**>>>> NOOO fui un sierre inesperado');
+          print('-*-*-*-**>>>> NOOO fui un cierre inesperado');
         }
         if (loginController.isLoggingInCharge == true) {
           await loginController.setLoggingInCharge(
@@ -688,9 +676,7 @@ class _HomePageBodyState extends State<HomePageBody>
                 'if (index == 1)',
                 loginController.tokenUserLoggedIn);
           }
-          //lo que llamaba el timer 2
 
-          //ESTO ES LO QUE LLAMABA EL TIMER
           if (loginController.idProfessionalLoggedIn != null &&
               loginController.branchIdLoggedIn != null &&
               (loginController.chargeUserLoggedIn == "Barbero" ||
@@ -700,7 +686,7 @@ class _HomePageBodyState extends State<HomePageBody>
             //aqui verifico si se esta acabando algun servico para mandar una notificacion
           }
 
-          //ESTO ES LO QUE LLAMABA EL TIMER 3
+
           if (loginController.idProfessionalLoggedIn != null &&
               loginController.branchIdLoggedIn != null &&
               (loginController.chargeUserLoggedIn == "Barbero" ||
@@ -755,9 +741,8 @@ class _HomePageBodyState extends State<HomePageBody>
               clientsScheduledController
                   .setContClientsWaiting(-90009); //inicializo nuevamente a 0
             }
-            //
           }
-          //ESTO ES LO QUE LLAMABA EL TIMER 3
+
         } else if (loginController.usserPermissionQr == null) {
           //poner a false el cargando
           clientsScheduledController.setBoolControlVision(false);

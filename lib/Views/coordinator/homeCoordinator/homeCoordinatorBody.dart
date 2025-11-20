@@ -184,10 +184,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
 
             setState(() {
               pagesConfigC.currentPageIndex = index;
-              print(
-                  'mostrando aqui el valor de index ESTOY EN HOMEcOORDINATORbODY : $index');
-              print(
-                  'mostrando aqui el valor de pagesConfigC.pages31Index ESTOY EN HOMEcOORDINATORbODY wewewe : ${pagesConfigC.pages31Index}');
+
             });
           },
           children: [
@@ -356,7 +353,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                               controller: _tabController,
                                               onTap: (index) {
                                                 print(
-                                                    'SI ESTOY LLEGANDO AL OnTap');
+                                                    'LLEGANDO AL OnTap');
                                                 _tabController.animateTo(index);
                                               },
                                               labelColor: Colors
@@ -1041,7 +1038,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 controllerShoppingCart.setLoading(false);
                               }
                               loginController.setMakeCallC(
-                                  true); //por si no entrara al metodo,que avilite las llamadas del timer
+                                  true);
                             } else {
                               Get.snackbar(
                                 'Mensaje',
@@ -1158,7 +1155,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                             if (controllerLogin.usserPermissionQr == 1 ||
                                 controllerLogin.usserPermissionQr == 2) {
                               loginController.setMakeCallC(
-                                  false); //desavilite las llamadas del timer
+                                  false); //deshabilitar las llamadas del timer
                               controllerShoppingCart.setLoading(true);
                               int idProf = controllerclient
                                   .pOutRequestBranch[i].professional_id!;
@@ -1173,29 +1170,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       idProf, charge, 0);
                               //aqui mandar notificacion
                               if (result == 1) {
-                                //aqui sacar al barbero del puesto y td
-                                // await controllerLogin.exitPostworking("Barbero");
-                                // controllerLogin.exit(controllerLogin.tokenUserLoggedIn);
-                                //todo aqui ver para sacarlo desde aca
-                                //poner a 4 para que le cierre la session el Qr
-                                // controllerLogin.setCodigoQrValid(null);
-                                //viendo a la hora que se le aceptó
-                                //esto lo envia la api
-                                // var now = DateTime.now(); //hora actual
-                                // //sumo 1 hora
-                                // var formatter = DateFormat('hh:mm');
-                                // String formattedTime = formatter.format(now);
+                                // Se elimana el envio de noficacion
 
-                                // //codigo 200
-                                // String typeDelete =
-                                //     'Aceptada su solicitud de Salida';
-
-                                // notiController.storeNotification2(
-                                //     typeDelete,
-                                //     controllerLogin.branchIdLoggedIn,
-                                //     idProf,
-                                //     'Aceptada su solicitud de Salida, ($formattedTime).',
-                                //     charge);
                               } else {
                                 Get.snackbar(
                                   'Alerta',
@@ -1213,14 +1189,13 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 );
                               }
                               if (controllerLogin.branchIdLoggedIn != null) {
-                                // loginController.setMakeCallC(
-                                //   true); //avilite las llamadas del timer
+
                                 await controllerclient.outRequestBranch(
                                     controllerLogin.branchIdLoggedIn);
                                 controllerShoppingCart.setLoading(false);
                               }
                               loginController.setMakeCallC(
-                                  true); //avilite las llamadas del timer
+                                  true);
                             } else {
                               Get.snackbar(
                                 'Mensaje',
@@ -1257,14 +1232,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
         ),
       );
     }
-    //
-    //
-    //todo aqui le muestra las solicitudes de Salida
-    //
-    //
 
-    //
-    //todo aqui le muestra las solicitudes de Colación
+    //Solicitudes de Colación
     for (int i = 0; i < controllerclient.clientsColacionRequestLength; i++) {
       titulo = 'Solicitando Colación';
 
@@ -1307,7 +1276,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                             if (controllerLogin.usserPermissionQr == 1 ||
                                 controllerLogin.usserPermissionQr == 2) {
                               loginController.setMakeCallC(
-                                  false); //de-avilite las llamadas del timer
+                                  false);
                               controllerShoppingCart.setLoading(true);
                               int idProf = controllerclient
                                   .clientsColacionRequestBranch[i]
@@ -1324,19 +1293,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       idProf, charge, 1);
                               //aqui mandar notificacion
                               if (result == 1) {
-                                //codigo 200
-                                //esto lo manda la api
-                                //
-                                /* String typeDelete =
-                                    'Rechazada su solicitud de Colación';
-
-                                notiController.storeNotification2(
-                                    typeDelete,
-                                    controllerLogin.branchIdLoggedIn,
-                                    idProf,
-                                    'Su solicitud de Colación fue rechazada',
-                                    charge);
-                                    */
+                                //aqui se elimina la notificacion
                               } else {
                                 Get.snackbar(
                                   'Alerta',
@@ -1354,15 +1311,14 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 );
                               }
                               if (controllerLogin.branchIdLoggedIn != null) {
-                                // loginController.setMakeCallC(
-                                //   true); //avilite las llamadas del timer
+
                                 await clientsScheduledController
                                     .ColacionRequestBranch(
                                         controllerLogin.branchIdLoggedIn);
                                 controllerShoppingCart.setLoading(false);
                               }
                               loginController.setMakeCallC(
-                                  true); //avilite las llamadas del timer
+                                  true);
                             } else {
                               Get.snackbar(
                                 'Mensaje',
@@ -1481,7 +1437,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                             if (controllerLogin.usserPermissionQr == 1 ||
                                 controllerLogin.usserPermissionQr == 2) {
                               loginController.setMakeCallC(
-                                  false); //avilite las llamadas del timer
+                                  false);
                               controllerShoppingCart.setLoading(true);
                               int idProf = controllerclient
                                   .clientsColacionRequestBranch[i]
@@ -1497,28 +1453,10 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       idProf, charge, 2);
                               //aqui mandar notificacion
                               if (result == 1) {
-                                //poner a null el Qr
-                                // controllerLogin.setCodigoQrValid(null);
-                                //viendo a la hora que se le aceptó
-                                //esto lo manda la api
-                                //
-                                // var now = DateTime.now(); //hora actual
-                                // var oneHourLater =
-                                //     now.add(Duration(hours: 1)); //sumo 1 hora
-                                // var formatter = DateFormat('hh:mm');
-                                // String formattedTime = formatter.format(now);
-                                // String formattedTime2 =
-                                //     formatter.format(oneHourLater);
-                                // //codigo 200
-                                // String typeDelete =
-                                //     'Aceptada su solicitud de Colación';
 
-                                // notiController.storeNotification2(
-                                //     typeDelete,
-                                //     controllerLogin.branchIdLoggedIn,
-                                //     idProf,
-                                //     'Aceptada su solicitud de Colación, de ($formattedTime a $formattedTime2)',
-                                //     charge);
+                                String typeDelete = 'Aceptada su solicitud de Colación';
+
+
                               } else {
                                 Get.snackbar(
                                   'Alerta',
@@ -1542,7 +1480,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 controllerShoppingCart.setLoading(false);
                               }
                               loginController.setMakeCallC(
-                                  true); //avilite las llamadas del timer
+                                  true);
                             } else {
                               Get.snackbar(
                                 'Mensaje',
@@ -1579,11 +1517,8 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
         ),
       );
     }
-    //
-    //todo aqui le muestra las solicitudes de Colación
-    //
 
-    //todo aqui le muestra a los clientes solicitados como rechazados
+    //Clientes solicitados como rechazados
     for (int i = 0;
         i < controllerclient.clientsScheduledListBranchClientLength;
         i++) {
@@ -1627,7 +1562,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                             if (controllerLogin.usserPermissionQr == 1 ||
                                 controllerLogin.usserPermissionQr == 2) {
                               loginController.setMakeCallC(
-                                  false); //de-avilite las llamadas del timer
+                                  false);
                               //rechazar la Eliminación
                               controllerShoppingCart.setLoading(true);
                               print('rechazando la solicitud');
@@ -1678,7 +1613,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                       'Tecnico');
                                 }
                                 if (controllerLogin.branchIdLoggedIn != null) {
-                                  // loginController.setMakeCallC(true); //avilite las llamadas del timer
+
                                   await controllerclient
                                       .fetchClientsRechazBranch(
                                           controllerLogin.branchIdLoggedIn!);
@@ -1705,7 +1640,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 controllerShoppingCart.setLoading(false);
                               }
                               loginController.setMakeCallC(
-                                  true); //avilite las llamadas del timer
+                                  true);
                             } else {
                               Get.snackbar(
                                 'Mensaje',
@@ -1849,7 +1784,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                             if (controllerLogin.usserPermissionQr == 1 ||
                                 controllerLogin.usserPermissionQr == 2) {
                               loginController.setMakeCallC(
-                                  false); //de-avilite las llamadas del timer
+                                  false);
                               controllerShoppingCart.setLoading(true);
                               String charge = controllerclient
                                   .clientsScheduledListBranchClient[i].charge!;
@@ -1881,17 +1816,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                               print('return resul: IconButton $result');
                               if (result == true) {
                                 if (charge == 'Barbero') {
-                                  //esto lo hace la api
-                                  //
-                                  /*notiController.storeNotification2(
-                                      //storeNotification2 significa que hay que cambiar el Qr dependiendo de la respuesta
-                                      typeDelete,
-                                      controllerLogin.branchIdLoggedIn,
-                                      controllerclient
-                                          .clientsScheduledListBranchClient[i]
-                                          .professional_id,
-                                      'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue eliminado de su cola',
-                                      'Barbero');*/
+                               // se elimina envio notificacion
                                 } else if (charge == 'Tecnico') {
                                   //enviar mensaje al barbero que el cliente esta regresando porque fue rechazado
 
@@ -1917,7 +1842,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 }
                               }
                               if (controllerLogin.branchIdLoggedIn != null) {
-                                //  loginController.setMakeCallC(true); //de-avilite las llamadas del timer
+
                                 await controllerclient.fetchClientsRechazBranch(
                                     controllerLogin.branchIdLoggedIn!);
                                 await contShopp.loadOrderDeleteCar(
@@ -1925,7 +1850,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 controllerShoppingCart.setLoading(false);
                               }
                               loginController.setMakeCallC(
-                                  true); //avilite las llamadas del timer
+                                  true);
                             } else {
                               Get.snackbar(
                                 'Mensaje',
@@ -1962,10 +1887,9 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
         ),
       );
     }
-    //
-    //
-    //todo aqui le muestra a los clientes solicitados como rechazados
-//todo aqui le muestra las solicitudes de Eliminación de Servicios y Productos
+
+    //clientes solicitados como rechazados
+    //Muestra las solicitudes de Eliminación de Servicios y Productos
     for (int i = 0; i < contShopp.orderDeleteCar.length; i++) {
       if (contShopp.orderDeleteCar[i].nameService == '') {
         titulo = 'Eliminación de Producto';
@@ -2017,7 +1941,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 controllerLogin.usserPermissionQr == 2) {
                               //rechazar la Eliminación
                               loginController.setMakeCallC(
-                                  false); //de-avilite las llamadas del timer
+                                  false);
                               controllerShoppingCart.setLoading(true);
                               int result = await contShopp.requestDelete(
                                   contShopp.orderDeleteCar[i].id, 0);
@@ -2032,14 +1956,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   nameServiceProduct =
                                       contShopp.orderDeleteCar[i].nameProduct;
                                 }
-                                //la notificacion la crea la api
-                                //
-                                // notiController.storeNotification(
-                                //     'Solicitud de Eliminación Rechazada',
-                                //     controllerLogin.branchIdLoggedIn,
-                                //     contShopp.orderDeleteCar[i].profesional_id,
-                                //     '!Atención..El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} no fue aprobado para su eliminación.',
-                                //     'Barbero');
+
                               }
                               if (controllerLogin.branchIdLoggedIn != null) {
                                 await contShopp.loadOrderDeleteCar(
@@ -2047,7 +1964,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 controllerShoppingCart.setLoading(false);
                               }
                               loginController.setMakeCallC(
-                                  true); //avilite las llamadas del timer
+                                  true);
                             } else {
                               Get.snackbar(
                                 'Mensaje',
@@ -2196,7 +2113,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 0xFF19CF9E), // Color de fondo en verde
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
-                                  12.0), // Ajusta el radio según tus necesidades
+                                  12.0), // Ajusta el radio según necesidades
                             ),
                           ),
                           onPressed: () async {
@@ -2205,7 +2122,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                               if (contShopp.buttonPress == false) {
                                 contShopp.setButtonPress(true);
                                 loginController.setMakeCallC(
-                                    false); //avilite las llamadas del timer
+                                    false);
                                 controllerShoppingCart.setLoading(true);
                                 int result = await contShopp.orderDelete(
                                     contShopp.orderDeleteCar[i].id);
@@ -2227,33 +2144,10 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                     nameServiceProduct =
                                         contShopp.orderDeleteCar[i].nameProduct;
                                   }
-
-                                  if (typeDelete ==
-                                      'Aceptada Eliminación de Servicio') {
-                                    //esta notificación la esta haciendo el api
-                                    //
-                                    // notiController.storeNotification2(
-                                    //     typeDelete,
-                                    //     controllerLogin.branchIdLoggedIn,
-                                    //     contShopp
-                                    //         .orderDeleteCar[i].profesional_id,
-                                    //     '$serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado con tiempo de ${contShopp.orderDeleteCar[i].duration_service} min.${contShopp.orderDeleteCar[i].reservation_id}',
-                                    //     'Barbero');
-                                  } else {
-                                    //esta notificación la esta haciendo el api
-                                    //
-                                    // notiController.storeNotification(
-                                    //     typeDelete,
-                                    //     controllerLogin.branchIdLoggedIn,
-                                    //     contShopp
-                                    //         .orderDeleteCar[i].profesional_id,
-                                    //     'El $serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado satisfactoriamente.',
-                                    //     'Barbero');
-                                  }
                                 }
                                 if (controllerLogin.branchIdLoggedIn != null) {
-                                  // loginController.setMakeCallC(
-                                  // true); //avilite las llamadas del timer
+
+                                  // Habilitar las llamadas del timer
                                   await contShopp.loadOrderDeleteCar(
                                       controllerLogin.branchIdLoggedIn!);
                                   controllerShoppingCart.setLoading(false);
@@ -2263,7 +2157,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                               controllerShoppingCart.setLoading(false);
                               contShopp.setButtonPress(false);
                               loginController.setMakeCallC(
-                                  true); //avilite las llamadas del timer
+                                  true); //Habilitar las llamadas del timer
                             } else {
                               Get.snackbar(
                                 'Mensaje',
@@ -2301,10 +2195,9 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
       );
     }
     //
-    //todo aqui le muestra las solicitudes de Eliminación de Servicios y Productos
+    //Muestra las solicitudes de Eliminación de Servicios y Productos
     //
 
-    //
     if ((contShopp.orderDeleteCar.isEmpty) &&
         (controllerclient.clientsScheduledListBranchClient.isEmpty) &&
         (controllerclient.clientsScheduledListBranchClient.isEmpty) &&

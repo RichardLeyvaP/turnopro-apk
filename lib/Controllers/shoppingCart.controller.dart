@@ -66,7 +66,7 @@ class ShoppingCartController extends GetxController {
     final ServiceController serviceControll = Get.find<ServiceController>();
     idServiceCart.clear();
     requestDeleteOrder.clear();
-    print('estoy cargando el carro de id car :$carIdClienteSelect');
+    print('Cargando el carro de id car :$carIdClienteSelect');
 
     try {
       print('**** 11111111 **** *** ESTE ES EL getTotalServices ACTUALMENTE:$getTotalServices');
@@ -111,24 +111,18 @@ class ShoppingCartController extends GetxController {
   }
 
   Future<void> loadOrderDeleteCar(branchId) async {
-    print(' estoy loadOrderDeleteCar aqui en loadOrderDeleteCar');
+    print('loadOrderDeleteCar');
     try {
-      orderDeleteCar = await productRepository.serviceRequestProductDelete(branchId); //todo
-      print('estoy loadOrderDeleteCar llegue aquiiiii orderDeleteCar');
+      orderDeleteCar = await productRepository.serviceRequestProductDelete(branchId);
       print(orderDeleteCar);
-      print('estoy loadOrderDeleteCar llegue aquiiiii orderDeleteCar.length:${orderDeleteCar.length}');
-
       update();
     } catch (e) {
-      print('DIO ERROR loadOrderDeleteCar:$e');
-    } finally {
-      // controllerLogin.setMakeCallC(true); //avilite las llamadas del timer
-      // controllerLogin.setMakeCallE(true);
+      print('ERROR loadOrderDeleteCar:$e');
     }
   }
 
   Future<void> readUpdateDeleteCar(dynamic orderDel) async {
-    print('Estoy en loadOrderDeleteCar');
+    print('readUpdateDeleteCar');
     try {
       if (orderDel != null && orderDel is List<OrderDeleteModel>) {
         orderDeleteCar = orderDel;
@@ -137,15 +131,11 @@ class ShoppingCartController extends GetxController {
         print('El resultado no es una lista de OrderDeleteModel o es null');
       }
     } catch (e) {
-      print('DIO ERROR readUpdateDeleteCar: $e');
-    } finally {
-      // controllerLogin.setMakeCallC(true); //habilitar las llamadas del timer
-      // controllerLogin.setMakeCallE(true);
+      print('ERROR readUpdateDeleteCar: $e');
     }
   }
 
   Future<int> requestDelete(int id, int request_delete) async {
-    //todooooooooo
     try {
       int result = await productRepository.awaitRequestDelete(id, request_delete, controllerLogin.tokenUserLoggedIn);
       if (result == 1) {
@@ -162,7 +152,7 @@ class ShoppingCartController extends GetxController {
   }
 
   Future<int> requestDelete2(int id, int request_delete, int idBranch) async {
-    //todooooooooo
+
     try {
       orderDeleteCar =
           await productRepository.awaitRequestDelete2(id, request_delete, idBranch, controllerLogin.tokenUserLoggedIn);
@@ -183,10 +173,10 @@ class ShoppingCartController extends GetxController {
 
   Future<int> orderDelete(id) async {
     try {
-      int result = await productRepository.orderDeleteCar(id); //todo
+      int result = await productRepository.orderDeleteCar(id);
       if (result == 1) {
         internetError = 0;
-        //  loadOrderDeleteCar(carIdClienteSelect!); //todo mandar branch_id errorrrr
+
       }
       print('return resul: $result');
       return result;
@@ -202,7 +192,7 @@ class ShoppingCartController extends GetxController {
     if (type == 'service') {
       getTotalServices = getTotalServices + prec;
     } else if (type == 'product') {
-      //todo revisar la suma de los precios del producto
+      // revisar la suma de los precios del producto
       getTotalProduct = getTotalProduct + prec;
     }
     totalPrice = getTotalServices + getTotalProduct;
@@ -212,7 +202,7 @@ class ShoppingCartController extends GetxController {
   loadDataInitiallyNecessary() async {
     //*AQUI CARGANDO LOS SEVICIO Y PRODUCTOS Y PONIENDOLOS EN LAS LISTAS CORRESPONDIENTES
 
-    //TODO REVISAR ESTA FUNCION BIEN CONEXION INTERNET
+    // CONEXION INTERNET
     try {
       final ServiceController controllerService = Get.find<ServiceController>();
 
@@ -228,7 +218,6 @@ class ShoppingCartController extends GetxController {
   }
 
   Future<void> _fetchServiceList() async {
-    //todo esta esta revisada ok
     try {
       final LoginController controllerLogin = Get.find<LoginController>();
       serviceCart = await serviceRepository.getServiceList(
@@ -240,19 +229,6 @@ class ShoppingCartController extends GetxController {
       update();
     }
   }
-
-  /* Future<void> _fetchProductList() async {
-    try {
-      final LoginController controllerLogin = Get.find<LoginController>();
-      productCart = await productRepository.getProductList(controllerLogin
-          .branchIdLoggedIn); //todo1 mando a pedir los productos que hay en la sucursal
-      internetError = 0;
-      update();
-    } catch (e) {
-      internetError = -99;
-      update();
-    }
-  }*/
 
   Future<int> _addOrderCartListNEW(car_id, product_id, service_id, type) async {
     try {
@@ -302,8 +278,7 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  //
-  //
+
 
   Future shopProduct(priceProduct, car_id, productId, categoryId, branchId) async {
     try {
@@ -330,28 +305,21 @@ class ShoppingCartController extends GetxController {
   }
 
   void updateShoppingCartValueSer(priceService, id, car_id, type, servicioName) async {
-    // print('*************serviceCart:${serviceCart.length}');
 
     if (!idServiceCart.contains(servicioName)) {
-      // selectserviceCart.add(servicio);
+
       idServiceCart.add(servicioName);
-      _addOrderCartList(car_id, 0, id, type); //todo REVISAR TIENE PROBLEMA
+      _addOrderCartList(car_id, 0, id, type);
       //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
       getTotalServicesProduct_Sum(type, priceService);
       shoppingCart += 1;
       serviceListLength = selectserviceCart.length;
-      print('LISTA2 _fetchServiceList Limpiando long de idServiceCart.length:${idServiceCart.length}');
+
     }
     update();
   }
 
-// updateShoppingCartValueSer(
-  //                       _.services[index].price_service, //aqui 0 porque este campo solo lo utilizo si fuera un producto
-  //                     _.services[index].id,
-  //                       controllerShoppingCart.carIdClienteSelect,
-  //                    'service',
-  //                 _.services[index].name);
-  //(priceService, id, car_id, type, servicioName)
+
   Future<int> updateShoppingCartValueSerNew(List<ServiceModel> selectServiceNew) async {
     try {
       int durationService = 0;
@@ -363,7 +331,7 @@ class ShoppingCartController extends GetxController {
         int resul = await _addOrderCartListNEW(carIdClienteSelect, 0, service.id, 'service');
         //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
 
-        if (resul == 0) //todo esta bien si retorna 0
+        if (resul == 0) // esta bien si retorna 0
         {
           // Llama al método _addOrderCartList con los parámetros necesarios
           idServiceCart.add(service.name);
@@ -375,7 +343,7 @@ class ShoppingCartController extends GetxController {
           print('memsj durationService:en el for: ${service.duration_service * 60}');
           durationService += service.duration_service * 60;
         } else {
-          //si no lo agrega lo descelecciona
+          //si no lo agrega lo deselecciona
           serviceController.getSelectServiceNew(service);
         }
 
@@ -400,7 +368,7 @@ class ShoppingCartController extends GetxController {
         {
           addDurationToTimer(clientScheduCont.animationController4!, Duration(seconds: durationService));
         }
-        //esta e spara actualizar las variables de memoria del telefono
+        //esta espara actualizar las variables de memoria del telefono
         controllerLogin.getUpdateTime(durationService, (clientScheduCont.modifyTimeSpecific + 1),
             'updateShoppingCartValueSerNew-reloj=${clientScheduCont.modifyTimeSpecific + 1}');
       }
@@ -408,13 +376,11 @@ class ShoppingCartController extends GetxController {
       if (cant != selectServicesTotal.length) {
         cant = cant - selectServicesTotal.length;
       }
-
-      //clientsController.modifingTime((durationService));
       return cant;
     } catch (e) {
       print('memsj Error al guardar el servicio: $e');
       return -990099;
-      // Manejar el error según sea necesario
+
     } finally {
       update();
     }
@@ -430,15 +396,11 @@ class ShoppingCartController extends GetxController {
       // Si está detenido, establecer el tiempo actual a la duración total del controlador
       currentTime = controller.duration!.inSeconds;
     }
-    print('memsj durationService:ESTE ES EL TIEMPO QUE TENIA:$currentTime');
+
     // Convertir additionalDuration a segundos
     int additionalTime = additionalDuration.inSeconds;
-    print('tiempoooooo : additionalTime:$additionalTime');
-
     // Calcular el nuevo tiempo total en segundos
     int newTotalTime = currentTime + additionalTime;
-    print('tiempoooooo : newTotalTime:$newTotalTime');
-
     // Asignar la nueva duración al AnimationController
     controller.duration = Duration(seconds: newTotalTime);
 
@@ -456,7 +418,7 @@ class ShoppingCartController extends GetxController {
         // print('*************serviceCart:${serviceCart.length}');
         if (!selectserviceCart.contains(serviceCart[index])) {
           selectserviceCart.add(serviceCart[index]);
-          _addOrderCartList(car_id, 0, serviceCart[index].id, type); //todo REVISAR TIENE PROBLEMA
+          _addOrderCartList(car_id, 0, serviceCart[index].id, type);
           //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
           getTotalServicesProduct_Sum(type, serviceCart[index].price_service);
           shoppingCart += 1;
@@ -468,7 +430,7 @@ class ShoppingCartController extends GetxController {
     } else if (type == 'product') {
       if (internetError != -99) {
         print('todavia qui llego bien');
-        await _addOrderCartList(car_id, id, 0, type); //todo
+        await _addOrderCartList(car_id, id, 0, type);
         print('else if (type == product):$index');
         //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
         getTotalServicesProduct_Sum(type, priceProduct);
@@ -480,30 +442,7 @@ class ShoppingCartController extends GetxController {
     }
   }
 
-  /* Future shopProduct(
-      priceProduct, categoryId, car_id, type, productId, branchId) async {
-    final ProductController productCont = Get.find<ProductController>();
-    List<ProductModel>? tempProduct;
-    if (type == 'product') {
-      //EN ESTA LINEA DE ABAJO SE LLAMA FUNCION PARA CALCULAR EL TOTAL
-      getTotalProduct = getTotalProduct + priceProduct;
-      totalPrice = getTotalServices + getTotalProduct;
 
-      tempProduct =
-          await addShopProduct(priceProduct,car_id, productId, categoryId, branchId);
-//actualizar los productos pasando el id de la categoria
-      if (tempProduct != null) {
-        productCont.product = tempProduct;
-        productListLength = productCont.product.length;
-        print('Cantidad de productos -- -- -- $productListLength');
-        shoppingCart += 1;
-      } else {
-        print('Ha dado error al comprar los productos y dio tempProduct=null');
-      }
-
-      update();
-    }
-  }*/
 
   void deleteShoppingCartValue(int newValue) {
     shoppingCart -= newValue;

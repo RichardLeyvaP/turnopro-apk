@@ -176,22 +176,22 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                                         ),
                                       ),
                                       onTap: () async {
-                                        // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
+                                        // mostrando los servicios de un cliente para que no se actualice la cola en ese momento
                                         controllerClient
                                             .showingServiceClient(true);
-                                        // aqui selecciono el cliente
+                                        //seleccion el cliente
                                         controllerClient.getselectCustomer(
                                             index,
                                             controllerClient
                                                 .clientsScheduledList[index]
                                                 .car_id);
-                                        //AQUI MANDO ID DE CARRO PAR ACARGAR EL CARRITO PARA LOS SERVICIO Y PRODUCTOS
+                                        //SE ENVIA ID DE CARRO PAR ACARGAR EL CARRITO PARA LOS SERVICIO Y PRODUCTOS
                                         //Y SE ACTUALIZA LA VARIABLE GLOBAL carIdClienteSelect
                                         controllerClient.selectCarClient(
                                             controllerClient
                                                 .clientsScheduledList[index]
                                                 .car_id);
-                                        //AQUI MANDO EL ID DE RESERVACION Y ME DEVUELVE EL ESTADO DEL CLIENTE,
+                                        //SE ENVIA EL ID DE RESERVACION Y ME DEVUELVE EL ESTADO DEL CLIENTE,
                                         //SI SE ESTA ATENDINEDO O NO , PARA ASI SABER CUANDO MOSTRAR LOS BOTONES DE ATENDIDO Y
                                         //SELECCIONAR SERVICIO Y PRODUCTOS
                                         controllerClient.returnClientStatus(
@@ -199,7 +199,7 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                                                 .clientsScheduledList[index]
                                                 .reservation_id!,
                                             controllerLogin.tokenUserLoggedIn);
-                                        //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
+                                        //SE ENVIA EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
                                         controllerClient.returnClientName(
                                             (controllerClient
                                                     .clientsScheduledList[index]
@@ -214,17 +214,7 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                                                 controllerLogin
                                                     .tokenUserLoggedIn)
                                             .then((_) {
-                                          /*  ModalHelper.showModal(
-                                                context,
-                                                controllerClient
-                                                    .clientsScheduledList[index]
-                                                    .client_name,
-                                                controllerClient
-                                                    .clientsScheduledList[index]
-                                                    .reservation_id,
-                                                controllerClient
-                                                    .clientsScheduledList[index]
-                                                    .car_id);*/
+
                                         });
                                       },
                                       title: Row(
@@ -415,46 +405,11 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                             ),
                     ],
                   )
-            // : const Column(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       Image(
-            //         image: AssetImage(
-            //           'assets/images/icons/error-connection.png',
-            //         ),
-            //       ),
-            //       Text('Lo sentimos, hay problemas de conexión...'),
-            //     ],
-            //   ),
             ),
       ),
-      //
-      //esto se comento para quitar el bottomNavigationBar y dejar uno solo en la pagina
-      //
-      // bottomNavigationBar: Padding(
-      //   padding: const EdgeInsets.all(12.0),
-      //   child: BottomNavigationBarNew(),
-      // ),
+
     );
   }
 }
 
-//esto es por si necesito cargar la imagen del servicio
-// Widget _buildImage(String label, String image) {
-//   return Column(
-//     children: [
-//       Text(
-//         label,
-//         style: const TextStyle(
-//             color: Color.fromARGB(255, 21, 44, 83),
-//             fontWeight: FontWeight.w700),
-//       ),
-//       Image.asset(
-//         image, // Reemplaza con la URL de tu imagen
-//         width: 320.0,
-//         height: 100.0,
-//       ),
-//       const SizedBox(height: 8.0),
-//     ],
-//   );
-// }
+

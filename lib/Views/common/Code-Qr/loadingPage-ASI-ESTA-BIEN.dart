@@ -62,14 +62,9 @@ class _MyLoadingPageState extends State<MyLoadingPage> {
       }
       // Iniciar un temporizador de 2 segundos
       Timer(Duration(seconds: 2), () async {
-//VERIFICAR QUE ESTE TODO BIEN
 
-        // print(
-        //     'esto es lo que object-professionalsQR:${controllerLogin.professionalsQR}');
-        // print('esto es lo que object-placesQR:${controllerLogin.placesQR}');
-        // print(
-        //     'esto es lo que object-workplaceidQR:${controllerLogin.workplaceidQR}');
-        // if (controllerLogin.usserMssQr == 1) {
+
+
         if (controllerLogin.chargeUserLoggedIn == "Barbero" ||
             (controllerLogin.chargeUserLoggedIn == "Barbero y Encargado" &&
                 controllerLogin.switchValue == false)) {

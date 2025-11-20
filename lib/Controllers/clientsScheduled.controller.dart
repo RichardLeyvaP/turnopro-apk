@@ -110,7 +110,7 @@ class ClientsScheduledController extends GetxController {
   bool boolFilterShowNextTecnhical = false; //si esta en false es que es la primera vez
   bool showingServiceClients = false;
   bool showingServiceClientsTechnical =
-      false; //saber si estoy mostrando los servicios de algun cliente en el tecnico ne el desplegable
+      false; // mostrando los servicios de algun cliente en el tecnico
   int filterShowTimer = 0; //si esta en false es que es la primera vez
   int statusClientTemporary = -99;
   String nameClientTemporary = 'Cliente';
@@ -485,9 +485,7 @@ class ClientsScheduledController extends GetxController {
   }
 
   upadateVariablesValueTimersPreferenc() async {
-    // print(
-    //   'estoy entrando pa saber que relojes estan activos-upadateVariablesValueTimers-clientsSchudeld');
-    // saveData();
+
     bool hasClient1 = clientsAttended1 != null;
     bool hasClient2 = clientsAttended2 != null;
     bool hasClient3 = clientsAttended3 != null;

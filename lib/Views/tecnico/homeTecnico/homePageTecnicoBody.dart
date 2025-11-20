@@ -45,8 +45,6 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
       ..reset()
       ..forward();
 
-    // clientsScheduledController.animationControllerInitial!.reset();
-    // clientsScheduledController.animationControllerInitial!.forward();
   }
 
   @override
@@ -102,37 +100,23 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     });
 
     if (LocalStorage.prefs.getBool('valueClockTec1ActivT') != null) {
-      print('entrando porque esta el atendiendo cliente:SOY DIFERENTE DE NULL SI');
+
       bool activeClock = LocalStorage.prefs.getBool('valueClockTec1ActivT')!;
       if (activeClock) {
-        print('entrando porque esta el atendiendo cliente:si estoy iniciando :$activeClock');
+        print('Atendiendo cliente ...iniciando :$activeClock');
         //si es true hay clientes atendiendose
-//obtengo el tiempo en el que esta
+        //obtengo el tiempo en el que esta
         int timeAct = LocalStorage.prefs.getInt('valueClockTec1')!;
         if (timeAct < 0) {
           timeAct = 2;
         }
-        // clientsScheduledController.animationTechnicalController1 = AnimationController(
-        //   vsync: this,
-        //   duration: Duration(seconds: timeAct),
-        // );
 
         clientsScheduledController.animationTechnicalController1!
           ..duration = Duration(seconds: timeAct)
           ..reset()
           ..forward();
-      } else {
-        print('entrando porque esta el atendiendo cliente:NOOO estoy iniciando :$activeClock');
       }
-      // else {
-      //   //si es false simplemente creo e inicializo el control para ser utilizado proximamente
-      //   clientsScheduledController.animationTechnicalController1!
-      // ..duration = Duration(seconds: 300)
-      // ..reset()
-      // ..forward();
-      // }
-    } else {
-      print('entrando porque esta el atendiendo cliente:SOY NULL SI');
+
     }
   }
 
@@ -142,15 +126,14 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     int hAs = obtenerHoraActualEnSegundos();
     LocalStorage.prefs.setInt('valueHoraAnt', hAs);
 
-    print('--este es el value del clok... ->Value guardado:$valueClock');
+    print('Valor del Reloj -> Value guardado:$valueClock');
 
 //si el clock de cliente atendido esta activo
     if (LocalStorage.prefs.getBool('valueClockTec1ActivT') != null &&
         LocalStorage.prefs.getBool('valueClockTec1ActivT') == true) {
-      print('entrando porque esta el atendiendo cliente: 1');
+
       int valueClock = getTimeRemainingAten();
-      print('entrando porque esta el atendiendo cliente:valueClock: $valueClock');
-      // clientsScheduledController.setTotalTimeClientec(valueClock);
+
       await LocalStorage.prefs.setInt('valueClockTec1', valueClock);
     }
   }
@@ -168,13 +151,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
 
   int getTimeRemainingAten() {
     if (clientsScheduledController.animationTechnicalController1 != null) {
-      // return (timeAct - (clientsScheduledController.animationTechnicalController1!.value * timeAct))
-      //     .round();
-      print('entrando porque esta el atendiendo cliente:***************************************************** ');
-      print(
-          'entrando porque esta el atendiendo cliente:totalTimeClient = ${clientsScheduledController.totalTimeClient} ');
-      print(
-          'entrando porque esta el atendiendo cliente:clientsScheduledController.animationTechnicalController1!.value = ${clientsScheduledController.animationTechnicalController1!.value} ');
+
       return (clientsScheduledController.totalTimeClient -
               (clientsScheduledController.animationTechnicalController1!.value *
                   clientsScheduledController.totalTimeClient))
@@ -257,9 +234,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                 ..stop();
             }
           }
-          // else
-          // if()//si hubiera cliente en cola
-          //await Future.delayed(Duration(seconds: 1));
+
           //Buscar notificaciones
           print('callTimerTec 4-callTimerTecNotification-llamada 8 seg');
           notiController.fetchNotificationList(loginController.branchIdLoggedIn, loginController.idProfessionalLoggedIn,
@@ -294,20 +269,15 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     super.build(context);
     return GetBuilder<ClientsTechnicalController>(builder: (controllerclient) {
       String firstName = '';
-      // //todo AQUI DETENGO LOS TIMER QUE NO ESTAN VISIBLES
+      // AQUI DETENGO LOS TIMER QUE NO ESTAN VISIBLES
 
       if (controllerclient.clientsNextTechnical != null) {
         String fullName = controllerclient.clientsNextTechnical!.client_name!;
-        //todo1                // Dividir el nombre completo por espacios
+       // Dividir el nombre completo por espacios
         List<String> partsName = fullName.split(" "); // Tomar los primeros dos nombres (si existen)
         firstName = partsName.isNotEmpty ? partsName[0] : "";
-        // String secondName = partsName.length > 1 ? partsName[1] : "";
-      }
 
-      // clientsScheduledController.animationControllerInitialT!.forward();
-      // LocalStorage.prefs.setBool('valueClockActivT', true);
-      // int hAs = obtenerHoraActualEnSegundos();
-      // LocalStorage.prefs.setInt('valueHoraAnt', hAs);
+      }
 
       return Column(
         //Cart anaranjado grande inicial que tiene el cronometro
@@ -328,7 +298,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                /*todo texto arriba */ Padding(
+                                 Padding(
                                   padding: const EdgeInsets.only(left: 8),
                                   child: Align(
                                     alignment: Alignment.topLeft,
@@ -347,7 +317,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
 
                                 /*CRONOMETRO*/ Padding(
                                   padding: const EdgeInsets.all(4.0),
-                                  //todo AQUI LA LOGICA AL MOSTRAR LOS TIMER
+                                  // AQUI LA LOGICA AL MOSTRAR LOS TIMER
                                   child: SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
                                     child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -434,16 +404,16 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                       ]
                                     ]),
                                   ),
-                                  //FIN CLIENTES QUE ESTAN EN COLA
+
                                 ),
-                                //todo CLIENTES QUE ESTAN EN COLA
+
                               ],
                             ),
                           )
                         : SizedBox(
                             height: 100,
                           ),
-                    //aqui mostarr el que le toca
+
                     controllerclient.boolFilterShowNextTecnhical
                         ? Padding(
                             padding: const EdgeInsets.only(left: 0, top: 8, right: 0, bottom: 6),
@@ -492,16 +462,6 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                       if (result == 1) //td bien
                                                       {
                                                         loginController.setCodigoQrValid(2);
-                                                        //esto lo hace la api
-                                                        //
-                                                        // notiController.storeNotification(
-                                                        //     'Solicitud de rechazo',
-                                                        //     loginController
-                                                        //         .branchIdLoggedIn,
-                                                        //     loginController
-                                                        //         .idProfessionalLoggedIn,
-                                                        //     'EL Técnico "${loginController.nameUserLoggedIn}" está rechazando al cliente "$nameClient"',
-                                                        //     'Ambos'); //esto es para quele llegue a coordinador y encargado
 
                                                         clientsScheduledController.animationControllerInitialT =
                                                             AnimationController(
@@ -512,10 +472,8 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                         clientsScheduledController.animationControllerInitialT!.reset();
                                                         clientsScheduledController.animationControllerInitialT!.stop();
                                                         // }
-                                                      } else // falló
-                                                      {
-                                                        print('No mando por alguna razón aqui - result = $result ');
-                                                      }
+                                                      } else
+
                                                       loginController.setMakeCallT(true);
                                                     } else if (loginController.usserPermissionQr == 2) {
                                                       Get.snackbar(
@@ -621,7 +579,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                       int resulButton = 0;
                                                       resulButton = loginController.handleButtonClickTec(
                                                           controllerclient.clientsNextTechnical!.reservation_id!);
-                                                      //todo-1
+
                                                       if (resulButton == 1) {
                                                         //aqui inicia el tmer de cliente atendido
                                                         //el valor 1 es que es que le va atender y por ende va ser el que esta atendiendo
@@ -808,14 +766,14 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
         ],
       );
     });
-    //todoooooooooooooooooooooooooooooooooooooooooo
+
   }
 
-  //todo9
+
   cardTimer(clientsL, int index, Key uniqueKey, String name, ClientsTechnicalController clientsScheduledController,
       AnimationController _animationController, String imageClient) {
     String segundos = "";
-    // Color colorInicial = Colors.white;
+
     Color colorInicial = Colors.white;
     Color colorInicialCirculo = const Color(0xFFFDAE2A);
     double fontSizeText = (MediaQuery.of(context).size.width * 0.030);
@@ -972,7 +930,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                 ],
                               ),
 
-                              // const Text("          "),
+
                             ],
                           ),
                           ButtonBar(
@@ -1045,16 +1003,15 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                       ..reset()
                                       ..stop();
 
-                                    //ponemos afalse la variable que nos indica que hay cliente atendiendose
+                                    //ponemos false la variable que nos indica que hay cliente atendiendose
                                     LocalStorage.prefs.setBool('valueClockTec1ActivT', false);
-                                    //y dejamos inicializada en 5 min para el nuevo cliente por atender
+                                    // dejamos inicializada en 5 min para el nuevo cliente por atender
                                     LocalStorage.prefs.setInt('valueClockTec1', 300);
                                     //reiniciando el timer del inicio
                                     LocalStorage.prefs.setInt('valueClockIni', 180);
                                     clientsScheduledController.setTotalTimeInitialTec(180);
 
                                     // La animación ha llegado al final, reiniciar
-
                                     clientsScheduledController.animationControllerInitialT!
                                       ..duration = const Duration(seconds: 180)
                                       ..reset()
@@ -1112,9 +1069,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
               height: 130,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                // border: Border.all(
-                //   color: Color.fromARGB(255, 75, 24, 2),
-                // ),
+
                 color: const Color(0xFFFDAE2A),
               ),
               child: Padding(
@@ -1407,11 +1362,10 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                 ),
               ),
               barrierDismissible: false,
-            ); //Get.back();
-            // controllerLogin.setIsLoadingFor(true);
+            );
             await coexistenceController.fetchCoexistenceList();
             pagesConfigC.onTabTapped(4); //index = 4 -> /CoexistencePage
-            //Get.back();
+
           }
           if (titleCart == 'Estadísticas') {
             Get.dialog(
@@ -1421,7 +1375,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                 ),
               ),
               barrierDismissible: false,
-            ); //Get.back();
+            );
             await Future.delayed(const Duration(milliseconds: 500));
             await coexistenceController.fetchEstadist0();
             pagesConfigC.onTabTapped(3); //index = 3 -> /StatisticPage
@@ -1438,7 +1392,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
             if (loginController.idProfessionalLoggedIn != null &&
                 loginController.branchIdLoggedIn != null &&
                 (loginController.chargeUserLoggedIn == "Tecnico")) {
-              //await Future.delayed(Duration(seconds: 1));
+
               //Buscar notificaciones
               await notiController.fetchNotificationList(loginController.branchIdLoggedIn,
                   loginController.idProfessionalLoggedIn, 'Tecnico', 'Cart-home', loginController.tokenUserLoggedIn);

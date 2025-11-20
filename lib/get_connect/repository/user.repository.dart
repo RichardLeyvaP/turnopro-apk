@@ -342,14 +342,14 @@ class UserRepository extends GetConnect {
       } else if (type == "Tecnico") {
         url = '${dotenv.env['API_ENDPOINT']}/update-state-tec-workplace?id=$id&select=0&professional_id=$idProf';
       }
-      print('este es el id del puesto url:$url');
+
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
       final response =
           await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
-      print('este es el id del puesto url:${response.statusCode}');
+
 
       //print(response.body);
       if (response.statusCode == 200) {
@@ -366,7 +366,7 @@ class UserRepository extends GetConnect {
   Future getIdPuestoRepo(int idProfessional, String charge) async {
     try {
       String token = loginController.tokenUserLoggedIn;
-      print('este es el id del puesto222-idProfessional:$idProfessional');
+      print('Id del puesto - idProfessional:$idProfessional');
       var url = '${dotenv.env['API_ENDPOINT']}/workplace-show-professional?professional_id=$idProfessional&charge=$charge';
 
       final headers = {
@@ -374,17 +374,17 @@ class UserRepository extends GetConnect {
       };
       final response =
           await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
-      print('este es el id del puesto333-response:$response');
-      print('este es el id del puesto333-response.statusCode:${response.statusCode}');
-      //print(response.body);
+      print('Id del puesto Response:$response');
+      print('Id del puesto response.statusCode:${response.statusCode}');
+
       if (response.statusCode == 200) {
         final intValue = int.parse(response.body);
-        print('este es el id del puesto333-return response:$intValue');
+
         if (intValue == 0) {
-          print('este es el id del puesto333-return intValue11:$intValue');
+
           return -99;
         } else {
-          print('este es el id del puesto333-return intValue22:$intValue');
+
           return intValue;
         }
       } else {
@@ -398,7 +398,7 @@ class UserRepository extends GetConnect {
 
   Future gettimeClokInitial(int idProfessional, int branch, String token) async {
     try {
-      print('este es el id del puesto222-idProfessional:$idProfessional');
+
       var url = '${dotenv.env['API_ENDPOINT']}/time-clock-reservation?professional_id=$idProfessional&branch_id=$branch';
 
       final headers = {
@@ -406,14 +406,11 @@ class UserRepository extends GetConnect {
       };
       final response =
           await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
-      print('este es el id del puesto333-response:$response');
-      print('este es el id del puesto333-response-url:$url');
-      print('este es el id del puesto333-response.statusCode de gettimeClokInitial:${response.statusCode}');
-      //print(response.body);
+
       if (response.statusCode == 200) {
         final intValue = response.body;
         print(
-            'el tiempo devuelto inicial es desde el metodo - ENTRANDOOOO-clockInitialTimeB-timeInicDb-EN EL REPOSITORIO:$intValue');
+            'el tiempo devuelto inicial es desde el metodo -clockInitialTimeB-timeInicDb-EN EL REPOSITORIO:$intValue');
         if (intValue > 182) {
           return 2;
         } else {
@@ -431,7 +428,7 @@ class UserRepository extends GetConnect {
   Future<int> getEntradaPuestoRepo(int idProfessional, int idBanch) async {
     try {
       String token = loginController.tokenUserLoggedIn;
-      print('este es el id del puesto222-idProfessional:$idProfessional');
+
       var url = '${dotenv.env['API_ENDPOINT']}/record-show-professional?professional_id=$idProfessional&branch_id=$idBanch';
 
       final headers = {
@@ -439,14 +436,11 @@ class UserRepository extends GetConnect {
       };
       final response =
           await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
-      print('este es el id del puesto333-response:$response');
-      print('este es el id del puesto333-response.statusCode:${response.statusCode}');
-      //print(response.body);
+
+
       if (response.statusCode == 200) {
         int intValue = int.parse(response.body);
-        print('este es el id del puesto333-return response:$intValue');
 
-        print('este es el id del puesto333-return intValue22:$intValue');
         return intValue;
       } else {
         return -99;
@@ -460,21 +454,20 @@ class UserRepository extends GetConnect {
   Future<int> getStateProfessional(int idProfessional) async {
     try {
       String token = loginController.tokenUserLoggedIn;
-      print('este es el id del puesto222-idProfessional:$idProfessional');
+
       var url = '${dotenv.env['API_ENDPOINT']}/professional-show-apk?id=$idProfessional';
-      print('este es el id del var url:$url');
+      print('Id del variable url:$url');
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
       final response =
           await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
-      print('este es el id del puesto333-response:$response');
-      print('este es el id del puesto333-response.statusCode:${response.statusCode}');
+
       //print(response.body);
       if (response.statusCode == 200) {
         final intValue = int.parse(response.body);
-        print('este es el id del puesto333-return response:${response.body}');
+
         return intValue;
       } else {
         return -99;

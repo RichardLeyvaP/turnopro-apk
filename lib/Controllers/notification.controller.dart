@@ -242,9 +242,8 @@ class NotificationController extends GetxController {
     final ClientsScheduledController clientCon =
         Get.find<ClientsScheduledController>();
     List<ClientsScheduledModel> clientsAux = [];
-    print('12345llamada timer estoy en CAntidad de Notificaciones-$type');
-    print(
-        'llamada timer ...tipo:$type......idSucursal:$idBranch......iProf:$idProfe');
+    print('llamada timer  en Cantidad de Notificaciones-$type');
+
 
     try {
       controllerLogin

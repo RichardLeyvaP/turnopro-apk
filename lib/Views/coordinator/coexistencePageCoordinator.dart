@@ -59,7 +59,7 @@ class _CoexistencePageCoordinatorState extends State<CoexistencePageCoordinator>
   /**VARIABLES NECESARIAS PARA EL CAR DE ARRIBA */
   @override
   Widget build(BuildContext context) {
-    print('ESTOY ENTRANDO AQUI A CONVIVENCIAS');
+    print('ENTRANDO A CONVIVENCIAS');
     return Scaffold(
       body: GetBuilder<CoexistenceController>(builder: (controll) {
         List<ProfessionalModel> profesionales = controll.professional;

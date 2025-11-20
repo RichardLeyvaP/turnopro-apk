@@ -9,8 +9,7 @@ import 'package:turnopro_apk/Models/coexistence_model.dart';
 import 'package:turnopro_apk/Models/product_model.dart';
 import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/Routes/index.dart';
-import 'package:turnopro_apk/Views/coordinator/coexistencePageCoordinator.dart';
-import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
+
 import 'package:turnopro_apk/get_connect/repository/clientsCoordinator.repository.dart';
 
 class ClientsCoordinatorController extends GetxController {
@@ -88,7 +87,7 @@ class ClientsCoordinatorController extends GetxController {
       false; //si esta en false es que es la primera vez
   bool showingServiceClients = false;
   bool showingServiceClientsTechnical =
-      false; //saber si estoy mostrando los servicios de algun cliente en el tecnico ne el desplegable
+      false; // mostrando los servicios de algun cliente en el tecnico
   int filterShowTimer = 0; //si esta en false es que es la primera vez
   int statusClientTemporary = -99;
   String nameClientTemporary = 'Cliente';
@@ -124,12 +123,7 @@ class ClientsCoordinatorController extends GetxController {
   List<ClientsScheduledModel> clientAttenCORD = [];
   final LoginController controllerLogin = Get.find<LoginController>();
 
-  //
-  //
-  /* saveIdProfessional(int id) {
-    professionalIdCORD = id;
-    update();
-  }*/
+
 
   void setImagePath(value) {
     imagePath = value;
@@ -166,55 +160,43 @@ class ClientsCoordinatorController extends GetxController {
           resultList['ConnectionIssues'] == true) {
         correctConnection = false;
         print(
-            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor-1-notification_tail_colationR');
+            ' variable para la vista indicando que hay problemas al conectarse con el servidor-1-notification_tail_colationR');
       } else {
-        //aqui evaluar resultados
-        //todo *******-1
+        // evaluar resultados
+
         //La cola donde attended es 0 3 y 33
         correctConnection = true;
-        //aqui estoy guardando la cola del dia de hoy del profesional
+        // guardando la cola del dia de hoy del profesional
         clientsScheduledListBranch =
             (resultList['tail'] ?? []).cast<ClientsScheduledModel>();
         clientsScheduledListBranchLength = clientsScheduledListBranch.length;
-        //todo *******-1
-        //
 
-        //
-        //todo *******-2 cola
         ShopCont.readUpdateDeleteCar(resultList['orderDEL']);
-        //todo *******-2 cola
-        //
-        //todo *******-3 cola1
+
         correctConnection = true;
-        //aqui estoy guardando la cola del dia de hoy del profesional
+        //guardando la cola del dia de hoy del profesional
         clientsScheduledListBranchClient =
             (resultList['clientListDel'] ?? []).cast<ClientsScheduledModel>();
         clientsScheduledListBranchClientLength =
             clientsScheduledListBranchClient.length;
-        //todo *******-3 cola1
-        //
-        //todo *******-2 prof1
+
         clientsColacionRequestBranch =
             (resultList['professionals3'] ?? []).cast<ClientsScheduledModel>();
         clientsColacionRequestLength = clientsColacionRequestBranch.length;
-        //todo *******-3 prof1
-        //
-        //todo *******-2 prof1
+
         pOutRequestBranch =
             (resultList['professionals4'] ?? []).cast<ClientsScheduledModel>();
         pOutRequestLength = pOutRequestBranch.length;
-        //todo *******-3 prof1
-        //todo *******-2 notifications
+
         await NotCont.readUpdateNotifications(
             idBranch, idProf, type, resultList);
 
-        //todo *******-2 notifications
-        //
+
       }
       update();
     } catch (e) {
       print(
-          'mandar alguna variable para la vista-dio este ERROR-notification_tail_colation:$e');
+          'mandar alguna variable para la vista- ERROR-notification_tail_colation:$e');
     }
   }
 
@@ -229,26 +211,22 @@ class ClientsCoordinatorController extends GetxController {
           resultList['ConnectionIssues'] == true) {
         correctConnection = false;
         print(
-            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor-1');
+            'Enviar variable para la vista deciendo que hay problemas al conectarse con el servidor-1');
       } else {
         correctConnection = true;
-        //aqui estoy guardando la cola del dia de hoy del profesional
+        //guardando la cola del dia de hoy del profesional
         clientsScheduledListBranch =
             (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
         clientsScheduledListBranchLength = clientsScheduledListBranch.length;
-        print(
-            'cargando valores -******-*********-*-****-* lenght: $clientsScheduledListBranchLength -****-************-* ');
-        //
+
       }
       update();
     } catch (e) {
-      print('mandar alguna variable para la vista-dio este ERROR:$e');
+      print('enviar variable para la vista -  ERROR:$e');
     }
   }
 
-  //
-  //
-  //
+
   Future<void> fetchClientsRechazBranch(idBranch) async {
     try {
       Map<String, dynamic> resultList = await repository.getClientsRechazBranch(
@@ -275,8 +253,7 @@ class ClientsCoordinatorController extends GetxController {
     } catch (e) {
       print(e);
     } finally {
-      //   loginController.setMakeCallC(true); //avilite las llamadas del timer
-      //  controllerLogin.setMakeCallE(true);
+
     }
   } //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
 
@@ -352,8 +329,7 @@ class ClientsCoordinatorController extends GetxController {
       print(e);
     } finally {
       update();
-      // controllerLogin.setMakeCallC(true); //avilite las llamadas del timer
-      //controllerLogin.setMakeCallE(true);
+
     }
   }
 
@@ -871,151 +847,6 @@ class ClientsCoordinatorController extends GetxController {
         reservationId, attended, controllerLogin.tokenUserLoggedIn);
     return value;
   }
-
-  // Future<void> acceptOrRejectClient(reservationId, attended) async {
-  //   final controllerLogin controllerLogin = Get.find<controllerLogin>();
-
-  //   bool value = await repository.acceptOrRejectClient(reservationId, attended);
-  //   //si lo que devuelve es true actualizo la cola
-  //   if (value == true) {
-  //     int? idBranch = controllerLogin.branchIdLoggedIn;
-  //     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
-  //     //aqui actualizo la cola
-  //     await fetchClientsScheduled(idProfessional, idBranch);
-  //     //verificar que reloj es el que hay que QUITAR
-  //     if (attended == 2) {
-  //       //si es 2 es que ya termino de atender al cliente1
-  //       if (clientsAttended1 != null) {
-  //         if (reservationId == clientsAttended1!.reservation_id) {
-  //           //SACO DE MI LISTA A clientsAttended1
-  //           clientsAttended1 = null;
-  //           //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended1
-  //           if (item.contains(0)) {
-  //             item.remove(0);
-  //           }
-  //           pausResumeClock[0] = -99;
-  //           //await sentValueClockDb(reservationId, 0);
-  //           await setTimeClock(reservationId, 0, 0, 0);
-  //         }
-  //       }
-  //       if (clientsAttended2 != null) {
-  //         //si es 2 es que ya termino de atender al cliente2
-  //         if (reservationId == clientsAttended2!.reservation_id) {
-  //           //SACO DE MI LISTA A clientsAttended2
-  //           clientsAttended2 = null;
-  //           //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended2
-  //           if (item.contains(1)) {
-  //             item.remove(1);
-  //           }
-  //           pausResumeClock[1] = -99;
-  //           // await sentValueClockDb(reservationId, 0);
-  //           await setTimeClock(reservationId, 0, 0, 0);
-  //         }
-  //       }
-  //       if (clientsAttended3 != null) {
-  //         //si es 2 es que ya termino de atender al cliente3
-  //         if (reservationId == clientsAttended3!.reservation_id) {
-  //           //SACO DE MI LISTA A clientsAttended3
-  //           clientsAttended3 = null;
-  //           //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended3
-  //           if (item.contains(2)) {
-  //             item.remove(2);
-  //           }
-  //           pausResumeClock[2] = -99;
-  //           // await sentValueClockDb(reservationId, 0);
-  //           await setTimeClock(reservationId, 0, 0, 0);
-  //         }
-  //       }
-  //       if (clientsAttended4 != null) {
-  //         //si es 2 es que ya termino de atender al cliente4
-  //         if (reservationId == clientsAttended4!.reservation_id) {
-  //           //SACO DE MI LISTA A clientsAttended4
-  //           clientsAttended4 = null;
-  //           //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended4
-  //           if (item.contains(3)) {
-  //             item.remove(3);
-  //           }
-  //           pausResumeClock[3] = -99;
-  //           //await sentValueClockDb(reservationId, 0);
-  //           await setTimeClock(reservationId, 0, 0, 0);
-  //         }
-  //       }
-  //     }
-  //     //SI ES ATEENDED = 4 ES PORQUE VA A MANDARLO AL TECNICO
-  //     //AQUI MANDAR A LLAMAR A LA FUNCION set_clock(TIMER), DEPENDIENDO DEL TIMER QUE SEA
-  //     //ESTO LO MODIFICA EN LA BD PARA QUE EL TECNICO TENGA ACCESO A EL
-  //     if (attended == 4) {
-  //       //ES PORQUE ES EL RELOJ 1
-  //       if (clientsAttended1 != null &&
-  //           reservationId == clientsAttended1!.reservation_id) {
-  //         //Pausar reloj 1
-  //         pauseResumeClock(0, 0);
-  //         bool clock = await sentValueClockDb(reservationId, 1);
-  //         print('EL RELOJ MANDO COMO RESPUESTA : $clock');
-  //         print('..............1');
-  //       }
-  //       //ES PORQUE ES EL RELOJ 2
-  //       if (clientsAttended2 != null &&
-  //           reservationId == clientsAttended2!.reservation_id) {
-  //         //Pausar reloj 2
-  //         pauseResumeClock(1, 0);
-  //         print('..............2');
-  //         bool clock = await sentValueClockDb(reservationId, 2);
-  //         print('EL RELOJ MANDO COMO RESPUESTA : $clock');
-  //       }
-  //       //ES PORQUE ES EL RELOJ 3
-  //       if (clientsAttended3 != null &&
-  //           reservationId == clientsAttended3!.reservation_id) {
-  //         //Pausar reloj 3
-  //         pauseResumeClock(2, 0);
-  //         print('..............3');
-  //         bool clock = await sentValueClockDb(reservationId, 3);
-  //         print('EL RELOJ MANDO COMO RESPUESTA : $clock');
-  //       }
-  //       //ES PORQUE ES EL RELOJ 4
-  //       if (clientsAttended4 != null &&
-  //           reservationId == clientsAttended4!.reservation_id) {
-  //         //Pausar reloj 4
-  //         pauseResumeClock(3, 0);
-  //         print('..............4');
-  //         bool clock = await sentValueClockDb(reservationId, 4);
-  //         print('EL RELOJ MANDO COMO RESPUESTA : $clock');
-  //       }
-  //     }
-  //     update();
-
-  //     filterShowCardTimer();
-  //     filterShowNext();
-
-  //     //AQUI ACTUALIZO LA VARIABLE QUE ME DICE QUE YA LLAMO A UN CLIENTE
-  //     if (attended == 1) {
-  //       callCliente = true;
-  //     }
-  //   } else {
-  //     print('Dio error al mandar a aceptar o rechazar al cliente');
-  //   }
-  // }
-
-  // Future<void> filterShowNext() async {
-  //   try {
-  //     final controllerLogin controllerLogin = Get.find<controllerLogin>();
-  //     int? idBranch = controllerLogin.branchIdLoggedIn;
-  //     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
-
-  //     bool resultTypeService =
-  //         await repository.typeOfService(idProfessional, idBranch);
-  //     if (resultTypeService) {
-  //       print('************** true');
-  //       boolFilterShowNext = true;
-  //     } else {
-  //       print('************** false');
-  //       boolFilterShowNext = false;
-  //     }
-  //     update();
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 
   Future<void> setTimeClock(reservationId, timeClock, detached, clock) async {
     try {

@@ -151,10 +151,10 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
     _timerResp =
         Timer.periodic(const Duration(seconds: 13), (Timer timer) async {
       await controllerLogin.checkConnection();
-      //estoy entrando cada 8 segundos
+      // entrando cada 8 segundos
       print('llamada timer - l callTimer1 9segundos');
       if (loginController.makeCallE == true) {
-        //todo la nueva
+
         await clientCorControl.notification_tail_colation(
             loginController.branchIdLoggedIn,
             loginController.idProfessionalLoggedIn,
@@ -565,20 +565,12 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                               int result =
                                   await controllerLogin.ColacionProfessional(
                                       idProf, charge, 1);
-                              //aqui mandar notificacion
+
                               if (result == 1) {
                                 //codigo 200
-                                //esto lo manda la api
-                                //
                                 // String typeDelete =
                                 //     'Rechazada su solicitud de Salida';
 
-                                // notiController.storeNotification2(
-                                //     typeDelete,
-                                //     controllerLogin.branchIdLoggedIn,
-                                //     idProf,
-                                //     'Su solicitud de Salida fue rechazada',
-                                //     charge);
                               } else {
                                 Get.snackbar(
                                   'Alerta',
@@ -872,18 +864,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                       idProf, charge, 1);
                               //aqui mandar notificacion
                               if (result == 1) {
-                                //codigo 200
-                                //esto lo manda la api
-                                //
-                                // String typeDelete =
-                                //     'Rechazada su solicitud de Colación';
+                                //Se quitan las Notificaciones
 
-                                // notiController.storeNotification2(
-                                //     typeDelete,
-                                //     controllerLogin.branchIdLoggedIn,
-                                //     idProf,
-                                //     'Su solicitud de Colación fue rechazada',
-                                //     charge);
                               } else {
                                 Get.snackbar(
                                   'Alerta',

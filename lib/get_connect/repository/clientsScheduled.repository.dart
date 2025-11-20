@@ -78,7 +78,7 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   Future getClientsTechnicalList(idBranch, idProf, token) async {
-    print('estoy en repositorio en - 1');
+
     try {
       List<ClientsScheduledModel> clientList = [];
       ClientsScheduledModel? nextClient, clientAtenYa;
