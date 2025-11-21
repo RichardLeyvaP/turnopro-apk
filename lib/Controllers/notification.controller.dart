@@ -68,7 +68,7 @@ class NotificationController extends GetxController {
   }
 
   Future<bool> storeNotification2(
-      //todo1
+
       tittle,
       branchId,
       professionalId,
@@ -84,7 +84,7 @@ class NotificationController extends GetxController {
   }
 
   Future<bool> storeNotification(
-      //todo1
+
       tittle,
       branchId,
       professionalId,
@@ -107,7 +107,7 @@ class NotificationController extends GetxController {
   }
 
   Future<bool> storeNotificationSERVICE(
-      //todo1
+
       tittle,
       branchId,
       professionalId,
@@ -153,49 +153,7 @@ class NotificationController extends GetxController {
     update();
   }
 
-  //todo/****AQUI LO DE LAS NOTIFICACIONES LOCALES****/
-/*  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
 
-  Future<void> initializeNotifications() async {
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/launcher_icon');
-    const DarwinInitializationSettings initializationSettingsIOS =
-        DarwinInitializationSettings();
-
-    const InitializationSettings initializationSettings =
-        InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS);
-
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  }
-
-  void scheduleNotification(String title, String descripcion) async {
-    final Uuid uuid = Uuid(); // Crea una instancia de Uuid
-    final String channelId = uuid.v4(); // Genera un channelId único
-    AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      channelId, // ID del canal
-      'Nombre del Canal', // Nombre del Canal
-      channelDescription:
-          'Descripción del Canal', // Descripción del Canal (argumento nombrado)
-      importance: Importance.max,
-      priority: Priority.high,
-      ticker: 'ticker',
-      sound: RawResourceAndroidNotificationSound('livechat129007'),
-      // ^ Utiliza el nombre del archivo de sonido sin la extensión
-    );
-    NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      title,
-      descripcion,
-      platformChannelSpecifics,
-    );
-  }*/
-  //todo/****AQUI LO DE LAS NOTIFICACIONES LOCALES****/
 
   bool _retryAttempted = false; // Variable para controlar el reintento
   int obtenerNumeroDespuesDelPunto(String textoCompleto) {
@@ -272,7 +230,7 @@ class NotificationController extends GetxController {
 
               if (element.state == 3 &&
                   element.tittle == 'Aceptada Eliminación de Servicio') {
-                print('modificar time de mm 1 estoy aqui en el forEach');
+                print('modificar time 1 en el forEach');
                 String textoCompleto = element.description;
                 int idReservation = obtenerNumeroDespuesDelPunto(textoCompleto);
                 if (controllerLogin.isLoggingNotification ==
@@ -295,19 +253,6 @@ class NotificationController extends GetxController {
               }
               if (element.state == 3 &&
                   element.tittle == 'Solicitud de Eliminación Rechazada') {
-                //ver si es un servicio
-                /*   String textoCompleto = element.description;
-                int idReservation = obtenerNumeroDespuesDelPunto(textoCompleto);
-                if (controllerLogin.isLoggingNotification == false &&
-                    idReservation !=
-                        0) //vino del login si es true,solo debe entrar si no viene del login
-                {
-                  controllerclient.watchModifyTimeRest(
-                      idReservation,
-                      textoCompleto,
-                      'professionalBranchNotifQueque',
-                      'rechazada');
-                }*/
 
                 updateNotifications2(idBranch, idProfe, element.id);
                 controllerLogin.setCodigoQrValid(1);
@@ -463,20 +408,12 @@ class NotificationController extends GetxController {
     }
   }
 
-  //
-  //
-  //
-//todo/****AQUI LO DE LAS NOTIFICACIONES LOCALES****/
-//tecnicooooooo
+
+//LAS NOTIFICACIONES LOCALES****/
+//tecnico
   Future<void> fetchNotificationListSERV(
       idBranch, idProfe, type, msj, token) async {
-    print('estoy llamando ahora desde->fetchNotificationListSERV');
-    print(
-        'callTimerTec 4-callTimerTecNotification-controlador-fetchNotificationList');
-    print('qwerc SII mandar ->NOTIFICACIONES-$msj');
-    print('12345llamada timer estoy en CAntidad de Notificaciones-$type');
-    print(
-        'llamada timer ...tipo:$type......idSucursal:$idBranch......iProf:$idProfe');
+
     try {
       Map<String, dynamic> result = await repository.getNotificationList(
           idBranch, idProfe, type, token, msj);
@@ -484,27 +421,12 @@ class NotificationController extends GetxController {
       print('object-${clientsTechnicalCont.clientsTechnicalLength}');
       if (result.containsKey('notificationListError') &&
           result.containsKey('notificationListError') == true) {
-        print(
-            'estoy entrando aqui si al error de notificacion.tec-del serviciooooo---*********');
 
-        if (type == 'Tecnico' &&
-            clientsTechnicalCont.clientsTechnicalLength >
-                0) //es tecnico y tiene la cola vacia que ni lo muestre
-        {
-          // controllerLogin.showConnectionError();
-        }
-        if (type != 'Tecnico') {
-          //  controllerLogin.showConnectionError();
-        }
-      } else if (result.containsKey('Erroor') && result['Erroor'] == true) {
-        print(
-            'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor,-8 el error fue en Future<void> fetchNotificationList');
       } else if (result.containsKey('notificationList') &&
           result.containsKey('notificationListNew')) {
         notification = result['notificationList'];
 
-        print(
-            'llamada timer estoy en CAntidad de Notificaciones fetchNotificationList :${notification.length}');
+        print('llamada timer  en Cantidad de Notificaciones fetchNotificationList :${notification.length}');
 
         notificationListLength = notification.length;
 
@@ -520,11 +442,11 @@ class NotificationController extends GetxController {
               notificationListNewSounded.add(element.id);
 
               notificationListNewAux.add(element);
-              //localNotificationsSimplifies(element.tittle, element.description);
+
             }
           }
 
-          //esto es para saber que valor darle al qr si aceptan o rechazan la colación
+          //Saber que valor darle al qr si aceptan o rechazan la colación
 
           if (element.state == 3 &&
               element.tittle ==
@@ -573,8 +495,7 @@ class NotificationController extends GetxController {
           }
         }
 
-        //todo comentado_nuevo
-//aqui veo y voy mandando las notificaciones locales
+        //Mandar las notificaciones locales
         for (final result in notificationListNewAux) {
           print(
               'callTimerTec 4-callTimerTecNotification -if-notificaciones locales :sii');
@@ -583,43 +504,18 @@ class NotificationController extends GetxController {
           print('aqui llamando las notificaciones nuevas');
           await Future.delayed(const Duration(seconds: 2)); // Espera 2 segundos
         }
-        //todo comentado_nuevo
 
-        if (outAcept !=
-            0) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+        if (outAcept !=0) //entra solo si es 'Aceptada Eliminación de Servicio'
         {
-          /*  Get.snackbar(
-            'Mensaje',
-            'Cerrando aplicación...',
-            duration: const Duration(milliseconds: 2500),
-            backgroundColor: const Color.fromARGB(118, 255, 255, 255),
-            showProgressIndicator: true,
-            progressIndicatorBackgroundColor:
-                const Color.fromARGB(255, 203, 205, 209),
-            progressIndicatorValueColor:
-                const AlwaysStoppedAnimation(Color(0xFFFDAE2A)),
-            overlayBlur: 3,
-          );
-          Get.dialog(
-            const Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFFFDAE2A),
-              ),
-            ),
-            barrierDismissible: false,
-          ); //Get.back();*/
           await updateNotifications2(idBranch, idProfe, outAcept);
-          //await controllerLogin.exitPostworking("Tecnico");
-          // await controllerLogin.exit(controllerLogin.tokenUserLoggedIn);
           updateOutAcept(0);
-          //  Get.back();
-          print('cargando aqui-16 para sacar del puesto y la apk-2');
+         print('cargando para sacar del puesto y la app');
         }
 
         update();
       } else if (result.containsKey('notificationListEncarg') &&
           result.containsKey('notificationListNewEncarg')) {
-        print('ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador');
+        print('ENTRA A BUSCAR NOTIFICACIONES - cont: en el controlador');
         notificationEncarg = result['notificationListEncarg'];
 
         notificationListLengthEncarg = notificationEncarg.length;
@@ -627,7 +523,7 @@ class NotificationController extends GetxController {
         notificationListNewEncarg = result['notificationListNewEncarg'];
         notificationListNewLengthEncarg = notificationListNewEncarg.length;
         print(
-            'ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador - notificationListNewLengthEncarg:${notificationEncarg.length}');
+            'ENTRA A BUSCAR NOTIFICACIONES - cont: en el controlador - notificationListNewLengthEncarg:${notificationEncarg.length}');
         List<NotificationModel> notificationListNewAuxEnc =
             []; // Lista de Notificaciones
         notificationListNewEncarg.forEach((element) async {
@@ -638,25 +534,16 @@ class NotificationController extends GetxController {
               notificationListNewSounded.add(element.id);
 
               notificationListNewAuxEnc.add(element);
-              //localNotificationsSimplifies(element.tittle, element.description);
+
             }
           }
 
           if (element.state == 3 &&
               element.tittle == 'Aceptada Eliminación de Servicio') {
-            print('modificar time de mm 1 estoy aqui en el forEach');
+
             String textoCompleto = element.description;
-            // String descripcion =
-            //     textoCompleto.split('.')[0]; // Obtener la descripción
-            // Obtener el segundo número (999)
-            // String numeroOcultoString = textoCompleto
-            //     .split('.')[1]
-            //     .trim(); // Obtener la parte después del punto y eliminar espacios en blanco
-            // int idReservation =
-            //     int.parse(numeroOcultoString); // Convertir a entero
+
             int idReservation = obtenerNumeroDespuesDelPunto(textoCompleto);
-            print(
-                'modificar time de mm 1 estoy aqui en el forEach-2-idReservation:$idReservation - textoCompleto:$textoCompleto');
 
             controllerclient.watchModifyTimeRest(
                 idReservation,
@@ -669,23 +556,19 @@ class NotificationController extends GetxController {
             //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
             //DESCONTAR EL TIEMPO AL RELOJ
             //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
-            //  siHayEliminarService = true;
+
           }
         });
         for (final result in notificationListNewAuxEnc) {
           print(
               'callTimerTec 4-callTimerTecNotification -if-notificaciones locales :sii');
           // Llama a la función localNotificationsSimplifies después del retraso
+          print(' llamando las notificaciones nuevas');
           localNotificationsSimplifies(result.tittle, result.description);
-          print('aqui llamando las notificaciones nuevas');
+
           await Future.delayed(const Duration(seconds: 2)); // Espera 2 segundos
         }
-        /* if (siHayEliminarService ==
-            true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
-        {
-          controllerclient.rest();
-          // controllerclient.setActiveModifyTimeRest(true);
-        }*/
+
 
         update();
       }
@@ -693,28 +576,24 @@ class NotificationController extends GetxController {
     } catch (e) {
       controllerLogin.setIsLoadingFor(false);
       // Manejo de errores
-      print('Error al obtener la lista de notificaciones:aqui: $e');
+      print('Error al obtener la lista de notificaciones: $e');
     }
   }
 
   Future<void> fetchNotificationList(
       idBranch, idProfe, type, msj, token) async {
-    print('estoy llamando ahora desde->fetchNotificationListAPK');
+    print('llamando ahora desde->fetchNotificationListAPK');
     print(
         'callTimerTec 4-callTimerTecNotification-controlador-fetchNotificationList');
-    print('qwerc SII mandar ->NOTIFICACIONES-$msj');
-    print('12345llamada timer estoy en CAntidad de Notificaciones-$type');
-    print(
-        'llamada timer ...tipo:$type......idSucursal:$idBranch......iProf:$idProfe');
+
     try {
       Map<String, dynamic> result = await repository.getNotificationList(
           idBranch, idProfe, type, token, msj);
-      bool siHayEliminarService = false;
+
       print('object-${clientsTechnicalCont.clientsTechnicalLength}');
       if (result.containsKey('notificationListError') &&
           result.containsKey('notificationListError') == true) {
-        print(
-            'estoy entrando aqui si al error de notificacion.tec-fetchNotificationList-fetchNotificationList');
+
 
         if (type == 'Tecnico' &&
             clientsTechnicalCont.clientsTechnicalLength >
@@ -737,7 +616,7 @@ class NotificationController extends GetxController {
         notification = result['notificationList'];
 
         print(
-            'llamada timer estoy en CAntidad de Notificaciones fetchNotificationList :${notification.length}');
+            'llamada timer en Cantidad de Notificaciones fetchNotificationList :${notification.length}');
 
         notificationListLength = notification.length;
 
@@ -758,7 +637,7 @@ class NotificationController extends GetxController {
           }
 
           //esto es para saber que valor darle al qr si aceptan o rechazan la colación
-          print('estoy llamando ahora desde->fetchNotificationList');
+          print('llamando ahora desde->fetchNotificationList');
           if (element.state == 3 &&
               element.tittle ==
                   'Aceptada su solicitud de Colación') //pongo a null el qr
@@ -786,14 +665,14 @@ class NotificationController extends GetxController {
               element.tittle ==
                   'Aceptada su solicitud de Salida') //pongo a 1 el qr
           {
-            print('cargando aqui-16 para sacar del puesto y la apk-1');
+            print('cargando para sacar del puesto y la app');
             FlutterBackgroundService().invoke('notificationSimplifies');
             await Future.delayed(const Duration(seconds: 1));
             updateOutAcept(element.id);
           }
           if (element.state == 3 &&
               element.tittle ==
-                  'Solicitud de Eliminación Rechazada') //pongo a null el qr
+                  'Solicitud de Eliminación Rechazada') //se asigna null el qr
           {
             print(
                 'callTimerTec 4-callTimerTecNotification -if-element.tittle :${element.tittle}');
@@ -809,17 +688,6 @@ class NotificationController extends GetxController {
           }
         }
 
-        //todo comentado_nuevo
-//aqui veo y voy mandando las notificaciones locales
-        /*   for (final result in notificationListNewAux) {
-          print(
-              'callTimerTec 4-callTimerTecNotification -if-notificaciones locales :sii');
-          // Llama a la función localNotificationsSimplifies después del retraso
-          localNotificationsSimplifies(result.tittle, result.description);
-          print('aqui llamando las notificaciones nuevas');
-          await Future.delayed(const Duration(seconds: 2)); // Espera 2 segundos
-        }*/
-        //todo comentado_nuevo
 
         if (outAcept !=
             0) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
@@ -855,7 +723,7 @@ class NotificationController extends GetxController {
         update();
       } else if (result.containsKey('notificationListEncarg') &&
           result.containsKey('notificationListNewEncarg')) {
-        print('ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador');
+        print('ENTRa A BUSCAR NOTIFICACIONES - cont');
         notificationEncarg = result['notificationListEncarg'];
 
         notificationListLengthEncarg = notificationEncarg.length;
@@ -863,24 +731,17 @@ class NotificationController extends GetxController {
         notificationListNewEncarg = result['notificationListNewEncarg'];
         notificationListNewLengthEncarg = notificationListNewEncarg.length;
         print(
-            'ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador - notificationListNewLengthEncarg:${notificationEncarg.length}');
+            'ENTRA A BUSCAR NOTIFICACIONES - cont:  en el controlador - notificationListNewLengthEncarg:${notificationEncarg.length}');
 
         notificationListNewEncarg.forEach((element) async {
           if (element.state == 3 &&
               element.tittle == 'Aceptada Eliminación de Servicio') {
-            print('modificar time de mm 1 estoy aqui en el forEach');
+
             String textoCompleto = element.description;
-            // String descripcion =
-            //     textoCompleto.split('.')[0]; // Obtener la descripción
-            // Obtener el segundo número (999)
-            // String numeroOcultoString = textoCompleto
-            //     .split('.')[1]
-            //     .trim(); // Obtener la parte después del punto y eliminar espacios en blanco
-            // int idReservation =
-            //     int.parse(numeroOcultoString); // Convertir a entero
+
             int idReservation = obtenerNumeroDespuesDelPunto(textoCompleto);
             print(
-                'modificar time de mm 1 estoy aqui en el forEach-2-idReservation:$idReservation - textoCompleto:$textoCompleto');
+                'modificar time de mm 1  en el forEach-2-idReservation:$idReservation - textoCompleto:$textoCompleto');
 
             controllerclient.watchModifyTimeRest(
                 idReservation,
@@ -893,15 +754,9 @@ class NotificationController extends GetxController {
             //NOTIFICAR UQ HAY CAMBIOS EN LOS RELOJES
             //DESCONTAR EL TIEMPO AL RELOJ
             //MANDAR AL METODO DE SABER CUANTOS MINUTOS HAY QUE DESCONTAR
-            //  siHayEliminarService = true;
+
           }
         });
-        /* if (siHayEliminarService ==
-            true) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
-        {
-          controllerclient.rest();
-          // controllerclient.setActiveModifyTimeRest(true);
-        }*/
 
         update();
       }
@@ -911,7 +766,7 @@ class NotificationController extends GetxController {
       // Manejo de errores
       print('Error al obtener la lista de notificaciones:aqui: $e');
     } finally {
-      if (msj == 'Barra de navegacionAbajo' || msj == 'Navigator-abajo') {
+      if (msj == 'Barra de navegacion de Abajo' || msj == 'Navigator-abajo') {
         Get.back();
       }
     }
@@ -923,7 +778,7 @@ class NotificationController extends GetxController {
     if (result.containsKey('notificationListError') &&
         result.containsKey('notificationListError') == true) {
       print(
-          'estoy entrando aqui si al error de notificacion.tec-fetchNotificationList-readUpdateNotifications');
+          'Si hay error de notificacion.tec-fetchNotificationList-readUpdateNotifications');
 
       if (type == 'Tecnico' &&
           clientsTechnicalCont.clientsTechnicalLength >
@@ -931,10 +786,8 @@ class NotificationController extends GetxController {
       {
         controllerLogin.showConnectionError();
       }
-      if (type != 'Tecnico') {
-        //  controllerLogin.showConnectionError();
-      }
-    } else if (result.containsKey('Erroor') && result['Erroor'] == true) {
+
+    } else if (result.containsKey('Error') && result['Erroor'] == true) {
       print(
           'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor,-8 el error fue en Future<void> fetchNotificationList');
     } else if (result.containsKey('notificationList') &&
@@ -942,7 +795,7 @@ class NotificationController extends GetxController {
       notification = result['notificationList'];
 
       print(
-          'llamada timer estoy en CAntidad de Notificaciones fetchNotificationList :${notification.length}');
+          'llamada timer en Cantidad de Notificaciones fetchNotificationList :${notification.length}');
 
       notificationListLength = notification.length;
 
@@ -958,12 +811,12 @@ class NotificationController extends GetxController {
             notificationListNewSounded.add(element.id);
 
             notificationListNewAux.add(element);
-            //localNotificationsSimplifies(element.tittle, element.description);
+
           }
         }
 
         //esto es para saber que valor darle al qr si aceptan o rechazan la colación
-        print('estoy llamando ahora desde->fetchNotificationList');
+        print(' llamando ahora desde->fetchNotificationList');
         if (element.state == 3 &&
             element.tittle ==
                 'Aceptada su solicitud de Colación') //pongo a null el qr
@@ -989,9 +842,9 @@ class NotificationController extends GetxController {
         }
         if (element.state == 3 &&
             element.tittle ==
-                'Aceptada su solicitud de Salida') //pongo a 1 el qr
+                'Aceptada su solicitud de Salida') //asigna a 1 el qr
         {
-          print('cargando aqui-16 para sacar del puesto y la apk-1');
+          print('cargando para sacar del puesto y la apk');
           FlutterBackgroundService().invoke('notificationSimplifies');
           await Future.delayed(const Duration(seconds: 1));
           updateOutAcept(element.id);
@@ -1015,7 +868,7 @@ class NotificationController extends GetxController {
       }
 
       if (outAcept !=
-          0) //entro solo si entro al if de 'Aceptada Eliminación de Servicio'
+          0) //entra solo si entro al if de 'Aceptada Eliminación de Servicio'
       {
         Get.snackbar(
           'Mensaje',
@@ -1042,13 +895,13 @@ class NotificationController extends GetxController {
         await controllerLogin.exit(controllerLogin.tokenUserLoggedIn);
         updateOutAcept(0);
         Get.back();
-        print('cargando aqui-16 para sacar del puesto y la apk-2');
+        print('cargando para sacar del puesto y la apk-2');
       }
 
       update();
     } else if (result.containsKey('notificationListEncarg') &&
         result.containsKey('notificationListNewEncarg')) {
-      print('ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador');
+      print('ENTRA A BUSCAR NOTIFICACIONES - cont: en el controlador');
       notificationEncarg = result['notificationListEncarg'];
 
       notificationListLengthEncarg = notificationEncarg.length;
@@ -1056,16 +909,16 @@ class NotificationController extends GetxController {
       notificationListNewEncarg = result['notificationListNewEncarg'];
       notificationListNewLengthEncarg = notificationListNewEncarg.length;
       print(
-          'ENTRO A BUSCAR NOTIFICACIONES - cont: estoy en el controlador - notificationListNewLengthEncarg:${notificationEncarg.length}');
+          'ENTRA A BUSCAR NOTIFICACIONES - cont:  en el controlador - notificationListNewLengthEncarg:${notificationEncarg.length}');
 
       notificationListNewEncarg.forEach((element) async {
         if (element.state == 3 &&
             element.tittle == 'Aceptada Eliminación de Servicio') {
-          print('modificar time de mm 1 estoy aqui en el forEach');
+          print('modificar time de mm 1  en el forEach');
           String textoCompleto = element.description;
           int idReservation = obtenerNumeroDespuesDelPunto(textoCompleto);
           print(
-              'modificar time de mm 1 estoy aqui en el forEach-2-idReservation:$idReservation - textoCompleto:$textoCompleto');
+              'modificar time de mm 1 en el forEach-2-idReservation:$idReservation - textoCompleto:$textoCompleto');
 
           controllerclient.watchModifyTimeRest(
               idReservation,
@@ -1117,7 +970,7 @@ class NotificationController extends GetxController {
       if (result == 1) {
         print('Las notificaciones fueron cambiada a 3 estas de id:$id');
       } else {
-        print('Las notificaciones fueron cambiada a 3 NOOOOOOOOOOOOO');
+        print('Las notificaciones fueron cambiada a 3 NO');
       }
     } catch (e) {
       print('error de notification:$e');

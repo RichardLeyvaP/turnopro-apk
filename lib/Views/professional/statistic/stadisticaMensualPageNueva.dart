@@ -58,7 +58,7 @@ class _StadisticaMensualPageNuevaState
                                   (MediaQuery.of(context).size.height * 0.068),
                               width: MediaQuery.of(context).size.width * 0.48,
                               decoration: const BoxDecoration(
-                                color: Color(0xFFFDAE2A), //todo
+                                color: Color(0xFFFDAE2A),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(8)),
                               ),
@@ -90,7 +90,7 @@ class _StadisticaMensualPageNuevaState
                                   (MediaQuery.of(context).size.height * 0.068),
                               width: MediaQuery.of(context).size.width * 0.48,
                               decoration: const BoxDecoration(
-                                color: Color(0xFF19CF9E), //todo
+                                color: Color(0xFF19CF9E),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(8)),
                               ),
@@ -199,7 +199,7 @@ class _StadisticaMensualPageNuevaState
 }
 
 Widget chartToRun(CoexistenceController cControll) {
-  //todo esto en un controlador  */
+
 
   List<List<double>> dataRows = [];
   double may = 0;
@@ -211,10 +211,9 @@ Widget chartToRun(CoexistenceController cControll) {
       may = value;
     }
     dataRows[0].add(value);
-    print('resultadosssssss final');
+
   }
 
-  //todo esto en un controlador  */
 
   LabelLayoutStrategy? xContainerLabelLayoutStrategy;
   ChartData chartData;

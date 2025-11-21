@@ -59,7 +59,7 @@ class topPage extends StatelessWidget {
                 offset: Offset(0, 3), // Cambia el desplazamiento de la sombra
               ),
             ],
-            color: colorCont, //todo
+            color: colorCont,
             borderRadius: BorderRadius.all(Radius.circular(borderCont)),
           ),
           // padding: EdgeInsets.only(top: 12),
@@ -79,7 +79,7 @@ class topPage extends StatelessWidget {
                           color: const Color.fromARGB(200, 0, 0, 0),
                         ),
                         onPressed: () {
-                          print('estoy entrando aqui...');
+
                           if ((title == 'Servicios' || title == 'Productos') && page == 'Coordinador') {
                             pagesConfigC.goToPreviousPage();
                           }

@@ -127,36 +127,12 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
             loginController.chargeUserLoggedIn == "Coordinador" &&
             loginController.usserPermissionQr != null) {
           // actualizo la cola
-          //todo la nueva
+
           await clientsScheduledController.notification_tail_colation(
               loginController.branchIdLoggedIn,
               loginController.idProfessionalLoggedIn,
               'Coordinador');
-          //todo la nueva
-          //  await clientsScheduledController
-          //       .fetchClientsScheduledBranch(loginController.branchIdLoggedIn);
 
-          /*QUITADAAAAAAAAAAAAAAAAA  
-         await clientsScheduledController
-              .fetchClientsRechazBranch(loginController.branchIdLoggedIn);
-          clientsScheduledController.setLoading(false);
-
-            await controllerShoppingCart
-                .loadOrderDeleteCar(loginController.branchIdLoggedIn);
-
-          await clientsScheduledController.ColacionRequestBranch(
-              loginController.branchIdLoggedIn);
-              
-               await clientsScheduledController
-              .outRequestBranch(loginController.branchIdLoggedIn);
-          controllerShoppingCart.setLoading(false);
-          
-          await notiController.fetchNotificationList(
-              loginController.branchIdLoggedIn,
-              loginController.idProfessionalLoggedIn,
-              'Coordinador',
-              'callTimerCoord',
-              loginController.tokenUserLoggedIn);*/
         }
       }
     });
@@ -473,7 +449,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
             pagesConfigC.pages31[5],
           ]);
     });
-    //todoooooooooooooooooooooooooooooooooooooooooo
+
   }
 
 //
@@ -816,7 +792,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     return Container(
       width: (MediaQuery.of(context).size.width * 0.46), //Tamaño de los Cards
       height: (MediaQuery.of(context).size.height *
-          0.192), //todo cambiadoNuevoValores
+          0.192),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(borderRadiusValue)),
         color: colorVariable,
@@ -945,7 +921,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
     fin = 2;
   }*/
 
-    //todo aqui le muestra las solicitudes de Salida
+    //muestra las solicitudes de Salida
     for (int i = 0; i < controllerclient.pOutRequestLength; i++) {
       titulo = 'Solicitando Salida';
 

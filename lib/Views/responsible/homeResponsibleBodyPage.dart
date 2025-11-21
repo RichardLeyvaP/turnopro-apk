@@ -81,7 +81,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
         controllerLogin.idProfessionalLoggedIn != null &&
         (controllerLogin.usserPermissionQr == 1 ||
             controllerLogin.usserPermissionQr == 2)) {
-      //todo la nueva
+
       await Future.delayed(const Duration(seconds: 1));
       await clientCorControl.notification_tail_colation(
           loginController.branchIdLoggedIn,
@@ -97,48 +97,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
             loginController.tokenUserLoggedIn);
       }
       controllerShoppingCart.setLoading(false);
-      //todo la nueva
-      /*
-      await Future.delayed(const Duration(milliseconds: 200));
-      notiController.fetchNotificationList(
-          controllerLogin.branchIdLoggedIn,
-          controllerLogin.idProfessionalLoggedIn,
-          'Encargado',
-          'loadDataFirt',
-          loginController.tokenUserLoggedIn);
-      if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
-        await Future.delayed(const Duration(milliseconds: 500));
-        notiController.fetchNotificationList(
-            controllerLogin.branchIdLoggedIn,
-            controllerLogin.idProfessionalLoggedIn,
-            'Barbero',
-            'loadDataFirt',
-            loginController.tokenUserLoggedIn);
-      }
-      await Future.delayed(const Duration(milliseconds: 200));
-      await controllerShoppingCart
-          .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
-      print('llamada timer encargado loadOrderDeleteCar completed');
-      await Future.delayed(const Duration(milliseconds: 200));
-      await clientCorControl
-          .fetchClientsScheduledBranch(controllerLogin.branchIdLoggedIn);
-      print('llamada timer encargado fetchClientsScheduledBranch completed');
 
-      await Future.delayed(const Duration(milliseconds: 200));
-      await clientCorControl
-          .fetchClientsRechazBranch(controllerLogin.branchIdLoggedIn);
-      print('llamada timer encargado fetchClientsRechazBranch completed');
-
-      await Future.delayed(const Duration(milliseconds: 200));
-      await clientCorControl.ColacionRequestBranch(
-          controllerLogin.branchIdLoggedIn);
-      print('llamada timer encargado ColacionRequestBranch completed');
-
-      await Future.delayed(const Duration(milliseconds: 200));
-      await clientCorControl.outRequestBranch(controllerLogin.branchIdLoggedIn);
-      print('llamada timer encargado outRequestBranch completed');
-      controllerShoppingCart.setLoading(false);
-      */
     } else {
       controllerShoppingCart.setLoading(false);
     }
@@ -168,53 +127,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
               'loadDataFirt',
               loginController.tokenUserLoggedIn);
         }
-        //todo la nueva
 
-        /*  if (controllerLogin.branchIdLoggedIn != null &&
-            controllerLogin.idProfessionalLoggedIn != null &&
-            controllerLogin.usserPermissionQr != null) {
-          await Future.delayed(const Duration(milliseconds: 1000));
-          notiController.fetchNotificationList(
-              controllerLogin.branchIdLoggedIn,
-              controllerLogin.idProfessionalLoggedIn,
-              'Encargado',
-              'loadDataFirt',
-              loginController.tokenUserLoggedIn);
-          if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
-            await Future.delayed(const Duration(milliseconds: 1000));
-            notiController.fetchNotificationList(
-                controllerLogin.branchIdLoggedIn,
-                controllerLogin.idProfessionalLoggedIn,
-                'Barbero',
-                'loadDataFirt',
-                loginController.tokenUserLoggedIn);
-          }
-          await Future.delayed(const Duration(milliseconds: 300));
-          await controllerShoppingCart
-              .loadOrderDeleteCar(controllerLogin.branchIdLoggedIn!);
-          print('llamada timer encargado loadOrderDeleteCar completed');
-          await Future.delayed(const Duration(milliseconds: 300));
-          await clientCorControl
-              .fetchClientsScheduledBranch(controllerLogin.branchIdLoggedIn);
-          print(
-              'llamada timer encargado fetchClientsScheduledBranch completed');
-          await Future.delayed(const Duration(milliseconds: 300));
-          await clientCorControl
-              .fetchClientsRechazBranch(controllerLogin.branchIdLoggedIn);
-          print('llamada timer encargado fetchClientsRechazBranch completed');
-          await Future.delayed(const Duration(milliseconds: 300));
-          await clientCorControl.ColacionRequestBranch(
-              controllerLogin.branchIdLoggedIn);
-          print('llamada timer encargado ColacionRequestBranch completed');
-          await Future.delayed(const Duration(milliseconds: 300));
-          await clientCorControl
-              .outRequestBranch(controllerLogin.branchIdLoggedIn);
-          print('llamada timer encargado outRequestBranch completed');
-          controllerShoppingCart.setLoading(false);
-        } else {
-          controllerShoppingCart.setLoading(false);
-        }
-        */
       }
     });
   }
@@ -514,7 +427,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
     fin = 2;
   }*/
 
-    //todo aqui le muestra las solicitudes de Salida
+    // muestra las solicitudes de Salida
     for (int i = 0; i < controllerclient.pOutRequestLength; i++) {
       titulo = 'Solicitando Salida';
 
@@ -802,14 +715,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
         ),
       );
     }
-    //
-    //
-    //todo aqui le muestra las solicitudes de Salida
-    //
-    //
-    //
 
-    //todo aqui le muestra las solicitudes de Colación
+    // muestra las solicitudes de Colación
     for (int i = 0; i < controllerclient.clientsColacionRequestLength; i++) {
       titulo = 'Solicitando Colación';
 
@@ -1103,11 +1010,9 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
         ),
       );
     }
-    //
-    //todo aqui le muestra las solicitudes de Colación
-    //
 
-    //todo aqui le muestra a los clientes solicitados como rechazados
+
+    //muestra a los clientes solicitados como rechazados
     for (int i = 0;
         i < controllerclient.clientsScheduledListBranchClientLength;
         i++) {
@@ -1469,14 +1374,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
         ),
       );
     }
-    //
-    //
-    //todo aqui le muestra a los clientes solicitados como rechazados
-    //
-    //
 
-    //
-//todo aqui le muestra las solicitudes de Eliminación de Servicios y Productos
+//solicitudes de Eliminación de Servicios y Productos
     for (int i = 0; i < contShopp.orderDeleteCar.length; i++) {
       if (contShopp.orderDeleteCar[i].nameService == '') {
         titulo = 'Eliminación de Producto';
@@ -1803,12 +1702,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
       );
     }
     //
-    //todo aqui le muestra las solicitudes de Eliminación de Servicios y Productos
-    //
-    //
-    //
+    // solicitudes de Eliminación de Servicios y Productos
 
-    //
     if ((contShopp.orderDeleteCar.isEmpty) &&
         (controllerclient.clientsScheduledListBranchClient.isEmpty) &&
         (controllerclient.clientsColacionRequestBranch.isEmpty) &&

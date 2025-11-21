@@ -179,13 +179,7 @@ class ShoppingCartPage extends StatelessWidget {
                                                   builder: (_) {
                                                 return InkWell(
                                                   onTap: () {
-                                                    //todooo
-                                                    // Get.snackbar(
-                                                    //   'Mensaje',
-                                                    //   'Enviada solicitud de eliminación.',
-                                                    //   duration: const Duration(
-                                                    //       milliseconds: 2000),
-                                                    // );
+
                                                     controllerShoppingCart
                                                         .requestDelete(
                                                             controllerShoppingCart
@@ -243,7 +237,7 @@ class ShoppingCartPage extends StatelessWidget {
                             heightFlexBody, // 85% del espacio disponible para esta parte
 
                         child: ListView.builder(
-                            //todo builder
+
                             itemCount: controllerShoppingCart.productListLength,
                             itemBuilder: (context, index) => Padding(
                                   padding: EdgeInsets.fromLTRB(
@@ -357,15 +351,7 @@ class ShoppingCartPage extends StatelessWidget {
                                                       builder: (_) {
                                                     return InkWell(
                                                       onTap: () {
-                                                        // Get.snackbar(
-                                                        //   'Mensaje',
-                                                        //   'Enviada solicitud de eliminación.',
-                                                        //   duration:
-                                                        //       const Duration(
-                                                        //           milliseconds:
-                                                        //               2000),
-                                                        // );
-                                                        //todooo
+
                                                         controllerShoppingCart
                                                             .requestDelete(
                                                                 controllerShoppingCart

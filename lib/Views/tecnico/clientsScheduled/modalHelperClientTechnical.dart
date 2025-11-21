@@ -159,7 +159,7 @@ class ModalHelperTecnical {
                                 Color(0xFF19CF9E)),
                           ),
                           onPressed: () async {
-                            //llamo al ocntrolador y lo paso attended = 11 que significa que esta ya atendido y lo mando con el profesional
+                            //llama al ocntrolador y lo pasa attended = 11 que significa que esta ya atendido y lo mando con el profesional
                             await controllClient.acceptClientTechnical(
                                 reservationId, 11);
                             //AQUI ENVIAR NOTIFICACION AL PROFESIONAL QUE YA VA EL CLIENTE DE VUELTA PARA ACABAR EL SERVICIO

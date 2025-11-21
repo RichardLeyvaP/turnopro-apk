@@ -244,7 +244,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false, //RLP Oculta la flecha de retroceso
       elevation: 0,
       backgroundColor: const Color.fromARGB(255, 231, 232, 234),
-      title: GetBuilder<LoginController>(//todo
+      title: GetBuilder<LoginController>(
           builder: (logUser) {
         return Row(
           children: [
@@ -715,7 +715,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                               0xFF4470F3)),
                                                 ),
                                                 onPressed: () async {
-                                                  //todo falta llamar un metodo aqui
+
                                                   //SACAR DEL PUESTO DE TRABAJO AL BARBERO
                                                   Get.dialog(
                                                     const Center(

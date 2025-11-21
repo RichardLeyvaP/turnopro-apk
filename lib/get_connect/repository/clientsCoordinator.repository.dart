@@ -260,20 +260,17 @@ class ClientsCoordinatorRepository extends GetConnect {
       print('hay coneccion getClientsScheduledListBranch');
       if (response.statusCode == 200) {
         //aqui evaluar tds las respuestas
-        //todo-1
-        //cola_branch_data
+
         final customers = response.body['tail'];
         for (Map service in customers) {
           ClientsScheduledModel client =
               ClientsScheduledModel.fromJson(jsonEncode(service));
           clientList.add(client);
         }
-        //todo-1
-        //
-        //todo-2 notifications
+
         final notifications = response.body['notifications'];
         print(
-            'llamada timer estoy en CAntidad de Notificaciones fetchNotificationList Tecn:$notifications');
+            'llamada timer en CAntidad de Notificaciones fetchNotificationList Tecn:$notifications');
         for (Map notification in notifications) {
           NotificationModel u =
               NotificationModel.fromJson(jsonEncode(notification));
@@ -307,49 +304,39 @@ class ClientsCoordinatorRepository extends GetConnect {
           }
         }
 
-        //todo-2 notifications
-        //
-        //
-        //todo-3 Cola
+
         final orders = response.body['carOrderDelete'];
         print(orders);
         if (orders != null) {
           for (int i = 0; i < orders.length; i++) {
-            print(
-                'ordya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
+
             orders[i].forEach((key, value) {
               print(
-                  'ordya tengo la cola de la api es estaa $key: ${value.runtimeType}');
+                  ' tiene la cola de la api es $key: ${value.runtimeType}');
             });
           }
           for (Map order in orders) {
-            print('DIO ERROR loadOrderDeleteCarv aqui mapeandooooo');
+
             OrderDeleteModel u = OrderDeleteModel.fromJson(jsonEncode(order));
             orderDEL.add(u);
-            print('DIO ERROR loadOrderDeleteCarv aqui mapeandooooo2222');
+
           }
         }
         //retornando dos listas
 
-        //todo-3 Cola
-        //
-        //
-        //todo-4 Cola1
+
         final customers2 = response.body['tail1']; //cola_branch_data2
         print(
-            'ya tengo la cola de la api getClientsRechazBranch:${customers2}');
+            'ya tiene la cola de la api getClientsRechazBranch:${customers2}');
         for (Map service in customers2) {
-          print('ya tengo la cola de la api getClientsRechazBranch222222222');
+          print('ya tiene la cola de la api getClientsRechazBranch222222222');
           ClientsScheduledModel client =
               ClientsScheduledModel.fromJson(jsonEncode(service));
           clientListDel.add(client);
-          print('ya tengo la cola de la api getClientsRechazBranch333333333');
+          print('ya tiene la cola de la api getClientsRechazBranch333333333');
           //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
         }
-        //todo-4 Cola1
-        //
-        //
-        //todo-5 Cola1
+
         final customers3 = response.body['professionals3'];
         for (Map service in customers3) {
           ClientsScheduledModel client2 =
@@ -357,9 +344,7 @@ class ClientsCoordinatorRepository extends GetConnect {
 
           professionals3.add(client2);
         }
-        //todo-5 Cola1
-        //
-        //todo-6 Cola1
+
         final customers4 = response.body['professionals4'];
         for (Map service in customers4) {
           ClientsScheduledModel client4 =
@@ -367,11 +352,9 @@ class ClientsCoordinatorRepository extends GetConnect {
 
           professionals4.add(client4);
           print(
-              'yccca tengo la cola de la api profOutRequestBranch:${clientList.length}');
+              'yccca tiene la cola de la api profOutRequestBranch:${clientList.length}');
         }
-        //todo-6 Cola1
-        //
-        //
+
       } else if (response.statusCode == null) {
         print(
             'response.statusCode al ser diferente de 200:${response.statusCode}');
@@ -402,7 +385,7 @@ class ClientsCoordinatorRepository extends GetConnect {
         };
       }
     } catch (e) {
-      print('estoy dando este error ...:$e');
+      print('Error:$e');
       return {"clientList": clientList};
     }
   } //
@@ -428,7 +411,7 @@ class ClientsCoordinatorRepository extends GetConnect {
       } else
         print('hay coneccion getClientsScheduledListBranch');
       if (response.statusCode == 200) {
-        print('ya tengo la cola de la api getClientsScheduledListBranch');
+        print('ya tiene la cola de la api getClientsScheduledListBranch');
         final customers = response.body['tail'];
         for (Map service in customers) {
           ClientsScheduledModel client =
@@ -467,19 +450,19 @@ class ClientsCoordinatorRepository extends GetConnect {
       } else
         print('hay coneccion getClientsRechazBranch');
       if (response.statusCode == 200) {
-        print('ya tengo la cola de la api getClientsRechazBranch');
+        print('ya tiene la cola de la api getClientsRechazBranch');
         final customers = response.body['tail'];
-        print('ya tengo la cola de la api getClientsRechazBranch:${customers}');
+        print('ya tiene la cola de la api getClientsRechazBranch:${customers}');
         for (Map service in customers) {
-          print('ya tengo la cola de la api getClientsRechazBranch222222222');
+          print('ya tiene la cola de la api getClientsRechazBranch222222222');
           ClientsScheduledModel client =
               ClientsScheduledModel.fromJson(jsonEncode(service));
           clientListDel.add(client);
-          print('ya tengo la cola de la api getClientsRechazBranch333333333');
+          print('ya tiene la cola de la api getClientsRechazBranch333333333');
           //AQUI PARA SABER CUAL ES EL CLIENTE QUE LE SIGUE, aqui solo coje el primero que tenga attended == 0
         }
         print(
-            'ya tengo la cola de la api getClientsRechazBranch clientListDel:${clientListDel.length}');
+            'ya tiene la cola de la api getClientsRechazBranch clientListDel:${clientListDel.length}');
       }
 
       return {"clientListDel": clientListDel};
@@ -511,7 +494,7 @@ class ClientsCoordinatorRepository extends GetConnect {
     } else
       print('hay coneccion ClientsColacionBranch');
     if (response.statusCode == 200) {
-      print('ya tengo la cola de la api ClientsColacionBranch');
+      print('ya tiene la cola de la api ClientsColacionBranch');
       final customers = response.body['professionals'];
       for (Map service in customers) {
         ClientsScheduledModel client =
@@ -519,7 +502,7 @@ class ClientsCoordinatorRepository extends GetConnect {
 
         clientList.add(client);
         print(
-            'yccca tengo la cola de la api ClientsColacionBranchLength:${clientList.length}');
+            'yccca tiene la cola de la api ClientsColacionBranchLength:${clientList.length}');
       }
     }
 
@@ -548,7 +531,7 @@ class ClientsCoordinatorRepository extends GetConnect {
     } else
       print('hay coneccion ClientsColacionBranch');
     if (response.statusCode == 200) {
-      print('ya tengo la cola de la api ClientsColacionBranch');
+      print('ya tiene la cola de la api ClientsColacionBranch');
       final customers = response.body['professionals'];
       for (Map service in customers) {
         ClientsScheduledModel client =
@@ -556,7 +539,7 @@ class ClientsCoordinatorRepository extends GetConnect {
 
         clientList.add(client);
         print(
-            'yccca tengo la cola de la api ClientsColacionBranchLength:${clientList.length}');
+            'yccca tiene la cola de la api ClientsColacionBranchLength:${clientList.length}');
       }
     }
 
@@ -585,7 +568,7 @@ class ClientsCoordinatorRepository extends GetConnect {
     } else
       print('hay coneccion profOutRequestBranch');
     if (response.statusCode == 200) {
-      print('ya tengo la cola de la api ClientsColacionBranch');
+      print('ya tiene la cola de la api ClientsColacionBranch');
       final customers = response.body['professionals'];
       for (Map service in customers) {
         ClientsScheduledModel client =
@@ -593,7 +576,7 @@ class ClientsCoordinatorRepository extends GetConnect {
 
         clientList.add(client);
         print(
-            'yccca tengo la cola de la api profOutRequestBranch:${clientList.length}');
+            'yccca tiene la cola de la api profOutRequestBranch:${clientList.length}');
       }
     }
 
@@ -620,18 +603,18 @@ class ClientsCoordinatorRepository extends GetConnect {
     } else
       print('hay coneccion getClientsScheduledListBranch');
     if (response.statusCode == 200) {
-      print('ya tengo la cola de la api getClientsScheduledListBranch');
+      print('ya tiene la cola de la api getClientsScheduledListBranch');
       // final customers = response.body['tail'];
       final customers = response.body['attended'];
       print(
-          'ya tengo la cola de la api getClientsScheduledListBranch:customers:$customers');
+          'ya tiene la cola de la api getClientsScheduledListBranch:customers:$customers');
       for (Map service in customers) {
         ClientsScheduledModel client =
             ClientsScheduledModel.fromJson(jsonEncode(service));
 
         clientList.add(client);
         print(
-            'yccca tengo la cola de la api getClientsScheduledListBranch:${clientList.length}');
+            'yccca tiene la cola de la api getClientsScheduledListBranch:${clientList.length}');
       }
     }
 
@@ -716,18 +699,8 @@ class ClientsCoordinatorRepository extends GetConnect {
       }
 
       final prod = responseBody['products'];
-      print(
-          'llamando _fetchCoexistenceList(); 111--888jsonString jsonStringjsonStringjsonStringjsonStringjsonString');
-//       // //todo LEER TIPOS DE DATOS QUE VIENEN D LA API
-//       for (int i = 0; i < prod.length; i++) {
-//         print(
-//             'ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
-//         prod[i].forEach((key, value) {
-//           print(
-//               'ya tengo la cola de la api es estaa $key: ${value.runtimeType}');
-//         });
-//       }
-// // //todo LEER TIPOS DE DATOS QUE VIENEN D LA API
+
+//  LEER TIPOS DE DATOS QUE VIENEN D LA API
       for (Map product in prod) {
         print('1');
         ProductModel u = ProductModel.fromJson(jsonEncode(product));
@@ -780,12 +753,12 @@ class ClientsCoordinatorRepository extends GetConnect {
     } else
       print('hay coneccion');
     if (response.statusCode == 200) {
-      print('ya tengo la cola de la api');
+      print('ya tiene la cola de la api');
       final customers = response.body['tail'];
       for (Map service in customers) {
         ClientsScheduledModel client =
             ClientsScheduledModel.fromJson(jsonEncode(service));
-        //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
+        // logica para saber si se cerro inesperadamente la apk y hay relojes activos
         if (client.detached == 1 &&
             client.attended != 0 &&
             client.attended != 2) {
@@ -795,7 +768,7 @@ class ClientsCoordinatorRepository extends GetConnect {
             "reservation_id": client.reservation_id,
             "updated_at": convertDateTimeToMinutes(client.updated_at!),
             "clock": client.clock!,
-            "timeClock": client.timeClock!, //todo cambiar123RLP
+            "timeClock": client.timeClock!,
             "client": client,
           };
           attendingClientList.add(newValue);
@@ -847,7 +820,7 @@ class ClientsCoordinatorRepository extends GetConnect {
   }
 
   Future<List<ServiceModel>> getCustomerServicesList(idCar, token) async {
-    print('estoy en repositorio en - 3-getCustomerServicesList');
+    print('en repositorio en - 3-getCustomerServicesList');
     List<ServiceModel> serviceCustomer = [];
     var url = '${dotenv.env['API_ENDPOINT']}/car_services?car_id=$idCar';
 
@@ -857,7 +830,7 @@ class ClientsCoordinatorRepository extends GetConnect {
     final response = await get(url, headers: headers).timeout(
         Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
     if (response.statusCode == 200) {
-      print('ya tengo los servicios');
+      print('ya tiene los servicios');
       final customers = response.body['services'];
       for (Map service in customers) {
         print('1');
@@ -865,24 +838,14 @@ class ClientsCoordinatorRepository extends GetConnect {
         serviceCustomer.add(u);
         //AQUI LA LOGICA DE SABER CUAL ES EL QUE LE SIGUE
       }
-      print('2 okkkkkkkk');
+
       return serviceCustomer;
     } else {
       return serviceCustomer;
     }
   }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
   Future sentValueClockDb(id, clock, token) async {
     var url = '${dotenv.env['API_ENDPOINT']}/set_clock?reservation_id=$id&clock=$clock';
 
@@ -895,17 +858,13 @@ class ClientsCoordinatorRepository extends GetConnect {
       print('ya guardo el reloj que esta utilizando');
       return true;
     } else {
-      print('NOO guardo el reloj que esta utilizando - el codigo no fue 200');
+      print('No guardo el reloj que esta utilizando - el codigo no fue 200');
       print(response.statusCode);
       return false;
     }
-  } //
+  }
 
-//
-//
-//
-//
-//
+
   Future getValueClockDb(id, token) async {
     var url = '${dotenv.env['API_ENDPOINT']}/get_clock?reservation_id=$id';
 
@@ -925,33 +884,10 @@ class ClientsCoordinatorRepository extends GetConnect {
     }
   }
 
-  /* Future<bool> getServicesSimultaneou(idCar) async {
-    var url =
-        '${dotenv.env['API_ENDPOINT']}/car_services?car_id=$idCar'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
 
-    final headers = {
-        "Authorization": "Bearer $token", // Agrega el token a los encabezados
-      };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
-    if (response.statusCode == 200) {
-      final customers = response.body['services'];
-      for (Map service in customers) {
-        ServiceModel serv = ServiceModel.fromJson(jsonEncode(service));
-        if (serv.simultaneou == 1) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-      return false;
-    } else {
-      return false;
-    }
-  }*/
 
   Future<bool> typeOfService(idProfessional, idBranch, token) async {
-    print('estoy en repositorio en - 6-2');
+
     var url =
         '${dotenv.env['API_ENDPOINT']}/type_of_service?professional_id=$idProfessional&branch_id=$idBranch';
 
@@ -1019,7 +955,7 @@ class ClientsCoordinatorRepository extends GetConnect {
 
   Future<int> returnClientStatus(reservationId, token) async {
     var url =
-        '${dotenv.env['API_ENDPOINT']}/return_client_status?reservation_id=$reservationId'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
+        '${dotenv.env['API_ENDPOINT']}/return_client_status?reservation_id=$reservationId'; //hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
 
     final headers = {
       "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -1082,7 +1018,7 @@ class ClientsCoordinatorRepository extends GetConnect {
           },
         ),
       );
-      print('++++++++++++++++++++');
+
       print(response.data);
       return true;
     } catch (e) {
@@ -1090,29 +1026,6 @@ class ClientsCoordinatorRepository extends GetConnect {
       return false;
     }
 
-    /*  var url = '${dotenv.env['API_ENDPOINT']}/storeByReservationId';
 
-    // Parámetros que deseas enviar en la solicitud POST
-    final Map<String, dynamic> body = {
-      'reservation_id': reservationId,
-      'look': look,
-      'client_look': image,
-    };
-    // Realizar la solicitud POST
-    final headers = {
-        "Authorization": "Bearer $token", // Agrega el token a los encabezados
-      };
-    final response = await post(headers:headers,url, body);
-    if (response.statusCode == 200) {
-      print('storeByReservationId value = true');
-      value = true;
-      return value;
-    } else {
-      print('ERROR:storeByReservationId value = false');
-      print(
-          'ERROR:storeByReservationId value = false : ${response.statusCode}');
-
-      return false;
-    }*/
   }
 }

@@ -282,7 +282,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          //todo cambiar esto que esta puesto para poder ver el boton
+
                           if (loginController.branchTecnicLoggedIn == 1) ...[
                             ElevatedButton(
                               style: ButtonStyle(
@@ -328,7 +328,6 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
                                       'no',
                                       'Tecnico'); //esto es para quele llegue a coordinador y encargado
 
-                                  //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
                                   await clientsController.acceptOrRejectClient(clientsController.idClientTemporary, 4,
                                       loginController.tokenUserLoggedIn); // Cierra el modal
                                   pagesConfigC.back();
@@ -480,21 +479,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
                                                           backgroundColor:
                                                               MaterialStateProperty.all<Color>(Color(0xFF4470F3)),
                                                         ),
-                                                        //todo este estaba antes
-                                                        // onPressed: () async {
-                                                        //   final ImagePicker _picker = ImagePicker();
-                                                        //   _.setPickedFile(await _picker.pickImage(
-                                                        //     source: ImageSource.camera,
-                                                        //   ));
-                                                        //   await LocalStorage.prefs.setBool('verificatePhoto', true);
 
-                                                        //   // Verifica si pickedFile no es nulo antes de acceder a su propiedad path
-                                                        //   if (_.pickedFile != null) {
-                                                        //     _.setImagePath(_.pickedFile!.path);
-                                                        //   }
-                                                        //   print('DIRECCIONDELAIMAGEN : ${_.imagePath}');
-                                                        // },
-                                                        //todo este estaba antes
 
                                                         onPressed: () async {
                                                           final ImagePicker _picker = ImagePicker();
@@ -609,7 +594,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
 
                                                               if (Get.isDialogOpen ?? false) {
                                                                 Get.back();
-                                                              } //aqui cierro el cargando
+                                                              } //aqui cierra el cargando
                                                               Get.snackbar(
                                                                 'Mensaje',
                                                                 'Finalizando servicio',
@@ -631,14 +616,14 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
                                                                 // Aquí dentro puedes poner la acción que deseas realizar después de esperar 2 segundos
                                                                 loginController.inTheClock(false);
                                                                 pagesConfigC.back();
-                                                                // Llama a cualquier función o realiza alguna tarea aquí
+
                                                               });
 
                                                               print('Comentario enviado - $commentText ');
                                                             } else {
                                                               if (Get.isDialogOpen ?? false) {
                                                                 Get.back();
-                                                              } //aqui cierro el cargando
+                                                              } //aqui cierra el cargando
 
                                                               Get.snackbar(
                                                                 '!Alerta',

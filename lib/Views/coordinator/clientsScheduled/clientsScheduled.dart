@@ -84,43 +84,7 @@ class YourPageViewScreenState extends State<HomePageView> {
       //     : null,
       body: Column(
         children: [
-          //todo esto de abajo son botones para manejar el desplazamiento de las paginas y hacer o no scroll
-          // Row(
-          //   children: [
-          //     ElevatedButton(
-          //       onPressed: () {
-          //         setState(() {
-          //           isPageViewEnabled = !isPageViewEnabled;
-          //         });
-          //       },
-          //       child:
-          //           Text(isPageViewEnabled ? 'Deshab Scroll' : 'Habili Scroll'),
-          //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.all(8.0),
-          //       child: ElevatedButton(
-          //         onPressed: () {
-          //           // Cambiar a la siguiente página.
-          //           _pageController.nextPage(
-          //             duration: Duration(milliseconds: 300),
-          //             curve: Curves.ease,
-          //           );
-          //         },
-          //         child: Text('Siguiente Página'),
-          //       ),
-          //     ),
-          //     ElevatedButton(
-          //       onPressed: () {
-          //         // Cambiar a la siguiente página.
-          //         _pageController.previousPage(
-          //           duration: Duration(milliseconds: 1000),
-          //           curve: Curves.fastOutSlowIn,
-          //         );
-          //       },
-          //       child: Text('Atras'),
-          //     ),
-          //   ],
-          // ),
+
           Expanded(
             child: PageView(
               controller: pagesConfigC.pageController,
@@ -136,10 +100,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                 });
               },
               children: [
-                // Agrega tus páginas aquí
-                //
-                //
-                //todo PAGINA 1
+
                 Center(
                   child: GetBuilder<ClientsScheduledController>(
                       builder: (controllerClient) => controllerClient.isLoading
@@ -403,7 +364,6 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                   index]
                                                               .attended !=
                                                           4) {
-                                                        // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
                                                         controllerClient
                                                             .showingServiceClient(
                                                                 true);
@@ -415,7 +375,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                     .clientsScheduledList[
                                                                         index]
                                                                     .car_id);
-                                                        //AQUI MANDO ID DE CARRO PAR ACARGAR EL CARRITO PARA LOS SERVICIO Y PRODUCTOS
+                                                        // MANDO ID DE CARRO PAR ACARGAR EL CARRITO PARA LOS SERVICIO Y PRODUCTOS
                                                         //Y SE ACTUALIZA LA VARIABLE GLOBAL carIdClienteSelect
                                                         controllerClient
                                                             .selectCarClient(
@@ -423,7 +383,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                     .clientsScheduledList[
                                                                         index]
                                                                     .car_id);
-                                                        //AQUI MANDO EL ID DE RESERVACION Y ME DEVUELVE EL ESTADO DEL CLIENTE,
+                                                        // MANDO EL ID DE RESERVACION Y ME DEVUELVE EL ESTADO DEL CLIENTE,
                                                         //SI SE ESTA ATENDINEDO O NO , PARA ASI SABER CUANDO MOSTRAR LOS BOTONES DE ATENDIDO Y
                                                         //SELECCIONAR SERVICIO Y PRODUCTOS
                                                         controllerClient.returnClientStatus(
@@ -433,7 +393,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                 .reservation_id!,
                                                             controllerLogin
                                                                 .tokenUserLoggedIn);
-                                                        //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
+                                                        // MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
                                                         controllerClient.returnClientName(
                                                             (controllerClient
                                                                     .clientsScheduledList[
@@ -517,7 +477,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                     children: [
                                                                       Icon(
                                                                         MdiIcons
-                                                                            .formatListNumbered, //todo
+                                                                            .formatListNumbered,
                                                                         color: const Color.fromARGB(
                                                                             255,
                                                                             150,
@@ -679,7 +639,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                         controllerClient.clientsScheduledList[index].attended ==
                                                                             5
                                                                     ? const Row(
-                                                                        //todo 999
+
                                                                         children: [
                                                                           Opacity(
                                                                             opacity:
@@ -696,7 +656,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                         ],
                                                                       )
                                                                     : const Row(
-                                                                        //todo 999
+
                                                                         children: [
                                                                           Opacity(
                                                                             opacity:
@@ -735,30 +695,12 @@ class YourPageViewScreenState extends State<HomePageView> {
                                 )
                               ],
                             )
-                      // :
-                      // const Column(
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      //     children: [
-                      //       Image(
-                      //         image: AssetImage(
-                      //           'assets/images/icons/error-connection.png',
-                      //         ),
-                      //       ),
-                      //       Text(
-                      //           'Lo sentimos, hay problemas de conexión...'),
-                      //     ],
-                      //   ),
+
                       ),
                 ),
-                //
-                //
-                //,
-                //todo PAGINA 2
+
                 const ServicesProductsPage(),
-                //
-                //
-                //,
-                //todo PAGINA 3
+
                 ShoppingCartPage(),
               ],
             ),

@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-//todo REVISAR aqui datos estaticos en el modelo, los valores enteros YAYAAAAA
+
 class OrderDeleteModel {
   int id;
   int profesional_id;

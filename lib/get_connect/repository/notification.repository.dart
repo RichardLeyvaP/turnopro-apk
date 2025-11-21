@@ -10,7 +10,7 @@ import 'package:turnopro_apk/Models/notification_model.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/env.dart';
 import 'package:http/http.dart' as http;
-//todo REVISAR aqui se esta cargando una API de ejemplo no la de SIMPLIFI
+
 
 class NotificationRepository extends GetConnect {
   final LoginController controllerLogin = Get.find<LoginController>();
@@ -164,11 +164,11 @@ class NotificationRepository extends GetConnect {
             Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
 
         print('viendo resultado1-response.statusCode:${response.statusCode}');
-        // print('viendo resultado1-response.body:${response.body}');
-        if (response.statusCode == 200) {
-          // final jsonResponse = jsonDecode(response.body);
 
-          //todo NOTIFICATIONS
+        if (response.statusCode == 200) {
+
+
+          // NOTIFICATIONS
           final notifications = response.body['notifications'];
           print(
               'viendo resultado1-response.body[notifications]:${response.body['notifications']}');
@@ -189,10 +189,10 @@ class NotificationRepository extends GetConnect {
           }
           print(
               'llamada timer en 10 segundos CANTIDAD nOTIFICACIONES:${notificationListNew.length}');
-          //todo END NOTIFICATIONS
-          //aqui el trabajo con la respuesta de la cola
+          // END NOTIFICATIONS
+          // la respuesta de la cola
           // final List<dynamic> tailData = jsonResponse['tail'];
-          //todo  TAILS
+          //  TAILS
           final customers = response.body['tail'];
           print(
               'viendo resultado1-response.body[tail]:${response.body['tail']}');
@@ -203,9 +203,8 @@ class NotificationRepository extends GetConnect {
                 ClientsScheduledModel.fromJson(jsonEncode(service));
             print(
                 'llamada timer en 10 segundos A professionalBranchNotifQueque repository-customers333:$customers');
-            // print(
-            //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
-            //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
+
+            // logica para saber si se cerro inesperadamente la apk y hay relojes activos
             if (controllerLogin.isLoggingIn == true) {
               if (client.detached == 1 &&
                   client.attended != 33 &&
@@ -220,7 +219,7 @@ class NotificationRepository extends GetConnect {
                   //"updated_at": convertDateTimeToMinutes(client.updated_at!),
                   "updated_at": client.updated_at!,
                   "clock": client.clock!,
-                  "timeClock": client.timeClock!, //todo cambiar123RLP
+                  "timeClock": client.timeClock!,
                   "client": client,
                 };
                 attendingClientList.add(newValue);
@@ -282,7 +281,7 @@ class NotificationRepository extends GetConnect {
           //aqui el trabajo con la respuesta de la cola
           print('viendo resultado1 - CANTIDAD LA COLA:${clientList.length}');
 
-          //todo END TAILS
+
 
           if (type == 'Encargado') {
             return {
@@ -293,7 +292,7 @@ class NotificationRepository extends GetConnect {
               "quantityClientAttended": quantityClientAttended,
               "attendingClient": attendingClientList, //puede ser null
               "varclientswaiting":
-                  varclientswaiting, //este me dice si hay que mandar alguna notificacion recordando que hay cliente esperando en cola por ser atendido
+                  varclientswaiting, //si hay que mandar alguna notificacion recordando que hay cliente esperando en cola por ser atendido
               //valores de la cola
               "notificationListEncarg": notificationList,
               "notificationListNewEncarg": notificationListNew,
@@ -322,100 +321,19 @@ class NotificationRepository extends GetConnect {
         m2.release();
       }
     } catch (e) {
-      print('viendo resultado1 - DI ERROR EN :$e');
+      print('Error :$e');
       return {
-        'Erroor': true
-      }; //si retorna null es que dio error deve ser de conexion
+        'Error': true
+      };
     }
-    // finally {
-    //   if (varStatusCode == 200) {
 
-    //   }
-    // }
   }
-
-  // Future getNotificationList(idBranch, idProf, type, token, place) async {
-  //   try {
-  //     print('estoy aqui en getNotificationList llamando desde:$place');
-  //     List<NotificationModel> notificationList = [];
-  //     List<NotificationModel> notificationListNew = [];
-  //     var url =
-  //         '${Env.apiEndpoint}/notification-professional?branch_id=$idBranch&professional_id=$idProf'; //cambiar aqui por servicios en la api
-
-  //     final headers = {
-  //       "Authorization": "Bearer $token", // Agrega el token a los encabezados
-  //     };
-  //     final response = await get(url, headers: headers).timeout(
-  //         Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
-  //     if (response.statusCode == 200) {
-  //       final notifications = response.body['notifications'];
-  //       print(
-  //           'llamada timer estoy en CAntidad de Notificaciones fetchNotificationList Tecn:$notifications');
-  //       for (Map notification in notifications) {
-  //         NotificationModel u =
-  //             NotificationModel.fromJson(jsonEncode(notification));
-
-  //         if (type == 'Coordinador' || type == 'Encargado') {
-  //           if (u.type == type ||
-  //               u.type == 'Ambos' ||
-  //               u.type == 'Barbero y Encargado') {
-  //             notificationList.add(u);
-  //           }
-  //           if (u.state == 0 || u.state == 3) {
-  //             //si esta en estos estados es que no se ha visto
-  //             //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
-  //             if (u.type == type ||
-  //                 u.type == 'Ambos' ||
-  //                 u.type == 'Barbero y Encargado') {
-  //               notificationListNew.add(u); //barbero
-  //             }
-  //           }
-  //         } else {
-  //           if (u.type == type || u.type == 'Barbero y Encargado') {
-  //             notificationList.add(u);
-  //           }
-  //           if (u.state == 0 || u.state == 3) {
-  //             //si esta en estos estados es que no se ha visto
-  //             //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
-  //             if (u.type == type || u.type == 'Barbero y Encargado') {
-  //               notificationListNew.add(u); //barbero
-  //             }
-  //           }
-  //         }
-  //       }
-  //       if (type == 'Encargado') {
-  //         return {
-  //           "notificationListEncarg": notificationList,
-  //           "notificationListNewEncarg": notificationListNew,
-  //         };
-  //       } else {
-  //         return {
-  //           "notificationList": notificationList,
-  //           "notificationListNew": notificationListNew,
-  //         };
-  //       }
-  //     } else {
-  //       print(
-  //           'mandar alguna variable para la vista Error en Future getNotificationList:${response.statusCode}');
-  //       return {
-  //         "notificationListError": true,
-  //       };
-  //     }
-  //   } catch (e) {
-  //     print(
-  //         'mandar alguna variable para la vista Error en Future getNotificationList:$e');
-  //     return {
-  //       'Erroor': true
-  //     }; //si retorna null es que dio error deve ser de conexion
-  //   }
-  // }
 
   final m = Mutex();
 
   Future getNotificationList(idBranch, idProf, type, token, place) async {
     try {
-      print(
-          'estoy aqui en getNotificationList llamando desde-----------:$place');
+      print(' getNotificationList llamando desde-----------:$place');
       List<NotificationModel> notificationList = [];
       List<NotificationModel> notificationListNew = [];
       var url =
@@ -432,7 +350,7 @@ class NotificationRepository extends GetConnect {
         if (response.statusCode == 200) {
           final notifications = response.body['notifications'];
           print(
-              'llamada timer estoy en CAntidad de Notificaciones fetchNotificationList Tecn:$notifications'); //R3 1405
+              'llamada timer en CAntidad de Notificaciones fetchNotificationList Tecn:$notifications'); //R3 1405
           for (Map notification in notifications) {
             NotificationModel u =
                 NotificationModel.fromJson(jsonEncode(notification));

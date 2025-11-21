@@ -151,7 +151,6 @@ class ClientsScheduledRepository extends GetConnect {
   //
 
   Future getClientsScheduledListNewServ(idProfessional, idBranch, isLoggingIn, token) async {
-    print('estoy en repositorio en - 2');
 
     try {
       int clientListSalon = 0;
@@ -187,24 +186,13 @@ class ClientsScheduledRepository extends GetConnect {
         final customers = response.body['tail'];
         // print('ya tengo la cola de la api es estaa${customers}');
 
-// // //todo LEER TIPOS DE DATOS QUE VIENEN D LA API
-//       for (int i = 0; i < customers.length; i++) {
-//         print(
-//             'ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
-//         customers[i].forEach((key, value) {
-//           print(
-//               'ya tengo la cola de la api es estaa $key: ${value.runtimeType}');
-//         });
-//       }
-// // //todo LEER TIPOS DE DATOS QUE VIENEN D LA API
+
 
         for (Map service in customers) {
-          // print(
-          //     'ya tengo la cola de la api es estaa *********for (Map service in customers)********');
+
           ClientsScheduledModel client = ClientsScheduledModel.fromJson(jsonEncode(service));
-          // print(
-          //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
-          //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
+
+          // logica para saber si se cerro inesperadamente la apk y hay relojes activos
           if (isLoggingIn == true) {
             //controllerLogin.isLoggingIn
             if (client.detached == 1 && client.attended != 33 && client.attended != 2) {
@@ -217,7 +205,7 @@ class ClientsScheduledRepository extends GetConnect {
                 //"updated_at": convertDateTimeToMinutes(client.updated_at!),
                 "updated_at": client.updated_at!,
                 "clock": client.clock!,
-                "timeClock": client.timeClock!, //todo cambiar123RLP
+                "timeClock": client.timeClock!,
                 "client": client,
               };
               attendingClientList.add(newValue);
@@ -240,7 +228,7 @@ class ClientsScheduledRepository extends GetConnect {
           print('gggclientes asistiendo entre a if (client.confirmation :2${client.confirmation}) {');
           if (hasNextClient == false) {
             if (client.attended == 0 && client.confirmation == 4) {
-              //todo aqui poner que el siguiente sea solo si está anunciado
+              //poner que el siguiente sea solo si está anunciado
               nextClient = client;
               hasNextClient = true;
             }
@@ -270,14 +258,12 @@ class ClientsScheduledRepository extends GetConnect {
         };
       }
     } catch (e) {
-      print('Primer ruta protegida-Dio error:$e');
+      print('Error:$e');
     }
   }
-//
-  //
+
 
   Future getClientsScheduledListNew(idProfessional, idBranch, isLoggingIn, token) async {
-    print('estoy en repositorio en - 2');
 
     try {
       int clientListSalon = 0;
@@ -314,24 +300,13 @@ class ClientsScheduledRepository extends GetConnect {
         final customers = response.body['tail'];
         // print('ya tengo la cola de la api es estaa${customers}');
 
-// // //todo LEER TIPOS DE DATOS QUE VIENEN D LA API
-//       for (int i = 0; i < customers.length; i++) {
-//         print(
-//             'ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
-//         customers[i].forEach((key, value) {
-//           print(
-//               'ya tengo la cola de la api es estaa $key: ${value.runtimeType}');
-//         });
-//       }
-// // //todo LEER TIPOS DE DATOS QUE VIENEN D LA API
+
 
         for (Map service in customers) {
-          // print(
-          //     'ya tengo la cola de la api es estaa *********for (Map service in customers)********');
+
           ClientsScheduledModel client = ClientsScheduledModel.fromJson(jsonEncode(service));
-          // print(
-          //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
-          //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
+
+          // logica para saber si se cerro inesperadamente la apk y hay relojes activos
           if (isLoggingIn == true) {
             //controllerLogin.isLoggingIn
             if (client.detached == 1 && client.attended != 33 && client.attended != 2) {
@@ -344,7 +319,7 @@ class ClientsScheduledRepository extends GetConnect {
                 //"updated_at": convertDateTimeToMinutes(client.updated_at!),
                 "updated_at": client.updated_at!,
                 "clock": client.clock!,
-                "timeClock": client.timeClock!, //todo cambiar123RLP
+                "timeClock": client.timeClock!,
                 "client": client,
               };
               attendingClientList.add(newValue);
@@ -367,7 +342,7 @@ class ClientsScheduledRepository extends GetConnect {
           print('gggclientes asistiendo entre a if (client.confirmation :2${client.confirmation}) {');
           if (hasNextClient == false) {
             if (client.attended == 0 && client.confirmation == 4) {
-              //todo aqui poner que el siguiente sea solo si está anunciado
+              //poner que el siguiente sea solo si está anunciado
               nextClient = client;
               hasNextClient = true;
             }
@@ -397,14 +372,13 @@ class ClientsScheduledRepository extends GetConnect {
         };
       }
     } catch (e) {
-      print('Primer ruta protegida-Dio error:$e');
+      print('Primer ruta protegida error:$e');
     }
   }
 //
   //
 
   Future getClientsScheduledList(idProfessional, idBranch, isLoggingIn, token1) async {
-    print('estoy en repositorio en - 2');
 
     try {
       List<ClientsScheduledModel> clientList = [];
@@ -436,24 +410,11 @@ class ClientsScheduledRepository extends GetConnect {
         final customers = response.body['tail'];
         // print('ya tengo la cola de la api es estaa${customers}');
 
-// // //todo LEER TIPOS DE DATOS QUE VIENEN D LA API
-//       for (int i = 0; i < customers.length; i++) {
-//         print(
-//             'ya tengo la cola de la api es estaa Tipos de datos para el objeto ${i + 1}:');
-//         customers[i].forEach((key, value) {
-//           print(
-//               'ya tengo la cola de la api es estaa $key: ${value.runtimeType}');
-//         });
-//       }
-// // //todo LEER TIPOS DE DATOS QUE VIENEN D LA API
 
         for (Map service in customers) {
-          // print(
-          //     'ya tengo la cola de la api es estaa *********for (Map service in customers)********');
           ClientsScheduledModel client = ClientsScheduledModel.fromJson(jsonEncode(service));
-          // print(
-          //     'ya tengo la cola de la api es estaa *********for (Map service in customers22)********');
-          //todo logica para saber si se cerro inesperadamente la apk y hay relojes activos
+
+          // logica para saber si se cerro inesperadamente la apk y hay relojes activos
           if (isLoggingIn == true) {
             //controllerLogin.isLoggingIn
             if (client.detached == 1 && client.attended != 0 && client.attended != 2) {
@@ -465,7 +426,7 @@ class ClientsScheduledRepository extends GetConnect {
                 //"updated_at": convertDateTimeToMinutes(client.updated_at!),
                 "updated_at": client.updated_at!,
                 "clock": client.clock!,
-                "timeClock": client.timeClock!, //todo cambiar123RLP
+                "timeClock": client.timeClock!,
                 "client": client,
               };
               attendingClientList.add(newValue);
@@ -538,8 +499,7 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   Future getCustomerServicesList2(idCar, token) async {
-    print('estoy en repositorio en - 35');
-    print('ertyu - idCar $idCar');
+
     try {
       List<ServiceModel> serviceCustomer = [];
       var url = '${dotenv.env['API_ENDPOINT']}/car_services2?car_id=$idCar';
@@ -552,32 +512,22 @@ class ClientsScheduledRepository extends GetConnect {
       if (response.statusCode == 200) {
         print('ya tengo los servicios');
         final customers = response.body['services'];
-        print('ertyu - services $customers');
-        // int i = 1;
+
         for (Map service in customers) {
           ServiceModel u = ServiceModel.fromJson(jsonEncode(service));
-          print('ertyu - service ${u.name}');
+
           serviceCustomer.add(u);
-          // i++;
-          //AQUI LA LOGICA DE SABER CUAL ES EL QUE LE SIGUE
         }
-        print('2 okkkkkkkk');
+
 
         final data = response.body['clientHistory'];
-        print('ertyu - clientHistory $data');
+
         String professionalNameBarber = data[0]['professionalName'];
         String imageUrlBarber = data[0]['image_url'] == '' ? 'comments/default_profile.jpg' : data[0]['image_url'];
         String imageLookBarber = data[0]['imageLook'];
         int cantVisitBarber = data[0]['cantVisit'];
         String endLookBarber = data[0]['endLook'] ?? '';
         String frecuenciaBarber = data[0]['frecuencia'];
-
-        print('ertyu - $professionalNameBarber');
-        print('ertyu - $imageUrlBarber');
-        print('ertyu - $imageLookBarber');
-        print('ertyu - $cantVisitBarber');
-        print('ertyu - $endLookBarber');
-        print('ertyu - $frecuenciaBarber');
 
         return {
           //valores de la cola
@@ -602,7 +552,6 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   Future getCustomerServicesList(idCar, token) async {
-    print('estoy en repositorio en - 36');
 
     try {
       List<ServiceModel> serviceCustomer = [];
@@ -636,7 +585,7 @@ class ClientsScheduledRepository extends GetConnect {
 
 
   Future sentValueClockDb(id, clock, token) async {
-    print('estoy en repositorio en - 4');
+
     try {
       var url = '${dotenv.env['API_ENDPOINT']}/set_clock?reservation_id=$id&clock=$clock';
 
@@ -660,7 +609,7 @@ class ClientsScheduledRepository extends GetConnect {
 
 
   Future<int> getValueClockDb(id, token) async {
-    print('estoy en repositorio en - 5');
+
     int result = -99;
     try {
       var url = '${dotenv.env['API_ENDPOINT']}/get_clock?reservation_id=$id';
@@ -685,7 +634,7 @@ class ClientsScheduledRepository extends GetConnect {
 
 //
   Future sendWhatsappNotificationRepos(String telefone, token) async {
-    print('estoy en repositorio en - 5');
+
     try {
       var url = '${dotenv.env['API_ENDPOINT']}/whatsapp-notification?telefone_client=$telefone';
 
@@ -706,33 +655,10 @@ class ClientsScheduledRepository extends GetConnect {
     }
   }
 
-  /* Future<bool> getServicesSimultaneou(idCar) async {
-    var url =
-        '${dotenv.env['API_ENDPOINT']}/car_services?car_id=$idCar'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
 
-    final headers = {
-        "Authorization": "Bearer $token", // Agrega el token a los encabezados
-      };
-      final response = await get(url, headers: headers).timeout(
-          Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
-    if (response.statusCode == 200) {
-      final customers = response.body['services'];
-      for (Map service in customers) {
-        ServiceModel serv = ServiceModel.fromJson(jsonEncode(service));
-        if (serv.simultaneou == 1) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-      return false;
-    } else {
-      return false;
-    }
-  }*/
 
   Future typeOfService(idProfessional, idBranch, token) async {
-    print('estoy en repositorio en - 6');
+
     try {
       var url = '${dotenv.env['API_ENDPOINT']}/type_of_service?professional_id=$idProfessional&branch_id=$idBranch';
 
@@ -755,7 +681,7 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   Future setTimeClock(reservationId, timeClock, detached, clock, token) async {
-    print('estoy en repositorio en - 7');
+
     try {
       print('EL TIEMPO ACTUAL reservationId->$reservationId');
       print('EL TIEMPO ACTUAL timeClock->$timeClock');
@@ -779,13 +705,13 @@ class ClientsScheduledRepository extends GetConnect {
         print('el timeClock llego null por eso entro aqui al else');
       }
     } catch (e) {
-      print('estoy en repositorio en - 7 error:$e');
+      print(' Error:$e');
     }
   }
 
-  //AQUI HACE LA LLAMADA PARA LOS INCUMPLIMIENTOS, 0 ES QUE INCUMPLIO Y 1 QUE CUMPLIO
+  // HACE LA LLAMADA PARA LOS INCUMPLIMIENTOS, 0 ES QUE INCUMPLIO Y 1 QUE CUMPLIO
   Future storeByType(type, branchId, professionalId, estado, token) async {
-    print('estoy en repositorio en - 8');
+
     try {
       var url = '${dotenv.env['API_ENDPOINT']}/storeByType';
 
@@ -821,7 +747,7 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   Future storeByTypeId(id, type, branchId, professionalId, estado, token) async {
-    print('estoy en repositorio en - 8');
+
     try {
       var url = '${dotenv.env['API_ENDPOINT']}/storeByTypeId';
 
@@ -859,7 +785,7 @@ class ClientsScheduledRepository extends GetConnect {
   } //AQUI HACE LA LLAMADA PARA LOS INCUMPLIMIENTOS, 0 ES QUE INCUMPLIO Y 1 QUE CUMPLIO
 
   Future storeByType2(type, branchId, professionalId, estado, token) async {
-    print('estoy en repositorio en - 8');
+
     print('llamda a la api desde segundo plano-REPOS');
     try {
       var url = '${dotenv.env['API_ENDPOINT']}/storeByType-time';
@@ -896,10 +822,10 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   Future returnClientStatus(reservationId, token) async {
-    print('estoy en repositorio en - 9');
+
     try {
       var url =
-          '${dotenv.env['API_ENDPOINT']}/return_client_status?reservation_id=$reservationId'; //todo hacer un metodo que devuelva dado un idCar si el servicio es simultaneo
+          '${dotenv.env['API_ENDPOINT']}/return_client_status?reservation_id=$reservationId';
 
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
@@ -920,7 +846,7 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   Future getProfessionalState(idBranch, token) async {
-    print('estoy en repositorio en - 10');
+
     try {
       List<ProfessionalModel> professionalList = [];
       var url = '${dotenv.env['API_ENDPOINT']}/professional-state?branch_id=$idBranch';
@@ -957,7 +883,7 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   Future getProfessionalState2First(idBranch, idReserv, idBarberAct, token) async {
-    print('estoy en repositorio en - 10');
+
     List<ProfessionalModel> professionalList = [];
     try {
       int cant = 0;
@@ -995,7 +921,7 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   Future getProfessionalState2Coord(idBranch, idReserv, token) async {
-    print('estoy en repositorio en - 10');
+
     try {
       List<ProfessionalModel> professionalList = [];
       var url = '${dotenv.env['API_ENDPOINT']}/professional-state-coordinador?branch_id=$idBranch&reservation_id=$idReserv';
@@ -1032,7 +958,7 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   Future getProfessionalState2(idBranch, idReserv, token) async {
-    print('estoy en repositorio en - 10');
+
     try {
       List<ProfessionalModel> professionalList = [];
       var url = '${dotenv.env['API_ENDPOINT']}/professional-state?branch_id=$idBranch&reservation_id=$idReserv';
@@ -1069,7 +995,7 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   Future acceptOrRejectClient(reservationId, attended, token) async {
-    print('estoy en repositorio en - 11');
+
     try {
       var url = '${dotenv.env['API_ENDPOINT']}/tail_attended?reservation_id=$reservationId&attended=$attended';
       print('ERROR:acceptOrRejectClient1 value = false- reservationId:$reservationId');
@@ -1088,7 +1014,7 @@ class ClientsScheduledRepository extends GetConnect {
         return -99;
       }
     } catch (e) {
-      print('mensaje al querer hacer esta accion:error al querer finalizar un servicio:$e');
+      print('error al finalizar un servicio:$e');
       return 0;
     }
   }
@@ -1111,13 +1037,13 @@ class ClientsScheduledRepository extends GetConnect {
         return -99;
       }
     } catch (e) {
-      print('mensaje al querer hacer esta accion:error al querer finalizar un servicio:$e');
+      print('error al finalizar un servicio:$e');
       return 0;
     }
   }
 
   Future<bool> deleteReservationClient(reservationId, cause, token) async {
-    print('estoy en repositorio en - 12');
+
     try {
       bool value = false;
       var url = '${dotenv.env['API_ENDPOINT']}/reservation-destroy';
@@ -1144,7 +1070,7 @@ class ClientsScheduledRepository extends GetConnect {
   }
 
   Future storeByReservationId(imag, reservationId, commentText, dioClient, token) async {
-    print('estoy en repositorio en - 13');
+
     try {
       // Crear FormData y agregar la imagen
 
@@ -1166,16 +1092,14 @@ class ClientsScheduledRepository extends GetConnect {
           ),
         );
         print(response.data);
-        print('esta es la subida de la imagen.Dio este resultado response.statusCode: ${response.statusCode}');
-        print('esta es la subida de la imagen.Dio este resultado response.data: ${response.data}');
-        print('esta es la subida de la imagen.Dio este resultado token: $token');
+
         if (response.statusCode == 200) {
           return true;
         } else {
           return false;
         }
       } catch (e) {
-        print('esta es la subida de la imagen.Error al subir la imagen: $e');
+        print('Error al subir la imagen: $e');
         return false;
       }
 

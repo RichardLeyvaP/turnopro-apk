@@ -337,7 +337,7 @@ class _BuildCalendarState extends State<BuildCalendar> {
 
     //EN ESTA DEVUELVE LAS GANANCIAS EN ESE INTERVALO DE FECHAS
     await controllerStatistic.getDataStatistic(startDate, endDate,
-        numberdayWeek, quantityDates); //todo LLAMANDO AL CONTROLADOR
+        numberdayWeek, quantityDates); // LLAMANDO AL CONTROLADOR
     // ignore: use_build_context_synchronously
     Navigator.of(context).pop();
   }

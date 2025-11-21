@@ -77,10 +77,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                 });
               },
               children: [
-                // Agrega tus páginas aquí
-                //
-                //
-                //todo PAGINA 1
+
                 if (controllerLogin.varInTheClock == false) ...[
                   Center(
                     child: GetBuilder<ClientsScheduledController>(
@@ -323,11 +320,8 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                             index]
                                                                         .car_id!;
 
-                                                                // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
-                                                                // controllerClient
-                                                                //     .showingServiceClient(
-                                                                //         true);
-                                                                // aqui cargar los servicios que tiene
+
+                                                                //  cargar los servicios que tiene
                                                                 await controllerClient
                                                                     .searchForCustomerServices3(
                                                                         controllerClient
@@ -460,7 +454,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                       : controllerClient.clientsScheduledList[index].attended == 4 ||
                                                                               controllerClient.clientsScheduledList[index].attended == 5
                                                                           ? const Row(
-                                                                              //todo 999
+
                                                                               children: [
                                                                                 Opacity(
                                                                                   opacity: 1,
@@ -515,29 +509,16 @@ class YourPageViewScreenState extends State<HomePageView> {
                                     ],
                                   )),
                   ),
-                  //
-                  //
-                  //,
-                  //todo PAGINA 2
+
                   const ServicesProductsPage(),
-                  //
-                  //
-                  //,
-                  //todo PAGINA 3
+
                   ShoppingCartPage(),
                 ] else ...[
-                  //
-                  //,
-                  //todo PAGINA 2
-                  const ServicesProductsPage(),
-                  //
-                  //
 
-                  //,
-                  //todo PAGINA 3
+                  const ServicesProductsPage(),
+
                   ShoppingCartPage(),
-                  //
-                  //
+
                   Center(
                     child: GetBuilder<ClientsScheduledController>(
                         builder: (controllerClient) => controllerClient
@@ -818,17 +799,13 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                         index]
                                                                     .client_image)
                                                                 .toString());
-                                                        //todo  INICIO esto estaba en la pagina del modal al dar en Ver carrito
                                                         await controllerClient
                                                             .watchModifyTime(
                                                                 controllerClient
                                                                     .clientsScheduledList[
                                                                         index]
                                                                     .reservation_id);
-                                                        // servControll
-                                                        //     .clearSelectService();
-                                                        //todo FIN esto estaba en la pagina del modal al dar en Ver carrito
-                                                        await chopCont
+                                                         await chopCont
                                                             .loadDataInitiallyNecessary()
                                                             .then((_) async {
                                                           await controllerClient
@@ -877,8 +854,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                 reservationId,
                                                                 carId,
                                                                 urlImage);
-                                                            // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
-                                                            controllerClient
+                                                             controllerClient
                                                                 .showingServiceClient(
                                                                     true);
                                                           });
@@ -1020,7 +996,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                           .attended ==
                                                                       5
                                                               ? const Row(
-                                                                  //todo 999
+
                                                                   children: [
                                                                     Opacity(
                                                                       opacity:
@@ -1068,7 +1044,7 @@ class YourPageViewScreenState extends State<HomePageView> {
                                                                       ],
                                                                     )
                                                                   : const Row(
-                                                                      //todo 999
+
                                                                       children: [
                                                                         Opacity(
                                                                           opacity:

@@ -54,7 +54,7 @@ class ClientsTechnicalController extends GetxController {
       false; //si esta en false es que es la primera vez
   bool showingServiceClients = false;
   bool showingServiceClientsTechnical =
-      false; //saber si estoy mostrando los servicios de algun cliente en el tecnico ne el desplegable
+      false; //saber si esta mostrando los servicios de algun cliente en el tecnico ne el desplegable
   int filterShowTimer = 0; //si esta en false es que es la primera vez
   int statusClientTemporary = -99;
   String nameClientTemporary = 'Cliente';
@@ -64,16 +64,7 @@ class ClientsTechnicalController extends GetxController {
   //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
   //ESTA VARIABLE HAY QUE LLENARLA DIRECTAMENTE DE LA DB
   Map<String, int> noncomplianceProfessional = {
-    /* //el tiempo para escoger los clientes inicial (3min)
-    'Tiempo': 3,
-    'teamQuota': 3, //Cuidado de equipo
-    'punctuality': 3, //Puntualidad
-    'clearCommunication': 3, //Comunicacion clara
-    'confidentiality': 3, //Confidencialidad
-    'cleanlinessOrder': 3, //Limpieza y Orden
-    'drugProhibition': 3, //Prohibición de Drogas y Alcohol
-    'respectTreatment': 3, //Respeto y Trato Cordial
-    /******************AGREGAR AQUI TODS LOS QUE DESEN*********************/*/
+
   };
 
   setNotificateClient(int idClient) {
@@ -223,11 +214,11 @@ class ClientsTechnicalController extends GetxController {
             'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor-7');
       } else {
         correctConnection = true;
-        //aqui estoy guardando la cola del dia de hoy del profesional
+        // guardando la cola del dia de hoy del profesional
         clientsScheduledListTechnical =
             (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
         clientsTechnicalLength = clientsScheduledListTechnical.length;
-        //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+        //aqui guarda al proximo de la cola para mostrarlo en el Home de la apk
 
         clientsNextTechnical = resultList['nextClient'];
         int cantRechaz = resultList['quantityClientRechaz'];
@@ -293,7 +284,7 @@ class ClientsTechnicalController extends GetxController {
   }
 
   Future<bool> changeNoncomplianceTecnhical(
-      //todo1
+
       type,
       branchId,
       professionalId,

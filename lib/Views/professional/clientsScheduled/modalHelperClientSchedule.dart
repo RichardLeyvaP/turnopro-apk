@@ -255,7 +255,7 @@ class ModalHelper {
                                       onPressed: () async {
                                         // Cierra el modal primero
                                         Navigator.pop(context);
-                                        //todo aqui quite las llamadas
+
                                         pageController.nextPage(
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.ease,
@@ -343,7 +343,7 @@ class ModalHelper {
                             ),
                             onPressed: () async {
                               if (loginController.usserPermissionQr == 1) {
-                                //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
+                                //llama al controlador y lo pasa attended = 2 que significa que esta ya atendido
                                 await controllClient.acceptOrRejectClient(
                                     reservationId,
                                     4,
@@ -407,8 +407,8 @@ class ModalHelper {
                                 Color(0xFF19CF9E)),
                           ),
                           onPressed: () async {
-                            // llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
-                            // //todo mandar estos valores para acabar servicio
+                            // llama al controlador y lo paso attended = 2 que significa que esta ya atendido
+                            //  mandar estos valores para acabar servicio
                             // await controllClient.acceptOrRejectClient(
                             //     reservationId, 2);
                             // Navigator.pop(context); // Cierra el modal

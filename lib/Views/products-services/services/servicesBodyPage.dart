@@ -282,7 +282,7 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                                                           width: constraints.maxWidth *
                                                                               (_.services[index].duration_service /
                                                                                   controllerLogin
-                                                                                      .serviceTime), //TODO AQUI CALCULA PARA QUE PINTE EL CONTAINER-RESPECTO-TIEMPO
+                                                                                      .serviceTime), // AQUI CALCULA PARA QUE DIBUJE EL CONTAINER-RESPECTO-TIEMPO
                                                                           decoration: const BoxDecoration(
                                                                               borderRadius: BorderRadius.all(
                                                                                   Radius.circular(borderRadiusValue)),
@@ -332,7 +332,7 @@ class _ServicesBodyPageState extends State<ServicesBodyPage> {
                                       );
                                     }),
                               ),
-                              //todo este era el que decia abajo total a pagar*/
+
                             ],
                           ),
                         ),

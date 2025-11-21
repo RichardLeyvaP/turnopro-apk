@@ -97,7 +97,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                       width: MediaQuery.of(context).size.width *
                                           0.485,
                                       decoration: BoxDecoration(
-                                        color: Color(0xFFFDAE2A), //todo
+                                        color: Color(0xFFFDAE2A),
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(8)),
                                       ),
@@ -129,7 +129,7 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                                       width: MediaQuery.of(context).size.width *
                                           0.485,
                                       decoration: BoxDecoration(
-                                        color: Color(0xFF19CF9E), //todo
+                                        color: Color(0xFF19CF9E),
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(8)),
                                       ),

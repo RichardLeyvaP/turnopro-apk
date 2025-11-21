@@ -55,7 +55,7 @@ class _StadisticaSemResponState extends State<StadisticaSemRespon> {
                 const SizedBox(
                   height: 8,
                 ),
-                //todo aqui comente el que estaba
+
 
                 Padding(
                   padding: const EdgeInsets.only(right: 12.0, left: 12),

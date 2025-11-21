@@ -59,7 +59,7 @@ class _StadisticaMenCordiState extends State<StadisticaMenCordi> {
             const SizedBox(
               height: 8,
             ),
-            //todo aqui comente el que estaba
+
 
             Container(
               width: (MediaQuery.of(context).size.width * 0.95),

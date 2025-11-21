@@ -114,7 +114,7 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                   ? Expanded(
                       flex: 18,
                       child: controllerCORD.clientsScheduledListBranch
-                              .isNotEmpty //todo si hay cargarlos aqui
+                              .isNotEmpty
                           ? ListView.builder(
                               padding: EdgeInsets
                                   .zero, // Elimina cualquier padding del ListView
@@ -133,7 +133,7 @@ class _AgendaResponsibleState extends State<AgendaResponsible> {
                   : Expanded(
                       flex: 18,
                       child: controllerCORD.clientsColacionBranch
-                              .isNotEmpty //todo si hay cargarlos aqui
+                              .isNotEmpty
                           ? ListView.builder(
                               padding: EdgeInsets
                                   .zero, // Elimina cualquier padding del ListView

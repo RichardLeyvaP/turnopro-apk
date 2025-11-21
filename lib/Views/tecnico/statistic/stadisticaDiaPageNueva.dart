@@ -47,7 +47,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
             const SizedBox(
               height: 8,
             ),
-            //todo aqui comente el que estaba
+
 
             Container(
               width: (MediaQuery.of(context).size.width * 0.95),
@@ -136,7 +136,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
 
                             return Column(
                               children: [
-                                //todo1 estructura de los cart
+
                                 Container(
                                   height: (MediaQuery.of(context).size.height *
                                       0.09),

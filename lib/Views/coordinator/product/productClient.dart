@@ -150,7 +150,7 @@ class _ProductClientState extends State<ProductClient> {
               Expanded(
                 flex: 18,
                 child: controllerCORD
-                        .productCORD.isNotEmpty //todo si hay cargarlos aqui
+                        .productCORD.isNotEmpty
                     ? ListView.builder(
                         padding: EdgeInsets
                             .zero, // Elimina cualquier padding del ListView

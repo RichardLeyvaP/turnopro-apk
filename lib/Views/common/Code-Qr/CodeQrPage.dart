@@ -41,12 +41,12 @@ class _QRViewPageState extends State<QRViewPage> {
 
   @override
   Widget build(BuildContext context) {
-//todo SIMULANDO QUE LEA EL CODIGO QR DE ENTRADA
+// SIMULANDO QUE LEA EL CODIGO QR DE ENTRADA
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Se ejecutará después de que se haya construido el widget
       // loginController.setCodigoQrValid(1);
       // La animación ha llegado al final, reiniciar
-      //todo solo si es barbero
+      // solo si es barbero
       //  clientsScheduledController.animationControllerInitial!.reset();
       // clientsScheduledController.animationControllerInitial!.forward();
       // print(
@@ -243,21 +243,7 @@ class _QRViewPageState extends State<QRViewPage> {
     );
   }
 
-  /* void _onQRViewCreated(QRViewController controller) {
-    setState(() {
-      this.controller = controller;
-    });
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-        loginController.qrReading(result!
-            .code); //todo aqui mando al controlador la lectura del codigo
-        // print('************ RESULTADO  ********** CodeQr qr:${result!.code}');
-      });
 
-      
-    });
-  }*/
 
   void _onQRViewCreated(QRViewController controller) {
     setState(() {

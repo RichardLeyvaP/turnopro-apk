@@ -104,7 +104,7 @@ class _AttendingClientState extends State<AttendingClient> {
                   ? Expanded(
                       flex: 18,
                       child: controllerCORD.clientAttendBranch
-                              .isNotEmpty //todo si hay cargarlos aqui
+                              .isNotEmpty
                           ? ListView.builder(
                               padding: EdgeInsets
                                   .zero, // Elimina cualquier padding del ListView
@@ -127,7 +127,7 @@ class _AttendingClientState extends State<AttendingClient> {
                   : Expanded(
                       flex: 18,
                       child: controllerCORD.clientsColacionBranch
-                              .isNotEmpty //todo si hay cargarlos aqui
+                              .isNotEmpty // si hay cargarlos aqui
                           ? ListView.builder(
                               padding: EdgeInsets
                                   .zero, // Elimina cualquier padding del ListView

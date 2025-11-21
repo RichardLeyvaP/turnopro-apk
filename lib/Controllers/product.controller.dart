@@ -129,12 +129,7 @@ class ProductController extends GetxController {
     update();
   }
 
-  /* Future<void> buyProduct(int index) async {
-    print('productooo cantProduct[index]:${cantProduct[index]}');
-    print('productooo index:$index');
-    cantProduct[index] = (cantProduct[index] - 1);
-    update();
-  }*/
+
 
   Future<void> fetchproductList(index) async {
     print(
@@ -212,7 +207,7 @@ class ProductController extends GetxController {
           professional_id,
           car_id,
           loginController
-              .tokenUserLoggedIn); //todo aqui llama a pedir las categorias de los productos por almacen-branch ala que pertenece el profesional
+              .tokenUserLoggedIn); //llama a pedir las categorias de los productos por almacen-branch ala que pertenece el profesional
 
       //aqui viendo si hay categorias de productos
 
@@ -230,7 +225,7 @@ class ProductController extends GetxController {
             idInicial = category[0].id;
             print(
                 'La lista de categorías está categoriasProductos:idInicial:${idInicial}');
-            //aqui gusrdo los id de las categorias
+            //aqui guarda los id de las categorias
             for (int i = 0; i < categoryListLength; i++) {
               agregarCategoria(category[i].id);
             }
@@ -285,14 +280,15 @@ class ProductController extends GetxController {
         category = await repository.getCategoryList(
             controllerLogin.branchIdLoggedIn,
             loginController
-                .tokenUserLoggedIn); //todo aqui llama a pedir las categorias de los productos por almacen-branch ala que pertenece el profesional
+                .tokenUserLoggedIn); //  llama a pedir las categorias de los productos por almacen-branch ala que pertenece el profesional
 
         // Verifica que la lista de categorías no esté vacía antes de acceder a sus elementos
         if (category.isNotEmpty) {
           categoryListLength = category.length;
           idInicial = category[0].id;
 
-          //aqui gusrdo los id de las categorias
+          //aqui guarda los id de las categorias
+
           for (int i = 0; i < categoryListLength; i++) {
             agregarCategoria(category[i].id);
           }
@@ -307,19 +303,11 @@ class ProductController extends GetxController {
         }
       }
     } catch (e) {
-      // print('FALLO LA CONEXION: $e');
+       print('FALLO LA CONEXION: $e');
     }
   }
 
-//todo esta es la primera ves que carga los productos hace la llamada a  fetchproductList(idInicial);
-/*  Future<void> initializeData() async {
-    updatePestana(0);
-    //todo aqui primero espero por las categorias para despues por el id de categoria llamar a los productos
-    await _fetchcategoryList(); // Espera a que se complete _fetchcategoryList
-    await fetchproductListIni(
-        idInicial); // Llama a fetchproductList después de obtener idInicial
-  }
-*/
+
   getList() {
     return product;
   }

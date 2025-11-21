@@ -66,10 +66,7 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                 });
               },
               children: [
-                // Agrega tus páginas aquí
-                //
-                //
-                //todo PAGINA 1
+
                 Center(
                   child: GetBuilder<ClientsTechnicalController>(
                       builder: (clientsScheduledController) =>
@@ -202,76 +199,7 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                                             ),
                                                           ),
                                                           onTap: () async {
-                                                            /*
-                                                          // aqui digo que estoy mostrando los servicios de un cliente para que no se actualice la cola en ese momento
-                                                          clientsScheduledController
-                                                              .showingServiceClientTechnical(
-                                                                  true);
-                                                          // aqui selecciono el cliente
-                                                          clientsScheduledController
-                                                              .getselectCustomerTechnical(
-                                                                  index,
-                                                                  clientsScheduledController
-                                                                      .clientsScheduledListTechnical[
-                                                                          index]
-                                                                      .car_id);
-                                                          //AQUI MANDO ID DE CARRO PAR ACARGAR EL CARRITO PARA LOS SERVICIO Y PRODUCTOS
-                                                          //Y SE ACTUALIZA LA VARIABLE GLOBAL carIdClienteSelect
-                                                          clientsScheduledController
-                                                              .selectCarClient(
-                                                                  clientsScheduledController
-                                                                      .clientsScheduledListTechnical[
-                                                                          index]
-                                                                      .car_id);
-                                                          //AQUI MANDO EL ID DE RESERVACION Y ME DEVUELVE EL ESTADO DEL CLIENTE,
-                                                          //SI SE ESTA ATENDINEDO O NO , PARA ASI SABER CUANDO MOSTRAR LOS BOTONES DE ATENDIDO Y
-                                                          //SELECCIONAR SERVICIO Y PRODUCTOS
-                                                          clientsScheduledController
-                                                              .returnClientStatus(
-                                                                  clientsScheduledController
-                                                                      .clientsScheduledListTechnical[
-                                                                          index]
-                                                                      .reservation_id!);
-                                                          //AQUI MANDO EL NOMBRE PARA PONERLO DE TITULO DE LA PAGINA DE SERVICE Y PRODUCT
-                                                          clientsScheduledController.returnClientName(
-                                                              (clientsScheduledController
-                                                                      .clientsScheduledListTechnical[
-                                                                          index]
-                                                                      .client_name)
-                                                                  .toString());
-                                                          
-                                                          clientsScheduledController
-                                                              .searchForCustomerServices(
-                                                                  clientsScheduledController
-                                                                      .clientsScheduledListTechnical[
-                                                                          index]
-                                                                      .car_id)
-                                                              .then((_) {
-                                                            ModalHelperTecnical
-                                                                .showModalTechnical(
-                                                                    //todo 1
-                                                                    pagesConfigC
-                                                                        .pageController,
-                                                                    context,
-                                                                    clientsScheduledController
-                                                                        .clientsScheduledListTechnical[
-                                                                            index]
-                                                                        .client_name!,
-                                                                    clientsScheduledController
-                                                                        .clientsScheduledListTechnical[
-                                                                            index]
-                                                                        .reservation_id!,
-                                                                    clientsScheduledController
-                                                                        .clientsScheduledListTechnical[
-                                                                            index]
-                                                                        .car_id!,
-                                                                    clientsScheduledController
-                                                                        .clientsScheduledListTechnical[
-                                                                            index]
-                                                                        .professional_id!);
-                                                          });
-                                                          
-                                                          */
+
                                                           },
                                                           title: Row(
                                                             mainAxisAlignment:
@@ -435,15 +363,9 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
                                   ],
                                 )),
                 ),
-                //
-                //
-                //,
-                //todo PAGINA 2
+
                 const ServicesProductsPage(),
-                //
-                //
-                //,
-                //todo PAGINA 3
+
                 ShoppingCartPage(),
               ],
             ),
@@ -454,5 +376,3 @@ class YourPageViewScreenState extends State<HomePageViewTechnical> {
   }
 }
 
-//****************************************************************************** */
-//****************************************************************************** */

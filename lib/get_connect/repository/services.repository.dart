@@ -26,14 +26,12 @@ class ServiceRepository extends GetConnect {
         if (response.statusCode == 200) {
           final services = response.body['professional_services'];
           for (Map service in services) {
-            print(
-                '**************************************estoy aqui devolviendo los services - (Map service in services)');
-            //print(jsonEncode(service));
+
             ServiceModel u = ServiceModel.fromJson(jsonEncode(service));
             serviceList.add(u);
             if (serviceTimeAux < u.duration_service) {
               serviceTimeAux = u
-                  .duration_service; //aqui guardo el mayor tiempo de servicio para utilizarlo en la barra cuando muetra los servicios
+                  .duration_service; //aqui guarda el mayor tiempo de servicio para utilizarlo en la barra cuando muetra los servicios
             }
             loginCont.setServiceTime(serviceTimeAux);
           }

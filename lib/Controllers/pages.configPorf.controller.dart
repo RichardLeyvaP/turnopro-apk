@@ -44,7 +44,7 @@ class PagesConfigController extends GetxController {
   }
 
   //
-  //todo **************** CONFIGURACIONES PARA HOME-PROFESIONAL ************************
+  // **************** CONFIGURACIONES PARA HOME-PROFESIONAL ************************
   //
   PageController pageController = PageController();
   PageController pageController2 = PageController();
@@ -111,38 +111,36 @@ class PagesConfigController extends GetxController {
     update();
   }
 
-  //
-  //
 
-  //todo List<Widget> _pages -> esta esta solo para inicializar pero no es la que funciona
+  // List<Widget> _pages -> esta esta solo para inicializar pero no es la que funciona
   final List<Widget> pages = [
     const HomePageBody(), // Página 1
-    const HomePageView(), // Página 1//todo poner aqui
+    const HomePageView(), // Página 1
     const NotificationsPageProf(), // Página 2
     const StatisticPage(), // Página 3
     const CoexistencePage(), // Página 4
   ];
-  //todo List<Widget> _pages2 -> esta esta solo para inicializar pero no es la que funciona
+  // List<Widget> _pages2 -> esta esta solo para inicializar pero no es la que funciona
   final List<Widget> pages2 = [
     const HomePageTecnicoBody(), // Página 1
-    const HomePageViewTechnical(), // Página 1//todo poner aqui
+    const HomePageViewTechnical(), // Página 1
     const NotificationsPageProf(), // Página 2
     const StatisticPage(), // Página 3
     const CoexistencePageTecnhical(), // Página 4
   ];
 
-  //todo List<Widget> _pages3
+
   final List<Widget> pages3 = [
-    const HomeCoordinatorBody(), // Página 1//todo ESTOY EN ESTA
+    const HomeCoordinatorBody(), // Página 1//
     const AttendingClient(), // Página 2
     const NotificationsPageProf(), // Página 3
     const StatisticPageCordin(),
     // const StatisticPage(), // Página 4
     const CoexistencePageCoordinator(), // Página 5
-  ]; //todo List<Widget> _pages31
+  ];
   final List<Widget> pages31 = [
     const ProfileClient(), // Página 1
-    const ServicesClient(), // Página 2//todo ESTOY EN ESTA
+    const ServicesClient(), // Página 2
     const ProductClient(), // Página 3
     const AttendingClient(), // Página 4
     const CoexistencePageCoordinator(), // Página 5
@@ -167,45 +165,19 @@ class PagesConfigController extends GetxController {
         extension == 'gif';
   }
 
-//todo nueva probando
-//******************************************************* */
+
   Future<void> onTabTapped(int index) async {
-    //CON ESTO GARANDIZO QUE SI DA EN EL MISMO TAB QUE NO VUELVA A DIBUJAR EL WIDGET,SOLO QUE DIBUJE CUANDO DE EN UNO DIFERENTE
+    //CON ESTO SE GARANTIZA QUE SI DA EN EL MISMO TAB QUE NO VUELVA A DIBUJAR EL WIDGET,SOLO QUE DIBUJE CUANDO DE EN UNO DIFERENTE
     print('selectedIndex:$selectedIndex');
     print('index:$index');
 
     if (selectedIndex != index) {
-      /*  if (index == 1 && logController.chargeUserLoggedIn == 'Coordinador') {
-        await showAppBar(false);
-        await clientsScheduledController
-            .clientsAttendBranch(logController.branchIdLoggedIn);
-        goToPage(4, pageController2);
-        selectedIndexBack = selectedIndex;
-        selectedIndex = index;
-        selectedIndexBackList.add(selectedIndexBack);
-        // pageHomeController.jumpToPage(index);
-        //
-
-        update();
-      } else {*/
-      if (index == 2) {
-        /*   print('llamar a notificACIONES-1');
-        int idBranch = logController.branchIdLoggedIn!;
-        int idProfess = logController.idProfessionalLoggedIn!;
-        String idCharge = logController.chargeUserLoggedIn;
-        await notiController.fetchNotificationList(
-            idBranch, idProfess, idCharge, 'No me acuerdo'); //3 es deyler
-        print('llamar a notificACIONES-2 listo');*/
-      }
 
       selectedIndexBack = selectedIndex;
       selectedIndex = index;
       selectedIndexBackList.add(selectedIndexBack);
       pageHomeController.jumpToPage(index);
-      //
 
-      update();
-      //}
     }
   }
 
@@ -224,7 +196,7 @@ class PagesConfigController extends GetxController {
   //************************************************** */
 
   void back() {
-    print('estoy haciendo un back()');
+    print(' haciendo un back()');
     if (selectedIndexBackList.isNotEmpty) {
       selectedIndex = getLastElement(selectedIndexBackList);
       pageHomeController.jumpToPage(selectedIndex);
@@ -260,6 +232,6 @@ class PagesConfigController extends GetxController {
   }
 
   //
-  //todo **************** FIN - CONFIGURACIONES PARA HOME-PROFESIONAL ************************
+  // **************** FIN - CONFIGURACIONES PARA HOME-PROFESIONAL ************************
   //
 }

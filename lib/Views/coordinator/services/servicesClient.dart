@@ -147,7 +147,7 @@ class _ServicesClientState extends State<ServicesClient> {
                 Expanded(
                   flex: 18,
                   child: controllerCORD
-                          .serviceCORD.isNotEmpty //todo si hay cargarlos aqui
+                          .serviceCORD.isNotEmpty
                       ? ListView.builder(
                           padding: EdgeInsets
                               .zero, // Elimina cualquier padding del ListView
@@ -264,7 +264,7 @@ class _ServicesClientState extends State<ServicesClient> {
                         Container(
                             width: constraints.maxWidth *
                                 (cant * 2 / 3) /
-                                10, //TODO AQUI CALCULA PARA QUE PINTE EL CONTAINER-RESPECTO-TIEMPO
+                                10, // AQUI CALCULA PARA QUE PINTE EL CONTAINER-RESPECTO-TIEMPO
                             decoration: const BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(12)),

@@ -62,7 +62,7 @@ class _SelectProfessionalPageState extends State<SelectProfessionalPage> {
                 flex: 4,
                 child: Container(
                   decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 204, 89, 89), //todo
+                      color: Color.fromARGB(255, 204, 89, 89),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),

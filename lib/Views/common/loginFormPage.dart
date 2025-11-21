@@ -18,11 +18,10 @@ class LoginFormPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //todo IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
+    // IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // _passController.text = '';
-      // _usserController.text = '';
+
       // Se ejecutará después de que se haya construido el widget
       print('que tipo de saludo dar dependiendo de la hora');
 
@@ -63,7 +62,7 @@ class LoginFormPage extends StatelessWidget {
                 flex: 10,
                 child: Container(
                   decoration: const BoxDecoration(
-                      color: Colors.white, //todo
+                      color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),

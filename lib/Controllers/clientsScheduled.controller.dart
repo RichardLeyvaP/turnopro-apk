@@ -221,7 +221,7 @@ class ClientsScheduledController extends GetxController {
           print('entré aca a cambiar el tiempo del reloj -3:time:$timeC1');
           //lo reinicio con el nuevo tiempo
           animationController1!
-            ..duration = Duration(seconds: timeC1) //todo cambiar123RLP
+            ..duration = Duration(seconds: timeC1)
             ..reset()
             ..forward();
           controllerLogin.getUpdateTime(timeC1, 1, 'clientSche-getShowClock');
@@ -229,10 +229,9 @@ class ClientsScheduledController extends GetxController {
         if (timeC2 != -999) //es que esta activo
         {
           print('entré aca a cambiar el tiempo del reloj -3:time:$timeC2');
-          //lo reinicio con el nuevo tiempo
-          //lo reinicio con el nuevo tiempo
+
           animationController2!
-            ..duration = Duration(seconds: timeC2) //todo cambiar123RLP
+            ..duration = Duration(seconds: timeC2)
             ..reset()
             ..forward();
           controllerLogin.getUpdateTime(timeC2, 2, 'clientSche-getShowClock');
@@ -243,7 +242,7 @@ class ClientsScheduledController extends GetxController {
           //lo reinicio con el nuevo tiempo
           //lo reinicio con el nuevo tiempo
           animationController3!
-            ..duration = Duration(seconds: timeC3) //todo cambiar123RLP
+            ..duration = Duration(seconds: timeC3)
             ..reset()
             ..forward();
           controllerLogin.getUpdateTime(timeC3, 3, 'clientSche-getShowClock');
@@ -254,7 +253,7 @@ class ClientsScheduledController extends GetxController {
           //lo reinicio con el nuevo tiempo
           //lo reinicio con el nuevo tiempo
           animationController4!
-            ..duration = Duration(seconds: timeC4) //todo cambiar123RLP
+            ..duration = Duration(seconds: timeC4)
             ..reset()
             ..forward();
           controllerLogin.getUpdateTime(timeC4, 4, 'clientSche-getShowClock');
@@ -494,7 +493,7 @@ class ClientsScheduledController extends GetxController {
     int remainingTime1, remainingTime2, remainingTime3, remainingTime4, reservationId;
 
     if (hasClient1) {
-      //todo haciendo aqui un ultimo cambio de verificacion
+      // cambio de verificacion
       ClientsScheduledModel? Aux = clientsAttended1;
       double currentTimeDouble = animationController1!.value * animationController1!.duration!.inSeconds.toDouble();
       int totalTimeInSeconds = animationController1!.duration!.inSeconds;
@@ -586,7 +585,7 @@ class ClientsScheduledController extends GetxController {
       //este es para el reloj 1
       if (clientsAttended1 != null) {
         if (animationController1 != null && animationController1!.isAnimating) {
-          //   print('estoy entrando pa saber que relojes->para mandar notifiacion');
+
           int? idClient = clientsAttended1?.client_id;
           String? nameClient = clientsAttended1?.client_name;
           if (idClient != null && nameClient != null) {
@@ -606,7 +605,7 @@ class ClientsScheduledController extends GetxController {
                       'no',
                       'Barbero');
 
-                  //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
+                  //llama al metodo que me dice que para este cliente ya se envio una notificacion al barbero
                   String teleClient = '';
                   if (clientsScheduledNext != null) {
                     teleClient = clientsScheduledNext!.telefone_client!;
@@ -617,7 +616,7 @@ class ClientsScheduledController extends GetxController {
                       clientsAttended1!.client_id!,
                       teleClient);
                   print('EL TIEMPO ACTUAL DEL RELOJ duracionSend YA sera:TELEFONO:$teleClient');
-                  //todo notificate
+                  // notificate
                   // scheduleNotification('!Alerta',
                   //     'El tiempo de servicio del cliente $nameClient se agotará');
                 } else {
@@ -656,7 +655,7 @@ class ClientsScheduledController extends GetxController {
                       'Barbero');
 
                   if ((idClient == clientsAttended2?.client_id)) {
-                    //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
+                    //llama al metodo que me dice que para este cliente ya se envio una notificacion al barbero
                     String teleClient = '';
                     if (clientsScheduledNext != null) {
                       teleClient = clientsScheduledNext!.telefone_client!;
@@ -701,7 +700,7 @@ class ClientsScheduledController extends GetxController {
                       'Barbero');
 
                   if ((idClient == clientsAttended3?.client_id)) {
-                    //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
+                    //llama al metodo que me dice que para este cliente ya se envio una notificacion al barbero
                     String teleClient = '';
                     if (clientsScheduledNext != null) {
                       teleClient = clientsScheduledNext!.telefone_client!;
@@ -710,9 +709,7 @@ class ClientsScheduledController extends GetxController {
                         3, //esto indica que es el reloj 2
                         clientsAttended3!.client_id!,
                         teleClient);
-                    //todo notificate
-                    // scheduleNotification('!Alerta',
-                    //     'El tiempo de servicio del cliente $nameClient se agotará');
+
                   }
                 }
               }
@@ -749,7 +746,7 @@ class ClientsScheduledController extends GetxController {
                       'Barbero');
 
                   if ((idClient == clientsAttended4?.client_id)) {
-                    //llamo al metodo que me dice que para este cliente ya se envio una notificacion al barbero
+                    //llama al metodo que me dice que para este cliente ya se envio una notificacion al barbero
                     String teleClient = '';
                     if (clientsScheduledNext != null) {
                       teleClient = clientsScheduledNext!.telefone_client!;
@@ -758,9 +755,7 @@ class ClientsScheduledController extends GetxController {
                         4, //esto indica que es el reloj 1
                         clientsAttended4!.client_id!,
                         teleClient);
-                    //todo notificate
-                    // scheduleNotification('!Alerta',
-                    //     'El tiempo de servicio del cliente $nameClient se agotará');
+
                   }
                 }
               }
@@ -770,19 +765,18 @@ class ClientsScheduledController extends GetxController {
       } else {
         animationController4!.stop();
         clearNotificationClients1(4);
-        print('object-2-2 reloj 4');
+
       }
       //
       //
     } catch (e) {
-      print('object-4 dio error en :$e');
+      print('Error :$e');
     }
   }
 
+  // relojes estan activos-upadateVariablesValueTimers-clientsSchudeld';
   upadateVariablesValueTimers() async {
-    // print(
-    //   'estoy entrando pa saber que relojes estan activos-upadateVariablesValueTimers-clientsSchudeld');
-    // saveData();
+
     bool hasClient1 = clientsAttended1 != null;
     bool hasClient2 = clientsAttended2 != null;
     bool hasClient3 = clientsAttended3 != null;
@@ -805,13 +799,12 @@ class ClientsScheduledController extends GetxController {
 // Guardar el valor en la base de datos
       timeClientsActAttended1 = timeSave; // Almacena en la basmpo en segune de datos el tiedos
       t1 = timeSave;
-      // timeClientsActAttended1 = remainingMinutes1; //DB - timeClock
+
       reservationId = clientsAttended1!.reservation_id!; //DB - reservation_id
       clock = 1; //DB - clock
       detached = 1; //DB - detached
-      //  await set_timeClock(reservation_id,timeClock,detached,clock);
-      print(
-          'aqui viendo - estoy entrando pa saber que relojes - timeSave:$timeSave-----totalTimeInSeconds:$totalTimeInSeconds');
+
+      print('entrando pa saber que relojes - timeSave:$timeSave-----totalTimeInSeconds:$totalTimeInSeconds');
       await setTimeClock(reservationId, timeClientsActAttended1, detached, clock, true,
           controllerLogin.tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min
       print(
@@ -831,11 +824,11 @@ class ClientsScheduledController extends GetxController {
 // Guardar el valor en la base de datos
       timeClientsActAttended2 = timeSave; // Almacena en la basmpo en segune de datos el tiedos
       t2 = timeSave;
-      // timeClientsActAttended2 = remainingMinutes2; //DB - timeClock
+
       reservationId = clientsAttended2!.reservation_id!; //DB - reservation_id
       clock = 2; //DB - clock
       detached = 1; //DB - detached
-      //  await set_timeClock(reservation_id,timeClock,detached,clock);
+
       await setTimeClock(reservationId, timeClientsActAttended2, detached, clock, true,
           controllerLogin.tokenUserLoggedIn); //ese true es que esta mandando actualizar la variable 3min
       print(
@@ -892,9 +885,6 @@ class ClientsScheduledController extends GetxController {
       print('EL TIEMPO ACTUAL DEL RELOJ 1 ES Nulo:$timeClientsActAttended1 ');
     }
 
-    // timeClientsActAttended2 = time2;
-    // timeClientsActAttended3 = time3;
-    // timeClientsActAttended4 = time4;
     if (t1 != -99 || t2 != -99 || t3 != -99 || t4 != -99) {
       verifyingClockTimeNew(t1, t2, t3, t4);
       if (animationControllerInitial != null && animationControllerInitial!.isAnimating) {
@@ -919,45 +909,44 @@ class ClientsScheduledController extends GetxController {
     //este nuevo cliente se le va a signar un reloj
     if (avail == 1) {
       clientsAttended1 = client;
-      timeClientsAttended1 = convertDateSecons(client.total_time!); //todo estaba antes aqui cambiar123RLP
+      timeClientsAttended1 = convertDateSecons(client.total_time!);
       print('value del reloj actual-tiempo a modificar -timeClientsAttended1:${client.total_time!}');
       int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended1!);
-      //aqu hace analisis y guarda en memoria del telefono
+      //aqui hace analisis y guarda en memoria del telefono
       //cuando falta 3 minu para acabar
       controllerLogin.getUpdateTime(timeMinutes, 1, 'newClientAttended-1');
-      //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
+
       busyClock = 0;
     }
     if (avail == 2) {
       clientsAttended2 = client;
       timeClientsAttended2 = convertDateSecons(client.total_time!);
       int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended2!);
-      //aqu hace analisis y guarda en memoria del telefono
+      //hace analisis y guarda en memoria del telefono
       //cuando falta 3 minu para acabar
       controllerLogin.getUpdateTime(timeMinutes, 2, 'newClientAttended-2');
-      //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
+
       busyClock = 1;
     }
     if (avail == 3) {
       clientsAttended3 = client;
       timeClientsAttended3 = convertDateSecons(client.total_time!);
-      // timeClientsAttended3 = int.parse(client.total_time!);
+
       int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended3!);
-      //aqu hace analisis y guarda en memoria del telefono
+      // hace analisis y guarda en memoria del telefono
       //cuando falta 3 minu para acabar
       controllerLogin.getUpdateTime(timeMinutes, 3, 'newClientAttended-3');
-      //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
+      // metodo nuevo para avisar y mandar notif cuando el servico se este acabando
       busyClock = 2;
     }
     if (avail == 4) {
       clientsAttended4 = client;
       timeClientsAttended4 = convertDateSecons(client.total_time!);
-      // timeClientsAttended4 = int.parse(client.total_time!);
+
       int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended4!);
-      //aqu hace analisis y guarda en memoria del telefono
-      //cuando falta 3 minu para acabar
+
       controllerLogin.getUpdateTime(timeMinutes, 4, 'newClientAttended-4');
-      //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
+      // metodo nuevo para avisar y mandar notif cuando el servico se este acabando
       busyClock = 3;
     }
     filterShowCardTimer();
@@ -1098,24 +1087,23 @@ class ClientsScheduledController extends GetxController {
       itemDel.addAll([0, 1, 2, 3]);
     }
 
-    // update();
+
   }
 
   rest() {
     if (modifyTimeSpecificRest != -99) //reloj 1
     {
-      print('modificar time de mm estoy entrando al metodo nuevo----rest()-1');
-      //  int i = modifyTimeSpecificRest;
+      print('modificar time de mm  entrando al metodo nuevo----rest()-1');
+
       int value = modifyTimeSpecificRestTIME;
-      subtractDurationFromTimer(animationController1!, Duration(seconds: value)); //todo cambiar123RLP
+      subtractDurationFromTimer(animationController1!, Duration(seconds: value));
       modifyTimeSpecificRest = -99;
       modifyTimeSpecificRestTIME = 0;
     }
 
     if (modifyTimeSpecificRest1 != -99) //reloj 2
     {
-      print('modificar time de mm estoy entrando al metodo nuevo----rest()-2');
-      //   int i = modifyTimeSpecificRest1;
+
       int value = modifyTimeSpecificRestTIME1;
       subtractDurationFromTimer(animationController2!, Duration(seconds: value));
       modifyTimeSpecificRest1 = -99;
@@ -1123,8 +1111,7 @@ class ClientsScheduledController extends GetxController {
     }
     if (modifyTimeSpecificRest2 != -99) //reloj 3
     {
-      print('modificar time de mm estoy entrando al metodo nuevo----rest()-3');
-      //  int i = modifyTimeSpecificRest2;
+
       int value = modifyTimeSpecificRestTIME2;
       subtractDurationFromTimer(animationController3!, Duration(seconds: value));
       modifyTimeSpecificRest2 = -99;
@@ -1133,8 +1120,7 @@ class ClientsScheduledController extends GetxController {
 
     if (modifyTimeSpecificRest3 != -99) //reloj 4
     {
-      print('modificar time de mm estoy entrando al metodo nuevo----rest()-4');
-      // int i = modifyTimeSpecificRest3;
+
       int value = modifyTimeSpecificRestTIME3;
       subtractDurationFromTimer(animationController4!, Duration(seconds: value));
       modifyTimeSpecificRest3 = -99;
@@ -1144,7 +1130,7 @@ class ClientsScheduledController extends GetxController {
 
 // (clientScheduCont.animationController1!,Duration(minutes: durationService));
   void subtractDurationFromTimer(AnimationController controller, Duration subtractionDuration) {
-    print('EL TIEMPO ACTUAL DEL RELOJ RESETEADO *************************************');
+    print('EL TIEMPO ACTUAL DEL RELOJ RESETEADO ***');
     // Verificar si el controlador está detenido o activo
     int currentTime;
     if (controller.isAnimating) {
@@ -1157,7 +1143,7 @@ class ClientsScheduledController extends GetxController {
     print('EL TIEMPO ACTUAL DEL RELOJ RESETEADO:ESTE ES EL TIEMPO QUE TENIA:$currentTime');
     // Convertir subtractionDuration a segundos
     int subtractionTime = subtractionDuration.inSeconds;
-    print('tiempoooooo : subtractionTime:$subtractionTime');
+    print('tiempo : subtractionTime:$subtractionTime');
 
     // Calcular el nuevo tiempo total en segundos
     int newTotalTime = currentTime - subtractionTime;
@@ -1166,7 +1152,7 @@ class ClientsScheduledController extends GetxController {
     if (newTotalTime <= 0) {
       newTotalTime = 0;
     }
-    print('tiempoooooo : newTotalTime:$newTotalTime');
+    print('tiempo : newTotalTime:$newTotalTime');
 
     // Asignar la nueva duración al AnimationController
     controller.duration = Duration(seconds: newTotalTime);
@@ -1180,7 +1166,7 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<void> watchModifyTimeRest(reservationId, descripcion, placeCall, option) async {
-    print('modificar time de mm estoy entrando ahora mismo watchModifyTimeRest-llamanado desde:$placeCall');
+    print('modificar time de mm  watchModifyTimeRest-llamanado desde:$placeCall');
     if (option == 'rechazada') {}
     if (option == 'aceptada') {
       int timeRest = obtenerDuracionServicio(descripcion);
@@ -1193,10 +1179,10 @@ class ClientsScheduledController extends GetxController {
           modifyTimeSpecificRestTIME += timeRest;
           print('modificar time de mm modifyTimeSpecificRestTIME = $modifyTimeSpecificRestTIME');
           print('modificar time de mm timeRest = $timeRest');
-          //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
-          //AQUI ACTUALIZAR EL RELOJ
+
+          // ACTUALIZAR EL RELOJ
           animationController1!
-            ..duration = Duration(seconds: timeRest) // todo cambiar123RLP
+            ..duration = Duration(seconds: timeRest)
             ..reset()
             ..forward();
           await Future.delayed(const Duration(milliseconds: 500));
@@ -1214,8 +1200,8 @@ class ClientsScheduledController extends GetxController {
           modifyTimeSpecificRestTIME1 += timeRest;
           print('modificar time de mm modifyTimeSpecificRestTIME = $modifyTimeSpecificRestTIME');
           print('modificar time de mm timeRest = $timeRest');
-          //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
-          //AQUI ACTUALIZAR EL RELOJ
+
+          // ACTUALIZAR EL RELOJ
           animationController2!
             ..duration = Duration(seconds: timeRest)
             ..reset()
@@ -1242,8 +1228,8 @@ class ClientsScheduledController extends GetxController {
           modifyTimeSpecificRestTIME2 += timeRest;
           print('modificar time de mm modifyTimeSpecificRestTIME = $modifyTimeSpecificRestTIME');
           print('modificar time de mm timeRest = $timeRest');
-          //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
-          //AQUI ACTUALIZAR EL RELOJ
+
+          // ACTUALIZAR EL RELOJ
           animationController3!
             ..duration = Duration(seconds: timeRest)
             ..reset()
@@ -1270,8 +1256,8 @@ class ClientsScheduledController extends GetxController {
           modifyTimeSpecificRestTIME3 += timeRest;
           print('modificar time de mm modifyTimeSpecificRestTIME = $modifyTimeSpecificRestTIME');
           print('modificar time de mm timeRest = $timeRest');
-          //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
-          //AQUI ACTUALIZAR EL RELOJ
+
+          // ACTUALIZAR EL RELOJ
           animationController4!
             ..duration = Duration(seconds: timeRest)
             ..reset()
@@ -1291,7 +1277,7 @@ class ClientsScheduledController extends GetxController {
       }
     }
 
-    //update();
+
   }
 
   clearModifyTimeSpecificRest() {
@@ -1348,31 +1334,13 @@ class ClientsScheduledController extends GetxController {
 
     modifyTimeRest[modifyTimeSpecificRest] = timeRest;
 
-    //al darle true le estoy diciendo que verifique que en algun timer hay cambio de tiempo
+    //verificar que en algun timer hay cambio de tiempo
     activeModifyTimeRest = true;
-    print('aqui toma valor -void modifingTime(time)- activeModifyTime:$activeModifyTime');
+    print(' toma valor -void modifingTime(time)- activeModifyTime:$activeModifyTime');
     update();
   }
 
-  // int obtenerDuracionServicio(String cadena) {
-  //   // Definimos la expresión regular para encontrar el número de minutos
-  //   RegExp regExp = RegExp(r'\b\d+\b');
 
-  //   // Buscamos todas las coincidencias de la expresión regular en el texto
-  //   Iterable<Match> matches = regExp.allMatches(cadena);
-
-  //   // Iteramos sobre todas las coincidencias
-  //   for (Match match in matches) {
-  //     // Obtenemos el texto que coincide con la expresión regular
-  //     String duracionTexto = match.group(0)!;
-
-  //     // Convertimos el texto a un entero y lo devolvemos
-  //     return int.parse(duracionTexto);
-  //   }
-
-  //   // Si no se encuentra ningún número en la cadena, devolvemos 0 o algún otro valor predeterminado según sea necesario
-  //   return 0;
-  // }
   int obtenerDuracionServicio(String cadena) {
     // Definimos la expresión regular para encontrar el número de segundos después de "tiempo de "
     RegExp regExp = RegExp(r'tiempo de (\d+) seg');
@@ -1384,11 +1352,11 @@ class ClientsScheduledController extends GetxController {
     if (match != null) {
       // Obtenemos el grupo capturado que contiene el número de segundos
       String duracionTexto = match.group(1)!;
-      print('modificar time de mm 1 estoy aqui en el forEach-match != null:$duracionTexto');
+      print('modificar time de mm 1 en el forEach-match != null:$duracionTexto');
       // Convertimos el texto a un entero y lo devolvemos
       return int.parse(duracionTexto);
     }
-    print('modificar time de mm 1 estoy aqui en el forEach-match == null:0');
+
     // Si no se encuentra ningún número en la cadena, devolvemos 0 o algún otro valor predeterminado según sea necesario
     return 0;
   }
@@ -1399,12 +1367,11 @@ class ClientsScheduledController extends GetxController {
     print(
         'tiempo a sumar =  1-*-*-*-------------------inicio-----------modifyTime[modifyTimeSpecific]--------------${modifyTime[modifyTimeSpecific]}');
     modifyTime[modifyTimeSpecific] = time;
-    print('-*-*-*-------------------deSPUES------------------------${modifyTime[modifyTimeSpecific]}');
-    print('clientes asistiendo -*-*-*-------------------deSPUES---------------${modifyTime[modifyTimeSpecific]}');
 
-    //al darle true le estoy diciendo que verifique que en algun timer hay cambio de tiempo
+
+    //al darle true manda a que verifique que en algun timer hay cambio de tiempo
     activeModifyTime = true;
-    print('aqui toma valor -void modifingTime(time)- activeModifyTime:$activeModifyTime');
+    print(' toma valor -void modifingTime(time)- activeModifyTime:$activeModifyTime');
     update();
   }
 
@@ -1417,13 +1384,13 @@ class ClientsScheduledController extends GetxController {
 
   void setActiveModifyTime(bool value) {
     activeModifyTime = value;
-    print('aqui toma valor -void setActiveModifyTime(bool value)- activeModifyTime:$activeModifyTime');
+    print(' toma valor -void setActiveModifyTime(bool value)- activeModifyTime:$activeModifyTime');
     update();
   }
 
   void setActiveModifyTimeRest(bool value) {
     activeModifyTimeRest = value;
-    print('aqui toma valor -void setActiveModifyTime(bool value)- activeModifyTime:$activeModifyTime');
+    print(' toma valor -void setActiveModifyTime(bool value)- activeModifyTime:$activeModifyTime');
     update();
   }
 
@@ -1433,17 +1400,17 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future getProfessionalState(idBranch, token) async {
-    print('getProfessionalState(idBranch) async 11');
-    //todo nuevo
+
+
     professionalDispon = await repository.getProfessionalState(idBranch, token);
     professionalDisponLength = professionalDispon.length;
-    print('getProfessionalState(idBranch) async 22 professionalDisponLength:$professionalDisponLength');
+
     update();
   }
 
   Future<List<ProfessionalModel>> getFirstProfessional(idBranch, idReserv, idBarberAct, token) async {
     print('getProfessionalState(idBranch) async 11');
-    //todo nuevo
+
     List<ProfessionalModel> profDisp = [];
 
     profDisp = await repository.getProfessionalState2First(idBranch, idReserv, idBarberAct, token);
@@ -1452,25 +1419,20 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future getProfessionalState2Coord(idBranch, idReserv, token) async {
-    print('getProfessionalState(idBranch) async 11');
-    //todo nuevo
+
     professionalDispon = await repository.getProfessionalState2Coord(idBranch, idReserv, token);
     professionalDisponLength = professionalDispon.length;
-    print('getProfessionalState(idBranch) async 22 professionalDisponLength:$professionalDisponLength');
     update();
   }
 
   Future getProfessionalState2(idBranch, idReserv, token) async {
-    print('getProfessionalState(idBranch) async 11');
-    //todo nuevo
     professionalDispon = await repository.getProfessionalState2(idBranch, idReserv, token);
     professionalDisponLength = professionalDispon.length;
-    print('getProfessionalState(idBranch) async 22 professionalDisponLength:$professionalDisponLength');
     update();
   }
 
   Future<void> acceptClientTechnical(reservationId, attended, token) async {
-    // final LoginController controllerLogin = Get.find<LoginController>();
+
     quantityClientAttendedTechnical = 1;
     boolFilterShowNextTecnhical = false;
     update();
@@ -1521,10 +1483,10 @@ class ClientsScheduledController extends GetxController {
         //si es 2 es que ya termino de atender al cliente1
         if (clientsAttended1 != null) {
           if (reservationId == clientsAttended1!.reservation_id) {
-            //SACO DE MI LISTA A clientsAttended1
+            //ELIMINA DE LA LISTA A clientsAttended1
             clientsAttended1 = null;
 
-            //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended1
+            // SE ELIMINA DE LA LISTA AL CLIENTE clientsAttended1
             if (item.contains(0)) {
               item.remove(0);
             }
@@ -1543,10 +1505,10 @@ class ClientsScheduledController extends GetxController {
         if (clientsAttended2 != null) {
           //si es 2 es que ya termino de atender al cliente2
           if (reservationId == clientsAttended2!.reservation_id) {
-            //SACO DE MI LISTA A clientsAttended2
+            //ELIMINA DE LA LISTA A clientsAttended2
             clientsAttended2 = null;
             pauseResumeClock(1, 0);
-            //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended2
+            // ELIMINO DE LA LISTA AL CLIENTE clientsAttended2
             if (item.contains(1)) {
               item.remove(1);
             }
@@ -1565,10 +1527,10 @@ class ClientsScheduledController extends GetxController {
         if (clientsAttended3 != null) {
           //si es 2 es que ya termino de atender al cliente3
           if (reservationId == clientsAttended3!.reservation_id) {
-            //SACO DE MI LISTA A clientsAttended3
+            //ELIMINO DE LA LISTA A clientsAttended3
             clientsAttended3 = null;
             pauseResumeClock(2, 0);
-            //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended3
+            //ELIMINO DE LA LISTA AL CLIENTE clientsAttended3
             if (item.contains(2)) {
               item.remove(2);
             }
@@ -1587,10 +1549,10 @@ class ClientsScheduledController extends GetxController {
         if (clientsAttended4 != null) {
           //si es 2 es que ya termino de atender al cliente4
           if (reservationId == clientsAttended4!.reservation_id) {
-            //SACO DE MI LISTA A clientsAttended4
+
             clientsAttended4 = null;
             pauseResumeClock(3, 0);
-            //AQUI ELIMINO DE LA LISTA AL CLIENTE clientsAttended4
+
             if (item.contains(3)) {
               item.remove(3);
             }
@@ -1607,7 +1569,7 @@ class ClientsScheduledController extends GetxController {
           }
         }
         update();
-        //AQUI INSERTO EN LA DB SI HUBIERAS RELOJES ACTIVOS
+        // INSERTA EN DB SI EXISTEN RELOJES ACTIVOS
         await upadateVariablesValueTimers();
         filterShowCardTimer();
         filterShowNext();
@@ -1646,7 +1608,7 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<int> acceptClientClock(clientSig, timeClock, clock, detached, reservationId, attended, token) async {
-    // final LoginController controllerLogin = Get.find<LoginController>();
+
     try {
       int value = await repository.acceptClientClock(timeClock, clock, detached, reservationId, attended, token);
       //si lo que devuelve es true actualizo la cola
@@ -1677,10 +1639,10 @@ class ClientsScheduledController extends GetxController {
           newClientAttended(clientSig, clock);
         }
 
-        //************************************************* */
+
         clientsWaiting(false); //este es para saber si hay algun cliente esperando para mandar la notificación
 
-        // detengo el timer de 3 minutos
+        // SE DETIENE el timer de 3 minutos
         LocalStorage.prefs.setInt('valueClockIni', 180);
         setTotalTimeInitial(180);
         LocalStorage.prefs.setBool('valueClockActiv', false);
@@ -1690,22 +1652,22 @@ class ClientsScheduledController extends GetxController {
           ..reset()
           ..stop();
 
-        //************************************************* */
+
 
         update();
 
         //AQUI INSERTO EN LA DB SI HUBIERAS RELOJES ACTIVOS
-        //todo este lo quite ahora en este nuevo cambio porque ya mande a insertar el tiempo
+        // este lo quite ahora en este nuevo cambio porque ya ENVIO a insertar el tiempo
         // await upadateVariablesValueTimers();
-        //AQUI ACTUALIZO LA VARIABLE QUE ME DICE QUE YA LLAMO A UN CLIENTE
+        //AQUI ACTUALIZO LA VARIABLE QUE ME DICE QUE YA llama A UN CLIENTE
         callCliente = true;
         return 1;
       } else if (value == -99) {
-        // controllerLogin.showConnectionError();
-        print('Dio error al mandar a aceptar o rechazar al cliente.Status = null');
+
+        print(' error al mandar a aceptar o rechazar al cliente.Status = null');
         return -99;
       } else {
-        print('Dio error al mandar a aceptar o rechazar al cliente');
+        print(' error al mandar a aceptar o rechazar al cliente');
         return 0;
       }
     } catch (e) {
@@ -1717,7 +1679,7 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<int> acceptOrRejectClient(reservationId, attended, token) async {
-    // final LoginController controllerLogin = Get.find<LoginController>();
+
     try {
       int value = await repository.acceptOrRejectClient(reservationId, attended, token);
       //si lo que devuelve es true actualizo la cola
@@ -1726,7 +1688,7 @@ class ClientsScheduledController extends GetxController {
         int? idBranch = controllerLogin.branchIdLoggedIn;
         int? idProfessional = controllerLogin.idProfessionalLoggedIn;
         //aqui actualizo la cola
-        if (attended == 1) //llamo al proximo cliente atender.actualizo la cola
+        if (attended == 1) //llama al proximo cliente atender.actualizo la cola
         {
           await fetchClientsScheduled(idProfessional, idBranch, 'acceptOrRejectClient');
         }
@@ -1769,22 +1731,22 @@ class ClientsScheduledController extends GetxController {
           }
         }
         update();
-        //AQUI INSERTO EN LA DB SI HUBIERAS RELOJES ACTIVOS
+        //AQUI INSERTO EN LA DB SI EXISTEN RELOJES ACTIVOS
         await upadateVariablesValueTimers();
         filterShowCardTimer();
         filterShowNext();
 
-        //AQUI ACTUALIZO LA VARIABLE QUE ME DICE QUE YA LLAMO A UN CLIENTE
+        //AQUI ACTUALIZO LA VARIABLE QUE ME DICE QUE YA llama A UN CLIENTE
         if (attended == 1) {
           callCliente = true;
         }
         return 1;
       } else if (value == -99) {
         controllerLogin.showConnectionError();
-        print('Dio error al mandar a aceptar o rechazar al cliente.Status = null');
+        print(' error al mandar a aceptar o rechazar al cliente.Status = null');
         return -99;
       } else {
-        print('Dio error al mandar a aceptar o rechazar al cliente');
+        print(' error al mandar a aceptar o rechazar al cliente');
         return 0;
       }
     } catch (e) {
@@ -1796,12 +1758,11 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<void> filterShowNext() async {
-    // boolControlVision = false;
-    // update();
+
     bool contVision = true;
-    print('aqui estoy en filterShowNext');
+    print(' filterShowNext');
     try {
-      // final LoginController controllerLogin = Get.find<LoginController>();
+
       int? idBranch = controllerLogin.branchIdLoggedIn;
       int? idProfessional = controllerLogin.idProfessionalLoggedIn;
       String? token = controllerLogin.tokenUserLoggedIn;
@@ -1812,27 +1773,15 @@ class ClientsScheduledController extends GetxController {
       if (result is bool) {
         boolFilterShowNextAux = boolFilterShowNext; //guardo aqui para saber si dierra error q valor tenia
         boolFilterShowNext = result;
-      } else if (result is int && result == -99) {
-        controllerLogin.showConnectionErrorServices();
-        print('Dio error al mostrar el filterShowNext()');
-        // Manejo del error, puedes lanzar una excepción o asignar un valor por defecto
-        // Por ejemplo:
-        // resultTypeService = false; // O cualquier otro valor que tenga sentido en tu lógica
-      } else {
-        // Si result no es ni bool ni el entero esperado, puedes manejar el caso aquí.
-        //throw Exception('Unexpected type or value returned from typeOfService.');
       }
 
-      // bool resultTypeService =
-      //     await repository.typeOfService(idProfessional, idBranch, token);
-      // boolFilterShowNext = resultTypeService;
-      // setBoolControlVision(true);
+
     } catch (e) {
       contVision = false;
       print(
           'Erra lista de notificor al obtener laciones: noUpdate-*********************$e'); //Error al obtener la lista de notificaciones:este
     } finally {
-      //  setBoolControlVision(contVision);
+
       update();
     }
   }
@@ -1842,7 +1791,7 @@ class ClientsScheduledController extends GetxController {
     try {
       bool result = await repository.setTimeClock(reservationId, timeClock, detached, clock, token);
       if (result) {
-        //todo este es el importante cuando agrega servicios y elimina
+        // este es el importante cuando agrega servicios y elimina
         //cuando falta 3 minu para acabar
         // (reservationId, 0, 0, 4)
         if (timeClock == 0 && detached == 0) {
@@ -1865,9 +1814,7 @@ class ClientsScheduledController extends GetxController {
         }
 
         print('EL TIEMPO ACTUAL DEL RELOJ ************** true $reservationId - $timeClock - $detached - $clock');
-        print('llamada timer setTimeClock - result != null-(ESTA BIEN)');
-      } else {
-        print('EL TIEMPO ACTUAL DEL RELOJ ************** false');
+        print('llamada timer setTimeClock (ESTA OK)');
       }
     } catch (e) {
       print('EL TIEMPO ACTUAL DEL RELOJ set_timeClock:$e');
@@ -1930,12 +1877,7 @@ class ClientsScheduledController extends GetxController {
       endLookBarber = resultList['endLookBarber'];
       frecuenciaBarber = resultList['frecuenciaBarber'];
 
-      print('ertyu - $professionalNameBarber');
-      print('ertyu - $imageUrlBarber');
-      print('ertyu - $imageLookBarber');
-      print('ertyu - $cantVisitBarber');
-      print('ertyu - $endLookBarber');
-      print('ertyu - $frecuenciaBarber');
+
     }
 
     update();
@@ -1947,7 +1889,7 @@ class ClientsScheduledController extends GetxController {
 
       if (resultList.containsKey("error")) {
         var errorValue = resultList["error"];
-        // Aquí puedes manejar el error, dependiendo del valor asociado a "error"
+
         if (errorValue == 'error') {
           // Manejo específico para cuando "error" tiene el valor 'error'
           print('Ocurrió un error: $errorValue');
@@ -1984,7 +1926,7 @@ class ClientsScheduledController extends GetxController {
 
       if (resultList.containsKey("error")) {
         var errorValue = resultList["error"];
-        // Aquí puedes manejar el error, dependiendo del valor asociado a "error"
+
         if (errorValue == 'error') {
           // Manejo específico para cuando "error" tiene el valor 'error'
           print('Ocurrió un error: $errorValue');
@@ -1995,20 +1937,7 @@ class ClientsScheduledController extends GetxController {
       } else {
 
         return resultList;
-        serviceCustomerSelected1 = resultList['serviceCustomer'];
 
-        serviceCustomerSelectedForm1 = serviceCustomerSelected1;
-
-        professionalNameBarber1 = resultList['professionalNameBarber'];
-        imageUrlBarber1 = resultList['imageUrlBarber'];
-        imageLookBarber1 = resultList['imageLookBarber'];
-        cantVisitBarber1 = resultList['cantVisitBarber'];
-        endLookBarber1 = resultList['endLookBarber'];
-        frecuenciaBarber1 = resultList['frecuenciaBarber'];
-
-
-        // Manejo del caso en que no haya error y se reciban datos válidos
-        print('Datos recibidos: $resultList');
       }
     } catch (e) {
       print(e);
@@ -2018,19 +1947,19 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<bool> changeNoncomplianceP(
-      //todo1
+
       type,
       branchId,
       professionalId,
       estado) async {
-    //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
+    // LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
     print('Segundo Plano - changeNoncomplianceP');
 
     bool result =
         await repository.storeByType(type, branchId, professionalId, estado, controllerLogin.tokenUserLoggedIn);
     if (result) {
       print('CORRECTO actualizo el estado correctamente');
-      //AQUI ES PÓRQUE INCUMPLIO CON ALGO
+      //AQUI ES PÓRQUE INCUMPLIO
       if (estado == 1) {
         noncomplianceProfessional[type] = 1;
         update();
@@ -2043,13 +1972,13 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<bool> changeNoncompliancePId(
-      //todo1
+
       id,
       type,
       branchId,
       professionalId,
       estado) async {
-    //AQUI LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
+    // LLAMAR AL REPOSITORIO PARA DAR INCUMPLIMIENTO
 
     print('Segundo Plano - changeNoncompliancePId');
     bool result =
@@ -2069,7 +1998,7 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<bool> changeNoncomplianceP2(
-      //todo1
+
       type,
       branchId,
       professionalId,
@@ -2104,12 +2033,12 @@ class ClientsScheduledController extends GetxController {
         : selectClientsScheduledList.add(clientsScheduledList[index]);
     final ShoppingCartController shoppingCartController = Get.find<ShoppingCartController>();
     shoppingCartController.carIdClienteSelect = idCar;
-    //  await returnClientStatus(reservationId);
+
     nameClientTemporary = clientName;
-    // await returnClientName(clientName);
+
     urlImageTemporary = imageName;
     idClientTemporary = reservationId;
-    //await returnImageName(imageName);
+
     await watchModifyTime(reservationId);
     update();
   }
@@ -2146,135 +2075,7 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
-  // Future<void> fetchClientsScheduledNewServ(
-  //     idProfessional, idBranch, msj, token) async {
-  //   bool noUpdate = false;
-  //   print('entrando a actualizar la cola en - fetchClientsScheduledNew');
-  //   try {
-  //     List<ClientsScheduledModel> clientsAux = [];
 
-  //     String s = '';
-
-  //     Map<String, dynamic> resultList =
-  //         await repository.getClientsScheduledListNewServ(
-  //             idProfessional, idBranch, controllerLogin.isLoggingIn, token);
-  //     // setBoolControlVision(false);
-
-  //     //verificando , si entra al if es problemas de coneccion
-  //     if (resultList.containsKey('ConnectionIssues') &&
-  //         resultList['ConnectionIssues'] == true) {
-  //       correctConnection = false;
-  //       print('llamando a buscar clientes - ERROR2');
-  //       print('qwerc SII mandar ->MAL-${clientsScheduledList.length}');
-  //     } else {
-  //       correctConnection = true;
-  //       //aqui estoy guardando la cola del dia de hoy del profesional
-  //       List<ClientsScheduledModel>? clientsScheduledListAUX = [];
-  //       List<ClientsScheduledModel>? clientsScheduledListAUX2 = [];
-
-  //       clientsScheduledListAUX = (resultList['clientList'] ?? []).cast<
-  //           ClientsScheduledModel>(); //aqui estoy guardando la cola del dia de hoy del profesional
-  //       clientsScheduledListAUX2 =
-  //           (resultList['clientListSig'] ?? []).cast<ClientsScheduledModel>();
-  //       if (clientsScheduledListAUX != null &&
-  //           clientsScheduledListAUX2 != null) {
-  //         clientsScheduledList = clientsScheduledListAUX;
-
-  //         clientsScheduledListLength = clientsScheduledList.length;
-  //         print(
-  //             'llamada timer Cantidad de Clientes-1 :$clientsScheduledListLength');
-  //         clientsAux = clientsScheduledListAUX2;
-  //         clientsScheduledListLengthTail = clientsAux.length;
-  //         print(
-  //             'llamando a buscar clientes - BIEN4-clientsScheduledList.length:${clientsScheduledList.length}');
-  //         print(
-  //             'qwerc SII mandar ->BIEN-${clientsScheduledList.length}--entro de:$msj-idProfessional=$idProfessional--idBranche:$idBranch Objeto-${clientsScheduledList}');
-
-  //         //
-  //         //
-
-  //         //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
-  //         clientsScheduledNextServ = resultList['nextClient'];
-  //         if (resultList.containsKey('clientListSalon')) {
-  //           setClientsScheSalon(resultList['clientListSalon']);
-  //         }
-
-  //         // setClientsScheSalon(resultList['clientListSalon']);
-  //         //si hay un siguiente mandar verificarle si es aleatorio o
-  //         quantityClientAttended = resultList['quantityClientAttended'];
-  //         varClientsWaiting = resultList['varclientswaiting'];
-  //         if (quantityClientAttended == 0) {
-  //           clientsAttended = 'nobody';
-  //         }
-
-  //         //**************************************************************** */
-  //         //**************************************************************** */
-  //         print(
-  //             'activando el Clock - 1 lenght - clientsScheduledList:${clientsScheduledList.length}');
-  //         for (var i = 0; i < clientsScheduledList.length; i++) {
-  //           // int clock = 0;
-  //           if (clientsScheduledList[i].attended == 11) {
-  //             int reservationId = clientsScheduledList[i].reservation_id!;
-
-  //             int clock = clientsScheduledList[i].clock!;
-  //             print(
-  //                 'EL RELOJ DEVUELTO ES : de fetchClientsScheduledNew:$clock');
-  //             //REVISAR SI VIENE EL RELOJ AHI
-  //             // int clock = await getValueClockDb(reservationId);
-  //             if (clock == 1) {
-  //               print('activando el Clock - 1');
-
-  //               await acceptOrRejectClient(
-  //                   reservationId, 111, loginController.tokenUserLoggedIn);
-  //               animationController1!.forward();
-  //               pauseResumeClock((clock - 1), -99);
-  //             }
-  //             if (clock == 2) {
-  //               print('activando el Clock - 2');
-
-  //               await acceptOrRejectClient(
-  //                   reservationId, 111, loginController.tokenUserLoggedIn);
-  //               animationController2!.forward();
-  //               pauseResumeClock((clock - 1), -99);
-  //             }
-  //             if (clock == 3) {
-  //               print('activando el Clock - 3');
-
-  //               await acceptOrRejectClient(
-  //                   reservationId, 111, loginController.tokenUserLoggedIn);
-  //               animationController3!.forward();
-  //               pauseResumeClock((clock - 1), -99);
-  //             }
-  //             if (clock == 4) {
-  //               print('activando el Clock - 4');
-
-  //               await acceptOrRejectClient(
-  //                   reservationId, 111, loginController.tokenUserLoggedIn);
-  //               animationController4!.forward();
-  //               pauseResumeClock((clock - 1), -99);
-  //             }
-  //           } //fin del if
-  //         }
-  //         //**************************************************************** */
-  //         //**************************************************************** */
-  //       }
-  //     }
-  //   } catch (e) {
-  //     noUpdate = true;
-  //     print(
-  //         'Dio error en Future<void> fetchClientsScheduled que se encuentra en el controlador del Login:$e');
-  //   } finally {
-  //     if (msj == 'Home-reasignedClient' || msj == 'Agenda-Card') {
-  //       Get.back();
-  //     }
-  //     print('Obtener la lista de notificaciones: noUpdate == click $noUpdate');
-  //     if (noUpdate == false) {
-  //       // setBoolControlVision(true);
-  //       update();
-  //     }
-  //     controllerLogin.setIsLoadingFor(false);
-  //   }
-  // }
 
   Future<void> fetchClientsScheduledNew(idProfessional, idBranch, msj, token) async {
     bool noUpdate = false;
@@ -2286,21 +2087,21 @@ class ClientsScheduledController extends GetxController {
 
       Map<String, dynamic> resultList =
           await repository.getClientsScheduledListNew(idProfessional, idBranch, controllerLogin.isLoggingIn, token);
-      // setBoolControlVision(false);
 
-      //verificando , si entra al if es problemas de coneccion
+
+      //verificando , si entra al if es problemas de conexion
       if (resultList.containsKey('ConnectionIssues') && resultList['ConnectionIssues'] == true) {
         correctConnection = false;
         print('llamando a buscar clientes - ERROR2');
-        print('qwerc SII mandar ->MAL-${clientsScheduledList.length}');
+
       } else {
         correctConnection = true;
-        //aqui estoy guardando la cola del dia de hoy del profesional
+        //guardando la cola del dia de hoy del profesional
         List<ClientsScheduledModel>? clientsScheduledListAUX = [];
         List<ClientsScheduledModel>? clientsScheduledListAUX2 = [];
 
         clientsScheduledListAUX = (resultList['clientList'] ?? [])
-            .cast<ClientsScheduledModel>(); //aqui estoy guardando la cola del dia de hoy del profesional
+            .cast<ClientsScheduledModel>(); // guardando la cola del dia de hoy del profesional
         clientsScheduledListAUX2 = (resultList['clientListSig'] ?? []).cast<ClientsScheduledModel>();
         if (clientsScheduledListAUX != null && clientsScheduledListAUX2 != null) {
           clientsScheduledList = clientsScheduledListAUX;
@@ -2311,17 +2112,11 @@ class ClientsScheduledController extends GetxController {
           clientsScheduledListLengthTail = clientsAux.length;
           print('llamando a buscar clientes - BIEN4-clientsScheduledList.length:${clientsScheduledList.length}');
           print(
-              'qwerc SII mandar ->BIEN-${clientsScheduledList.length}--entro de:$msj-idProfessional=$idProfessional--idBranche:$idBranch Objeto-${clientsScheduledList}');
+              ' SI  ->BIEN-${clientsScheduledList.length}--entro de:$msj-idProfessional=$idProfessional--idBranche:$idBranch Objeto-${clientsScheduledList}');
 
-          //
-          //
 
-          //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+          //aqui guarda al proximo de la cola para mostrarlo en el Home de la apk
           clientsScheduledNext = resultList['nextClient'];
-
-
-
-
           clientsScheduledNextServ = resultList['nextClient'];
 
           clientsScheduledNextServ = ClientsScheduledModel.fromMap(
@@ -2331,7 +2126,6 @@ class ClientsScheduledController extends GetxController {
             setClientsScheSalon(resultList['clientListSalon']);
           }
 
-          // setClientsScheSalon(resultList['clientListSalon']);
           //si hay un siguiente mandar verificarle si es aleatorio o
           quantityClientAttended = resultList['quantityClientAttended'];
           varClientsWaiting = resultList['varclientswaiting'];
@@ -2339,8 +2133,6 @@ class ClientsScheduledController extends GetxController {
             clientsAttended = 'nobody';
           }
 
-          //**************************************************************** */
-          //**************************************************************** */
           print('activando el Clock - 1 lenght - clientsScheduledList:${clientsScheduledList.length}');
           for (var i = 0; i < clientsScheduledList.length; i++) {
             // int clock = 0;
@@ -2349,7 +2141,7 @@ class ClientsScheduledController extends GetxController {
 
               int clock = clientsScheduledList[i].clock!;
               print('EL RELOJ DEVUELTO ES : de fetchClientsScheduledNew:$clock');
-              //REVISAR SI VIENE EL RELOJ AHI
+              //REVISAR SI VIENE EL RELOJ
               // int clock = await getValueClockDb(reservationId);
               if (clock == 1) {
                 print('activando el Clock - 1');
@@ -2387,7 +2179,7 @@ class ClientsScheduledController extends GetxController {
       }
     } catch (e) {
       noUpdate = true;
-      print('Dio1 error en Future<void> fetchClientsScheduled que se encuentra en el controlador del Login:$e');
+      print('Error en Future<void> fetchClientsScheduled que se encuentra en el controlador del Login:$e');
     } finally {
       if (msj == 'Home-reasignedClient' || msj == 'Agenda-Card' || msj == 'navigation down') {
         Get.back();
@@ -2402,7 +2194,7 @@ class ClientsScheduledController extends GetxController {
   }
 
   Future<void> fetchClientsScheduled(idProfessional, idBranch, msj) async {
-    print('entrando aqui para mandar notificacion desde:$msj');
+    print('entrando para mandar notificacion desde:$msj');
     try {
       List<ClientsScheduledModel> clientsAux = [];
 
@@ -2413,15 +2205,15 @@ class ClientsScheduledController extends GetxController {
       if (resultList.containsKey('ConnectionIssues') && resultList['ConnectionIssues'] == true) {
         correctConnection = false;
         print('llamando a buscar clientes - ERROR2');
-        print('qwerc SII mandar ->MAL-${clientsScheduledList.length}');
+
       } else {
         correctConnection = true;
-        //aqui estoy guardando la cola del dia de hoy del profesional
+        // guardando la cola del dia de hoy del profesional
         List<ClientsScheduledModel>? clientsScheduledListAUX = [];
         List<ClientsScheduledModel>? clientsScheduledListAUX2 = [];
 
         clientsScheduledListAUX = (resultList['clientList'] ?? [])
-            .cast<ClientsScheduledModel>(); //aqui estoy guardando la cola del dia de hoy del profesional
+            .cast<ClientsScheduledModel>(); //guardando la cola del dia de hoy del profesional
         clientsScheduledListAUX2 = (resultList['clientListSig'] ?? []).cast<ClientsScheduledModel>();
         if (clientsScheduledListAUX != null && clientsScheduledListAUX2 != null) {
           clientsScheduledList = clientsScheduledListAUX;
@@ -2431,12 +2223,7 @@ class ClientsScheduledController extends GetxController {
           clientsAux = clientsScheduledListAUX2;
           clientsScheduledListLengthTail = clientsAux.length;
           print('llamando a buscar clientes - BIEN4-clientsScheduledList.length:${clientsScheduledList.length}');
-          print(
-              'qwerc SII mandar ->BIEN-${clientsScheduledList.length}--entro de:$msj-idProfessional=$idProfessional--idBranche:$idBranch Objeto-${clientsScheduledList}');
 
-          //
-          //
-          //  if (closeIesperado == true) //es que cerró inesperadamente
           {
             if (resultList.containsKey('attendingClient')) {
               List<Map>? attendingClientList = resultList['attendingClient'];
@@ -2450,7 +2237,7 @@ class ClientsScheduledController extends GetxController {
                 controllerLogin.setIsLoggingIn(false);
               } else {
                 print(
-                    'clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn})  NOOO ');
+                    'clientes asistiendo -- if (controllerLogin.isLoggingIn == ${controllerLogin.isLoggingIn})  NO ');
               }
             } else {
               // La clave 'attendingClient' no está presente en el mapa
@@ -2458,13 +2245,9 @@ class ClientsScheduledController extends GetxController {
             }
           }
 
-          //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+          //aqui guarda al proximo de la cola para mostrarlo en el Home de la apk
           clientsScheduledNext = resultList['nextClient'];
           clientsScheduledNextServ = resultList['nextClient'];
-
-
-
-
           quantityClientAttended = resultList['quantityClientAttended'];
           varClientsWaiting = resultList['varclientswaiting'];
           if (quantityClientAttended == 0) {
@@ -2475,19 +2258,17 @@ class ClientsScheduledController extends GetxController {
             int idCar = clientsScheduledNext!.car_id!;
             await searchForCustomerServices(idCar, controllerLogin.tokenUserLoggedIn);
             await filterShowNext();
-            //  setValueClock(true);
+
           } else {
-            print('if (clientsScheduledNext != null) ESTOY DANDO null');
-            //  setValueClock(false);
+            print('clientsScheduledNext = null');
+
           }
         }
       }
       update();
       controllerLogin.setIsLoadingFor(false);
     } catch (e) {
-      print('Dio2 error en Future<void> fetchClientsScheduled que se encuentra en el controlador del Login:$e');
-    } finally {
-      // setBoolControlVision(true);
+      print('Error en Future<void> fetchClientsScheduled que se encuentra en el controlador del Login:$e');
     }
   }
 
@@ -2500,9 +2281,7 @@ class ClientsScheduledController extends GetxController {
           int? detached;
 
           map.forEach((key, value) {
-            // print('clientes asistiendo key :$key');
-            // print('clientes asistiendo value :$value');
-            // Asignar valores a las variables según la clave
+
             switch (key) {
               case "detached":
                 detached = value;
@@ -2525,49 +2304,41 @@ class ClientsScheduledController extends GetxController {
             print('clientes asistiendo entre a :$clock');
             // Asignar a variables específicas para clock 1
             timeClientsAttended1 = timeClock!;
-            //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
+            // metodo nuevo para avisar y mandar notif cuando el servico se este acabando
             int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended1!);
-            //aqu hace analisis y guarda en memoria del telefono
+            //hace analisis y guarda en memoria del telefono
             //cuando falta 3 minu para acabar
             controllerLogin.getUpdateTime(timeMinutes, 1, 'logicaInesperadaQuitarTiempo-1');
-            //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
+            //metodo nuevo para avisar y mandar notif cuando el servico se este acabando
             print('clientes asistiendo hora timeClock***********timeClock*****:$timeClock');
           } else if (clock == 2 && detached == 99) {
             print('clientes asistiendo entre a :$clock');
             // Asignar a variables específicas para clock 2
             timeClientsAttended2 = timeClock!;
-            //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
             int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended2!);
-            //aqu hace analisis y guarda en memoria del telefono
-            //cuando falta 3 minu para acabar
             controllerLogin.getUpdateTime(timeMinutes, 2, 'logicaInesperadaQuitarTiempo-2');
-            //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
+
           } else if (clock == 3 && detached == 99) {
             print('clientes asistiendo entre a :$clock');
             // Asignar a variables específicas para clock 3
             timeClientsAttended3 = timeClock!;
-            //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
+
             int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended3!);
-            //aqu hace analisis y guarda en memoria del telefono
-            //cuando falta 3 minu para acabar
             controllerLogin.getUpdateTime(timeMinutes, 3, 'logicaInesperadaQuitarTiempo-3');
-            //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
+
           } else if (clock == 4 && detached == 99) {
             print('clientes asistiendo entre a :$clock');
             // Asignar a variables específicas para clock 3
             timeClientsAttended4 = timeClock!;
-            //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
-            int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended4!);
-            //aqu hace analisis y guarda en memoria del telefono
-            //cuando falta 3 minu para acabar
-            controllerLogin.getUpdateTime(timeMinutes, 4, 'logicaInesperadaQuitarTiempo-4');
-            //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
-          }
-          // Puedes agregar más condiciones según sea necesario para otros valores de clock
-        } //cierre for (var map in attendingClientList)
 
+            int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended4!);
+           controllerLogin.getUpdateTime(timeMinutes, 4, 'logicaInesperadaQuitarTiempo-4');
+
+          }
+
+        }
         update();
-        //
+
       } else {
         // La lista es nula o está vacía
         print('!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo es nula o está vacía.');
@@ -2580,18 +2351,12 @@ class ClientsScheduledController extends GetxController {
   Future<void> logicaInesperada(List<Map>? attendingClientList) async {
     try {
       if (attendingClientList != null && attendingClientList.isNotEmpty) {
-        // La lista no es nula y tiene elementos
-        // Hacer algo con la lista...
-        // print(
-        //   'clientes asistiendo!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo no está vacía.');
-        //print('clientes asistiendo : ${attendingClientList.length}');
-        // Obtener la hora actual
+
 
         DateTime horaActual = DateTime.now();
         DateTime hora1 = DateTime.parse('2024-02-27 19:34:45');
         int diferenciaSegundos = 0;
-        // print('clientes asistiendo horaActual :$horaActual');
-        // print('clientes asistiendo hora1 :$hora1');
+
         // Usando un bucle for-in
         for (var map in attendingClientList) {
           int? id;
@@ -2601,8 +2366,7 @@ class ClientsScheduledController extends GetxController {
           ClientsScheduledModel? client;
 
           map.forEach((key, value) {
-            // print('clientes asistiendo key :$key');
-            // print('clientes asistiendo value :$value');
+
             // Asignar valores a las variables según la clave
             switch (key) {
               case "reservation_id":
@@ -2619,20 +2383,14 @@ class ClientsScheduledController extends GetxController {
                 break;
               case "updated_at":
                 hora1 = DateTime.parse(value);
-                // updated = value;
+
                 break;
               default:
-                // Manejar otras claves si es necesario
                 break;
             }
           });
 
-          /*   if (hora1 != null) {
-            hora1 = DateTime.parse(updated!);
-            diferenciaSegundos = horaActual.difference(hora1).inSeconds;
-          } else {
-            diferenciaSegundos = 0;
-          }*/
+
           // Calcular la diferencia en segundos entre hora1 y la hora actual
 
           int diferenciaSegundos = horaActual.difference(hora1).inSeconds;
@@ -2656,10 +2414,10 @@ class ClientsScheduledController extends GetxController {
                   (timeClock! - diferenciaSegundos) <= 0 ? 0 : (timeClock! - diferenciaSegundos); //tiempo en segundos
               //pasar el tiempo de segundos a minutos
               int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended1!);
-              //aqu hace analisis y guarda en memoria del telefono
+              //hace analisis y guarda en memoria del telefono
               //cuando falta 3 minu para acabar
               controllerLogin.getUpdateTime(timeMinutes, 1, 'logicaInesperada-1');
-              //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
+
             }
           } else if (clock == 2) {
             if (client!.attended == 4 || client!.attended == 5 || client!.attended == 33) {
@@ -2670,10 +2428,10 @@ class ClientsScheduledController extends GetxController {
               timeClientsAttended2 =
                   (timeClock! - diferenciaSegundos) <= 0 ? 0 : (timeClock! - diferenciaSegundos); //tiempo en segundos
               int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended2!);
-              //aqu hace analisis y guarda en memoria del telefono
+              //hace analisis y guarda en memoria del telefono
               //cuando falta 3 minu para acabar
               controllerLogin.getUpdateTime(timeMinutes, 2, 'logicaInesperada-2');
-              //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
+
             }
           } else if (clock == 3) {
             if (client!.attended == 4 || client!.attended == 5 || client!.attended == 33) {
@@ -2684,10 +2442,10 @@ class ClientsScheduledController extends GetxController {
               timeClientsAttended3 =
                   (timeClock! - diferenciaSegundos) <= 0 ? 0 : (timeClock! - diferenciaSegundos); //tiempo en segundos
               int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended3!);
-              //aqu hace analisis y guarda en memoria del telefono
+
               //cuando falta 3 minu para acabar
               controllerLogin.getUpdateTime(timeMinutes, 3, 'logicaInesperada-3');
-              //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
+
             }
           } else if (clock == 4) {
             if (client!.attended == 4 || client!.attended == 5 || client!.attended == 33) {
@@ -2698,14 +2456,14 @@ class ClientsScheduledController extends GetxController {
               timeClientsAttended4 =
                   (timeClock! - diferenciaSegundos) <= 0 ? 0 : (timeClock! - diferenciaSegundos); //tiempo en segundos
               int timeMinutes = controllerLogin.secondsToMinutes(timeClientsAttended4!);
-              //aqu hace analisis y guarda en memoria del telefono
+
               //cuando falta 3 minu para acabar
               controllerLogin.getUpdateTime(timeMinutes, 4, 'logicaInesperada-4');
-              //todo metodo nuevo para avisar y mandar notif cuando el servico se este acabando
+
             }
           }
-          // Puedes agregar más condiciones según sea necesario para otros valores de clock
-        } //cierre for (var map in attendingClientList)
+
+        }
         //VERIFICO QUE RELOJ ESTA OCUPADO Y VEO SI HAY DISPONIBILIDAD
         filterShowCardTimer();
         update();
@@ -2723,7 +2481,7 @@ class ClientsScheduledController extends GetxController {
   Future<void> fetchClientsTechnical(idBranch) async {
     Map<String, dynamic> resultList = await repository.getClientsTechnicalList(
         idBranch, controllerLogin.idProfessionalLoggedIn!, controllerLogin.tokenUserLoggedIn);
-    print('111ya entre a buscar inicialmente los clientes del tecnico');
+    print(' entra a buscar inicialmente los clientes del tecnico');
     print(resultList);
     //verificando , si entra al if es problemas de coneccion
     if (resultList.containsKey('ConnectionIssues') && resultList['ConnectionIssues'] == true) {
@@ -2731,10 +2489,10 @@ class ClientsScheduledController extends GetxController {
       print('mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor-6');
     } else {
       correctConnection = true;
-      //aqui estoy guardando la cola del dia de hoy del profesional
+      //aqui guardala cola del dia de hoy del profesional
       clientsScheduledListTechnical = (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
       clientsTechnicalLength = clientsScheduledListTechnical.length;
-      //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+      //aqui guarda al proximo de la cola para mostrarlo en el Home de la apk
 
       clientsNextTechnical = resultList['nextClient'];
       quantityClientAttendedTechnical = resultList['quantityClientAttended'];
@@ -2755,15 +2513,8 @@ class ClientsScheduledController extends GetxController {
     update();
   }
 
-  /* setValueClock(bool value) {
-    if (value == true) {
-      sizeClock = 145;
-    } else {
-      sizeClock = 160;
-    }
-  }*/
 
-//en este le doy el tamaño al reloj dependiendo del tamaño del telefono
+// le asigna el tamaño al reloj dependiendo del tamaño del telefono
   setValueClockDinamic(double value) {
     sizeClock = value;
     update();
@@ -2776,15 +2527,7 @@ class ClientsScheduledController extends GetxController {
     return h2.roundToDouble();
   }
 
-  // int convertDateSecons(String tiempo) {
-  //   List<String> partes = tiempo.split(":");
-  //   int horas = int.parse(partes[0]);
-  //   int minutos = int.parse(partes[1]);
-  //   int segundos = int.parse(partes[2]);
 
-  //   int tiempoEnSegundos = horas * 3600 + minutos * 60 + segundos;
-  //   return tiempoEnSegundos;
-  // }
   int convertDateSecons(String tiempo) {
     try {
       // Dividir la cadena en partes usando ":" como separador
@@ -2806,25 +2549,12 @@ class ClientsScheduledController extends GetxController {
     }
   }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
   Future<bool> sentValueClockDb(int id, int clock) async {
     //si return = false es que no se inserto en la Db
     return await repository.sentValueClockDb(id, clock, controllerLogin.tokenUserLoggedIn);
   }
 
-//
-//
-//
-//
-//
   Future<int> getValueClockDb(int id) async {
     try {
       return await repository.getValueClockDb(id, controllerLogin.tokenUserLoggedIn);
@@ -2832,7 +2562,7 @@ class ClientsScheduledController extends GetxController {
       print(e);
       return -99;
     }
-    //si return = false es que no se inserto en la Db
+
   }
 
   Future<void> sendWhatsappNotification(

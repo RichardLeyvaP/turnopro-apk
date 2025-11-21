@@ -366,36 +366,8 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                                   if (controllerLogin
                                                                           .codigoQrValid() ==
                                                                       true) {
-                                                                    //aqui voy controlando que no pueda elimira tds los servicios
-                                                                    //todo aqui controlar que no pueda mandara eliminar tds los servicios
-                                                                    /*  if ((controllerShoppingCart.serviceListLengthCant +
-                                                                            1) ==
-                                                                        controllerShoppingCart
-                                                                            .serviceListLength) {
-                                                                      Get.snackbar(
-                                                                        'Mensaje',
-                                                                        'Todos los servicios no pueden ser eliminados',
-                                                                        duration:
-                                                                            const Duration(milliseconds: 2500),
-                                                                        backgroundColor: const Color.fromARGB(
-                                                                            118,
-                                                                            255,
-                                                                            255,
-                                                                            255),
-                                                                        showProgressIndicator:
-                                                                            true,
-                                                                        progressIndicatorBackgroundColor: const Color.fromARGB(
-                                                                            255,
-                                                                            203,
-                                                                            205,
-                                                                            209),
-                                                                        progressIndicatorValueColor:
-                                                                            const AlwaysStoppedAnimation(Color(0xFFF18254)),
-                                                                        overlayBlur:
-                                                                            3,
-                                                                      );
-                                                                    } else {*/
-                                                                    //aqui voy controlando que no pueda elimira tds los servicios
+
+                                                                    // controlando que no pueda elimira tds los servicios
                                                                     controllerShoppingCart
                                                                         .setServiceSelectCant(
                                                                             1);
@@ -405,7 +377,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                                             .selectserviceCart[index]
                                                                             .id,
                                                                         1);
-                                                                    //todo aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+
                                                                     if (result ==
                                                                         1) {
                                                                       // ver que reloj es?
@@ -560,7 +532,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                   heightFlexBody, // 85% del espacio disponible para esta parte
 
                               child: ListView.builder(
-                                  //todo builder
+
                                   padding: EdgeInsets
                                       .zero, // Elimina cualquier padding del ListView
                                   itemCount:

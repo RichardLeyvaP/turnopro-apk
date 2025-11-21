@@ -60,7 +60,7 @@ class _ProductsBodyState extends State<ProductsBody>
     // Agrega un listener al controlador de pestañas
     _tabController.addListener(() async {
       print('cambio de pestalla:${_tabController.index}');
-      //todo Llama a la función cuando la pestaña cambia
+      // Llama a la función cuando la pestaña cambia
       controllerProduct.updatePestana(_tabController.index);
       await controllerProduct.fetchproductList(tabsID[_tabController.index]);
       //}

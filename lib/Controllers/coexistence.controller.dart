@@ -55,41 +55,9 @@ class CoexistenceController extends GetxController {
   bool isLoading = true;
   bool retriesResult = false;
   String? chargeSave;
-  //LLAMANDO AL CONTROLADOR
 
-  CoexistenceController() {
-    /*
-    print('estoy inicializando CoexistenceController ');
-    final StatisticController controllerStad = Get.find<StatisticController>();
-    final LoginController controllerLogin = Get.find<LoginController>();
-    if (controllerLogin.chargeUserLoggedIn == "Barbero") {
-      print('llamando fetchCoexistenceList(); porque soy Barbero');
-      fetchCoexistenceList();
-    }
-    if (controllerLogin.chargeUserLoggedIn == "Tecnico") {
-      print('llamando fetchCoexistenceList(); porque soy Tecnico');
-      fetchCoexistenceList();
-    }
 
-    //todo esto solo cargarlo cuando sea un Responsable
-    if (controllerLogin.chargeUserLoggedIn == "Encargado") {
-      print('llamando fetchCoexistenceList(); porque soy Encargado');
-      fetchBranchProfessionals();
-    }
 
-    if (controllerLogin.chargeUserLoggedIn == "Coordinador") {
-      print('llamando fetchCoexistenceList(); porque soy Coordinador');
-      fetchBranchProfessionals();
-    }
-    //esto CARGAR este metodo si es RESPONSABLE
-
-    //AQUI CARGO LA Estadística DEL DIA DE HOY INICIALMENTE JASTA QUE SELECCIONES ALGUNA FECHA
-    final now = DateTime.now();
-    final formatter = DateFormat('yyyy-MM-dd');
-    final dateAct = formatter.format(now);
-    controllerStad.getDataStatisticDay(dateAct, dateAct, 1, 1);
-    */
-  }
 
   @override
   void onReady() {
@@ -112,7 +80,7 @@ class CoexistenceController extends GetxController {
       coexistence = await repository.getCoexistenceList(idProfessional, idBranch, controllerLogin.tokenUserLoggedIn);
       print(coexistence.length);
       coexistenceListLength = coexistence.length;
-      print('a15627 coexistenceListLength:${coexistenceListLength}');
+      print(' coexistenceListLength:${coexistenceListLength}');
 
       update();
     } catch (e) {
@@ -132,7 +100,7 @@ class CoexistenceController extends GetxController {
     meses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   }
 
-  //todo nuevaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
   Future<void> getStadistAno(int ano) async {
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
@@ -140,36 +108,32 @@ class CoexistenceController extends GetxController {
     Map<String, dynamic> resultList =
         await repository.getAnoStadist(idProfessional, idBranch, ano, controllerLogin.tokenUserLoggedIn);
     meses[0] = double.parse(resultList['stadist']['enero'].toString());
-    print('resultadosssssss 4');
+
     meses[1] = double.parse(resultList['stadist']['febrero'].toString());
-    print('resultadosssssss 5');
+
     meses[2] = double.parse(resultList['stadist']['marzo'].toString());
-    print('resultadosssssss 6');
+
     meses[3] = double.parse(resultList['stadist']['abril'].toString());
-    print('resultadosssssss 7');
+
     meses[4] = double.parse(resultList['stadist']['mayo'].toString());
-    print('resultadosssssss 8');
+
     meses[5] = double.parse(resultList['stadist']['junio'].toString());
-    print('resultadosssssss 9');
+
     meses[6] = double.parse(resultList['stadist']['julio'].toString());
     meses[7] = double.parse(resultList['stadist']['agosto'].toString());
     meses[8] = double.parse(resultList['stadist']['septiembre'].toString());
     meses[9] = double.parse(resultList['stadist']['octubre'].toString());
     meses[10] = double.parse(resultList['stadist']['noviembre'].toString());
     meses[11] = double.parse(resultList['stadist']['diciembre'].toString());
-    print('resultadosssssss 15');
-
-    //   averageEarnings = resultList['averageEarnings'];
 
     averageEarnings = resultList['averageEarnings'].toString();
     totalEarnings = resultList['totalEarnings'].toString();
-    //   totalEarnings = resultList['totalEarnings'];
 
     update();
   }
 
   Future<void> fetchEstadist1(data) async {
-    print('werya tengo1');
+
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
     int? idBranch = controllerLogin.branchIdLoggedIn;
@@ -178,7 +142,7 @@ class CoexistenceController extends GetxController {
     estadist1 = await repository.fetchEstadist1(idProfessional, idBranch, data, charge);
     print(estadist1.length);
     estadist1Length = estadist1.length;
-    print('werya tengo-result coexistenceListLength:${estadist1Length}');
+    print('result coexistenceListLength:${estadist1Length}');
 
     update();
     controllerLogin.setIsLoadingFor(false);
@@ -186,7 +150,7 @@ class CoexistenceController extends GetxController {
 
   Future<void> fetchEstadistPagos() async {
     retriesResult = false;
-    print('werya tengo1');
+
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
     int? idBranch = controllerLogin.branchIdLoggedIn;
@@ -202,10 +166,10 @@ class CoexistenceController extends GetxController {
     Map<String, dynamic> resultList = await repository.fetchEstadistPagos(idProfessional, idBranch, charge);
 
     estadistPagos = resultList['branchProf'];
-    retriesResult = resultList['retries']; //en este controlo si dio error al buscar los datos con true
+    retriesResult = resultList['retries']; //para controlar si dio error al buscar los datos con true
     print(estadistPagos.length);
     estadistPagosLength = estadistPagos.length;
-    print('werya tengo-result coexistenceListLength:${resultList['pendiente']}');
+
     estadistPagosFijo = {
       'pendiente': resultList['pendiente'].toString(),
       'pagado': resultList['pagado'].toString(),
@@ -231,7 +195,7 @@ class CoexistenceController extends GetxController {
   }
 
   Future<void> fetchEstadist0() async {
-    print('werya tengo1');
+
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
     int? idBranch = controllerLogin.branchIdLoggedIn;
@@ -241,7 +205,7 @@ class CoexistenceController extends GetxController {
       estadist0 = await repository.fetchEstadist0(idProfessional, idBranch, charge);
       print(estadist0.length);
       estadist0Length = estadist0.length;
-      print('werya tengo-result coexistenceListLength:${estadist0Length}');
+
 
       update();
     } catch (e) {
@@ -250,7 +214,7 @@ class CoexistenceController extends GetxController {
       Get.back();
     }
 
-    //controllerLogin.setIsLoadingFor(false);
+
   }
 
   Future<void> specificCoexistenceList(idProfessional) async {
@@ -264,19 +228,19 @@ class CoexistenceController extends GetxController {
 
   Future<void> fetchBranchProfessionals() async {
     selectedProfessional = null;
-    print('ESTOY ENTRANDO AQUI A CONVIVENCIAS aqui en fetchBranchProfessionals()');
+    print(' ENTRANDO A CONVIVENCIAS en fetchBranchProfessionals()');
     final LoginController controllerLogin = Get.find<LoginController>();
     int? idBranch = controllerLogin.branchIdLoggedIn;
     print(
-        'ESTOY ENTRANDO AQUI A CONVIVENCIAS aqui en controllerLogin.branchIdLoggedIn=${controllerLogin.branchIdLoggedIn}');
+        ' ENTRANDO A CONVIVENCIAS en controllerLogin.branchIdLoggedIn=${controllerLogin.branchIdLoggedIn}');
     professional = await repository.getBranchProfessionals(idBranch);
     print(
         'actualizando las convivencias iniciales.RLP- getCoexistenceList111111 %%%%%%%%%%%%%%%%% Profesionales por branch %%%%%%%%%%%%%%%%%%%%');
     print(professional.length);
     professionalListLength = professional.length;
-//todo agregue esto nuevo
+
     print(
-        'ESTOY ENTRANDO AQUI A CONVIVENCIAS aqui en fetchBranchProfessionals()----professionalListLength-$professionalListLength');
+        ' ENTRANDO A CONVIVENCIAS en fetchBranchProfessionals()----professionalListLength-$professionalListLength');
     update();
   }
 
@@ -300,7 +264,7 @@ class CoexistenceController extends GetxController {
       if (branchProfessionalListLength > 0) {
         return 1;
       } else {
-        print('ya tengo la cola de la api es estaa Tipos de dato No hay sucursales');
+
         return 0;
       }
     } else {

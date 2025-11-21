@@ -25,10 +25,8 @@ class WeeklyStatisticsRepository extends GetConnect {
               '${dotenv.env['API_ENDPOINT']}/branch_winner?branch_id=$idBranch&startDate=$startDate&endDate=$endDate';
         }
 
-        print(idBranch);
-        print(startDate);
-        print(endDate);
-        print('Esta e sla url que estoy llamado:$url');
+
+
         final response = await http.get(
           Uri.parse(url),
           headers: {
@@ -153,14 +151,13 @@ class WeeklyStatisticsRepository extends GetConnect {
             // Acceder a la lista de earningByDay
             List<dynamic> earningByDay = jsonResponse['earningByDay']['dates'];
 
-            //todo aqui tengo el total y la media
+            //el total y la media
             totalEarnings =
                 (jsonResponse['earningByDay']['totalEarnings'] ?? 0).toDouble();
             averageEarnings =
                 (jsonResponse['earningByDay']['averageEarnings'] ?? 0)
                     .toDouble();
-            print(
-                '*****************************************************************************************');
+
             print(totalEarnings);
             print(averageEarnings);
 

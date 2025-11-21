@@ -92,7 +92,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                               0, 3), // Cambia el desplazamiento de la sombra
                         ),
                       ],
-                      color: colorCont, //todo
+                      color: colorCont,
                       borderRadius:
                           BorderRadius.all(Radius.circular(borderCont)),
                     ),
@@ -226,7 +226,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
             ),
             Expanded(
               flex: 12,
-              child: servicesList.isNotEmpty //todo si hay cargarlos aqui
+              child: servicesList.isNotEmpty
                   ? Padding(
                       padding:
                           const EdgeInsets.only(left: 10, right: 10, top: 8),
@@ -275,7 +275,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        //todo1 estructura de los cart
+
                         SizedBox(
                           height: 5,
                         ),
@@ -531,7 +531,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
       PagesConfigController pagesConfigCont, page) {
     return InkWell(
       onTap: () async {
-        print('estoy dando click');
+        print('dando click');
         await pagesConfigCont.showAppBar(false);
         pagesConfigCont.goToPage(page, pagesConfigCont.pageController2);
 
@@ -599,7 +599,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
       urlImage) {
     return InkWell(
       onTap: () async {
-        print('estoy dando click');
+        print('dando click');
       },
       child: Column(
         children: [

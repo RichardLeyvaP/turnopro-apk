@@ -421,150 +421,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final ClientsScheduledController clientCon = Get.find<ClientsScheduledController>();
   NotificationController notiController = Get.find<NotificationController>();
 
-  @override //todo AppBar
+  @override // AppBar
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false, //RLP Oculta la flecha de retroceso
       elevation: 0,
       backgroundColor: const Color.fromARGB(255, 231, 232, 234),
-      title: GetBuilder<LoginController>(//todo
+      title: GetBuilder<LoginController>(
           builder: (logUser) {
         return InkWell(
           onTap: () {
-            /*
-            loginController.addOpenSecretkey();
-            print('llave secreta = ${loginController.getOpenSecretkey()}');
-            if (loginController.userLoggedIn != '' && loginController.getOpenSecretkey() == 5) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return GetBuilder<LoginController>(builder: (_) {
-                    return Dialog(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ), //this right here
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Container(
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFFDAE2A),
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(8),
-                                topRight: Radius.circular(8),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 12),
-                                  child: Text(
-                                    'Mensaje',
-                                    style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700),
-                                  ),
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.close, color: Colors.white),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 150,
-                            child: Column(
-                              children: [
-                                Padding(
-                                    padding: const EdgeInsets.only(top: 30, left: 16, right: 16, bottom: 10),
-                                    child: Text(
-                                        'Deseas abrir la proxima vez con la huella digital, usuario:${loginController.userLoggedIn} ?                         ')),
-                                //
 
-                                ButtonBar(
-                                  alignment: MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    ElevatedButton(
-                                        style: ButtonStyle(
-                                            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                              const EdgeInsets.symmetric(vertical: 0, horizontal: 18.0),
-                                            ),
-                                            backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF4470F3))),
-                                        onPressed: () async {
-                                          //mostrar mensaje y guardar a true variable
-                                          LocalStorage.prefs.setBool('EntryFootprintOpen', true);
-                                          Get.snackbar(
-                                            'Mensaje',
-                                            'Guardada correctamente su configuración',
-                                            duration: const Duration(milliseconds: 2500),
-                                            backgroundColor: const Color.fromARGB(118, 255, 255, 255),
-                                            showProgressIndicator: true,
-                                            progressIndicatorBackgroundColor: const Color.fromARGB(255, 203, 205, 209),
-                                            progressIndicatorValueColor:
-                                                const AlwaysStoppedAnimation(Color(0xFF19CF9E)),
-                                            overlayBlur: 3,
-                                          );
-                                          loginController.setOpenSecretkey(0); //vuelve a tomar el valor inicial (0)
-                                          Navigator.pop(context);
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              MdiIcons.check,
-                                              color: Colors.white,
-                                            ),
-                                            SizedBox(
-                                              width: 6,
-                                            ),
-                                            const Text(
-                                              'SI    ',
-                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
-                                            ),
-                                          ],
-                                        )),
-                                    ElevatedButton(
-                                      style: ButtonStyle(
-                                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                          const EdgeInsets.symmetric(vertical: 0, horizontal: 18.0),
-                                        ),
-                                        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFF6750)),
-                                      ),
-                                      onPressed: () async {
-                                        LocalStorage.prefs.setBool('EntryFootprintOpen', false);
-                                        loginController.setOpenSecretkey(0); //vuelve a tomar el valor inicial (0)
-                                        // Cerrar el primer modal
-                                        Navigator.pop(context);
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            MdiIcons.close,
-                                            color: Colors.white,
-                                          ),
-                                          SizedBox(width: 6),
-                                          Text(
-                                            'NO    ',
-                                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  });
-                },
-              );
-              loginController.setOpenSecretkey(0);
-            }
-            */
           },
           child: Row(
             children: [
@@ -573,10 +440,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  // border: Border.all(
-                  //   color: Colors.white,
-                  //   width: 2, // Ajusta el ancho del borde según tus preferencias
-                  // ),
+
                 ),
                 child: CircleAvatar(
                   radius: 25,
@@ -633,8 +497,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ),
 
-                /*  NetworkImage(
-                      '${Env.apiEndpoint}/images23/${logUser.imageUrlLoggedIn}'),*/ //todo Modo de cargar la foto
+
                 // radius: 25, // Ajusta el tamaño del círculo aquí
               ),
               SizedBox(
@@ -965,7 +828,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                               } else {
                                                 print('solicitud pidiendo ir a colación.');
                                                 if (_.usserPermissionQr == 1) {
-                                                  //todo esto cambiarlo
+
                                                   if (clientCon.getWaitTime() == true ||
                                                       (clientCon.getWaitTime() == false &&
                                                           clientCon.clientsScheSalon ==
@@ -1116,14 +979,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                     MaterialStateProperty.all<Color>(const Color(0xFF4470F3)),
                                               ),
                                               onPressed: () async {
-                                                //todo falta llamar un metodo aqui
-                                                //SACAR DEL PUESTO DE TRABAJO AL BARBERO
-                                                //
-                                                // Lógica para enviar el comentario
+
+
 
                                                 //LLAMAR AL ENPOINT PARA SACAR DEL PUESTO DE TRABAJO
                                                 if (_.usserPermissionQr == 1) {
-                                                  //todo esto cambiarlo
+
 
                                                   int result = await _.ColacionProfessional(
                                                       _.idProfessionalLoggedIn, 'Barbero', 4); //solicitud de salida
@@ -1239,8 +1100,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       },
                     );
 
-                    //todooooooooooooooooooooooooooooooooooooooooo
-                    // Get.offAllNamed('/LoginFormPage');
+
                   },
                   child: CircleAvatar(
                     radius: 22, // Tamaño del CircleAvatar

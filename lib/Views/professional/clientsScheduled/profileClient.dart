@@ -104,7 +104,7 @@ class _ProfileClientState extends State<ProfileClient> {
                               0, 3), // Cambia el desplazamiento de la sombra
                         ),
                       ],
-                      color: colorCont, //todo
+                      color: colorCont,
                       borderRadius:
                       BorderRadius.all(Radius.circular(borderCont)),
                     ),
@@ -238,7 +238,7 @@ class _ProfileClientState extends State<ProfileClient> {
             ),
             Expanded(
               flex: 12,
-              child: servicesList.isNotEmpty //todo si hay cargarlos aqui
+              child: servicesList.isNotEmpty // si hay cargarlos aqui
                   ? Padding(
                 padding:
                 const EdgeInsets.only(left: 10, right: 10, top: 8),
@@ -287,7 +287,6 @@ class _ProfileClientState extends State<ProfileClient> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        //todo1 estructura de los cart
                         SizedBox(
                           height: 5,
                         ),
@@ -536,14 +535,10 @@ class _ProfileClientState extends State<ProfileClient> {
       PagesConfigController pagesConfigCont, page) {
     return InkWell(
       onTap: () async {
-        print('estoy dando click');
+        print(' dando click');
         await pagesConfigCont.showAppBar(false);
         pagesConfigCont.goToPage(page, pagesConfigCont.pageController2);
 
-        /*pageController2.nextPage(
-          duration: Duration(milliseconds: 300),
-          curve: Curves.ease,
-        );*/
       },
       child: Container(
         height: (MediaQuery.of(context).size.height * 0.07),
@@ -604,7 +599,7 @@ class _ProfileClientState extends State<ProfileClient> {
       urlImage) {
     return InkWell(
       onTap: () async {
-        print('estoy dando click');
+        print(' dando click');
       },
       child: Column(
         children: [

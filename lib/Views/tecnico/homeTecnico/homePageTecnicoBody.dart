@@ -105,7 +105,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
       if (activeClock) {
         print('Atendiendo cliente ...iniciando :$activeClock');
         //si es true hay clientes atendiendose
-        //obtengo el tiempo en el que esta
+        //se obtiene el tiempo en el que esta
         int timeAct = LocalStorage.prefs.getInt('valueClockTec1')!;
         if (timeAct < 0) {
           timeAct = 2;
@@ -269,7 +269,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     super.build(context);
     return GetBuilder<ClientsTechnicalController>(builder: (controllerclient) {
       String firstName = '';
-      // AQUI DETENGO LOS TIMER QUE NO ESTAN VISIBLES
+      // SE DETIENEN LOS TIMER QUE NO ESTAN VISIBLES
 
       if (controllerclient.clientsNextTechnical != null) {
         String fullName = controllerclient.clientsNextTechnical!.client_name!;
@@ -280,7 +280,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
       }
 
       return Column(
-        //Cart anaranjado grande inicial que tiene el cronometro
+        //Cart grande inicial que tiene el cronometro
         children: [
           Expanded(
               flex: 13,
@@ -590,14 +590,13 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                                           LocalStorage.prefs.setBool('valueClockTec1ActivT', true);
                                                           LocalStorage.prefs.setInt('valueClockTec1', 300);
 
-                                                          //
-                                                          //todo FALTA QUE SE MUESTRE EL RELOJ
+
 
                                                           clientsScheduledController.animationTechnicalController1!
                                                             ..duration = const Duration(seconds: 300)
                                                             ..reset()
                                                             ..forward();
-                                                          // detengo todos los timers que deben detenerse
+                                                          // se detienen todos los timers que deben detenerse
                                                           LocalStorage.prefs.setBool('valueClockActivT', false);
                                                           LocalStorage.prefs.setInt('valueClockIni', 180);
                                                           clientsScheduledController.animationControllerInitialT!
@@ -1139,7 +1138,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                         Text(
                                           '$minutes :',
                                           style: TextStyle(
-                                              fontSize: (MediaQuery.of(context).size.width * 0.04), //todo2
+                                              fontSize: (MediaQuery.of(context).size.width * 0.04),
                                               fontFamily: GoogleFonts.orbitron().fontFamily,
                                               color: colorInicial,
                                               fontWeight: FontWeight.w900),
@@ -1179,7 +1178,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
     );
   }
 
-  //todo9
+
   cardTimer2(
     Key uniqueKey,
     String name,
@@ -1282,7 +1281,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                       Text(
                                         '$minutes :',
                                         style: TextStyle(
-                                            fontSize: (MediaQuery.of(context).size.width * 0.04), //todo2
+                                            fontSize: (MediaQuery.of(context).size.width * 0.04),
                                             fontFamily: GoogleFonts.orbitron().fontFamily,
                                             color: colorInicial,
                                             fontWeight: FontWeight.w900),

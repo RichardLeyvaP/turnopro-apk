@@ -12,7 +12,7 @@ import 'package:turnopro_apk/Models/services_model.dart';
 import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 import 'package:turnopro_apk/get_connect/repository/product.repository.dart';
 import 'package:turnopro_apk/get_connect/repository/services.repository.dart';
-//todo REVISAR REVISAR este controlador y que  funcione correctamente,no lo he revisado me refiero funcionalmente
+
 
 class ShoppingCartController extends GetxController {
   ProductRepository productRepository = ProductRepository();
@@ -69,32 +69,28 @@ class ShoppingCartController extends GetxController {
     print('Cargando el carro de id car :$carIdClienteSelect');
 
     try {
-      print('**** 11111111 **** *** ESTE ES EL getTotalServices ACTUALMENTE:$getTotalServices');
-      //  print('00000');
-      Map<String, dynamic> resultList = await productRepository.getCartProductService(); //todo aqui revisando
-      //print('1111111');
 
-      //primero veo que no halla dado null la llamada
+
+      Map<String, dynamic> resultList = await productRepository.getCartProductService();
+
+
+      //primero revisar que no halla dado null la llamada
       if (resultList.containsKey('statusCode') && resultList['statusCode'] == null) {
         controllerLogin.showConnectionError();
       } else {
         selectproduct = (resultList['products'] ?? []).cast<ProductModel>();
         selectserviceCart = (resultList['services'] ?? []).cast<ServiceModel>();
-        // if (totalPrice == 0.0) {
+
         //Este condicional controlando que solo entrela primera vez
         totalPrice = resultList['PriceTotal'];
         getTotalServices = resultList['PriceService'];
         getTotalProduct = resultList['PriceProduct'];
-        //}
-        print('**** 11111111 **** *** ESTE ES EL getTotalServices ACTUALMENTE:$getTotalServices');
+
+
         productListLength = selectproduct.length;
         serviceListLength = selectserviceCart.length;
-        //aqui asigno los servicios que ya tiene sekeccionados
+        //aqui los servicios que ya tiene sekeccionados
         serviceControll.asigSelectService(selectserviceCart);
-        print(
-            'LISTA2 _fetchServiceList Limpiando**** *** ESTE ES EL getTotalServices ACTUALMENTE:${selectserviceCart.length}');
-        print(
-            'LISTA2 _fetchServiceList Limpiando**** *** ESTE ES EL getTotalServices ACTUALMENTE:${selectserviceCart}');
 
         for (int i = 0; i < selectserviceCart.length; i++) {
           idServiceCart.add(selectserviceCart[i].nameService!);
@@ -104,7 +100,7 @@ class ShoppingCartController extends GetxController {
         update();
       }
     } catch (e) {
-      //print('DIO ERROR:$e');
+
     } finally {
       await Future.delayed(const Duration(seconds: 1));
     }
@@ -357,7 +353,7 @@ class ShoppingCartController extends GetxController {
         if (clientScheduCont.modifyTimeSpecific == 0) //es el reloj 1
         {
           addDurationToTimer(
-              clientScheduCont.animationController1!, Duration(seconds: durationService)); //todo cambiar123RLP
+              clientScheduCont.animationController1!, Duration(seconds: durationService));
         } else if (clientScheduCont.modifyTimeSpecific == 1) //reloj 2
         {
           addDurationToTimer(clientScheduCont.animationController2!, Duration(seconds: durationService));

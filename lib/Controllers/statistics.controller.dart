@@ -79,13 +79,12 @@ class StatisticController extends GetxController {
   bool isLoading = true;
 
   Future<void> getDataStatisticDay(
-      //todo agregadas variables del dia
+      // agregadas variables del dia
       startDateIn,
       endDateIn,
       numberdayWeekIn,
       quantityDatesIn) async {
-    //todo asi mapea bien
-    print('111111 getDataStatisticDay');
+
     final LoginController controllerLogin = Get.find<LoginController>();
     earningByDaysDia.clear();
     averageEarningsDia = 0.0;
@@ -122,13 +121,12 @@ class StatisticController extends GetxController {
   }
 
   Future<void> getDataStatisticSem(
-      //todo agregadas variables del dia
+      // agregadas variables del dia
       startDateIn,
       endDateIn,
       numberdayWeekIn,
       quantityDatesIn) async {
-    //todo asi mapea bien
-    print('111111 getDataStatisticDay');
+
     final LoginController controllerLogin = Get.find<LoginController>();
     earningByDaysSem.clear();
     averageEarningsSem = 0.0;
@@ -164,10 +162,10 @@ class StatisticController extends GetxController {
   }
 
   Future<void> getDataStatisticMen(mes, year) async {
-    //todo asi mapea bien
+
 
     final LoginController controllerLogin = Get.find<LoginController>();
-    print('111111 getDataStatisticDay -mes:$mes...year:$year..idProf:${controllerLogin.idProfessionalLoggedIn}');
+    print(' getDataStatisticDay -mes:$mes...year:$year..idProf:${controllerLogin.idProfessionalLoggedIn}');
     earningByDaysMen.clear();
     averageEarningsMen = 0.0;
     totalEarningsMen = 0.0;
@@ -191,8 +189,7 @@ class StatisticController extends GetxController {
   }
 
   Future<void> getDataStatisticRespon(page, startDateIn, endDateIn, numberdayWeekIn, quantityDatesIn, mes, year) async {
-    //todo asi mapea bien
-    print('111111 getDataStatisticRespon');
+
     final LoginController controllerLogin = Get.find<LoginController>();
     earningByDays.clear();
     averageEarnings = 0.0;
@@ -243,42 +240,7 @@ class StatisticController extends GetxController {
     }
   }
 
-  // Future<void> getDataStatisticRespon(startDateIn, endDateIn, numberdayWeekIn,
-  //     quantityDatesIn, mes, year) async {
-  //   //todo asi mapea bien
-  //   print('111111 getDataStatisticRespon');
-  //   final LoginController controllerLogin = Get.find<LoginController>();
-  //   earningByDays.clear();
-  //   averageEarnings = 0.0;
-  //   totalEarnings = 0.0;
-  //   if (mes == -99 && year == -99) {
-  //     dateRange = '';
-  //     if (quantityDatesIn > 7) {
-  //       quantityDates = 7;
-  //     } else {
-  //       quantityDates = quantityDatesIn;
-  //     }
-  //     dateRange = '   $startDateIn  -  $endDateIn';
-  //   }
 
-  //   try {
-  //     var responStad = await weeklyStatisticsRepository.getDayStatisticsRespon(
-  //         controllerLogin.branchIdLoggedIn, startDateIn, endDateIn, mes, year);
-  //     print('respuest getDataStatisticRespon----$responStad');
-
-  //     if (responStad['Monto Generado'] != 0) {
-  //       statisticsGeneralRespon1 = responStad;
-  //       update();
-  //     } else {
-  //       statisticsGeneralRespon1 = {};
-  //       print('Resultados getDataStatisticRespon CORRECTOS pero vacio');
-  //     }
-  //     update();
-  //   } catch (e) {
-  //     print(
-  //         'Resultados getDataStatisticRespon ERROR StatisticController en getDataStatistic esta otra :$e');
-  //   }
-  // }
 
   Future<void> getDataStatistic(startDateIn, endDateIn, numberdayWeekIn, quantityDatesIn) async {
     final LoginController controllerLogin = Get.find<LoginController>();
@@ -291,9 +253,6 @@ class StatisticController extends GetxController {
     } else {
       quantityDates = quantityDatesIn;
     }
-    // numberdayWeek = numberdayWeekIn;
-    // print(
-    //     'Id Profesional : ${controllerLogin.idProfessionalLoggedIn}  fechaIni: $startDateIn  fechaFin: $endDateIn  diaSemana: $numberdayWeekIn  cantidad de fechas: $quantityDatesIn');
 
     try {
       WeeklyStatisticsModel responseId = await weeklyStatisticsRepository.getWeeklyStatisticsList(
@@ -314,25 +273,25 @@ class StatisticController extends GetxController {
 
           earningByDays.add(earnings);
 
-          //todo actualizando variables globales *****
+          // actualizando variables globales *****
           if (numberdayWeek == -99099) {
-            numberdayWeek = dayOfWeek; //todo ya aqui actualiza el dia de la semana en el grafico
+            numberdayWeek = dayOfWeek; // ya aqui actualiza el dia de la semana en el grafico
           }
         }
 
-        //todo ****ACTUALIZANDO VARIABLES PARA EL GRAFICO****************
+        // ****ACTUALIZANDO VARIABLES PARA EL GRAFICO****************
         totalEarnings = responseId.totalEarnings;
         averageEarnings = responseId.averageEarnings;
         dateRange = '   $startDateIn  -  $endDateIn';
-        //todo **********************************************************
+
 
         update();
       } else {
-        // print('Resultados correctos pero vacio');
+        print('Resultados correctos pero vacio');
       }
       update();
     } catch (e) {
-      // print('Error StatisticController en getDataStatistic :$e');
+      print('Error StatisticController en getDataStatistic :$e');
     }
   }
 }

@@ -8,7 +8,7 @@ import 'package:turnopro_apk/Controllers/login.controller.dart';
 import 'package:turnopro_apk/Controllers/pages.configPorf.controller.dart';
 //import 'package:turnopro_apk/Views/professional/clientsScheduled/modalHelperClientSchedule.dart';
 
-//todo ESTE NO NO NO NO NO SE ESTA UTILIZANDO
+
 class ClientsScheduled extends StatefulWidget {
   const ClientsScheduled({Key? key}) : super(key: key);
 
@@ -25,7 +25,7 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
 
   @override
   void initState() {
-    super.initState(); //todo REVISAR valor fijo
+    super.initState();
   }
 
   @override
@@ -242,7 +242,7 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                                                       children: [
                                                         Icon(
                                                           MdiIcons
-                                                              .formatListNumbered, //todo
+                                                              .formatListNumbered,
                                                           color: const Color
                                                                   .fromARGB(
                                                               255, 150, 37, 19),
@@ -364,7 +364,7 @@ class _ClientsScheduledState extends State<ClientsScheduled> {
                                                       ],
                                                     )
                                                   : const Row(
-                                                      //todo 99
+
                                                       children: [
                                                         Opacity(
                                                           opacity: 1,

@@ -173,11 +173,11 @@ class UserRepository extends GetConnect {
         print(branchesLog);
         return branchesLog;
       } else {
-        print('devolviendo de getBranchLoggedIn(String email, String password) NOO- ${response.statusCode}');
+        print('devolviendo de getUserLoggedBranch(String email, String password) NOO- ${response.statusCode}');
         return null;
       }
     } catch (e) {
-      print('5Error estoy en el catch (e) y este es el error:$e');
+      print('getUserLoggedBranch :$e');
     }
   }
 
@@ -201,10 +201,9 @@ class UserRepository extends GetConnect {
       print(response.statusCode);
       if (response.statusCode == 200) {
         final users = response.body;
-        print('1dentro del code:200');
-        print('final users:$users');
+
         if (users != null) {
-          print('2dentro del code:200 y tiene usuarios-users:$users');
+          print('dentro del code:200 y tiene usuarios-users:$users');
           print(users);
           return users;
         } else {
@@ -216,7 +215,7 @@ class UserRepository extends GetConnect {
         return null;
       }
     } catch (e) {
-      print('5Error estoy en el catch (e) y este es el error:$e');
+      print('Error:$e');
       return null;
     }
   }
@@ -230,7 +229,7 @@ class UserRepository extends GetConnect {
       };
 
       final response = await get(url, headers: headers).timeout(Duration(seconds: 15));
-      //print(response.body);
+
       if (response.statusCode == 200) {
         final resp = response.body;
         if (resp != null) {
@@ -248,19 +247,12 @@ class UserRepository extends GetConnect {
   Future userLogout(String token) async {
     try {
       var url = '${dotenv.env['API_ENDPOINT']}/logout';
-
-      // Parámetros que deseas enviar en la solicitud POST
-      /*   final Map<String, dynamic> body = {
-        'email': email,
-        'password': password,
-      };*/
-
-      final headers = {
+ final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
 
       final response = await get(url, headers: headers).timeout(Duration(seconds: 15));
-      //print(response.body);
+
       if (response.statusCode == 200) {
         final resp = response.body;
         if (resp != null) {
@@ -270,7 +262,7 @@ class UserRepository extends GetConnect {
         return null;
       }
     } catch (e) {
-      print('Error de userLogoutNew:$e');
+      print('Error de userLogout:$e');
       return null;
     }
   }
@@ -351,7 +343,7 @@ class UserRepository extends GetConnect {
           await get(url, headers: headers).timeout(Duration(seconds: 15)); // Aumenta el tiempo de espera a 15 segundos
 
 
-      //print(response.body);
+
       if (response.statusCode == 200) {
         return true;
       } else {

@@ -240,14 +240,12 @@ class ClientsCoordinatorController extends GetxController {
             'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor-2');
       } else {
         correctConnection = true;
-        //aqui estoy guardando la cola del dia de hoy del profesional
+        // guardando la cola del dia de hoy del profesional
         clientsScheduledListBranchClient =
             (resultList['clientListDel'] ?? []).cast<ClientsScheduledModel>();
         clientsScheduledListBranchClientLength =
             clientsScheduledListBranchClient.length;
-        print(
-            'ddcargando valores -******-*********-*-****-* lenght: $clientsScheduledListBranchClientLength -****-************-* ');
-        //
+
       }
       update();
     } catch (e) {
@@ -269,7 +267,7 @@ class ClientsCoordinatorController extends GetxController {
           'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor(clientsAttendBranch)');
     } else {
       correctConnection = true;
-      //aqui estoy guardando la cola del dia de hoy del profesional
+      // guardando la cola del dia de hoy del profesional
       clientAttendBranch =
           (resultList['clientAttendList'] ?? []).cast<ClientsScheduledModel>();
       clientAttendBranchLength = clientAttendBranch.length;
@@ -292,7 +290,7 @@ class ClientsCoordinatorController extends GetxController {
           'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor(ClientsColacionBranch)');
     } else {
       correctConnection = true;
-      //aqui estoy guardando la cola del dia de hoy del profesional
+      //guardando la cola del dia de hoy del profesional
       clientsColacionBranch =
           (resultList['clientAttendList'] ?? []).cast<ClientsScheduledModel>();
       clientsColacionBranchLength = clientsColacionBranch.length;
@@ -317,7 +315,7 @@ class ClientsCoordinatorController extends GetxController {
             'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor(ClientsColacionBranch)');
       } else {
         correctConnection = true;
-        //aqui estoy guardando la cola del dia de hoy del profesional
+        // guardando la cola del dia de hoy del profesional
         clientsColacionRequestBranch = (resultList['clientAttendList'] ?? [])
             .cast<ClientsScheduledModel>();
         clientsColacionRequestLength = clientsColacionRequestBranch.length;
@@ -345,20 +343,17 @@ class ClientsCoordinatorController extends GetxController {
             'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor(outRequestBranch)');
       } else {
         correctConnection = true;
-        //aqui estoy guardando la cola del dia de hoy del profesional
+        // guardando la cola del dia de hoy del profesional
         pOutRequestBranch = (resultList['clientAttendList'] ?? [])
             .cast<ClientsScheduledModel>();
         pOutRequestLength = pOutRequestBranch.length;
-        print(
-            'zz-******-pOutRequestLength-****-* $pOutRequestLength -****-************-* ');
-        //
+
       }
     } catch (e) {
       print(e);
     } finally {
       update();
-      //controllerLogin.setMakeCallC(true);
-      //controllerLogin.setMakeCallE(true);
+
     }
 
     print(resultList);
@@ -467,7 +462,7 @@ class ClientsCoordinatorController extends GetxController {
       return 0;
     } else {
       print(
-          'Cliente reasignado correctamente -> NOOOO desde reasignedClientTottem');
+          'Cliente reasignado correctamente -> NO desde reasignedClientTottem');
       return -999;
     }
   } //VARIABLES PARA EL CONTROL DE INCUMPLIMINETOS (convivencia)
@@ -475,9 +470,7 @@ class ClientsCoordinatorController extends GetxController {
   //ESTA VARIABLE HAY QUE LLENARLA DIRECTAMENTE DE LA DB
   Map<String, int> noncomplianceProfessional = {};
 
-  //
-  //
-  //
+
   AnimationController? animationControllerInitial;
 
   AnimationController? animationController1;
@@ -490,7 +483,7 @@ class ClientsCoordinatorController extends GetxController {
 
   upadateVariablesValueTimers() async {
     print(
-        'estoy entrando pa saber que relojes estan activos-upadateVariablesValueTimers-clientsCoordinator');
+        ' entrando para saber que relojes estan activos-upadateVariablesValueTimers-clientsCoordinator');
     bool hasClient1 = clientsAttended1 != null;
     bool hasClient2 = clientsAttended2 != null;
     bool hasClient3 = clientsAttended3 != null;
@@ -795,7 +788,7 @@ class ClientsCoordinatorController extends GetxController {
     print(
         '-*-*-*-------------------deSPUES------------------------${modifyTime[modifyTimeSpecific]}');
 
-    //al darle true le estoy diciendo que verifique que en algun timer hay cambio de tiempo
+    //al darle true le esta diciendo que verifique que en algun timer hay cambio de tiempo
     activeModifyTime = true;
     print(
         'aqui toma valor -void modifingTime(time)CORDINATOR- activeModifyTime:$activeModifyTime');
@@ -894,7 +887,6 @@ class ClientsCoordinatorController extends GetxController {
   }
 
   Future<bool> changeNoncomplianceP(
-      //todo1
       type,
       branchId,
       professionalId,
@@ -964,10 +956,10 @@ class ClientsCoordinatorController extends GetxController {
     update();
   }
 
-//todo este es el que estoy haciendo
+
   Future<void> getClientHistory(idClient, idBranch, idReserv) async {
     try {
-      print('estoy en :Controller getClientHistory(idClient, idBranch)');
+      print(' en :Controller getClientHistory(idClient, idBranch)');
       Map<String, dynamic> resultList = await repository.getClientHistory(
           idClient, idBranch, controllerLogin.tokenUserLoggedIn);
       print(resultList);
@@ -980,7 +972,7 @@ class ClientsCoordinatorController extends GetxController {
       } else {
         correctConnection = true;
 
-        //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+        //aqui guarda al proximo de la cola para mostrarlo en el Home de la apk
         clientNameCORD = resultList['clientName'];
         professionalNameCORD = resultList['professionalName'];
         imageUrlCORD = resultList['image_url'];
@@ -1016,157 +1008,11 @@ class ClientsCoordinatorController extends GetxController {
     return text;
   }
 
-  // Future<void> fetchClientsScheduled(idProfessional, idBranch) async {
-  //   Map<String, dynamic> resultList =
-  //       await repository.getClientsScheduledList(idProfessional, idBranch);
-  //   print(resultList);
-  //   //verificando , si entra al if es problemas de coneccion
-  //   if (resultList.containsKey('ConnectionIssues') &&
-  //       resultList['ConnectionIssues'] == true) {
-  //     correctConnection = false;
-  //     print(
-  //         'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor');
-  //   } else {
-  //     correctConnection = true;
-  //     //aqui estoy guardando la cola del dia de hoy del profesional
-  //     clientsScheduledList =
-  //         (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
-  //     clientsScheduledListLength = clientsScheduledList.length;
-  //     //
-  //     //
-  //     if (closeIesperado == true) //es que cerró inesperadamente
-  //     {
-  //       if (resultList.containsKey('attendingClient')) {
-  //         List<Map>? attendingClientList = resultList['attendingClient'];
-  //         logicaInesperada(attendingClientList);
-  //       } else {
-  //         // La clave 'attendingClient' no está presente en el mapa
-  //         print(
-  //             '!!!!!!!!!!!!!!!!!!!!La clave "attendingClient" no está presente en el mapa.');
-  //       }
-  //     }
 
-  //     //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
-  //     clientsScheduledNext = resultList['nextClient'];
-  //     quantityClientAttended = resultList['quantityClientAttended'];
-  //     if (quantityClientAttended == 0) {
-  //       clientsAttended = 'nobody';
-  //     }
-
-  //     if (clientsScheduledNext != null) {
-  //       print('prueba 1 - != null');
-  //       int idCar = clientsScheduledNext!.car_id!;
-  //       await searchForCustomerServices(idCar);
-  //       await filterShowNext();
-  //       setValueClock(true);
-  //     } else {
-  //       print('prueba 2 - == null');
-  //       setValueClock(false);
-  //     }
-  //   }
-  //   update();
-  // }
-
-  // Future<void> logicaInesperada(List<Map>? attendingClientList) async {
-  //   if (attendingClientList != null && attendingClientList.isNotEmpty) {
-  //     // La lista no es nula y tiene elementos
-  //     // Hacer algo con la lista...
-  //     print(
-  //         '!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo no está vacía.');
-  //     print('clientes asistiendo : ${attendingClientList.length}');
-  //     // Usando un bucle for-in
-  //     for (var map in attendingClientList) {
-  //       int? id;
-  //       int? updated;
-  //       int? clock;
-  //       int? timeClock;
-  //       ClientsScheduledModel? client;
-
-  //       map.forEach((key, value) {
-  //         // Asignar valores a las variables según la clave
-  //         switch (key) {
-  //           case "reservation_id":
-  //             id = value;
-  //             break;
-  //           case "updated_at":
-  //             updated = value;
-  //             break;
-  //           case "clock":
-  //             clock = value;
-  //             break;
-  //           case "timeClock":
-  //             timeClock = value;
-  //             break;
-  //           case "client":
-  //             client = value;
-  //             break;
-  //           default:
-  //             // Manejar otras claves si es necesario
-  //             break;
-  //         }
-  //       });
-
-  //       // Lógica adicional si es necesario con las variables asignadas
-  //       if (clock == 1) {
-  //         // Asignar a variables específicas para clock 1
-  //         clientsAttended1 = client;
-  //         timeClientsAttended1 = timeClock;
-  //         //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
-  //         //  await set_timeClock(reservation_id,timeClock,detached,clock);
-  //         // await setTimeClock(client!.reservation_id, 0, 0, 1);//todo comente a ver si ya lo hace bien
-  //         // ... otras asignaciones para clock 1
-  //       } else if (clock == 2) {
-  //         // Asignar a variables específicas para clock 2
-  //         clientsAttended2 = client;
-  //         timeClientsAttended2 = timeClock;
-  //         //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
-  //         //  await set_timeClock(reservation_id,timeClock,detached,clock);
-  //         // await setTimeClock(client!.reservation_id, 0, 0, 2);//todo comente a ver si ya lo hace bien
-  //         // ... otras asignaciones para clock 2
-  //       } else if (clock == 3) {
-  //         // Asignar a variables específicas para clock 3
-  //         clientsAttended3 = client;
-  //         timeClientsAttended3 = timeClock;
-  //         //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
-  //         //  await set_timeClock(reservation_id,timeClock,detached,clock);
-  //         // await setTimeClock(client!.reservation_id, 0, 0, 3);//todo comente a ver si ya lo hace bien
-
-  //         // ... otras asignaciones para clock 3
-  //       } else if (clock == 4) {
-  //         // Asignar a variables específicas para clock 3
-  //         clientsAttended4 = client;
-  //         timeClientsAttended4 = timeClock;
-  //         //AQUI LLAMAR A LA FUNCION SET_TIMECLOCK Y MODIFICAR TODAS LAS VARIABLES
-  //         //  await set_timeClock(reservation_id,timeClock,detached,clock);
-  //         // await setTimeClock(client!.reservation_id, 0, 0, 4);//todo comente a ver si ya lo hace bien
-
-  //         // ... otras asignaciones para clock 3
-  //       }
-  //       // Puedes agregar más condiciones según sea necesario para otros valores de clock
-  //     } //cierre for (var map in attendingClientList)
-  //     //VERIFICO QUE RELOJ ESTA OCUPADO Y VEO SI HAY DISPONIBILIDAD
-  //     filterShowCardTimer();
-  //     update();
-  //     //
-  //   } else {
-  //     // La lista es nula o está vacía
-  //     print(
-  //         '!!!!!!!!!!!!!!!!!!!!La lista de clientes asistiendo es nula o está vacía.');
-  //   }
-  // }
-
-//
-//
-//
-//
-//
-//
-//
   Future<void> fetchClientsTechnical(idBranch) async {
     Map<String, dynamic> resultList = await repository.getClientsTechnicalList(
         idBranch, controllerLogin.tokenUserLoggedIn);
-    print('111ya entre a buscar inicialmente los clientes del tecnico');
-    print(resultList);
+
     //verificando , si entra al if es problemas de coneccion
     if (resultList.containsKey('ConnectionIssues') &&
         resultList['ConnectionIssues'] == true) {
@@ -1175,11 +1021,11 @@ class ClientsCoordinatorController extends GetxController {
           'mandar alguna variable para la vista deciendo que hay problemas al conectarse con el servidor-5');
     } else {
       correctConnection = true;
-      //aqui estoy guardando la cola del dia de hoy del profesional
+      //  guardando la cola del dia de hoy del profesional
       clientsScheduledListTechnical =
           (resultList['clientList'] ?? []).cast<ClientsScheduledModel>();
       clientsTechnicalLength = clientsScheduledListTechnical.length;
-      //aqui guardo al proximo de la cola para mostrarlo en el Home de la apk
+      // guardando al proximo de la cola para mostrarlo en el Home de la apk
 
       clientsNextTechnical = resultList['nextClient'];
       quantityClientAttendedTechnical = resultList['quantityClientAttended'];

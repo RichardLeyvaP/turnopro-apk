@@ -218,7 +218,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                                         3), // Cambia el desplazamiento de la sombra
                                   ),
                                 ],
-                                color: colorCont, //todo
+                                color: colorCont,
                                 borderRadius: BorderRadius.all(
                                     Radius.circular(borderCont)),
                               ),
@@ -334,7 +334,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                       Expanded(
                         flex: 18, //cantidad aqui de profesionales disponibles
                         child: _.professionalDisponLength >
-                                0 //todo si hay cargarlos aqui
+                                0 // si hay cargarlos aqui
                             ? ListView.builder(
                                 padding: EdgeInsets
                                     .zero, // Elimina cualquier padding del ListView
@@ -346,7 +346,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                                       // Pasa aquí los datos necesarios para cardOptions
                                       icon,
                                       _.professionalDispon[index]
-                                          .position, //todo aqui que me devuelva
+                                          .position,
                                       '${_.professionalDispon[index].name}  ${_.professionalDispon[index].surname}',
                                       _.professionalDispon[index].id,
                                       _.professionalDispon[index].image_url,
@@ -522,13 +522,13 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Color(0xFF4470F3)),
 
-                        // Añadir más propiedades de estilo aquí
+
                       ),
                       onPressed: () async {
                         //(reservationId, clientId, professionalId)
                         int clientIdCORD = clientCord.clientIdCORD;
                         int reservationId = clientCord.idReservCORD;
-                        //todo falta poner un cargando
+
                         clientCord.setLoading(true);
                         bool result = await clientCord.reasignedClientCoord(
                             reservationId,
@@ -555,13 +555,12 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                           //  setLoading(value)
                           clientCord.setLoading(false);
                           print('Aqui lo mando al home despue de reasinarlo');
-                          //aqui lo mando al home
-                          //todo falta probarlo porque en el momento que se hizo no habia barberos disponibles
+
                           pagesConfigCont.pageController2
-                              .jumpToPage(0); //AQUI VA  AL HOME
+                              .jumpToPage(0);
                           pagesConfigCont.showAppBar(true);
 
-                          //ENVIAR UNA NOTIFICACION AL PROFESSIONAL //TODO 32:00
+
                         } else {
                           {
                             Get.snackbar(

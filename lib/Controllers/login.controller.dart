@@ -474,7 +474,7 @@ class LoginController extends GetxController {
     }
   }
 
-  //esta la llamo en el modal para limpiar nuevamente la variable
+  //esta la llama en el modal para limpiar nuevamente la variable
   void handleButtonClickServiceClear() {
     pressedButtonServ.clear();
     update();
@@ -526,13 +526,13 @@ class LoginController extends GetxController {
     }
   }
 
-  //esta la llamo en el modal para limpiar nuevamente la variable
+  //esta la llama en el modal para limpiar nuevamente la variable
   void setHandleButtonClickModal() {
     pressedButtonModal.clear();
     update();
   }
 
-  //esta la llamo en el modal para limpiar nuevamente la variable
+  //esta la llama en el modal para limpiar nuevamente la variable
   void inTheClock(bool value) {
     varInTheClock = value;
     update();
@@ -612,7 +612,7 @@ class LoginController extends GetxController {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final Size screenSize = mediaQuery.size;
 
-    //Aqui obtengo el ancho y alto de los telefonos
+    //se obtiene el ancho y alto de los telefonos
     //dependiendo de este tamaño doy tamaño a los card y demas componentes
     androidInfoWidth = screenSize.width;
     androidInfoHeight = screenSize.height;
@@ -713,11 +713,9 @@ class LoginController extends GetxController {
         update();
         Get.offAllNamed('/LoginFormPage2');
       }
-      else {
-        print('aqui estoy dev branch nooo');
-      }
+
     } catch (e) {
-      print('aqui estoy dev branch nooo eroor :$e');
+      print('getUserLoggedBranch Error :$e');
     }
   }
 
@@ -804,7 +802,7 @@ class LoginController extends GetxController {
         print(' result == null por eso no entro');
       }
     } catch (e) {
-      print('errorrrrrr:$e');
+      print('Error:$e');
     }
   }
 
@@ -816,7 +814,7 @@ class LoginController extends GetxController {
 
   clockInitialTimeB(int timeInicDb, ClientsScheduledController clientsScheduledController, String tyype) async {
     print('el tiempo devuelto inicial es desde el metodo -clockInitialTimeB-timeInicDb:$timeInicDb');
-    //aqui obtengo la hora actual para comparar con la anterior si es posible
+    //se obtiene la hora actual para comparar con la anterior si es posible
     int hAs = obtenerHoraActualEnSegundos();
     LocalStorage.prefs.setInt('valueHoraAct', hAs);
     print('Valor de Reloj - valueHoraAct-LOGIN:$hAs');
@@ -826,11 +824,11 @@ class LoginController extends GetxController {
       if (LocalStorage.prefs.getInt('valueHoraAnt') != null && LocalStorage.prefs.getInt('valueHoraAct') != null) {
         print('el tiempo devuelto inicial es desde el metodo - IF DE ARRIBA-variables activas2');
         int timeAsig = 180;
-        //obtengo la hora anterior y actual en segundos
+        //se obtiene la hora anterior y actual en segundos
         int hourAnt = LocalStorage.prefs.getInt('valueHoraAnt')!;
         int hourAct = LocalStorage.prefs.getInt('valueHoraAct')!;
         int segundExit = hourAct - hourAnt;
-        //resto los segundos que estuvo fuera
+        //se resta los segundos que estuvo fuera
         int valueAntClock = LocalStorage.prefs.getInt('valueClockIni')!;
         int diferSeg = valueAntClock - segundExit;
         if (diferSeg > 0) {
@@ -879,7 +877,7 @@ class LoginController extends GetxController {
         //sino esta ativo el time de 3 min pues vemos si ya estaba trabajando en segundo plano
         //llamamos a la db
       } else {
-        print('el tiempo devuelto inicial es desde el metodo - clockInitialTimeB-NOOOO-entra al if()');
+        print('el tiempo devuelto inicial es desde el metodo - clockInitialTimeB-NO-entra al if()');
         clientsScheduledController.setTotalTimeInitial(181);
       }
     }
@@ -926,27 +924,24 @@ class LoginController extends GetxController {
   }
 
   clockInitialTimeT(ClientsTechnicalController clientsScheduledController, String tyype) {
-    //aqui obtengo la hora actual para comparar con la anterior si es posible
+    //se obtiene la hora actual para comparar con la anterior si es posible
 
     if (LocalStorage.prefs.getBool('valueClockActivT') != null &&
         LocalStorage.prefs.getBool('valueClockActivT') == true) {
       int timeAsig = 180;
       if (LocalStorage.prefs.getInt('valueHoraAnt') != null && LocalStorage.prefs.getInt('valueClockIni') != null) {
-        //obtengo la hora anterior y actual en segundos
+        //se obtiene la hora anterior y actual en segundos
         int hourAnt = LocalStorage.prefs.getInt('valueHoraAnt')!;
         int hourAct = obtenerHoraActualEnSegundos();
         int segundExit = hourAct - hourAnt;
-        //resto los segundos que estuvo fuera
+        //se restan los segundos que estuvo fuera
         int valueAntClock = LocalStorage.prefs.getInt('valueClockIni')!;
         int diferSeg = valueAntClock - segundExit;
         if (diferSeg > 0) {
-          //aun no s eacabaron los 3 minutos
-          // asigno el tiempo
+
           timeAsig = diferSeg > 180 ? 180 : diferSeg;
-        } else //es que se acaboron los 3 min
+        } else //es que se acabaron los 3 min
         {
-          // ya una vez en el dia esto cumplido ya no importa el reloj de espera
-          //al salir del sistema esta variable debe tomar false
           timeAsig = 180;
         }
         LocalStorage.prefs.setInt('valueClockIni', timeAsig);
@@ -957,24 +952,24 @@ class LoginController extends GetxController {
     if (LocalStorage.prefs.getBool('valueClockTec1ActivT') != null &&
         LocalStorage.prefs.getBool('valueClockTec1ActivT') == true) {
       bool activeClock = LocalStorage.prefs.getBool('valueClockTec1ActivT')!;
-      print('entrando porque esta el atendiendo cliente:CONTROLADOR-INI');
+
       if (activeClock) {
-        print('entrando porque esta el atendiendo cliente:CONTROLADOR-activeClock:$activeClock');
+
         if (LocalStorage.prefs.getInt('valueHoraAnt') != null && LocalStorage.prefs.getInt('valueClockTec1') != null) {
-          print('entrando porque esta el atendiendo cliente:CONTROLADOR-dentro del if:si');
+
           int timeAsig = 180;
-          //obtengo la hora anterior y actual en segundos
+          //se obtiene la hora anterior y actual en segundos
           int hourAnt = LocalStorage.prefs.getInt('valueHoraAnt')!;
           int hourAct = obtenerHoraActualEnSegundos();
           int segundExit = hourAct - hourAnt;
-          //resto los segundos que estuvo fuera
+
           int valueAntClock = LocalStorage.prefs.getInt('valueClockTec1')!;
           int diferSeg = valueAntClock - segundExit;
           if (diferSeg > 0) {
-            //aun no s eacabaron los 3 minutos
+
             // asigno el tiempo
             timeAsig = diferSeg > 300 ? 300 : diferSeg;
-          } else //es que se acaboron los 3 min
+          } else //es que se acabaron los 3 min
           {
             // ya una vez en el dia esto cumplido ya no importa el reloj de espera
             //al salir del sistema esta variable debe tomar false
@@ -982,7 +977,7 @@ class LoginController extends GetxController {
           }
           LocalStorage.prefs.setInt('valueClockTec1', timeAsig);
           clientsScheduledController.setTotalTimeClientec(timeAsig);
-          print('entrando porque esta el atendiendo cliente:CONTROLADOR-dentro del if-FINAL:timeAsig:$timeAsig');
+
         }
       }
     }
@@ -1078,13 +1073,13 @@ class LoginController extends GetxController {
               await notifCont.updateNotificationsState3(branchIdLoggedIn, idProfessionalLoggedIn!);
 
               setCodigoQrValid(null);
-              print('id de puesto de trabajo estoy entrando a poner el codigo1 en :null');
+
             }
           }
 
           //await initializeService();
           await LocalStorage.prefs.setBool('verificatePhoto', false);
-          //todo aqui guardo cada vez que loguea los datos para la proxima vez que no tenga que loguearse
+          // aqui guarda cada vez que loguea los datos para la proxima vez que no tenga que loguearse
 
           if (chargeUserLoggedIn == 'Encargado' || chargeUserLoggedIn == 'Coordinador') {
             int entrada = 0;
@@ -1174,14 +1169,14 @@ class LoginController extends GetxController {
         update();
       } //cierre if (result != null) {
       else if (result == null) {
-        checkAndStopService(); //si esta activo lo detengo
+        checkAndStopService();
         showConnectionErrorLogin();
         // Get.back();
         Get.offAllNamed(
           '/LoginFormPage',
         );
       } else {
-        checkAndStopService(); //si esta activo lo detengo
+        checkAndStopService(); //si esta activo SE DETIENE
         incorrectFields = true;
         await loadingValue(false);
         update();
@@ -1189,7 +1184,7 @@ class LoginController extends GetxController {
         Get.back();
       }
     } catch (e) {
-      checkAndStopService(); //si esta activo lo detengo
+      checkAndStopService(); //si esta activo SE DETIENE
       showConnectionError();
       Get.back();
       print('Error loginGetIn:$e');

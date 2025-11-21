@@ -1,46 +1,4 @@
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-// import 'package:uuid/uuid.dart';
 
-// //todo/****AQUI LO DE LAS NOTIFICACIONES LOCALES****/
-// FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-//     FlutterLocalNotificationsPlugin();
-
-// Future<void> initializeNotificationsNew() async {
-//   const AndroidInitializationSettings initializationSettingsAndroid =
-//       AndroidInitializationSettings('@mipmap/launcher_icon');
-//   const DarwinInitializationSettings initializationSettingsIOS =
-//       DarwinInitializationSettings();
-
-//   const InitializationSettings initializationSettings = InitializationSettings(
-//       android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-
-//   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-// }
-
-// Future<void> scheduleNotificationNew(String title, String descripcion) async {
-//   final Uuid uuid = Uuid(); // Crea una instancia de Uuid
-//   final String channelId = uuid.v4(); // Genera un channelId único
-//   AndroidNotificationDetails androidPlatformChannelSpecifics =
-//       AndroidNotificationDetails(
-//     channelId, // ID del canal
-//     'Nombre_del_Canal', // Nombre del Canal
-//     channelDescription:
-//         'Descripción_del_Canal', // Descripción del Canal (argumento nombrado)
-//     importance: Importance.max,
-//     priority: Priority.high,
-//     ticker: 'ticker',
-//     sound: const RawResourceAndroidNotificationSound('livechat129007'),
-//     // ^ Utiliza el nombre del archivo de sonido sin la extensión
-//   );
-//   NotificationDetails platformChannelSpecifics =
-//       NotificationDetails(android: androidPlatformChannelSpecifics);
-//   await flutterLocalNotificationsPlugin.show(
-//     1,
-//     title,
-//     descripcion,
-//     platformChannelSpecifics,
-//   );
-// }
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:uuid/uuid.dart';

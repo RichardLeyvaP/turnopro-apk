@@ -307,7 +307,7 @@ class _HomePageBodyState extends State<HomePageBody>
 
     llamadasTimer2();
 
-//todo fin codigoanterior
+
     clientsScheduledController.animationControllerInitial = AnimationController(
       vsync: this,
       duration: Duration(seconds: clientsScheduledController.totalTimeInitial),
@@ -319,7 +319,7 @@ class _HomePageBodyState extends State<HomePageBody>
       if (status == AnimationStatus.completed) {
         print('Se ha completado los 3-La animación se ha completado-SIIIII');
 
-//ESTA CONDICIÓN E SPARA GARANTIZAR QUE SI HAY ALGÚN CLIENTE ATENDIENDOSE QUE NO HAGA NADA,POR SI ESTUVIERA EL RELOJ INITIAL TRABAJANDO
+//ESTA CONDICIÓN ES PARA GARANTIZAR QUE SI HAY ALGÚN CLIENTE ATENDIENDOSE QUE NO HAGA NADA,POR SI ESTUVIERA EL RELOJ INITIAL TRABAJANDO
         if (clientsScheduledController.clientsAttended1 == null &&
             clientsScheduledController.clientsAttended2 == null &&
             clientsScheduledController.clientsAttended3 == null &&
@@ -372,7 +372,7 @@ class _HomePageBodyState extends State<HomePageBody>
                   'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado.',
                   'no',
                   'Barbero');
-//todo notificate
+
             }
           } //FIN DEL IF DE BARBERO ENCARGADO
           reiniciateClock();
@@ -566,7 +566,7 @@ class _HomePageBodyState extends State<HomePageBody>
             print('id de puesto de trabajo 1 no esta en ningun puesto:null');
           }
         } else {
-          print('-*-*-*-**>>>> NOOO fui un cierre inesperado');
+          print('-*-*-*-**>>>> NO fue un cierre inesperado');
         }
         if (loginController.isLoggingInCharge == true) {
           await loginController.setLoggingInCharge(
@@ -713,9 +713,9 @@ class _HomePageBodyState extends State<HomePageBody>
                       'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!',
                       'no',
                       'Barbero');
-                  //todo notificate
-                  // scheduleNotification(
-                  //     '!Alerta', 'Recuerda que tienes clientes en cola');
+                  // notificate
+                  // scheduleNotification
+
                   //para controlar que con este cliente solo le avise una vez
                   clientsScheduledController.setContClientsWaiting(20);
                   clientsScheduledController.setcantClientWait(
@@ -802,73 +802,7 @@ class _HomePageBodyState extends State<HomePageBody>
 
     super.build(context);
 
-    // todo URGENTE
-    /*
-    _timer2 = Timer.periodic(Duration(seconds: 5), (timer) async {
-      print(
-          'Esto se ejecuta 2 segundos después de renderizar el cuadro--nuevo');
 
-      if (getTimeRemaining() < 3) {
-        // aaqui cancelar hasta que vea si rasigna o no
-        // comente esto aqui porque no esta funcionando bien
-        //     loginController.setCodigoQrValidAnt(0); //10 es en espera
-      }
-      if (loginController.idProfessionalLoggedIn != null &&
-          loginController.branchIdLoggedIn != null &&
-          (loginController.chargeUserLoggedIn == "Barbero" ||
-              (loginController.chargeUserLoggedIn == "Barbero y Encargado"))) {
-        //  verifyingClockTimeActive();
-      }
-      if (loginController.segundoPlano == 3) {
-        print('cargando aqui-11');
-        print('..segundoPlano siii APAGANDO LLAMADA');
-        loginController.getSegundoPlano(1);
-      }
-      //todo este no va hacer falta si lo implemento en ShopingCart.controller
-      if (clientsScheduledController.activeModifyTime == true) {
-        print('cargando aqui-12');
-        //AQUI GARANTIZO QUE AUMENTE EL VALOR DEL RELOJ UNA SOLA VEZ Y QUE INSERTE EN LA DB 1 SOLA VEZ
-        clientsScheduledController.setActiveModifyTime(false);
-      }
-      if (clientsScheduledController.activeModifyTimeRest == true) {
-        print('cargando aqui-13');
-        //AQUI GARANTIZO QUE disminuya EL VALOR DEL RELOJ UNA SOLA VEZ Y QUE INSERTE EN LA DB 1 SOLA VEZ
-        clientsScheduledController.setActiveModifyTimeRest(false);
-        clientsScheduledController.clearModifyTimeSpecificRest();
-      }
-
-      if (loginController.ejecutadoEvent == false) {
-        print('cargando aqui-14');
-        // Se ejecutará después de que se haya construido el widget
-        //define que tipo de saludo dar dependiendo de la hora
-
-        if (clientsScheduledController.closeIesperado == true) {
-          print('-*-*-*-**>>>> si fui un sierre inesperado');
-          if (clientsScheduledController.item.isNotEmpty) {
-            loginController.setCodigoQrValid(1);
-          } else if (loginController.usserPermissionQr == -99 &&
-              loginController.usserPermissionQr == 0) {
-            loginController.setCodigoQrValid(null);
-            print('id de mi puesto de trabajo 1 no esta en ningun puesto:null');
-          }
-        } else {
-          print('-*-*-*-**>>>> NOOO fui un sierre inesperado');
-        }
-        if (loginController.isLoggingInCharge == true) {
-          await loginController.setLoggingInCharge(
-              false, 'buildComponent-1103');
-        }
-
-        clientsScheduledController.setCloseIesperado(false);
-        clientsScheduledController.clockChanges(false);
-        loginController.ejecutado_(true);
-        clientsScheduledController.modifingTimeClose();
-      }
-      clientsScheduledController.setCloseIesperadoLogin(false);
-
-      clientsScheduledController.setCloseIesperado(false);
-    });
-*/
 
 
     return GetBuilder<ClientsScheduledController>(builder: (clientsScheduledController) {
@@ -1029,13 +963,8 @@ class _HomePageBodyState extends State<HomePageBody>
       }
 
       if (clientsScheduledController.activeModifyTime == true) {
-        //SI activeModifyTime =  TRUE SUMO TIEMPO
-        print(
-            'tiempo a sumar =  2 EL TIEMPO ACTUAL DEL RELOJ estoy entrando aqui');
-        //aqui verifico qsi hay que agregarle el tiempo algun reloj
-        print(
-            'activeModifyTime SOY = ${clientsScheduledController.activeModifyTime} Y MANDE ESTE TIEMPO ${clientsScheduledController.modifyTime[clientsScheduledController.modifyTimeSpecific]}');
-        int i = clientsScheduledController.modifyTimeSpecific;
+
+         int i = clientsScheduledController.modifyTimeSpecific;
         int value = clientsScheduledController
             .modifyTime[clientsScheduledController.modifyTimeSpecific];
         // Obtén la duración total del AnimationController
@@ -1056,15 +985,13 @@ class _HomePageBodyState extends State<HomePageBody>
 
         int valueMin = tiempoRestante.truncate() + value;
         Duration nuevaDuracion = Duration(
-          seconds: valueMin, //todo cambiar123RLP
+          seconds: valueMin,
         );
 
         animationCont[i]!.duration = nuevaDuracion;
         print(
             'EL TIEMPO ACTUAL DEL RELOJ duracionSend YA sera valueMinuto :$valueMin');
-        //aqui actualizar la variable
-        //aqui es cuando agregan algun servicio
-        //todo aqui poner el metodo
+
         loginController.getUpdateTime(valueMin, (i + 1),
             'build-homePage-i=${i + 1}'); //porque i comienza en 0
 
@@ -1078,8 +1005,7 @@ class _HomePageBodyState extends State<HomePageBody>
       if (clientsScheduledController.activeModifyTimeRest == true) {
         if (clientsScheduledController.modifyTimeSpecificRest != -99) //reloj 1
         {
-          print(
-              'modificar time de mm 1 estoy aqui en el (clientsScheduledController.modifyTimeSpecificRest != -99)');
+
           int i = clientsScheduledController.modifyTimeSpecificRest;
           int value = clientsScheduledController.modifyTimeSpecificRestTIME;
           // Obtén la duración total del AnimationController
@@ -1097,14 +1023,12 @@ class _HomePageBodyState extends State<HomePageBody>
             valueMin = 1;
           }
           Duration nuevaDuracion = Duration(
-            seconds: valueMin, //todo cambiar123RLP
+            seconds: valueMin,
           );
 
           animationCont[i]!.duration = nuevaDuracion;
           print('EL TIEMPO ACTUAL DEL RELOJ duracionSend YA:$nuevaDuracion');
-          //aqui actualizar la variable
-          //aqui es cuando eliminan algun servicio
-          //todo aqui poner el metodo
+
           loginController.getUpdateTime(
               valueMin, 1, 'build-homePage-1'); //debe ser el reloj 1
           animationCont[i]!.reset();
@@ -1114,8 +1038,7 @@ class _HomePageBodyState extends State<HomePageBody>
 
         if (clientsScheduledController.modifyTimeSpecificRest1 != -99) //reloj 2
         {
-          print(
-              'modificar time de mm 1 estoy aqui en el (clientsScheduledController.modifyTimeSpecificRest1 != -99)');
+
           int i = clientsScheduledController.modifyTimeSpecificRest1;
           int value = clientsScheduledController.modifyTimeSpecificRestTIME1;
           // Obtén la duración total del AnimationController
@@ -1132,14 +1055,12 @@ class _HomePageBodyState extends State<HomePageBody>
             valueMin = 1;
           }
           Duration nuevaDuracion = Duration(
-            seconds: valueMin, //todo cambiar123RLP
+            seconds: valueMin,
           );
 
           animationCont[i]!.duration = nuevaDuracion;
           print('EL TIEMPO ACTUAL DEL RELOJ duracionSend YA:$nuevaDuracion');
-          //aqui actualizar la variable
-          //aqui es cuando eliminan algun servicio
-          //todo aqui poner el metodo
+
           loginController.getUpdateTime(
               valueMin, 2, 'build-homePage-1'); //debe ser el reloj 2
           animationCont[i]!.reset();
@@ -1149,7 +1070,7 @@ class _HomePageBodyState extends State<HomePageBody>
         if (clientsScheduledController.modifyTimeSpecificRest2 != -99) //reloj 3
         {
           print(
-              'modificar time de mm 1 estoy aqui en el (clientsScheduledController.modifyTimeSpecificRest2 != -99)');
+              'modificar time de mm 1  en el (clientsScheduledController.modifyTimeSpecificRest2 != -99)');
           int i = clientsScheduledController.modifyTimeSpecificRest2;
           int value = clientsScheduledController.modifyTimeSpecificRestTIME2;
           // Obtén la duración total del AnimationController
@@ -1166,14 +1087,12 @@ class _HomePageBodyState extends State<HomePageBody>
             valueMin = 1;
           }
           Duration nuevaDuracion = Duration(
-            seconds: valueMin, //todo cambiar123RLP
+            seconds: valueMin,
           );
 
           animationCont[i]!.duration = nuevaDuracion;
           print('EL TIEMPO ACTUAL DEL RELOJ duracionSend YA:$nuevaDuracion');
-//aqui actualizar la variable
-          //aqui es cuando eliminan algun servicio
-          //todo aqui poner el metodo
+
           loginController.getUpdateTime(
               valueMin, 3, 'build-homePage-3'); //debe ser el reloj 3
           animationCont[i]!.reset();
@@ -1184,7 +1103,7 @@ class _HomePageBodyState extends State<HomePageBody>
         if (clientsScheduledController.modifyTimeSpecificRest3 != -99) //reloj 4
         {
           print(
-              'modificar time de mm 1 estoy aqui en el (clientsScheduledController.modifyTimeSpecificRest3 != -99)');
+              'modificar time de mm 1  en el (clientsScheduledController.modifyTimeSpecificRest3 != -99)');
           int i = clientsScheduledController.modifyTimeSpecificRest3;
           int value = clientsScheduledController.modifyTimeSpecificRestTIME3;
           // Obtén la duración total del AnimationController
@@ -1201,14 +1120,12 @@ class _HomePageBodyState extends State<HomePageBody>
             valueMin = 1;
           }
           Duration nuevaDuracion = Duration(
-            seconds: valueMin, //todo cambiar123RLP
+            seconds: valueMin,
           );
 
           animationCont[i]!.duration = nuevaDuracion;
           print('EL TIEMPO ACTUAL DEL RELOJ duracionSend YA:$nuevaDuracion');
-//aqui actualizar la variable
-          //aqui es cuando eliminan algun servicio
-          //todo aqui poner el metodo
+
           loginController.getUpdateTime(
               valueMin, 4, 'build-homePage-4'); //debe ser el reloj 4
           animationCont[i]!.reset();
@@ -1252,25 +1169,19 @@ class _HomePageBodyState extends State<HomePageBody>
       }
 
 
-      // //todo AQUI DETENGO LOS TIMER QUE NO ESTAN VISIBLES
+      // AQUI SE DETIENE LOS TIMER QUE NO ESTAN VISIBLES
 
       if (clientsScheduledController.clientsScheduledNextServ != null) {
 
         String fullName = clientsScheduledController.clientsScheduledNextServ!.client_name!;
 
 
-
-
-
-
-
-        //todo1                // Dividir el nombre completo por espacios
         List<String> partsName =
             fullName.split(" "); // Tomar los primeros dos nombres (si existen)
 
          String firtsName = partsName.length > 0 ? partsName[0] : "";
       }
-      //todo IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
+      // IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
 
       return RefreshIndicator(
         onRefresh: _refresh,
@@ -1374,14 +1285,11 @@ class _HomePageBodyState extends State<HomePageBody>
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.all(2.0),
-                                                  //todo AQUI LA LOGICA AL MOSTRAR LOS TIMER
+                                                  // AQUI LA LOGICA AL MOSTRAR LOS TIMER
                                                   child: SingleChildScrollView(
-                                                  /*  scrollDirection:
-                                                        Axis.horizontal,*/
+
                                                     child: Column(
-    /*   mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,*/
+
                                                         children: [
                                                           //AQUI MUESTRA LOS TIMER DE LOS CLIENTES QUE ESTE ATENDIENDO
                                                           if (clientsScheduledController
@@ -1517,11 +1425,10 @@ class _HomePageBodyState extends State<HomePageBody>
                                                           ]
                                                         ]),
                                                   ),
-                                                  //FIN CLIENTES QUE ESTAN EN COLA
-                                                ),
-                                                //todo CLIENTES QUE ESTAN EN COLA
 
-                                                //FIN CLIENTES QUE ESTAN EN COLA
+                                                ),
+
+
                                               ],
                                             ),
                                           )
@@ -1806,8 +1713,8 @@ class _HomePageBodyState extends State<HomePageBody>
           }
 
 
-          print("Entra aca");
-          //todo 710
+
+
           return Container(
             margin: const EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -1890,7 +1797,7 @@ class _HomePageBodyState extends State<HomePageBody>
                       // Barbero
                       Row(
                         children: [
-                          //todo 711
+
                       CircleAvatar(
                       radius: 24,
                       backgroundColor: Colors.grey[200],
@@ -2064,491 +1971,7 @@ class _HomePageBodyState extends State<HomePageBody>
 
 
                 const SizedBox(height: 16),
-/*
-            Container(
-              height: (MediaQuery.of(context).size.height * 0.115),
-              width: (MediaQuery.of(context).size.width * 0.20),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.white, // Color blanco para el borde
-                  width:
-                  1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                ),
-                color: Color(0xFFFF6750),
-                borderRadius:
-                const BorderRadius.all(Radius.circular(18)),
-              ),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFFF6750),
-                  // Color de fondo en verde
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        16.0), // Ajusta el radio según tus necesidades
-                  ),
-                ),
-                onPressed: () async {
-                  if (clientsScheduledController.errorHome != -99) {
-                    if (loginController.codigoQrValid() == true &&
-                        loginController.usserPermissionQrAntes ==
-                            1) {
-                      clientsScheduledControllerE
-                          .setBoolFilterShowNext(false);
-                      clientsScheduledControllerE
-                          .setBoolControlVision(false);
 
-                      int rest =
-                      await clientsScheduledControllerE
-                          .acceptOrRejectClient(
-                          clientsScheduledControllerE
-                              .clientsScheduledNextServ!
-                              .reservation_id,
-                          3,
-                          loginController
-                              .tokenUserLoggedIn);
-                      if (rest == 1) {
-                        LocalStorage.prefs
-                            .setInt('valueClockIni', 180);
-                        clientsScheduledController
-                            .setTotalTimeInitial(180);
-                        LocalStorage.prefs
-                            .setBool('valueClockActiv', false);
-
-                        clientsScheduledController
-                            .animationControllerInitial!
-                          ..duration = Duration(seconds: 180)
-                          ..reset()
-                          ..stop();
-                        loginController.setCodigoQrValid(2);
-                      } else {
-                        loginController.setCodigoQrValid(1);
-                      }
-                    } else if (loginController.usserPermissionQr ==
-                        2) {
-                      Get.snackbar(
-                        'Mensaje',
-                        'Debe de esperar la respuesta a su solicitud',
-                        duration:
-                        const Duration(milliseconds: 2500),
-                        backgroundColor: const Color.fromARGB(
-                            118, 255, 255, 255),
-                        showProgressIndicator: true,
-                        progressIndicatorBackgroundColor:
-                        const Color.fromARGB(
-                            255, 203, 205, 209),
-                        progressIndicatorValueColor:
-                        const AlwaysStoppedAnimation(
-                            Color(0xFFFDAE2A)),
-                        overlayBlur: 3,
-                      );
-                    } else {
-                      Get.snackbar(
-                        'Mensaje',
-                        'Debe de escanear el código Qr de entrada',
-                        duration:
-                        const Duration(milliseconds: 2500),
-                        backgroundColor: const Color.fromARGB(
-                            118, 255, 255, 255),
-                        showProgressIndicator: true,
-                        progressIndicatorBackgroundColor:
-                        const Color.fromARGB(
-                            255, 203, 205, 209),
-                        progressIndicatorValueColor:
-                        const AlwaysStoppedAnimation(
-                            Color(0xFFFDAE2A)),
-                        overlayBlur: 3,
-                      );
-                    }
-                  } else {
-                    //mostrar mensaje de error de conexion
-                    loginController.showConnectionError();
-                    await Future.delayed(
-                        Duration(milliseconds: 1000));
-                    Get.snackbar(
-                      'Mensaje',
-                      'Vuelva a intentarlo, hubo problema de conexión.',
-                      duration: const Duration(milliseconds: 2500),
-                      backgroundColor:
-                      const Color.fromARGB(118, 255, 255, 255),
-                      showProgressIndicator: true,
-                      progressIndicatorBackgroundColor:
-                      const Color.fromARGB(255, 203, 205, 209),
-                      progressIndicatorValueColor:
-                      const AlwaysStoppedAnimation(
-                          Color(0xFFFDAE2A)),
-                      overlayBlur: 3,
-                    );
-                  }
-                },
-                child: Icon(
-                  MdiIcons.thumbDownOutline,
-                  color: Colors.white,
-                  size: (MediaQuery.of(context).size.height * 0.04),
-                ),
-              ),
-            ),
-            Container(
-              height: (MediaQuery.of(context).size.height * 0.115),
-              width: (MediaQuery.of(context).size.width * 0.8),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15, top: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.start,
-                          crossAxisAlignment:
-                          CrossAxisAlignment.end,
-                          children: [
-                            const Icon(
-                              Icons.person,
-                              color: const Color.fromARGB(
-                                  255, 43, 44, 49),
-                              size: 22,
-                            ),
-                            Text(
-                              //todo 707 nombre
-                              clientCord.truncateText(
-                                  firstName, 13),
-                              softWrap: true,
-                              style: const TextStyle(
-                                  height: 1.0,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 20),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Text(
-                            // todo 707 AQUI ESTA EL TIEMPO TOTAL DEL SERVICIO
-                              (clientsScheduledControllerE
-                                  .clientsScheduledNextServ!
-                                  .total_time!),
-                              style: const TextStyle(
-                                height: 1.2,
-                                fontSize: 16,
-                                color: Color.fromARGB(180, 0, 0, 0),
-                              )),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: clientsScheduledControllerE
-                            .clientsScheduledNextServ!
-                            .services!
-                            .length >
-                            2
-                            ? 2
-                            : clientsScheduledControllerE
-                            .clientsScheduledNextServ!
-                            .services!
-                            .length,
-                        // todo 707 aqui estan los servicios
-                        itemBuilder: (context, index) => Row(
-                          children: [
-                            Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.start,
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      MdiIcons.viewList,
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      clientsScheduledControllerE
-                                          .clientsScheduledNextServ!
-                                          .services![index]
-                                          .name,
-                                      style: const TextStyle(
-                                          fontWeight:
-                                          FontWeight.w700),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              height: (MediaQuery.of(context).size.height * 0.5),
-              //   height: (MediaQuery.of(context).size.height * 0.115),
-              width: (MediaQuery.of(context).size.width * 0.20),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    color:
-                    Colors.white, // Color blanco para el borde
-                    width:
-                    1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                  ),
-                  color: const Color(0xFF19CF9E),
-                  borderRadius:
-                  const BorderRadius.all(Radius.circular(18))),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF19CF9E),
-                  // Color de fondo en verde
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        16.0), // Ajusta el radio según tus necesidades
-                  ),
-                ),
-                onPressed: () async {
-                  //AQUI VEO SI YA ESCANEO EL CODIGO QR Y ESTA EN EL LOCAL
-                  if (clientsScheduledController.errorHome != -99) {
-                    if (loginController.codigoQrValid() == true &&
-                        loginController.usserPermissionQrAntes ==
-                            1 &&
-                        clientsScheduledControllerE
-                            .clientsScheduledNextServ !=
-                            null &&
-                        clientsScheduledControllerE
-                            .clientsScheduledNextServ!
-                            .reservation_id! >
-                            0) {
-                      loginController.setMakeCall(false);
-                      clientsScheduledControllerE
-                          .setBoolControlVision(false);
-                      clientsScheduledControllerE
-                          .setBoolFilterShowNext(false);
-                      //aqui poner que muestre un cargando
-                      clientsScheduledControllerE
-                          .clientsScheduledNextServAux =
-                      clientsScheduledControllerE
-                          .clientsScheduledNextServ!;
-                      clientsScheduledControllerE
-                          .funtErrorClientAcept(true);
-
-                      int resulButton = 0;
-                      resulButton =
-                          loginController.handleButtonClick(
-                              clientsScheduledControllerE
-                                  .clientsScheduledNextServ!
-                                  .reservation_id!);
-                      if (resulButton == 1) {
-                        int timeClock = clientsScheduledControllerE
-                            .convertTimeToSeconds(
-                            clientsScheduledControllerE
-                                .clientsScheduledNextServAux!
-                                .total_time!);
-                        int clock = clientsScheduledControllerE
-                            .availability;
-                        // (timeClock, clock,detached, reservationId, attended, token)
-                        int aceptClient =
-                        await clientsScheduledControllerE
-                            .acceptClientClock(
-                            clientsScheduledControllerE
-                                .clientsScheduledNextServAux!,
-                            timeClock,
-                            //timeClock
-                            clock,
-                            //clock
-                            1,
-                            //detached
-                            clientsScheduledControllerE
-                                .clientsScheduledNextServ!
-                                .reservation_id,
-                            //reservationId
-                            1,
-                            //attended
-                            loginController
-                                .tokenUserLoggedIn); //token
-                        if (aceptClient == 1) {
-                          // detengo todos los timers que deben detenerse
-                          for (int j = 0;
-                          j <
-                              clientsScheduledControllerE
-                                  .itemDel.length;
-                          j++) {
-                            animationCont[
-                            clientsScheduledControllerE
-                                .itemDel[j]]!
-                                .stop();
-                            animationCont[
-                            clientsScheduledControllerE
-                                .itemDel[j]]!
-                                .reset();
-                          }
-                          //HACE LAS VERIFICACIONES NECESARIAS PARA ACTIVAR LOS RELOJES QUE NECESITEN SER ACTIVADOS
-                          if (clientsScheduledControllerE
-                              .busyClock ==
-                              0) {
-                            // Detenemos el controlador
-                            if (animationCont[0]!.isAnimating) {
-                              animationCont[0]!.stop();
-                            }
-
-// Reseteamos el controlador a su estado inicial
-                            animationCont[0]!.reset();
-                            animationCont[0]!.duration = Duration(
-                                seconds: clientsScheduledControllerE
-                                    .timeClientsAttended1!);
-                            animationCont[0]!.forward();
-                          } else if (clientsScheduledControllerE
-                              .busyClock ==
-                              1) {
-                            if (animationCont[1]!.isAnimating) {
-                              animationCont[1]!.stop();
-                            }
-
-// Reseteamos el controlador a su estado inicial
-                            animationCont[1]!.reset();
-                            animationCont[1]!.duration = Duration(
-                                seconds: clientsScheduledControllerE
-                                    .timeClientsAttended2!);
-                            animationCont[1]!.forward();
-                          } else if (clientsScheduledControllerE
-                              .busyClock ==
-                              2) {
-                            if (animationCont[2]!.isAnimating) {
-                              animationCont[2]!.stop();
-                            }
-
-// Reseteamos el controlador a su estado inicial
-                            animationCont[2]!.reset();
-                            animationCont[2]!.duration = Duration(
-                                seconds: clientsScheduledControllerE
-                                    .timeClientsAttended3!);
-                            animationCont[2]!.forward();
-                          } else if (clientsScheduledControllerE
-                              .busyClock ==
-                              3) {
-                            if (animationCont[3]!.isAnimating) {
-                              animationCont[3]!.stop();
-                            }
-
-// Reseteamos el controlador a su estado inicial
-                            animationCont[3]!.reset();
-                            animationCont[3]!.duration = Duration(
-                                seconds: clientsScheduledControllerE
-                                    .timeClientsAttended4!);
-                            animationCont[3]!.forward();
-                          }
-                        } else {
-                          //activo nuevamente que el boton para coger al cliente este disponible
-                          loginController.handleButtonClickDelete(
-                              clientsScheduledControllerE
-                                  .clientsScheduledNextServAux!
-                                  .reservation_id!);
-                          //mostrar mensaje de error de
-                          loginController.showConnectionError();
-                          await Future.delayed(
-                              Duration(milliseconds: 1500));
-                          Get.snackbar(
-                            'Mensaje',
-                            'Vuelva a intentarlo, hubo problema de conexión..',
-                            duration:
-                            const Duration(milliseconds: 2500),
-                            backgroundColor: const Color.fromARGB(
-                                118, 255, 255, 255),
-                            showProgressIndicator: true,
-                            progressIndicatorBackgroundColor:
-                            const Color.fromARGB(
-                                255, 203, 205, 209),
-                            progressIndicatorValueColor:
-                            const AlwaysStoppedAnimation(
-                                Color(0xFFFDAE2A)),
-                            overlayBlur: 3,
-                          );
-                          loginController.setMakeCall(true);
-                          clientsScheduledControllerE
-                              .setBoolFilterShowNext(true);
-                          await _refresh();
-                        }
-                      }
-                      loginController.setMakeCall(true);
-                      // clientsScheduledControllerE
-                      //     .setBoolControlVision(true);
-                    } else if (loginController.usserPermissionQr ==
-                        2) {
-                      Get.snackbar(
-                        'Mensaje',
-                        'Debe de esperar la respuesta a su solicitud',
-                        duration:
-                        const Duration(milliseconds: 2500),
-                        backgroundColor: const Color.fromARGB(
-                            118, 255, 255, 255),
-                        showProgressIndicator: true,
-                        progressIndicatorBackgroundColor:
-                        const Color.fromARGB(
-                            255, 203, 205, 209),
-                        progressIndicatorValueColor:
-                        const AlwaysStoppedAnimation(
-                            Color(0xFFFDAE2A)),
-                        overlayBlur: 3,
-                      );
-                    } else {
-                      Get.snackbar(
-                        'Mensaje',
-                        'Debe de escanear el código Qr de entrada',
-                        duration:
-                        const Duration(milliseconds: 2500),
-                        backgroundColor: const Color.fromARGB(
-                            118, 255, 255, 255),
-                        showProgressIndicator: true,
-                        progressIndicatorBackgroundColor:
-                        const Color.fromARGB(
-                            255, 203, 205, 209),
-                        progressIndicatorValueColor:
-                        const AlwaysStoppedAnimation(
-                            Color(0xFFFDAE2A)),
-                        overlayBlur: 3,
-                      );
-                    }
-                  } else {
-                    //mostrar mensaje de error de conexion
-                    loginController.showConnectionError();
-                    await Future.delayed(
-                        Duration(milliseconds: 1000));
-                    Get.snackbar(
-                      'Mensaje',
-                      'Vuelva a intentarlo, hubo problema de conexión..',
-                      duration: const Duration(milliseconds: 2500),
-                      backgroundColor:
-                      const Color.fromARGB(118, 255, 255, 255),
-                      showProgressIndicator: true,
-                      progressIndicatorBackgroundColor:
-                      const Color.fromARGB(255, 203, 205, 209),
-                      progressIndicatorValueColor:
-                      const AlwaysStoppedAnimation(
-                          Color(0xFFFDAE2A)),
-                      overlayBlur: 3,
-                    );
-                  }
-                  clientsScheduledControllerE
-                      .funtErrorClientAcept(false);
-                },
-                child: Icon(
-                  MdiIcons.thumbUpOutline,
-                  color: Colors.white,
-                  size: (MediaQuery.of(context).size.height * 0.04),
-                ),
-              ),
-            ),
-*/
                 // BOTTOM FOOTER
                 Padding(
                   padding: const EdgeInsets.only(left: 4, right: 4, bottom: 4),
@@ -2687,7 +2110,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                 ),
                               ),
                               const SizedBox(width: 8),
-                              //todo 708
+
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -2805,7 +2228,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                               loginController
                                                   .tokenUserLoggedIn); //token
                                           if (aceptClient == 1) {
-                                            // detengo todos los timers que deben detenerse
+                                            // SE DETIENEN todos los timers que deben detenerse
                                             for (int j = 0;
                                             j <
                                                 clientsScheduledControllerE
@@ -3260,491 +2683,7 @@ class _HomePageBodyState extends State<HomePageBody>
                       ),
 
                       const SizedBox(height: 16),
-/*
-            Container(
-              height: (MediaQuery.of(context).size.height * 0.115),
-              width: (MediaQuery.of(context).size.width * 0.20),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.white, // Color blanco para el borde
-                  width:
-                  1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                ),
-                color: Color(0xFFFF6750),
-                borderRadius:
-                const BorderRadius.all(Radius.circular(18)),
-              ),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFFF6750),
-                  // Color de fondo en verde
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        16.0), // Ajusta el radio según tus necesidades
-                  ),
-                ),
-                onPressed: () async {
-                  if (clientsScheduledController.errorHome != -99) {
-                    if (loginController.codigoQrValid() == true &&
-                        loginController.usserPermissionQrAntes ==
-                            1) {
-                      clientsScheduledControllerE
-                          .setBoolFilterShowNext(false);
-                      clientsScheduledControllerE
-                          .setBoolControlVision(false);
 
-                      int rest =
-                      await clientsScheduledControllerE
-                          .acceptOrRejectClient(
-                          clientsScheduledControllerE
-                              .clientsScheduledNextServ!
-                              .reservation_id,
-                          3,
-                          loginController
-                              .tokenUserLoggedIn);
-                      if (rest == 1) {
-                        LocalStorage.prefs
-                            .setInt('valueClockIni', 180);
-                        clientsScheduledController
-                            .setTotalTimeInitial(180);
-                        LocalStorage.prefs
-                            .setBool('valueClockActiv', false);
-
-                        clientsScheduledController
-                            .animationControllerInitial!
-                          ..duration = Duration(seconds: 180)
-                          ..reset()
-                          ..stop();
-                        loginController.setCodigoQrValid(2);
-                      } else {
-                        loginController.setCodigoQrValid(1);
-                      }
-                    } else if (loginController.usserPermissionQr ==
-                        2) {
-                      Get.snackbar(
-                        'Mensaje',
-                        'Debe de esperar la respuesta a su solicitud',
-                        duration:
-                        const Duration(milliseconds: 2500),
-                        backgroundColor: const Color.fromARGB(
-                            118, 255, 255, 255),
-                        showProgressIndicator: true,
-                        progressIndicatorBackgroundColor:
-                        const Color.fromARGB(
-                            255, 203, 205, 209),
-                        progressIndicatorValueColor:
-                        const AlwaysStoppedAnimation(
-                            Color(0xFFFDAE2A)),
-                        overlayBlur: 3,
-                      );
-                    } else {
-                      Get.snackbar(
-                        'Mensaje',
-                        'Debe de escanear el código Qr de entrada',
-                        duration:
-                        const Duration(milliseconds: 2500),
-                        backgroundColor: const Color.fromARGB(
-                            118, 255, 255, 255),
-                        showProgressIndicator: true,
-                        progressIndicatorBackgroundColor:
-                        const Color.fromARGB(
-                            255, 203, 205, 209),
-                        progressIndicatorValueColor:
-                        const AlwaysStoppedAnimation(
-                            Color(0xFFFDAE2A)),
-                        overlayBlur: 3,
-                      );
-                    }
-                  } else {
-                    //mostrar mensaje de error de conexion
-                    loginController.showConnectionError();
-                    await Future.delayed(
-                        Duration(milliseconds: 1000));
-                    Get.snackbar(
-                      'Mensaje',
-                      'Vuelva a intentarlo, hubo problema de conexión.',
-                      duration: const Duration(milliseconds: 2500),
-                      backgroundColor:
-                      const Color.fromARGB(118, 255, 255, 255),
-                      showProgressIndicator: true,
-                      progressIndicatorBackgroundColor:
-                      const Color.fromARGB(255, 203, 205, 209),
-                      progressIndicatorValueColor:
-                      const AlwaysStoppedAnimation(
-                          Color(0xFFFDAE2A)),
-                      overlayBlur: 3,
-                    );
-                  }
-                },
-                child: Icon(
-                  MdiIcons.thumbDownOutline,
-                  color: Colors.white,
-                  size: (MediaQuery.of(context).size.height * 0.04),
-                ),
-              ),
-            ),
-            Container(
-              height: (MediaQuery.of(context).size.height * 0.115),
-              width: (MediaQuery.of(context).size.width * 0.8),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15, top: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.start,
-                          crossAxisAlignment:
-                          CrossAxisAlignment.end,
-                          children: [
-                            const Icon(
-                              Icons.person,
-                              color: const Color.fromARGB(
-                                  255, 43, 44, 49),
-                              size: 22,
-                            ),
-                            Text(
-                              //todo 707 nombre
-                              clientCord.truncateText(
-                                  firstName, 13),
-                              softWrap: true,
-                              style: const TextStyle(
-                                  height: 1.0,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 20),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Text(
-                            // todo 707 AQUI ESTA EL TIEMPO TOTAL DEL SERVICIO
-                              (clientsScheduledControllerE
-                                  .clientsScheduledNextServ!
-                                  .total_time!),
-                              style: const TextStyle(
-                                height: 1.2,
-                                fontSize: 16,
-                                color: Color.fromARGB(180, 0, 0, 0),
-                              )),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: clientsScheduledControllerE
-                            .clientsScheduledNextServ!
-                            .services!
-                            .length >
-                            2
-                            ? 2
-                            : clientsScheduledControllerE
-                            .clientsScheduledNextServ!
-                            .services!
-                            .length,
-                        // todo 707 aqui estan los servicios
-                        itemBuilder: (context, index) => Row(
-                          children: [
-                            Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.start,
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      MdiIcons.viewList,
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      clientsScheduledControllerE
-                                          .clientsScheduledNextServ!
-                                          .services![index]
-                                          .name,
-                                      style: const TextStyle(
-                                          fontWeight:
-                                          FontWeight.w700),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              height: (MediaQuery.of(context).size.height * 0.5),
-              //   height: (MediaQuery.of(context).size.height * 0.115),
-              width: (MediaQuery.of(context).size.width * 0.20),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    color:
-                    Colors.white, // Color blanco para el borde
-                    width:
-                    1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                  ),
-                  color: const Color(0xFF19CF9E),
-                  borderRadius:
-                  const BorderRadius.all(Radius.circular(18))),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF19CF9E),
-                  // Color de fondo en verde
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        16.0), // Ajusta el radio según tus necesidades
-                  ),
-                ),
-                onPressed: () async {
-                  //AQUI VEO SI YA ESCANEO EL CODIGO QR Y ESTA EN EL LOCAL
-                  if (clientsScheduledController.errorHome != -99) {
-                    if (loginController.codigoQrValid() == true &&
-                        loginController.usserPermissionQrAntes ==
-                            1 &&
-                        clientsScheduledControllerE
-                            .clientsScheduledNextServ !=
-                            null &&
-                        clientsScheduledControllerE
-                            .clientsScheduledNextServ!
-                            .reservation_id! >
-                            0) {
-                      loginController.setMakeCall(false);
-                      clientsScheduledControllerE
-                          .setBoolControlVision(false);
-                      clientsScheduledControllerE
-                          .setBoolFilterShowNext(false);
-                      //aqui poner que muestre un cargando
-                      clientsScheduledControllerE
-                          .clientsScheduledNextServAux =
-                      clientsScheduledControllerE
-                          .clientsScheduledNextServ!;
-                      clientsScheduledControllerE
-                          .funtErrorClientAcept(true);
-
-                      int resulButton = 0;
-                      resulButton =
-                          loginController.handleButtonClick(
-                              clientsScheduledControllerE
-                                  .clientsScheduledNextServ!
-                                  .reservation_id!);
-                      if (resulButton == 1) {
-                        int timeClock = clientsScheduledControllerE
-                            .convertTimeToSeconds(
-                            clientsScheduledControllerE
-                                .clientsScheduledNextServAux!
-                                .total_time!);
-                        int clock = clientsScheduledControllerE
-                            .availability;
-                        // (timeClock, clock,detached, reservationId, attended, token)
-                        int aceptClient =
-                        await clientsScheduledControllerE
-                            .acceptClientClock(
-                            clientsScheduledControllerE
-                                .clientsScheduledNextServAux!,
-                            timeClock,
-                            //timeClock
-                            clock,
-                            //clock
-                            1,
-                            //detached
-                            clientsScheduledControllerE
-                                .clientsScheduledNextServ!
-                                .reservation_id,
-                            //reservationId
-                            1,
-                            //attended
-                            loginController
-                                .tokenUserLoggedIn); //token
-                        if (aceptClient == 1) {
-                          // detengo todos los timers que deben detenerse
-                          for (int j = 0;
-                          j <
-                              clientsScheduledControllerE
-                                  .itemDel.length;
-                          j++) {
-                            animationCont[
-                            clientsScheduledControllerE
-                                .itemDel[j]]!
-                                .stop();
-                            animationCont[
-                            clientsScheduledControllerE
-                                .itemDel[j]]!
-                                .reset();
-                          }
-                          //HACE LAS VERIFICACIONES NECESARIAS PARA ACTIVAR LOS RELOJES QUE NECESITEN SER ACTIVADOS
-                          if (clientsScheduledControllerE
-                              .busyClock ==
-                              0) {
-                            // Detenemos el controlador
-                            if (animationCont[0]!.isAnimating) {
-                              animationCont[0]!.stop();
-                            }
-
-// Reseteamos el controlador a su estado inicial
-                            animationCont[0]!.reset();
-                            animationCont[0]!.duration = Duration(
-                                seconds: clientsScheduledControllerE
-                                    .timeClientsAttended1!);
-                            animationCont[0]!.forward();
-                          } else if (clientsScheduledControllerE
-                              .busyClock ==
-                              1) {
-                            if (animationCont[1]!.isAnimating) {
-                              animationCont[1]!.stop();
-                            }
-
-// Reseteamos el controlador a su estado inicial
-                            animationCont[1]!.reset();
-                            animationCont[1]!.duration = Duration(
-                                seconds: clientsScheduledControllerE
-                                    .timeClientsAttended2!);
-                            animationCont[1]!.forward();
-                          } else if (clientsScheduledControllerE
-                              .busyClock ==
-                              2) {
-                            if (animationCont[2]!.isAnimating) {
-                              animationCont[2]!.stop();
-                            }
-
-// Reseteamos el controlador a su estado inicial
-                            animationCont[2]!.reset();
-                            animationCont[2]!.duration = Duration(
-                                seconds: clientsScheduledControllerE
-                                    .timeClientsAttended3!);
-                            animationCont[2]!.forward();
-                          } else if (clientsScheduledControllerE
-                              .busyClock ==
-                              3) {
-                            if (animationCont[3]!.isAnimating) {
-                              animationCont[3]!.stop();
-                            }
-
-// Reseteamos el controlador a su estado inicial
-                            animationCont[3]!.reset();
-                            animationCont[3]!.duration = Duration(
-                                seconds: clientsScheduledControllerE
-                                    .timeClientsAttended4!);
-                            animationCont[3]!.forward();
-                          }
-                        } else {
-                          //activo nuevamente que el boton para coger al cliente este disponible
-                          loginController.handleButtonClickDelete(
-                              clientsScheduledControllerE
-                                  .clientsScheduledNextServAux!
-                                  .reservation_id!);
-                          //mostrar mensaje de error de
-                          loginController.showConnectionError();
-                          await Future.delayed(
-                              Duration(milliseconds: 1500));
-                          Get.snackbar(
-                            'Mensaje',
-                            'Vuelva a intentarlo, hubo problema de conexión..',
-                            duration:
-                            const Duration(milliseconds: 2500),
-                            backgroundColor: const Color.fromARGB(
-                                118, 255, 255, 255),
-                            showProgressIndicator: true,
-                            progressIndicatorBackgroundColor:
-                            const Color.fromARGB(
-                                255, 203, 205, 209),
-                            progressIndicatorValueColor:
-                            const AlwaysStoppedAnimation(
-                                Color(0xFFFDAE2A)),
-                            overlayBlur: 3,
-                          );
-                          loginController.setMakeCall(true);
-                          clientsScheduledControllerE
-                              .setBoolFilterShowNext(true);
-                          await _refresh();
-                        }
-                      }
-                      loginController.setMakeCall(true);
-                      // clientsScheduledControllerE
-                      //     .setBoolControlVision(true);
-                    } else if (loginController.usserPermissionQr ==
-                        2) {
-                      Get.snackbar(
-                        'Mensaje',
-                        'Debe de esperar la respuesta a su solicitud',
-                        duration:
-                        const Duration(milliseconds: 2500),
-                        backgroundColor: const Color.fromARGB(
-                            118, 255, 255, 255),
-                        showProgressIndicator: true,
-                        progressIndicatorBackgroundColor:
-                        const Color.fromARGB(
-                            255, 203, 205, 209),
-                        progressIndicatorValueColor:
-                        const AlwaysStoppedAnimation(
-                            Color(0xFFFDAE2A)),
-                        overlayBlur: 3,
-                      );
-                    } else {
-                      Get.snackbar(
-                        'Mensaje',
-                        'Debe de escanear el código Qr de entrada',
-                        duration:
-                        const Duration(milliseconds: 2500),
-                        backgroundColor: const Color.fromARGB(
-                            118, 255, 255, 255),
-                        showProgressIndicator: true,
-                        progressIndicatorBackgroundColor:
-                        const Color.fromARGB(
-                            255, 203, 205, 209),
-                        progressIndicatorValueColor:
-                        const AlwaysStoppedAnimation(
-                            Color(0xFFFDAE2A)),
-                        overlayBlur: 3,
-                      );
-                    }
-                  } else {
-                    //mostrar mensaje de error de conexion
-                    loginController.showConnectionError();
-                    await Future.delayed(
-                        Duration(milliseconds: 1000));
-                    Get.snackbar(
-                      'Mensaje',
-                      'Vuelva a intentarlo, hubo problema de conexión..',
-                      duration: const Duration(milliseconds: 2500),
-                      backgroundColor:
-                      const Color.fromARGB(118, 255, 255, 255),
-                      showProgressIndicator: true,
-                      progressIndicatorBackgroundColor:
-                      const Color.fromARGB(255, 203, 205, 209),
-                      progressIndicatorValueColor:
-                      const AlwaysStoppedAnimation(
-                          Color(0xFFFDAE2A)),
-                      overlayBlur: 3,
-                    );
-                  }
-                  clientsScheduledControllerE
-                      .funtErrorClientAcept(false);
-                },
-                child: Icon(
-                  MdiIcons.thumbUpOutline,
-                  color: Colors.white,
-                  size: (MediaQuery.of(context).size.height * 0.04),
-                ),
-              ),
-            ),
-*/
                       // BOTTOM FOOTER
                       Padding(
                         padding: const EdgeInsets.only(left: 4, right: 4, bottom: 4),
@@ -3883,7 +2822,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                       ),
                                     ),
                                     const SizedBox(width: 8),
-                                    //todo 708
+
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
@@ -3999,7 +2938,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                                     loginController
                                                         .tokenUserLoggedIn); //token
                                                 if (aceptClient == 1) {
-                                                  // detengo todos los timers que deben detenerse
+                                                  // SE DETIENEN todos los timers que deben detenerse
                                                   for (int j = 0;
                                                   j <
                                                       clientsScheduledControllerE
@@ -4227,1406 +3166,9 @@ class _HomePageBodyState extends State<HomePageBody>
           );
         }
 
-
-
-
-
-      return Container(
-        padding: EdgeInsets.all(10),
-        color: Colors.grey[200],
-        child: Row(
-          children: [
-            Stack(children: [
-              Container(
-                child: CircleAvatar(
-                  backgroundColor:
-                  Colors.white, //fondo de la imagen
-                  radius: 44,
-                  child:
-                  //
-                  GestureDetector(
-                    onDoubleTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ImageDetailScreen(
-                                  imageUrl:
-                                  '${dotenv.env['API_ENDPOINT']}/images/$urlImageClient'),
-                        ),
-                      );
-                    },
-                    child: ClipOval(
-                      child: CachedNetworkImage(
-                        imageUrl:
-                        '${dotenv.env['API_ENDPOINT']}/images/$urlImageClient',
-                        placeholder: (context, url) =>
-                            Container(
-                              width: 30,
-                              height: 30,
-                              child: const Center(
-                                child: SizedBox(
-                                  width: 30,
-                                  height: 30,
-                                  child:
-                                  CircularProgressIndicator(
-                                    strokeWidth:
-                                    2, // Personaliza el ancho del indicador como desees
-                                    valueColor:
-                                    AlwaysStoppedAnimation<
-                                        Color>(
-                                        Color.fromARGB(110,
-                                            253, 176, 42)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                        errorWidget:
-                            (context, url, error) =>
-                            Image.asset(
-                              'assets/images/default_profile.jpg',
-                              cacheWidth: 30,
-                              cacheHeight: 30,
-                              fit: BoxFit.cover,
-                            ),
-                        fit: BoxFit.cover,
-                        width: 50,
-                        height: 50,
-                      ),
-                    ),
-                  ),
-                ),
-                //
-              ),
-              Positioned(
-                top: 58,
-                right: 2,
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius:
-                      BorderRadius.circular(5),
-                      color: const Color(0xFFFDAE2A)
-                    // Puedes agregar otras propiedades de estilo aquí si es necesario
-                  ),
-                  width: 82,
-                  height: 20,
-                  child: Center(
-                    child: Text(
-                      ' ${frecuenciaBarber1}',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w800),
-                    ),
-                  ),
-                ),
-              ),
-            ]),
-
-
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(firstName!,
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.bold)),
-                Text("Visitas: " + cantVisitBarber1!,
-                    style: const TextStyle(
-                        fontSize: 12)),
-
-              ],
-            ),
-
-            const SizedBox(width: 20),
-
-            Stack(children: [
-              Container(
-                child: CircleAvatar(
-                  backgroundColor:
-                  Colors.white, //fondo de la imagen
-                  radius: 24,
-                  child:
-                  //
-                  GestureDetector(
-                    onDoubleTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ImageDetailScreen(
-                                  imageUrl:
-                                  '${dotenv.env['API_ENDPOINT']}/images/$urlImageBarber'),
-                        ),
-                      );
-                    },
-                    child: ClipOval(
-                      child: CachedNetworkImage(
-                        imageUrl:
-                        '${dotenv.env['API_ENDPOINT']}/images/$urlImageBarber',
-                        placeholder: (context, url) =>
-                            Container(
-                              width: 30,
-                              height: 30,
-                              child: const Center(
-                                child: SizedBox(
-                                  width: 30,
-                                  height: 30,
-                                  child:
-                                  CircularProgressIndicator(
-                                    strokeWidth:
-                                    2, // Personaliza el ancho del indicador como desees
-                                    valueColor:
-                                    AlwaysStoppedAnimation<
-                                        Color>(
-                                        Color.fromARGB(110,
-                                            253, 176, 42)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                        errorWidget:
-                            (context, url, error) =>
-                            Image.asset(
-                              'assets/images/default_profile.jpg',
-                              cacheWidth: 30,
-                              cacheHeight: 30,
-                              fit: BoxFit.cover,
-                            ),
-                        fit: BoxFit.cover,
-                        width: 50,
-                        height: 50,
-                      ),
-                    ),
-                  ),
-                ),
-                //
-              ),
-
-            ]),
-
-            const SizedBox(width: 4),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Último Barbero",
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.bold)),
-                Text("Hola"!,
-                    style: const TextStyle(
-                        fontSize: 12)),
-
-              ],
-            ),        ],
-        ),
-      );
-
-
-
-      return Padding(
-        padding: const EdgeInsets.only(
-          left: 8,
-          right: 8,
-        ),
-        child: FittedBox(
-            fit: BoxFit.contain,
-            child: clientsScheduledControllerE.clientsScheduledNextServ !=
-                        null &&
-                    clientsScheduledControllerE.getWaitTime() == false
-                //  ||
-                //         LocalStorage.prefs.getBool('valueClockActiv') == false
-                ? Container(
-              margin: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: Colors.black12),
-              ),
-              child: Column(
-                children: [
-                  // HEADER
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      children: [
-                        // Cliente
-                        Expanded(
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 60, // Ajusta a tu necesidad
-                                height: 60,
-                                child: Stack(
-                                  clipBehavior: Clip.none,
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 24,
-                                      backgroundImage: NetworkImage(
-                                        '${dotenv.env['API_ENDPOINT']}/images/$urlImageClient',
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: 8, // mueve hacia abajo para que no lo tape el avatar
-
-                                      left: -6,
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                        decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          borderRadius: BorderRadius.circular(6),
-                                        ),
-                                        child: Text(
-                                          frecuenciaBarber1!,
-                                          style: const TextStyle(fontSize: 9, color: Colors.white),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              const SizedBox(width: 12),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(firstName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                                  Text("Visitas: $cantVisitBarber1", style: const TextStyle(fontSize: 12)),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                        // Barbero
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 24,
-                              backgroundImage: NetworkImage(
-                                '${dotenv.env['API_ENDPOINT']}/images/$urlImageBarber',
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(UltimateBarber1!, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                                const Text("Último Profesional", style: TextStyle(fontSize: 12)),
-                              ],
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-
-
-
-                  // FOTOS
-                  Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child:    Align(
-                        alignment:
-                        Alignment
-                            .topLeft,
-                        child: Row(
-                          mainAxisSize:
-                          MainAxisSize
-                              .min,
-                          crossAxisAlignment:
-                          CrossAxisAlignment
-                              .center,
-                          children: [
-
-                            Column(
-                              children: [
-                                GestureDetector(
-                                  onTap:
-                                      () {
-                                    showZoomableImage(context,
-                                        '${dotenv.env['API_ENDPOINT']}/images/$urlImageClient');
-                                  },
-                                  child:
-                                  ClipRRect(
-                                    borderRadius:
-                                    BorderRadius.circular(16),
-                                    child:
-                                    CachedNetworkImage(
-                                      imageUrl: '${dotenv.env['API_ENDPOINT']}/images/$urlImageClient',
-                                      placeholder: (context, url) => Container(
-                                        width: 130,
-                                        height: 130,
-                                        child: const Center(
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            valueColor: AlwaysStoppedAnimation<Color>(
-                                              Color.fromARGB(110, 253, 176, 42),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      errorWidget: (context, url, error) => Image.asset(
-                                        'assets/images/default_profile.jpg',
-                                        width: 130,
-                                        height: 130,
-                                        fit: BoxFit.cover,
-                                      ),
-                                      fit: BoxFit.cover,
-                                      width: 160,
-                                      height: 130,
-                                    ),
-                                  ),
-                                ),
-                                const Align(
-                                    alignment:
-                                    Alignment.center,
-                                    child: Padding(
-                                      padding: EdgeInsets.all(4.0),
-                                      child: Text(
-                                        'Último look',
-                                        style: TextStyle(fontSize: 12, height: 1.3, color: Color(0xFFFDAE2A), fontWeight: FontWeight.w600),
-                                      ),
-                                    )),
-                              ],
-                            ),
-
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            Transform
-                                .scale(
-                              scale:
-                              1.0,
-                              child:
-                              cardTimer2(
-                                UniqueKey(),
-                                'Esperando',
-                                clientsScheduledController,
-                                clientsScheduledController
-                                    .animationControllerInitial!,
-                              ),
-                            ),
-
-                          ],
-                        ),
-                      )
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // HISTORIAL
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF2F2F2),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: const [
-                            Icon(Icons.history, color: Colors.black),
-                            SizedBox(width: 8),
-                            Text("Historial", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text("Servicios", style: TextStyle(fontWeight: FontWeight.bold)),
-                            Text("Cantidad", style: TextStyle(fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text("Corte de Cabello"),
-                            Text("2"),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text("Cejas"),
-                            Text("3"),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-/*
-            Container(
-              height: (MediaQuery.of(context).size.height * 0.115),
-              width: (MediaQuery.of(context).size.width * 0.20),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.white, // Color blanco para el borde
-                  width:
-                  1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                ),
-                color: Color(0xFFFF6750),
-                borderRadius:
-                const BorderRadius.all(Radius.circular(18)),
-              ),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFFF6750),
-                  // Color de fondo en verde
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        16.0), // Ajusta el radio según tus necesidades
-                  ),
-                ),
-                onPressed: () async {
-                  if (clientsScheduledController.errorHome != -99) {
-                    if (loginController.codigoQrValid() == true &&
-                        loginController.usserPermissionQrAntes ==
-                            1) {
-                      clientsScheduledControllerE
-                          .setBoolFilterShowNext(false);
-                      clientsScheduledControllerE
-                          .setBoolControlVision(false);
-
-                      int rest =
-                      await clientsScheduledControllerE
-                          .acceptOrRejectClient(
-                          clientsScheduledControllerE
-                              .clientsScheduledNextServ!
-                              .reservation_id,
-                          3,
-                          loginController
-                              .tokenUserLoggedIn);
-                      if (rest == 1) {
-                        LocalStorage.prefs
-                            .setInt('valueClockIni', 180);
-                        clientsScheduledController
-                            .setTotalTimeInitial(180);
-                        LocalStorage.prefs
-                            .setBool('valueClockActiv', false);
-
-                        clientsScheduledController
-                            .animationControllerInitial!
-                          ..duration = Duration(seconds: 180)
-                          ..reset()
-                          ..stop();
-                        loginController.setCodigoQrValid(2);
-                      } else {
-                        loginController.setCodigoQrValid(1);
-                      }
-                    } else if (loginController.usserPermissionQr ==
-                        2) {
-                      Get.snackbar(
-                        'Mensaje',
-                        'Debe de esperar la respuesta a su solicitud',
-                        duration:
-                        const Duration(milliseconds: 2500),
-                        backgroundColor: const Color.fromARGB(
-                            118, 255, 255, 255),
-                        showProgressIndicator: true,
-                        progressIndicatorBackgroundColor:
-                        const Color.fromARGB(
-                            255, 203, 205, 209),
-                        progressIndicatorValueColor:
-                        const AlwaysStoppedAnimation(
-                            Color(0xFFFDAE2A)),
-                        overlayBlur: 3,
-                      );
-                    } else {
-                      Get.snackbar(
-                        'Mensaje',
-                        'Debe de escanear el código Qr de entrada',
-                        duration:
-                        const Duration(milliseconds: 2500),
-                        backgroundColor: const Color.fromARGB(
-                            118, 255, 255, 255),
-                        showProgressIndicator: true,
-                        progressIndicatorBackgroundColor:
-                        const Color.fromARGB(
-                            255, 203, 205, 209),
-                        progressIndicatorValueColor:
-                        const AlwaysStoppedAnimation(
-                            Color(0xFFFDAE2A)),
-                        overlayBlur: 3,
-                      );
-                    }
-                  } else {
-                    //mostrar mensaje de error de conexion
-                    loginController.showConnectionError();
-                    await Future.delayed(
-                        Duration(milliseconds: 1000));
-                    Get.snackbar(
-                      'Mensaje',
-                      'Vuelva a intentarlo, hubo problema de conexión.',
-                      duration: const Duration(milliseconds: 2500),
-                      backgroundColor:
-                      const Color.fromARGB(118, 255, 255, 255),
-                      showProgressIndicator: true,
-                      progressIndicatorBackgroundColor:
-                      const Color.fromARGB(255, 203, 205, 209),
-                      progressIndicatorValueColor:
-                      const AlwaysStoppedAnimation(
-                          Color(0xFFFDAE2A)),
-                      overlayBlur: 3,
-                    );
-                  }
-                },
-                child: Icon(
-                  MdiIcons.thumbDownOutline,
-                  color: Colors.white,
-                  size: (MediaQuery.of(context).size.height * 0.04),
-                ),
-              ),
-            ),
-            Container(
-              height: (MediaQuery.of(context).size.height * 0.115),
-              width: (MediaQuery.of(context).size.width * 0.8),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15, top: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.start,
-                          crossAxisAlignment:
-                          CrossAxisAlignment.end,
-                          children: [
-                            const Icon(
-                              Icons.person,
-                              color: const Color.fromARGB(
-                                  255, 43, 44, 49),
-                              size: 22,
-                            ),
-                            Text(
-                              //todo 707 nombre
-                              clientCord.truncateText(
-                                  firstName, 13),
-                              softWrap: true,
-                              style: const TextStyle(
-                                  height: 1.0,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 20),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Text(
-                            // todo 707 AQUI ESTA EL TIEMPO TOTAL DEL SERVICIO
-                              (clientsScheduledControllerE
-                                  .clientsScheduledNextServ!
-                                  .total_time!),
-                              style: const TextStyle(
-                                height: 1.2,
-                                fontSize: 16,
-                                color: Color.fromARGB(180, 0, 0, 0),
-                              )),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: clientsScheduledControllerE
-                            .clientsScheduledNextServ!
-                            .services!
-                            .length >
-                            2
-                            ? 2
-                            : clientsScheduledControllerE
-                            .clientsScheduledNextServ!
-                            .services!
-                            .length,
-                        // todo 707 aqui estan los servicios
-                        itemBuilder: (context, index) => Row(
-                          children: [
-                            Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.start,
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      MdiIcons.viewList,
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      clientsScheduledControllerE
-                                          .clientsScheduledNextServ!
-                                          .services![index]
-                                          .name,
-                                      style: const TextStyle(
-                                          fontWeight:
-                                          FontWeight.w700),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              height: (MediaQuery.of(context).size.height * 0.5),
-              //   height: (MediaQuery.of(context).size.height * 0.115),
-              width: (MediaQuery.of(context).size.width * 0.20),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    color:
-                    Colors.white, // Color blanco para el borde
-                    width:
-                    1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                  ),
-                  color: const Color(0xFF19CF9E),
-                  borderRadius:
-                  const BorderRadius.all(Radius.circular(18))),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF19CF9E),
-                  // Color de fondo en verde
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        16.0), // Ajusta el radio según tus necesidades
-                  ),
-                ),
-                onPressed: () async {
-                  //AQUI VEO SI YA ESCANEO EL CODIGO QR Y ESTA EN EL LOCAL
-                  if (clientsScheduledController.errorHome != -99) {
-                    if (loginController.codigoQrValid() == true &&
-                        loginController.usserPermissionQrAntes ==
-                            1 &&
-                        clientsScheduledControllerE
-                            .clientsScheduledNextServ !=
-                            null &&
-                        clientsScheduledControllerE
-                            .clientsScheduledNextServ!
-                            .reservation_id! >
-                            0) {
-                      loginController.setMakeCall(false);
-                      clientsScheduledControllerE
-                          .setBoolControlVision(false);
-                      clientsScheduledControllerE
-                          .setBoolFilterShowNext(false);
-                      //aqui poner que muestre un cargando
-                      clientsScheduledControllerE
-                          .clientsScheduledNextServAux =
-                      clientsScheduledControllerE
-                          .clientsScheduledNextServ!;
-                      clientsScheduledControllerE
-                          .funtErrorClientAcept(true);
-
-                      int resulButton = 0;
-                      resulButton =
-                          loginController.handleButtonClick(
-                              clientsScheduledControllerE
-                                  .clientsScheduledNextServ!
-                                  .reservation_id!);
-                      if (resulButton == 1) {
-                        int timeClock = clientsScheduledControllerE
-                            .convertTimeToSeconds(
-                            clientsScheduledControllerE
-                                .clientsScheduledNextServAux!
-                                .total_time!);
-                        int clock = clientsScheduledControllerE
-                            .availability;
-                        // (timeClock, clock,detached, reservationId, attended, token)
-                        int aceptClient =
-                        await clientsScheduledControllerE
-                            .acceptClientClock(
-                            clientsScheduledControllerE
-                                .clientsScheduledNextServAux!,
-                            timeClock,
-                            //timeClock
-                            clock,
-                            //clock
-                            1,
-                            //detached
-                            clientsScheduledControllerE
-                                .clientsScheduledNextServ!
-                                .reservation_id,
-                            //reservationId
-                            1,
-                            //attended
-                            loginController
-                                .tokenUserLoggedIn); //token
-                        if (aceptClient == 1) {
-                          // detengo todos los timers que deben detenerse
-                          for (int j = 0;
-                          j <
-                              clientsScheduledControllerE
-                                  .itemDel.length;
-                          j++) {
-                            animationCont[
-                            clientsScheduledControllerE
-                                .itemDel[j]]!
-                                .stop();
-                            animationCont[
-                            clientsScheduledControllerE
-                                .itemDel[j]]!
-                                .reset();
-                          }
-                          //HACE LAS VERIFICACIONES NECESARIAS PARA ACTIVAR LOS RELOJES QUE NECESITEN SER ACTIVADOS
-                          if (clientsScheduledControllerE
-                              .busyClock ==
-                              0) {
-                            // Detenemos el controlador
-                            if (animationCont[0]!.isAnimating) {
-                              animationCont[0]!.stop();
-                            }
-
-// Reseteamos el controlador a su estado inicial
-                            animationCont[0]!.reset();
-                            animationCont[0]!.duration = Duration(
-                                seconds: clientsScheduledControllerE
-                                    .timeClientsAttended1!);
-                            animationCont[0]!.forward();
-                          } else if (clientsScheduledControllerE
-                              .busyClock ==
-                              1) {
-                            if (animationCont[1]!.isAnimating) {
-                              animationCont[1]!.stop();
-                            }
-
-// Reseteamos el controlador a su estado inicial
-                            animationCont[1]!.reset();
-                            animationCont[1]!.duration = Duration(
-                                seconds: clientsScheduledControllerE
-                                    .timeClientsAttended2!);
-                            animationCont[1]!.forward();
-                          } else if (clientsScheduledControllerE
-                              .busyClock ==
-                              2) {
-                            if (animationCont[2]!.isAnimating) {
-                              animationCont[2]!.stop();
-                            }
-
-// Reseteamos el controlador a su estado inicial
-                            animationCont[2]!.reset();
-                            animationCont[2]!.duration = Duration(
-                                seconds: clientsScheduledControllerE
-                                    .timeClientsAttended3!);
-                            animationCont[2]!.forward();
-                          } else if (clientsScheduledControllerE
-                              .busyClock ==
-                              3) {
-                            if (animationCont[3]!.isAnimating) {
-                              animationCont[3]!.stop();
-                            }
-
-// Reseteamos el controlador a su estado inicial
-                            animationCont[3]!.reset();
-                            animationCont[3]!.duration = Duration(
-                                seconds: clientsScheduledControllerE
-                                    .timeClientsAttended4!);
-                            animationCont[3]!.forward();
-                          }
-                        } else {
-                          //activo nuevamente que el boton para coger al cliente este disponible
-                          loginController.handleButtonClickDelete(
-                              clientsScheduledControllerE
-                                  .clientsScheduledNextServAux!
-                                  .reservation_id!);
-                          //mostrar mensaje de error de
-                          loginController.showConnectionError();
-                          await Future.delayed(
-                              Duration(milliseconds: 1500));
-                          Get.snackbar(
-                            'Mensaje',
-                            'Vuelva a intentarlo, hubo problema de conexión..',
-                            duration:
-                            const Duration(milliseconds: 2500),
-                            backgroundColor: const Color.fromARGB(
-                                118, 255, 255, 255),
-                            showProgressIndicator: true,
-                            progressIndicatorBackgroundColor:
-                            const Color.fromARGB(
-                                255, 203, 205, 209),
-                            progressIndicatorValueColor:
-                            const AlwaysStoppedAnimation(
-                                Color(0xFFFDAE2A)),
-                            overlayBlur: 3,
-                          );
-                          loginController.setMakeCall(true);
-                          clientsScheduledControllerE
-                              .setBoolFilterShowNext(true);
-                          await _refresh();
-                        }
-                      }
-                      loginController.setMakeCall(true);
-                      // clientsScheduledControllerE
-                      //     .setBoolControlVision(true);
-                    } else if (loginController.usserPermissionQr ==
-                        2) {
-                      Get.snackbar(
-                        'Mensaje',
-                        'Debe de esperar la respuesta a su solicitud',
-                        duration:
-                        const Duration(milliseconds: 2500),
-                        backgroundColor: const Color.fromARGB(
-                            118, 255, 255, 255),
-                        showProgressIndicator: true,
-                        progressIndicatorBackgroundColor:
-                        const Color.fromARGB(
-                            255, 203, 205, 209),
-                        progressIndicatorValueColor:
-                        const AlwaysStoppedAnimation(
-                            Color(0xFFFDAE2A)),
-                        overlayBlur: 3,
-                      );
-                    } else {
-                      Get.snackbar(
-                        'Mensaje',
-                        'Debe de escanear el código Qr de entrada',
-                        duration:
-                        const Duration(milliseconds: 2500),
-                        backgroundColor: const Color.fromARGB(
-                            118, 255, 255, 255),
-                        showProgressIndicator: true,
-                        progressIndicatorBackgroundColor:
-                        const Color.fromARGB(
-                            255, 203, 205, 209),
-                        progressIndicatorValueColor:
-                        const AlwaysStoppedAnimation(
-                            Color(0xFFFDAE2A)),
-                        overlayBlur: 3,
-                      );
-                    }
-                  } else {
-                    //mostrar mensaje de error de conexion
-                    loginController.showConnectionError();
-                    await Future.delayed(
-                        Duration(milliseconds: 1000));
-                    Get.snackbar(
-                      'Mensaje',
-                      'Vuelva a intentarlo, hubo problema de conexión..',
-                      duration: const Duration(milliseconds: 2500),
-                      backgroundColor:
-                      const Color.fromARGB(118, 255, 255, 255),
-                      showProgressIndicator: true,
-                      progressIndicatorBackgroundColor:
-                      const Color.fromARGB(255, 203, 205, 209),
-                      progressIndicatorValueColor:
-                      const AlwaysStoppedAnimation(
-                          Color(0xFFFDAE2A)),
-                      overlayBlur: 3,
-                    );
-                  }
-                  clientsScheduledControllerE
-                      .funtErrorClientAcept(false);
-                },
-                child: Icon(
-                  MdiIcons.thumbUpOutline,
-                  color: Colors.white,
-                  size: (MediaQuery.of(context).size.height * 0.04),
-                ),
-              ),
-            ),
-*/
-                  // BOTTOM FOOTER
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4, right: 4, bottom: 4),
-                    child: Row(
-                      children: [
-                        // Botón izquierdo
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.all(0),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF2F2F2),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: (MediaQuery.of(context).size.height * 0.115),
-                                  width: (MediaQuery.of(context).size.width * 0.20),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.white, // Color blanco para el borde
-                                      width:
-                                      1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                                    ),
-                                    color: Color(0xFFFF6750),
-                                    borderRadius:
-                                    const BorderRadius.all(Radius.circular(18)),
-                                  ),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFFFF6750),
-                                      // Color de fondo en verde
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            16.0), // Ajusta el radio según tus necesidades
-                                      ),
-                                    ),
-                                    onPressed: () async {
-                                      if (clientsScheduledController.errorHome != -99) {
-                                        if (loginController.codigoQrValid() == true &&
-                                            loginController.usserPermissionQrAntes ==
-                                                1) {
-                                          clientsScheduledControllerE
-                                              .setBoolFilterShowNext(false);
-                                          clientsScheduledControllerE
-                                              .setBoolControlVision(false);
-
-                                          int rest =
-                                          await clientsScheduledControllerE
-                                              .acceptOrRejectClient(
-                                              clientsScheduledControllerE
-                                                  .clientsScheduledNextServ!
-                                                  .reservation_id,
-                                              3,
-                                              loginController
-                                                  .tokenUserLoggedIn);
-                                          if (rest == 1) {
-                                            LocalStorage.prefs
-                                                .setInt('valueClockIni', 180);
-                                            clientsScheduledController
-                                                .setTotalTimeInitial(180);
-                                            LocalStorage.prefs
-                                                .setBool('valueClockActiv', false);
-
-                                            clientsScheduledController
-                                                .animationControllerInitial!
-                                              ..duration = Duration(seconds: 180)
-                                              ..reset()
-                                              ..stop();
-                                            loginController.setCodigoQrValid(2);
-                                          } else {
-                                            loginController.setCodigoQrValid(1);
-                                          }
-                                        } else if (loginController.usserPermissionQr ==
-                                            2) {
-                                          Get.snackbar(
-                                            'Mensaje',
-                                            'Debe de esperar la respuesta a su solicitud',
-                                            duration:
-                                            const Duration(milliseconds: 2500),
-                                            backgroundColor: const Color.fromARGB(
-                                                118, 255, 255, 255),
-                                            showProgressIndicator: true,
-                                            progressIndicatorBackgroundColor:
-                                            const Color.fromARGB(
-                                                255, 203, 205, 209),
-                                            progressIndicatorValueColor:
-                                            const AlwaysStoppedAnimation(
-                                                Color(0xFFFDAE2A)),
-                                            overlayBlur: 3,
-                                          );
-                                        } else {
-                                          Get.snackbar(
-                                            'Mensaje',
-                                            'Debe de escanear el código Qr de entrada',
-                                            duration:
-                                            const Duration(milliseconds: 2500),
-                                            backgroundColor: const Color.fromARGB(
-                                                118, 255, 255, 255),
-                                            showProgressIndicator: true,
-                                            progressIndicatorBackgroundColor:
-                                            const Color.fromARGB(
-                                                255, 203, 205, 209),
-                                            progressIndicatorValueColor:
-                                            const AlwaysStoppedAnimation(
-                                                Color(0xFFFDAE2A)),
-                                            overlayBlur: 3,
-                                          );
-                                        }
-                                      } else {
-                                        //mostrar mensaje de error de conexion
-                                        loginController.showConnectionError();
-                                        await Future.delayed(
-                                            Duration(milliseconds: 1000));
-                                        Get.snackbar(
-                                          'Mensaje',
-                                          'Vuelva a intentarlo, hubo problema de conexión.',
-                                          duration: const Duration(milliseconds: 2500),
-                                          backgroundColor:
-                                          const Color.fromARGB(118, 255, 255, 255),
-                                          showProgressIndicator: true,
-                                          progressIndicatorBackgroundColor:
-                                          const Color.fromARGB(255, 203, 205, 209),
-                                          progressIndicatorValueColor:
-                                          const AlwaysStoppedAnimation(
-                                              Color(0xFFFDAE2A)),
-                                          overlayBlur: 3,
-                                        );
-                                      }
-                                    },
-                                    child: Icon(
-                                      MdiIcons.thumbDownOutline,
-                                      color: Colors.white,
-                                      size: (MediaQuery.of(context).size.height * 0.04),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                //todo 708
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "${truncateText(
-                                          firstName, 10)}   ${clientsScheduledControllerE
-                                          .clientsScheduledNextServ!
-                                          .total_time!}",
-
-                                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                                    ),
-                                    ...List.generate(
-                                      (clientsScheduledControllerE.clientsScheduledNextServ!.services!.length > 2)
-                                          ? 2
-                                          : clientsScheduledControllerE.clientsScheduledNextServ!.services!.length,
-                                          (index) {
-                                        final service = clientsScheduledControllerE
-                                            .clientsScheduledNextServ!.services![index];
-                                        return Text(
-                                          service.name,
-
-
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
-
-                                Spacer(),
-
-                                // Botón derecho
-                                Container(
-                                  height: (MediaQuery.of(context).size.height *  0.115),
-                                  //   height: (MediaQuery.of(context).size.height * 0.115),
-                                  width: (MediaQuery.of(context).size.width * 0.20),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color:
-                                        Colors.white, // Color blanco para el borde
-                                        width:
-                                        1.0, // Ancho del borde (puedes ajustarlo según sea necesario)
-                                      ),
-                                      color: const Color(0xFF19CF9E),
-                                      borderRadius:
-                                      const BorderRadius.all(Radius.circular(18))),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFF19CF9E),
-                                      // Color de fondo en verde
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            16.0), // Ajusta el radio según tus necesidades
-                                      ),
-                                    ),
-                                    onPressed: () async {
-                                      //AQUI VEO SI YA ESCANEO EL CODIGO QR Y ESTA EN EL LOCAL
-                                      if (clientsScheduledController.errorHome != -99) {
-                                        if (loginController.codigoQrValid() == true &&
-                                            loginController.usserPermissionQrAntes ==
-                                                1 &&
-                                            clientsScheduledControllerE
-                                                .clientsScheduledNextServ !=
-                                                null &&
-                                            clientsScheduledControllerE
-                                                .clientsScheduledNextServ!
-                                                .reservation_id! >
-                                                0) {
-                                          loginController.setMakeCall(false);
-                                          clientsScheduledControllerE
-                                              .setBoolControlVision(false);
-                                          clientsScheduledControllerE
-                                              .setBoolFilterShowNext(false);
-                                          //aqui poner que muestre un cargando
-                                          clientsScheduledControllerE
-                                              .clientsScheduledNextServAux =
-                                          clientsScheduledControllerE
-                                              .clientsScheduledNextServ!;
-                                          clientsScheduledControllerE
-                                              .funtErrorClientAcept(true);
-
-                                          int resulButton = 0;
-                                          resulButton =
-                                              loginController.handleButtonClick(
-                                                  clientsScheduledControllerE
-                                                      .clientsScheduledNextServ!
-                                                      .reservation_id!);
-                                          if (resulButton == 1) {
-                                            int timeClock = clientsScheduledControllerE
-                                                .convertTimeToSeconds(
-                                                clientsScheduledControllerE
-                                                    .clientsScheduledNextServAux!
-                                                    .total_time!);
-                                            int clock = clientsScheduledControllerE
-                                                .availability;
-                                            // (timeClock, clock,detached, reservationId, attended, token)
-                                            int aceptClient =
-                                            await clientsScheduledControllerE
-                                                .acceptClientClock(
-                                                clientsScheduledControllerE
-                                                    .clientsScheduledNextServAux!,
-                                                timeClock,
-                                                //timeClock
-                                                clock,
-                                                //clock
-                                                1,
-                                                //detached
-                                                clientsScheduledControllerE
-                                                    .clientsScheduledNextServ!
-                                                    .reservation_id,
-                                                //reservationId
-                                                1,
-                                                //attended
-                                                loginController
-                                                    .tokenUserLoggedIn); //token
-                                            if (aceptClient == 1) {
-                                              // detengo todos los timers que deben detenerse
-                                              for (int j = 0;
-                                              j <
-                                                  clientsScheduledControllerE
-                                                      .itemDel.length;
-                                              j++) {
-                                                animationCont[
-                                                clientsScheduledControllerE
-                                                    .itemDel[j]]!
-                                                    .stop();
-                                                animationCont[
-                                                clientsScheduledControllerE
-                                                    .itemDel[j]]!
-                                                    .reset();
-                                              }
-                                              //HACE LAS VERIFICACIONES NECESARIAS PARA ACTIVAR LOS RELOJES QUE NECESITEN SER ACTIVADOS
-                                              if (clientsScheduledControllerE
-                                                  .busyClock ==
-                                                  0) {
-                                                // Detenemos el controlador
-                                                if (animationCont[0]!.isAnimating) {
-                                                  animationCont[0]!.stop();
-                                                }
-
-// Reseteamos el controlador a su estado inicial
-                                                animationCont[0]!.reset();
-                                                animationCont[0]!.duration = Duration(
-                                                    seconds: clientsScheduledControllerE
-                                                        .timeClientsAttended1!);
-                                                animationCont[0]!.forward();
-                                              } else if (clientsScheduledControllerE
-                                                  .busyClock ==
-                                                  1) {
-                                                if (animationCont[1]!.isAnimating) {
-                                                  animationCont[1]!.stop();
-                                                }
-
-// Reseteamos el controlador a su estado inicial
-                                                animationCont[1]!.reset();
-                                                animationCont[1]!.duration = Duration(
-                                                    seconds: clientsScheduledControllerE
-                                                        .timeClientsAttended2!);
-                                                animationCont[1]!.forward();
-                                              } else if (clientsScheduledControllerE
-                                                  .busyClock ==
-                                                  2) {
-                                                if (animationCont[2]!.isAnimating) {
-                                                  animationCont[2]!.stop();
-                                                }
-
-// Reseteamos el controlador a su estado inicial
-                                                animationCont[2]!.reset();
-                                                animationCont[2]!.duration = Duration(
-                                                    seconds: clientsScheduledControllerE
-                                                        .timeClientsAttended3!);
-                                                animationCont[2]!.forward();
-                                              } else if (clientsScheduledControllerE
-                                                  .busyClock ==
-                                                  3) {
-                                                if (animationCont[3]!.isAnimating) {
-                                                  animationCont[3]!.stop();
-                                                }
-
-// Reseteamos el controlador a su estado inicial
-                                                animationCont[3]!.reset();
-                                                animationCont[3]!.duration = Duration(
-                                                    seconds: clientsScheduledControllerE
-                                                        .timeClientsAttended4!);
-                                                animationCont[3]!.forward();
-                                              }
-                                            } else {
-                                              //activo nuevamente que el boton para coger al cliente este disponible
-                                              loginController.handleButtonClickDelete(
-                                                  clientsScheduledControllerE
-                                                      .clientsScheduledNextServAux!
-                                                      .reservation_id!);
-                                              //mostrar mensaje de error de
-                                              loginController.showConnectionError();
-                                              await Future.delayed(
-                                                  Duration(milliseconds: 1500));
-                                              Get.snackbar(
-                                                'Mensaje',
-                                                'Vuelva a intentarlo, hubo problema de conexión..',
-                                                duration:
-                                                const Duration(milliseconds: 2500),
-                                                backgroundColor: const Color.fromARGB(
-                                                    118, 255, 255, 255),
-                                                showProgressIndicator: true,
-                                                progressIndicatorBackgroundColor:
-                                                const Color.fromARGB(
-                                                    255, 203, 205, 209),
-                                                progressIndicatorValueColor:
-                                                const AlwaysStoppedAnimation(
-                                                    Color(0xFFFDAE2A)),
-                                                overlayBlur: 3,
-                                              );
-                                              loginController.setMakeCall(true);
-                                              clientsScheduledControllerE
-                                                  .setBoolFilterShowNext(true);
-                                              await _refresh();
-                                            }
-                                          }
-                                          loginController.setMakeCall(true);
-                                          // clientsScheduledControllerE
-                                          //     .setBoolControlVision(true);
-                                        } else if (loginController.usserPermissionQr ==
-                                            2) {
-                                          Get.snackbar(
-                                            'Mensaje',
-                                            'Debe de esperar la respuesta a su solicitud',
-                                            duration:
-                                            const Duration(milliseconds: 2500),
-                                            backgroundColor: const Color.fromARGB(
-                                                118, 255, 255, 255),
-                                            showProgressIndicator: true,
-                                            progressIndicatorBackgroundColor:
-                                            const Color.fromARGB(
-                                                255, 203, 205, 209),
-                                            progressIndicatorValueColor:
-                                            const AlwaysStoppedAnimation(
-                                                Color(0xFFFDAE2A)),
-                                            overlayBlur: 3,
-                                          );
-                                        } else {
-                                          Get.snackbar(
-                                            'Mensaje',
-                                            'Debe de escanear el código Qr de entrada',
-                                            duration:
-                                            const Duration(milliseconds: 2500),
-                                            backgroundColor: const Color.fromARGB(
-                                                118, 255, 255, 255),
-                                            showProgressIndicator: true,
-                                            progressIndicatorBackgroundColor:
-                                            const Color.fromARGB(
-                                                255, 203, 205, 209),
-                                            progressIndicatorValueColor:
-                                            const AlwaysStoppedAnimation(
-                                                Color(0xFFFDAE2A)),
-                                            overlayBlur: 3,
-                                          );
-                                        }
-                                      } else {
-                                        //mostrar mensaje de error de conexion
-                                        loginController.showConnectionError();
-                                        await Future.delayed(
-                                            Duration(milliseconds: 1000));
-                                        Get.snackbar(
-                                          'Mensaje',
-                                          'Vuelva a intentarlo, hubo problema de conexión..',
-                                          duration: const Duration(milliseconds: 2500),
-                                          backgroundColor:
-                                          const Color.fromARGB(118, 255, 255, 255),
-                                          showProgressIndicator: true,
-                                          progressIndicatorBackgroundColor:
-                                          const Color.fromARGB(255, 203, 205, 209),
-                                          progressIndicatorValueColor:
-                                          const AlwaysStoppedAnimation(
-                                              Color(0xFFFDAE2A)),
-                                          overlayBlur: 3,
-                                        );
-                                      }
-                                      clientsScheduledControllerE
-                                          .funtErrorClientAcept(false);
-                                    },
-                                    child: Icon(
-                                      MdiIcons.thumbUpOutline,
-                                      color: Colors.white,
-                                      size: (MediaQuery.of(context).size.height * 0.04),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-
-
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            )
-                : (clientsScheduledController.clientsScheSalon == 0) &&
-                        clientsScheduledControllerE.clientsScheduledNextServ ==
-                            null
-                    ? const SizedBox(
-                        height: 100,
-                        child: Center(
-                          child: Text('707No hay clientes en cola',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16,
-                                color: Color.fromARGB(255, 82, 81, 81),
-                              )),
-                        ),
-                      )
-                    : loginController.usserPermissionQr == 2
-                        ? const Center(
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 35,
-                                ),
-                                Text(
-                                  'Debe de esperar la respuesta',
-                                  style: TextStyle(
-                                      // color: Colors.white,
-                                      color: Color.fromARGB(255, 39, 39, 39),
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Text(
-                                  'a su solicitud',
-                                  style: TextStyle(
-                                      //color: Colors.white,
-                                      color: Color.fromARGB(255, 39, 39, 39),
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  height: 45,
-                                ),
-                              ],
-                            ),
-                          )
-                        : SizedBox(width: 100, height: 100, child: Text(''))),
-      );
     });
   }
 
-  //todo9
   cardTimer(
 
     int idreservation,
@@ -5719,8 +3261,7 @@ class _HomePageBodyState extends State<HomePageBody>
                 // aqui selecciono el cliente
                 await clientsScheduledController.metodsClients(
                     index, carrId, idreservation, name, imag);
-                print('ya páse por aqui-1');
-                //todo FIN esto estaba en la pagina del modal al dar en Ver carrito
+
 
                 //aqui devuelve en category_branch las categorias
                 //aqui devuelve en category_products los productos por categorias
@@ -5786,7 +3327,7 @@ class _HomePageBodyState extends State<HomePageBody>
         }
       },
 
-      //todo 710
+
 
       child: Container(
         margin: const EdgeInsets.all(10),
@@ -6103,7 +3644,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                                                   context)
                                                                   .size
                                                                   .width *
-                                                                  0.038), //todo2
+                                                                  0.038),
                                                               fontFamily: GoogleFonts
                                                                   .orbitron()
                                                                   .fontFamily,
@@ -6119,7 +3660,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                                                   context)
                                                                   .size
                                                                   .width *
-                                                                  0.038), //todo2
+                                                                  0.038),
                                                               fontFamily: GoogleFonts
                                                                   .orbitron()
                                                                   .fontFamily,
@@ -6134,7 +3675,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                                               (MediaQuery.of(context)
                                                                   .size
                                                                   .width *
-                                                                  0.038), //todo2
+                                                                  0.038),
                                                               fontFamily:
                                                               GoogleFonts.orbitron()
                                                                   .fontFamily,
@@ -6226,7 +3767,7 @@ class _HomePageBodyState extends State<HomePageBody>
     );
   }
 
-  //todo9
+
   cardTimer2(
     Key uniqueKey,
     String name,
@@ -6359,7 +3900,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                             fontSize: (MediaQuery.of(context)
                                                     .size
                                                     .width *
-                                                0.04), //todo2
+                                                0.04),
                                             fontFamily: GoogleFonts.orbitron()
                                                 .fontFamily,
                                             color: colorInicial,
@@ -6449,7 +3990,7 @@ class _HomePageBodyState extends State<HomePageBody>
         ),
         onPressed: () async {
           if (titleCart == 'Agenda') {
-            //todo optimización de codigo-cambio de ruta (anterior-fetchClientsScheduled)
+
             if (clientsScheduledController.errorHome == -99) {
               await Future.delayed(const Duration(milliseconds: 2000));
             }

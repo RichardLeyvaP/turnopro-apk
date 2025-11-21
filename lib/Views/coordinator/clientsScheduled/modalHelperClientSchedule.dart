@@ -60,17 +60,7 @@ class ModalHelper {
                                       const Color.fromARGB(255, 43, 44, 49)),
                                 ),
                                 onPressed: () async {
-                                  //llamo al ocntrolador y lo paso attended = 2 que significa que esta ya atendido
-                                  //todo mandar estos valores para acabar servicio
-                                  // await controllClient.acceptOrRejectClient(
-                                  //     reservationId, 2);
-                                  // Navigator.pop(context); // Cierra el modal
-                                  //
-                                  //
-                                  //
-                                  //
-                                  //
-                                  //
+
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -297,7 +287,7 @@ class ModalHelper {
                                       const Color.fromARGB(255, 43, 44, 49)),
                                 ),
                                 onPressed: () async {
-                                  //llamo al controlador y lo paso attended = 4 que significa que va para el tecnico capilar
+                                  //llama al controlador y lo pasa attended = 4 que significa que va para el tecnico capilar
                                   await controllClient.acceptOrRejectClient(
                                       reservationId,
                                       4,
@@ -401,10 +391,8 @@ class ModalHelper {
                           await controllClient.watchModifyTime(reservationId);
                           // Cierra el modal primero
                           Navigator.pop(context);
-                          //luego llamo a la pagina de servicios y productos
-                          /*Get.toNamed(
-                            '/servicesProductsPage',
-                          );*/
+                          //luego llama a la pagina de servicios y productos
+
                           pageController.nextPage(
                             duration: Duration(milliseconds: 300),
                             curve: Curves.ease,
@@ -432,10 +420,7 @@ class ModalHelper {
                           await controllClient.watchModifyTime(reservationId);
                           // Cierra el modal primero
                           Navigator.pop(context);
-                          //luego llamo a la pagina de servicios y productos
-                          /*Get.toNamed(
-                            '/servicesProductsPage',
-                          );*/
+
                           pageController.nextPage(
                             duration: Duration(milliseconds: 300),
                             curve: Curves.ease,

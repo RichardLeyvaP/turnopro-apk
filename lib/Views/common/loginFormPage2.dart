@@ -65,7 +65,7 @@ class _LoginFormPage2State extends State<LoginFormPage2> {
                 flex: 4,
                 child: Container(
                   decoration: const BoxDecoration(
-                      color: Colors.white, //todo
+                      color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),

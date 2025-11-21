@@ -18,20 +18,17 @@ class LoginFormPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //todo IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
+    // IMPORTANTE ESTA FUNCION SE EJECUTA DESPUES QUE SE CREA EL WIDGET
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // _passController.text = '';
-      // _usserController.text = '';
+
       // Se ejecutará después de que se haya construido el widget
       print('que tipo de saludo dar dependiendo de la hora');
 
       clientContro.setValueClockDinamic(clientContro.calcularH(controllerLogin.androidInfoHeight!));
       await Future.delayed(const Duration(seconds: 1));
       await loginController.checkConnection();
-      // print(
-      //     'clientes asistiendo ENTRE A DESTRUIR LAS VARIABLES DEL TIEMPO ASIGNADO activeModifyTime SOY = ${controllerclient.activeModifyTime}');
-    });
+       });
     //AQUI OBTENIENDO PROPIEDADES DEL TELEFONO PARA AJUSTAR LOS TAMAÑOS DE LOS COMPONENTES
     controllerLogin.getScreenResolution(context);
     return FadeIn(
@@ -63,7 +60,7 @@ class LoginFormPage extends StatelessWidget {
                 flex: 10,
                 child: Container(
                   decoration: const BoxDecoration(
-                      color: Colors.white, //todo
+                      color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
@@ -73,30 +70,7 @@ class LoginFormPage extends StatelessWidget {
                     child: GetBuilder<LoginController>(builder: (_) {
                       return Column(
                         children: [
-                          // TextField(
-                          //   controller: _usserController,
-                          //   decoration: InputDecoration(
-                          //     hintText: 'Usuario',
-                          //     border: OutlineInputBorder(
-                          //       borderRadius: BorderRadius.circular(
-                          //           15.0), // Color del borde
-                          //     ),
-                          //     prefixIcon: const Icon(
-                          //       Icons.person,
-                          //       color: Color.fromARGB(90, 0, 0, 0),
-                          //     ),
-                          //     focusedBorder: OutlineInputBorder(
-                          //       borderSide: const BorderSide(
-                          //           color: const Color(0xFFFDAE2A), width: 1.0),
-                          //       borderRadius: BorderRadius.circular(10.0),
-                          //     ),
-                          //     enabledBorder: OutlineInputBorder(
-                          //       borderSide: const BorderSide(
-                          //           color: const Color(0xFFFDAE2A), width: 1.0),
-                          //       borderRadius: BorderRadius.circular(10.0),
-                          //     ),
-                          //   ),
-                          // ),
+
                           TextField(
                             controller: _usserController,
                             decoration: InputDecoration(

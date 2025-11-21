@@ -59,7 +59,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                       itemBuilder: (context, index) => InkWell(
                                             onTap: () async {
                                               print(
-                                                  'estoy dando en :${_.estadist0[index].data.toString()}');
+                                                  'click en :${_.estadist0[index].data.toString()}');
                                               Get.dialog(
                                                 const Center(
                                                   child:
@@ -277,7 +277,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                       itemBuilder: (context, index) => InkWell(
                                             onTap: () async {
                                               print(
-                                                  'estoy dando en :${_.estadist0[index].data.toString()}');
+                                                  ' dando click :${_.estadist0[index].data.toString()}');
                                               Get.dialog(
                                                 const Center(
                                                   child:

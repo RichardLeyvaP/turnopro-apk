@@ -43,7 +43,6 @@ class _NotificationsPageNewState extends State<NotificationsPageNew> {
       notifCont.updateNotifications(
           logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn, typeEnv);
 
-      // Llama a cualquier función o realiza alguna tarea aquí
     });
 
     // Get.back();

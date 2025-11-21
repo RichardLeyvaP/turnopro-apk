@@ -16,16 +16,16 @@ class PagesConfigResponController extends GetxController {
   int selectedIndexRespBack = 0;
   PageController pageRespController = PageController();
   //
-  //todo **************** CONFIGURACIONES PARA HOME-RESPONSABLE ************************
+  // **************** CONFIGURACIONES PARA HOME-RESPONSABLE ************************
   //
 
-  //todo List<Widget> _pages -> esta esta solo para inicializar pero no es la que funciona
+  // List<Widget> _pages -> esta esta solo para inicializar pero no es la que funciona
   final List<Widget> pages = [
-    HomeResponsibleBodyPages(), // Página 1//todo poner aqui
-    AgendaResponsible(), // Página 1//todo poner aqui
-    const NotificationsPageNew(), // Pagina 2 okokokokok
-    const StatisticPageRespon(), // Página 3 okkkkkkkk
-    const CoexistencePageResponsible(), // Página 4 okkkkk
+    HomeResponsibleBodyPages(), // Página 1//
+    AgendaResponsible(), // Página 1//
+    const NotificationsPageNew(), // Pagina 2
+    const StatisticPageRespon(), // Página 3
+    const CoexistencePageResponsible(), // Página 4
   ];
 
   @override
@@ -37,7 +37,7 @@ class PagesConfigResponController extends GetxController {
     });
   }
 
-//todo nueva probando
+
 //******************************************************* */
   void onTabTapped(int index) {
     //CON ESTO GARANDIZO QUE SI DA EN EL MISMO TAB QUE NO VUELVA A DIBUJAR EL WIDGET,SOLO QUE DIBUJE CUANDO DE EN UNO DIFERENTE
@@ -99,6 +99,6 @@ class PagesConfigResponController extends GetxController {
   }
 
   //
-  //todo **************** FIN - CONFIGURACIONES PARA HOME-RESPONSABLE ************************
+  // **************** FIN - CONFIGURACIONES PARA HOME-RESPONSABLE ************************
   //
 }

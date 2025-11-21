@@ -23,7 +23,7 @@ import 'package:turnopro_apk/Views/responsible/statistic_R/statisticPage_R.dart'
 import 'package:turnopro_apk/Views/tecnico/homeTecnico/homePageTecnico.dart';
 import 'package:overlay_support/overlay_support.dart';
 
-//todo este es el que me falta optimizar
+
 class Myapp extends StatelessWidget {
   Myapp({super.key});
   final LoginController controllerasas = Get.put(LoginController());
@@ -33,17 +33,6 @@ class Myapp extends StatelessWidget {
   final Color colorPrimario2 = const Color(0xFF4470F3); // Color primario appBar
   final Color colorSecundario2 = const Color(0xFF4470F3); // Color secundario
 
-  //todo colores
-  //este color es el casi blanco-gris  de fondo Color.fromARGB(255, 231, 232, 234)
-  // Color(0xFFFDAE2A) ->> Convivencia --amarullo
-  // Color 4470F3: Color(0xFF4470F3)-->Notificaciones --azul
-  // Color 19CF9E: Color(0xFF19CF9E)-->Agenda --verde
-  // Color FF6750: Color(0xFFFF6750)-->Estadística --rojo
-  //  Color.fromARGB( 255, 192, 191, 191)-->Cancelar --gris de botones
-  //
-  // const Color.fromARGB(255, 231, 233, 233) -- casi blanco pero no lo es
-
-  //todo colores
 
   @override
   Widget build(Object context) {
@@ -104,11 +93,8 @@ class Myapp extends StatelessWidget {
         page: () => LoadingErrorPage(),
       ),
       GetPage(
-        name: '/HomeCordinador', //todo cordinador
-        //page: () => const ServicesClient(),
-        //page: () => const ProductClient(),
-        // page: () => const AssignProfessional(),//ya asignado
-        //page: () => const ProfileClient(),
+        name: '/HomeCordinador',
+
         page: () => const HomeCoordinatorPages(),
         binding: BindingsBuilder.put(() => LoginController()),
       ),

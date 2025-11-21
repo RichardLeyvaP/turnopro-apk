@@ -79,7 +79,7 @@ class _ProfileClientState extends State<ProfileClient> {
                               0, 3), // Cambia el desplazamiento de la sombra
                         ),
                       ],
-                      color: colorCont, //todo
+                      color: colorCont,
                       borderRadius:
                           BorderRadius.all(Radius.circular(borderCont)),
                     ),
@@ -219,7 +219,7 @@ class _ProfileClientState extends State<ProfileClient> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        //todo1 estructura de los cart
+                        // estructura de los cart
                         SizedBox(
                           height: 5,
                         ),
@@ -482,7 +482,7 @@ class _ProfileClientState extends State<ProfileClient> {
                                                                 .isNotEmpty) {
                                                               print(
                                                                   'Cliente eliminado correctamente de la cola deleteReservationClient value = :1');
-                                                              //todo falta poner un cargando
+
                                                               await _.deleteReservationClient(
                                                                   controllerCoord
                                                                       .idReservCORD,
@@ -502,9 +502,6 @@ class _ProfileClientState extends State<ProfileClient> {
                                                                     milliseconds:
                                                                         3000),
                                                               );
-                                                              //todo falta mandar mensaje al profesional que se le elimino tal cliente de la cola poruqe no habia llegado
-                                                              print(
-                                                                  'Cliente eliminado correctamente de la cola deleteReservationClient value = :2');
                                                               // Cerrar el primer modal
                                                               Navigator.pop(
                                                                   context);
@@ -628,7 +625,7 @@ class _ProfileClientState extends State<ProfileClient> {
       PagesConfigController pagesConfigCont, page) {
     return InkWell(
       onTap: () async {
-        print('estoy dando click');
+        print(' dando click');
         await pagesConfigCont.showAppBar(false);
         pagesConfigCont.goToPage(page, pagesConfigCont.pageController2);
 
@@ -696,7 +693,7 @@ class _ProfileClientState extends State<ProfileClient> {
       imageUltimateBarber) {
     return InkWell(
       onTap: () async {
-        print('estoy dando click');
+        print(' dando click');
       },
       child: Column(
         children: [

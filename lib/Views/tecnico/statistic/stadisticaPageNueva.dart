@@ -130,7 +130,7 @@ class BarChartSample6 extends StatelessWidget {
       axisSide: meta.axisSide,
       child: InkWell(
           onTap: () {
-            print(text); //todo aqui puedo mostrar la cantidad por dia
+            print(text); // aqui puedo mostrar la cantidad por dia
           },
           child: Container(
               width: 35,

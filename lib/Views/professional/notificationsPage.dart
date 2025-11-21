@@ -42,10 +42,10 @@ class _NotificationsPageProfState extends State<NotificationsPageProf> {
       notifCont.updateNotifications(
           logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn, typeEnv);
 
-      // Llama a cualquier función o realiza alguna tarea aquí
+
     });
 
-    // Get.back();
+
   }
 
   @override

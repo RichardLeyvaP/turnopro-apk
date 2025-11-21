@@ -29,8 +29,8 @@ class ProductRepository extends GetConnect {
       int carId = shoppingCartController.carIdClienteSelect!;
       String token = loginCont.tokenUserLoggedIn;
       var url =
-          '${dotenv.env['API_ENDPOINT']}/car_orders?id=$carId'; //todo REVISAR aqui enviar el id del carro correspondiente al cliente-profesional
-      print('estoy cargando el carro de id car :$url');
+          '${dotenv.env['API_ENDPOINT']}/car_orders?id=$carId';
+      print(' cargando el carro de id car :$url');
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
@@ -51,7 +51,7 @@ class ProductRepository extends GetConnect {
         final services = response.body['servicescar'];
         if (services != null) {
           for (Map service in services) {
-            ServiceModel u = ServiceModel.fromJson(jsonEncode(service)); //todo
+            ServiceModel u = ServiceModel.fromJson(jsonEncode(service));
             serviceListCar.add(u);
             PriceT += u.price_service;
             PriceService += u.price_service;
@@ -59,7 +59,7 @@ class ProductRepository extends GetConnect {
         }
         //retornando dos listas
         print(
-            'estoy cargando el carro de id car services leght :${serviceListCar.length}');
+            ' cargando el carro de id car services leght :${serviceListCar.length}');
         return {
           'products': productListCar,
           'services': serviceListCar,
@@ -69,7 +69,7 @@ class ProductRepository extends GetConnect {
         };
       } else if (response.statusCode == null) {
         print(
-            'estoy cargando el carro de id car services leght response.statusCode:${response.statusCode}');
+            ' cargando el carro de id car services leght response.statusCode:${response.statusCode}');
         return {'statusCode': null};
       }
     } catch (e) {
@@ -104,10 +104,10 @@ class ProductRepository extends GetConnect {
             });
           }
           for (Map order in orders) {
-            print('DIO ERROR loadOrderDeleteCarv aqui mapeandooooo');
+
             OrderDeleteModel u = OrderDeleteModel.fromJson(jsonEncode(order));
             orderDEL.add(u);
-            print('DIO ERROR loadOrderDeleteCarv aqui mapeandooooo2222');
+
           }
         }
         //retornando dos listas
@@ -115,7 +115,7 @@ class ProductRepository extends GetConnect {
         return orderDEL;
       }
     } catch (e) {
-      print('DIO ERROR loadOrderDeleteCar eroor:$e,NO RETORNO LAS DOS LISTAS ');
+      print('ERROR loadOrderDeleteCar eroor:$e,NO RETORNO LAS DOS LISTAS ');
     }
   }
 
@@ -154,7 +154,6 @@ class ProductRepository extends GetConnect {
 
   //*ESTE METODO ME DEVUELVE TODOS LOS PRODUCTOS
   Future getProductList(branchId) async {
-    //todo 1 REVISAR aqui devuelve los productos
     try {
       String token = loginCont.tokenUserLoggedIn;
       List<ProductModel> productList = [];
@@ -220,7 +219,7 @@ class ProductRepository extends GetConnect {
                 'Nuevo metodo para productos - Mapeando los productos:${prod.name}');
           }
         }
-        return productList; //aqui retorno los productos
+        return productList; // retorna los productos
       } else {
         print(
             'Nuevo metodo para productos - Dando error response.statusCode:${response.statusCode}');
@@ -234,7 +233,7 @@ class ProductRepository extends GetConnect {
 
 //*ESTE METODO ME DEVUELVE TODOS LOS PRODUCTOS
   Future<int> addOrderCartList(
-      //todo REVISAR REVISAR este metodo
+
       car_id,
       product_id,
       service_id,
@@ -272,7 +271,7 @@ class ProductRepository extends GetConnect {
         return -990099;
       }
     } catch (e) {
-      print('addOrderCartList Errorrrrr:$e');
+      print('addOrderCartList Error:$e');
       return -990099;
     }
   }
@@ -333,10 +332,10 @@ class ProductRepository extends GetConnect {
             });
           }
           for (Map order in orders) {
-            print('DIO ERROR loadOrderDeleteCarv aqui mapeandooooo');
+
             OrderDeleteModel u = OrderDeleteModel.fromJson(jsonEncode(order));
             orderDEL.add(u);
-            print('DIO ERROR loadOrderDeleteCarv aqui mapeandooooo2222');
+
           }
         }
         //retornando dos listas
@@ -374,13 +373,13 @@ class ProductRepository extends GetConnect {
     }
   }
 
-//todo BIEN getCategoryList(branchIdLoggedIn)
+
   Future<List<CategoryModel>> getCategoryList(branchIdLoggedIn, token) async {
     List<CategoryModel> categoryList = [];
     try {
       var url =
           '${dotenv.env['API_ENDPOINT']}/category_branch?branch_id=$branchIdLoggedIn';
-//todo aqui van las categorias de los productos para el tab
+//las categorias de los productos para el tab
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
@@ -431,7 +430,7 @@ class ProductRepository extends GetConnect {
     return jsonList.map((json) => ProductModel.fromMap(json)).toList();
   }
 
-//todo BIEN getCategoryList(branchIdLoggedIn)
+
   Future metdNewServiceProductRepository(
       branch_id, professional_id, car_id, token) async {
     List<CategoryModel> categoryList = [];
@@ -440,7 +439,7 @@ class ProductRepository extends GetConnect {
     try {
       var url =
           '${dotenv.env['API_ENDPOINT']}/category-products-branch?branch_id=$branch_id&professional_id=$professional_id&car_id=$car_id';
-//todo aqui van las categorias de los productos para el tab
+// categorias de los productos para el tab
       final headers = {
         "Authorization": "Bearer $token", // Agrega el token a los encabezados
       };
@@ -501,7 +500,7 @@ class ProductRepository extends GetConnect {
           servicesList.add(serv);
           if (serviceTimeAux < serv.duration_service) {
             serviceTimeAux = serv
-                .duration_service; //aqui guardo el mayor tiempo de servicio para utilizarlo en la barra cuando muetra los servicios
+                .duration_service; //aqui guarda el mayor tiempo de servicio para utilizarlo en la barra cuando muetra los servicios
           }
           if (serv.cliente == true) {
             selectServ.add(serv);
@@ -509,9 +508,7 @@ class ProductRepository extends GetConnect {
         }
 
         loginCont.setServiceTime(serviceTimeAux);
-        // print(
-        //     'Aqui retorno los category_products por almacen-branch ${categoryList.length}');
-        //  return categoryList;
+
         return {
           'categoryList': categoryList,
           'productCategory': products,

@@ -39,24 +39,7 @@ class _StatisticPageState extends State<StatisticPage>
     // _tabController = TabController(length: 4, vsync: this);
     _tabController = TabController(length: 3, vsync: this);
     super.initState();
-    /*  if (logCont.chargeUserLoggedIn == 'Barbero y Encargado') {
-      if (logCont.switchValue == false) //'Barbero'
-      {
-        typeEnv = 'Barbero';
-      } else {
-        typeEnv = 'Encargado';
-      }
-    } else {
-      typeEnv = logCont.chargeUserLoggedIn;
-    }
-    Future.delayed(const Duration(seconds: 2), () {
-      notifCont.updateNotifications(
-          logCont.branchIdLoggedIn, logCont.idProfessionalLoggedIn, typeEnv);
 
-      // Llama a cualquier función o realiza alguna tarea aquí
-    });*/
-
-    // Get.back();
   }
 
   BoxDecoration clickServicesDecoration = const BoxDecoration(
