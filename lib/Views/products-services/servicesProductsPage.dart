@@ -324,7 +324,7 @@ class _ServicesProductsPageState extends State<ServicesProductsPage> with Single
                                       'Cliente llegando',
                                       loginController.branchIdLoggedIn,
                                       loginController.idProfessionalLoggedIn,
-                                      'EL cliente "${clientsController.nameClientTemporary}" fue enviado por el barbero ${loginController.nameUserLoggedIn}',
+                                      'EL cliente "${clientsController.nameClientTemporary}" fue enviado por el Profesional ${loginController.nameUserLoggedIn}',
                                       'no',
                                       'Tecnico'); //esto es para quele llegue a coordinador y encargado
 

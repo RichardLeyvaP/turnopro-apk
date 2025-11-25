@@ -26,7 +26,7 @@ class _MyLoadingErrorPageState extends State<MyLoadingErrorPage> {
     Timer(Duration(seconds: 2), () async {
 //VERIFICAR QUE ESTE TODO BIEN
 
-      if (controllerLogin.chargeUserLoggedIn == "Barbero") {
+      if (controllerLogin.chargeUserLoggedIn == "Profesional") {
         Get.offAllNamed('/Professional');
       } else if (controllerLogin.chargeUserLoggedIn == "Encargado") {
         Get.offAllNamed('/HomeResponsible');

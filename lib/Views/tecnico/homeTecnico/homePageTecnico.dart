@@ -682,7 +682,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                               ),
                                               onPressed: () async {
 
-                                                //SACAR DEL PUESTO DE TRABAJO AL BARBERO
+                                                //SACAR DEL PUESTO DE TRABAJO AL Profesional
 
                                                 //LLAMAR AL ENPOINT PARA SACAR DEL PUESTO DE TRABAJO
                                                 if (_.usserPermissionQr == 1) {

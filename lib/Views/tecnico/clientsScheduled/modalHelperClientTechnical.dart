@@ -169,7 +169,7 @@ class ModalHelperTecnical {
                                 idProf,
                                 ' El cliente $cliente ya está disponible para que continúes con el servicio',
                                 'no',
-                                'Barbero');
+                                'Profesional');
                             Navigator.pop(context); // Cierra el modal
                           },
                           child: Row(

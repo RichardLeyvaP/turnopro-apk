@@ -176,14 +176,14 @@ class NotificationRepository extends GetConnect {
             NotificationModel u =
                 NotificationModel.fromJson(jsonEncode(notification));
 
-            if (u.type == type || u.type == 'Barbero y Encargado') {
+            if (u.type == type || u.type == 'Profesional y Encargado') {
               notificationList.add(u);
             }
             if (u.state == 0 || u.state == 3) {
               //si esta en estos estados es que no se ha visto
               //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
-              if (u.type == type || u.type == 'Barbero y Encargado') {
-                notificationListNew.add(u); //barbero
+              if (u.type == type || u.type == 'Profesional y Encargado') {
+                notificationListNew.add(u); //Profesional
               }
             }
           }
@@ -358,7 +358,7 @@ class NotificationRepository extends GetConnect {
             if (type == 'Coordinador' || type == 'Encargado') {
               if (u.type == type ||
                   u.type == 'Ambos' ||
-                  u.type == 'Barbero y Encargado') {
+                  u.type == 'Profesional y Encargado') {
                 notificationList.add(u);
               }
               if (u.state == 0 || u.state == 3) {
@@ -366,19 +366,19 @@ class NotificationRepository extends GetConnect {
                 //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
                 if (u.type == type ||
                     u.type == 'Ambos' ||
-                    u.type == 'Barbero y Encargado') {
-                  notificationListNew.add(u); //barbero
+                    u.type == 'Profesional y Encargado') {
+                  notificationListNew.add(u); //Profesional
                 }
               }
             } else {
-              if (u.type == type || u.type == 'Barbero y Encargado') {
+              if (u.type == type || u.type == 'Profesional y Encargado') {
                 notificationList.add(u);
               }
               if (u.state == 0 || u.state == 3) {
                 //si esta en estos estados es que no se ha visto
                 //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
-                if (u.type == type || u.type == 'Barbero y Encargado') {
-                  notificationListNew.add(u); //barbero
+                if (u.type == type || u.type == 'Profesional y Encargado') {
+                  notificationListNew.add(u); //Profesional
                 }
               }
             }

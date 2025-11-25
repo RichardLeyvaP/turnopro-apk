@@ -117,8 +117,8 @@ Future<void> notificationSimplifies() async {
 
   if (chargeProfesional != null && chargeProfesional.isNotEmpty) {
     print('notificacion desde:-:SERVICIO-notificationSimplifies()-chargeProfesional:$chargeProfesional');
-    // Verifica si el valor de 'charge_profesional' es 'Barbero y Encargado'
-    if (chargeProfesional == 'Barbero y Encargado') {
+    // Verifica si el valor de 'charge_profesional' es 'Profesional y Encargado'
+    if (chargeProfesional == 'Profesional y Encargado') {
       print('notificacion desde:-:SERVICIO-notificationSimplifies()-1');
 
       // Verifica si las claves necesarias existen antes de usarlas
@@ -128,7 +128,7 @@ Future<void> notificationSimplifies() async {
 
       if (branchProfesional != null && idProfesional != null && tokenUser != null) {
         await notiController.fetchNotificationListSERV(
-            branchProfesional, idProfesional, 'Barbero', 'LLamando-desde-background-service', tokenUser);
+            branchProfesional, idProfesional, 'Profesional', 'LLamando-desde-background-service', tokenUser);
         await Future.delayed(const Duration(seconds: 3));
         await notiController.fetchNotificationListSERV(
             branchProfesional, idProfesional, 'Encargado', 'LLamando-desde-background-service', tokenUser);
@@ -285,8 +285,8 @@ Future<void> onStart(ServiceInstance service) async {
 
     if (branchProfesional != null && idProfesional != null && tokenUser != null) {
       if (chargeProfesional != null && chargeProfesional.isNotEmpty) {
-        // Verifica si el valor de 'charge_profesional' es 'Barbero y Encargado'
-        if ((chargeProfesional == 'Barbero y Encargado') || (chargeProfesional == 'Barbero')) {
+        // Verifica si el valor de 'charge_profesional' es 'Profesional y Encargado'
+        if ((chargeProfesional == 'Profesional y Encargado') || (chargeProfesional == 'Profesional')) {
           await clientCord.reasignedClientSegundoPlano(idProfesional, branchProfesional, tokenUser, 1);
         }
       }

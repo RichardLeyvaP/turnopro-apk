@@ -970,27 +970,16 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   .pOutRequestBranch[i].professional_id!;
                               String charge =
                                   controllerclient.pOutRequestBranch[i].charge!;
-                              if (charge == 'Barbero y Encargado') {
-                                charge = 'Barbero';
+                              if (charge == 'Profesional y Encargado') {
+                                charge = 'Profesional';
                               }
 
                               int result =
                                   await controllerLogin.ColacionProfessional(
                                       idProf, charge, 1);
-                              //aqui mandar notificacion
-                              if (result == 1) {
-                                //codigo 200
-                                //enviado de la api
-                                //
-                                /*  String typeDelete =
-                                    'Rechazada su solicitud de Salida';
 
-                                notiController.storeNotification2(
-                                    typeDelete,
-                                    controllerLogin.branchIdLoggedIn,
-                                    idProf,
-                                    'Su solicitud de Salida fue rechazada',
-                                    charge);*/
+                              if (result == 1) {
+                              //se eliminan las notificaciones
                               } else {
                                 Get.snackbar(
                                   'Alerta',
@@ -1137,14 +1126,14 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   .pOutRequestBranch[i].professional_id!;
                               String charge =
                                   controllerclient.pOutRequestBranch[i].charge!;
-                              if (charge == 'Barbero y Encargado') {
-                                charge = 'Barbero';
+                              if (charge == 'Profesional y Encargado') {
+                                charge = 'Profesional';
                               }
 
                               int result =
                                   await controllerLogin.ColacionProfessional(
                                       idProf, charge, 0);
-                              //aqui mandar notificacion
+
                               if (result == 1) {
                                 // Se elimana el envio de noficacion
 
@@ -1259,15 +1248,15 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   .professional_id!;
                               String charge = controllerclient
                                   .clientsColacionRequestBranch[i].charge!;
-                              if (charge == 'Barbero y Encargado') {
-                                charge = 'Barbero';
+                              if (charge == 'Profesional y Encargado') {
+                                charge = 'Profesional';
                               }
                               print('este es el cargo : $charge');
 
                               int result =
                                   await controllerLogin.ColacionProfessional(
                                       idProf, charge, 1);
-                              //aqui mandar notificacion
+
                               if (result == 1) {
                                 //aqui se elimina la notificacion
                               } else {
@@ -1420,14 +1409,14 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   .professional_id!;
                               String charge = controllerclient
                                   .clientsColacionRequestBranch[i].charge!;
-                              if (charge == 'Barbero y Encargado') {
-                                charge = 'Barbero';
+                              if (charge == 'Profesional y Encargado') {
+                                charge = 'Profesional';
                               }
 
                               int result =
                                   await controllerLogin.ColacionProfessional(
                                       idProf, charge, 2);
-                              //aqui mandar notificacion
+
                               if (result == 1) {
 
                                 String typeDelete = 'Aceptada su solicitud de Colación';
@@ -1547,10 +1536,10 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                               String charge = controllerclient
                                   .clientsScheduledListBranchClient[i].charge!;
                               print('rechazando la solicitud - charge:$charge');
-                              if (charge == 'Barbero y Encargado') {
-                                charge = 'Barbero';
+                              if (charge == 'Profesional y Encargado') {
+                                charge = 'Profesional';
                               }
-                              if (charge == 'Barbero') {
+                              if (charge == 'Profesional') {
                                 result = await clientsScheduledController
                                     .acceptOrRejectClientCoord(
                                         controllerclient
@@ -1566,10 +1555,10 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                         4);
                               }
 
-                              //aqui mandar notificacion
+
                               print('return resul: IconButton $result');
                               if (result == true) {
-                                if (charge == 'Barbero') {
+                                if (charge == 'Profesional') {
                                   notiController.storeNotification2(
                                       'Solicitud de Eliminación Rechazada',
                                       controllerLogin.branchIdLoggedIn,
@@ -1577,7 +1566,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                           .clientsScheduledListBranchClient[i]
                                           .professional_id,
                                       '!Atención..El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} no fue rechazado.',
-                                      'Barbero');
+                                      'Profesional');
                                 } else if (charge == 'Tecnico') {
                                   notiController.storeNotification2(
                                       'Solicitud de Eliminación Rechazada',
@@ -1766,10 +1755,10 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                   .clientsScheduledListBranchClient[i].charge!;
                               bool result = false;
                               String typeDelete = '';
-                              if (charge == 'Barbero y Encargado') {
-                                charge = 'Barbero';
+                              if (charge == 'Profesional y Encargado') {
+                                charge = 'Profesional';
                               }
-                              if (charge == 'Barbero') {
+                              if (charge == 'Profesional') {
                                 result = await clientsScheduleCont
                                     .deleteReservationClientCoor(
                                         controllerclient
@@ -1788,13 +1777,13 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 typeDelete = 'Aceptada Eliminación de Cliente';
                               }
 
-                              //aqui mandar notificacion
+
                               print('return resul: IconButton $result');
                               if (result == true) {
-                                if (charge == 'Barbero') {
+                                if (charge == 'Profesional') {
                                // se elimina envio notificacion
                                 } else if (charge == 'Tecnico') {
-                                  //enviar mensaje al barbero que el cliente esta regresando porque fue rechazado
+                                  //enviar mensaje al Profesional que el cliente esta regresando porque fue rechazado
 
                                   notiController.storeNotification(
                                       'Cliente rechazado por el Técnico',
@@ -1804,7 +1793,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                           .idBarber,
                                       'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue rechazado por el Técnico ${controllerclient.clientsScheduledListBranchClient[i].professional_name}',
                                       'nada',
-                                      'Barbero');
+                                      'Profesional');
                                   //enviar notificacion al propio tecnico que fue aceptada
                                   notiController.storeNotification(
                                       typeDelete,
@@ -1921,7 +1910,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                               controllerShoppingCart.setLoading(true);
                               int result = await contShopp.requestDelete(
                                   contShopp.orderDeleteCar[i].id, 0);
-                              //aqui mandar notificacion
+
                               if (result == 1) {
                                 String serviceProduct = 'Servicio';
                                 String? nameServiceProduct =
@@ -2102,7 +2091,7 @@ class _HomeCoordinatorBodyState extends State<HomeCoordinatorBody>
                                 controllerShoppingCart.setLoading(true);
                                 int result = await contShopp.orderDelete(
                                     contShopp.orderDeleteCar[i].id);
-                                //aqui mandar notificacion
+
                                 print('return resul: IconButton $result');
                                 print(
                                     'return resul: orderDeleteCar[i].id ${contShopp.orderDeleteCar[i].id}');

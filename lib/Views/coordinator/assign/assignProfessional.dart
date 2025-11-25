@@ -54,141 +54,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
   Widget build(BuildContext context) {
     return GetBuilder<ClientsCoordinatorController>(builder: (controllerCoord) {
       return Scaffold(
-        /* appBar: AppBar(
-          toolbarHeight: 170,
-          leading: Stack(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () {
-                      pagesConfigCont.goToPage(
-                          1, pagesConfigCont.pageController2);
 
-                      // Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
-              Positioned(
-                bottom: -20,
-                left: -20,
-                child: Container(
-                  width:
-                      72.0, // Ajusta el tamaño del círculo según sea necesario
-                  height: 72.0,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color.fromARGB(76, 224, 224,
-                        224), // Puedes ajustar el tono del gris según tus preferencias
-                  ),
-                ),
-              )
-            ],
-          ),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: const Color.fromARGB(255, 43, 44, 49),
-                        width:
-                            2, // Ajusta el ancho del borde según tus preferencias
-                      ),
-                    ),
-                    child: CircleAvatar(
-                      radius: 25,
-                      child: ClipOval(
-                        child: Image.network(
-                          '${Env.apiEndpoint}/images/${controllerCoord.imageLookCORD}',
-                          fit: BoxFit
-                              .cover, // Ajusta la imagen para cubrir completamente el área
-                          width:
-                              50, // Ancho deseado de la imagen dentro del círculo
-                          height: 50,
-                          loadingBuilder: (BuildContext context, Widget child,
-                              ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) {
-                              // Si la imagen se carga correctamente, mostramos la imagen
-                              return child;
-                            } else {
-                              // Si la imagen aún se está cargando, mostramos un indicador de progreso
-                              return const CircularProgressIndicator(
-                                color: Color(0xFFFDAE2A),
-                              );
-                            }
-                          },
-                          errorBuilder: (BuildContext context, Object error,
-                              StackTrace? stackTrace) {
-                            // Si la imagen no se puede cargar y estamos en modo de depuración, mostramos una imagen por defecto
-                            if (kDebugMode) {
-                              return CircleAvatar(
-                                radius: 25,
-                                backgroundColor: Colors
-                                    .transparent, // Fondo transparente para que el borde sea visible
-                                child: ClipOval(
-                                  child: Image.asset(
-                                    'assets/images/default_profile.jpg',
-                                    fit: BoxFit
-                                        .cover, // Ajusta la imagen para cubrir completamente el área
-                                    width:
-                                        50, // Ancho deseado de la imagen dentro del círculo
-                                    height:
-                                        50, // Alto deseado de la imagen dentro del círculo
-                                  ),
-                                ),
-                              );
-                            } else {
-                              // Si no estamos en modo de depuración, mostramos un texto de error
-                              return CircleAvatar(
-                                radius: 25,
-                                backgroundColor: Colors
-                                    .transparent, // Fondo transparente para que el borde sea visible
-                                child: ClipOval(
-                                  child: Image.asset(
-                                    'assets/images/default_profile.jpg',
-                                    fit: BoxFit
-                                        .cover, // Ajusta la imagen para cubrir completamente el área
-                                    width:
-                                        50, // Ancho deseado de la imagen dentro del círculo
-                                    height:
-                                        50, // Alto deseado de la imagen dentro del círculo
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  Text(
-                    controllerCoord.clientNameCORD,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w700, fontSize: 20),
-                  ),
-                  Text(
-                    'Barbero Actual: ${controllerCoord.professActualNameCORD}',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w100, fontSize: 11, height: 1.0),
-                  ),
-                ],
-              ),
-              SizedBox(
-                width: (MediaQuery.of(context).size.width * 0.14),
-              ),
-            ],
-          ),
-          //actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
-          elevation: 0, // Quits the shadow
-          //shadowColor: Colors.amber, // Removes visual elevation
-        ),*/
         backgroundColor: const Color.fromARGB(255, 231, 232, 234),
         body: GetBuilder<ClientsScheduledController>(
           builder: (_) {
@@ -313,7 +179,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                                             fontSize: 20),
                                       ),
                                       Text(
-                                        'Barbero Actual: ${controllerCoord.professActualNameCORD}',
+                                        'Profesional Actual: ${controllerCoord.professActualNameCORD}',
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w100,
                                             fontSize: 11,
@@ -354,7 +220,7 @@ class _AssignProfessionalState extends State<AssignProfessional> {
                                 },
                               )
                             : const Center(
-                                child: Text('No hay Barberos disponibles'),
+                                child: Text('No hay Profesionales disponibles'),
                               ),
                       ),
                     ],

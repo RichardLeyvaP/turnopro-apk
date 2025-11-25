@@ -41,7 +41,7 @@ class CoexistenceRepository extends GetConnect {
           if (controllerLogin.chargeUserLoggedIn == "Tecnico") {
             controllerClientTecn.noncomplianceProfessional[u.id.toString()] = u.state;
           }
-          if (controllerLogin.chargeUserLoggedIn == "Barbero") {
+          if (controllerLogin.chargeUserLoggedIn == "Profesional") {
             controllerClient.noncomplianceProfessional[u.id.toString()] = u.state;
           }
           controllerClient.noncomplianceProfessional[u.id.toString()] = u.state;
@@ -136,13 +136,13 @@ class CoexistenceRepository extends GetConnect {
           // cambiar por el nombre del cargo
           if (loginController.chargeUserLoggedIn == "Coordinador") {
             //puede modificar las reglas de todos
-            if (u.charge_id == 'Barbero' ||
+            if (u.charge_id == 'Profesional' ||
                 u.charge_id == 'Tecnico' ||
-                u.charge_id == 'Barbero y Encargado' ||
+                u.charge_id == 'Profesional y Encargado' ||
                 u.charge_id == 'Encargado') {
               professionalList.add(u);
             }
-          } else if (u.charge_id == 'Barbero' || u.charge_id == 'Tecnico') {
+          } else if (u.charge_id == 'Profesional' || u.charge_id == 'Tecnico') {
             professionalList.add(u);
           }
         }

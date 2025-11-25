@@ -106,7 +106,7 @@ class _SelectProfessionalPageState extends State<SelectProfessionalPage> {
                             },
                             items: [
                               DropdownMenuItem<String>(
-                                value: 'Barbero',
+                                value: 'Profesional',
                                 child: Row(
                                   children: [
                                     Icon(
@@ -116,7 +116,7 @@ class _SelectProfessionalPageState extends State<SelectProfessionalPage> {
                                           0.03,
                                     ),
                                     Text(
-                                      '  Barbero',
+                                      '  Profesional',
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,

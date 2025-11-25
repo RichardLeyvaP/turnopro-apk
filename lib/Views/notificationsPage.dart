@@ -28,10 +28,10 @@ class _NotificationsPageNewState extends State<NotificationsPageNew> {
   void initState() {
     super.initState();
 
-    if (logCont.chargeUserLoggedIn == 'Barbero y Encargado') {
-      if (logCont.switchValue == false) //'Barbero'
+    if (logCont.chargeUserLoggedIn == 'Profesional y Encargado') {
+      if (logCont.switchValue == false) //'Profesional'
       {
-        typeEnv = 'Barbero';
+        typeEnv = 'Profesional';
       } else {
         typeEnv = 'Encargado';
       }

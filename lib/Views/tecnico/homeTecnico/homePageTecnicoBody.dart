@@ -990,7 +990,7 @@ class _HomePageTecnicoBodyState extends State<HomePageTecnicoBody>
                                         clientsScheduledController.clientsAttendedTechnical!.professional_id,
                                         'El cliente ${clientsScheduledController.clientsAttendedTechnical!.client_name} ya está disponible para que continúes con el servicio',
                                         'no',
-                                        'Barbero');
+                                        'Profesional');
                                     await clientsScheduledController.acceptClientTechnical(
                                         clientsScheduledController.clientsAttendedTechnical!.reservation_id, 11);
                                     //aqui limpiar la variable que no deja cojer doble al cliente

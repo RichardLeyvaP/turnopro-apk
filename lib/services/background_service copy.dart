@@ -84,8 +84,8 @@ Future<void> notificationSimplifies() async {
   if (chargeProfesional != null && chargeProfesional.isNotEmpty) {
     print(
         'notificacion desde:-:SERVICIO-notificationSimplifies()-chargeProfesional:$chargeProfesional');
-    // Verifica si el valor de 'charge_profesional' es 'Barbero y Encargado'
-    if (chargeProfesional == 'Barbero y Encargado') {
+    // Verifica si el valor de 'charge_profesional' es 'Profesional y Encargado'
+    if (chargeProfesional == 'Profesional y Encargado') {
       print('notificacion desde:-:SERVICIO-notificationSimplifies()-1');
 
       // Verifica si las claves necesarias existen antes de usarlas
@@ -99,7 +99,7 @@ Future<void> notificationSimplifies() async {
         await notiController.fetchNotificationListSERV(
             branchProfesional,
             idProfesional,
-            'Barbero',
+            'Profesional',
             'LLamando-desde-background-service',
             tokenUser);
         await notiController.fetchNotificationListSERV(
@@ -293,21 +293,14 @@ Future<void> onStart(ServiceInstance service) async {
         idProfesional != null &&
         tokenUser != null) {
       if (chargeProfesional != null && chargeProfesional.isNotEmpty) {
-        // Verifica si el valor de 'charge_profesional' es 'Barbero y Encargado'
-        if ((chargeProfesional == 'Barbero y Encargado') ||
-            (chargeProfesional == 'Barbero')) {
+        // Verifica si el valor de 'charge_profesional' es 'Profesional y Encargado'
+        if ((chargeProfesional == 'Profesional y Encargado') ||
+            (chargeProfesional == 'Profesional')) {
           await clientCord.reasignedClientSegundoPlano(
               idProfesional, branchProfesional, tokenUser, 1); //
         }
       }
-    } else {
-      print(
-          'Algunas claves necesarias no están presentes en LocalStorage.prefs.-reasignedClientSegundoPlano');
     }
-    //
-    //
-    //
-    //
 
     print(
         'notificacion desde:-:SERVICIO-notificationSimplifies()-*****var_timerInitial=${LocalStorage.prefs.getInt('var_timerInitial')}');

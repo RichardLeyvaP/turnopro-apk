@@ -163,9 +163,9 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                       ),
                     ),
                   ),
-                  if (loginCont.chargeUserLoggedIn == 'Barbero' ||
+                  if (loginCont.chargeUserLoggedIn == 'Profesional' ||
                       loginCont.chargeUserLoggedIn ==
-                          'Barbero y Encargado') ...[
+                          'Profesional y Encargado') ...[
                     Padding(
                       padding: const EdgeInsets.only(bottom: 2),
                       child: Expanded(
@@ -697,12 +697,12 @@ class _Estadistc2PagosState extends State<Estadistc2Pagos> {
                       ),
                     ),
                   ],
-                  //detalles solo del barbero
+                  //detalles solo del Profesional
                   //pagos
                   Expanded(
-                    flex: loginCont.chargeUserLoggedIn == 'Barbero' ||
+                    flex: loginCont.chargeUserLoggedIn == 'Profesional' ||
                             loginCont.chargeUserLoggedIn ==
-                                'Barbero y Encargado'
+                                'Profesional y Encargado'
                         ? 13
                         : 22, // 85% del espacio disponible para esta parte
                     child: _.estadistPagosLength > 0

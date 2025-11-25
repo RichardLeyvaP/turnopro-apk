@@ -87,12 +87,12 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
           loginController.branchIdLoggedIn,
           loginController.idProfessionalLoggedIn,
           'Encargado');
-      if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
+      if (loginController.chargeUserLoggedIn == "Profesional y Encargado") {
         await Future.delayed(const Duration(milliseconds: 1000));
         notiController.fetchNotificationList(
             controllerLogin.branchIdLoggedIn,
             controllerLogin.idProfessionalLoggedIn,
-            'Barbero',
+            'Profesional',
             'loadDataFirt',
             loginController.tokenUserLoggedIn);
       }
@@ -118,12 +118,12 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
             loginController.branchIdLoggedIn,
             loginController.idProfessionalLoggedIn,
             'Encargado');
-        if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
+        if (loginController.chargeUserLoggedIn == "Profesional y Encargado") {
           await Future.delayed(const Duration(seconds: 1));
           notiController.fetchNotificationList(
               controllerLogin.branchIdLoggedIn,
               controllerLogin.idProfessionalLoggedIn,
-              'Barbero',
+              'Profesional',
               'loadDataFirt',
               loginController.tokenUserLoggedIn);
         }
@@ -471,8 +471,8 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                   .pOutRequestBranch[i].professional_id!;
                               String charge =
                                   controllerclient.pOutRequestBranch[i].charge!;
-                              if (charge == 'Barbero y Encargado') {
-                                charge = 'Barbero';
+                              if (charge == 'Profesional y Encargado') {
+                                charge = 'Profesional';
                               }
 
                               int result =
@@ -627,14 +627,14 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                   .pOutRequestBranch[i].professional_id!;
                               String charge =
                                   controllerclient.pOutRequestBranch[i].charge!;
-                              if (charge == 'Barbero y Encargado') {
-                                charge = 'Barbero';
+                              if (charge == 'Profesional y Encargado') {
+                                charge = 'Profesional';
                               }
 
                               int result =
                                   await controllerLogin.ColacionProfessional(
                                       idProf, charge, 0);
-                              //aqui mandar notificacion
+
                               if (result == 1) {
                                 //poner a 4 para que le cierre la session el Qr
                                 // controllerLogin.setCodigoQrValid(null);
@@ -761,15 +761,15 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                   .professional_id!;
                               String charge = controllerclient
                                   .clientsColacionRequestBranch[i].charge!;
-                              if (charge == 'Barbero y Encargado') {
-                                charge = 'Barbero';
+                              if (charge == 'Profesional y Encargado') {
+                                charge = 'Profesional';
                               }
                               print('este es el cargo : $charge');
 
                               int result =
                                   await controllerLogin.ColacionProfessional(
                                       idProf, charge, 1);
-                              //aqui mandar notificacion
+
                               if (result == 1) {
                                 //Se quitan las Notificaciones
 
@@ -919,14 +919,14 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                   .professional_id!;
                               String charge = controllerclient
                                   .clientsColacionRequestBranch[i].charge!;
-                              if (charge == 'Barbero y Encargado') {
-                                charge = 'Barbero';
+                              if (charge == 'Profesional y Encargado') {
+                                charge = 'Profesional';
                               }
 
                               int result =
                                   await controllerLogin.ColacionProfessional(
                                       idProf, charge, 2);
-                              //aqui mandar notificacion
+
                               if (result == 1) {
                                 //poner a null el Qr
                                 // controllerLogin.setCodigoQrValid(null);
@@ -1060,10 +1060,10 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                               String charge = controllerclient
                                   .clientsScheduledListBranchClient[i].charge!;
                               print('rechazando la solicitud - charge:$charge');
-                              if (charge == 'Barbero y Encargado') {
-                                charge = 'Barbero';
+                              if (charge == 'Profesional y Encargado') {
+                                charge = 'Profesional';
                               }
-                              if (charge == 'Barbero') {
+                              if (charge == 'Profesional') {
                                 result = await clientCorControl
                                     .acceptOrRejectClientCoord(
                                         controllerclient
@@ -1079,10 +1079,10 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                         4);
                               }
 
-                              //aqui mandar notificacion
+
                               print('return resul: IconButton $result');
                               if (result == true) {
-                                if (charge == 'Barbero') {
+                                if (charge == 'Profesional') {
                                   notiController.storeNotification2(
                                       'Solicitud de Eliminación Rechazada',
                                       controllerLogin.branchIdLoggedIn,
@@ -1090,7 +1090,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                           .clientsScheduledListBranchClient[i]
                                           .professional_id,
                                       '!Atención..El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} no fue rechazado.',
-                                      'Barbero');
+                                      'Profesional');
                                 } else if (charge == 'Tecnico') {
                                   notiController.storeNotification2(
                                       'Solicitud de Eliminación Rechazada',
@@ -1273,10 +1273,10 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                   .clientsScheduledListBranchClient[i].charge!;
                               bool result = false;
                               String typeDelete = '';
-                              if (charge == 'Barbero y Encargado') {
-                                charge = 'Barbero';
+                              if (charge == 'Profesional y Encargado') {
+                                charge = 'Profesional';
                               }
-                              if (charge == 'Barbero') {
+                              if (charge == 'Profesional') {
                                 result = await clientsScheduleCont
                                     .deleteReservationClientCoor(
                                         controllerclient
@@ -1295,10 +1295,10 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 typeDelete = 'Aceptada Eliminación de Cliente';
                               }
 
-                              //aqui mandar notificacion
+
                               print('return resul: IconButton $result');
                               if (result == true) {
-                                if (charge == 'Barbero') {
+                                if (charge == 'Profesional') {
                                   notiController.storeNotification2(
                                       typeDelete,
                                       controllerLogin.branchIdLoggedIn,
@@ -1306,9 +1306,9 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                           .clientsScheduledListBranchClient[i]
                                           .professional_id,
                                       'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue eliminado de su cola',
-                                      'Barbero');
+                                      'Profesional');
                                 } else if (charge == 'Tecnico') {
-                                  //enviar mensaje al barbero que el cliente esta regresando porque fue rechazado
+                                  //enviar mensaje al Profesional que el cliente esta regresando porque fue rechazado
 
                                   notiController.storeNotification(
                                       'Cliente rechazado por el Técnico',
@@ -1318,7 +1318,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                           .idBarber,
                                       'El cliente ${controllerclient.clientsScheduledListBranchClient[i].client_name} fue rechazado por el Técnico ${controllerclient.clientsScheduledListBranchClient[i].professional_name}',
                                       'no',
-                                      'Barbero');
+                                      'Profesional');
                                   //enviar notificacion al propio tecnico que fue aceptada
                                   notiController.storeNotification2(
                                       typeDelete,
@@ -1426,7 +1426,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                               controllerShoppingCart.setLoading(true);
                               int result = await contShopp.requestDelete(
                                   contShopp.orderDeleteCar[i].id, 0);
-                              //aqui mandar notificacion
+
                               if (result == 1) {
                                 String serviceProduct = 'Servicio';
                                 String? nameServiceProduct =
@@ -1444,7 +1444,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 //     controllerLogin.branchIdLoggedIn,
                                 //     contShopp.orderDeleteCar[i].profesional_id,
                                 //     '!Atención..El $serviceProduct "$nameServiceProduct" de el cliente ${contShopp.orderDeleteCar[i].nameClient} no fue aprobado para su eliminación.',
-                                //     'Barbero');
+                                //     'Profesional');
                               }
                               if (controllerLogin.branchIdLoggedIn != null) {
                                 await contShopp.loadOrderDeleteCar(
@@ -1613,7 +1613,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                 controllerShoppingCart.setLoading(true);
                                 int result = await contShopp.orderDelete(
                                     contShopp.orderDeleteCar[i].id);
-                                //aqui mandar notificacion
+
                                 print('return resul: IconButton $result');
                                 print(
                                     'return resul: orderDeleteCar[i].id ${contShopp.orderDeleteCar[i].id}');
@@ -1642,7 +1642,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                     //     contShopp
                                     //         .orderDeleteCar[i].profesional_id,
                                     //     '$serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado con tiempo de ${contShopp.orderDeleteCar[i].duration_service} min.${contShopp.orderDeleteCar[i].reservation_id}',
-                                    //     'Barbero');
+                                    //     'Profesional');
                                   } else {
                                     //esta notificación la esta haciendo el api
                                     //
@@ -1652,7 +1652,7 @@ class _HomeResponsibleBodyPagesState extends State<HomeResponsibleBodyPages>
                                     //     contShopp
                                     //         .orderDeleteCar[i].profesional_id,
                                     //     'El $serviceProduct "$nameServiceProduct" del cliente ${contShopp.orderDeleteCar[i].nameClient} fue eliminado satisfactoriamente.',
-                                    //     'Barbero');
+                                    //     'Profesional');
                                   }
                                 }
                                 if (controllerLogin.branchIdLoggedIn != null) {

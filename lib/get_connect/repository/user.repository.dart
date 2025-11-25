@@ -329,7 +329,7 @@ class UserRepository extends GetConnect {
     try {
       var url = '';
       String token = loginController.tokenUserLoggedIn;
-      if (type == "Barbero") {
+      if (type == "Profesional") {
         url = '${dotenv.env['API_ENDPOINT']}/update-state-prof-workplace?id=$id&busy=0&professional_id=$idProf';
       } else if (type == "Tecnico") {
         url = '${dotenv.env['API_ENDPOINT']}/update-state-tec-workplace?id=$id&select=0&professional_id=$idProf';

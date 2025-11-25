@@ -454,7 +454,7 @@ class ClientsScheduledRepository extends GetConnect {
           //AQUI PARA SABER CUANTOS ESTA ATENDIENDO
           if (client.attended == 1 || client.attended == 11 || client.attended == 111 || client.attended == 33) {
             print('relojes activos:${client.clock!}');
-            //33 es rechazado por el tecnico pero es atendido por el barbero
+            //33 es rechazado por el tecnico pero es atendido por el Profesional
             print('clientes asistiendo entre a if (client.attended == 1) {');
             quantityClientAttended++;
           }
@@ -903,7 +903,7 @@ class ClientsScheduledRepository extends GetConnect {
           ProfessionalModel u = ProfessionalModel.fromJson(jsonEncode(professional));
           //AQUI SOLO COJO QUE NO SEAN RESPONSABLES
           if (u.charge_id != 'Encargado' && u.charge_id != 'Coordinador' && u.id != idBarberAct && cant == 0) {
-            //que no sea ni coordinador,ni encargado,ni el mismo barbero
+            //que no sea ni coordinador,ni encargado,ni el mismo Profesional
 
             professionalList.add(u);
             cant++; //para garantizar que solo me devuelva 1

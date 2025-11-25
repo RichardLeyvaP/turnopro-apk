@@ -297,10 +297,10 @@ class _HomePagesState extends State<HomePages> with WidgetsBindingObserver {
                           ); //Get.back();
                           String typeEnv = '';
 
-                          if (loginController.chargeUserLoggedIn == 'Barbero y Encargado') {
-                            if (loginController.switchValue == false) //'Barbero'
+                          if (loginController.chargeUserLoggedIn == 'Profesional y Encargado') {
+                            if (loginController.switchValue == false) //'Profesional'
                             {
-                              typeEnv = 'Barbero';
+                              typeEnv = 'Profesional';
                             } else {
                               typeEnv = 'Encargado';
                             }
@@ -510,7 +510,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   SizedBox(
                     height: 5,
                   ),
-                  logUser.chargeUserLoggedIn == 'Barbero y Encargado'
+                  logUser.chargeUserLoggedIn == 'Profesional y Encargado'
                       ? TruncatedText(
                           text: logUser.nameUserLoggedIn,
                           maxLength: 13,
@@ -532,7 +532,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           ),
                         ),
                   const Text(
-                    'Barbero',
+                    'Profesional',
                     style: TextStyle(
                         color: const Color.fromARGB(255, 43, 44, 49),
                         fontSize: 12,
@@ -549,7 +549,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         GetBuilder<LoginController>(builder: (_) {
           return Row(
             children: [
-              _.chargeUserLoggedIn == 'Barbero y Encargado'
+              _.chargeUserLoggedIn == 'Profesional y Encargado'
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -606,7 +606,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                           )
                                         : null,
                                     child: Text(
-                                      _.switchValue ? '  Barbero' : 'Encargado',
+                                      _.switchValue ? '  Profesional' : 'Encargado',
                                       style: const TextStyle(fontSize: 12, color: const Color(0xFF2B3141), height: 1),
                                     ),
                                   )
@@ -835,7 +835,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                               0)) //es que esta en tiempo de pedir colación
                                                   {
                                                     int result = await _.ColacionProfessional(
-                                                        _.idProfessionalLoggedIn, 'Barbero', 3);
+                                                        _.idProfessionalLoggedIn, 'Profesional', 3);
                                                     if (result == 1) //codigo 200
                                                     {
                                                       clientCon.setWaitTime(false);
@@ -987,7 +987,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 
                                                   int result = await _.ColacionProfessional(
-                                                      _.idProfessionalLoggedIn, 'Barbero', 4); //solicitud de salida
+                                                      _.idProfessionalLoggedIn, 'Profesional', 4); //solicitud de salida
                                                   if (result == 1) //codigo 200
                                                   {
                                                     clientCon.setWaitTime(false);

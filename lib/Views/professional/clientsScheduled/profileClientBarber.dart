@@ -312,7 +312,7 @@ class _ProfileClientBarberState extends State<ProfileClientBarber> {
                                 clientSchedControl.endLookBarber1,
                                 clientSchedControl.professionalNameBarber1,
                                 clientSchedControl
-                                    .imageUrlBarber1, // 'CARGAR LA IMAGEN DEL BARBERO',
+                                    .imageUrlBarber1, // 'CARGAR LA IMAGEN DEL PROFESIONAL',
                               ),
                               Padding(
                                   padding: const EdgeInsets.all(5.0),

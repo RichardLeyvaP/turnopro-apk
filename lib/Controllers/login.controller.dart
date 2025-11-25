@@ -32,7 +32,7 @@ class LoginController extends GetxController {
   bool setIsLoading = false;
   bool setIsLoading2 = false;
 
-  bool switchValue = false; //false es barbero y true Encargado
+  bool switchValue = false; //false es Profesional y true Encargado
 
   setSwitchValue() {
     switchValue = false;
@@ -236,7 +236,7 @@ class LoginController extends GetxController {
     } else {
       int timeInit = await gettimeClokInitial(idProfessionalLoggedIn!, branchIdLoggedIn!, tokenUserLoggedIn);
       print('el tiempo devuelto inicial es desde el metodo del login:$timeInit');
-      clockInitialTimeB(timeInit, clientsScheduledController, 'Barbero');
+      clockInitialTimeB(timeInit, clientsScheduledController, 'Profesional');
 
       setLoggingInCharge(true, 'setswitchValue-194');
       switchValue = false;
@@ -244,11 +244,7 @@ class LoginController extends GetxController {
       clientsScheduledController.setCloseIesperado(true);
       clientsScheduledController.setCloseIesperadoLogin(true);
       await Future.delayed(const Duration(milliseconds: 500));
-      // await clientsScheduledController.fetchClientsScheduledNew(
-      //     idProfessionalLoggedIn,
-      //     branchIdLoggedIn,
-      //     'setswitchValue',
-      //     tokenUserLoggedIn);
+
       await clientsScheduledController.fetchClientsScheduled(
           idProfessionalLoggedIn, branchIdLoggedIn, 'setswitchValue');
       print('soy un switchValue:false');
@@ -765,16 +761,16 @@ class LoginController extends GetxController {
             setCodigoQrValid(null);
           }
 
-          if (chargeUserLoggedIn == "Barbero") {
-            //aqui cargo la cola del barbero para poder tener en el home al siguiente de la cola inicialmente
+          if (chargeUserLoggedIn == "Profesional") {
+            //aqui  la cola del Profesional para poder tener en el home al siguiente de la cola inicialmente
 
             setIsLoggingIn(true);
             setLoggingInCharge(true, 'loginGetInEncargadoBarbero-659');
             clientsScheduledController.setCloseIesperado(true);
             clientsScheduledController.setCloseIesperadoLogin(true);
-            await clientsScheduledController.fetchClientsScheduled(idProfessionalLoggedIn, branchIdLoggedIn, 'Barbero');
+            await clientsScheduledController.fetchClientsScheduled(idProfessionalLoggedIn, branchIdLoggedIn, 'Profesional');
 
-            print('***************SOY BARBERO*************');
+            print('***************SOY Profesional*************');
             pagina = '/Professional';
             loadingValue(false);
             update();
@@ -1047,8 +1043,8 @@ class LoginController extends GetxController {
             print('asignando valores de memoria:NO-1');
           }
           int stateBET = 2;
-          if (chargeUserLoggedIn == 'Barbero' ||
-              chargeUserLoggedIn == 'Barbero y Encargado' ||
+          if (chargeUserLoggedIn == 'Profesional' ||
+              chargeUserLoggedIn == 'Profesional y Encargado' ||
               chargeUserLoggedIn == 'Tecnico') {
             int idPuesto = await getIdPuesto(idProfessionalLoggedIn!);
             if (idPuesto != -99 && idPuesto != -999) {
@@ -1113,15 +1109,15 @@ class LoginController extends GetxController {
             }
           }
 
-          if (chargeUserLoggedIn == "Barbero" || chargeUserLoggedIn == "Barbero y Encargado") {
+          if (chargeUserLoggedIn == "Profesional" || chargeUserLoggedIn == "Profesional y Encargado") {
             if (stateBET == 1) //si esta adentro con td bien.puede hacer estas llamadas
             ///solo cargo td esto si tengo el qr leido
             {
               //aqui es para saber solamnete el tiempo del reloj inicial de los 3min
               int timeInit = await gettimeClokInitial(idProfessionalLoggedIn!, branchIdLoggedIn!, tokenUserLoggedIn);
               print('el tiempo devuelto inicial es desde el metodo del login:$timeInit');
-              clockInitialTimeB(timeInit, clientsScheduledController, 'Barbero');
-              //aqui cargo la cola del barbero para poder tener en el home al siguiente de la cola inicialmente
+              clockInitialTimeB(timeInit, clientsScheduledController, 'Profesional');
+              //aqui cargo la cola del Profesional para poder tener en el home al siguiente de la cola inicialmente
 
               setIsLoggingIn(true);
               setLoggingNotification(true);
@@ -1129,7 +1125,7 @@ class LoginController extends GetxController {
               clientsScheduledController.setCloseIesperado(true);
               clientsScheduledController.setCloseIesperadoLogin(true);
               await clientsScheduledController.fetchClientsScheduled(
-              idProfessionalLoggedIn, branchIdLoggedIn, 'Barbero y Encargado');
+              idProfessionalLoggedIn, branchIdLoggedIn, 'Profesional y Encargado');
             }
 
             pagina = '/Professional';
@@ -1199,7 +1195,7 @@ class LoginController extends GetxController {
       final NotificationController notCont = Get.find<NotificationController>();
       clientCont.updateTails();
       notCont.setNotifLenght();
-      setSwitchValue(); //si fuera Barbero encargado que lo ponga en la parte del barbero
+      setSwitchValue(); //si fuera Profesional encargado que lo ponga en la parte del Profesional
 
       if (token != '') {
         Map<String, dynamic>? result; //INICIALIZANDO A NULL
@@ -1282,7 +1278,7 @@ class LoginController extends GetxController {
 
   Future<void> exitPostworking(String tipe) async {
     try {
-      if (tipe == 'Barbero' || tipe == 'Tecnico') {
+      if (tipe == 'Profesional' || tipe == 'Tecnico') {
         bool result;
         int idPuesto = await getIdPuesto(idProfessionalLoggedIn!);
 
@@ -1292,9 +1288,9 @@ class LoginController extends GetxController {
             await ColacionProfessional(idProfessionalLoggedIn, tipe, 0);
             bool exit = await usuarioLg.exitHours(branchIdLoggedIn, idProfessionalLoggedIn, tokenUserLoggedIn);
             if (exit) {
-              print('SI registra la hora de salida del barbero o tecnico');
+              print('SI registra la hora de salida del Profesional o tecnico');
             } else {
-              print('NO registró la hora de salida del barbero o tecnico');
+              print('NO registró la hora de salida del Profesional o tecnico');
             }
           } else {
             print('NO SALIO DEL PUESTO EL PROFESIONAL');

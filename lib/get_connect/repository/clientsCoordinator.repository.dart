@@ -278,7 +278,7 @@ class ClientsCoordinatorRepository extends GetConnect {
           if (type == 'Coordinador' || type == 'Encargado') {
             if (u.type == type ||
                 u.type == 'Ambos' ||
-                u.type == 'Barbero y Encargado') {
+                u.type == 'Profesional y Encargado') {
               notificationList.add(u);
             }
             if (u.state == 0 || u.state == 3) {
@@ -286,19 +286,19 @@ class ClientsCoordinatorRepository extends GetConnect {
               //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
               if (u.type == type ||
                   u.type == 'Ambos' ||
-                  u.type == 'Barbero y Encargado') {
-                notificationListNew.add(u); //barbero
+                  u.type == 'Profesional y Encargado') {
+                notificationListNew.add(u); //Profesional
               }
             }
           } else {
-            if (u.type == type || u.type == 'Barbero y Encargado') {
+            if (u.type == type || u.type == 'Profesional y Encargado') {
               notificationList.add(u);
             }
             if (u.state == 0 || u.state == 3) {
               //si esta en estos estados es que no se ha visto
               //el u.state == 3 me dice que eliminaron un servicio y se mando a disminuir el tiempo del reloj
-              if (u.type == type || u.type == 'Barbero y Encargado') {
-                notificationListNew.add(u); //barbero
+              if (u.type == type || u.type == 'Profesional y Encargado') {
+                notificationListNew.add(u); //Profesional
               }
             }
           }
@@ -788,7 +788,7 @@ class ClientsCoordinatorRepository extends GetConnect {
             client.attended == 11 ||
             client.attended == 111 ||
             client.attended == 33) {
-          //33 es rechazado por el tecnico pero es atendido por el barbero
+          //33 es rechazado por el tecnico pero es atendido por el Profesional
           //agregue aqui estos dos 11 y 111
           quantityClientAttended++;
         }

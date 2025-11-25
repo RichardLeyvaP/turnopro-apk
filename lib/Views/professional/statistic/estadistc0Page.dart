@@ -549,7 +549,7 @@ class _Estadistc0PageState extends State<Estadistc0Page> {
                                                                                 MainAxisAlignment.spaceBetween,
                                                                             children: [
                                                                               const Text(
-                                                                                'Ganancia del Barbero',
+                                                                                'Ganancia del Profesional',
                                                                                 style: TextStyle(
                                                                                   fontSize: 16,
                                                                                 ),

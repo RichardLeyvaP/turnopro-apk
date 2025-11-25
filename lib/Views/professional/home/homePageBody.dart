@@ -170,18 +170,18 @@ class _HomePageBodyState extends State<HomePageBody>
         loginController.setCodigoQrValidAnt(1);
         Get.back();
       }
-    } else //No hay barberos disponibles
+    } else //No hay Profesional disponibles
     {
       //aqui mandar el cliente a verificar si es aleatori y cambiar el valor
       //y poner valor aleatore = 3 diciendo que puede ser llamado por alguien aunque este de primero
       loginController.setCodigoQrValidAnt(1);
       Get.back();
-      print('Intentó reasignar pero :No hay barberos disponibles');
+      print('Intentó reasignar pero :No hay Profesionales disponibles');
     }
   }
 
   Future<int> professionalDisp(int idReserv) async {
-    //que sea diferente al barbero actual
+    //que sea diferente al Profesional actual
     int idBarberAct = loginController.idProfessionalLoggedIn!;
     List<ProfessionalModel> profDisp;
     profDisp = await clientsScheduledController.getFirstProfessional(
@@ -352,7 +352,7 @@ class _HomePageBodyState extends State<HomePageBody>
           }
 
 
-          if (loginController.chargeUserLoggedIn != "Barbero y Encargado") {
+          if (loginController.chargeUserLoggedIn != "Profesional y Encargado") {
             if (clientsScheduledController
                         .noncomplianceProfessional['Tiempo'] !=
                     0 &&
@@ -371,10 +371,10 @@ class _HomePageBodyState extends State<HomePageBody>
                   loginController.idProfessionalLoggedIn!,
                   'Tu tiempo de espera de 3 minutos para seleccionar al nuevo cliente en cola se ha agotado.',
                   'no',
-                  'Barbero');
+                  'Profesional');
 
             }
-          } //FIN DEL IF DE BARBERO ENCARGADO
+          } //FIN DEL IF DE Profesional ENCARGADO
           reiniciateClock();
         }
       }
@@ -529,8 +529,8 @@ class _HomePageBodyState extends State<HomePageBody>
 
       if (loginController.idProfessionalLoggedIn != null &&
           loginController.branchIdLoggedIn != null &&
-          (loginController.chargeUserLoggedIn == "Barbero" ||
-          (loginController.chargeUserLoggedIn == "Barbero y Encargado"))) {
+          (loginController.chargeUserLoggedIn == "Profesional" ||
+          (loginController.chargeUserLoggedIn == "Profesional y Encargado"))) {
 
       }
       if (loginController.segundoPlano == 3) {
@@ -603,9 +603,9 @@ class _HomePageBodyState extends State<HomePageBody>
         if (loginController.usserPermissionQr != null &&
             loginController.idProfessionalLoggedIn != null &&
             loginController.branchIdLoggedIn != null &&
-            (loginController.chargeUserLoggedIn == "Barbero" ||
+            (loginController.chargeUserLoggedIn == "Profesional" ||
                 (loginController.chargeUserLoggedIn ==
-                    "Barbero y Encargado"))) {
+                    "Profesional y Encargado"))) {
           clientsScheduledController.filterShowNext();
           String teleClient = '';
           if (clientsScheduledController.clientsScheduledNextServ != null) {
@@ -626,7 +626,7 @@ class _HomePageBodyState extends State<HomePageBody>
           //variables
           int idBranch = loginController.branchIdLoggedIn!;
           int idProfe = loginController.idProfessionalLoggedIn!;
-          String type = 'Barbero';
+          String type = 'Profesional';
           String msj = 'llamadasTimer1';
 
           await notiController.professionalBranchNotifQueque(
@@ -642,7 +642,7 @@ class _HomePageBodyState extends State<HomePageBody>
               loginController.usserPermissionQr == 2) {
             restartStopClock();
           }
-          if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
+          if (loginController.chargeUserLoggedIn == "Profesional y Encargado") {
             await Future.delayed(const Duration(milliseconds: 1000));
             await notiController.fetchNotificationList(
                 loginController.branchIdLoggedIn,
@@ -656,13 +656,13 @@ class _HomePageBodyState extends State<HomePageBody>
           print('llamada timer 2 - 11segundos');
           if (loginController.idProfessionalLoggedIn != null &&
               loginController.branchIdLoggedIn != null &&
-              (loginController.chargeUserLoggedIn == "Barbero" ||
+              (loginController.chargeUserLoggedIn == "Profesional" ||
                   (loginController.chargeUserLoggedIn ==
-                      "Barbero y Encargado"))) {
+                      "Profesional y Encargado"))) {
             //guardar datos de los relojes en la db
-            //comprobar que este en barbero
+            //comprobar que este en Profesional
             if (loginController.switchValue ==
-                false) //es porque está en barbero
+                false) //es porque está en Profesional
             {
               await Future.delayed(const Duration(milliseconds: 500));
               //veridficar que el que tenga para finalizar no mande a modificar
@@ -677,21 +677,13 @@ class _HomePageBodyState extends State<HomePageBody>
                 loginController.tokenUserLoggedIn);
           }
 
-          if (loginController.idProfessionalLoggedIn != null &&
-              loginController.branchIdLoggedIn != null &&
-              (loginController.chargeUserLoggedIn == "Barbero" ||
-                  (loginController.chargeUserLoggedIn ==
-                      "Barbero y Encargado"))) {
-            //en este caso son 3 minutos que esta definido en el controlador
-            //aqui verifico si se esta acabando algun servico para mandar una notificacion
-          }
 
 
           if (loginController.idProfessionalLoggedIn != null &&
               loginController.branchIdLoggedIn != null &&
-              (loginController.chargeUserLoggedIn == "Barbero" ||
+              (loginController.chargeUserLoggedIn == "Profesional" ||
                   (loginController.chargeUserLoggedIn ==
-                      "Barbero y Encargado"))) {
+                      "Profesional y Encargado"))) {
             //en este caso son 3 minutos que esta definido en el controlador
             //aqui verifico si se esta acabando algun servico para mandar una notificacion
 
@@ -712,7 +704,7 @@ class _HomePageBodyState extends State<HomePageBody>
                       loginController.idProfessionalLoggedIn,
                       'Recuerda que tienes clientes en cola.¡No los mantengas esperando por mucho tiempo!',
                       'no',
-                      'Barbero');
+                      'Profesional');
                   // notificate
                   // scheduleNotification
 
@@ -757,10 +749,10 @@ class _HomePageBodyState extends State<HomePageBody>
         await notiController.fetchNotificationList(
             loginController.branchIdLoggedIn,
             loginController.idProfessionalLoggedIn,
-            'Barbero',
+            'Profesional',
             'Cart homeBarbero1',
             loginController.tokenUserLoggedIn);
-        if (loginController.chargeUserLoggedIn == "Barbero y Encargado") {
+        if (loginController.chargeUserLoggedIn == "Profesional y Encargado") {
           await Future.delayed(const Duration(milliseconds: 700));
           await notiController.fetchNotificationList(
               loginController.branchIdLoggedIn,
@@ -1794,7 +1786,7 @@ class _HomePageBodyState extends State<HomePageBody>
                           ],
                         ),
                       ),
-                      // Barbero
+                      // Profesional
                       Row(
                         children: [
 
@@ -2504,7 +2496,7 @@ class _HomePageBodyState extends State<HomePageBody>
                                 ],
                               ),
                             ),
-                            // Barbero
+                            // Profesional
                             Row(
                               children: [
                                 CircleAvatar(
@@ -3407,7 +3399,7 @@ class _HomePageBodyState extends State<HomePageBody>
                       ],
                     ),
                   ),
-                  // Barbero
+                  // Profesional
                   Row(
                     children: [
 
@@ -4075,15 +4067,15 @@ class _HomePageBodyState extends State<HomePageBody>
             ); //Get.back();
             String typeEnv = '';
 
-            if (loginController.chargeUserLoggedIn == 'Barbero y Encargado') {
-              if (loginController.switchValue == false) //'Barbero'
+            if (loginController.chargeUserLoggedIn == 'Profesional y Encargado') {
+              if (loginController.switchValue == false) //'Profesional'
               {
-                typeEnv = 'Barbero';
+                typeEnv = 'Profesional';
               } else {
                 typeEnv = 'Encargado';
               }
             } else {
-              typeEnv = 'Barbero';
+              typeEnv = 'Profesional';
             }
 
             await notiController.fetchNotificationList(

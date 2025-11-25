@@ -411,7 +411,7 @@ class _StadisticaSemanalPageNuevaState
                         });
                       },
                       firstDay: DateTime(1900, 1,
-                          1), //fecha de registro en la empresa del barbero
+                          1), //fecha de registro en la empresa del Profesional
                       lastDay: DateTime.now(),
                       selectedDayPredicate: (day) {
                         return isSameDay(_selectedDay, day);

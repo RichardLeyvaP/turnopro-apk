@@ -267,7 +267,7 @@ class _ProfileClientState extends State<ProfileClient> {
                                 controllerCoord.endLookCORD,
                                 controllerCoord.professionalNameCORD,
                                 controllerCoord
-                                    .imageUrlCORD, // 'CARGAR LA IMAGEN DEL BARBERO',
+                                    .imageUrlCORD, // 'CARGAR LA IMAGEN DEL Profesional',
                               ),
 
                               Padding(
@@ -852,19 +852,13 @@ class _ProfileClientState extends State<ProfileClient> {
                       const Row(
                         children: [
                           Text(
-                            'Último barbero #todo',
+                            'Último Profesional',
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
                                 height: 1.2),
                           ),
-                          /*  Text(
-                            '(16/01/2024)',
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                height: 1.2),
-                          ),*/
+
                         ],
                       ),
                       Text(

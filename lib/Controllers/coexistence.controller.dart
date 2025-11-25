@@ -155,9 +155,9 @@ class CoexistenceController extends GetxController {
     int? idProfessional = controllerLogin.idProfessionalLoggedIn;
     int? idBranch = controllerLogin.branchIdLoggedIn;
     String? charge = controllerLogin.chargeUserLoggedIn;
-    if (charge == 'Barbero y Encargado') {
+    if (charge == 'Profesional y Encargado') {
       if (controllerLogin.switchValue == false) {
-        charge = 'Barbero';
+        charge = 'Profesional';
       } else if (controllerLogin.switchValue == true) {
         charge = 'Encargado';
       }

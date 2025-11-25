@@ -46,7 +46,7 @@ class _QRViewPageState extends State<QRViewPage> {
       // Se ejecutará después de que se haya construido el widget
       // loginController.setCodigoQrValid(1);
       // La animación ha llegado al final, reiniciar
-      // solo si es barbero
+      // solo si es Profesional
       //  clientsScheduledController.animationControllerInitial!.reset();
       // clientsScheduledController.animationControllerInitial!.forward();
       // print(

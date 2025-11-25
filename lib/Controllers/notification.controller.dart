@@ -123,19 +123,6 @@ class NotificationController extends GetxController {
     return result;
   }
 
-  /* Future<void> reproducirSound() async {
-    Soundpool pool = Soundpool(streamType: StreamType.notification);
-    print('reproduciendo el sonido-1');
-    int soundId = await rootBundle
-        .load("assets/sound/livechat-129007.mp3")
-        .then((ByteData soundData) {
-      print('reproduciendo el sonido-3');
-      return pool.load(soundData);
-    });
-    int streamId = await pool.play(soundId);
-    print('reproduciendo el sonido-2');
-  }*/
-
   updateNotificationListBack(int value) {
     notificationListBack = value;
     update();
@@ -292,7 +279,7 @@ class NotificationController extends GetxController {
                 barrierDismissible: false);
             await Future.delayed(Duration(seconds: 5));
             await updateNotifications2(idBranch, idProfe, outAcept);
-            //  await controllerLogin.exitPostworking("Barbero");
+
             await controllerLogin.exit(controllerLogin.tokenUserLoggedIn);
             updateOutAcept(0);
             Get.back();

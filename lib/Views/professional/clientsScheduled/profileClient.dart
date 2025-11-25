@@ -316,7 +316,7 @@ class _ProfileClientState extends State<ProfileClient> {
                                 clientSchedControl.endLookBarber1,
                                 clientSchedControl.professionalNameBarber1,
                                 clientSchedControl
-                                    .imageUrlBarber1, // 'CARGAR LA IMAGEN DEL BARBERO',
+                                    .imageUrlBarber1, // 'CARGAR LA IMAGEN DEL PROFESIONAL',
                               ),
                               Padding(
                                   padding: const EdgeInsets.all(5.0),
@@ -727,7 +727,7 @@ class _ProfileClientState extends State<ProfileClient> {
                       const Row(
                         children: [
                           Text(
-                            'Último barbero #todo 144',
+                            'Último Profesional',
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,

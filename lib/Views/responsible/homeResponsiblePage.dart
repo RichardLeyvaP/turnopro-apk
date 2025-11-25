@@ -362,7 +362,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         GetBuilder<LoginController>(builder: (_) {
           return Row(
             children: [
-              _.chargeUserLoggedIn == 'Barbero y Encargado'
+              _.chargeUserLoggedIn == 'Profesional y Encargado'
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -435,7 +435,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                           )
                                         : null,
                                     child: Text(
-                                      _.switchValue ? '  Barbero' : 'Encargado',
+                                      _.switchValue ? '  Profesional' : 'Encargado',
                                       style: const TextStyle(
                                           fontSize: 10,
                                           color: const Color(0xFF2B3141),
@@ -454,7 +454,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               const SizedBox(
                 width: 14,
               ),
-              _.chargeUserLoggedIn != 'Barbero y Encargado'
+              _.chargeUserLoggedIn != 'Profesional y Encargado'
                   ? InkWell(
                       onTap: () {
                         //verifico si esta atendiendo a alguien no puede leer un nuevo codigo
@@ -596,7 +596,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               const SizedBox(
                 width: 10,
               ),
-              _.chargeUserLoggedIn != 'Barbero y Encargado'
+              _.chargeUserLoggedIn != 'Profesional y Encargado'
                   ? InkWell(
                       onTap: () {
                         //ESTE ES PQARA CUANDO VA A SALIR SABER SI PUEDE O NO
@@ -716,7 +716,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                 ),
                                                 onPressed: () async {
 
-                                                  //SACAR DEL PUESTO DE TRABAJO AL BARBERO
+                                                  //SACAR DEL PUESTO DE TRABAJO AL Profesional
                                                   Get.dialog(
                                                     const Center(
                                                       child:

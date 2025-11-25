@@ -603,9 +603,9 @@ class ClientsScheduledController extends GetxController {
                       professionalId,
                       'El tiempo de servicio del cliente $nameClient se agotará aproximadamente en 3 minutos',
                       'no',
-                      'Barbero');
+                      'Profesional');
 
-                  //llama al metodo que me dice que para este cliente ya se envio una notificacion al barbero
+                  //llama al metodo que me dice que para este cliente ya se envio una notificacion al Profesional
                   String teleClient = '';
                   if (clientsScheduledNext != null) {
                     teleClient = clientsScheduledNext!.telefone_client!;
@@ -652,10 +652,10 @@ class ClientsScheduledController extends GetxController {
                       professionalId,
                       'El tiempo de servicio del cliente $nameClient se agotará aproximadamente en 3 minutos',
                       'no',
-                      'Barbero');
+                      'Profesional');
 
                   if ((idClient == clientsAttended2?.client_id)) {
-                    //llama al metodo que me dice que para este cliente ya se envio una notificacion al barbero
+                    //llama al metodo que me dice que para este cliente ya se envio una notificacion al Profesional
                     String teleClient = '';
                     if (clientsScheduledNext != null) {
                       teleClient = clientsScheduledNext!.telefone_client!;
@@ -697,10 +697,10 @@ class ClientsScheduledController extends GetxController {
                       professionalId,
                       'El tiempo de servicio del cliente $nameClient se agotará aproximadamente en 3 minutos',
                       'no',
-                      'Barbero');
+                      'Profesional');
 
                   if ((idClient == clientsAttended3?.client_id)) {
-                    //llama al metodo que me dice que para este cliente ya se envio una notificacion al barbero
+                    //llama al metodo que me dice que para este cliente ya se envio una notificacion al Profesional
                     String teleClient = '';
                     if (clientsScheduledNext != null) {
                       teleClient = clientsScheduledNext!.telefone_client!;
@@ -743,10 +743,10 @@ class ClientsScheduledController extends GetxController {
                       professionalId,
                       'El tiempo de servicio del cliente $nameClient se agotará aproximadamente en 3 minutos',
                       'no',
-                      'Barbero');
+                      'Profesional');
 
                   if ((idClient == clientsAttended4?.client_id)) {
-                    //llama al metodo que me dice que para este cliente ya se envio una notificacion al barbero
+                    //llama al metodo que me dice que para este cliente ya se envio una notificacion al Profesional
                     String teleClient = '';
                     if (clientsScheduledNext != null) {
                       teleClient = clientsScheduledNext!.telefone_client!;

@@ -660,7 +660,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                           ),
                                           onPressed: () async {
 
-                                            //SACAR DEL PUESTO DE TRABAJO AL BARBERO
+                                            //SACAR DEL PUESTO DE TRABAJO AL Profesional
                                             Get.dialog(
                                               const Center(
                                                 child:
